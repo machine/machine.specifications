@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Castle.Facilities.DeferredServiceResolution", "Castle.Facilities.DeferredServiceResolution\Castle.Facilities.DeferredServiceResolution.csproj", "{FD223B74-1AE9-4F5A-B476-B823A3FE3997}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Castle.Facilities.DeferredServiceResolution.Tests", "Castle.Facilities.DeferredServiceResolution.Tests\Castle.Facilities.DeferredServiceResolution.Tests.csproj", "{3636D7C8-B960-40E9-BC20-EAEC0E72964B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD223B74-1AE9-4F5A-B476-B823A3FE3997}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD223B74-1AE9-4F5A-B476-B823A3FE3997}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD223B74-1AE9-4F5A-B476-B823A3FE3997}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD223B74-1AE9-4F5A-B476-B823A3FE3997}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3636D7C8-B960-40E9-BC20-EAEC0E72964B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3636D7C8-B960-40E9-BC20-EAEC0E72964B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3636D7C8-B960-40E9-BC20-EAEC0E72964B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3636D7C8-B960-40E9-BC20-EAEC0E72964B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
