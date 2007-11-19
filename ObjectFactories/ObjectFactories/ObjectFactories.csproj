@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21004</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{636539F5-74F6-46C2-8F53-D2FD4E6BCDDD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ObjectFactories</RootNamespace>
+    <AssemblyName>ObjectFactories</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Build\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Build\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Build.Engine" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Tasks" />
+    <Reference Include="Microsoft.Build.Utilities" />
+    <Reference Include="Mono.Cecil, Version=0.6.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Mdb, Version=0.2.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\Mono.Cecil.Mdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Pdb, Version=0.2.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\Mono.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CecilLayer\AssemblyWrapper.cs" />
+    <Compile Include="CecilLayer\IAssembly.cs" />
+    <Compile Include="Services\Impl\DefaultSuperFactory.cs" />
+    <Compile Include="Factories.cs" />
+    <Compile Include="Services\IFactoryFinder.cs" />
+    <Compile Include="Services\IFactoryCallWeaver.cs" />
+    <Compile Include="Services\IConstructorCallFinder.cs" />
+    <Compile Include="Services\IFactoryMapSerializer.cs" />
+    <Compile Include="Services\IObjectFactoriesProcessor.cs" />
+    <Compile Include="Services\IRuntimeFactoryInformation.cs" />
+    <Compile Include="Services\ISuperFactory.cs" />
+    <Compile Include="Model\Factory.cs" />
+    <Compile Include="Model\FactoryMap.cs" />
+    <Compile Include="Model\ConstructorCallWeave.cs" />
+    <Compile Include="MsBuild\FactoryWeaverTask.cs" />
+    <Compile Include="Services\IObjectFactory.cs" />
+    <Compile Include="MsBuild\MsBuildLogger.cs" />
+    <Compile Include="ObjectFactoryException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Impl\FactoryCallWeaver.cs" />
+    <Compile Include="Services\Impl\FactoryFinder.cs" />
+    <Compile Include="Services\IAssemblies.cs" />
+    <Compile Include="Services\ILogger.cs" />
+    <Compile Include="Services\Impl\Assemblies.cs" />
+    <Compile Include="Services\Impl\ConstructorCallFinder.cs" />
+    <Compile Include="Services\Impl\FactoryMapSerializer.cs" />
+    <Compile Include="Services\Impl\ObjectFactoriesProcessor.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

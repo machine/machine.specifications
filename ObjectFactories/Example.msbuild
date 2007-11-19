@@ -1,0 +1,16 @@
+<Project Default="Weave" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask TaskName="FactoryWeaverTask" AssemblyFile="Build\Debug\ObjectFactories.dll"/>
+
+  <Target Name="Weave" DependsOnTargets="Rebuild">
+    <FactoryWeaverTask PrimaryAssembly="Build\Debug\ObjectFactories.Example.exe" Assemblies="Build\Debug\ObjectFactories.Example.exe" />
+    <Exec Command="peverify Build\Debug\ObjectFactories.Example.exe" />
+  </Target>
+
+  <Target Name="Run" DependsOnTargets="Weave">
+    <Exec Command="Build\Debug\ObjectFactories.Example.exe" />
+  </Target>
+
+  <Target Name="Rebuild">
+    <!--MsBuild Projects="ObjectFactories.sln" Targets="Rebuild" /-->
+  </Target>
+</Project>

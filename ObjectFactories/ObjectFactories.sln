@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectFactories", "ObjectFactories\ObjectFactories.csproj", "{636539F5-74F6-46C2-8F53-D2FD4E6BCDDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectFactories.Tests", "ObjectFactories.Tests\ObjectFactories.Tests.csproj", "{E2B5E0E4-B042-44A0-8286-B179B205D1E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectFactories.Example", "ObjectFactories.Example\ObjectFactories.Example.csproj", "{0E1351EB-6DB7-4BBA-8EF8-E5A3FCE45FAA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{636539F5-74F6-46C2-8F53-D2FD4E6BCDDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{636539F5-74F6-46C2-8F53-D2FD4E6BCDDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{636539F5-74F6-46C2-8F53-D2FD4E6BCDDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{636539F5-74F6-46C2-8F53-D2FD4E6BCDDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2B5E0E4-B042-44A0-8286-B179B205D1E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2B5E0E4-B042-44A0-8286-B179B205D1E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2B5E0E4-B042-44A0-8286-B179B205D1E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2B5E0E4-B042-44A0-8286-B179B205D1E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E1351EB-6DB7-4BBA-8EF8-E5A3FCE45FAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E1351EB-6DB7-4BBA-8EF8-E5A3FCE45FAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E1351EB-6DB7-4BBA-8EF8-E5A3FCE45FAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E1351EB-6DB7-4BBA-8EF8-E5A3FCE45FAA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
