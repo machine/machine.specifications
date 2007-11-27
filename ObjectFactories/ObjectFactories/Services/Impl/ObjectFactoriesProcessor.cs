@@ -33,6 +33,8 @@ namespace ObjectFactories.Services.Impl
     public void ProcessAssembly(string path)
     {
       IAssembly assembly = _assemblies.LoadAssembly(path);
+      EnumerableFinder enumerableFinder = new EnumerableFinder(_log);
+      enumerableFinder.FindEnumerables(assembly);
       FactoryMap factories = _factoryFinder.FindFactories(assembly);
       IEnumerable<ConstructorCallWeave> weaves = _constructorCallFinder.FindConstructorCallWeaves(assembly, factories);
       _factoryCallWeaver.WeaveConstructorCalls(weaves, factories);

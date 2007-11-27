@@ -31,6 +31,10 @@ namespace ObjectFactories.Services.Impl
       {
         foreach (MethodDefinition method in type.Methods)
         {
+          if (method.Body == null)
+          {
+            continue;
+          }
           foreach (Instruction instruction in method.Body.Instructions)
           {
             if (instruction.OpCode == OpCodes.Newobj)
@@ -38,7 +42,10 @@ namespace ObjectFactories.Services.Impl
               MethodDefinition constructor = instruction.Operand as MethodDefinition;
               if (constructor != null && constructor.Parameters.Count == 0)
               {
-                spots.Add(new ConstructorCallWeave(assembly, method, instruction, constructor));
+                if (factories.HasForObjectType(constructor.DeclaringType))
+                {
+                  spots.Add(new ConstructorCallWeave(assembly, method, instruction, constructor));
+                }
               }
             }
           }

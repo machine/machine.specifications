@@ -60,6 +60,7 @@
     <Compile Include="Services\IFactoryCallWeaver.cs" />
     <Compile Include="Services\IConstructorCallFinder.cs" />
     <Compile Include="Services\IFactoryMapSerializer.cs" />
+    <Compile Include="Services\Impl\EnumerableFinder.cs" />
     <Compile Include="Services\IObjectFactoriesProcessor.cs" />
     <Compile Include="Services\IRuntimeFactoryInformation.cs" />
     <Compile Include="Services\ISuperFactory.cs" />
