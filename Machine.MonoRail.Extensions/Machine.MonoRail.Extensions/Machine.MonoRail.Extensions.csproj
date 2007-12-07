@@ -15,6 +15,8 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Machine.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -82,9 +84,14 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Calendars\AbstractCalendarParametersAssembler.cs" />
     <Compile Include="Calendars\AbstractCalendarViewComponent.cs" />
     <Compile Include="Calendars\Daily\DailyCalendarCellParameters.cs" />
     <Compile Include="Calendars\ICalendarParameters.cs" />
+    <Compile Include="Calendars\Monthly\IMonthlyCalendarParametersAssembler.cs" />
+    <Compile Include="Calendars\Monthly\IMonthlyCalendarView.cs" />
+    <Compile Include="Calendars\Monthly\MonthlyCalendarParameters.cs" />
+    <Compile Include="Calendars\Monthly\MonthlyCalendarParametersAssembler.cs" />
     <Compile Include="Calendars\Weekly\CalendarCellParameters.cs" />
     <Compile Include="Calendars\Weekly\WeeklyColumnParameters.cs" />
     <Compile Include="Calendars\Weekly\WeeklyNavigationParameters.cs" />
@@ -103,6 +110,7 @@
     <Compile Include="Calendars\Weekly\WeeklyCalendar.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Machine.snk" />
     <None Include="Views\Home\Index.brail" />
     <None Include="Views\Layouts\Default.brail" />
     <None Include="Views\Rescues\GeneralError.brail" />

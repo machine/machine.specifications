@@ -7,22 +7,12 @@ namespace Machine.MonoRail.Extensions.Calendars.Monthly
     DateTime FirstVisibleDate
     {
       set;
+      get;
     }
     DateTime LastVisibleDate
     {
       set;
-    }
-    MonthlyNavigationParameters Navigation
-    {
-      set;
-    }
-    MonthlyColumnParameters Column
-    {
-      set;
-    }
-    CalendarCellParameters Cell
-    {
-      set;
+      get;
     }
   }
 }

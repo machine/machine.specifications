@@ -28,7 +28,7 @@ namespace Machine.MonoRail.Extensions.Calendars.Weekly
 
     public override void Initialize()
     {
-      _parameters = GetParameters<IWeeklyCalendarParameters>();
+      _parameters = GetView<IWeeklyCalendarParameters>();
       base.Initialize();
     }
 

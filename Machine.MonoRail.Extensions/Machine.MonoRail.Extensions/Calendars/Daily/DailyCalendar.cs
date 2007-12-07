@@ -20,7 +20,7 @@ namespace Machine.MonoRail.Extensions.Calendars.Daily
 
     public override void Initialize()
     {
-      _parameters = GetParameters<IDailyCalendarParameters>();
+      _parameters = GetView<IDailyCalendarParameters>();
       ValidateParameters();
       base.Initialize();
     }

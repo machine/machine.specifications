@@ -14,6 +14,7 @@ namespace Machine.MonoRail.Extensions.Calendars.Monthly
     private const string RowBeginSectionName = "BeginRow";
     private const string RowEndSectionName = "EndRow";
     private IMonthlyCalendarParameters _parameters;
+    private IMonthlyCalendarView _view;
     #endregion
 
     #region Methods
@@ -28,32 +29,30 @@ namespace Machine.MonoRail.Extensions.Calendars.Monthly
     public override void Initialize()
     {
       _parameters = GetParameters<IMonthlyCalendarParameters>();
+      _view = GetView<IMonthlyCalendarView>();
       base.Initialize();
     }
 
     public override void Render()
     {
       DateTime selectedDay = _parameters.SelectedDate;
-      DateTime firstDayOfMonth = GetFirstDayOfMonth(selectedDay);
-      DateTime firstVisibleDay = GetFirstDayOfWeek(firstDayOfMonth);
-      DateTime lastDayOfMonth = GetLastDayOfMonth(selectedDay);
-      DateTime lastVisibleDay = GetLastDayOfWeek(lastDayOfMonth);
 
-      _parameters.FirstVisibleDate = firstVisibleDay;
-      _parameters.LastVisibleDate = lastVisibleDay;
-      _parameters.Navigation = new MonthlyNavigationParameters(GetDateOneMonthAway(selectedDay, false), GetDateOneMonthAway(selectedDay, true));
+      _view.SelectedDate = _parameters.SelectedDate;
+      _view.FirstVisibleDate = _parameters.FirstVisibleDate;
+      _view.LastVisibleDate = _parameters.LastVisibleDate;
+      _view.Navigation = new MonthlyNavigationParameters(GetDateOneMonthAway(selectedDay, false), GetDateOneMonthAway(selectedDay, true));
 
       RenderSection(BeginSectionName);
       RenderSection(NavigationSectionName);
       RenderSection(RowBeginSectionName);
       for (int i = 0; i < 7; ++i )
       {
-        _parameters.Column = new MonthlyColumnParameters((DayOfWeek)i);
+        _view.Column = new MonthlyColumnParameters((DayOfWeek)i);
         RenderSection(ColumnHeaderSectionName);
-        _parameters.Column = null;
+        _view.Column = null;
       }
       RenderSection(RowEndSectionName);
-      RenderDays(firstVisibleDay, lastVisibleDay, selectedDay);
+      RenderDays(_parameters.FirstVisibleDate, _parameters.LastVisibleDate, selectedDay);
       RenderSection(EndSectionName);
     }
 
@@ -66,9 +65,9 @@ namespace Machine.MonoRail.Extensions.Calendars.Monthly
         {
           RenderSection(RowBeginSectionName);
         }
-        _parameters.Cell = new CalendarCellParameters(currentDay, IsSameDay(currentDay, selectedDay), IsSameMonth(currentDay, selectedDay), IsToday(currentDay));
+        _view.Cell = new CalendarCellParameters(currentDay, IsSameDay(currentDay, selectedDay), IsSameMonth(currentDay, selectedDay), IsToday(currentDay));
         RenderSection(DaySectionName);
-        _parameters.Cell = null;
+        _view.Cell = null;
         if (currentDay.DayOfWeek == DayOfWeek.Saturday)
         {
           RenderSection(RowEndSectionName);

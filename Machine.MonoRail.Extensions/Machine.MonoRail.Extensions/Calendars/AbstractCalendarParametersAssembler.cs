@@ -1,23 +1,11 @@
 ﻿using System;
 using System.Globalization;
 
-using Castle.MonoRail.Framework;
-
 namespace Machine.MonoRail.Extensions.Calendars
 {
-  public abstract class AbstractCalendarViewComponent : ViewComponent
+  public abstract class AbstractCalendarParametersAssembler
   {
     protected readonly Calendar _calendar = new GregorianCalendar();
-
-    protected virtual TParameters GetParameters<TParameters>()
-    {
-      return (TParameters)this.ComponentParams["Parameters"];
-    }
-
-    protected virtual TView GetView<TView>()
-    {
-      return DictionaryAdapterSource.DictionaryAdapterFactory.GetAdapter<TView>(this.ComponentParams);
-    }
 
     protected virtual bool IsSameDay(DateTime day1, DateTime day2)
     {
@@ -31,7 +19,7 @@ namespace Machine.MonoRail.Extensions.Calendars
 
     protected virtual bool IsToday(DateTime day)
     {
-      return day.Date == DateTime.Now.Date; // ??
+      return day.Date == DateTime.Now.Date;
     }
 
     protected virtual DateTime GetFirstDayOfMonth(DateTime day)
