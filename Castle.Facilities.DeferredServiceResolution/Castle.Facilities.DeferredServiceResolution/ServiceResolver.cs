@@ -27,12 +27,12 @@ namespace Castle.Facilities.DeferredServiceResolution
 
     public ComponentModel ResolveModel(Type type)
     {
-      return _serviceInterfaceResolver.Resolve(type, _componentModelAndKernelSource.Models, false);
+      return _serviceInterfaceResolver.AttemptResolve(type, _componentModelAndKernelSource.Models);
     }
 
     public bool CanResolve(Type type)
     {
-      return _serviceInterfaceResolver.Resolve(type, _componentModelAndKernelSource.Models, false) != null;
+      return _serviceInterfaceResolver.AttemptResolve(type, _componentModelAndKernelSource.Models) != null;
     }
     #endregion
   }

@@ -7,7 +7,7 @@ namespace Castle.Facilities.DeferredServiceResolution
 {
   public interface IServiceInterfaceResolver
   {
-    ComponentModel Resolve(Type serviceType, ICollection<ComponentModel> models, bool throwOnError);
+    ComponentModel AttemptResolve(Type serviceType, ICollection<ComponentModel> models);
     ComponentModel Resolve(Type serviceType, ICollection<ComponentModel> models);
   }
 }

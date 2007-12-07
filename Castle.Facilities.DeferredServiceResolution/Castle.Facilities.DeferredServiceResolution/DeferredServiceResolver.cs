@@ -30,7 +30,7 @@ namespace Castle.Facilities.DeferredServiceResolution
     {
       try
       {
-        return _serviceInterfaceResolver.Resolve(dependency.TargetType, _componentModelSource.Models, false) != null;
+        return _serviceInterfaceResolver.AttemptResolve(dependency.TargetType, _componentModelSource.Models) != null;
       }
       catch (Exception error)
       {

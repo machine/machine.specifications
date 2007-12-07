@@ -10,6 +10,8 @@ namespace Castle.Facilities.DeferredServiceResolution
   {
     private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ServiceInterfaceResolver));
 
+    private readonly Dictionary<Type, ComponentModel> _cache = new Dictionary<Type, ComponentModel>();
+
     public ComponentModel Resolve(Type serviceType, ICollection<ComponentModel> models, bool throwOnError)
     {
       List<ComponentModel> candidates = new List<ComponentModel>();
@@ -36,9 +38,32 @@ namespace Castle.Facilities.DeferredServiceResolution
       return candidates[0];
     }
 
+    public ComponentModel AttemptResolve(Type serviceType, ICollection<ComponentModel> models)
+    {
+      if (_cache.ContainsKey(serviceType))
+      {
+        return _cache[serviceType];
+      }
+      ComponentModel model = Resolve(serviceType, models, false);
+      if (model != null)
+      {
+        _cache[serviceType] = model;
+      }
+      return model;
+    }
+
     public ComponentModel Resolve(Type serviceType, ICollection<ComponentModel> models)
     {
-      return Resolve(serviceType, models, true);
+      if (_cache.ContainsKey(serviceType))
+      {
+        return _cache[serviceType];
+      }
+      ComponentModel model = Resolve(serviceType, models, true);
+      if (model != null)
+      {
+        _cache[serviceType] = model;
+      }
+      return model;
     }
 
     private static bool IsImplementationOf(Type serviceType, Type implementation)
