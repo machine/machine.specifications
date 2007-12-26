@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<!-- The following path should be set by the installer. It should end with a backslash. -->
+	<PropertyGroup>
+		<PostSharpDirectory  Condition=" '$(PostSharpDirectory)' == '' ">$(MSBuildProjectDirectory)\..\Libraries\PostSharp\</PostSharpDirectory>
+	</PropertyGroup>
+
+	<!-- Determines whether a PostSharp project is named after the principal project. -->
+	<PropertyGroup Condition=" '$(PostSharpProject)'=='' AND Exists('$(MSBuildProjectDirectory)\$(MSBuildProjectName).$(Configuration).$(Platform).psproj') ">
+		<PostSharpProject>$(MSBuildProjectDirectory)\$(MSBuildProjectName).$(Configuration).$(Platform).psproj</PostSharpProject>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(PostSharpProject)'=='' AND Exists('$(MSBuildProjectDirectory)\$(MSBuildProjectName).$(Configuration).psproj') ">
+		<PostSharpProject>$(MSBuildProjectDirectory)\$(MSBuildProjectName).$(Configuration).psproj</PostSharpProject>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(PostSharpProject)'=='' AND Exists('$(MSBuildProjectDirectory)\$(MSBuildProjectName).psproj') ">
+		<PostSharpProject>$(MSBuildProjectDirectory)\$(MSBuildProjectName).psproj</PostSharpProject>
+	</PropertyGroup>
+
+	<!-- Set default properties -->
+	<PropertyGroup>
+		<PostSharpAutoUpdateDisable Condition="$(PostSharpAutoUpdateDisable)==''">False</PostSharpAutoUpdateDisable>
+	</PropertyGroup>
+
+	<!-- Other properties -->
+	<PropertyGroup>
+		<PostSharpConfiguration Condition="'$(PostSharpConfiguration)'==''">$(Configuration)</PostSharpConfiguration>
+		<PostSharpPlatform Condition="'$(PostSharpPlatform)'==''">$(Platform)</PostSharpPlatform>
+		<PostSharpIntermediateDirectory Condition="'$(PostSharpIntermediateDirectory)'==''">$(IntermediateOutputPath)PostSharp</PostSharpIntermediateDirectory>
+		<PostSharpCleanIntermediate Condition="'$(PostSharpCleanIntermediate)'==''">False</PostSharpCleanIntermediate>
+    <PostSharpSignAssembly Condition="'$(PostSharpSignAssembly)'=='' AND '$(SignAssembly)'!=''">$(SignAssembly)</PostSharpSignAssembly>
+    <PostSharpSignAssembly Condition="'$(PostSharpSignAssembly)'==''">False</PostSharpSignAssembly>
+    <PostSharpAttachDebugger Condition="'$(PostSharpAttachDebugger)'==''">False</PostSharpAttachDebugger>
+    <_PostSharpAttachDebuggerCmdLine Condition="'$(PostSharpAttachDebugger)'=='True' Or '$(PostSharpAttachDebugger)'=='true'">/Attach</_PostSharpAttachDebuggerCmdLine>
+  </PropertyGroup>
+
+  <!-- Import tasks -->
+  <UsingTask	AssemblyFile="$(PostSharpDirectory)PostSharp.MSBuild.dll"
+				TaskName="PostSharp.MSBuild.PostSharp"
+				Condition="'$(PostSharpUseCommandLine)'!='True'"/>
+
+  <UsingTask	AssemblyFile="$(PostSharpDirectory)PostSharp.MSBuild.dll"
+				TaskName="PostSharp.MSBuild.TouchWithDelay"
+				Condition="'$(PostSharpUseCommandLine)'!='True'"/>
+
+
+  <!-- Inspect project references for PostSharp.Public.dll -->
+  <Target Name="PostSharpInspectReferences"
+			Condition="'$(BuildingProject)'=='true' And '$(SkipPostSharp)'!='True' And '$(PostSharpProject)'=='' "
+			DependsOnTargets="ResolveAssemblyReferences;PostSharpInspectConstants">
+
+    <Message Text="PostSharp parses the following references: @(ReferencePath -> '%(Filename)')."
+		    Importance="low"/>
+
+    <CreateProperty Condition="'%(ReferencePath.Filename)'=='PostSharp.Public'" Value="True">
+      <Output TaskParameter="Value" PropertyName="AutoPostSharp" />
+    </CreateProperty>
+
+    <Message Text="PostSharp parses the following dependencies: @(ReferenceDependencyPaths -> '%(Filename)')."
+             Importance="low"
+             Condition="'$(AutoPostSharp)'==''"/>
+
+    <CreateProperty Condition="'$(AutoPostSharp)'=='' AND '%(ReferenceDependencyPaths.Filename)'=='PostSharp.Public'" Value="True">
+      <Output TaskParameter="Value" PropertyName="AutoPostSharp" />
+    </CreateProperty>
+
+
+    <Message	Condition="'$(AutoPostSharp)'=='True'"
+					Importance="low"
+					Text="PostSharp.Public reference detected. The default project will be used." />
+
+
+    <CreateProperty Condition="'$(AutoPostSharp)'=='True'" Value="$(PostSharpDirectory)\Default.psproj">
+      <Output TaskParameter="Value" PropertyName="PostSharpProject" />
+    </CreateProperty>
+
+  </Target>
+
+  <!-- Determines whether the SkipPostSharp constant has been defined -->
+  <Target Name="PostSharpInspectConstants"
+			Condition="'$(BuildingProject)'=='true' And '$(SkipPostSharp)'!='True'">
+
+    <CreateItem Include="$(DefineConstants)">
+      <Output TaskParameter="Include" ItemName="_DefineConstants"/>
+    </CreateItem>
+
+    <CreateProperty Condition="'%(_DefineConstants.Identity)'=='SkipPostSharp' AND '$(SkipPostSharp)'==''" Value="True">
+      <Output TaskParameter="Value" PropertyName="SkipPostSharp" />
+    </CreateProperty>
+
+    <Message	Condition="'$(SkipPostSharp)'=='True'"
+					Importance="low"
+					Text="SkipPostSharp constant detected. The PostSharp target will be ignored." />
+
+    <CreateProperty Condition="'%(_DefineConstants.Identity)'=='PostSharpVerify'" Value="True">
+      <Output TaskParameter="Value" PropertyName="PostSharpVerify" />
+    </CreateProperty>
+
+  </Target>
+
+  <!-- Task PostSharp: executes PostSharp if the PostSharpProject is defined. -->
+  <Target	Name="PostSharp"
+			Condition="'$(BuildingProject)'=='true' And '$(PostSharpProject)'!='' And '$(PostSharpProject)'!='None' And '$(SkipPostSharp)'==''"
+			Inputs="$(PostSharpProject);@(IntermediateAssembly->'%(FullPath)')"
+			Outputs="@(IntermediateAssembly->'%(FullPath).postsharp')"
+			DependsOnTargets="_CopyFilesMarkedCopyLocal">
+
+    <Message Text="Executing PostSharp from $(PostSharpDirectory); project = $(PostSharpProject)."
+				 Importance="low"/>
+
+    <CreateProperty Value="@(IntermediateAssembly->'$(PostSharpIntermediateDirectory)\%(Filename)%(Extension)')">
+      <Output TaskParameter="Value" PropertyName="_PostSharpOutput"/>
+    </CreateProperty>
+
+    <CreateProperty Value="@(IntermediateAssembly->'$(PostSharpIntermediateDirectory)\%(Filename).pdb')">
+      <Output TaskParameter="Value" PropertyName="_PostSharpPdb"/>
+    </CreateProperty>
+
+    <CreateItem Include="$(ReferencePath)">
+      <Output TaskParameter="Include" ItemName="_ReferencePathAsItem"/>
+    </CreateItem>
+
+    <CreateProperty Value="@(_ReferencePathAsItem->'%(Identity)', ',')">
+      <Output TaskParameter="Value" PropertyName="_ReferencePathAsCommaSeparatedList"/>
+    </CreateProperty>
+
+    <CreateItem Include="
+              Output=$(_PostSharpOutput);
+              ReferenceDirectory=$(MSBuildProjectDirectory);
+							Configuration=$(PostSharpConfiguration);
+							Platform=$(PostSharpPlatform);
+							SearchPath=$(OutDir),$(_ReferencePathAsCommaSeparatedList);
+							IntermediateDirectory=$(PostSharpIntermediateDirectory);
+							CleanIntermediate=$(PostSharpCleanIntermediate);
+							MSBuildProjectFullPath=$(MSBuildProjectFullPath);
+							SignAssembly=$(PostSharpSignAssembly);
+							PrivateKeyLocation=$(AssemblyOriginatorKeyFile);
+							$(PostSharpParameters)">
+      <Output TaskParameter="Include" ItemName="_PostSharpParameters"/>
+    </CreateItem>
+
+    <MakeDir Directories="$(PostSharpIntermediateDirectory)"/>
+
+    <Message Text="Passing parameters: @(_PostSharpParameters)" Importance="low"/>
+
+    <PostSharp	Project="$(PostSharpProject)"
+					Input="@(IntermediateAssembly->'%(FullPath)')"
+					AutoUpdateDisabled="$(PostSharpAutoUpdateDisable)"
+					Parameters="@(_PostSharpParameters)"
+					Condition="'$(PostSharpUseCommandLine)'!='True'"
+          AttachDebugger="$(PostSharpAttachDebugger)"
+					/>
+
+		<Exec Condition="'$(PostSharpUseCommandLine)'=='True'"
+			  Command="&quot;$(PostSharpDirectory)PostSharp.exe&quot; $(_PostSharpAttachDebuggerCmdLine) &quot;$(PostSharpProject)&quot; &quot;@(IntermediateAssembly->'%(FullPath)')&quot; @(_PostSharpParameters->'&quot;/P:%(Identity) &quot;', ' ' )"/>
+
+		<!-- Copies the resulting files back to the intermediate assembly -->
+		<Copy SourceFiles="$(_PostSharpOutput)"  DestinationFiles="@(IntermediateAssembly->'%(FullPath)')"/>
+		<Copy SourceFiles="$(_PostSharpPdb)"  DestinationFiles="@(IntermediateAssembly->'%(RootDir)%(Directory)%(Filename).pdb')" Condition="Exists('$(_PostSharpPdb)')"/>
+
+		<!-- Touch the semaphore file to enable incremental building (with a delay of 1 s
+		     to avoid to post-compile the result of post-compilation during incremental rebuild   -->
+		<TouchWithDelay Files="@(IntermediateAssembly->'%(FullPath).postsharp')"
+						ReferenceFile="@(IntermediateAssembly)"
+						Delay="100"
+						Condition="'$(PostSharpUseCommandLine)'!='True'"/>
+
+    <Touch Files="@(IntermediateAssembly->'%(FullPath).postsharp')" AlwaysCreate="true"
+      		Condition="'$(PostSharpUseCommandLine)'=='True'"/>
+    
+	</Target>
+
+	<Target Name="PostSharpVerify" DependsOnTargets="GetFrameworkPaths" 
+          Condition="'$(PostSharpVerify)'!='' And '$(_PostSharpOutput)'!=''">
+		<Exec Command="&quot;$(FrameworkSDKDir)bin\peverify&quot; &quot;$(OutDir)$(TargetFileName)&quot; /nologo /verbose"
+          Condition="'$(FrameworkSDKDir)'!=''"/>
+    <Warning Text="PostSharp could not be verified because the .NET Framework SDK is not installed."
+             Condition="'$(FrameworkSDKDir)'==''"/>
+	 </Target>
+
+	<!-- Introduces PostSharp in the chain of compilation targets -->
+	<PropertyGroup>
+		<CompileDependsOn>
+			$(CompileDependsOn);
+			PostSharpInspectConstants;
+			PostSharpInspectReferences;
+			PostSharp
+		</CompileDependsOn>
+		<BuildDependsOn>
+			$(BuildDependsOn);
+			PostSharpVerify
+		</BuildDependsOn>
+   </PropertyGroup>
+
+</Project>
