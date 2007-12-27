@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <References Include="Build\Debug\*.dll">
+    <!--References Include="Build\Debug\*.dll">
       <InProject>false</InProject>
-    </References>
+    </References-->
   </ItemGroup>
 
   <Target Name="Default">

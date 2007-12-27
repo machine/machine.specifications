@@ -51,11 +51,17 @@ namespace Machine.Migrations
     }
 
     public Column(string name, Type type, short size, bool isPrimaryKey)
+     : this(name, type, size, isPrimaryKey, false)
+    {
+    }
+
+    public Column(string name, Type type, short size, bool isPrimaryKey, bool allowNull)
     {
       _name = name;
       _type = type;
       _size = size;
       _isPrimaryKey = isPrimaryKey;
+      _allowNull = allowNull;
     }
   }
 }

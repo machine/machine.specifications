@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 using Machine.Migrations.DatabaseProviders;
@@ -55,7 +56,7 @@ namespace Machine.Migrations.SchemaProviders
       }
     }
 
-    public void AddColumn(string table, string column, Type type, bool isPrimaryKey)
+    public void AddColumn(string table, string column, Type type, short size, bool isPrimaryKey, bool allowNull)
     {
       _databaseProvider.ExecuteNonQuery("ALTER TABLE {0} ADD COLUMN {1}", table, ColumnToCreateTableSql(new Column(column, type, 0, isPrimaryKey)));
     }
@@ -84,6 +85,37 @@ namespace Machine.Migrations.SchemaProviders
           return false;
         }
         return _databaseProvider.ExecuteScalar<Int32>("SELECT COUNT(*) FROM syscolumns WHERE id = object_id('{0}') AND name = '{1}'", table, column) > 0;
+      }
+    }
+
+    public void ChangeColumn(string table, string column, Type type, short size, bool allowNull)
+    {
+      _databaseProvider.ExecuteNonQuery("ALTER TABLE {0} {1}", table, ColumnToCreateTableSql(new Column(column, type, size, false, allowNull)));
+    }
+
+    public string[] Columns(string table)
+    {
+      using (IDataReader reader = _databaseProvider.ExecuteReader("SELECT name FROM syscolumns WHERE id = object_id('el_user')"))
+      {
+        List<string> values = new List<string>();
+        while (reader.Read())
+        {
+          values.Add(reader.GetString(0));
+        }
+        return values.ToArray();
+      }
+    }
+
+    public string[] Tables()
+    {
+      using (IDataReader reader = _databaseProvider.ExecuteReader("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES"))
+      {
+        List<string> values = new List<string>();
+        while (reader.Read())
+        {
+          values.Add(reader.GetString(0));
+        }
+        return values.ToArray();
       }
     }
     #endregion

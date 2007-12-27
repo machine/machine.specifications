@@ -88,7 +88,14 @@ namespace Machine.Migrations
 
     public string[] References
     {
-      get { return _references; }
+      get
+      {
+        if (_references == null)
+        {
+          return new string[0];
+        }
+        return _references;
+      }
       set { _references = value; }
     }
     #endregion
