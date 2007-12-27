@@ -6,7 +6,6 @@ using Microsoft.Build.Utilities;
 
 using StructureMap;
 using StructureMap.Configuration.DSL;
-using StructureMap.Graph;
 
 using Machine.Core.MsBuildUtilities;
 using Machine.Migrations.DatabaseProviders;
@@ -24,6 +23,7 @@ namespace Machine.Migrations
     private string _connectionString;
     private short _desiredVersion;
     private bool _diagnostics;
+    private string[] _references;
 
     public MigratorTask()
     {
@@ -51,6 +51,7 @@ namespace Machine.Migrations
       StructureMapConfiguration.BuildInstancesOf<IConfiguration>().TheDefaultIs(Registry.Object(this)).AsSingletons();
 
       StructureMapConfiguration.BuildInstancesOf<CSharpMigrationFactory>().TheDefaultIsConcreteType<CSharpMigrationFactory>().AsSingletons();
+      StructureMapConfiguration.BuildInstancesOf<BooMigrationFactory>().TheDefaultIsConcreteType<BooMigrationFactory>().AsSingletons();
 
       ObjectFactory.GetInstance<IMigrator>().RunMigrator();
       return true;
@@ -80,6 +81,12 @@ namespace Machine.Migrations
     {
       get { return _diagnostics; }
       set { _diagnostics = value; }
+    }
+
+    public string[] References
+    {
+      get { return _references; }
+      set { _references = value; }
     }
     #endregion
   }

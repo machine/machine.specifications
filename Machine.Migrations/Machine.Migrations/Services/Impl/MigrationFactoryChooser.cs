@@ -8,12 +8,14 @@ namespace Machine.Migrations.Services.Impl
   {
     #region Member Data
     private readonly CSharpMigrationFactory _cSharpMigrationFactory;
+    private readonly BooMigrationFactory _booMigrationFactory;
     #endregion
 
     #region MigrationApplicatorChooser()
-    public MigrationFactoryChooser(CSharpMigrationFactory cSharpMigrationFactory)
+    public MigrationFactoryChooser(CSharpMigrationFactory cSharpMigrationFactory, BooMigrationFactory booMigrationFactory)
     {
       _cSharpMigrationFactory = cSharpMigrationFactory;
+      _booMigrationFactory = booMigrationFactory;
     }
     #endregion
 
@@ -24,6 +26,10 @@ namespace Machine.Migrations.Services.Impl
       if (extension.Equals(".cs"))
       {
         return _cSharpMigrationFactory;
+      }
+      if (extension.Equals(".boo"))
+      {
+        return _booMigrationFactory;
       }
       throw new ArgumentException(migrationReference.Path);
     }

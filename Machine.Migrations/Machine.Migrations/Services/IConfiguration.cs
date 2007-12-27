@@ -24,5 +24,10 @@ namespace Machine.Migrations.Services
     {
       get;
     }
+
+    string[] References
+    {
+      get;
+    }
   }
 }

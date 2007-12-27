@@ -4,28 +4,31 @@ using System.Reflection;
 
 namespace Machine.Migrations.Services.Impl
 {
-  public class CSharpMigrationFactory : IMigrationFactory
+  public class CSharpMigrationFactory : AbstractMigrationCompilerFactory, IMigrationFactory
   {
     #region Logging
     private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(CSharpMigrationFactory));
     #endregion
 
-    #region IMigrationApplicator Members
-    public IDatabaseMigration CreateMigration(MigrationReference migrationReference)
+    #region Member Data
+    private readonly IConfiguration _configuration;
+    #endregion
+
+    #region CSharpMigrationFactory()
+    public CSharpMigrationFactory(IConfiguration configuration)
     {
-      Type type = CompileMigration(migrationReference);
-      object fixture = Activator.CreateInstance(type);
-      IDatabaseMigration instance = fixture as IDatabaseMigration;
-      if (instance == null)
-      {
-        throw new ArgumentException(type + " should be a " + typeof(IDatabaseMigration));
-      }
-      return instance;
+      _configuration = configuration;
     }
     #endregion
 
-    #region Methods
-    private static Type CompileMigration(MigrationReference migrationReference)
+    #region IMigrationApplicator Members
+    public IDatabaseMigration CreateMigration(MigrationReference migrationReference)
+    {
+      return CreateMigrationInstance(migrationReference);
+    }
+    #endregion
+
+    protected override Type CompileMigration(MigrationReference migrationReference)
     {
       CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
       CompilerParameters parameters = new CompilerParameters();
@@ -49,6 +52,5 @@ namespace Machine.Migrations.Services.Impl
       }
       return type;
     }
-    #endregion
   }
 }

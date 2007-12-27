@@ -31,6 +31,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Boo.Lang, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\Boo\Boo.Lang.dll</HintPath>
+    </Reference>
+    <Reference Include="Boo.Lang.Compiler, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\Boo\Boo.Lang.Compiler.dll</HintPath>
+    </Reference>
+    <Reference Include="Boo.Lang.Parser, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\Boo\Boo.Lang.Parser.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\Logging\log4net.dll</HintPath>
@@ -63,6 +75,8 @@
     <Compile Include="Services\IMigrationRunner.cs" />
     <Compile Include="Services\IMigrationSelector.cs" />
     <Compile Include="Services\IMigrator.cs" />
+    <Compile Include="Services\Impl\AbstractMigrationCompilerFactory.cs" />
+    <Compile Include="Services\Impl\BooMigrationFactory.cs" />
     <Compile Include="Services\Impl\CSharpMigrationFactory.cs" />
     <Compile Include="Services\Impl\MigrationFactoryChooser.cs" />
     <Compile Include="Services\Impl\MigrationFinder.cs" />

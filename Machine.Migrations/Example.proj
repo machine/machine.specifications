@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <Target Name="Default">
-    <MigratorTask ConnectionString="Data Source=127.0.0.1;Initial Catalog=eldb01;Integrated Security=SSPI" DesiredVersion="$(DesiredVersion)" />
+    <MigratorTask
+        ConnectionString="Data Source=127.0.0.1;Initial Catalog=eldb01;Integrated Security=SSPI"
+        DesiredVersion="$(DesiredVersion)"
+        References=""
+        />
   </Target>
 </Project>

@@ -11,6 +11,8 @@ namespace Machine.Migrations.Services.Impl
   public class MigrationFactoryChooserTests : StandardFixture<MigrationFactoryChooser>
   {
     private CSharpMigrationFactory _cSharpMigrationFactory;
+    private BooMigrationFactory _booMigrationFactory;
+    private IConfiguration _configuration;
 
     [Test]
     public void ChooseFactory_IsCSharp_ReturnsFactory()
@@ -27,8 +29,10 @@ namespace Machine.Migrations.Services.Impl
 
     public override MigrationFactoryChooser Create()
     {
-      _cSharpMigrationFactory = new CSharpMigrationFactory();
-      return new MigrationFactoryChooser(_cSharpMigrationFactory);
+      _configuration = _mocks.DynamicMock<IConfiguration>();
+      _cSharpMigrationFactory = new CSharpMigrationFactory(_configuration);
+      _booMigrationFactory = new BooMigrationFactory(_configuration);
+      return new MigrationFactoryChooser(_cSharpMigrationFactory, _booMigrationFactory);
     }
   }
 }
