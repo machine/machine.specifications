@@ -16,11 +16,11 @@ namespace Machine.Migrations.Services.Impl
     private IMigrationSelector _migrationSelector;
     private IMigrationRunner _migrationRunner;
     private ISchemaStateManager _schemaStateManager;
-    private List<MigrationReference> _migrations;
+    private List<MigrationStep> _steps;
 
     public override Migrator Create()
     {
-      _migrations = new List<MigrationReference>();
+      _steps = new List<MigrationStep>();
       _databaseProvider = _mocks.DynamicMock<IDatabaseProvider>();
       _migrationSelector = _mocks.DynamicMock<IMigrationSelector>();
       _schemaStateManager = _mocks.DynamicMock<ISchemaStateManager>();
@@ -35,9 +35,9 @@ namespace Machine.Migrations.Services.Impl
       {
         _databaseProvider.Open();
         _schemaStateManager.CheckSchemaInfoTable();
-        SetupResult.For(_migrationSelector.SelectMigrations()).Return(_migrations);
-        SetupResult.For(_migrationRunner.CanMigrate(_migrations)).Return(true);
-        _migrationRunner.Migrate(_migrations);
+        SetupResult.For(_migrationSelector.SelectMigrations()).Return(_steps);
+        SetupResult.For(_migrationRunner.CanMigrate(_steps)).Return(true);
+        _migrationRunner.Migrate(_steps);
         _databaseProvider.Close();
       }
       _target.RunMigrator();
@@ -51,8 +51,8 @@ namespace Machine.Migrations.Services.Impl
       {
         _databaseProvider.Open();
         _schemaStateManager.CheckSchemaInfoTable();
-        SetupResult.For(_migrationSelector.SelectMigrations()).Return(_migrations);
-        SetupResult.For(_migrationRunner.CanMigrate(_migrations)).Return(false);
+        SetupResult.For(_migrationSelector.SelectMigrations()).Return(_steps);
+        SetupResult.For(_migrationRunner.CanMigrate(_steps)).Return(false);
         _databaseProvider.Close();
       }
       _target.RunMigrator();

@@ -19,5 +19,10 @@ namespace Machine.Migrations.Services
     {
       get;
     }
+
+    bool ShowDiagnostics
+    {
+      get;
+    }
   }
 }

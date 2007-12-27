@@ -25,26 +25,27 @@ namespace Machine.Migrations.Services.Impl
     #endregion
 
     #region IMigrationRunner Members
-    public bool CanMigrate(ICollection<MigrationReference> migrations)
+    public bool CanMigrate(ICollection<MigrationStep> steps)
     {
-      foreach (MigrationReference migrationReference in migrations)
+      foreach (MigrationStep step in steps)
       {
+        MigrationReference migrationReference = step.MigrationReference;
         IMigrationFactory migrationFactory = _migrationFactoryChooser.ChooseFactory(migrationReference);
         IDatabaseMigration migration = migrationFactory.CreateMigration(migrationReference);
-        migrationReference.DatabaseMigration = migration;
+        step.DatabaseMigration = migration;
         _migrationInitializer.InitializeMigration(migration);
       }
       _log.Info("All migrations are initialized.");
       return true;
     }
 
-    public void Migrate(ICollection<MigrationReference> migrations)
+    public void Migrate(ICollection<MigrationStep> steps)
     {
-      foreach (MigrationReference migrationReference in migrations)
+      foreach (MigrationStep step in steps)
       {
-        _log.InfoFormat("Running {0}", migrationReference);
-        migrationReference.DatabaseMigration.Up();
-        //_schemaStateManager.SetVersion(migration.Version);
+        _log.InfoFormat("Running {0}", step);
+        step.Apply();
+        _schemaStateManager.SetVersion(step.VersionAfterApplying);
       }
     }
     #endregion

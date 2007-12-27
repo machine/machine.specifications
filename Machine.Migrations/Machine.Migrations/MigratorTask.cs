@@ -20,7 +20,15 @@ namespace Machine.Migrations
 {
   public class MigratorTask : Task, IConfiguration
   {
+    private string _migrationsDirectory;
     private string _connectionString;
+    private short _desiredVersion;
+    private bool _diagnostics;
+
+    public MigratorTask()
+    {
+      _migrationsDirectory = Environment.CurrentDirectory;
+    }
 
     public override bool Execute()
     {
@@ -39,8 +47,10 @@ namespace Machine.Migrations
       StructureMapConfiguration.BuildInstancesOf<ISchemaProvider>().TheDefaultIsConcreteType<SqlServerSchemaProvider>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<IMigrator>().TheDefaultIsConcreteType<Migrator>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<IMigrationFactoryChooser>().TheDefaultIsConcreteType<MigrationFactoryChooser>().AsSingletons();
-      StructureMapConfiguration.BuildInstancesOf<CSharpMigrationFactory>().TheDefaultIsConcreteType<CSharpMigrationFactory>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<IConfiguration>().TheDefaultIs(Registry.Object(this)).AsSingletons();
+
+      StructureMapConfiguration.BuildInstancesOf<CSharpMigrationFactory>().TheDefaultIsConcreteType<CSharpMigrationFactory>().AsSingletons();
+
       ObjectFactory.GetInstance<IMigrator>().RunMigrator();
       return true;
     }
@@ -55,12 +65,20 @@ namespace Machine.Migrations
 
     public string MigrationsDirectory
     {
-      get { return Environment.CurrentDirectory; }
+      get { return _migrationsDirectory; }
+      set { _migrationsDirectory = value; }
     }
 
     public short DesiredVersion
     {
-      get { return 0; }
+      get { return _desiredVersion; }
+      set { _desiredVersion = value; }
+    }
+
+    public bool ShowDiagnostics
+    {
+      get { return _diagnostics; }
+      set { _diagnostics = value; }
     }
     #endregion
   }

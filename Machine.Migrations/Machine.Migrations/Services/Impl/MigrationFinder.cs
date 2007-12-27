@@ -37,6 +37,9 @@ namespace Machine.Migrations.Services.Impl
           migrations.Add(new MigrationReference(Int16.Parse(m.Groups[1].Value), _namer.ToCamelCase(m.Groups[2].Value), file));
         }
       }
+      migrations.Sort(delegate (MigrationReference mr1, MigrationReference mr2) {
+        return mr1.Version.CompareTo(mr2.Version);
+      });
       return migrations;
     }
     #endregion

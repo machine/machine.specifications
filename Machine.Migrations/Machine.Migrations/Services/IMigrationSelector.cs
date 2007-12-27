@@ -5,6 +5,6 @@ namespace Machine.Migrations.Services
 {
   public interface IMigrationSelector
   {
-    ICollection<MigrationReference> SelectMigrations();
+    ICollection<MigrationStep> SelectMigrations();
   }
 }

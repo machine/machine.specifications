@@ -30,10 +30,10 @@ namespace Machine.Migrations.Services.Impl
       {
         _databaseProvider.Open();
         _schemaStateManager.CheckSchemaInfoTable();
-        ICollection<MigrationReference> migrations = _migrationSelector.SelectMigrations();
-        if (_migrationRunner.CanMigrate(migrations))
+        ICollection<MigrationStep> steps = _migrationSelector.SelectMigrations();
+        if (_migrationRunner.CanMigrate(steps))
         {
-          _migrationRunner.Migrate(migrations);
+          _migrationRunner.Migrate(steps);
         }
       }
       catch (Exception)

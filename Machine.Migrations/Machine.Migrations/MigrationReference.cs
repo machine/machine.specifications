@@ -8,7 +8,6 @@ namespace Machine.Migrations
     private short _version;
     private string _name;
     private string _path;
-    private IDatabaseMigration _databaseMigration;
 
     public short Version
     {
@@ -26,12 +25,6 @@ namespace Machine.Migrations
     {
       get { return _path; }
       set { _path = value; }
-    }
-
-    public IDatabaseMigration DatabaseMigration
-    {
-      get { return _databaseMigration; }
-      set { _databaseMigration = value; }
     }
 
     public MigrationReference()
