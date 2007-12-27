@@ -1,0 +1,7 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask TaskName="Machine.Migrations.MigratorTask" AssemblyFile="Build\Debug\Machine.Migrations.dll" />
+
+  <Target Name="Default">
+    <MigratorTask ConnectionString="Data Source=127.0.0.1;Initial Catalog=eldb01;Integrated Security=SSPI" />
+  </Target>
+</Project>
