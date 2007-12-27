@@ -34,6 +34,11 @@ namespace Machine.Migrations.Services.Impl
       CompilerParameters parameters = new CompilerParameters();
       parameters.GenerateExecutable = false;
       parameters.ReferencedAssemblies.Add(typeof(IDatabaseMigration).Assembly.Location);
+      foreach (string reference in _configuration.References)
+      {
+        _log.Debug("Referencing: " + reference);
+        parameters.ReferencedAssemblies.Add(reference);
+      }
       _log.InfoFormat("Compiling {0}", migrationReference);
       CompilerResults cr = provider.CompileAssemblyFromFile(parameters, migrationReference.Path);
       if (cr.Errors.Count > 0)

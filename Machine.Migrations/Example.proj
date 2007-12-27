@@ -5,11 +5,17 @@
     <DesiredVersion>0</DesiredVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <References Include="Build\Debug\*.dll">
+      <InProject>false</InProject>
+    </References>
+  </ItemGroup>
+
   <Target Name="Default">
     <MigratorTask
         ConnectionString="Data Source=127.0.0.1;Initial Catalog=eldb01;Integrated Security=SSPI"
         DesiredVersion="$(DesiredVersion)"
-        References=""
+        References="@(References)"
         />
   </Target>
 </Project>

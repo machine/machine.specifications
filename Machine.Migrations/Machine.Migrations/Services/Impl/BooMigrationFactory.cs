@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Reflection;
 using Boo.Lang.Compiler;
 using Boo.Lang.Compiler.IO;
 using Boo.Lang.Compiler.Pipelines;
@@ -36,6 +36,11 @@ namespace Machine.Migrations.Services.Impl
       BooCompiler compiler = new BooCompiler();
       compiler.Parameters.Input.Add(new FileInput(migrationReference.Path));
       compiler.Parameters.References.Add(typeof(IDatabaseMigration).Assembly);
+      foreach (string reference in _configuration.References)
+      {
+        _log.Debug("Referencing: " + reference);
+        compiler.Parameters.References.Add(Assembly.LoadFrom(reference));
+      }
       compiler.Parameters.OutputType = CompilerOutputType.Library;
       compiler.Parameters.GenerateInMemory = true;
       compiler.Parameters.Ducky = true;
