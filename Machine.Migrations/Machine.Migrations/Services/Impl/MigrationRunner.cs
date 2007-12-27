@@ -13,12 +13,14 @@ namespace Machine.Migrations.Services.Impl
     private readonly IMigrationFactoryChooser _migrationFactoryChooser;
     private readonly IMigrationInitializer _migrationInitializer;
     private readonly ISchemaStateManager _schemaStateManager;
+    private readonly IConfiguration _configuration;
     #endregion
 
     #region MigrationRunner()
-    public MigrationRunner(IMigrationFactoryChooser migrationFactoryChooser, IMigrationInitializer migrationInitializer, ISchemaStateManager schemaStateManager)
+    public MigrationRunner(IMigrationFactoryChooser migrationFactoryChooser, IMigrationInitializer migrationInitializer, ISchemaStateManager schemaStateManager, IConfiguration configuration)
     {
       _schemaStateManager = schemaStateManager;
+      _configuration = configuration;
       _migrationInitializer = migrationInitializer;
       _migrationFactoryChooser = migrationFactoryChooser;
     }
@@ -46,8 +48,11 @@ namespace Machine.Migrations.Services.Impl
         using (Machine.Core.LoggingUtilities.Log4NetNdc.Push("{0}", step.MigrationReference.Name))
         {
           _log.InfoFormat("Running {0}", step);
-          step.Apply();
-          _schemaStateManager.SetVersion(step.VersionAfterApplying);
+          if (!_configuration.ShowDiagnostics)
+          {
+            step.Apply();
+            _schemaStateManager.SetVersion(step.VersionAfterApplying);
+          }
         }
       }
     }

@@ -3,6 +3,7 @@
 
   <PropertyGroup>
     <DesiredVersion>0</DesiredVersion>
+    <ShowDiagnostics>False</ShowDiagnostics>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +16,7 @@
     <MigratorTask
         ConnectionString="Data Source=127.0.0.1;Initial Catalog=eldb01;Integrated Security=SSPI"
         DesiredVersion="$(DesiredVersion)"
+        ShowDiagnostics="$(ShowDiagnostics)"
         References="@(References)"
         />
   </Target>

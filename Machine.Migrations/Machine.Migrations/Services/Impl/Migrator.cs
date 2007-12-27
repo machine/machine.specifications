@@ -36,10 +36,6 @@ namespace Machine.Migrations.Services.Impl
           _migrationRunner.Migrate(steps);
         }
       }
-      catch (Exception)
-      {
-        throw;
-      }
       finally
       {
         _databaseProvider.Close();

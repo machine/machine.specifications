@@ -14,6 +14,7 @@ namespace Machine.Migrations.Services.Impl
     private IMigrationFactoryChooser _migrationFactoryChooser;
     private IMigrationInitializer _migrationInitializer;
     private IMigrationFactory _migrationFactory;
+    private IConfiguration _configuration;
 
     public override MigrationRunner Create()
     {
@@ -21,7 +22,8 @@ namespace Machine.Migrations.Services.Impl
       _migrationFactoryChooser = _mocks.DynamicMock<IMigrationFactoryChooser>();
       _migrationInitializer = _mocks.DynamicMock<IMigrationInitializer>();
       _migrationFactory = _mocks.DynamicMock<IMigrationFactory>();
-      return new MigrationRunner(_migrationFactoryChooser, _migrationInitializer, _schemaStateManager);
+      _configuration = _mocks.DynamicMock<IConfiguration>();
+      return new MigrationRunner(_migrationFactoryChooser, _migrationInitializer, _schemaStateManager, _configuration);
     }
   }
 }
