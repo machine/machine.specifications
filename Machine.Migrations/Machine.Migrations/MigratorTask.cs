@@ -32,7 +32,7 @@ namespace Machine.Migrations
 
     public override bool Execute()
     {
-      log4net.Config.BasicConfigurator.Configure(new Log4NetMsBuildAppender(this.Log, new log4net.Layout.PatternLayout("%-5p %m")));
+      log4net.Config.BasicConfigurator.Configure(new Log4NetMsBuildAppender(this.Log, new log4net.Layout.PatternLayout("%-5p %x %m")));
 
       StructureMapConfiguration.UseDefaultStructureMapConfigFile = false;  
       StructureMapConfiguration.BuildInstancesOf<IFileSystem>().TheDefaultIsConcreteType<FileSystem>().AsSingletons();
@@ -53,7 +53,10 @@ namespace Machine.Migrations
       StructureMapConfiguration.BuildInstancesOf<CSharpMigrationFactory>().TheDefaultIsConcreteType<CSharpMigrationFactory>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<BooMigrationFactory>().TheDefaultIsConcreteType<BooMigrationFactory>().AsSingletons();
 
-      ObjectFactory.GetInstance<IMigrator>().RunMigrator();
+      using (Machine.Core.LoggingUtilities.Log4NetNdc.Push(String.Empty))
+      {
+        ObjectFactory.GetInstance<IMigrator>().RunMigrator();
+      }
       return true;
     }
 

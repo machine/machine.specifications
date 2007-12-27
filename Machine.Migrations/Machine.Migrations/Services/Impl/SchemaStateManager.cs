@@ -48,9 +48,12 @@ namespace Machine.Migrations.Services.Impl
 
     public short GetVersion()
     {
-      short version = (short)_databaseProvider.ExecuteScalar<Int32>("SELECT {1} FROM {0}", TableName, VersionColumnName);
-      _log.InfoFormat("Version: {0}", version);
-      return version;
+      using (Machine.Core.LoggingUtilities.Log4NetNdc.Push("GetVersion"))
+      {
+        short version = (short)_databaseProvider.ExecuteScalar<Int32>("SELECT {1} FROM {0}", TableName, VersionColumnName);
+        _log.InfoFormat("Version: {0}", version);
+        return version;
+      }
     }
 
     public void SetVersion(short version)

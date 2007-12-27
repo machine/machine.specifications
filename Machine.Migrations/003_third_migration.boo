@@ -2,8 +2,8 @@ import System
 import Machine.Migrations
 
 class ThirdMigration(SimpleMigration):
-	def Up():
-    print "Up"
+  def Up():
+    Log.Info("Up")
 	
-	def Down():
-    print "Down"
+  def Down():
+    Log.Info("Down")

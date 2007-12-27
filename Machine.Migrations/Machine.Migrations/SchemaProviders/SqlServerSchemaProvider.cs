@@ -26,17 +26,20 @@ namespace Machine.Migrations.SchemaProviders
       {
         throw new ArgumentException("columns");
       }
-      StringBuilder sb = new StringBuilder();
-      sb.Append("CREATE TABLE ").Append(table).Append(" (");
-      bool first = true;
-      foreach (Column column in columns)
+      using (Machine.Core.LoggingUtilities.Log4NetNdc.Push("AddTable"))
       {
-        if (!first) sb.Append(",");
-        sb.AppendLine().Append(ColumnToCreateTableSql(column).Trim());
-        first = false;
+        StringBuilder sb = new StringBuilder();
+        sb.Append("CREATE TABLE ").Append(table).Append(" (");
+        bool first = true;
+        foreach (Column column in columns)
+        {
+          if (!first) sb.Append(",");
+          sb.AppendLine().Append(ColumnToCreateTableSql(column).Trim());
+          first = false;
+        }
+        sb.AppendLine().Append(")");
+        _databaseProvider.ExecuteNonQuery(sb.ToString());
       }
-      sb.AppendLine().Append(")");
-      _databaseProvider.ExecuteNonQuery(sb.ToString());
     }
 
     public void DropTable(string table)
@@ -46,7 +49,10 @@ namespace Machine.Migrations.SchemaProviders
 
     public bool HasTable(string table)
     {
-      return _databaseProvider.ExecuteScalar<Int32>("SELECT COUNT(*) FROM syscolumns WHERE id = object_id('{0}')", table) > 0;
+      using (Machine.Core.LoggingUtilities.Log4NetNdc.Push("HasTable({0})", table))
+      {
+        return _databaseProvider.ExecuteScalar<Int32>("SELECT COUNT(*) FROM syscolumns WHERE id = object_id('{0}')", table) > 0;
+      }
     }
 
     public void AddColumn(string table, string column, Type type, bool isPrimaryKey)
@@ -61,11 +67,14 @@ namespace Machine.Migrations.SchemaProviders
 
     public bool HasColumn(string table, string column)
     {
-      if (!HasTable(table))
+      using (Machine.Core.LoggingUtilities.Log4NetNdc.Push("HasColumn({0}.{1})", table, column))
       {
-        return false;
+        if (!HasTable(table))
+        {
+          return false;
+        }
+        return _databaseProvider.ExecuteScalar<Int32>("SELECT COUNT(*) FROM syscolumns WHERE id = object_id('{0}') AND name = '{1}'", table, column) > 0;
       }
-      return _databaseProvider.ExecuteScalar<Int32>("SELECT COUNT(*) FROM syscolumns WHERE id = object_id('{0}') AND name = '{1}'", table, column) > 0;
     }
     #endregion
 

@@ -43,9 +43,12 @@ namespace Machine.Migrations.Services.Impl
     {
       foreach (MigrationStep step in steps)
       {
-        _log.InfoFormat("Running {0}", step);
-        step.Apply();
-        _schemaStateManager.SetVersion(step.VersionAfterApplying);
+        using (Machine.Core.LoggingUtilities.Log4NetNdc.Push("{0}", step.MigrationReference.Name))
+        {
+          _log.InfoFormat("Running {0}", step);
+          step.Apply();
+          _schemaStateManager.SetVersion(step.VersionAfterApplying);
+        }
       }
     }
     #endregion

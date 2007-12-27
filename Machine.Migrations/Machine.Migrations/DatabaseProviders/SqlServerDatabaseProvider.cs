@@ -26,6 +26,11 @@ namespace Machine.Migrations.DatabaseProviders
     #endregion
 
     #region IDatabaseProvider Members
+    public IDbConnection DatabaseConnection
+    {
+      get { return _connection; }
+    }
+
     public void Open()
     {
       _connection = new SqlConnection(_configuration.ConnectionString);

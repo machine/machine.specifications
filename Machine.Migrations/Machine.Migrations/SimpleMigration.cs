@@ -9,11 +9,17 @@ namespace Machine.Migrations
   public abstract class SimpleMigration : IDatabaseMigration
   {
     #region Member Data
+    private readonly log4net.ILog _log;
     private ISchemaProvider _schemaProvider;
     private IDatabaseProvider _databaseProvider;
     #endregion
 
     #region Properties
+    public log4net.ILog Log
+    {
+      get { return _log; }
+    }
+
     public ISchemaProvider Schema
     {
       get { return _schemaProvider; }
@@ -28,6 +34,7 @@ namespace Machine.Migrations
     #region SimpleMigration()
     protected SimpleMigration()
     {
+      _log = log4net.LogManager.GetLogger(GetType());
     }
     #endregion
 
