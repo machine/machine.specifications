@@ -6,16 +6,14 @@ namespace Machine.Migrations.Services.Impl
   public class MigrationSelector : IMigrationSelector
   {
     #region Member Data
-    private readonly IConfiguration _configuration;
-    private readonly ISchemaStateManager _schemaStateManager;
     private readonly IMigrationFinder _migrationFinder;
+    private readonly IVersionStateFactory _versionStateFactory;
     #endregion
 
     #region MigrationSelector()
-    public MigrationSelector(ISchemaStateManager schemaStateManager, IMigrationFinder migrationFinder, IConfiguration configuration)
+    public MigrationSelector(IMigrationFinder migrationFinder, IVersionStateFactory versionStateFactory)
     {
-      _schemaStateManager = schemaStateManager;
-      _configuration = configuration;
+      _versionStateFactory = versionStateFactory;
       _migrationFinder = migrationFinder;
     }
     #endregion
@@ -23,13 +21,13 @@ namespace Machine.Migrations.Services.Impl
     #region IMigrationSelector Members
     public ICollection<MigrationStep> SelectMigrations()
     {
-      List<MigrationReference> all = new List<MigrationReference>(_migrationFinder.FindMigrations());
+      ICollection<MigrationReference> all = _migrationFinder.FindMigrations();
       List<MigrationStep> selected = new List<MigrationStep>();
       if (all.Count == 0)
       {
         return selected;
       }
-      VersionState version = GetVersionState(all);
+      VersionState version = _versionStateFactory.CreateVersionState(all);
       foreach (MigrationReference migration in all)
       {
         if (version.IsApplicable(migration))
@@ -45,26 +43,5 @@ namespace Machine.Migrations.Services.Impl
       return selected;
     }
     #endregion
-
-    private VersionState GetVersionState(ICollection<MigrationReference> migrations)
-    {
-      short current = _schemaStateManager.GetVersion();
-      short desired = _configuration.DesiredVersion;
-      short last = 0;
-      if (migrations.Count > 0)
-      {
-        List<MigrationReference> all = new List<MigrationReference>(migrations);
-        last = all[all.Count - 1].Version;
-      }
-      if (desired > last)
-      {
-        throw new ArgumentException("DesiredVersion is greater than maximum migration!");
-      }
-      if (desired < 0)
-      {
-        desired = last;
-      }
-      return new VersionState(current, last, desired);
-    }
   }
 }

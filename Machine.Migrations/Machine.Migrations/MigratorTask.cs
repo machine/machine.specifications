@@ -47,6 +47,7 @@ namespace Machine.Migrations
       StructureMapConfiguration.BuildInstancesOf<ISchemaProvider>().TheDefaultIsConcreteType<SqlServerSchemaProvider>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<IMigrator>().TheDefaultIsConcreteType<Migrator>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<IMigrationFactoryChooser>().TheDefaultIsConcreteType<MigrationFactoryChooser>().AsSingletons();
+      StructureMapConfiguration.BuildInstancesOf<IVersionStateFactory>().TheDefaultIsConcreteType<VersionStateFactory>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<IConfiguration>().TheDefaultIs(Registry.Object(this)).AsSingletons();
 
       StructureMapConfiguration.BuildInstancesOf<CSharpMigrationFactory>().TheDefaultIsConcreteType<CSharpMigrationFactory>().AsSingletons();

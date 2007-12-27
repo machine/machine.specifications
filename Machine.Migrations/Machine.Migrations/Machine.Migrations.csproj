@@ -71,9 +71,11 @@
     <Compile Include="Services\Impl\MigrationSelector.cs" />
     <Compile Include="Services\Impl\Migrator.cs" />
     <Compile Include="Services\Impl\SchemaStateManager.cs" />
+    <Compile Include="Services\Impl\VersionStateFactory.cs" />
     <Compile Include="Services\ISchemaStateManager.cs" />
     <Compile Include="SchemaProviders\ISchemaProvider.cs" />
     <Compile Include="SchemaProviders\SqlServerSchemaProvider.cs" />
+    <Compile Include="Services\IVersionStateFactory.cs" />
     <Compile Include="SimpleMigration.cs" />
     <Compile Include="Table.cs" />
     <Compile Include="VersionState.cs" />
