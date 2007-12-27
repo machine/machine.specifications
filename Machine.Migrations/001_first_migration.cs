@@ -1,13 +1,14 @@
 using System;
 using Machine.Migrations;
 
-public class FirstMigration : IDatabaseMigration
+public class FirstMigration : SimpleMigration
 {
-  public void Up()
+  public override void Up()
   {
+    Console.WriteLine(this.Schema.HasTable("Booger"));
   }
 
-  public void Down()
+  public override void Down()
   {
   }
 }

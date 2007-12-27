@@ -10,15 +10,17 @@ namespace Machine.Migrations.Services.Impl
     #endregion
 
     #region Member Data
+    private readonly IMigrationFactoryChooser _migrationFactoryChooser;
+    private readonly IMigrationInitializer _migrationInitializer;
     private readonly ISchemaStateManager _schemaStateManager;
-    private readonly IMigrationFactoryChooser _cigrationFactoryChooser;
     #endregion
 
     #region MigrationRunner()
-    public MigrationRunner(ISchemaStateManager schemaStateManager, IMigrationFactoryChooser migrationFactoryChooser)
+    public MigrationRunner(IMigrationFactoryChooser migrationFactoryChooser, IMigrationInitializer migrationInitializer, ISchemaStateManager schemaStateManager)
     {
       _schemaStateManager = schemaStateManager;
-      _cigrationFactoryChooser = migrationFactoryChooser;
+      _migrationInitializer = migrationInitializer;
+      _migrationFactoryChooser = migrationFactoryChooser;
     }
     #endregion
 
@@ -30,12 +32,13 @@ namespace Machine.Migrations.Services.Impl
 
     public void Migrate(ICollection<MigrationReference> migrations)
     {
-      foreach (MigrationReference migration in migrations)
+      foreach (MigrationReference migrationReference in migrations)
       {
-        _log.InfoFormat("Running {0}", migration.Path);
-        IMigrationFactory migrationFactory = _cigrationFactoryChooser.ChooseFactory(migration);
-        IDatabaseMigration instance = migrationFactory.CreateMigration(migration);
-        instance.Up();
+        _log.InfoFormat("Running {0}", migrationReference.Path);
+        IMigrationFactory migrationFactory = _migrationFactoryChooser.ChooseFactory(migrationReference);
+        IDatabaseMigration migration = migrationFactory.CreateMigration(migrationReference);
+        _migrationInitializer.InitializeMigration(migration);
+        migration.Up();
         //_schemaStateManager.SetVersion(migration.Version);
       }
     }

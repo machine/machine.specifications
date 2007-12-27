@@ -1,13 +1,13 @@
 using System;
 using Machine.Migrations;
 
-public class SecondMigration : IDatabaseMigration
+public class SecondMigration : SimpleMigration
 {
-  public void Up()
+  public override void Up()
   {
   }
 
-  public void Down()
+  public override void Down()
   {
   }
 }

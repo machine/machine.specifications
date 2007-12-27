@@ -31,6 +31,7 @@ namespace Machine.Migrations
       StructureMapConfiguration.BuildInstancesOf<IMigrationFinder>().TheDefaultIsConcreteType<MigrationFinder>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<IMigrationSelector>().TheDefaultIsConcreteType<MigrationSelector>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<IMigrationRunner>().TheDefaultIsConcreteType<MigrationRunner>().AsSingletons();
+      StructureMapConfiguration.BuildInstancesOf<IMigrationInitializer>().TheDefaultIsConcreteType<MigrationInitializer>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<IFileSystem>().TheDefaultIsConcreteType<FileSystem>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<IDatabaseProvider>().TheDefaultIsConcreteType<SqlServerDatabaseProvider>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<ISchemaProvider>().TheDefaultIsConcreteType<SqlServerSchemaProvider>().AsSingletons();

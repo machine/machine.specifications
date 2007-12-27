@@ -58,12 +58,14 @@
     <Compile Include="Services\IMigrationFactory.cs" />
     <Compile Include="Services\IMigrationFactoryChooser.cs" />
     <Compile Include="Services\IMigrationFinder.cs" />
+    <Compile Include="Services\IMigrationInitializer.cs" />
     <Compile Include="Services\IMigrationRunner.cs" />
     <Compile Include="Services\IMigrationSelector.cs" />
     <Compile Include="Services\IMigrator.cs" />
     <Compile Include="Services\Impl\CSharpMigrationFactory.cs" />
     <Compile Include="Services\Impl\MigrationFactoryChooser.cs" />
     <Compile Include="Services\Impl\MigrationFinder.cs" />
+    <Compile Include="Services\Impl\MigrationInitializer.cs" />
     <Compile Include="Services\Impl\MigrationRunner.cs" />
     <Compile Include="Services\Impl\MigrationSelector.cs" />
     <Compile Include="Services\Impl\Migrator.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="Services\ISchemaStateManager.cs" />
     <Compile Include="SchemaProviders\ISchemaProvider.cs" />
     <Compile Include="SchemaProviders\SqlServerSchemaProvider.cs" />
+    <Compile Include="SimpleMigration.cs" />
     <Compile Include="Table.cs" />
   </ItemGroup>
   <ItemGroup>
