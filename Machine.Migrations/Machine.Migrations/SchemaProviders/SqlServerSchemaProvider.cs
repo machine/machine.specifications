@@ -65,6 +65,16 @@ namespace Machine.Migrations.SchemaProviders
       _databaseProvider.ExecuteNonQuery("ALTER TABLE {0} DROP COLUMN {1}", table, column);
     }
 
+    public void RenameTable(string table, string newName)
+    {
+      _databaseProvider.ExecuteNonQuery("EXEC sp_rename '{0}', '{1}'", table, newName);
+    }
+
+    public void RenameColumn(string table, string column, string newName)
+    {
+      _databaseProvider.ExecuteNonQuery("EXEC sp_rename '{0}.{1}', '{2}', 'COLUMN'", table, column, newName);
+    }
+
     public bool HasColumn(string table, string column)
     {
       using (Machine.Core.LoggingUtilities.Log4NetNdc.Push("HasColumn({0}.{1})", table, column))

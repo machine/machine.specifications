@@ -108,5 +108,25 @@ namespace Machine.Migrations.SchemaProviders
       };
       _target.AddTable("TheTable", columns);
     }
+
+    [Test]
+    public void RenameColumn_Always_DoesExec()
+    {
+      using (_mocks.Record())
+      {
+        SetupResult.For(_databaseProvider.ExecuteNonQuery("EXEC sp_rename '{0}.{1}', '{2}', 'COLUMN'", "TheTable", "OldColumn", "NewColumn")).Return(true);
+      }
+      _target.RenameColumn("TheTable", "OldColumn", "NewColumn");
+    }
+
+    [Test]
+    public void RenameTable_Always_DoesExec()
+    {
+      using (_mocks.Record())
+      {
+        SetupResult.For(_databaseProvider.ExecuteNonQuery("EXEC sp_rename '{0}', '{1}'", "TheTable", "NewTable")).Return(true);
+      }
+      _target.RenameTable("TheTable", "NewTable");
+    }
   }
 }
