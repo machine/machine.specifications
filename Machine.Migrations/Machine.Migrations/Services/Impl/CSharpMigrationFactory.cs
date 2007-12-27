@@ -11,9 +11,9 @@ namespace Machine.Migrations.Services.Impl
     #endregion
 
     #region IMigrationApplicator Members
-    public IDatabaseMigration CreateMigration(Migration migration)
+    public IDatabaseMigration CreateMigration(MigrationReference migrationReference)
     {
-      Type type = CompileMigration(migration);
+      Type type = CompileMigration(migrationReference);
       object fixture = Activator.CreateInstance(type);
       IDatabaseMigration instance = fixture as IDatabaseMigration;
       if (instance == null)
@@ -25,13 +25,13 @@ namespace Machine.Migrations.Services.Impl
     #endregion
 
     #region Methods
-    private static Type CompileMigration(Migration migration)
+    private static Type CompileMigration(MigrationReference migrationReference)
     {
       CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
       CompilerParameters parameters = new CompilerParameters();
       parameters.GenerateExecutable = false;
       parameters.ReferencedAssemblies.Add(typeof(IDatabaseMigration).Assembly.Location);
-      CompilerResults cr = provider.CompileAssemblyFromFile(parameters, migration.Path);
+      CompilerResults cr = provider.CompileAssemblyFromFile(parameters, migrationReference.Path);
       if (cr.Errors.Count > 0)
       {
         foreach (CompilerError error in cr.Errors)
@@ -45,7 +45,7 @@ namespace Machine.Migrations.Services.Impl
       {
         return type;
       }
-      throw new ArgumentException("Unable to locate Migration: " + migration.Path);
+      throw new ArgumentException("Unable to locate Migration: " + migrationReference.Path);
     }
     #endregion
   }

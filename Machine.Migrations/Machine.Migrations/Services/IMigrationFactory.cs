@@ -5,6 +5,6 @@ namespace Machine.Migrations.Services
 {
   public interface IMigrationFactory
   {
-    IDatabaseMigration CreateMigration(Migration migration);
+    IDatabaseMigration CreateMigration(MigrationReference migrationReference);
   }
 }

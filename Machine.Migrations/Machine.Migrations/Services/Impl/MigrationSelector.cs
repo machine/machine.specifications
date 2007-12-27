@@ -19,11 +19,11 @@ namespace Machine.Migrations.Services.Impl
     #endregion
 
     #region IMigrationSelector Members
-    public ICollection<Migration> SelectMigrations()
+    public ICollection<MigrationReference> SelectMigrations()
     {
       short version = _schemaStateManager.GetVersion();
-      List<Migration> migrations = new List<Migration>();
-      foreach (Migration migration in _migrationFinder.FindMigrations())
+      List<MigrationReference> migrations = new List<MigrationReference>();
+      foreach (MigrationReference migration in _migrationFinder.FindMigrations())
       {
         if (migration.Version > version)
         {

@@ -33,7 +33,7 @@ namespace Machine.Migrations.Services.Impl
         SetupResult.For(_configuration.MigrationsDirectory).Return("MigrationsDirectory");
         SetupResult.For(_fileSystem.GetFiles("MigrationsDirectory")).Return(new string[0]);
       }
-      CollectionAssert.IsEmpty(new List<Migration>(_target.FindMigrations()));
+      CollectionAssert.IsEmpty(new List<MigrationReference>(_target.FindMigrations()));
       _mocks.VerifyAll();
     }
 
@@ -45,7 +45,7 @@ namespace Machine.Migrations.Services.Impl
         SetupResult.For(_configuration.MigrationsDirectory).Return("MigrationsDirectory");
         SetupResult.For(_fileSystem.GetFiles("MigrationsDirectory")).Return(_files.ToArray());
       }
-      CollectionAssert.IsEmpty(new List<Migration>(_target.FindMigrations()));
+      CollectionAssert.IsEmpty(new List<MigrationReference>(_target.FindMigrations()));
       _mocks.VerifyAll();
     }
 
@@ -58,7 +58,7 @@ namespace Machine.Migrations.Services.Impl
         SetupResult.For(_configuration.MigrationsDirectory).Return("MigrationsDirectory");
         SetupResult.For(_fileSystem.GetFiles("MigrationsDirectory")).Return(_files.ToArray());
       }
-      List<Migration> migrations = new List<Migration>(_target.FindMigrations());
+      List<MigrationReference> migrations = new List<MigrationReference>(_target.FindMigrations());
       Assert.AreEqual(1, migrations.Count);
       _mocks.VerifyAll();
     }

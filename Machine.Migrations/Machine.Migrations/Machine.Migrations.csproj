@@ -51,7 +51,7 @@
     <Compile Include="DatabaseProviders\IDatabaseProvider.cs" />
     <Compile Include="DatabaseProviders\SqlServerDatabaseProvider.cs" />
     <Compile Include="IDatabaseMigration.cs" />
-    <Compile Include="Migration.cs" />
+    <Compile Include="MigrationReference.cs" />
     <Compile Include="MigratorTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IConfiguration.cs" />

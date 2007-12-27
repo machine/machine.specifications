@@ -18,14 +18,14 @@ namespace Machine.Migrations.Services.Impl
     #endregion
 
     #region IMigrationApplicatorChooser Members
-    public IMigrationFactory ChooseFactory(Migration migration)
+    public IMigrationFactory ChooseFactory(MigrationReference migrationReference)
     {
-      string extension = Path.GetExtension(migration.Path);
+      string extension = Path.GetExtension(migrationReference.Path);
       if (extension.Equals(".cs"))
       {
         return _cSharpMigrationFactory;
       }
-      throw new ArgumentException(migration.Path);
+      throw new ArgumentException(migrationReference.Path);
     }
     #endregion
   }

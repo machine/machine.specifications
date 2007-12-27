@@ -24,15 +24,15 @@ namespace Machine.Migrations.Services.Impl
     #endregion
 
     #region IMigrationFinder Members
-    public ICollection<Migration> FindMigrations()
+    public ICollection<MigrationReference> FindMigrations()
     {
-      List<Migration> migrations = new List<Migration>();
+      List<MigrationReference> migrations = new List<MigrationReference>();
       foreach (string file in _fileSystem.GetFiles(_configuration.MigrationsDirectory))
       {
         Match m = _regex.Match(Path.GetFileName(file));
         if (m.Success)
         {
-          migrations.Add(new Migration(Int16.Parse(m.Groups[1].Value), m.Groups[2].Value, file));
+          migrations.Add(new MigrationReference(Int16.Parse(m.Groups[1].Value), m.Groups[2].Value, file));
         }
       }
       return migrations;

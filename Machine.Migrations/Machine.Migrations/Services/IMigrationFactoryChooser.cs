@@ -5,6 +5,6 @@ namespace Machine.Migrations.Services
 {
   public interface IMigrationFactoryChooser
   {
-    IMigrationFactory ChooseFactory(Migration migration);
+    IMigrationFactory ChooseFactory(MigrationReference migrationReference);
   }
 }

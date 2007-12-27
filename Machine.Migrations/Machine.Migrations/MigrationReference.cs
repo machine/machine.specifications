@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Machine.Migrations
 {
-  public class Migration
+  public class MigrationReference
   {
     private short _version;
     private string _name;
@@ -27,11 +27,11 @@ namespace Machine.Migrations
       set { _path = value; }
     }
 
-    public Migration()
+    public MigrationReference()
     {
     }
 
-    public Migration(short version, string name, string path)
+    public MigrationReference(short version, string name, string path)
     {
       _version = version;
       _name = name;

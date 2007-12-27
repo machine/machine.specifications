@@ -15,14 +15,14 @@ namespace Machine.Migrations.Services.Impl
     [Test]
     public void ChooseFactory_IsCSharp_ReturnsFactory()
     {
-      Assert.AreEqual(_cSharpMigrationFactory, _target.ChooseFactory(new Migration(1, "Migration", "001_migration.cs")));
+      Assert.AreEqual(_cSharpMigrationFactory, _target.ChooseFactory(new MigrationReference(1, "Migration", "001_migration.cs")));
     }
 
     [Test]
     [ExpectedException(typeof(ArgumentException))]
     public void ChooseFactory_IsNotCSharp_Throws()
     {
-      _target.ChooseFactory(new Migration(1, "Migration", "001_migration.boo"));
+      _target.ChooseFactory(new MigrationReference(1, "Migration", "001_migration.boo"));
     }
 
     public override MigrationFactoryChooser Create()

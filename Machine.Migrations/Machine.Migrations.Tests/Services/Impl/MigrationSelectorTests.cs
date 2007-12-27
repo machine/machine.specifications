@@ -13,7 +13,7 @@ namespace Machine.Migrations.Services.Impl
   {
     private ISchemaStateManager _schemaStateManager;
     private IMigrationFinder _migrationFinder;
-    private List<Migration> _migrations;
+    private List<MigrationReference> _migrations;
 
     [Test]
     public void SelectMigrations_VersionIsZero_IsAll()
@@ -22,7 +22,7 @@ namespace Machine.Migrations.Services.Impl
       {
         SetupResult.For(_schemaStateManager.GetVersion()).Return((short)0);
       }
-      CollectionAssert.AreEqual(_migrations, new List<Migration>(_target.SelectMigrations()));
+      CollectionAssert.AreEqual(_migrations, new List<MigrationReference>(_target.SelectMigrations()));
       _mocks.VerifyAll();
     }
 
@@ -33,7 +33,7 @@ namespace Machine.Migrations.Services.Impl
       {
         SetupResult.For(_schemaStateManager.GetVersion()).Return((short)4);
       }
-      CollectionAssert.IsEmpty(new List<Migration>(_target.SelectMigrations()));
+      CollectionAssert.IsEmpty(new List<MigrationReference>(_target.SelectMigrations()));
       _mocks.VerifyAll();
     }
 
@@ -44,7 +44,7 @@ namespace Machine.Migrations.Services.Impl
       {
         SetupResult.For(_schemaStateManager.GetVersion()).Return((short)2);
       }
-      CollectionAssert.AreEqual(new Migration[] { _migrations[2], _migrations[3] }, new List<Migration>(_target.SelectMigrations()));
+      CollectionAssert.AreEqual(new MigrationReference[] { _migrations[2], _migrations[3] }, new List<MigrationReference>(_target.SelectMigrations()));
       _mocks.VerifyAll();
     }
 
@@ -52,11 +52,11 @@ namespace Machine.Migrations.Services.Impl
     {
       _schemaStateManager = _mocks.DynamicMock<ISchemaStateManager>();
       _migrationFinder = _mocks.DynamicMock<IMigrationFinder>();
-      _migrations = new List<Migration>();
-      _migrations.Add(new Migration(1, "A", "001_a.cs"));
-      _migrations.Add(new Migration(2, "B", "001_b.cs"));
-      _migrations.Add(new Migration(3, "C", "001_c.cs"));
-      _migrations.Add(new Migration(4, "D", "001_d.cs"));
+      _migrations = new List<MigrationReference>();
+      _migrations.Add(new MigrationReference(1, "A", "001_a.cs"));
+      _migrations.Add(new MigrationReference(2, "B", "001_b.cs"));
+      _migrations.Add(new MigrationReference(3, "C", "001_c.cs"));
+      _migrations.Add(new MigrationReference(4, "D", "001_d.cs"));
       SetupResult.For(_migrationFinder.FindMigrations()).Return(_migrations);
       return new MigrationSelector(_schemaStateManager, _migrationFinder);
     }

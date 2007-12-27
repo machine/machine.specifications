@@ -16,11 +16,11 @@ namespace Machine.Migrations.Services.Impl
     private IMigrationSelector _migrationSelector;
     private IMigrationRunner _migrationRunner;
     private ISchemaStateManager _schemaStateManager;
-    private List<Migration> _migrations;
+    private List<MigrationReference> _migrations;
 
     public override Migrator Create()
     {
-      _migrations = new List<Migration>();
+      _migrations = new List<MigrationReference>();
       _databaseProvider = _mocks.DynamicMock<IDatabaseProvider>();
       _migrationSelector = _mocks.DynamicMock<IMigrationSelector>();
       _schemaStateManager = _mocks.DynamicMock<ISchemaStateManager>();

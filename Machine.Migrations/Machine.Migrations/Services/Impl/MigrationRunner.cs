@@ -23,14 +23,14 @@ namespace Machine.Migrations.Services.Impl
     #endregion
 
     #region IMigrationRunner Members
-    public bool CanMigrate(ICollection<Migration> migrations)
+    public bool CanMigrate(ICollection<MigrationReference> migrations)
     {
       return true;
     }
 
-    public void Migrate(ICollection<Migration> migrations)
+    public void Migrate(ICollection<MigrationReference> migrations)
     {
-      foreach (Migration migration in migrations)
+      foreach (MigrationReference migration in migrations)
       {
         _log.InfoFormat("Running {0}", migration.Path);
         IMigrationFactory migrationFactory = _cigrationFactoryChooser.ChooseFactory(migration);
