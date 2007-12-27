@@ -21,10 +21,16 @@ namespace Machine.Migrations.Services.Impl
     }
 
     [Test]
-    [ExpectedException(typeof(ArgumentException))]
-    public void ChooseFactory_IsNotCSharp_Throws()
+    public void ChooseFactory_IsBoo_ReturnsFactory()
     {
-      _target.ChooseFactory(new MigrationReference(1, "Migration", "001_migration.boo"));
+      Assert.AreEqual(_booMigrationFactory, _target.ChooseFactory(new MigrationReference(1, "Migration", "001_migration.boo")));
+    }
+
+    [Test]
+    [ExpectedException(typeof(ArgumentException))]
+    public void ChooseFactory_IsNotCSharpOrBoo_Throws()
+    {
+      _target.ChooseFactory(new MigrationReference(1, "Migration", "001_migration.vb"));
     }
 
     public override MigrationFactoryChooser Create()

@@ -40,6 +40,7 @@ namespace Machine.Migrations.Services.Impl
       compiler.Parameters.GenerateInMemory = true;
       compiler.Parameters.Ducky = true;
       compiler.Parameters.Pipeline = new CompileToMemory();
+      _log.InfoFormat("Compiling {0}", migrationReference);
       CompilerContext cc = compiler.Run();
       if (cc.Errors.Count > 0)
       {
