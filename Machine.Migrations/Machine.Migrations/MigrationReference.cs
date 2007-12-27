@@ -8,6 +8,7 @@ namespace Machine.Migrations
     private short _version;
     private string _name;
     private string _path;
+    private IDatabaseMigration _databaseMigration;
 
     public short Version
     {
@@ -27,6 +28,12 @@ namespace Machine.Migrations
       set { _path = value; }
     }
 
+    public IDatabaseMigration DatabaseMigration
+    {
+      get { return _databaseMigration; }
+      set { _databaseMigration = value; }
+    }
+
     public MigrationReference()
     {
     }
@@ -40,7 +47,7 @@ namespace Machine.Migrations
 
     public override string ToString()
     {
-      return String.Format("Migration<{0}, {1}, {2}>", _version, _name, _path);
+      return String.Format("Migration<{0}, {1}>", _version, _name);
     }
   }
 }

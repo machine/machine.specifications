@@ -27,6 +27,14 @@ namespace Machine.Migrations.Services.Impl
     #region IMigrationRunner Members
     public bool CanMigrate(ICollection<MigrationReference> migrations)
     {
+      foreach (MigrationReference migrationReference in migrations)
+      {
+        IMigrationFactory migrationFactory = _migrationFactoryChooser.ChooseFactory(migrationReference);
+        IDatabaseMigration migration = migrationFactory.CreateMigration(migrationReference);
+        migrationReference.DatabaseMigration = migration;
+        _migrationInitializer.InitializeMigration(migration);
+      }
+      _log.Info("All migrations are initialized.");
       return true;
     }
 
@@ -34,11 +42,8 @@ namespace Machine.Migrations.Services.Impl
     {
       foreach (MigrationReference migrationReference in migrations)
       {
-        _log.InfoFormat("Running {0}", migrationReference.Path);
-        IMigrationFactory migrationFactory = _migrationFactoryChooser.ChooseFactory(migrationReference);
-        IDatabaseMigration migration = migrationFactory.CreateMigration(migrationReference);
-        _migrationInitializer.InitializeMigration(migration);
-        migration.Up();
+        _log.InfoFormat("Running {0}", migrationReference);
+        migrationReference.DatabaseMigration.Up();
         //_schemaStateManager.SetVersion(migration.Version);
       }
     }

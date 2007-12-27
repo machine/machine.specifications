@@ -31,7 +31,7 @@ namespace Machine.Migrations.Services.Impl
       CompilerParameters parameters = new CompilerParameters();
       parameters.GenerateExecutable = false;
       parameters.ReferencedAssemblies.Add(typeof(IDatabaseMigration).Assembly.Location);
-      _log.InfoFormat("Compiling {0}", migrationReference.Path);
+      _log.InfoFormat("Compiling {0}", migrationReference);
       CompilerResults cr = provider.CompileAssemblyFromFile(parameters, migrationReference.Path);
       if (cr.Errors.Count > 0)
       {
@@ -42,11 +42,12 @@ namespace Machine.Migrations.Services.Impl
         throw new InvalidOperationException();
       }
       Assembly assembly = cr.CompiledAssembly;
-      foreach (Type type in assembly.GetTypes())
+      Type type = assembly.GetType(migrationReference.Name);
+      if (type == null)
       {
-        return type;
+        throw new ArgumentException("Unable to locate Migration: " + migrationReference.Path);
       }
-      throw new ArgumentException("Unable to locate Migration: " + migrationReference.Path);
+      return type;
     }
     #endregion
   }

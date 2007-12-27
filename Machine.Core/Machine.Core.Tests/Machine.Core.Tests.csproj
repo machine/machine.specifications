@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Impl\FileSystemTests.cs" />
+    <Compile Include="Services\Impl\NamerTests.cs" />
     <Compile Include="StandardFixture.cs" />
   </ItemGroup>
   <ItemGroup>

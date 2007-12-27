@@ -45,6 +45,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IFileSystem.cs" />
     <Compile Include="Services\Impl\FileSystem.cs" />
+    <Compile Include="Services\Impl\Namer.cs" />
+    <Compile Include="Services\INamer.cs" />
     <Compile Include="SingletonAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

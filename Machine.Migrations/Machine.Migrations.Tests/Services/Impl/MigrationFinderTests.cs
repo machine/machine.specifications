@@ -13,6 +13,7 @@ namespace Machine.Migrations.Services.Impl
   public class MigrationFinderTests : StandardFixture<MigrationFinder>
   {
     private IFileSystem _fileSystem;
+    private INamer _namer;
     private IConfiguration _configuration;
     private List<string> _files;
 
@@ -21,8 +22,9 @@ namespace Machine.Migrations.Services.Impl
       _files = new List<string>();
       _files.AddRange(new String[] { "some_file.txt", "something.cs", "034veryclose.cs" });
       _fileSystem = _mocks.DynamicMock<IFileSystem>();
+      _namer = _mocks.DynamicMock<INamer>();
       _configuration = _mocks.DynamicMock<IConfiguration>();
-      return new MigrationFinder(_fileSystem, _configuration);
+      return new MigrationFinder(_fileSystem, _namer, _configuration);
     }
 
     [Test]
@@ -57,6 +59,7 @@ namespace Machine.Migrations.Services.Impl
         _files.Add("001_migration.cs");
         SetupResult.For(_configuration.MigrationsDirectory).Return("MigrationsDirectory");
         SetupResult.For(_fileSystem.GetFiles("MigrationsDirectory")).Return(_files.ToArray());
+        SetupResult.For(_namer.ToCamelCase("migration")).Return("Migration");
       }
       List<MigrationReference> migrations = new List<MigrationReference>(_target.FindMigrations());
       Assert.AreEqual(1, migrations.Count);

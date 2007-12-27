@@ -13,12 +13,14 @@ namespace Machine.Migrations.Services.Impl
     private readonly Regex _regex = new Regex(@"^(\d+)_([\w_]+)\.(cs|boo)$");
     private readonly IConfiguration _configuration;
     private readonly IFileSystem _fileSystem;
+    private readonly INamer _namer;
     #endregion
 
     #region MigrationFinder()
-    public MigrationFinder(IFileSystem fileSystem, IConfiguration configuration)
+    public MigrationFinder(IFileSystem fileSystem, INamer namer, IConfiguration configuration)
     {
       _fileSystem = fileSystem;
+      _namer = namer;
       _configuration = configuration;
     }
     #endregion
@@ -32,7 +34,7 @@ namespace Machine.Migrations.Services.Impl
         Match m = _regex.Match(Path.GetFileName(file));
         if (m.Success)
         {
-          migrations.Add(new MigrationReference(Int16.Parse(m.Groups[1].Value), m.Groups[2].Value, file));
+          migrations.Add(new MigrationReference(Int16.Parse(m.Groups[1].Value), _namer.ToCamelCase(m.Groups[2].Value), file));
         }
       }
       return migrations;

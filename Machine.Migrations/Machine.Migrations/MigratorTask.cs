@@ -27,12 +27,14 @@ namespace Machine.Migrations
       log4net.Config.BasicConfigurator.Configure(new Log4NetMsBuildAppender(this.Log, new log4net.Layout.PatternLayout("%-5p %m")));
 
       StructureMapConfiguration.UseDefaultStructureMapConfigFile = false;  
+      StructureMapConfiguration.BuildInstancesOf<IFileSystem>().TheDefaultIsConcreteType<FileSystem>().AsSingletons();
+      StructureMapConfiguration.BuildInstancesOf<INamer>().TheDefaultIsConcreteType<Namer>().AsSingletons();
+
       StructureMapConfiguration.BuildInstancesOf<ISchemaStateManager>().TheDefaultIsConcreteType<SchemaStateManager>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<IMigrationFinder>().TheDefaultIsConcreteType<MigrationFinder>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<IMigrationSelector>().TheDefaultIsConcreteType<MigrationSelector>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<IMigrationRunner>().TheDefaultIsConcreteType<MigrationRunner>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<IMigrationInitializer>().TheDefaultIsConcreteType<MigrationInitializer>().AsSingletons();
-      StructureMapConfiguration.BuildInstancesOf<IFileSystem>().TheDefaultIsConcreteType<FileSystem>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<IDatabaseProvider>().TheDefaultIsConcreteType<SqlServerDatabaseProvider>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<ISchemaProvider>().TheDefaultIsConcreteType<SqlServerSchemaProvider>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<IMigrator>().TheDefaultIsConcreteType<Migrator>().AsSingletons();
