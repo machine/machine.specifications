@@ -95,7 +95,7 @@ namespace Machine.Migrations.SchemaProviders
 
     public string[] Columns(string table)
     {
-      using (IDataReader reader = _databaseProvider.ExecuteReader("SELECT name FROM syscolumns WHERE id = object_id('el_user')"))
+      using (IDataReader reader = _databaseProvider.ExecuteReader("SELECT name FROM syscolumns WHERE id = object_id('{0}')", table))
       {
         List<string> values = new List<string>();
         while (reader.Read())
