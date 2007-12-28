@@ -1,23 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <UsingTask TaskName="Machine.Migrations.MigratorTask" AssemblyFile="Build\Debug\Machine.Migrations.dll" />
+  <Import Project="Machine.Migrations.targets" />
 
   <PropertyGroup>
-    <DesiredVersion>0</DesiredVersion>
-    <ShowDiagnostics>False</ShowDiagnostics>
+    <MigrationConnectionString>Data Source=127.0.0.1;Initial Catalog=eldb01;Integrated Security=SSPI</MigrationConnectionString>
   </PropertyGroup>
 
-  <ItemGroup>
-    <!--References Include="Build\Debug\*.dll">
-      <InProject>false</InProject>
-    </References-->
-  </ItemGroup>
-
-  <Target Name="Default">
-    <MigratorTask
-        ConnectionString="Data Source=127.0.0.1;Initial Catalog=eldb01;Integrated Security=SSPI"
-        DesiredVersion="$(DesiredVersion)"
-        ShowDiagnostics="$(ShowDiagnostics)"
-        References="@(References)"
-        />
+  <Target Name="Default" DependsOnTargets="Migrate">
   </Target>
 </Project>

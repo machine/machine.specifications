@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask TaskName="Machine.Migrations.MigratorTask" AssemblyFile="Build\Debug\Machine.Migrations.dll" />
+
+  <PropertyGroup>
+    <DesiredMigrationVersion Condition="'$(DesiredMigrationVersion)'==''">-1</DesiredMigrationVersion>
+    <ShowMigrationDiagnostics Condition="'$(ShowMigrationDiagnostics)'==''">False</ShowMigrationDiagnostics>
+    <MigrationsDirectory Condition="'$(MigrationsDirectory)'==''">$(MSBuildProjectDirectory)\Migrations</MigrationsDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--MigrationReferences Include="Build\Debug\*.dll">
+      <InProject>false</InProject>
+    </MigrationReferences-->
+  </ItemGroup>
+
+  <Target Name="Migrate">
+    <Error Text="Please set the MigrationConnectionString MsBuild property!" Condition="'$(MigrationConnectionString)'==''" />
+    <MigratorTask
+      ConnectionString="$(MigrationConnectionString)"
+      DesiredVersion="$(DesiredMigrationVersion)"
+      ShowDiagnostics="$(ShowMigrationDiagnostics)"
+      References="@(MigrationReferences)"
+      MigrationsDirectory="$(MigrationsDirectory)"
+    />
+  </Target>
+</Project>
