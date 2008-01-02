@@ -11,5 +11,6 @@ namespace Machine.Core.Services
     bool IsFile(string path);
     bool IsDirectory(string path);
     Stream OpenFile(string path);
+    void CopyFile(string source, string destination, bool overwrite);
   }
 }

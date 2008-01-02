@@ -1,6 +1,8 @@
 ﻿using System;
 using System.CodeDom.Compiler;
+using System.IO;
 using System.Reflection;
+using Machine.Core.Services;
 
 namespace Machine.Migrations.Services.Impl
 {
@@ -12,12 +14,14 @@ namespace Machine.Migrations.Services.Impl
 
     #region Member Data
     private readonly IConfiguration _configuration;
+    private readonly IFileSystem _fileSystem;
     #endregion
 
     #region CSharpMigrationFactory()
-    public CSharpMigrationFactory(IConfiguration configuration)
+    public CSharpMigrationFactory(IConfiguration configuration, IFileSystem fileSystem)
     {
       _configuration = configuration;
+      _fileSystem = fileSystem;
     }
     #endregion
 
@@ -36,7 +40,7 @@ namespace Machine.Migrations.Services.Impl
       parameters.ReferencedAssemblies.Add(typeof(IDatabaseMigration).Assembly.Location);
       foreach (string reference in _configuration.References)
       {
-        _log.Debug("Referencing: " + reference);
+        // _log.Debug("Referencing: " + reference);
         parameters.ReferencedAssemblies.Add(reference);
       }
       _log.InfoFormat("Compiling {0}", migrationReference);
@@ -50,10 +54,21 @@ namespace Machine.Migrations.Services.Impl
         throw new InvalidOperationException();
       }
       Assembly assembly = cr.CompiledAssembly;
+      foreach (string reference in _configuration.References)
+      {
+        if (_fileSystem.IsFile(reference))
+        {
+          _fileSystem.CopyFile(reference, Path.Combine(Path.GetDirectoryName(assembly.Location), Path.GetFileName(reference)), true);
+        }
+      }
       Type type = assembly.GetType(migrationReference.Name);
+      foreach (Type possiblyAMigrationType in assembly.GetExportedTypes())
+      {
+        _log.InfoFormat("Exported: {0}", possiblyAMigrationType);
+      }
       if (type == null)
       {
-        throw new ArgumentException("Unable to locate Migration: " + migrationReference.Path);
+        throw new ArgumentException("Unable to locate Migration: " + migrationReference.Name);
       }
       return type;
     }

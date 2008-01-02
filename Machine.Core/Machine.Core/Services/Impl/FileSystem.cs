@@ -31,6 +31,11 @@ namespace Machine.Core.Services.Impl
     {
       return File.OpenRead(path);
     }
+
+    public void CopyFile(string source, string destination, bool overwrite)
+    {
+      File.Copy(source, destination, overwrite);
+    }
     #endregion
   }
 }

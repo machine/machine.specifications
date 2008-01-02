@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using Machine.Core;
-
+using Machine.Core.Services;
 using NUnit.Framework;
 
 namespace Machine.Migrations.Services.Impl
@@ -13,6 +13,7 @@ namespace Machine.Migrations.Services.Impl
     private CSharpMigrationFactory _cSharpMigrationFactory;
     private BooMigrationFactory _booMigrationFactory;
     private IConfiguration _configuration;
+    private IFileSystem _fileSystem;
 
     [Test]
     public void ChooseFactory_IsCSharp_ReturnsFactory()
@@ -36,7 +37,8 @@ namespace Machine.Migrations.Services.Impl
     public override MigrationFactoryChooser Create()
     {
       _configuration = _mocks.DynamicMock<IConfiguration>();
-      _cSharpMigrationFactory = new CSharpMigrationFactory(_configuration);
+      _fileSystem = _mocks.DynamicMock<IFileSystem>();
+      _cSharpMigrationFactory = new CSharpMigrationFactory(_configuration, _fileSystem);
       _booMigrationFactory = new BooMigrationFactory(_configuration);
       return new MigrationFactoryChooser(_cSharpMigrationFactory, _booMigrationFactory);
     }
