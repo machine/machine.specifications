@@ -9,13 +9,15 @@ namespace Machine.Migrations.Services.Impl
   public class MigrationInitializer : IMigrationInitializer
   {
     #region Member Data
+    private readonly IConfiguration _configuration;
     private readonly IDatabaseProvider _databaseProvider;
     private readonly ISchemaProvider _schemaProvider;
     #endregion
 
     #region MigrationInitializer()
-    public MigrationInitializer(IDatabaseProvider databaseProvider, ISchemaProvider schemaProvider)
+    public MigrationInitializer(IConfiguration configuration, IDatabaseProvider databaseProvider, ISchemaProvider schemaProvider)
     {
+      _configuration = configuration;
       _databaseProvider = databaseProvider;
       _schemaProvider = schemaProvider;
     }
@@ -24,7 +26,7 @@ namespace Machine.Migrations.Services.Impl
     #region IMigrationInitializer Members
     public void InitializeMigration(IDatabaseMigration migration)
     {
-      migration.Initialize(_databaseProvider, _schemaProvider);
+      migration.Initialize(_configuration, _databaseProvider, _schemaProvider);
     }
     #endregion
   }

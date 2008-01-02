@@ -15,13 +15,15 @@ namespace Machine.Migrations.Services.Impl
     private IDatabaseProvider _databaseProvider;
     private ISchemaProvider _schemaProvider;
     private IDatabaseMigration _migration;
+    private IConfiguration _configuration;
 
     public override MigrationInitializer Create()
     {
       _databaseProvider = _mocks.CreateMock<IDatabaseProvider>();
       _schemaProvider = _mocks.CreateMock<ISchemaProvider>();
       _migration = _mocks.CreateMock<IDatabaseMigration>();
-      return new MigrationInitializer(_databaseProvider, _schemaProvider);
+      _configuration = _mocks.CreateMock<IConfiguration>();
+      return new MigrationInitializer(_configuration, _databaseProvider, _schemaProvider);
     }
 
     [Test]
@@ -29,7 +31,7 @@ namespace Machine.Migrations.Services.Impl
     {
       using (_mocks.Record())
       {
-        _migration.Initialize(_databaseProvider, _schemaProvider);
+        _migration.Initialize(_configuration, _databaseProvider, _schemaProvider);
       }
       _target.InitializeMigration(_migration);
       _mocks.VerifyAll();
