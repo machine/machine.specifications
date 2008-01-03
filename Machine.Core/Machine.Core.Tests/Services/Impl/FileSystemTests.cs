@@ -84,5 +84,15 @@ namespace Machine.Core.Services.Impl
     {
       _target.OpenFile(@"C:\NotAFile");
     }
+
+    [Test]
+    public void CreateTemporaryDirectory_Always_MakesNewDirectory()
+    {
+      TemporaryDirectoryHandle handle = _target.CreateTemporaryDirectory("abcdefg");
+      Console.WriteLine("{0}", handle.Path);
+      Assert.IsTrue(Directory.Exists(handle.Path));
+      handle.Dispose();
+      Assert.IsFalse(Directory.Exists(handle.Path));
+    }
   }
 }

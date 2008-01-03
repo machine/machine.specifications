@@ -24,5 +24,11 @@ namespace Machine.Core.Services.Impl
     {
       Assert.AreEqual("ThisIsCamelCase", _target.ToCamelCase("This_is_Camel_case"));
     }
+
+    [Test]
+    public void MakeRandomName_Always_MakesString()
+    {
+      Assert.AreEqual(8, _target.MakeRandomName().Length);
+    }
   }
 }

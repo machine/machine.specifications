@@ -36,6 +36,18 @@ namespace Machine.Core.Services.Impl
     {
       File.Copy(source, destination, overwrite);
     }
+
+    public TemporaryDirectoryHandle CreateTemporaryDirectory()
+    {
+      string temporaryName = Path.GetTempFileName();
+      string path = Path.Combine(Path.GetTempPath(), temporaryName);
+      return CreateTemporaryDirectory(path);
+    }
+
+    public TemporaryDirectoryHandle CreateTemporaryDirectory(string path)
+    {
+      return new TemporaryDirectoryHandle(path);
+    }
     #endregion
   }
 }
