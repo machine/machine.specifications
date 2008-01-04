@@ -57,18 +57,7 @@ namespace Machine.Migrations.Services.Impl
         throw new InvalidOperationException();
       }
       Assembly assembly = cr.CompiledAssembly;
-      foreach (string reference in _configuration.References)
-      {
-        if (_fileSystem.IsFile(reference))
-        {
-          _fileSystem.CopyFile(reference, Path.Combine(Path.GetDirectoryName(assembly.Location), Path.GetFileName(reference)), true);
-        }
-      }
       Type type = assembly.GetType(migrationReference.Name);
-      foreach (Type possiblyAMigrationType in assembly.GetExportedTypes())
-      {
-        _log.InfoFormat("Exported: {0}", possiblyAMigrationType);
-      }
       if (type == null)
       {
         throw new ArgumentException("Unable to locate Migration: " + migrationReference.Name);
