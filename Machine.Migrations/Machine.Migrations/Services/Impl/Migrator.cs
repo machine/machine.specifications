@@ -11,12 +11,14 @@ namespace Machine.Migrations.Services.Impl
     private readonly IMigrationSelector _migrationSelector;
     private readonly IMigrationRunner _migrationRunner;
     private readonly ISchemaStateManager _schemaStateManager;
+    private readonly IWorkingDirectoryManager _workingDirectoryManager;
     #endregion
 
     #region Migrator()
-    public Migrator(IMigrationSelector migrationSelector, IMigrationRunner migrationRunner, IDatabaseProvider databaseProvider, ISchemaStateManager schemaStateManager)
+    public Migrator(IMigrationSelector migrationSelector, IMigrationRunner migrationRunner, IDatabaseProvider databaseProvider, ISchemaStateManager schemaStateManager, IWorkingDirectoryManager workingDirectoryManager)
     {
       _migrationSelector = migrationSelector;
+      _workingDirectoryManager = workingDirectoryManager;
       _schemaStateManager = schemaStateManager;
       _databaseProvider = databaseProvider;
       _migrationRunner = migrationRunner;
@@ -31,6 +33,7 @@ namespace Machine.Migrations.Services.Impl
         _databaseProvider.Open();
         _schemaStateManager.CheckSchemaInfoTable();
         ICollection<MigrationStep> steps = _migrationSelector.SelectMigrations();
+        _workingDirectoryManager.Create();
         if (_migrationRunner.CanMigrate(steps))
         {
           _migrationRunner.Migrate(steps);
@@ -38,6 +41,7 @@ namespace Machine.Migrations.Services.Impl
       }
       finally
       {
+        _workingDirectoryManager.Destroy();
         _databaseProvider.Close();
       }
     }

@@ -16,5 +16,7 @@ namespace Machine.Core.Services
     void CopyFile(string source, string destination, bool overwrite);
     TemporaryDirectoryHandle CreateTemporaryDirectory();
     TemporaryDirectoryHandle CreateTemporaryDirectory(string path);
+    void CreateDirectory(string path);
+    void RemoveDirectory(string path);
   }
 }

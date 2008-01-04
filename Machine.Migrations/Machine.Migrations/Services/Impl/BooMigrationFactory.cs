@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using Boo.Lang.Compiler;
 using Boo.Lang.Compiler.IO;
@@ -15,12 +16,14 @@ namespace Machine.Migrations.Services.Impl
 
     #region Member Data
     private readonly IConfiguration _configuration;
+    private readonly IWorkingDirectoryManager _workingDirectoryManager;
     #endregion
 
     #region BooMigrationFactory()
-    public BooMigrationFactory(IConfiguration configuration)
+    public BooMigrationFactory(IConfiguration configuration, IWorkingDirectoryManager workingDirectoryManager)
     {
       _configuration = configuration;
+      _workingDirectoryManager = workingDirectoryManager;
     }
     #endregion
 
@@ -43,9 +46,9 @@ namespace Machine.Migrations.Services.Impl
       }
       compiler.Parameters.OutputType = CompilerOutputType.Library;
       compiler.Parameters.GenerateInMemory = true;
+      compiler.Parameters.OutputAssembly = Path.Combine(_workingDirectoryManager.WorkingDirectory, Path.GetFileNameWithoutExtension(migrationReference.Path) + ".dll");
       compiler.Parameters.Ducky = true;
-      compiler.Parameters.Pipeline = new CompileToMemory();
-      _log.InfoFormat("Compiling {0}", migrationReference);
+      compiler.Parameters.Pipeline = new CompileToFile();
       CompilerContext cc = compiler.Run();
       if (cc.Errors.Count > 0)
       {
@@ -55,7 +58,8 @@ namespace Machine.Migrations.Services.Impl
         }
         throw new InvalidOperationException();
       }
-      if (cc.GeneratedAssembly == null)
+      Assembly assembly = cc.GeneratedAssembly;
+      if (assembly == null)
       {
         throw new InvalidOperationException();
       }

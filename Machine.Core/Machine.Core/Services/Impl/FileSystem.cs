@@ -48,6 +48,16 @@ namespace Machine.Core.Services.Impl
     {
       return new TemporaryDirectoryHandle(path);
     }
+
+    public void CreateDirectory(string path)
+    {
+      Directory.CreateDirectory(path);
+    }
+
+    public void RemoveDirectory(string path)
+    {
+      Directory.Delete(path, true);
+    }
     #endregion
   }
 }

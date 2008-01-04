@@ -15,12 +15,14 @@ namespace Machine.Migrations.Services.Impl
     #region Member Data
     private readonly IConfiguration _configuration;
     private readonly IFileSystem _fileSystem;
+    private readonly IWorkingDirectoryManager _workingDirectoryManager;
     #endregion
 
     #region CSharpMigrationFactory()
-    public CSharpMigrationFactory(IConfiguration configuration, IFileSystem fileSystem)
+    public CSharpMigrationFactory(IConfiguration configuration, IFileSystem fileSystem, IWorkingDirectoryManager workingDirectoryManager)
     {
       _configuration = configuration;
+      _workingDirectoryManager = workingDirectoryManager;
       _fileSystem = fileSystem;
     }
     #endregion
@@ -37,10 +39,11 @@ namespace Machine.Migrations.Services.Impl
       CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
       CompilerParameters parameters = new CompilerParameters();
       parameters.GenerateExecutable = false;
+      parameters.OutputAssembly = Path.Combine(_workingDirectoryManager.WorkingDirectory, Path.GetFileNameWithoutExtension(migrationReference.Path) + ".dll");
       parameters.ReferencedAssemblies.Add(typeof(IDatabaseMigration).Assembly.Location);
+      parameters.IncludeDebugInformation = true;
       foreach (string reference in _configuration.References)
       {
-        // _log.Debug("Referencing: " + reference);
         parameters.ReferencedAssemblies.Add(reference);
       }
       _log.InfoFormat("Compiling {0}", migrationReference);

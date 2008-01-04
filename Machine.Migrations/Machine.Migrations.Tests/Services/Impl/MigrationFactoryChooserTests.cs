@@ -13,6 +13,7 @@ namespace Machine.Migrations.Services.Impl
     private CSharpMigrationFactory _cSharpMigrationFactory;
     private BooMigrationFactory _booMigrationFactory;
     private IConfiguration _configuration;
+    private IWorkingDirectoryManager _workingDirectoryManager;
     private IFileSystem _fileSystem;
 
     [Test]
@@ -38,8 +39,9 @@ namespace Machine.Migrations.Services.Impl
     {
       _configuration = _mocks.DynamicMock<IConfiguration>();
       _fileSystem = _mocks.DynamicMock<IFileSystem>();
-      _cSharpMigrationFactory = new CSharpMigrationFactory(_configuration, _fileSystem);
-      _booMigrationFactory = new BooMigrationFactory(_configuration);
+      _workingDirectoryManager = _mocks.DynamicMock<IWorkingDirectoryManager>();
+      _cSharpMigrationFactory = new CSharpMigrationFactory(_configuration, _fileSystem, _workingDirectoryManager);
+      _booMigrationFactory = new BooMigrationFactory(_configuration, _workingDirectoryManager);
       return new MigrationFactoryChooser(_cSharpMigrationFactory, _booMigrationFactory);
     }
   }
