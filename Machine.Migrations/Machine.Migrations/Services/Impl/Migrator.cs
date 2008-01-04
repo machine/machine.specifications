@@ -30,10 +30,10 @@ namespace Machine.Migrations.Services.Impl
     {
       try
       {
+        _workingDirectoryManager.Create();
         _databaseProvider.Open();
         _schemaStateManager.CheckSchemaInfoTable();
         ICollection<MigrationStep> steps = _migrationSelector.SelectMigrations();
-        _workingDirectoryManager.Create();
         if (_migrationRunner.CanMigrate(steps))
         {
           _migrationRunner.Migrate(steps);
@@ -41,7 +41,6 @@ namespace Machine.Migrations.Services.Impl
       }
       finally
       {
-        _workingDirectoryManager.Destroy();
         _databaseProvider.Close();
       }
     }

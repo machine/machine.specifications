@@ -8,6 +8,10 @@ namespace Machine.Migrations.Services.Impl
 {
   public class WorkingDirectoryManager : IWorkingDirectoryManager
   {
+    #region Logging
+    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(WorkingDirectoryManager));
+    #endregion
+
     private readonly IFileSystem _fileSystem;
     private readonly IConfiguration _configuration;
 
@@ -28,6 +32,8 @@ namespace Machine.Migrations.Services.Impl
 
     public void Create()
     {
+      _log.InfoFormat("Recreating {0}", this.WorkingDirectory);
+      Destroy();
       _fileSystem.CreateDirectory(this.WorkingDirectory);
       foreach (string reference in _configuration.References)
       {

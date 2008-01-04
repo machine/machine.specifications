@@ -41,7 +41,6 @@ namespace Machine.Migrations.Services.Impl
         _workingDirectoryManager.Create();
         SetupResult.For(_migrationRunner.CanMigrate(_steps)).Return(true);
         _migrationRunner.Migrate(_steps);
-        _workingDirectoryManager.Destroy();
         _databaseProvider.Close();
       }
       _target.RunMigrator();
@@ -58,7 +57,6 @@ namespace Machine.Migrations.Services.Impl
         SetupResult.For(_migrationSelector.SelectMigrations()).Return(_steps);
         _workingDirectoryManager.Create();
         SetupResult.For(_migrationRunner.CanMigrate(_steps)).Return(false);
-        _workingDirectoryManager.Destroy();
         _databaseProvider.Close();
       }
       _target.RunMigrator();
