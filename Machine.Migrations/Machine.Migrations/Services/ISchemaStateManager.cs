@@ -7,7 +7,6 @@ namespace Machine.Migrations.Services
   {
     void CheckSchemaInfoTable();
     short[] GetAppliedMigrationVersions();
-    short GetVersion();
     void SetMigrationVersionUnapplied(short version);
     void SetMigrationVersionApplied(short version);
   }

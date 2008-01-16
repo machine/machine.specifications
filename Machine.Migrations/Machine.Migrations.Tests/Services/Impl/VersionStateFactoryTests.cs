@@ -45,7 +45,7 @@ namespace Machine.Migrations.Services.Impl
       using (_mocks.Record())
       {
         SetupResult.For(_configuration.DesiredVersion).Return((short)2);
-        SetupResult.For(_schemaStateManager.GetVersion()).Return((short)3);
+        SetupResult.For(_schemaStateManager.GetAppliedMigrationVersions()).Return(new short[] { 1, 2, 3});
       }
       VersionState actual = _target.CreateVersionState(_migrations);
       Assert.AreEqual(4, actual.Last);
@@ -57,7 +57,7 @@ namespace Machine.Migrations.Services.Impl
       using (_mocks.Record())
       {
         SetupResult.For(_configuration.DesiredVersion).Return((short)-1);
-        SetupResult.For(_schemaStateManager.GetVersion()).Return((short)3);
+        SetupResult.For(_schemaStateManager.GetAppliedMigrationVersions()).Return(new short[] { 1, 2, 3});
       }
       VersionState actual = _target.CreateVersionState(_migrations);
       Assert.AreEqual(4, actual.Desired);
@@ -70,7 +70,7 @@ namespace Machine.Migrations.Services.Impl
       using (_mocks.Record())
       {
         SetupResult.For(_configuration.DesiredVersion).Return((short)5);
-        SetupResult.For(_schemaStateManager.GetVersion()).Return((short)3);
+        SetupResult.For(_schemaStateManager.GetAppliedMigrationVersions()).Return(new short[] { 1, 2, 3});
       }
       _target.CreateVersionState(_migrations);
     }

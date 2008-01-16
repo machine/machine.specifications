@@ -24,28 +24,6 @@ namespace Machine.Migrations.Services.Impl
     }
 
     [Test]
-    public void GetVersion_None_IsZero()
-    {
-      using (_mocks.Record())
-      {
-        SetupResult.For(_databaseProvider.ExecuteScalarArray<Int16>("SELECT CAST({1} AS SMALLINT) FROM {0} ORDER BY {1}", "schema_info", "version")).Return(new Int16[] { });
-      }
-      Assert.AreEqual(0, _target.GetVersion());
-      _mocks.VerifyAll();
-    }
-
-    [Test]
-    public void GetVersion_Several_IsLast()
-    {
-      using (_mocks.Record())
-      {
-        SetupResult.For(_databaseProvider.ExecuteScalarArray<Int16>("SELECT CAST({1} AS SMALLINT) FROM {0} ORDER BY {1}", "schema_info", "version")).Return(new Int16[] { 1, 2, 3 });
-      }
-      Assert.AreEqual(3, _target.GetVersion());
-      _mocks.VerifyAll();
-    }
-
-    [Test]
     public void GetAppliedMigrationVersions_Always_JustDoesSelectAndReturnsArray()
     {
       using (_mocks.Record())

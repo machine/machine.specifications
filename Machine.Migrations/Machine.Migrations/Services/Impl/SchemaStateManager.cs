@@ -37,7 +37,7 @@ namespace Machine.Migrations.Services.Impl
         return;
       }
 
-      _log.InfoFormat("Creating {0} because it's missing...", TableName);
+      _log.InfoFormat("Creating {0}...", TableName);
 
       Column[] columns = new Column[] {
         new Column(IdColumnName, typeof(Int32), 4, true),
@@ -47,27 +47,9 @@ namespace Machine.Migrations.Services.Impl
       _schemaProvider.AddTable(TableName, columns);
     }
 
-    public short GetVersion()
-    {
-      using (Machine.Core.LoggingUtilities.Log4NetNdc.Push("GetVersion"))
-      {
-        short[] versions = GetAppliedMigrationVersions();
-        short version = 0;
-        if (versions.Length > 0)
-        {
-          version = versions[versions.Length - 1];
-        }
-        _log.InfoFormat("Version: {0}", version);
-        return version;
-      }
-    }
-
     public short[] GetAppliedMigrationVersions()
     {
-      using (Machine.Core.LoggingUtilities.Log4NetNdc.Push("GetAppliedMigrationVersions"))
-      {
-        return _databaseProvider.ExecuteScalarArray<Int16>("SELECT CAST({1} AS SMALLINT) FROM {0} ORDER BY {1}", TableName, VersionColumnName);
-      }
+      return _databaseProvider.ExecuteScalarArray<Int16>("SELECT CAST({1} AS SMALLINT) FROM {0} ORDER BY {1}", TableName, VersionColumnName);
     }
 
     public void SetMigrationVersionUnapplied(short version)
@@ -77,7 +59,7 @@ namespace Machine.Migrations.Services.Impl
 
     public void SetMigrationVersionApplied(short version)
     {
-      _databaseProvider.ExecuteNonQuery("INSERT INTO {0} ({1}, {2}) VALUES ({3}, {4})", TableName, IdColumnName, VersionColumnName, version, version);
+      _databaseProvider.ExecuteNonQuery("INSERT INTO {0} ({1}, {2}, {3}) VALUES ({4}, {5}, '{6}')", TableName, IdColumnName, VersionColumnName, ApplicationDateColumnName, version, version, DateTime.Now);
     }
     #endregion
   }
