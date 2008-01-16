@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Build\Debug\</OutputPath>
+    <OutputPath>..\..\Build\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Build\Release\</OutputPath>
+    <OutputPath>..\..\Build\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -44,9 +44,13 @@
     <Compile Include="LoggingUtilities\Log4NetNdc.cs" />
     <Compile Include="MsBuildUtilities\Log4NetMsBuildAppender.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IClock.cs" />
     <Compile Include="Services\IFileSystem.cs" />
+    <Compile Include="Services\Impl\Clock.cs" />
     <Compile Include="Services\Impl\FileSystem.cs" />
     <Compile Include="Services\Impl\Namer.cs" />
+    <Compile Include="Services\Impl\ThreadManager.cs" />
+    <Compile Include="Services\IThreadManager.cs" />
     <Compile Include="Services\TemporaryDirectoryHandle.cs" />
     <Compile Include="Services\INamer.cs" />
     <Compile Include="SingletonAttribute.cs" />

@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21004</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AA05C128-39BA-41D0-A627-A5B20F8A79FF}</ProjectGuid>
+    <ProjectGuid>{D51F5063-688D-4A1E-9C69-E780923660C4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Machine.Core</RootNamespace>
-    <AssemblyName>Machine.Core.Tests</AssemblyName>
+    <RootNamespace>Machine.BackgroundJobs</RootNamespace>
+    <AssemblyName>Machine.BackgroundJobs.Tests</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.DynamicProxy2, Version=2.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\Testing\Castle.DynamicProxy2.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.4.1.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\Testing\nunit.framework.dll</HintPath>
@@ -44,18 +48,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Sample\LongRunningJob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\Impl\ClockTests.cs" />
-    <Compile Include="Services\Impl\FileSystemTests.cs" />
-    <Compile Include="Services\Impl\NamerTests.cs" />
-    <Compile Include="Services\Impl\ThreadManagerTests.cs" />
-    <Compile Include="StandardFixture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Machine.Core\Machine.Core.csproj">
+    <ProjectReference Include="..\..\Machine.Core\Machine.Core\Machine.Core.csproj">
       <Project>{CC4332BD-DC7F-4B89-8C38-F8B51CADC991}</Project>
       <Name>Machine.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Machine.BackgroundJobs\Machine.BackgroundJobs.csproj">
+      <Project>{93E29839-10C4-4C32-B3FD-4DFEB4F44B9B}</Project>
+      <Name>Machine.BackgroundJobs</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\Impl\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

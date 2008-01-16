@@ -6,6 +6,6 @@
     <MigrationConnectionString>Data Source=127.0.0.1;Initial Catalog=eldb01;Integrated Security=SSPI</MigrationConnectionString>
   </PropertyGroup>
 
-  <Target Name="Default" DependsOnTargets="Migrate">
+  <Target Name="Default" DependsOnTargets="MigrationMachine">
   </Target>
 </Project>

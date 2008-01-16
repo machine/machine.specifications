@@ -14,7 +14,7 @@
     </MigrationReferences-->
   </ItemGroup>
 
-  <Target Name="Migrate">
+  <Target Name="MigrationMachine">
     <Error Text="Please set the MigrationConnectionString MsBuild property!" Condition="'$(MigrationConnectionString)'==''" />
     <MigratorTask
       ConnectionString="$(MigrationConnectionString)"

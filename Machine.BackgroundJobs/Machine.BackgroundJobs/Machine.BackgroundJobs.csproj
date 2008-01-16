@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21004</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AA05C128-39BA-41D0-A627-A5B20F8A79FF}</ProjectGuid>
+    <ProjectGuid>{93E29839-10C4-4C32-B3FD-4DFEB4F44B9B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Machine.Core</RootNamespace>
-    <AssemblyName>Machine.Core.Tests</AssemblyName>
+    <RootNamespace>Machine.BackgroundJobs</RootNamespace>
+    <AssemblyName>Machine.BackgroundJobs</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,28 +31,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.4.1.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\Testing\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.Mocks, Version=3.1.0.584, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\Testing\Rhino.Mocks.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IBackgroundJob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\Impl\ClockTests.cs" />
-    <Compile Include="Services\Impl\FileSystemTests.cs" />
-    <Compile Include="Services\Impl\NamerTests.cs" />
-    <Compile Include="Services\Impl\ThreadManagerTests.cs" />
-    <Compile Include="StandardFixture.cs" />
+    <Compile Include="Services\IBackgroundJobHandler.cs" />
+    <Compile Include="Services\IJobQueuer.cs" />
+    <Compile Include="Services\IJobRepository.cs" />
+    <Compile Include="Services\IJobServicesSelector.cs" />
+    <Compile Include="Services\IJobSpawner.cs" />
+    <Compile Include="Services\IJobTypeRepository.cs" />
+    <Compile Include="Services\Impl\JobQueuer.cs" />
+    <Compile Include="Services\Impl\JobSpawner.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Machine.Core\Machine.Core.csproj">
+    <ProjectReference Include="..\..\Machine.Core\Machine.Core\Machine.Core.csproj">
       <Project>{CC4332BD-DC7F-4B89-8C38-F8B51CADC991}</Project>
       <Name>Machine.Core</Name>
     </ProjectReference>
