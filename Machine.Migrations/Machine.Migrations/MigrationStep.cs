@@ -25,6 +25,11 @@ namespace Machine.Migrations
       get { return _reverting; }
     }
 
+    public short Version
+    {
+      get { return _migrationReference.Version; }
+    }
+
     public short VersionAfterApplying
     {
       get

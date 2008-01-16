@@ -21,7 +21,7 @@ namespace Machine.Migrations.Services.Impl
     #region IVersionStateFactory Members
     public VersionState CreateVersionState(ICollection<MigrationReference> migrations)
     {
-      short current = _schemaStateManager.GetVersion();
+      short[] applied = _schemaStateManager.GetAppliedMigrationVersions();
       short desired = _configuration.DesiredVersion;
       short last = 0;
       if (migrations.Count > 0)
@@ -37,7 +37,7 @@ namespace Machine.Migrations.Services.Impl
       {
         desired = last;
       }
-      return new VersionState(current, last, desired);
+      return new VersionState(last, desired, applied);
     }
     #endregion
   }

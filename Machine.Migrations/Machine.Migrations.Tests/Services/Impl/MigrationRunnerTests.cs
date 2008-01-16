@@ -61,9 +61,9 @@ namespace Machine.Migrations.Services.Impl
       using (_mocks.Record())
       {
         _migration1.Up();
-        _schemaStateManager.SetVersion(1);
+        _schemaStateManager.SetMigrationVersionApplied(1);
         _migration2.Up();
-        _schemaStateManager.SetVersion(2);
+        _schemaStateManager.SetMigrationVersionApplied(2);
       }
       _target.Migrate(_steps);
       _mocks.VerifyAll();

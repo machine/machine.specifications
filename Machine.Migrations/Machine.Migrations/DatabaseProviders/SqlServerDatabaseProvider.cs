@@ -49,6 +49,18 @@ namespace Machine.Migrations.DatabaseProviders
       return (T)command.ExecuteScalar();
     }
 
+    public T[] ExecuteScalarArray<T>(string sql, params object[] objects)
+    {
+      IDataReader reader = ExecuteReader(sql, objects);
+      List<T> values = new List<T>();
+      while (reader.Read())
+      {
+        values.Add((T)reader.GetValue(0));
+      }
+      reader.Close();
+      return values.ToArray();
+    }
+
     public IDataReader ExecuteReader(string sql, params object[] objects)
     {
       IDbCommand command = PrepareCommand(sql, objects);

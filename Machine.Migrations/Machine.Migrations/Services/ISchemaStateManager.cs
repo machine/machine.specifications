@@ -6,7 +6,9 @@ namespace Machine.Migrations.Services
   public interface ISchemaStateManager
   {
     void CheckSchemaInfoTable();
+    short[] GetAppliedMigrationVersions();
     short GetVersion();
-    void SetVersion(short version);
+    void SetMigrationVersionUnapplied(short version);
+    void SetMigrationVersionApplied(short version);
   }
 }

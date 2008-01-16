@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Machine.Core;
 using Machine.Migrations.DatabaseProviders;
 using Machine.Migrations.SchemaProviders;
+
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -23,24 +24,35 @@ namespace Machine.Migrations.Services.Impl
     }
 
     [Test]
-    public void GetVersion_Always_JustDoesSelect()
+    public void GetVersion_None_IsZero()
     {
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteScalar<Int32>("SELECT {1} FROM {0}", "schema_info", "version")).Return(1);
+        SetupResult.For(_databaseProvider.ExecuteScalarArray<Int16>("SELECT CAST({1} AS SMALLINT) FROM {0} ORDER BY {1}", "schema_info", "version")).Return(new Int16[] { });
       }
-      Assert.AreEqual(1, _target.GetVersion());
+      Assert.AreEqual(0, _target.GetVersion());
       _mocks.VerifyAll();
     }
 
     [Test]
-    public void SetVersion_Always_JustDoesUpdate()
+    public void GetVersion_Several_IsLast()
     {
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteNonQuery("UPDATE {0} SET {1} = {2}", "schema_info", "version", 1)).Return(true);
+        SetupResult.For(_databaseProvider.ExecuteScalarArray<Int16>("SELECT CAST({1} AS SMALLINT) FROM {0} ORDER BY {1}", "schema_info", "version")).Return(new Int16[] { 1, 2, 3 });
       }
-      _target.SetVersion(1);
+      Assert.AreEqual(3, _target.GetVersion());
+      _mocks.VerifyAll();
+    }
+
+    [Test]
+    public void GetAppliedMigrationVersions_Always_JustDoesSelectAndReturnsArray()
+    {
+      using (_mocks.Record())
+      {
+        SetupResult.For(_databaseProvider.ExecuteScalarArray<Int16>("SELECT CAST({1} AS SMALLINT) FROM {0} ORDER BY {1}", "schema_info", "version")).Return(new Int16[] { 1, 2, 3 });
+      }
+      Assert.AreEqual(new Int16[] { 1, 2, 3 }, _target.GetAppliedMigrationVersions());
       _mocks.VerifyAll();
     }
 
@@ -63,9 +75,30 @@ namespace Machine.Migrations.Services.Impl
         SetupResult.For(_schemaProvider.HasTable("schema_info")).Return(false);
         _schemaProvider.AddTable("schema_info", null);
         LastCall.IgnoreArguments();
-        Expect.Call(_databaseProvider.ExecuteNonQuery("INSERT INTO {0} ({1}, {2}) VALUES ({3}, {4})", "schema_info", "id", "version", 1, 0)).Return(true);
       }
       _target.CheckSchemaInfoTable();
+      _mocks.VerifyAll();
+    }
+
+    [Test]
+    public void SetMigrationVersionUnapplied_Always_NukesRow()
+    {
+      using (_mocks.Record())
+      {
+        SetupResult.For(_databaseProvider.ExecuteNonQuery("DELETE FROM {0} WHERE {1} = {2}", "schema_info", "version", 1)).Return(true);
+      }
+      _target.SetMigrationVersionUnapplied(1);
+      _mocks.VerifyAll();
+    }
+
+    [Test]
+    public void SetMigrationVersionApplied_Always_AddsRow()
+    {
+      using (_mocks.Record())
+      {
+        SetupResult.For(_databaseProvider.ExecuteNonQuery("INSERT INTO {0} ({1}, {2}) VALUES ({3}, {4})", "schema_info", "id", "version", 2, 2)).Return(true);
+      }
+      _target.SetMigrationVersionUnapplied(2);
       _mocks.VerifyAll();
     }
   }

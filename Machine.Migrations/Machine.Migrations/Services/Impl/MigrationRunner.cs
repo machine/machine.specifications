@@ -51,7 +51,14 @@ namespace Machine.Migrations.Services.Impl
           if (!_configuration.ShowDiagnostics)
           {
             step.Apply();
-            _schemaStateManager.SetVersion(step.VersionAfterApplying);
+            if (step.Reverting)
+            {
+              _schemaStateManager.SetMigrationVersionUnapplied(step.Version);
+            }
+            else
+            {
+              _schemaStateManager.SetMigrationVersionApplied(step.Version);
+            }
           }
         }
       }

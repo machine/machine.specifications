@@ -35,6 +35,24 @@ namespace Machine.Migrations.Services.Impl
     }
 
     [Test]
+    public void SelectMigrations_DesiredVersionIs4_CurrentVersionIs0ButAsRougueApplied_LastMigrationIs4_IsAllButApplied()
+    {
+      using (_mocks.Record())
+      {
+        SetupMocks(4, new short[] { 2 });
+      }
+      List<MigrationStep> actual = new List<MigrationStep>(_target.SelectMigrations());
+      CollectionAssert.AreEqual(
+        new MigrationStep[] {
+          new MigrationStep(_migrations[0], false),
+          new MigrationStep(_migrations[2], false),
+          new MigrationStep(_migrations[3], false),
+        },
+        actual
+      );
+    }
+
+    [Test]
     public void SelectMigrations_DesiredVersionIs4_CurrentVersionIs4_LastMigrationIs4_IsNothing()
     {
       using (_mocks.Record())
@@ -128,7 +146,17 @@ namespace Machine.Migrations.Services.Impl
 
     private void SetupMocks(short desired, short current)
     {
-      SetupResult.For(_versionStateFactory.CreateVersionState(_migrations)).Return(new VersionState(current, 4, desired));
+      List<short> applied = new List<short>();
+      for (short i = 1; i <= current; ++i)
+      {
+        applied.Add(i);
+      }
+      SetupMocks(desired, applied.ToArray());
+    }
+
+    private void SetupMocks(short desired, IList<short> applied)
+    {
+      SetupResult.For(_versionStateFactory.CreateVersionState(_migrations)).Return(new VersionState(4, desired, applied));
       SetupResult.For(_migrationFinder.FindMigrations()).Return(_migrations);
     }
 

@@ -5,13 +5,13 @@ namespace Machine.Migrations
 {
   public class VersionState
   {
-    private readonly short _current;
+    private readonly IList<short> _applied;
     private readonly short _last;
     private readonly short _desired;
 
-    public short Current
+    public IList<short> Applied
     {
-      get { return _current; }
+      get { return _applied; }
     }
 
     public short Last
@@ -26,26 +26,45 @@ namespace Machine.Migrations
 
     public bool IsReverting
     {
-      get { return _desired < _current; }
+      get
+      {
+        foreach (short applied in _applied)
+        {
+          if (_desired < applied)
+          {
+            return true;
+          }
+        }
+        return false;
+      }
     }
 
-    public VersionState(short current, short last, short desired)
+    public VersionState(short last, short desired, IList<short> applied)
     {
-      _current = current;
+      _applied = applied;
       _last = last;
       _desired = desired;
     }
 
     public bool IsApplicable(MigrationReference migrationReference)
     {
-      short start = _current;
-      short end = _desired;
-      if (start > end)
+      bool isApplied = _applied.Contains(migrationReference.Version);
+      if (isApplied)
       {
-        start = _desired;
-        end = _current;
+        if (migrationReference.Version > _desired)
+        {
+          return true;
+        }
+        return false;
       }
-      return migrationReference.Version > start && migrationReference.Version <= end;
+      else
+      {
+        if (migrationReference.Version <= _desired)
+        {
+          return true;
+        }
+        return false;
+      }
     }
   }
 }

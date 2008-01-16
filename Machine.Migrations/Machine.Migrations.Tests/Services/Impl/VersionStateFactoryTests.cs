@@ -28,15 +28,15 @@ namespace Machine.Migrations.Services.Impl
     }
 
     [Test]
-    public void CreateVersionState_Always_SetsCurrent()
+    public void CreateVersionState_Always_SetsApplied()
     {
       using (_mocks.Record())
       {
         SetupResult.For(_configuration.DesiredVersion).Return((short)2);
-        SetupResult.For(_schemaStateManager.GetVersion()).Return((short)3);
+        SetupResult.For(_schemaStateManager.GetAppliedMigrationVersions()).Return(new short[] { 1, 2, 3});
       }
       VersionState actual = _target.CreateVersionState(_migrations);
-      Assert.AreEqual(3, actual.Current);
+      CollectionAssert.AreEqual(new short[] { 1, 2, 3 }, new List<short>(actual.Applied));
     }
 
     [Test]

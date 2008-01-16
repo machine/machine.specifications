@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <UsingTask TaskName="Machine.Migrations.MigratorTask" AssemblyFile="Build\Debug\Machine.Migrations.dll" />
+  <UsingTask TaskName="Machine.Migrations.MigratorTask" AssemblyFile="..\Build\Debug\Machine.Migrations.dll" />
 
   <PropertyGroup>
     <DesiredMigrationVersion Condition="'$(DesiredMigrationVersion)'==''">-1</DesiredMigrationVersion>
