@@ -23,8 +23,10 @@ namespace Machine.BackgroundJobs
       using (_mocks.Ordered())
       {
         Get<IBackgroundJob>().IsStarted = true;
+        Get<IBackgroundJob>().PercentageComplete = 0.0;
         Get<IBackgroundJobHandler>().HandleJob(Get<IBackgroundJob>());
         Get<IBackgroundJob>().IsComplete = true;
+        Get<IBackgroundJob>().PercentageComplete = 100.0;
       }
       _mocks.ReplayAll();
       _target.Run();
@@ -38,10 +40,12 @@ namespace Machine.BackgroundJobs
       using (_mocks.Ordered())
       {
         Get<IBackgroundJob>().IsStarted = true;
+        Get<IBackgroundJob>().PercentageComplete = 0.0;
         Get<IBackgroundJobHandler>().HandleJob(Get<IBackgroundJob>());
         LastCall.Throw(error);
         Get<IBackgroundJob>().Error = error;
         Get<IBackgroundJob>().IsComplete = true;
+        Get<IBackgroundJob>().PercentageComplete = 100.0;
       }
       _mocks.ReplayAll();
       _target.Run();

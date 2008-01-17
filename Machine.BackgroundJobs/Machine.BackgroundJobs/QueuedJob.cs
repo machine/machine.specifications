@@ -39,6 +39,7 @@ namespace Machine.BackgroundJobs
       try
       {
         _job.IsStarted = true;
+        _job.PercentageComplete = 0.0;
         _handler.HandleJob(_job);
       }
       catch (Exception error)
@@ -48,6 +49,7 @@ namespace Machine.BackgroundJobs
       finally
       {
         _job.IsComplete = true;
+        _job.PercentageComplete = 100.0;
       }
     }
     #endregion
