@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Machine.BackgroundJobs.Services;
+
 namespace Machine.BackgroundJobs
 {
   public interface IBackgroundJob

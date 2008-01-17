@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace Machine.BackgroundJobs.Services
 {
-  public interface IJobTypeRepository
+  public interface IBackgroundJobQueuer
   {
-    void RegisterBackgroundJobType(Type type);
+    IBackgroundJob QueueJob(IBackgroundJob job);
   }
 }

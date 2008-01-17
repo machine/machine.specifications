@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace Machine.BackgroundJobs.Services
 {
-  public interface IJobSpawner
+  public interface IBackgroundJobSpawner
   {
-    void Start();
-    void Stop();
+    void Spawn(IBackgroundJob job);
   }
 }

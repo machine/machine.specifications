@@ -9,13 +9,29 @@ namespace Machine.Core.Services.Impl
     #region IThreadManager Members
     public IThread CreateThread(ThreadStart start)
     {
-      return new DotNotThread(new Thread(start));
+      return new DotNotThread(new Thread(start), null);
+    }
+
+    public IThread CreateThread(IRunnable runnable)
+    {
+      return new DotNotThread(new Thread(RunnableHandler), runnable);
+    }
+
+    public void Sleep(TimeSpan duration)
+    {
+      Thread.Sleep(duration);
     }
     #endregion
+
+    private static void RunnableHandler(object parameter)
+    {
+      ((IRunnable)parameter).Run();
+    }
   }
   public class DotNotThread : IThread
   {
     private readonly Thread _thread;
+    private readonly object _parameter;
 
     public Thread SystemThread
     {
@@ -27,14 +43,22 @@ namespace Machine.Core.Services.Impl
       get { return _thread.IsAlive; }
     }
 
-    public DotNotThread(Thread thread)
+    public DotNotThread(Thread thread, object parameter)
     {
       _thread = thread;
+      _parameter = parameter;
     }
 
     public void Start()
     {
-      _thread.Start();
+      if (_parameter != null)
+      {
+        _thread.Start(_parameter);
+      }
+      else
+      {
+        _thread.Start();
+      }
     }
 
     public void Join()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Machine.BackgroundJobs.Sample
 {
+  [BackgroundJob(typeof(LongRunningJobHandler), typeof(LongRunningJobRepository))]
   public class LongRunningJob : IBackgroundJob
   {
     private Int32 _jobNumber;
@@ -10,6 +11,7 @@ namespace Machine.BackgroundJobs.Sample
     private bool _isStarted;
     private double _percentageComplete;
     private string _statusMessage;
+    private TimeSpan _runFor;
 
     public int JobNumber
     {
@@ -39,6 +41,12 @@ namespace Machine.BackgroundJobs.Sample
     {
       get { return _statusMessage; }
       set { _statusMessage = value; }
+    }
+
+    public TimeSpan RunFor
+    {
+      get { return _runFor; }
+      set { _runFor = value; }
     }
   }
 }
