@@ -59,7 +59,7 @@ namespace Machine.Migrations.Services.Impl
 
     public void SetMigrationVersionApplied(short version)
     {
-      _databaseProvider.ExecuteNonQuery("INSERT INTO {0} ({1}, {2}, {3}) VALUES ({4}, {5}, '{6}')", TableName, IdColumnName, VersionColumnName, ApplicationDateColumnName, version, version, DateTime.Now);
+      _databaseProvider.ExecuteNonQuery("INSERT INTO {0} ({1}, {2}) VALUES ({3}, {4})", TableName, IdColumnName, VersionColumnName, version, version);
     }
     #endregion
   }

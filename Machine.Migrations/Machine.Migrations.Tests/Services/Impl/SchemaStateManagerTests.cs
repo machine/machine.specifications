@@ -18,7 +18,7 @@ namespace Machine.Migrations.Services.Impl
 
     public override SchemaStateManager Create()
     {
-      _databaseProvider = _mocks.DynamicMock<IDatabaseProvider>();
+      _databaseProvider = _mocks.CreateMock<IDatabaseProvider>();
       _schemaProvider = _mocks.DynamicMock<ISchemaProvider>();
       return new SchemaStateManager(_databaseProvider, _schemaProvider);
     }
@@ -61,22 +61,24 @@ namespace Machine.Migrations.Services.Impl
     [Test]
     public void SetMigrationVersionUnapplied_Always_NukesRow()
     {
+      short version = 1;
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteNonQuery("DELETE FROM {0} WHERE {1} = {2}", "schema_info", "version", 1)).Return(true);
+        SetupResult.For(_databaseProvider.ExecuteNonQuery("DELETE FROM {0} WHERE {1} = {2}", "schema_info", "version", version)).Return(true);
       }
-      _target.SetMigrationVersionUnapplied(1);
+      _target.SetMigrationVersionUnapplied(version);
       _mocks.VerifyAll();
     }
 
     [Test]
     public void SetMigrationVersionApplied_Always_AddsRow()
     {
+      short version = 2;
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteNonQuery("INSERT INTO {0} ({1}, {2}) VALUES ({3}, {4})", "schema_info", "id", "version", 2, 2)).Return(true);
+        SetupResult.For(_databaseProvider.ExecuteNonQuery("INSERT INTO {0} ({1}, {2}) VALUES ({3}, {4})", "schema_info", "id", "version", version, version)).Return(true);
       }
-      _target.SetMigrationVersionUnapplied(2);
+      _target.SetMigrationVersionApplied(version);
       _mocks.VerifyAll();
     }
   }

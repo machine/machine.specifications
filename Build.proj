@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Deploy" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="Clean">
+    <MsBuild Projects="Machine.Migrations/Machine.Migrations.sln" Targets="Clean" />
+    <MsBuild Projects="Machine.BackgroundJobs/Machine.BackgroundJobs.sln" Targets="Clean" />
+    <MsBuild Projects="Machine.MonoRail.Extensions/Machine.MonoRail.Extensions.sln" Targets="Clean" />
+  </Target>
+
+  <Target Name="Build">
+    <MsBuild Projects="Machine.Migrations/Machine.Migrations.sln" />
+    <MsBuild Projects="Machine.BackgroundJobs/Machine.BackgroundJobs.sln" />
+    <MsBuild Projects="Machine.MonoRail.Extensions/Machine.MonoRail.Extensions.sln" />
+  </Target>
+
+  <Target Name="Deploy" DependsOnTargets="Build">
+    <CreateItem Include="Build\Debug\*.*" Exclude="Build\Debug\*.Tests.*">
+      <Output TaskParameter="Include" ItemName="DeployAssemblies" />
+    </CreateItem>
+    <Copy SourceFiles="@(DeployAssemblies)" DestinationFolder="$(ELHOME)\Trunk\Lib\Machine" />
+    <Copy SourceFiles="@(DeployAssemblies)" DestinationFolder="$(ELHOME)\Tools\Machine" />
+  </Target>
+</Project>

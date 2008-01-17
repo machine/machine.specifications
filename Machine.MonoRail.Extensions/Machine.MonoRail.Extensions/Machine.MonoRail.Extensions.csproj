@@ -124,9 +124,13 @@
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
   -->
+  <Target Name="AfterBuild">
+   <CreateItem Include="$(OutputPath)\*.*">
+      <Output TaskParameter="Include" ItemName="AfterBuildFiles" />
+    </CreateItem>
+    <Copy SourceFiles="@(AfterBuildFiles)" DestinationFolder="..\..\Build\$(Configuration)" />
+  </Target>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
