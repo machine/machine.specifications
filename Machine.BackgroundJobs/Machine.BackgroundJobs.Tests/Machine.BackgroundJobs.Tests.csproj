@@ -67,8 +67,9 @@
     <Compile Include="Services\Impl\BackgroundJobQueuerTests.cs" />
     <Compile Include="Services\Impl\BackgroundJobSpawnerTests.cs" />
     <Compile Include="Services\Impl\JobManagerTests.cs" />
+    <Compile Include="Services\Impl\SimpleJobRepositoryLocatorTests.cs" />
     <Compile Include="Services\Impl\SimpleJobRepositoryTests.cs" />
-    <Compile Include="Services\Impl\WindsorJobServicesLocatorTests.cs" />
+    <Compile Include="Services\Impl\WindsorJobHandlerLocatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Machine.Core\Machine.Core.Tests\Machine.Core.Tests.csproj">

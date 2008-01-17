@@ -14,7 +14,7 @@ namespace Machine.BackgroundJobs.Services.Impl
   {
     public override BackgroundJobQueuer Create()
     {
-      return new BackgroundJobQueuer(Get<IJobServicesLocator>());
+      return new BackgroundJobQueuer(Get<IJobRepositoryLocator>());
     }
 
     [Test]
@@ -23,7 +23,7 @@ namespace Machine.BackgroundJobs.Services.Impl
       LongRunningJob job = new LongRunningJob();
       using (_mocks.Record())
       {
-        SetupResult.For(Get<IJobServicesLocator>().LocateRepository(typeof(LongRunningJob))).Return(Get<IJobRepository>());
+        SetupResult.For(Get<IJobRepositoryLocator>().LocateJobRepository(typeof(LongRunningJob))).Return(Get<IJobRepository>());
         Get<IJobRepository>().SaveJob(job);
       }
       Assert.AreEqual(job, _target.QueueJob(job));

@@ -6,16 +6,16 @@ namespace Machine.BackgroundJobs.Services.Impl
   public class JobManager : IJobManager
   {
     #region Member Data
-    private readonly IJobServicesLocator _jobServicesLocator;
+    private readonly IJobRepositoryLocator _jobRepositoryLocator;
     private readonly IBackgroundJobQueuer _backgroundJobQueuer;
     private readonly IBackgroundJobSpawner _backgroundJobSpawner;
     #endregion
 
     #region JobManager()
-    public JobManager(IJobServicesLocator jobServicesLocator, IBackgroundJobQueuer backgroundJobQueuer, IBackgroundJobSpawner backgroundJobSpawner)
+    public JobManager(IJobRepositoryLocator jobRepositoryLocator, IBackgroundJobQueuer backgroundJobQueuer, IBackgroundJobSpawner backgroundJobSpawner)
     {
-      _jobServicesLocator = jobServicesLocator;
       _backgroundJobSpawner = backgroundJobSpawner;
+      _jobRepositoryLocator = jobRepositoryLocator;
       _backgroundJobQueuer = backgroundJobQueuer;
     }
     #endregion
@@ -23,17 +23,17 @@ namespace Machine.BackgroundJobs.Services.Impl
     #region IJobManager Members
     public IList<IBackgroundJob> GetActiveJobs(Type jobType)
     {
-      return _jobServicesLocator.LocateRepository(jobType).GetActiveJobs();
+      return _jobRepositoryLocator.LocateJobRepository(jobType).GetActiveJobs();
     }
 
     public IList<IBackgroundJob> GetCompletedJobs(Type jobType)
     {
-      return _jobServicesLocator.LocateRepository(jobType).GetCompletedJobs();
+      return _jobRepositoryLocator.LocateJobRepository(jobType).GetCompletedJobs();
     }
 
     public IBackgroundJob FindJob(Type jobType, Int32 jobNumber)
     {
-      return _jobServicesLocator.LocateRepository(jobType).FindJob(jobNumber);
+      return _jobRepositoryLocator.LocateJobRepository(jobType).FindJob(jobNumber);
     }
 
     public void QueueJob(IBackgroundJob job)

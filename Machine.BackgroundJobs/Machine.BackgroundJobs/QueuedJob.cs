@@ -6,9 +6,12 @@ namespace Machine.BackgroundJobs
 {
   public class QueuedJob : IRunnable
   {
+    #region Member Data
     private readonly IBackgroundJob _job;
     private readonly IBackgroundJobHandler _handler;
+    #endregion
 
+    #region Properties
     public IBackgroundJob Job
     {
       get { return _job; }
@@ -18,6 +21,7 @@ namespace Machine.BackgroundJobs
     {
       get { return _handler; }
     }
+    #endregion
 
     #region QueuedJob()
     public QueuedJob(IBackgroundJob job, IBackgroundJobHandler handler)

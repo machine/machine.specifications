@@ -16,7 +16,7 @@ namespace Machine.BackgroundJobs.Services.Impl
   {
     public override BackgroundJobSpawner Create()
     {
-      return new BackgroundJobSpawner(Get<IThreadManager>(), Get<IJobServicesLocator>());
+      return new BackgroundJobSpawner(Get<IThreadManager>(), Get<IJobHandlerLocator>());
     }
 
     [Test]
@@ -25,7 +25,7 @@ namespace Machine.BackgroundJobs.Services.Impl
       LongRunningJob job = new LongRunningJob();
       using (_mocks.Record())
       {
-        SetupResult.For(Get<IJobServicesLocator>().LocateJobHandler(typeof(LongRunningJob))).Return(Get<IBackgroundJobHandler>());
+        SetupResult.For(Get<IJobHandlerLocator>().LocateJobHandler(typeof(LongRunningJob))).Return(Get<IBackgroundJobHandler>());
         Expect.Call(Get<IThreadManager>().CreateThread(Get<IRunnable>())).Constraints(Is.TypeOf(typeof(QueuedJob))).Return(Get<IThread>());
       }
       _target.SpawnJob(job);

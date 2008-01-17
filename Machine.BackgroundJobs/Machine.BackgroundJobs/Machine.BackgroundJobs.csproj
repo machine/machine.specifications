@@ -54,9 +54,10 @@
     <Compile Include="QueuedJob.cs" />
     <Compile Include="Services\IBackgroundJobHandler.cs" />
     <Compile Include="Services\IBackgroundJobQueuer.cs" />
+    <Compile Include="Services\IJobHandlerLocator.cs" />
     <Compile Include="Services\IJobManager.cs" />
     <Compile Include="Services\IJobRepository.cs" />
-    <Compile Include="Services\IJobServicesLocator.cs" />
+    <Compile Include="Services\IJobRepositoryLocator.cs" />
     <Compile Include="Services\IBackgroundJobSpawner.cs" />
     <Compile Include="Services\Impl\AbstractBackgroundJobHandler.cs" />
     <Compile Include="Services\Impl\AttributeAwareJobServicesLocator.cs" />
@@ -64,7 +65,8 @@
     <Compile Include="Services\Impl\BackgroundJobSpawner.cs" />
     <Compile Include="Services\Impl\JobManager.cs" />
     <Compile Include="Services\Impl\SimpleJobRepository.cs" />
-    <Compile Include="Services\Impl\WindsorJobServicesLocator.cs" />
+    <Compile Include="Services\Impl\SimpleJobRepositoryLocator.cs" />
+    <Compile Include="Services\Impl\WindsorJobHandlerLocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Machine.Core\Machine.Core\Machine.Core.csproj">

@@ -2,27 +2,24 @@
 using System.Collections.Generic;
 using System.Reflection;
 
+using Castle.Windsor;
+
 namespace Machine.BackgroundJobs.Services.Impl
 {
-  public abstract class AttributeAwareJobServicesLocator : IJobServicesLocator
+  public abstract class AttributeAwareJobServicesLocator
   {
-    #region IJobServicesLocator Members
-    public IJobRepository LocateRepository(Type jobType)
-    {
-      return LocateRepository(jobType, FindAttribute(jobType));
-    }
+    #region Member Data
+    private readonly IWindsorContainer _windsorContainer;
+    #endregion
 
-    public IBackgroundJobHandler LocateJobHandler(Type jobType)
+    #region AttributeAwareJobServicesLocator()
+    protected AttributeAwareJobServicesLocator(IWindsorContainer windsorContainer)
     {
-      return LocateJobHandler(jobType, FindAttribute(jobType));
+      _windsorContainer = windsorContainer;
     }
     #endregion
 
     #region Methods
-    protected abstract IJobRepository LocateRepository(Type jobType, BackgroundJobAttribute attribute);
-
-    protected abstract IBackgroundJobHandler LocateJobHandler(Type jobType, BackgroundJobAttribute attribute);
-
     protected virtual BackgroundJobAttribute FindAttribute(ICustomAttributeProvider type)
     {
       BackgroundJobAttribute[] attributes = (BackgroundJobAttribute[]) type.GetCustomAttributes(typeof (BackgroundJobAttribute), true);
@@ -31,6 +28,17 @@ namespace Machine.BackgroundJobs.Services.Impl
         return null;
       }
       return attributes[0];
+    }
+
+    protected virtual IBackgroundJobHandler Resolve(Type type)
+    {
+      object resolved = _windsorContainer.Resolve(type);
+      IBackgroundJobHandler service = resolved as IBackgroundJobHandler;
+      if (service == null)
+      {
+        throw new ArgumentException(String.Format("{0} should be an {1}", type, typeof(IBackgroundJobHandler)));
+      }
+      return service;
     }
     #endregion
   }

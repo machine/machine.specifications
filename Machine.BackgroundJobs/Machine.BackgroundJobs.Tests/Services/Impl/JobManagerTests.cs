@@ -17,7 +17,7 @@ namespace Machine.BackgroundJobs.Services.Impl
     public override JobManager Create()
     {
       GetNormal<IJobRepository>();
-      return new JobManager(Get<IJobServicesLocator>(), Get<IBackgroundJobQueuer>(), Get<IBackgroundJobSpawner>());
+      return new JobManager(Get<IJobRepositoryLocator>(), Get<IBackgroundJobQueuer>(), Get<IBackgroundJobSpawner>());
     }
 
     [Test]
@@ -25,7 +25,7 @@ namespace Machine.BackgroundJobs.Services.Impl
     {
       using (_mocks.Record())
       {
-        SetupResult.For(Get<IJobServicesLocator>().LocateRepository(typeof(LongRunningJob))).Return(Get<IJobRepository>());
+        SetupResult.For(Get<IJobRepositoryLocator>().LocateJobRepository(typeof(LongRunningJob))).Return(Get<IJobRepository>());
         SetupResult.For(Get<IJobRepository>().GetActiveJobs()).Return(_jobs);
       }
       Assert.AreEqual(_jobs, _target.GetActiveJobs(typeof(LongRunningJob)));
@@ -36,7 +36,7 @@ namespace Machine.BackgroundJobs.Services.Impl
     {
       using (_mocks.Record())
       {
-        SetupResult.For(Get<IJobServicesLocator>().LocateRepository(typeof(LongRunningJob))).Return(Get<IJobRepository>());
+        SetupResult.For(Get<IJobRepositoryLocator>().LocateJobRepository(typeof(LongRunningJob))).Return(Get<IJobRepository>());
         SetupResult.For(Get<IJobRepository>().GetCompletedJobs()).Return(_jobs);
       }
       Assert.AreEqual(_jobs, _target.GetCompletedJobs(typeof(LongRunningJob)));
@@ -48,7 +48,7 @@ namespace Machine.BackgroundJobs.Services.Impl
       LongRunningJob job = new LongRunningJob();
       using (_mocks.Record())
       {
-        SetupResult.For(Get<IJobServicesLocator>().LocateRepository(typeof(LongRunningJob))).Return(Get<IJobRepository>());
+        SetupResult.For(Get<IJobRepositoryLocator>().LocateJobRepository(typeof(LongRunningJob))).Return(Get<IJobRepository>());
         SetupResult.For(Get<IJobRepository>().FindJob(1)).Return(job);
       }
       Assert.AreEqual(job, _target.FindJob(typeof(LongRunningJob), 1));

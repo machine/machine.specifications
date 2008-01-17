@@ -9,21 +9,21 @@ namespace Machine.BackgroundJobs.Services.Impl
   {
     #region Member Data
     private readonly IThreadManager _threadManager;
-    private readonly IJobServicesLocator _jobServicesLocator;
+    private readonly IJobHandlerLocator _jobHandlerLocator;
     #endregion
 
     #region JobSpawner()
-    public BackgroundJobSpawner(IThreadManager threadManager, IJobServicesLocator jobServicesLocator)
+    public BackgroundJobSpawner(IThreadManager threadManager, IJobHandlerLocator jobHandlerLocator)
     {
       _threadManager = threadManager;
-      _jobServicesLocator = jobServicesLocator;
+      _jobHandlerLocator = jobHandlerLocator;
     }
     #endregion
 
     #region IJobSpawner Members
     public void SpawnJob(IBackgroundJob job)
     {
-      IBackgroundJobHandler jobHandler = _jobServicesLocator.LocateJobHandler(job.GetType());
+      IBackgroundJobHandler jobHandler = _jobHandlerLocator.LocateJobHandler(job.GetType());
       _threadManager.CreateThread(new QueuedJob(job, jobHandler));
     }
     #endregion
