@@ -45,6 +45,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\Castle\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="PowerCollections, Version=1.0.2537.26112, Culture=neutral, PublicKeyToken=39b64bd62e632034, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\Collections\PowerCollections.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />

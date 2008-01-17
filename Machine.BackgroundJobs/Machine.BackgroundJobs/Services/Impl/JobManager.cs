@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Wintellect.PowerCollections;
 
 namespace Machine.BackgroundJobs.Services.Impl
 {
@@ -21,19 +22,39 @@ namespace Machine.BackgroundJobs.Services.Impl
     #endregion
 
     #region IJobManager Members
-    public IList<IBackgroundJob> GetActiveJobs(Type jobType)
+    public IList<IBackgroundJob> FindActiveJobs(Type jobType)
     {
-      return _jobRepositoryLocator.LocateJobRepository(jobType).GetActiveJobs();
+      return _jobRepositoryLocator.LocateJobRepository(jobType).FindActiveJobs();
     }
 
-    public IList<IBackgroundJob> GetCompletedJobs(Type jobType)
+    public IList<IBackgroundJob> FindCompletedJobs(Type jobType)
     {
-      return _jobRepositoryLocator.LocateJobRepository(jobType).GetCompletedJobs();
+      return _jobRepositoryLocator.LocateJobRepository(jobType).FindCompletedJobs();
+    }
+
+    public IList<IBackgroundJob> FindJobs(Type jobType)
+    {
+      return _jobRepositoryLocator.LocateJobRepository(jobType).FindJobs();
     }
 
     public IBackgroundJob FindJob(Type jobType, Int32 jobNumber)
     {
       return _jobRepositoryLocator.LocateJobRepository(jobType).FindJob(jobNumber);
+    }
+
+    public IList<TJobType> FindCompletedJobs<TJobType>() where TJobType : IBackgroundJob
+    {
+      return new List<TJobType>(Algorithms.TypedAs<TJobType>(FindCompletedJobs(typeof(TJobType))));
+    }
+
+    public IList<TJobType> FindActiveJobs<TJobType>() where TJobType : IBackgroundJob
+    {
+      return new List<TJobType>(Algorithms.TypedAs<TJobType>(FindActiveJobs(typeof(TJobType))));
+    }
+
+    public IList<TJobType> FindJobs<TJobType>() where TJobType : IBackgroundJob
+    {
+      return new List<TJobType>(Algorithms.TypedAs<TJobType>(FindJobs(typeof(TJobType))));
     }
 
     public TJobType FindJob<TJobType>(Int32 jobNumber) where TJobType : IBackgroundJob

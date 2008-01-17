@@ -21,25 +21,36 @@ namespace Machine.BackgroundJobs.Services.Impl
     }
 
     [Test]
-    public void GetActiveJobs_Always_GetsFromRepository()
+    public void FindActiveJobs_Always_GetsFromRepository()
     {
       using (_mocks.Record())
       {
         SetupResult.For(Get<IJobRepositoryLocator>().LocateJobRepository(typeof(LongRunningJob))).Return(Get<IJobRepository>());
-        SetupResult.For(Get<IJobRepository>().GetActiveJobs()).Return(_jobs);
+        SetupResult.For(Get<IJobRepository>().FindActiveJobs()).Return(_jobs);
       }
-      Assert.AreEqual(_jobs, _target.GetActiveJobs(typeof(LongRunningJob)));
+      Assert.AreEqual(_jobs, _target.FindActiveJobs(typeof(LongRunningJob)));
     }
 
     [Test]
-    public void GetCompletedJobs_Always_GetsFromRepository()
+    public void FindCompletedJobs_Always_GetsFromRepository()
     {
       using (_mocks.Record())
       {
         SetupResult.For(Get<IJobRepositoryLocator>().LocateJobRepository(typeof(LongRunningJob))).Return(Get<IJobRepository>());
-        SetupResult.For(Get<IJobRepository>().GetCompletedJobs()).Return(_jobs);
+        SetupResult.For(Get<IJobRepository>().FindCompletedJobs()).Return(_jobs);
       }
-      Assert.AreEqual(_jobs, _target.GetCompletedJobs(typeof(LongRunningJob)));
+      Assert.AreEqual(_jobs, _target.FindCompletedJobs(typeof(LongRunningJob)));
+    }
+
+    [Test]
+    public void FindJobs_Always_GetsFromRepository()
+    {
+      using (_mocks.Record())
+      {
+        SetupResult.For(Get<IJobRepositoryLocator>().LocateJobRepository(typeof(LongRunningJob))).Return(Get<IJobRepository>());
+        SetupResult.For(Get<IJobRepository>().FindJobs()).Return(_jobs);
+      }
+      Assert.AreEqual(_jobs, _target.FindJobs(typeof(LongRunningJob)));
     }
 
     [Test]

@@ -24,7 +24,7 @@ namespace Machine.BackgroundJobs.Services.Impl
     }
 
     [Test]
-    public void GetCompletedJobs_Always_ReturnsOnlyThoseCompleted()
+    public void FindCompletedJobs_Always_ReturnsOnlyThoseCompleted()
     {
       using (_mocks.Record())
       {
@@ -33,12 +33,12 @@ namespace Machine.BackgroundJobs.Services.Impl
       _target.AddJob(_job1);
       _target.AddJob(_job2);
       _target.AddJob(_job3);
-      CollectionAssert.AreEqual(new IBackgroundJob[] { _job2 }, new List<IBackgroundJob>(_target.GetCompletedJobs()));
+      CollectionAssert.AreEqual(new IBackgroundJob[] { _job2 }, new List<IBackgroundJob>(_target.FindCompletedJobs()));
       _mocks.VerifyAll();
     }
 
     [Test]
-    public void GetActiveJobs_Always_ReturnsOnlyThoseNotCompleted()
+    public void FindActiveJobs_Always_ReturnsOnlyThoseNotCompleted()
     {
       using (_mocks.Record())
       {
@@ -47,7 +47,21 @@ namespace Machine.BackgroundJobs.Services.Impl
       _target.AddJob(_job1);
       _target.AddJob(_job2);
       _target.AddJob(_job3);
-      CollectionAssert.AreEqual(new IBackgroundJob[] { _job1, _job3 }, new List<IBackgroundJob>(_target.GetActiveJobs()));
+      CollectionAssert.AreEqual(new IBackgroundJob[] { _job1, _job3 }, new List<IBackgroundJob>(_target.FindActiveJobs()));
+      _mocks.VerifyAll();
+    }
+
+    [Test]
+    public void FindJobs_Always_ReturnsAll()
+    {
+      using (_mocks.Record())
+      {
+        _job2.IsComplete = true;
+      }
+      _target.AddJob(_job1);
+      _target.AddJob(_job2);
+      _target.AddJob(_job3);
+      CollectionAssert.AreEqual(new IBackgroundJob[] { _job1, _job2, _job3 }, new List<IBackgroundJob>(_target.FindJobs()));
       _mocks.VerifyAll();
     }
 

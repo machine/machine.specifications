@@ -14,7 +14,7 @@ namespace Machine.BackgroundJobs.Services.Impl
     #endregion
 
     #region IJobRepository Members
-    public virtual IList<IBackgroundJob> GetCompletedJobs()
+    public virtual IList<IBackgroundJob> FindCompletedJobs()
     {
       using (RWLock.AsWriter(_lock))
       {
@@ -30,7 +30,7 @@ namespace Machine.BackgroundJobs.Services.Impl
       }
     }
 
-    public virtual IList<IBackgroundJob> GetActiveJobs()
+    public virtual IList<IBackgroundJob> FindActiveJobs()
     {
       using (RWLock.AsWriter(_lock))
       {
@@ -42,6 +42,16 @@ namespace Machine.BackgroundJobs.Services.Impl
             filtered.Add(job);
           }
         }
+        return filtered;
+      }
+    }
+
+    public virtual IList<IBackgroundJob> FindJobs()
+    {
+      using (RWLock.AsWriter(_lock))
+      {
+        List<IBackgroundJob> filtered = new List<IBackgroundJob>();
+        filtered.AddRange(_jobs);
         return filtered;
       }
     }
