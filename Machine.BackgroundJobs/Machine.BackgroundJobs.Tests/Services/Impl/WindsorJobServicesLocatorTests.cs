@@ -26,7 +26,7 @@ namespace Machine.BackgroundJobs.Services.Impl
       {
         SetupResult.For(Get<IWindsorContainer>().Resolve(typeof(LongRunningJobHandler))).Return(Get<IBackgroundJobHandler>());
       }
-      Assert.AreEqual(Get<IBackgroundJobHandler>(), _target.LocateJobHandler(new LongRunningJob()));
+      Assert.AreEqual(Get<IBackgroundJobHandler>(), _target.LocateJobHandler(typeof(LongRunningJob)));
     }
 
     [Test]
@@ -36,7 +36,7 @@ namespace Machine.BackgroundJobs.Services.Impl
       {
         SetupResult.For(Get<IWindsorContainer>().Resolve(typeof(LongRunningJobRepository))).Return(Get<IJobRepository>());
       }
-      Assert.AreEqual(Get<IJobRepository>(), _target.LocateRepository(new LongRunningJob()));
+      Assert.AreEqual(Get<IJobRepository>(), _target.LocateRepository(typeof(LongRunningJob)));
     }
   }
 }

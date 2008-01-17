@@ -66,6 +66,8 @@
     <Compile Include="Sample\LongRunningJobRepository.cs" />
     <Compile Include="Services\Impl\BackgroundJobQueuerTests.cs" />
     <Compile Include="Services\Impl\BackgroundJobSpawnerTests.cs" />
+    <Compile Include="Services\Impl\JobManagerTests.cs" />
+    <Compile Include="Services\Impl\SimpleJobRepositoryTests.cs" />
     <Compile Include="Services\Impl\WindsorJobServicesLocatorTests.cs" />
   </ItemGroup>
   <ItemGroup>

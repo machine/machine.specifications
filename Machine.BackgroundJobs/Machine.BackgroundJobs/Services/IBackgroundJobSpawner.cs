@@ -5,6 +5,6 @@ namespace Machine.BackgroundJobs.Services
 {
   public interface IBackgroundJobSpawner
   {
-    void Spawn(IBackgroundJob job);
+    void SpawnJob(IBackgroundJob job);
   }
 }

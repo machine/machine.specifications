@@ -7,21 +7,21 @@ namespace Machine.BackgroundJobs.Services.Impl
   public abstract class AttributeAwareJobServicesLocator : IJobServicesLocator
   {
     #region IJobServicesLocator Members
-    public IJobRepository LocateRepository(IBackgroundJob job)
+    public IJobRepository LocateRepository(Type jobType)
     {
-      return LocateRepository(job, FindAttribute(job.GetType()));
+      return LocateRepository(jobType, FindAttribute(jobType));
     }
 
-    public IBackgroundJobHandler LocateJobHandler(IBackgroundJob job)
+    public IBackgroundJobHandler LocateJobHandler(Type jobType)
     {
-      return LocateJobHandler(job, FindAttribute(job.GetType()));
+      return LocateJobHandler(jobType, FindAttribute(jobType));
     }
     #endregion
 
     #region Methods
-    protected abstract IJobRepository LocateRepository(IBackgroundJob job, BackgroundJobAttribute attribute);
+    protected abstract IJobRepository LocateRepository(Type jobType, BackgroundJobAttribute attribute);
 
-    protected abstract IBackgroundJobHandler LocateJobHandler(IBackgroundJob job, BackgroundJobAttribute attribute);
+    protected abstract IBackgroundJobHandler LocateJobHandler(Type jobType, BackgroundJobAttribute attribute);
 
     protected virtual BackgroundJobAttribute FindAttribute(ICustomAttributeProvider type)
     {

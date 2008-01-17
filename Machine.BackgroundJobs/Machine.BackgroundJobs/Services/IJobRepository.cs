@@ -5,7 +5,9 @@ namespace Machine.BackgroundJobs.Services
 {
   public interface IJobRepository
   {
-    ICollection<IBackgroundJob> GetPendingJobs();
+    IList<IBackgroundJob> GetCompletedJobs();
+    IList<IBackgroundJob> GetActiveJobs();
+    IBackgroundJob FindJob(Int32 jobNumber);
     void AddJob(IBackgroundJob job);
     void SaveJob(IBackgroundJob job);
   }

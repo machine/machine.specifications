@@ -10,22 +10,27 @@ namespace Machine.BackgroundJobs
     Int32 JobNumber
     {
       get;
+      set;
     }
     bool IsComplete
     {
       get;
+      set;
     }
     bool IsStarted
     {
       get;
+      set;
     }
     double PercentageComplete
     {
       get;
+      set;
     }
     string StatusMessage
     {
       get;
+      set;
     }
   }
 }

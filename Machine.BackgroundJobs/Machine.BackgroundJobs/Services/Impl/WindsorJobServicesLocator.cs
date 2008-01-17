@@ -19,7 +19,7 @@ namespace Machine.BackgroundJobs.Services.Impl
     #endregion
 
     #region AttributeAwareJobServicesLocator
-    protected override IJobRepository LocateRepository(IBackgroundJob job, BackgroundJobAttribute attribute)
+    protected override IJobRepository LocateRepository(Type jobType, BackgroundJobAttribute attribute)
     {
       object resolved = _windsorContainer.Resolve(attribute.RepositoryType);
       IJobRepository jobRepository = resolved as IJobRepository;
@@ -30,7 +30,7 @@ namespace Machine.BackgroundJobs.Services.Impl
       return jobRepository;
     }
 
-    protected override IBackgroundJobHandler LocateJobHandler(IBackgroundJob job, BackgroundJobAttribute attribute)
+    protected override IBackgroundJobHandler LocateJobHandler(Type jobType, BackgroundJobAttribute attribute)
     {
       object resolved = _windsorContainer.Resolve(attribute.HandlerType);
       IBackgroundJobHandler backgroundJobHandler = resolved as IBackgroundJobHandler;

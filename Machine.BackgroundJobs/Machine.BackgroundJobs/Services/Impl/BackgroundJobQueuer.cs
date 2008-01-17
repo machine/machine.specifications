@@ -19,7 +19,7 @@ namespace Machine.BackgroundJobs.Services.Impl
     #region IJobQueuer Members
     public IBackgroundJob QueueJob(IBackgroundJob job)
     {
-      IJobRepository jobRepository = _jobServicesLocator.LocateRepository(job);
+      IJobRepository jobRepository = _jobServicesLocator.LocateRepository(job.GetType());
       jobRepository.SaveJob(job);
       return job;
     }

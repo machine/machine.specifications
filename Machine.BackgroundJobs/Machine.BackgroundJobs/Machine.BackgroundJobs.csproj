@@ -54,6 +54,7 @@
     <Compile Include="QueuedJob.cs" />
     <Compile Include="Services\IBackgroundJobHandler.cs" />
     <Compile Include="Services\IBackgroundJobQueuer.cs" />
+    <Compile Include="Services\IJobManager.cs" />
     <Compile Include="Services\IJobRepository.cs" />
     <Compile Include="Services\IJobServicesLocator.cs" />
     <Compile Include="Services\IBackgroundJobSpawner.cs" />
@@ -61,6 +62,8 @@
     <Compile Include="Services\Impl\AttributeAwareJobServicesLocator.cs" />
     <Compile Include="Services\Impl\BackgroundJobQueuer.cs" />
     <Compile Include="Services\Impl\BackgroundJobSpawner.cs" />
+    <Compile Include="Services\Impl\JobManager.cs" />
+    <Compile Include="Services\Impl\SimpleJobRepository.cs" />
     <Compile Include="Services\Impl\WindsorJobServicesLocator.cs" />
   </ItemGroup>
   <ItemGroup>

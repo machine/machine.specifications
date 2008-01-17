@@ -5,7 +5,7 @@ namespace Machine.BackgroundJobs.Services
 {
   public interface IJobServicesLocator
   {
-    IJobRepository LocateRepository(IBackgroundJob job);
-    IBackgroundJobHandler LocateJobHandler(IBackgroundJob job);
+    IJobRepository LocateRepository(Type jobType);
+    IBackgroundJobHandler LocateJobHandler(Type jobType);
   }
 }

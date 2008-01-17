@@ -10,12 +10,14 @@ namespace Machine.Core
   {
     protected TType _target;
     protected MockRepository _mocks;
-    protected Dictionary<Type, object> _gottenMocks;
+    protected Dictionary<Type, object> _dynamicMocks;
+    protected Dictionary<Type, object> _normalMocks;
 
     [SetUp]
     public virtual void Setup()
     {
-      _gottenMocks = new Dictionary<Type, object>();
+      _dynamicMocks = new Dictionary<Type, object>();
+      _normalMocks = new Dictionary<Type, object>();
       _mocks = new MockRepository();
       _target = Create();
     }
@@ -25,13 +27,30 @@ namespace Machine.Core
       throw new InvalidOperationException();
     }
 
+    public TMock GetNormal<TMock>()
+    {
+      if (_dynamicMocks.ContainsKey(typeof(TMock)))
+      {
+        throw new InvalidOperationException();
+      }
+      if (!_normalMocks.ContainsKey(typeof(TMock)))
+      {
+        _normalMocks[typeof(TMock)] = _mocks.CreateMock<TMock>();
+      }
+      return (TMock)_normalMocks[typeof(TMock)];
+    }
+
     public TMock Get<TMock>()
     {
-      if (!_gottenMocks.ContainsKey(typeof(TMock)))
+      if (_normalMocks.ContainsKey(typeof(TMock)))
       {
-        _gottenMocks[typeof(TMock)] = _mocks.DynamicMock<TMock>();
+        return (TMock)_normalMocks[typeof(TMock)];
       }
-      return (TMock)_gottenMocks[typeof (TMock)];
+      if (!_dynamicMocks.ContainsKey(typeof(TMock)))
+      {
+        _dynamicMocks[typeof(TMock)] = _mocks.DynamicMock<TMock>();
+      }
+      return (TMock)_dynamicMocks[typeof(TMock)];
     }
   }
 }

@@ -21,9 +21,9 @@ namespace Machine.BackgroundJobs.Services.Impl
     #endregion
 
     #region IJobSpawner Members
-    public void Spawn(IBackgroundJob job)
+    public void SpawnJob(IBackgroundJob job)
     {
-      IBackgroundJobHandler jobHandler = _jobServicesLocator.LocateJobHandler(job);
+      IBackgroundJobHandler jobHandler = _jobServicesLocator.LocateJobHandler(job.GetType());
       _threadManager.CreateThread(new QueuedJob(job, jobHandler));
     }
     #endregion

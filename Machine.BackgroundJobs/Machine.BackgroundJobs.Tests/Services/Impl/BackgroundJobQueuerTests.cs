@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+using Machine.BackgroundJobs.Sample;
 using Machine.Core;
 
 using NUnit.Framework;
@@ -19,12 +20,13 @@ namespace Machine.BackgroundJobs.Services.Impl
     [Test]
     public void QueueJob_Always_LocatesRepositoryAndSaves()
     {
+      LongRunningJob job = new LongRunningJob();
       using (_mocks.Record())
       {
-        SetupResult.For(Get<IJobServicesLocator>().LocateRepository(Get<IBackgroundJob>())).Return(Get<IJobRepository>());
-        Get<IJobRepository>().SaveJob(Get<IBackgroundJob>());
+        SetupResult.For(Get<IJobServicesLocator>().LocateRepository(typeof(LongRunningJob))).Return(Get<IJobRepository>());
+        Get<IJobRepository>().SaveJob(job);
       }
-      Assert.AreEqual(Get<IBackgroundJob>(), _target.QueueJob(Get<IBackgroundJob>()));
+      Assert.AreEqual(job, _target.QueueJob(job));
       _mocks.VerifyAll();
     }
   }
