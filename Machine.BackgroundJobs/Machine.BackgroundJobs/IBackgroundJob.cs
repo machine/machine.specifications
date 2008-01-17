@@ -30,5 +30,10 @@ namespace Machine.BackgroundJobs
       get;
       set;
     }
+    Exception Error
+    {
+      get;
+      set;
+    }
   }
 }

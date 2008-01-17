@@ -69,6 +69,7 @@
     <Compile Include="Services\Impl\SimpleJobRepository.cs" />
     <Compile Include="Services\Impl\SimpleJobRepositoryLocator.cs" />
     <Compile Include="Services\Impl\WindsorJobHandlerLocator.cs" />
+    <Compile Include="SimpleBackgroundJob.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Machine.Core\Machine.Core\Machine.Core.csproj">

@@ -36,6 +36,11 @@ namespace Machine.BackgroundJobs.Services.Impl
       return _jobRepositoryLocator.LocateJobRepository(jobType).FindJob(jobNumber);
     }
 
+    public TJobType FindJob<TJobType>(Int32 jobNumber) where TJobType : IBackgroundJob
+    {
+      return (TJobType)FindJob(typeof(TJobType), jobNumber);
+    }
+
     public void QueueJob(IBackgroundJob job)
     {
       _backgroundJobQueuer.QueueJob(job);
@@ -47,6 +52,7 @@ namespace Machine.BackgroundJobs.Services.Impl
 
     public void StartJob(IBackgroundJob job)
     {
+      _backgroundJobQueuer.QueueJob(job);
       _backgroundJobSpawner.SpawnJob(job);
     }
     #endregion

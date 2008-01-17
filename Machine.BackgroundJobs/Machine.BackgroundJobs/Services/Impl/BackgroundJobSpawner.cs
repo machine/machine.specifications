@@ -23,8 +23,13 @@ namespace Machine.BackgroundJobs.Services.Impl
     #region IJobSpawner Members
     public void SpawnJob(IBackgroundJob job)
     {
+      if (job.JobNumber == 0)
+      {
+        throw new ArgumentException("job");
+      }
       IBackgroundJobHandler jobHandler = _jobHandlerLocator.LocateJobHandler(job.GetType());
-      _threadManager.CreateThread(new QueuedJob(job, jobHandler));
+      IThread thread = _threadManager.CreateThread(new QueuedJob(job, jobHandler));
+      thread.Start();
     }
     #endregion
   }

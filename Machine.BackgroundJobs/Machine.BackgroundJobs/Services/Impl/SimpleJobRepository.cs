@@ -80,6 +80,10 @@ namespace Machine.BackgroundJobs.Services.Impl
 
     public virtual void SaveJob(IBackgroundJob job)
     {
+      if (job.JobNumber == 0)
+      {
+        AddJob(job);
+      }
     }
     #endregion
   }

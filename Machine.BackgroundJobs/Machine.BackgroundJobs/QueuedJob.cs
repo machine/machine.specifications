@@ -36,7 +36,19 @@ namespace Machine.BackgroundJobs
     #region IRunnable Members
     public void Run()
     {
-      _handler.HandleJob(_job);
+      try
+      {
+        _job.IsStarted = true;
+        _handler.HandleJob(_job);
+      }
+      catch (Exception error)
+      {
+        _job.Error = error;
+      }
+      finally
+      {
+        _job.IsComplete = true;
+      }
     }
     #endregion
   }
