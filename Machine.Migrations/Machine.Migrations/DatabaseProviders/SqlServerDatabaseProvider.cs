@@ -76,7 +76,10 @@ namespace Machine.Migrations.DatabaseProviders
 
     public void Close()
     {
-      _connection.Close();
+      if (_connection != null)
+      {
+        _connection.Close();
+      }
     }
     #endregion
 

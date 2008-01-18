@@ -58,11 +58,26 @@ namespace Machine.Migrations.Services.Impl
     }
 
     [Test]
-    public void Destroy_Always_DestroysDirectory()
+    public void Destroy_DirectoryDoesNotExist_DoesntDestroy()
     {
       using (_mocks.Record())
       {
         SetupResult.For(_configuration.MigrationsDirectory).Return("Migrations");
+        SetupResult.For(_fileSystem.IsDirectory(@"Migrations\WorkingTemp")).Return(false);
+        _fileSystem.RemoveDirectory(@"Migrations\WorkingTemp");
+        LastCall.IgnoreArguments().Repeat.Never();
+      }
+      _target.Destroy();
+      _mocks.VerifyAll();
+    }
+
+    [Test]
+    public void Destroy_DirectoryExists_DestroysDirectory()
+    {
+      using (_mocks.Record())
+      {
+        SetupResult.For(_configuration.MigrationsDirectory).Return("Migrations");
+        SetupResult.For(_fileSystem.IsDirectory(@"Migrations\WorkingTemp")).Return(true);
         _fileSystem.RemoveDirectory(@"Migrations\WorkingTemp");
       }
       _target.Destroy();

@@ -46,7 +46,10 @@ namespace Machine.Migrations.Services.Impl
 
     public void Destroy()
     {
-      _fileSystem.RemoveDirectory(this.WorkingDirectory);
+      if (_fileSystem.IsDirectory(this.WorkingDirectory))
+      {
+        _fileSystem.RemoveDirectory(this.WorkingDirectory);
+      } 
     }
     #endregion
   }
