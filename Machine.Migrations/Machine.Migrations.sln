@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Migrations", "Machine.Migrations\Machine.Migrations.csproj", "{03796A8D-51A4-4308-A706-D27960E59896}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Migrations.Tests", "Machine.Migrations.Tests\Machine.Migrations.Tests.csproj", "{02F2A2D5-BF1C-4D6E-A54B-F48D5F71EA24}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Core", "..\Machine.Core\Machine.Core\Machine.Core.csproj", "{CC4332BD-DC7F-4B89-8C38-F8B51CADC991}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Core.Tests", "..\Machine.Core\Machine.Core.Tests\Machine.Core.Tests.csproj", "{AA05C128-39BA-41D0-A627-A5B20F8A79FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.NHibernateExtensions", "..\Machine.NHibernateExtensions\Machine.NHibernateExtensions.csproj", "{11EA06FF-F2C5-4A49-94F8-A0B13550B5A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Migrations.Tests", "Machine.Migrations.Tests\Machine.Migrations.Tests.csproj", "{297C1585-659E-499C-8CB5-7B50D17D8D26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +21,6 @@ Global
 		{03796A8D-51A4-4308-A706-D27960E59896}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03796A8D-51A4-4308-A706-D27960E59896}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03796A8D-51A4-4308-A706-D27960E59896}.Release|Any CPU.Build.0 = Release|Any CPU
-		{02F2A2D5-BF1C-4D6E-A54B-F48D5F71EA24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02F2A2D5-BF1C-4D6E-A54B-F48D5F71EA24}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02F2A2D5-BF1C-4D6E-A54B-F48D5F71EA24}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02F2A2D5-BF1C-4D6E-A54B-F48D5F71EA24}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CC4332BD-DC7F-4B89-8C38-F8B51CADC991}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CC4332BD-DC7F-4B89-8C38-F8B51CADC991}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC4332BD-DC7F-4B89-8C38-F8B51CADC991}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -37,6 +33,10 @@ Global
 		{11EA06FF-F2C5-4A49-94F8-A0B13550B5A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11EA06FF-F2C5-4A49-94F8-A0B13550B5A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11EA06FF-F2C5-4A49-94F8-A0B13550B5A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{297C1585-659E-499C-8CB5-7B50D17D8D26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{297C1585-659E-499C-8CB5-7B50D17D8D26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{297C1585-659E-499C-8CB5-7B50D17D8D26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{297C1585-659E-499C-8CB5-7B50D17D8D26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
