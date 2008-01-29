@@ -9,7 +9,7 @@ namespace Machine.Migrations
 {
   public interface IDatabaseMigration
   {
-    void Initialize(IConfiguration configuration, IDatabaseProvider databaseProvider, ISchemaProvider schemaProvider);
+    void Initialize(IConfiguration configuration, IDatabaseProvider databaseProvider, ISchemaProvider schemaProvider, ICommonTransformations commonTransformations);
     void Up();
     void Down();
   }

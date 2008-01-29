@@ -17,5 +17,6 @@ namespace Machine.Migrations.DatabaseProviders
     IDataReader ExecuteReader(string sql, params object[] objects);
     bool ExecuteNonQuery(string sql, params object[] objects);
     void Close();
+    IDbTransaction Begin();
   }
 }

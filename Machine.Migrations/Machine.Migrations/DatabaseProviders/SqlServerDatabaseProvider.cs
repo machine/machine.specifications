@@ -16,6 +16,7 @@ namespace Machine.Migrations.DatabaseProviders
     #region Member Data
     private readonly IConfiguration _configuration;
     private SqlConnection _connection;
+    private IDbTransaction _transaction;
     #endregion
 
     #region SqlServerDatabaseProvider()
@@ -81,6 +82,11 @@ namespace Machine.Migrations.DatabaseProviders
         _connection.Close();
       }
     }
+
+    public IDbTransaction Begin()
+    {
+      return _transaction = _connection.BeginTransaction();
+    }
     #endregion
 
     #region Member Data
@@ -88,6 +94,7 @@ namespace Machine.Migrations.DatabaseProviders
     {
       IDbCommand command = _connection.CreateCommand();
       command.CommandText = String.Format(sql, objects);
+      command.Transaction = _transaction;
       _log.Info(command.CommandText);
       return command;
     }

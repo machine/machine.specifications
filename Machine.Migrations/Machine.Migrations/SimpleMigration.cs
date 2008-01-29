@@ -13,6 +13,7 @@ namespace Machine.Migrations
     private readonly log4net.ILog _log;
     private ISchemaProvider _schemaProvider;
     private IDatabaseProvider _databaseProvider;
+    private ICommonTransformations _commonTransformations;
     private IConfiguration _configuration;
     #endregion
 
@@ -36,6 +37,12 @@ namespace Machine.Migrations
     {
       get { return _databaseProvider; }
     }
+
+    public ICommonTransformations CommonTransformations
+    {
+      get { return _commonTransformations; }
+    }
+
     #endregion
 
     #region SimpleMigration()
@@ -46,11 +53,12 @@ namespace Machine.Migrations
     #endregion
 
     #region IDatabaseMigration Members
-    public virtual void Initialize(IConfiguration configuration, IDatabaseProvider databaseProvider, ISchemaProvider schemaProvider)
+    public virtual void Initialize(IConfiguration configuration, IDatabaseProvider databaseProvider, ISchemaProvider schemaProvider, ICommonTransformations commonTransformations)
     {
       _configuration = configuration;
       _schemaProvider = schemaProvider;
       _databaseProvider = databaseProvider;
+      _commonTransformations = commonTransformations;
     }
 
     public abstract void Up();

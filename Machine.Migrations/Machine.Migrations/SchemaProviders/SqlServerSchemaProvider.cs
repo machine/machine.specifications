@@ -58,7 +58,7 @@ namespace Machine.Migrations.SchemaProviders
 
     public void AddColumn(string table, string column, Type type, short size, bool isPrimaryKey, bool allowNull)
     {
-      _databaseProvider.ExecuteNonQuery("ALTER TABLE {0} ADD COLUMN {1}", table, ColumnToCreateTableSql(new Column(column, type, 0, isPrimaryKey)));
+      _databaseProvider.ExecuteNonQuery("ALTER TABLE {0} ADD {1}", table, ColumnToCreateTableSql(new Column(column, type, size, isPrimaryKey, allowNull)));
     }
 
     public void RemoveColumn(string table, string column)
@@ -90,7 +90,7 @@ namespace Machine.Migrations.SchemaProviders
 
     public void ChangeColumn(string table, string column, Type type, short size, bool allowNull)
     {
-      _databaseProvider.ExecuteNonQuery("ALTER TABLE {0} {1}", table, ColumnToCreateTableSql(new Column(column, type, size, false, allowNull)));
+      _databaseProvider.ExecuteNonQuery("ALTER TABLE {0} ALTER COLUMN {1}", table, ColumnToCreateTableSql(new Column(column, type, size, false, allowNull)));
     }
 
     public string[] Columns(string table)
