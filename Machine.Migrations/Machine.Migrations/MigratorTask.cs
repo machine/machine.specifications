@@ -49,6 +49,7 @@ namespace Machine.Migrations
       StructureMapConfiguration.BuildInstancesOf<IMigrationFactoryChooser>().TheDefaultIsConcreteType<MigrationFactoryChooser>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<IVersionStateFactory>().TheDefaultIsConcreteType<VersionStateFactory>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<IWorkingDirectoryManager>().TheDefaultIsConcreteType<WorkingDirectoryManager>().AsSingletons();
+      StructureMapConfiguration.BuildInstancesOf<ICommonTransformations>().TheDefaultIsConcreteType<CommonTransformations>().AsSingletons();
       StructureMapConfiguration.BuildInstancesOf<IConfiguration>().TheDefaultIs(Registry.Object(this)).AsSingletons();
 
       StructureMapConfiguration.BuildInstancesOf<CSharpMigrationFactory>().TheDefaultIsConcreteType<CSharpMigrationFactory>().AsSingletons();
