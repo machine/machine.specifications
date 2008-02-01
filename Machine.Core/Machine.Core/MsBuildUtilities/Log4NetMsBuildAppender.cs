@@ -30,7 +30,7 @@ namespace Machine.Core.MsBuildUtilities
       {
         _loggingHelper.LogWarning(RenderLoggingEvent(loggingEvent));
       }
-      else if (loggingEvent.Level == Level.Fatal)
+      else if (loggingEvent.Level == Level.Fatal || loggingEvent.Level == Level.Error || loggingEvent.Level == Level.Emergency || loggingEvent.Level == Level.Critical)
       {
         _loggingHelper.LogError(RenderLoggingEvent(loggingEvent));
       }

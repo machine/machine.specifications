@@ -34,22 +34,12 @@ namespace Machine.Migrations.Services.Impl
       {
         _workingDirectoryManager.Create();
         _databaseProvider.Open();
-        transaction = _databaseProvider.Begin();
         _schemaStateManager.CheckSchemaInfoTable();
         ICollection<MigrationStep> steps = _migrationSelector.SelectMigrations();
         if (_migrationRunner.CanMigrate(steps))
         {
           _migrationRunner.Migrate(steps);
         }
-        transaction.Commit();
-      }
-      catch (Exception)
-      {
-        if (transaction != null)
-        {
-          transaction.Rollback();
-        }
-        throw;
       }
       finally
       {

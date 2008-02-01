@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-
+using System.Data;
 using Machine.Core;
-
+using Machine.Migrations.DatabaseProviders;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -18,6 +18,8 @@ namespace Machine.Migrations.Services.Impl
     private IConfiguration _configuration;
     private IDatabaseMigration _migration1;
     private IDatabaseMigration _migration2;
+    private IDatabaseProvider _databaseProvider;
+    private IDbTransaction _transaction;
     private List<MigrationStep> _steps;
 
     public override MigrationRunner Create()
@@ -32,7 +34,9 @@ namespace Machine.Migrations.Services.Impl
       _migrationInitializer = _mocks.DynamicMock<IMigrationInitializer>();
       _migrationFactory = _mocks.DynamicMock<IMigrationFactory>();
       _configuration = _mocks.DynamicMock<IConfiguration>();
-      return new MigrationRunner(_migrationFactoryChooser, _migrationInitializer, _schemaStateManager, _configuration);
+      _databaseProvider = _mocks.DynamicMock<IDatabaseProvider>();
+      _transaction = _mocks.CreateMock<IDbTransaction>();
+      return new MigrationRunner(_migrationFactoryChooser, _migrationInitializer, _schemaStateManager, _configuration, _databaseProvider);
     }
 
     [Test]
@@ -54,16 +58,49 @@ namespace Machine.Migrations.Services.Impl
     }
 
     [Test]
+    public void Migrate_NoDiagnosticsAndThrows_Rollsback()
+    {
+      _steps[0].DatabaseMigration = _migration1;
+      _steps[1].DatabaseMigration = _migration2;
+      using (_mocks.Record())
+      {
+        Expect.Call(_databaseProvider.Begin()).Return(_transaction);
+        _migration1.Up();
+        _schemaStateManager.SetMigrationVersionApplied(1);
+        _transaction.Commit();
+        Expect.Call(_databaseProvider.Begin()).Return(_transaction);
+        _migration2.Up();
+        LastCall.Throw(new ArgumentException());
+        _transaction.Rollback();
+      }
+      bool caught = false;
+      try
+      {
+        _target.Migrate(_steps);
+      }
+      catch (ArgumentException)
+      {
+        caught = true;
+      }
+      Assert.IsTrue(caught);
+      _mocks.VerifyAll();
+    }
+
+    [Test]
     public void Migrate_NoDiagnostics_Applies()
     {
       _steps[0].DatabaseMigration = _migration1;
       _steps[1].DatabaseMigration = _migration2;
       using (_mocks.Record())
       {
+        Expect.Call(_databaseProvider.Begin()).Return(_transaction);
         _migration1.Up();
         _schemaStateManager.SetMigrationVersionApplied(1);
+        _transaction.Commit();
+        Expect.Call(_databaseProvider.Begin()).Return(_transaction);
         _migration2.Up();
         _schemaStateManager.SetMigrationVersionApplied(2);
+        _transaction.Commit();
       }
       _target.Migrate(_steps);
       _mocks.VerifyAll();

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using Machine.Migrations.DatabaseProviders;
 
 namespace Machine.Migrations.Services.Impl
 {
@@ -14,12 +16,14 @@ namespace Machine.Migrations.Services.Impl
     private readonly IMigrationInitializer _migrationInitializer;
     private readonly ISchemaStateManager _schemaStateManager;
     private readonly IConfiguration _configuration;
+    private readonly IDatabaseProvider _databaseProvider;
     #endregion
 
     #region MigrationRunner()
-    public MigrationRunner(IMigrationFactoryChooser migrationFactoryChooser, IMigrationInitializer migrationInitializer, ISchemaStateManager schemaStateManager, IConfiguration configuration)
+    public MigrationRunner(IMigrationFactoryChooser migrationFactoryChooser, IMigrationInitializer migrationInitializer, ISchemaStateManager schemaStateManager, IConfiguration configuration, IDatabaseProvider databaseProvider)
     {
       _schemaStateManager = schemaStateManager;
+      _databaseProvider = databaseProvider;
       _configuration = configuration;
       _migrationInitializer = migrationInitializer;
       _migrationFactoryChooser = migrationFactoryChooser;
@@ -50,14 +54,28 @@ namespace Machine.Migrations.Services.Impl
           _log.InfoFormat("Running {0}", step);
           if (!_configuration.ShowDiagnostics)
           {
-            step.Apply();
-            if (step.Reverting)
+            IDbTransaction transaction = null;
+            try
             {
-              _schemaStateManager.SetMigrationVersionUnapplied(step.Version);
+              transaction = _databaseProvider.Begin();
+              step.Apply();
+              if (step.Reverting)
+              {
+                _schemaStateManager.SetMigrationVersionUnapplied(step.Version);
+              }
+              else
+              {
+                _schemaStateManager.SetMigrationVersionApplied(step.Version);
+              }
+              transaction.Commit();
             }
-            else
+            catch (Exception)
             {
-              _schemaStateManager.SetMigrationVersionApplied(step.Version);
+              if (transaction != null)
+              {
+                transaction.Rollback();
+              }
+              throw;
             }
           }
         }
