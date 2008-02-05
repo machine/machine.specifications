@@ -5,6 +5,15 @@ namespace Machine.Migrations.Services
 {
   public interface IConfiguration
   {
+    Type ConnectionProviderType
+    {
+      get;
+    }
+
+    Type TransactionManagerType
+    {
+      get;
+    }
     string ConnectionString
     {
       get;

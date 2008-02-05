@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using Castle.Windsor;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-
-using StructureMap;
-using StructureMap.Configuration.DSL;
 
 using Machine.Core.MsBuildUtilities;
 using Machine.Migrations.DatabaseProviders;
@@ -17,6 +14,33 @@ using Machine.Migrations.Services;
 
 namespace Machine.Migrations
 {
+  public class MachineContainer : WindsorContainer
+  {
+    public void AddService<TService>(Type implementation)
+    {
+      AddComponent(MakeKey(implementation), typeof(TService), implementation);
+    }
+
+    public void AddService<TService, TImpl>() where TImpl : TService
+    {
+      AddService<TService>(typeof(TImpl));
+    }
+
+    public void AddService<TService>(TService implementation)
+    {
+      Kernel.AddComponentInstance(MakeKey(implementation.GetType()), typeof(TService), implementation);
+    }
+
+    public void AddService<TImpl>()
+    {
+      AddComponent(MakeKey(typeof(TImpl)), typeof(TImpl));
+    }
+
+    private static string MakeKey(Type implementation)
+    {
+      return implementation.FullName;
+    }
+  }
   public class MigratorTask : Task, IConfiguration
   {
     private string _migrationsDirectory;
@@ -24,6 +48,8 @@ namespace Machine.Migrations
     private short _desiredVersion;
     private bool _diagnostics;
     private string[] _references;
+    private string _connectionProvider;
+    private string _transactionManager;
 
     public MigratorTask()
     {
@@ -34,30 +60,30 @@ namespace Machine.Migrations
     {
       log4net.Config.BasicConfigurator.Configure(new Log4NetMsBuildAppender(this.Log, new log4net.Layout.PatternLayout("%-5p %x %m")));
 
-      StructureMapConfiguration.UseDefaultStructureMapConfigFile = false;  
-      StructureMapConfiguration.BuildInstancesOf<IFileSystem>().TheDefaultIsConcreteType<FileSystem>().AsSingletons();
-      StructureMapConfiguration.BuildInstancesOf<INamer>().TheDefaultIsConcreteType<Namer>().AsSingletons();
-
-      StructureMapConfiguration.BuildInstancesOf<ISchemaStateManager>().TheDefaultIsConcreteType<SchemaStateManager>().AsSingletons();
-      StructureMapConfiguration.BuildInstancesOf<IMigrationFinder>().TheDefaultIsConcreteType<MigrationFinder>().AsSingletons();
-      StructureMapConfiguration.BuildInstancesOf<IMigrationSelector>().TheDefaultIsConcreteType<MigrationSelector>().AsSingletons();
-      StructureMapConfiguration.BuildInstancesOf<IMigrationRunner>().TheDefaultIsConcreteType<MigrationRunner>().AsSingletons();
-      StructureMapConfiguration.BuildInstancesOf<IMigrationInitializer>().TheDefaultIsConcreteType<MigrationInitializer>().AsSingletons();
-      StructureMapConfiguration.BuildInstancesOf<IDatabaseProvider>().TheDefaultIsConcreteType<SqlServerDatabaseProvider>().AsSingletons();
-      StructureMapConfiguration.BuildInstancesOf<ISchemaProvider>().TheDefaultIsConcreteType<SqlServerSchemaProvider>().AsSingletons();
-      StructureMapConfiguration.BuildInstancesOf<IMigrator>().TheDefaultIsConcreteType<Migrator>().AsSingletons();
-      StructureMapConfiguration.BuildInstancesOf<IMigrationFactoryChooser>().TheDefaultIsConcreteType<MigrationFactoryChooser>().AsSingletons();
-      StructureMapConfiguration.BuildInstancesOf<IVersionStateFactory>().TheDefaultIsConcreteType<VersionStateFactory>().AsSingletons();
-      StructureMapConfiguration.BuildInstancesOf<IWorkingDirectoryManager>().TheDefaultIsConcreteType<WorkingDirectoryManager>().AsSingletons();
-      StructureMapConfiguration.BuildInstancesOf<ICommonTransformations>().TheDefaultIsConcreteType<CommonTransformations>().AsSingletons();
-      StructureMapConfiguration.BuildInstancesOf<IConfiguration>().TheDefaultIs(Registry.Object(this)).AsSingletons();
-
-      StructureMapConfiguration.BuildInstancesOf<CSharpMigrationFactory>().TheDefaultIsConcreteType<CSharpMigrationFactory>().AsSingletons();
-      StructureMapConfiguration.BuildInstancesOf<BooMigrationFactory>().TheDefaultIsConcreteType<BooMigrationFactory>().AsSingletons();
+      MachineContainer container = new MachineContainer();
+      container.AddService<IConnectionProvider>(this.ConnectionProviderType);
+      container.AddService<IMigrationTransactionService>(this.TransactionManagerType);
+      container.AddService<IFileSystem, FileSystem>();
+      container.AddService<INamer, Namer>();
+      container.AddService<ISchemaStateManager, SchemaStateManager>();
+      container.AddService<IMigrationFinder, MigrationFinder>();
+      container.AddService<IMigrationSelector, MigrationSelector>();
+      container.AddService<IMigrationRunner, MigrationRunner>();
+      container.AddService<IMigrationInitializer, MigrationInitializer>();
+      container.AddService<IDatabaseProvider, SqlServerDatabaseProvider>();
+      container.AddService<ISchemaProvider, SqlServerSchemaProvider>();
+      container.AddService<IMigrator, Migrator>();
+      container.AddService<IMigrationFactoryChooser, MigrationFactoryChooser>();
+      container.AddService<IVersionStateFactory, VersionStateFactory>();
+      container.AddService<IWorkingDirectoryManager, WorkingDirectoryManager>();
+      container.AddService<ICommonTransformations, CommonTransformations>();
+      container.AddService<IConfiguration>(this);
+      container.AddService<CSharpMigrationFactory>();
+      container.AddService<BooMigrationFactory>();
 
       using (Machine.Core.LoggingUtilities.Log4NetNdc.Push(String.Empty))
       {
-        ObjectFactory.GetInstance<IMigrator>().RunMigrator();
+        container.Resolve<IMigrator>().RunMigrator();
       }
       return true;
     }
@@ -68,6 +94,42 @@ namespace Machine.Migrations
     {
       get { return _connectionString; }
       set { _connectionString = value; }
+    }
+
+    public Type ConnectionProviderType
+    {
+      get
+      {
+        if (String.IsNullOrEmpty(_connectionProvider))
+        {
+          return typeof(ConnectionProvider);
+        }
+        return Type.GetType(_connectionProvider);
+      }
+    }
+
+    public string ConnectionProvider
+    {
+      get { return _connectionProvider; }
+      set { _connectionProvider = value; }
+    }
+
+    public Type TransactionManagerType
+    {
+      get
+      {
+        if (String.IsNullOrEmpty(_transactionManager))
+        {
+          return typeof(MigrationTransactionService);
+        }
+        return Type.GetType(_transactionManager);
+      }
+    }
+
+    public string TransactionManager
+    {
+      get { return _transactionManager; }
+      set { _transactionManager = value; }
     }
 
     public string MigrationsDirectory

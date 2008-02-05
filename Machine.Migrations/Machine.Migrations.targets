@@ -22,6 +22,8 @@
       ShowDiagnostics="$(ShowMigrationDiagnostics)"
       References="@(MigrationReferences)"
       MigrationsDirectory="$(MigrationsDirectory)"
+      ConnectionProvider="$(MigrationsConnectionProvider)"
+      TransactionManager="$(MigrationsTransactionManager)"
     />
   </Target>
 </Project>

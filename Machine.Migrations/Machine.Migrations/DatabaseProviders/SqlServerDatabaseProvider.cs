@@ -15,7 +15,7 @@ namespace Machine.Migrations.DatabaseProviders
 
     #region Member Data
     private readonly IConfiguration _configuration;
-    private SqlConnection _connection;
+    private IDbConnection _connection;
     private IDbTransaction _transaction;
     #endregion
 

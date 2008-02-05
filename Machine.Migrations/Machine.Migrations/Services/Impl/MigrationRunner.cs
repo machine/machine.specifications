@@ -16,14 +16,14 @@ namespace Machine.Migrations.Services.Impl
     private readonly IMigrationInitializer _migrationInitializer;
     private readonly ISchemaStateManager _schemaStateManager;
     private readonly IConfiguration _configuration;
-    private readonly IDatabaseProvider _databaseProvider;
+    private readonly IMigrationTransactionService _migrationTransactionService;
     #endregion
 
     #region MigrationRunner()
-    public MigrationRunner(IMigrationFactoryChooser migrationFactoryChooser, IMigrationInitializer migrationInitializer, ISchemaStateManager schemaStateManager, IConfiguration configuration, IDatabaseProvider databaseProvider)
+    public MigrationRunner(IMigrationFactoryChooser migrationFactoryChooser, IMigrationInitializer migrationInitializer, ISchemaStateManager schemaStateManager, IConfiguration configuration, IMigrationTransactionService migrationTransactionService)
     {
       _schemaStateManager = schemaStateManager;
-      _databaseProvider = databaseProvider;
+      _migrationTransactionService = migrationTransactionService;
       _configuration = configuration;
       _migrationInitializer = migrationInitializer;
       _migrationFactoryChooser = migrationFactoryChooser;
@@ -57,7 +57,7 @@ namespace Machine.Migrations.Services.Impl
             IDbTransaction transaction = null;
             try
             {
-              transaction = _databaseProvider.Begin();
+              transaction = _migrationTransactionService.Begin();
               step.Apply();
               if (step.Reverting)
               {

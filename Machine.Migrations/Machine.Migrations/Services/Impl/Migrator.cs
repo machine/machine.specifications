@@ -29,7 +29,6 @@ namespace Machine.Migrations.Services.Impl
     #region IMigrator Members
     public void RunMigrator()
     {
-      IDbTransaction transaction = null;
       try
       {
         _workingDirectoryManager.Create();
