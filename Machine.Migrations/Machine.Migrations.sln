@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.NHibernateExtension
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Migrations.Tests", "Machine.Migrations.Tests\Machine.Migrations.Tests.csproj", "{297C1585-659E-499C-8CB5-7B50D17D8D26}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Migrations.NHibernate", "Machine.Migrations.NHibernate\Machine.Migrations.NHibernate.csproj", "{75C365BA-073A-48C8-85A6-43ACD6EB220C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{297C1585-659E-499C-8CB5-7B50D17D8D26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{297C1585-659E-499C-8CB5-7B50D17D8D26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{297C1585-659E-499C-8CB5-7B50D17D8D26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75C365BA-073A-48C8-85A6-43ACD6EB220C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75C365BA-073A-48C8-85A6-43ACD6EB220C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75C365BA-073A-48C8-85A6-43ACD6EB220C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75C365BA-073A-48C8-85A6-43ACD6EB220C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

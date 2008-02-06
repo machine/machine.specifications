@@ -4,8 +4,9 @@ using System.Data;
 
 namespace Machine.Migrations.Services
 {
-  public interface IMigrationTransactionService
+  public interface ITransactionProvider
   {
     IDbTransaction Begin();
+    void Enlist(IDbCommand command);
   }
 }

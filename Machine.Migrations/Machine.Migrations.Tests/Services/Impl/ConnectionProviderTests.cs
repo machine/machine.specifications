@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 
 using Machine.Core;
 
@@ -27,7 +28,7 @@ namespace Machine.Migrations.Services.Impl
       {
         SetupResult.For(_configuration.ConnectionString).Return("ConnectionString");
       }
-      _target.CreateConnection();
+      IDbConnection connection = _target.CurrentConnection;
       _mocks.VerifyAll();
     }
   }

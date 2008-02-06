@@ -7,8 +7,13 @@ namespace Machine.Migrations.Services.Impl
 {
   public class ConnectionProvider : IConnectionProvider
   {
+    #region Logging
+    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ConnectionProvider));
+    #endregion
+
     #region Member Data
     private readonly IConfiguration _configuration;
+    private IDbConnection _connection;
     #endregion
 
     #region ConnectionProvider()
@@ -19,11 +24,23 @@ namespace Machine.Migrations.Services.Impl
     #endregion
 
     #region IConnectionProvider Members
-    public IDbConnection CreateConnection()
+    public IDbConnection OpenConnection()
     {
-      IDbConnection connection = new SqlConnection(_configuration.ConnectionString);
-      connection.Open();
-      return connection;
+      return this.CurrentConnection;
+    }
+
+    public IDbConnection CurrentConnection
+    {
+      get
+      {
+        if (_connection == null)
+        {
+          _log.Info("Opening Connection: " + _configuration.ConnectionString);
+          _connection = new SqlConnection(_configuration.ConnectionString);
+          _connection.Open();
+        }
+        return _connection;
+      }
     }
     #endregion
   }

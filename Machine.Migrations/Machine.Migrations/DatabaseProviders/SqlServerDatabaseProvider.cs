@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Data;
 
 using Machine.Migrations.Services;
@@ -14,28 +13,22 @@ namespace Machine.Migrations.DatabaseProviders
     #endregion
 
     #region Member Data
-    private readonly IConfiguration _configuration;
-    private IDbConnection _connection;
-    private IDbTransaction _transaction;
+    private readonly IConnectionProvider _connectionProvider;
+    private readonly ITransactionProvider _transactionProvider;
     #endregion
 
     #region SqlServerDatabaseProvider()
-    public SqlServerDatabaseProvider(IConfiguration configuration)
+    public SqlServerDatabaseProvider(IConnectionProvider connectionProvider, ITransactionProvider transactionProvider)
     {
-      _configuration = configuration;
+      _connectionProvider = connectionProvider;
+      _transactionProvider = transactionProvider;
     }
     #endregion
 
     #region IDatabaseProvider Members
-    public IDbConnection DatabaseConnection
-    {
-      get { return _connection; }
-    }
-
     public void Open()
     {
-      _connection = new SqlConnection(_configuration.ConnectionString);
-      _connection.Open();
+      _connectionProvider.OpenConnection();
     }
 
     public object ExecuteScalar(string sql, params object[] objects)
@@ -77,24 +70,24 @@ namespace Machine.Migrations.DatabaseProviders
 
     public void Close()
     {
-      if (_connection != null)
+      if (this.DatabaseConnection != null)
       {
-        _connection.Close();
+        this.DatabaseConnection.Close();
       }
-    }
-
-    public IDbTransaction Begin()
-    {
-      return _transaction = _connection.BeginTransaction();
     }
     #endregion
 
     #region Member Data
+    protected virtual IDbConnection DatabaseConnection
+    {
+      get { return _connectionProvider.CurrentConnection; }
+    }
+
     private IDbCommand PrepareCommand(string sql, object[] objects)
     {
-      IDbCommand command = _connection.CreateCommand();
+      IDbCommand command = this.DatabaseConnection.CreateCommand();
       command.CommandText = String.Format(sql, objects);
-      command.Transaction = _transaction;
+      _transactionProvider.Enlist(command);
       _log.Info(command.CommandText);
       return command;
     }

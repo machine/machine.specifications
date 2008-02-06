@@ -84,7 +84,7 @@
     <Compile Include="Services\IMigrationInitializer.cs" />
     <Compile Include="Services\IMigrationRunner.cs" />
     <Compile Include="Services\IMigrationSelector.cs" />
-    <Compile Include="Services\IMigrationTransactionService.cs" />
+    <Compile Include="Services\ITransactionProvider.cs" />
     <Compile Include="Services\IMigrator.cs" />
     <Compile Include="Services\Impl\AbstractMigrationCompilerFactory.cs" />
     <Compile Include="Services\Impl\BooMigrationFactory.cs" />
@@ -96,7 +96,7 @@
     <Compile Include="Services\Impl\MigrationInitializer.cs" />
     <Compile Include="Services\Impl\MigrationRunner.cs" />
     <Compile Include="Services\Impl\MigrationSelector.cs" />
-    <Compile Include="Services\Impl\MigrationTransactionService.cs" />
+    <Compile Include="Services\Impl\TransactionProvider.cs" />
     <Compile Include="Services\Impl\Migrator.cs" />
     <Compile Include="Services\Impl\SchemaStateManager.cs" />
     <Compile Include="Services\Impl\VersionStateFactory.cs" />
@@ -109,6 +109,7 @@
     <Compile Include="SimpleMigration.cs" />
     <Compile Include="Table.cs" />
     <Compile Include="VersionState.cs" />
+    <Compile Include="WindsorWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Machine.Core\Machine.Core\Machine.Core.csproj">

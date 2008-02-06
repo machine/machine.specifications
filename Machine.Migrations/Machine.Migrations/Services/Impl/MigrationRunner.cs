@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using Machine.Migrations.DatabaseProviders;
@@ -16,14 +16,14 @@ namespace Machine.Migrations.Services.Impl
     private readonly IMigrationInitializer _migrationInitializer;
     private readonly ISchemaStateManager _schemaStateManager;
     private readonly IConfiguration _configuration;
-    private readonly IMigrationTransactionService _migrationTransactionService;
+    private readonly ITransactionProvider _transactionProvider;
     #endregion
 
     #region MigrationRunner()
-    public MigrationRunner(IMigrationFactoryChooser migrationFactoryChooser, IMigrationInitializer migrationInitializer, ISchemaStateManager schemaStateManager, IConfiguration configuration, IMigrationTransactionService migrationTransactionService)
+    public MigrationRunner(IMigrationFactoryChooser migrationFactoryChooser, IMigrationInitializer migrationInitializer, ISchemaStateManager schemaStateManager, IConfiguration configuration, ITransactionProvider transactionProvider)
     {
       _schemaStateManager = schemaStateManager;
-      _migrationTransactionService = migrationTransactionService;
+      _transactionProvider = transactionProvider;
       _configuration = configuration;
       _migrationInitializer = migrationInitializer;
       _migrationFactoryChooser = migrationFactoryChooser;
@@ -57,7 +57,7 @@ namespace Machine.Migrations.Services.Impl
             IDbTransaction transaction = null;
             try
             {
-              transaction = _migrationTransactionService.Begin();
+              transaction = _transactionProvider.Begin();
               step.Apply();
               if (step.Reverting)
               {
@@ -67,12 +67,14 @@ namespace Machine.Migrations.Services.Impl
               {
                 _schemaStateManager.SetMigrationVersionApplied(step.Version);
               }
+              _log.InfoFormat("Comitting");
               transaction.Commit();
             }
             catch (Exception)
             {
               if (transaction != null)
               {
+                _log.InfoFormat("Rollback");
                 transaction.Rollback();
               }
               throw;

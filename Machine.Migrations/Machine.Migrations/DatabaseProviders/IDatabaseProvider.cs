@@ -6,10 +6,6 @@ namespace Machine.Migrations.DatabaseProviders
 {
   public interface IDatabaseProvider
   {
-    IDbConnection DatabaseConnection
-    {
-      get;
-    }
     void Open();
     object ExecuteScalar(string sql, params object[] objects);
     T ExecuteScalar<T>(string sql, params object[] objects);
@@ -17,6 +13,5 @@ namespace Machine.Migrations.DatabaseProviders
     IDataReader ExecuteReader(string sql, params object[] objects);
     bool ExecuteNonQuery(string sql, params object[] objects);
     void Close();
-    IDbTransaction Begin();
   }
 }

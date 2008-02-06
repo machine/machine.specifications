@@ -18,7 +18,7 @@ namespace Machine.Migrations.Services.Impl
     private IConfiguration _configuration;
     private IDatabaseMigration _migration1;
     private IDatabaseMigration _migration2;
-    private IMigrationTransactionService _migrationTransactionService;
+    private ITransactionProvider _transactionProvider;
     private IDbTransaction _transaction;
     private List<MigrationStep> _steps;
 
@@ -34,9 +34,9 @@ namespace Machine.Migrations.Services.Impl
       _migrationInitializer = _mocks.DynamicMock<IMigrationInitializer>();
       _migrationFactory = _mocks.DynamicMock<IMigrationFactory>();
       _configuration = _mocks.DynamicMock<IConfiguration>();
-      _migrationTransactionService = _mocks.DynamicMock<IMigrationTransactionService>();
+      _transactionProvider = _mocks.DynamicMock<ITransactionProvider>();
       _transaction = _mocks.CreateMock<IDbTransaction>();
-      return new MigrationRunner(_migrationFactoryChooser, _migrationInitializer, _schemaStateManager, _configuration, _migrationTransactionService);
+      return new MigrationRunner(_migrationFactoryChooser, _migrationInitializer, _schemaStateManager, _configuration, _transactionProvider);
     }
 
     [Test]
@@ -64,11 +64,11 @@ namespace Machine.Migrations.Services.Impl
       _steps[1].DatabaseMigration = _migration2;
       using (_mocks.Record())
       {
-        Expect.Call(_migrationTransactionService.Begin()).Return(_transaction);
+        Expect.Call(_transactionProvider.Begin()).Return(_transaction);
         _migration1.Up();
         _schemaStateManager.SetMigrationVersionApplied(1);
         _transaction.Commit();
-        Expect.Call(_migrationTransactionService.Begin()).Return(_transaction);
+        Expect.Call(_transactionProvider.Begin()).Return(_transaction);
         _migration2.Up();
         LastCall.Throw(new ArgumentException());
         _transaction.Rollback();
@@ -93,11 +93,11 @@ namespace Machine.Migrations.Services.Impl
       _steps[1].DatabaseMigration = _migration2;
       using (_mocks.Record())
       {
-        Expect.Call(_migrationTransactionService.Begin()).Return(_transaction);
+        Expect.Call(_transactionProvider.Begin()).Return(_transaction);
         _migration1.Up();
         _schemaStateManager.SetMigrationVersionApplied(1);
         _transaction.Commit();
-        Expect.Call(_migrationTransactionService.Begin()).Return(_transaction);
+        Expect.Call(_transactionProvider.Begin()).Return(_transaction);
         _migration2.Up();
         _schemaStateManager.SetMigrationVersionApplied(2);
         _transaction.Commit();
