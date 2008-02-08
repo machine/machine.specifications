@@ -35,8 +35,16 @@ namespace Machine.Migrations.SchemaProviders
         foreach (Column column in columns)
         {
           if (!first) sb.Append(",");
-          sb.AppendLine().Append(ColumnToCreateTableSql(column).Trim());
+          sb.AppendLine().Append(ColumnToCreateTableSql(column));
           first = false;
+        }
+        foreach (Column column in columns)
+        {
+          string sql = ColumnToConstraintsSql(table, column);
+          if (sql != null)
+          {
+            sb.Append(",").AppendLine().Append(sql);
+          }
         }
         sb.AppendLine().Append(")");
         _databaseProvider.ExecuteNonQuery(sb.ToString());
@@ -123,7 +131,16 @@ namespace Machine.Migrations.SchemaProviders
     #region Member Data
     public static string ColumnToCreateTableSql(Column column)
     {
-      return String.Format("{0} {1} {2} {3}", column.Name, DotNetToSqlType(column.Type), column.AllowNull ? "" : "NOT NULL", column.IsPrimaryKey ? "PRIMARY KEY" : "");
+      return String.Format("{0} {1} {2} {3}", column.Name, DotNetToSqlType(column.Type), column.AllowNull ? "" : "NOT NULL", column.IsPrimaryKey ? "IDENTITY(1, 1)" : "").Trim();
+    }
+
+    public static string ColumnToConstraintsSql(string tableName, Column column)
+    {
+      if (column.IsPrimaryKey)
+      {
+        return String.Format("CONSTRAINT PK_{0} PRIMARY KEY CLUSTERED ({1})", tableName, column.Name);
+      }
+      return null;
     }
 
     public static string DotNetToSqlType(Type type)

@@ -87,7 +87,7 @@ namespace Machine.Migrations.SchemaProviders
     {
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteNonQuery("CREATE TABLE TheTable (\r\nId INT NOT NULL PRIMARY KEY\r\n)")).Return(true);
+        SetupResult.For(_databaseProvider.ExecuteNonQuery("CREATE TABLE TheTable (\r\nId INT NOT NULL IDENTITY(1, 1),\r\nCONSTRAINT PK_TheTable PRIMARY KEY CLUSTERED (Id)\r\n)")).Return(true);
       }
       Column[] columns = new Column[] {
         new Column("Id", typeof(Int32), 4, true), 
@@ -100,7 +100,7 @@ namespace Machine.Migrations.SchemaProviders
     {
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteNonQuery("CREATE TABLE TheTable (\r\nId INT NOT NULL PRIMARY KEY,\r\nName NVARCHAR(MAX) NOT NULL\r\n)")).Return(true);
+        SetupResult.For(_databaseProvider.ExecuteNonQuery("CREATE TABLE TheTable (\r\nId INT NOT NULL IDENTITY(1, 1),\r\nName NVARCHAR(MAX) NOT NULL,\r\nCONSTRAINT PK_TheTable PRIMARY KEY CLUSTERED (Id)\r\n)")).Return(true);
       }
       Column[] columns = new Column[] {
         new Column("Id", typeof(Int32), 4, true), 
