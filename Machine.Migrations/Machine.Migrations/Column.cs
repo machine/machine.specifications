@@ -45,6 +45,28 @@ namespace Machine.Migrations
     {
     }
 
+    public Column(string name, Type type)
+     : this(name, type, false)
+    {
+    }
+
+    public Column(string name, Type type, bool allowNull)
+     : this(name, type, 0)
+    {
+      if (type == typeof(Int16))
+      {
+        _size = 2;
+      }
+      else if (type == typeof(Int32))
+      {
+        _size = 4;
+      }
+      else if (type == typeof(Int64))
+      {
+        _size = 8;
+      }
+    }
+
     public Column(string name, Type type, short size)
      : this(name, type, size, false)
     {

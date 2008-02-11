@@ -30,7 +30,7 @@ namespace Machine.Migrations.SchemaProviders
       using (Machine.Core.LoggingUtilities.Log4NetNdc.Push("AddTable"))
       {
         StringBuilder sb = new StringBuilder();
-        sb.Append("CREATE TABLE ").Append(table).Append(" (");
+        sb.Append("CREATE TABLE \"").Append(table).Append("\" (");
         bool first = true;
         foreach (Column column in columns)
         {
@@ -66,12 +66,12 @@ namespace Machine.Migrations.SchemaProviders
 
     public void AddColumn(string table, string column, Type type, short size, bool isPrimaryKey, bool allowNull)
     {
-      _databaseProvider.ExecuteNonQuery("ALTER TABLE {0} ADD {1}", table, ColumnToCreateTableSql(new Column(column, type, size, isPrimaryKey, allowNull)));
+      _databaseProvider.ExecuteNonQuery("ALTER TABLE \"{0}\" ADD {1}", table, ColumnToCreateTableSql(new Column(column, type, size, isPrimaryKey, allowNull)));
     }
 
     public void RemoveColumn(string table, string column)
     {
-      _databaseProvider.ExecuteNonQuery("ALTER TABLE {0} DROP COLUMN {1}", table, column);
+      _databaseProvider.ExecuteNonQuery("ALTER TABLE \"{0}\" DROP COLUMN \"{1}\"", table, column);
     }
 
     public void RenameTable(string table, string newName)
@@ -98,7 +98,7 @@ namespace Machine.Migrations.SchemaProviders
 
     public void ChangeColumn(string table, string column, Type type, short size, bool allowNull)
     {
-      _databaseProvider.ExecuteNonQuery("ALTER TABLE {0} ALTER COLUMN {1}", table, ColumnToCreateTableSql(new Column(column, type, size, false, allowNull)));
+      _databaseProvider.ExecuteNonQuery("ALTER TABLE \"{0}\" ALTER COLUMN {1}", table, ColumnToCreateTableSql(new Column(column, type, size, false, allowNull)));
     }
 
     public string[] Columns(string table)
@@ -131,14 +131,14 @@ namespace Machine.Migrations.SchemaProviders
     #region Member Data
     public static string ColumnToCreateTableSql(Column column)
     {
-      return String.Format("{0} {1} {2} {3}", column.Name, DotNetToSqlType(column.Type), column.AllowNull ? "" : "NOT NULL", column.IsPrimaryKey ? "IDENTITY(1, 1)" : "").Trim();
+      return String.Format("\"{0}\" {1} {2} {3}", column.Name, DotNetToSqlType(column.Type), column.AllowNull ? "" : "NOT NULL", column.IsPrimaryKey ? "IDENTITY(1, 1)" : "").Trim();
     }
 
     public static string ColumnToConstraintsSql(string tableName, Column column)
     {
       if (column.IsPrimaryKey)
       {
-        return String.Format("CONSTRAINT PK_{0} PRIMARY KEY CLUSTERED ({1})", tableName, column.Name);
+        return String.Format("CONSTRAINT PK_{0} PRIMARY KEY CLUSTERED (\"{1}\")", tableName, column.Name);
       }
       return null;
     }
@@ -173,6 +173,10 @@ namespace Machine.Migrations.SchemaProviders
 			{
 				return "REAL";
 			}
+      if (type == typeof(decimal))
+      {
+        return "MONEY";
+      }
       throw new ArgumentException("type");
     }
     #endregion

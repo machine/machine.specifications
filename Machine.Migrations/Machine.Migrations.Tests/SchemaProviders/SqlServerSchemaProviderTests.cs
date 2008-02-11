@@ -35,7 +35,7 @@ namespace Machine.Migrations.SchemaProviders
     {
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteNonQuery("ALTER TABLE {0} DROP COLUMN {1}", "TheTable", "TheColumn")).Return(true);
+        SetupResult.For(_databaseProvider.ExecuteNonQuery("ALTER TABLE \"{0}\" DROP COLUMN \"{1}\"", "TheTable", "TheColumn")).Return(true);
       }
       _target.RemoveColumn("TheTable", "TheColumn");
     }
@@ -87,7 +87,7 @@ namespace Machine.Migrations.SchemaProviders
     {
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteNonQuery("CREATE TABLE TheTable (\r\nId INT NOT NULL IDENTITY(1, 1),\r\nCONSTRAINT PK_TheTable PRIMARY KEY CLUSTERED (Id)\r\n)")).Return(true);
+        SetupResult.For(_databaseProvider.ExecuteNonQuery("CREATE TABLE \"TheTable\" (\r\n\"Id\" INT NOT NULL IDENTITY(1, 1),\r\nCONSTRAINT PK_TheTable PRIMARY KEY CLUSTERED (\"Id\")\r\n)")).Return(true);
       }
       Column[] columns = new Column[] {
         new Column("Id", typeof(Int32), 4, true), 
@@ -100,7 +100,7 @@ namespace Machine.Migrations.SchemaProviders
     {
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteNonQuery("CREATE TABLE TheTable (\r\nId INT NOT NULL IDENTITY(1, 1),\r\nName NVARCHAR(MAX) NOT NULL,\r\nCONSTRAINT PK_TheTable PRIMARY KEY CLUSTERED (Id)\r\n)")).Return(true);
+        SetupResult.For(_databaseProvider.ExecuteNonQuery("CREATE TABLE \"TheTable\" (\r\n\"Id\" INT NOT NULL IDENTITY(1, 1),\r\n\"Name\" NVARCHAR(MAX) NOT NULL,\r\nCONSTRAINT PK_TheTable PRIMARY KEY CLUSTERED (\"Id\")\r\n)")).Return(true);
       }
       Column[] columns = new Column[] {
         new Column("Id", typeof(Int32), 4, true), 
