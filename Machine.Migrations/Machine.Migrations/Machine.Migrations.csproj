@@ -109,12 +109,15 @@
     <Compile Include="SimpleMigration.cs" />
     <Compile Include="Table.cs" />
     <Compile Include="VersionState.cs" />
-    <Compile Include="WindsorWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Machine.Core\Machine.Core\Machine.Core.csproj">
       <Project>{CC4332BD-DC7F-4B89-8C38-F8B51CADC991}</Project>
       <Name>Machine.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Machine.IoC\Machine.IoC\Machine.IoC.csproj">
+      <Project>{8DABCD9B-546A-4789-87C3-94FCEB38110D}</Project>
+      <Name>Machine.IoC</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

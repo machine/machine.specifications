@@ -157,6 +157,10 @@ namespace Machine.Migrations.SchemaProviders
       {
         return "BIGINT";
       }
+      if (type == typeof(byte[]))
+      {
+        return "VARBINARY(MAX)";
+      }
       if (type == typeof(String))
       {
         if (size == 0)

@@ -33,6 +33,33 @@ namespace Machine.Migrations.Services.Impl
         _schemaProvider.ChangeColumn(table, column, type, 0, allowNull);
       }
     }
+
+    public IDisposable EnableIdentityInsertion(string table)
+    {
+      SetIdentityInsertion(table, true);
+      return new DisableIdentityInsertion(this, table);
+    }
+
+    public void SetIdentityInsertion(string table, bool enabled)
+    {
+      _databaseProvider.ExecuteNonQuery("SET IDENTITY_INSERT \"{0}\" {1}", table, enabled ? "ON" : "OFF");
+    }
     #endregion
+  }
+  public class DisableIdentityInsertion : IDisposable
+  {
+    private readonly ICommonTransformations _commonTransformations;
+    private readonly string _table;
+
+    public DisableIdentityInsertion(ICommonTransformations commonTransformations, string table)
+    {
+      _commonTransformations = commonTransformations;
+      _table = table;
+    }
+
+    public void Dispose()
+    {
+      _commonTransformations.SetIdentityInsertion(_table, false);
+    }
   }
 }

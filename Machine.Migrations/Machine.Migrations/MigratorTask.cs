@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Castle.Windsor;
+
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
+using Machine.IoC;
 using Machine.Core.MsBuildUtilities;
 using Machine.Migrations.DatabaseProviders;
 using Machine.Migrations.SchemaProviders;

@@ -1,7 +1,7 @@
 using System;
 using Castle.Windsor;
 
-namespace Machine.Migrations
+namespace Machine.IoC
 {
   public class WindsorWrapper
   {

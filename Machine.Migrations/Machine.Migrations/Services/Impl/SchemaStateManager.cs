@@ -41,8 +41,8 @@ namespace Machine.Migrations.Services.Impl
 
       Column[] columns = new Column[] {
         new Column(IdColumnName, typeof(Int32), 4, true),
-        new Column(VersionColumnName, typeof(Int32), 4, false),
-        new Column(ApplicationDateColumnName, typeof(DateTime), 0, false)
+        new Column(VersionColumnName, typeof(Int32), 4, false)
+        // new Column(ApplicationDateColumnName, typeof(DateTime), 0, false)
       };
       _schemaProvider.AddTable(TableName, columns);
     }
@@ -59,7 +59,7 @@ namespace Machine.Migrations.Services.Impl
 
     public void SetMigrationVersionApplied(short version)
     {
-      _databaseProvider.ExecuteNonQuery("INSERT INTO {0} ({1}, {2}) VALUES ({3}, {4})", TableName, IdColumnName, VersionColumnName, version, version);
+      _databaseProvider.ExecuteNonQuery("INSERT INTO {0} ({2}) VALUES ({4})", TableName, IdColumnName, VersionColumnName, version, version);
     }
     #endregion
   }
