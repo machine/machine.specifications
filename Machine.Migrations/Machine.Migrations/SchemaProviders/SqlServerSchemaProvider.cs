@@ -131,7 +131,7 @@ namespace Machine.Migrations.SchemaProviders
     #region Member Data
     public static string ColumnToCreateTableSql(Column column)
     {
-      return String.Format("\"{0}\" {1} {2} {3}", column.Name, DotNetToSqlType(column.Type), column.AllowNull ? "" : "NOT NULL", column.IsPrimaryKey ? "IDENTITY(1, 1)" : "").Trim();
+      return String.Format("\"{0}\" {1} {2} {3}", column.Name, DotNetToSqlType(column.Type, column.Size), column.AllowNull ? "" : "NOT NULL", column.IsPrimaryKey ? "IDENTITY(1, 1)" : "").Trim();
     }
 
     public static string ColumnToConstraintsSql(string tableName, Column column)
@@ -143,7 +143,7 @@ namespace Machine.Migrations.SchemaProviders
       return null;
     }
 
-    public static string DotNetToSqlType(Type type)
+    public static string DotNetToSqlType(Type type, int size)
     {
       if (type == typeof(Int16))
       {
@@ -159,7 +159,11 @@ namespace Machine.Migrations.SchemaProviders
       }
       if (type == typeof(String))
       {
-        return "NVARCHAR(MAX)";
+        if (size == 0)
+        {
+          return "NVARCHAR(MAX)";
+        }
+        return String.Format("NVARCHAR({0})", size);
       }
 			if (type == typeof(DateTime))
 			{

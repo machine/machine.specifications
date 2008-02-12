@@ -96,7 +96,7 @@ namespace Machine.Migrations.SchemaProviders
     }
 
     [Test]
-    public void AddTable_TwoColumnsPrimaryKeyAndAnother_IsSql()
+    public void AddTable_TwoColumnsPrimaryKeyAndAStringWithMaxLength_IsSql()
     {
       using (_mocks.Record())
       {
@@ -105,6 +105,20 @@ namespace Machine.Migrations.SchemaProviders
       Column[] columns = new Column[] {
         new Column("Id", typeof(Int32), 4, true), 
         new Column("Name", typeof(String), 0), 
+      };
+      _target.AddTable("TheTable", columns);
+    }
+
+    [Test]
+    public void AddTable_TwoColumnsPrimaryKeyAndAStringWithLength_IsSql()
+    {
+      using (_mocks.Record())
+      {
+        SetupResult.For(_databaseProvider.ExecuteNonQuery("CREATE TABLE \"TheTable\" (\r\n\"Id\" INT NOT NULL IDENTITY(1, 1),\r\n\"Name\" NVARCHAR(100) NOT NULL,\r\nCONSTRAINT PK_TheTable PRIMARY KEY CLUSTERED (\"Id\")\r\n)")).Return(true);
+      }
+      Column[] columns = new Column[] {
+        new Column("Id", typeof(Int32), 4, true), 
+        new Column("Name", typeof(String), 100), 
       };
       _target.AddTable("TheTable", columns);
     }
