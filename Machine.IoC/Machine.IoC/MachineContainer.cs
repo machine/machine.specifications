@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 using Castle.Windsor;
@@ -36,6 +37,29 @@ namespace Machine.IoC
     public void AddService<TImpl>()
     {
       AddComponent(MakeKey(typeof(TImpl)), typeof(TImpl));
+    }
+
+    public void AddServiceWithProvides<TImpl>()
+    {
+      AddServiceWithProvides(typeof(TImpl));
+    }
+
+    public void AddServiceWithProvides(Type type)
+    {
+      ProvidesServiceAttribute[] attributes = ((ProvidesServiceAttribute[])type.GetCustomAttributes(typeof (ProvidesServiceAttribute), true));
+      if (attributes.Length == 0)
+      {
+        return;
+      }
+      AddComponent(MakeKey(type), attributes[0].ServiceType, type);
+    }
+
+    public void AddServicesWithProvides(Assembly assembly)
+    {
+      foreach (Type type in assembly.GetTypes())
+      {
+        AddServiceWithProvides(type);
+      }
     }
 
     public void RemoveService<TService>()
