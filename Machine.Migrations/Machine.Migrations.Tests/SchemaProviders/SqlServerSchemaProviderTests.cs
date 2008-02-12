@@ -25,7 +25,7 @@ namespace Machine.Migrations.SchemaProviders
     {
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteNonQuery("DROP TABLE {0}", "TheTable")).Return(true);
+        SetupResult.For(_databaseProvider.ExecuteNonQuery("DROP TABLE \"{0}\"", "TheTable")).Return(true);
       }
       _target.DropTable("TheTable");
     }

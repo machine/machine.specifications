@@ -53,7 +53,7 @@ namespace Machine.Migrations.SchemaProviders
 
     public void DropTable(string table)
     {
-      _databaseProvider.ExecuteNonQuery("DROP TABLE {0}", table);
+      _databaseProvider.ExecuteNonQuery("DROP TABLE \"{0}\"", table);
     }
 
     public bool HasTable(string table)
