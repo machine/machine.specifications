@@ -51,7 +51,7 @@ namespace Machine.Migrations
     }
 
     public Column(string name, Type type, bool allowNull)
-     : this(name, type, 0)
+     : this(name, type, 0, false, allowNull)
     {
       if (type == typeof(Int16))
       {
