@@ -12,6 +12,7 @@ namespace Machine.Core.Services
   {
     IThread CreateThread(ThreadStart start);
     IThread CreateThread(IRunnable runnable);
+    ITimer StartTimer(TimeSpan delay, TimeSpan period, IRunnable runnable);
     void Sleep(TimeSpan duration);
   }
   public interface IThread
@@ -22,5 +23,9 @@ namespace Machine.Core.Services
     }
     void Start();
     void Join();
+  }
+  public interface ITimer
+  {
+    void Stop();
   }
 }

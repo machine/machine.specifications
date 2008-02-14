@@ -17,6 +17,11 @@ namespace Machine.Core.Services.Impl
       return new DotNotThread(new Thread(RunnableHandler), runnable);
     }
 
+    public ITimer StartTimer(TimeSpan delay, TimeSpan period, IRunnable runnable)
+    {
+      return new DotNetTimer(delay, period, runnable);
+    }
+
     public void Sleep(TimeSpan duration)
     {
       Thread.Sleep(duration);
@@ -26,6 +31,33 @@ namespace Machine.Core.Services.Impl
     private static void RunnableHandler(object parameter)
     {
       ((IRunnable)parameter).Run();
+    }
+  }
+  public class DotNetTimer : ITimer
+  {
+    #region Member Data
+    private readonly Timer _timer;
+    private readonly IRunnable _runnable;
+    #endregion
+
+    #region DotNetTimer()
+    public DotNetTimer(TimeSpan delay, TimeSpan period, IRunnable runnable)
+    {
+      _runnable = runnable;
+      _timer = new Timer(OnTimer, this, delay, period);
+    }
+    #endregion
+
+    #region ITimer Members
+    public void Stop()
+    {
+      _timer.Dispose();
+    }
+    #endregion
+
+    private void OnTimer(object state)
+    {
+      _runnable.Run();
     }
   }
   public class DotNotThread : IThread

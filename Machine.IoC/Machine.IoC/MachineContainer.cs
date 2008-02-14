@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
+using Castle.MicroKernel;
 using Castle.Windsor;
 using Castle.Windsor.Configuration;
 
@@ -10,6 +11,8 @@ namespace Machine.IoC
 {
   public class MachineContainer : WindsorContainer
   {
+    private long _counter;
+
     public MachineContainer(IConfigurationInterpreter interpreter)
      : base(interpreter)
     {
@@ -17,6 +20,11 @@ namespace Machine.IoC
 
     public MachineContainer()
     {
+    }
+
+    public virtual void AddFacility(IFacility facility)
+    {
+      AddFacility(facility.GetType().Name, facility);
     }
 
     public void AddService<TService>(Type implementation)
@@ -51,7 +59,12 @@ namespace Machine.IoC
       {
         return;
       }
-      AddComponent(MakeKey(type), attributes[0].ServiceType, type);
+      Type serviceType = attributes[0].ServiceType;
+      if (!serviceType.IsAssignableFrom(type))
+      {
+        throw new InvalidCastException(String.Format("Can't cast {0} to {1}", type, serviceType));
+      }
+      AddComponent(MakeKey(type), serviceType, type);
     }
 
     public void AddServicesWithProvides(Assembly assembly)
@@ -72,9 +85,9 @@ namespace Machine.IoC
       return Kernel.HasComponent(MakeKey(typeof(TService)));
     }
 
-    private static string MakeKey(Type implementation)
+    private string MakeKey(Type implementation)
     {
-      return implementation.FullName;
+      return implementation.FullName + (_counter++);
     }
 
     public virtual void AddController(Type type)
