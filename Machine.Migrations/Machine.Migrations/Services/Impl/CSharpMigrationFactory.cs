@@ -1,5 +1,6 @@
 ﻿using System;
 using System.CodeDom.Compiler;
+using System.Data.SqlTypes;
 using System.IO;
 using System.Reflection;
 using Machine.Core.Services;
@@ -41,6 +42,7 @@ namespace Machine.Migrations.Services.Impl
       parameters.GenerateExecutable = false;
       parameters.OutputAssembly = Path.Combine(_workingDirectoryManager.WorkingDirectory, Path.GetFileNameWithoutExtension(migrationReference.Path) + ".dll");
       parameters.ReferencedAssemblies.Add(typeof(IDatabaseMigration).Assembly.Location);
+      parameters.ReferencedAssemblies.Add(typeof(SqlMoney).Assembly.Location);
       parameters.IncludeDebugInformation = true;
       foreach (string reference in _configuration.References)
       {

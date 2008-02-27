@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlTypes;
 using System.Text;
 
 using Machine.Migrations.DatabaseProviders;
@@ -182,6 +183,10 @@ namespace Machine.Migrations.SchemaProviders
 				return "REAL";
 			}
       if (type == typeof(decimal))
+      {
+        return "MONEY";
+      }
+      if (type == typeof(SqlMoney))
       {
         return "MONEY";
       }
