@@ -65,9 +65,24 @@ namespace Machine.Migrations.SchemaProviders
       }
     }
 
+    public void AddColumn(string table, string column, Type type)
+    {
+      AddColumn(table, column, type, -1, false, false);
+    }
+
     public void AddColumn(string table, string column, Type type, short size, bool isPrimaryKey, bool allowNull)
     {
       _databaseProvider.ExecuteNonQuery("ALTER TABLE \"{0}\" ADD {1}", table, ColumnToCreateTableSql(new Column(column, type, size, isPrimaryKey, allowNull)));
+    }
+
+    public void AddColumn(string table, string column, Type type, bool allowNull)
+    {
+      AddColumn(table, column, type, 0, false, allowNull);
+    }
+
+    public void AddColumn(string table, string column, Type type, short size, bool allowNull)
+    {
+      AddColumn(table, column, type, size, false, allowNull);
     }
 
     public void RemoveColumn(string table, string column)

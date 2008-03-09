@@ -8,7 +8,10 @@ namespace Machine.Migrations.SchemaProviders
     void AddTable(string table, ICollection<Column> columns);
     void DropTable(string table);
     void RenameTable(string table, string newName);
+    void AddColumn(string table, string column, Type type);
+    void AddColumn(string table, string column, Type type, bool allowNull);
     void AddColumn(string table, string column, Type type, short size, bool isPrimaryKey, bool allowNull);
+    void AddColumn(string table, string column, Type type, short size, bool allowNull);
     void RemoveColumn(string table, string column);
     void RenameColumn(string table, string column, string newName);
     bool HasTable(string table);

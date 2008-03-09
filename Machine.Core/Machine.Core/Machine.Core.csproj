@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21004</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CC4332BD-DC7F-4B89-8C38-F8B51CADC991}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -57,6 +57,7 @@
     <Compile Include="Services\INamer.cs" />
     <Compile Include="SingletonAttribute.cs" />
     <Compile Include="Utility\LockingHelpers.cs" />
+    <Compile Include="Utility\XmlSerializationHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

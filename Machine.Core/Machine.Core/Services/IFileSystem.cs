@@ -13,10 +13,13 @@ namespace Machine.Core.Services
     bool IsFile(string path);
     bool IsDirectory(string path);
     Stream OpenFile(string path);
+    Stream CreateFile(string path);
     void CopyFile(string source, string destination, bool overwrite);
     TemporaryDirectoryHandle CreateTemporaryDirectory();
     TemporaryDirectoryHandle CreateTemporaryDirectory(string path);
     void CreateDirectory(string path);
     void RemoveDirectory(string path);
+    string GetTempFileName();
+    void MoveFile(string source, string destination);
   }
 }

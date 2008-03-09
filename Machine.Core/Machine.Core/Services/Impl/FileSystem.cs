@@ -32,9 +32,19 @@ namespace Machine.Core.Services.Impl
       return File.OpenRead(path);
     }
 
+    public Stream CreateFile(string path)
+    {
+      return File.Create(path);
+    }
+
     public void CopyFile(string source, string destination, bool overwrite)
     {
       File.Copy(source, destination, overwrite);
+    }
+
+    public void MoveFile(string source, string destination)
+    {
+      File.Move(source, destination);
     }
 
     public TemporaryDirectoryHandle CreateTemporaryDirectory()
@@ -57,6 +67,11 @@ namespace Machine.Core.Services.Impl
     public void RemoveDirectory(string path)
     {
       Directory.Delete(path, true);
+    }
+
+    public string GetTempFileName()
+    {
+      return Path.GetTempFileName();
     }
     #endregion
   }
