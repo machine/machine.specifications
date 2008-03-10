@@ -142,6 +142,16 @@ namespace Machine.Migrations.SchemaProviders
         return values.ToArray();
       }
     }
+
+    public void AddForiegnKeyConstraint(string table, string name, string column, string foreignTable, string foreignColumn)
+    {
+      _databaseProvider.ExecuteNonQuery("ALTER TABLE \"{0}\" ADD CONSTRAINT \"{1}\" FOREIGN KEY (\"{2}\") REFERENCES \"{3}\" (\"{4}\")", table, name, column, foreignTable, foreignColumn);
+    }
+
+    public void DropConstraint(string table, string name)
+    {
+      _databaseProvider.ExecuteNonQuery("ALTER TABLE \"{0}\" DROP CONSTRAINT \"{1}\"", table, name);
+    }
     #endregion
 
     #region Member Data

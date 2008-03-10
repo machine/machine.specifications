@@ -19,5 +19,7 @@ namespace Machine.Migrations.SchemaProviders
     void ChangeColumn(string table, string column, Type type, short size, bool allowNull);
     string[] Columns(string table);
     string[] Tables();
+    void AddForiegnKeyConstraint(string table, string name, string column, string foreignTable, string foreignColumn);
+    void DropConstraint(string table, string name);
   }
 }
