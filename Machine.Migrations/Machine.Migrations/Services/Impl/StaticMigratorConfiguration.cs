@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using Machine.Migrations.DatabaseProviders;
+using Machine.Migrations.SchemaProviders;
 
 namespace Machine.Migrations.Services.Impl
 {
   public class StaticMigratorConfiguration : IConfiguration
   {
     #region Member Data
-    private Type _connectionProviderType;
-    private Type _schemaProviderType;
-    private Type _databaseProviderType;
+    private Type _connectionProviderType = typeof(SqlServerConnectionProvider);
+    private Type _schemaProviderType = typeof(SqlServerSchemaProvider);
+    private Type _databaseProviderType = typeof(SqlServerDatabaseProvider);
     private string _connectionString;
     private string _migrationsDirectory;
-    private short _desiredVersion;
+    private short _desiredVersion = -1;
     private bool _showDiagnostics;
-    private string[] _references;
+    private string[] _references = new string[0];
     #endregion
 
     #region StaticMigratorConfiguration()
@@ -34,7 +36,7 @@ namespace Machine.Migrations.Services.Impl
       _schemaProviderType = schemaProviderType;
     }
 
-    public StaticMigratorConfiguration(string connectionString, Type connectionProviderType, Type schemaProviderType, string migrationsDirectory)
+    public StaticMigratorConfiguration(string connectionString, string migrationsDirectory, Type schemaProviderType, Type connectionProviderType)
     {
       _connectionString = connectionString;
       _connectionProviderType = connectionProviderType;
