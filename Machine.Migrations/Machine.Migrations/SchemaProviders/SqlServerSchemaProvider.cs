@@ -14,6 +14,13 @@ namespace Machine.Migrations.SchemaProviders
     private readonly IDatabaseProvider _databaseProvider;
     #endregion
 
+    #region Properties
+    protected IDatabaseProvider DatabaseProvider
+    {
+      get { return _databaseProvider; }
+    }
+    #endregion
+
     #region SqlServerSchemaProvider()
     public SqlServerSchemaProvider(IDatabaseProvider databaseProvider)
     {
@@ -57,11 +64,11 @@ namespace Machine.Migrations.SchemaProviders
       _databaseProvider.ExecuteNonQuery("DROP TABLE \"{0}\"", table);
     }
 
-    public bool HasTable(string table)
+    public virtual bool HasTable(string table)
     {
       using (Machine.Core.LoggingUtilities.Log4NetNdc.Push("HasTable({0})", table))
       {
-        return _databaseProvider.ExecuteScalar<Int32>("SELECT COUNT(*) FROM syscolumns WHERE id = object_id('{0}')", table) > 0;
+        return _databaseProvider.ExecuteScalar<Int32>("SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{0}'", table) > 0;
       }
     }
 
@@ -100,15 +107,11 @@ namespace Machine.Migrations.SchemaProviders
       _databaseProvider.ExecuteNonQuery("EXEC sp_rename '{0}.{1}', '{2}', 'COLUMN'", table, column, newName);
     }
 
-    public bool HasColumn(string table, string column)
+    public virtual bool HasColumn(string table, string column)
     {
       using (Machine.Core.LoggingUtilities.Log4NetNdc.Push("HasColumn({0}.{1})", table, column))
       {
-        if (!HasTable(table))
-        {
-          return false;
-        }
-        return _databaseProvider.ExecuteScalar<Int32>("SELECT COUNT(*) FROM syscolumns WHERE id = object_id('{0}') AND name = '{1}'", table, column) > 0;
+        return _databaseProvider.ExecuteScalar<Int32>("SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{0}' AND COLUMN_NAME = '{1}'", table, column) > 0;
       }
     }
 
@@ -117,29 +120,19 @@ namespace Machine.Migrations.SchemaProviders
       _databaseProvider.ExecuteNonQuery("ALTER TABLE \"{0}\" ALTER COLUMN {1}", table, ColumnToCreateTableSql(new Column(column, type, size, false, allowNull)));
     }
 
-    public string[] Columns(string table)
+    public virtual string[] Columns(string table)
     {
-      using (IDataReader reader = _databaseProvider.ExecuteReader("SELECT name FROM syscolumns WHERE id = object_id('{0}')", table))
+      using (IDataReader reader = _databaseProvider.ExecuteReader("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{0}'", table))
       {
-        List<string> values = new List<string>();
-        while (reader.Read())
-        {
-          values.Add(reader.GetString(0));
-        }
-        return values.ToArray();
+        return GetColumnAsArray(reader, 0);
       }
     }
 
-    public string[] Tables()
+    public virtual string[] Tables()
     {
       using (IDataReader reader = _databaseProvider.ExecuteReader("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES"))
       {
-        List<string> values = new List<string>();
-        while (reader.Read())
-        {
-          values.Add(reader.GetString(0));
-        }
-        return values.ToArray();
+        return GetColumnAsArray(reader, 0);
       }
     }
 
@@ -155,12 +148,22 @@ namespace Machine.Migrations.SchemaProviders
     #endregion
 
     #region Member Data
-    public static string ColumnToCreateTableSql(Column column)
+    public static string[] GetColumnAsArray(IDataReader reader, int columnIndex)
+    {
+      List<string> values = new List<string>();
+      while (reader.Read())
+      {
+        values.Add(reader.GetString(columnIndex));
+      }
+      return values.ToArray();
+    }
+
+    public virtual string ColumnToCreateTableSql(Column column)
     {
       return String.Format("\"{0}\" {1} {2} {3}", column.Name, DotNetToSqlType(column.Type, column.Size), column.AllowNull ? "" : "NOT NULL", column.IsPrimaryKey ? "IDENTITY(1, 1)" : "").Trim();
     }
 
-    public static string ColumnToConstraintsSql(string tableName, Column column)
+    public virtual string ColumnToConstraintsSql(string tableName, Column column)
     {
       if (column.IsPrimaryKey)
       {
@@ -169,7 +172,7 @@ namespace Machine.Migrations.SchemaProviders
       return null;
     }
 
-    public static string DotNetToSqlType(Type type, int size)
+    public virtual string DotNetToSqlType(Type type, int size)
     {
       if (type == typeof(Int16))
       {

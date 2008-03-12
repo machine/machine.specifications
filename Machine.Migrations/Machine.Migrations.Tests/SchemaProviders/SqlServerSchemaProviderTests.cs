@@ -41,22 +41,11 @@ namespace Machine.Migrations.SchemaProviders
     }
 
     [Test]
-    public void HasColumn_HasNoTable_IsFalse()
-    {
-      using (_mocks.Record())
-      {
-        SetupResult.For(_databaseProvider.ExecuteScalar<Int32>("SELECT COUNT(*) FROM syscolumns WHERE id = object_id('{0}')", "TheTable")).Return(0);
-      }
-      Assert.IsFalse(_target.HasColumn("TheTable", "TheColumn"));
-    }
-
-    [Test]
     public void HasColumn_HasTableAndColumn_IsTrue()
     {
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteScalar<Int32>("SELECT COUNT(*) FROM syscolumns WHERE id = object_id('{0}')", "TheTable")).Return(1);
-        SetupResult.For(_databaseProvider.ExecuteScalar<Int32>("SELECT COUNT(*) FROM syscolumns WHERE id = object_id('{0}') AND name = '{1}'", "TheTable", "TheColumn")).Return(1);
+        SetupResult.For(_databaseProvider.ExecuteScalar<Int32>("SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{0}' AND COLUMN_NAME = '{1}'", "TheTable", "TheColumn")).Return(1);
       }
       Assert.IsTrue(_target.HasColumn("TheTable", "TheColumn"));
     }
@@ -66,8 +55,7 @@ namespace Machine.Migrations.SchemaProviders
     {
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteScalar<Int32>("SELECT COUNT(*) FROM syscolumns WHERE id = object_id('{0}')", "TheTable")).Return(1);
-        SetupResult.For(_databaseProvider.ExecuteScalar<Int32>("SELECT COUNT(*) FROM syscolumns WHERE id = object_id('{0}') AND name = '{1}'", "TheTable", "TheColumn")).Return(0);
+        SetupResult.For(_databaseProvider.ExecuteScalar<Int32>("SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{0}' AND COLUMN_NAME = '{1}'", "TheTable", "TheColumn")).Return(0);
       }
       Assert.IsFalse(_target.HasColumn("TheTable", "TheColumn"));
     }

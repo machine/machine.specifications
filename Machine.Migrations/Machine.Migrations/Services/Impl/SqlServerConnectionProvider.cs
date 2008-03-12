@@ -5,10 +5,10 @@ using System.Data.SqlClient;
 
 namespace Machine.Migrations.Services.Impl
 {
-  public class ConnectionProvider : IConnectionProvider
+  public class SqlServerConnectionProvider : IConnectionProvider
   {
     #region Logging
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ConnectionProvider));
+    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(SqlServerConnectionProvider));
     #endregion
 
     #region Member Data
@@ -16,8 +16,8 @@ namespace Machine.Migrations.Services.Impl
     private IDbConnection _connection;
     #endregion
 
-    #region ConnectionProvider()
-    public ConnectionProvider(IConfiguration configuration)
+    #region SqlServerConnectionProvider()
+    public SqlServerConnectionProvider(IConfiguration configuration)
     {
       _configuration = configuration;
     }

@@ -10,10 +10,16 @@ namespace Machine.Migrations.Services
       get;
     }
 
-    Type TransactionManagerType
+    Type SchemaProviderType
     {
       get;
     }
+
+    Type DatabaseProviderType
+    {
+      get;
+    }
+
     string ConnectionString
     {
       get;

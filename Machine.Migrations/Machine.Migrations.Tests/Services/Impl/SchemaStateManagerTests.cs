@@ -76,7 +76,7 @@ namespace Machine.Migrations.Services.Impl
       short version = 2;
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteNonQuery("INSERT INTO {0} ({1}, {2}) VALUES ({3}, {4})", "schema_info", "id", "version", version, version)).Return(true);
+        SetupResult.For(_databaseProvider.ExecuteNonQuery("INSERT INTO {0} ({2}) VALUES ({4})", "schema_info", "id", "version", version, version)).Return(true);
       }
       _target.SetMigrationVersionApplied(version);
       _mocks.VerifyAll();

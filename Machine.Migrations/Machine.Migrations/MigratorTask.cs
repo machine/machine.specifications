@@ -2,16 +2,13 @@
 using System.Collections.Generic;
 using Castle.Windsor;
 
+using Machine.Migrations.DatabaseProviders;
+using Machine.Migrations.SchemaProviders;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
-using Machine.IoC;
 using Machine.Core.MsBuildUtilities;
-using Machine.Migrations.DatabaseProviders;
-using Machine.Migrations.SchemaProviders;
 using Machine.Migrations.Services.Impl;
-using Machine.Core.Services.Impl;
-using Machine.Core.Services;
 using Machine.Migrations.Services;
 
 namespace Machine.Migrations
@@ -29,43 +26,18 @@ namespace Machine.Migrations
       _migrationsDirectory = Environment.CurrentDirectory;
     }
 
-    public virtual IWindsorContainer CreateContainer()
+    public virtual IMigratorContainerFactory CreateContainerFactory()
     {
-      return new WindsorContainer();
-    }
-
-    public virtual IWindsorContainer CreateAndPopulateContainer()
-    {
-      IWindsorContainer windsor = CreateContainer();
-      WindsorWrapper container = new WindsorWrapper(windsor);
-      container.AddService<IConnectionProvider>(this.ConnectionProviderType);
-      container.AddService<ITransactionProvider>(this.TransactionManagerType);
-      container.AddService<IFileSystem, FileSystem>();
-      container.AddService<INamer, Namer>();
-      container.AddService<ISchemaStateManager, SchemaStateManager>();
-      container.AddService<IMigrationFinder, MigrationFinder>();
-      container.AddService<IMigrationSelector, MigrationSelector>();
-      container.AddService<IMigrationRunner, MigrationRunner>();
-      container.AddService<IMigrationInitializer, MigrationInitializer>();
-      container.AddService<IDatabaseProvider, SqlServerDatabaseProvider>();
-      container.AddService<ISchemaProvider, SqlServerSchemaProvider>();
-      container.AddService<IMigrator, Migrator>();
-      container.AddService<IMigrationFactoryChooser, MigrationFactoryChooser>();
-      container.AddService<IVersionStateFactory, VersionStateFactory>();
-      container.AddService<IWorkingDirectoryManager, WorkingDirectoryManager>();
-      container.AddService<ICommonTransformations, CommonTransformations>();
-      container.AddService<IConfiguration>(this);
-      container.AddService<CSharpMigrationFactory>();
-      container.AddService<BooMigrationFactory>();
-      return windsor;
+      return new MigratorContainerFactory();
     }
 
     public override bool Execute()
     {
+      IMigratorContainerFactory migratorContainerFactory = CreateContainerFactory();
       log4net.Config.BasicConfigurator.Configure(new Log4NetMsBuildAppender(this.Log, new log4net.Layout.PatternLayout("%-5p %x %m")));
       using (Machine.Core.LoggingUtilities.Log4NetNdc.Push(String.Empty))
       {
-        IWindsorContainer container = CreateAndPopulateContainer();
+        IWindsorContainer container = migratorContainerFactory.CreateAndPopulateContainer(this);
         container.Resolve<IMigrator>().RunMigrator();
       }
       return true;
@@ -77,16 +49,6 @@ namespace Machine.Migrations
     {
       get { return _connectionString; }
       set { _connectionString = value; }
-    }
-
-    public virtual Type ConnectionProviderType
-    {
-      get { return typeof(ConnectionProvider); }
-    }
-
-    public virtual Type TransactionManagerType
-    {
-      get { return typeof(TransactionProvider); }
     }
 
     public string MigrationsDirectory
@@ -118,6 +80,21 @@ namespace Machine.Migrations
         return _references;
       }
       set { _references = value; }
+    }
+
+    public Type ConnectionProviderType
+    {
+      get { return typeof(SqlServerConnectionProvider); }
+    }
+
+    public Type SchemaProviderType
+    {
+      get { return typeof(SqlServerSchemaProvider); }
+    }
+
+    public Type DatabaseProviderType
+    {
+      get { return typeof(SqlServerDatabaseProvider); }
     }
     #endregion
   }

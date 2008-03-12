@@ -10,14 +10,14 @@ using Rhino.Mocks;
 namespace Machine.Migrations.Services.Impl
 {
   [TestFixture]
-  public class ConnectionProviderTests : StandardFixture<ConnectionProvider>
+  public class ConnectionProviderTests : StandardFixture<SqlServerConnectionProvider>
   {
     private IConfiguration _configuration;
 
-    public override ConnectionProvider Create()
+    public override SqlServerConnectionProvider Create()
     {
       _configuration = _mocks.DynamicMock<IConfiguration>();
-      return new ConnectionProvider(_configuration);
+      return new SqlServerConnectionProvider(_configuration);
     }
 
     [Test]

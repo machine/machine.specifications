@@ -75,6 +75,7 @@
     <Compile Include="MigrationStep.cs" />
     <Compile Include="MigratorTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchemaProviders\SqlServerCeSchemaProvider.cs" />
     <Compile Include="Services\ICommonTransformations.cs" />
     <Compile Include="Services\IConfiguration.cs" />
     <Compile Include="Services\IConnectionProvider.cs" />
@@ -84,12 +85,14 @@
     <Compile Include="Services\IMigrationInitializer.cs" />
     <Compile Include="Services\IMigrationRunner.cs" />
     <Compile Include="Services\IMigrationSelector.cs" />
+    <Compile Include="Services\IMigratorContainerFactory.cs" />
+    <Compile Include="Services\Impl\MigratorContainerFactory.cs" />
     <Compile Include="Services\ITransactionProvider.cs" />
     <Compile Include="Services\IMigrator.cs" />
     <Compile Include="Services\Impl\AbstractMigrationCompilerFactory.cs" />
     <Compile Include="Services\Impl\BooMigrationFactory.cs" />
     <Compile Include="Services\Impl\CommonTransformations.cs" />
-    <Compile Include="Services\Impl\ConnectionProvider.cs" />
+    <Compile Include="Services\Impl\SqlServerConnectionProvider.cs" />
     <Compile Include="Services\Impl\CSharpMigrationFactory.cs" />
     <Compile Include="Services\Impl\MigrationFactoryChooser.cs" />
     <Compile Include="Services\Impl\MigrationFinder.cs" />
