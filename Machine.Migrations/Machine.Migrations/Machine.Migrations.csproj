@@ -86,6 +86,7 @@
     <Compile Include="Services\IMigrationRunner.cs" />
     <Compile Include="Services\IMigrationSelector.cs" />
     <Compile Include="Services\IMigratorContainerFactory.cs" />
+    <Compile Include="Services\Impl\AbstractConnectionProvider.cs" />
     <Compile Include="Services\Impl\MigratorContainerFactory.cs" />
     <Compile Include="Services\Impl\StaticMigratorConfiguration.cs" />
     <Compile Include="Services\ITransactionProvider.cs" />
