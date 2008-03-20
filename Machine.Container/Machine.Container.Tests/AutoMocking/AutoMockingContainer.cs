@@ -21,7 +21,7 @@ namespace Machine.Container.AutoMocking
     public override IActivatorResolver CreateDependencyResolver()
     {
       _mockingDependencyResolver = new MockingDependencyResolver(_mocks);
-      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new ActivatorLookupDependencyResolver(), _mockingDependencyResolver, new ThrowsPendingActivatorResolver());
+      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new DefaultLifestyleAwareActivatorResolver(), _mockingDependencyResolver, new ThrowsPendingActivatorResolver());
     }
 
     public virtual TService Get<TService>()

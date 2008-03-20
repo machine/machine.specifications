@@ -35,10 +35,10 @@ namespace Machine.Container.Lifestyles
       Run(delegate
       {
         SetupResult.For(Get<IActivatorStrategy>().CreateDefaultActivator(_serviceEntry)).Return(Get<IActivator>());
-        Expect.Call(Get<IActivator>().Create(Get<ICreationServices>())).Return(_instance);
+        Expect.Call(Get<IActivator>().Activate(Get<ICreationServices>())).Return(_instance);
       });
       _target.Initialize();
-      Assert.AreEqual(_instance, _target.Create(Get<ICreationServices>()));
+      Assert.AreEqual(_instance, _target.Activate(Get<ICreationServices>()));
     }
 
     [Test]
@@ -47,12 +47,12 @@ namespace Machine.Container.Lifestyles
       Run(delegate
       {
         SetupResult.For(Get<IActivatorStrategy>().CreateDefaultActivator(_serviceEntry)).Return(Get<IActivator>());
-        Expect.Call(Get<IActivator>().Create(Get<ICreationServices>())).Return(new object());
-        Expect.Call(Get<IActivator>().Create(Get<ICreationServices>())).Return(_instance);
+        Expect.Call(Get<IActivator>().Activate(Get<ICreationServices>())).Return(new object());
+        Expect.Call(Get<IActivator>().Activate(Get<ICreationServices>())).Return(_instance);
       });
       _target.Initialize();
-      _target.Create(Get<ICreationServices>());
-      Assert.AreEqual(_instance, _target.Create(Get<ICreationServices>()));
+      _target.Activate(Get<ICreationServices>());
+      Assert.AreEqual(_instance, _target.Activate(Get<ICreationServices>()));
     }
     #endregion
 

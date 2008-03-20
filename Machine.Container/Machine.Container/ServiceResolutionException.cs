@@ -27,6 +27,27 @@ namespace Machine.Container
 
   [Serializable]
   [CoverageExclude]
+  public class YouFoundABugException : Exception
+  {
+    public YouFoundABugException()
+    {
+    }
+
+    public YouFoundABugException(string message) : base(message)
+    {
+    }
+
+    public YouFoundABugException(string message, Exception innerException) : base(message, innerException)
+    {
+    }
+
+    protected YouFoundABugException(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
+    }
+  }
+
+  [Serializable]
+  [CoverageExclude]
   public class CircularDependencyException : Exception
   {
     public CircularDependencyException()
@@ -84,6 +105,27 @@ namespace Machine.Container
     }
 
     protected MissingServiceException(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
+    }
+  }
+
+  [Serializable]
+  [CoverageExclude]
+  public class AmbiguousServicesException : Exception
+  {
+    public AmbiguousServicesException()
+    {
+    }
+
+    public AmbiguousServicesException(string message) : base(message)
+    {
+    }
+
+    public AmbiguousServicesException(string message, Exception innerException) : base(message, innerException)
+    {
+    }
+
+    protected AmbiguousServicesException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }
   }

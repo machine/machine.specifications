@@ -33,9 +33,9 @@ namespace Machine.Container.Lifestyles
       return _defaultActivator.CanActivate(services);
     }
 
-    public virtual object Create(ICreationServices services)
+    public virtual object Activate(ICreationServices services)
     {
-      return _defaultActivator.Create(services);
+      return _defaultActivator.Activate(services);
     }
     #endregion
   }

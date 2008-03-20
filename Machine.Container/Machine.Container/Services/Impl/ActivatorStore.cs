@@ -14,14 +14,14 @@ namespace Machine.Container.Services.Impl
     #region Member Data
     private readonly Dictionary<ServiceEntry, IActivator> _cache = new Dictionary<ServiceEntry, IActivator>();
     private readonly IActivatorStrategy _activatorStrategy;
-    private readonly ILifestyleFactory _lifestyleFactory;
+    private readonly ILifestyleStore _lifestyleStore;
     #endregion
 
     #region ActivatorStore()
-    public ActivatorStore(IActivatorStrategy activatorStrategy, ILifestyleFactory lifestyleFactory)
+    public ActivatorStore(IActivatorStrategy activatorStrategy, ILifestyleStore lifestyleStore)
     {
       _activatorStrategy = activatorStrategy;
-      _lifestyleFactory = lifestyleFactory;
+      _lifestyleStore = lifestyleStore;
     }
     #endregion
 
@@ -32,8 +32,8 @@ namespace Machine.Container.Services.Impl
       {
         return _cache[entry];
       }
-      _log.Info("Creating On Demand: " + entry);
-      ILifestyle lifestyle = _lifestyleFactory.CreateLifestyle(entry);
+      _log.Info("Creating: " + entry);
+      ILifestyle lifestyle = _lifestyleStore.ResolveLifestyle(entry);
       return _cache[entry] = _activatorStrategy.CreateLifestyleActivator(lifestyle);
     }
 
@@ -41,6 +41,11 @@ namespace Machine.Container.Services.Impl
     {
       _log.Info("Adding: " + entry + " " + activator);
       _cache[entry] = activator;
+    }
+
+    public bool HasActivator(ServiceEntry entry)
+    {
+      return _cache.ContainsKey(entry);
     }
     #endregion
   }

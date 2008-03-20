@@ -56,6 +56,7 @@
     <Compile Include="Model\ConstructorCandidate.cs" />
     <Compile Include="Model\DependencyType.cs" />
     <Compile Include="Model\LifestyleType.cs" />
+    <Compile Include="Model\ResolvedServiceEntry.cs" />
     <Compile Include="Model\ServiceDependency.cs" />
     <Compile Include="Model\ServiceEntry.cs" />
     <Compile Include="Model\ServiceState.cs" />
@@ -70,7 +71,7 @@
     <Compile Include="Services\ILifestyle.cs" />
     <Compile Include="Services\ILifestyleFactory.cs" />
     <Compile Include="Services\ILifestyleStore.cs" />
-    <Compile Include="Services\Impl\ActivatorLookupDependencyResolver.cs" />
+    <Compile Include="Services\Impl\DefaultLifestyleAwareActivatorResolver.cs" />
     <Compile Include="Services\Impl\ActivatorStore.cs" />
     <Compile Include="Services\Impl\CreationServices.cs" />
     <Compile Include="Activators\DefaultActivator.cs" />

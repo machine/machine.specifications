@@ -9,5 +9,6 @@ namespace Machine.Container.Services
   {
     ILifestyle ResolveLifestyle(ServiceEntry entry);
     void AddLifestyle(ServiceEntry entry, ILifestyle activator);
+    bool HasLifestyle(ServiceEntry entry);
   }
 }

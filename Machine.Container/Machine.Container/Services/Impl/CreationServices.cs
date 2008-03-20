@@ -27,6 +27,11 @@ namespace Machine.Container.Services.Impl
     #endregion
 
     #region ICreationServices Members
+    public Stack<ServiceEntry> Progress
+    {
+      get { return _progress; }
+    }
+
     public IActivatorStore ActivatorStore
     {
       get { return _activatorStore; }
@@ -40,11 +45,6 @@ namespace Machine.Container.Services.Impl
     public IActivatorStrategy ActivatorStrategy
     {
       get { return _activatorStrategy; }
-    }
-
-    public Stack<ServiceEntry> Progress
-    {
-      get { return _progress; }
     }
 
     public IOverrideLookup Overrides

@@ -31,8 +31,8 @@ namespace Machine.Container.Activators
     [Test]
     public void Create_Always_ReturnsInstance()
     {
-      Assert.AreEqual(_instance, _activator.Create(Get<ICreationServices>()));
-      Assert.AreEqual(_instance, _activator.Create(Get<ICreationServices>()));
+      Assert.AreEqual(_instance, _activator.Activate(Get<ICreationServices>()));
+      Assert.AreEqual(_instance, _activator.Activate(Get<ICreationServices>()));
     }
     #endregion
   }

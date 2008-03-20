@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 
 using Machine.Container.Model;
-using Machine.Container.Utility;
 
 namespace Machine.Container.Services.Impl
 {
   public class ServiceEntryResolver : IServiceEntryResolver
   {
+    #region Logging
+    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ServiceEntryResolver));
+    #endregion
+
     #region Member Data
     private readonly IServiceGraph _serviceGraph;
     private readonly IServiceEntryFactory _serviceEntryFactory;
@@ -37,36 +40,25 @@ namespace Machine.Container.Services.Impl
         entry = _serviceEntryFactory.CreateServiceEntry(serviceType, implementationType, LifestyleType.Singleton);
         _serviceGraph.Add(entry);
       }
-      if (entry.ImplementationType != implementationType)
+      if (entry.ImplementationType != implementationType && serviceType != implementationType)
       {
         throw new ServiceResolutionException("Can't add a service twice with two implementations: " + serviceType);
       }
       return entry;
     }
 
-    public ServiceEntry ResolveEntry(ICreationServices services, Type serviceType)
+    public ResolvedServiceEntry ResolveEntry(ICreationServices services, Type serviceType)
     {
-      return ResolveActivator(services, serviceType);
-    }
-    #endregion
-
-    #region Methods
-    protected virtual ServiceEntry ResolveActivator(ICreationServices services, Type serviceType)
-    {
-      ServiceEntry entry = _serviceGraph.LookupLazily(serviceType);
+      _log.Info("ResolveEntry: " + serviceType);
+      ServiceEntry entry = _serviceGraph.Lookup(serviceType);
       if (entry == null)
       {
         entry = _serviceEntryFactory.CreateServiceEntry(serviceType, serviceType, LifestyleType.Transient);
       }
-      if (entry.Activator != null)
-      {
-        return entry;
-      }
       IActivator activator = _activatorResolver.ResolveActivator(services, entry);
       if (activator != null)
       {
-        entry.Activator = activator;
-        return entry;
+        return new ResolvedServiceEntry(entry, activator);
       }
       return null;
     }

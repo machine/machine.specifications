@@ -14,51 +14,55 @@ namespace Machine.Container
     private IActivatorStrategy _activatorStrategy;
     private IActivatorStore _activatorStore;
     private ILifestyleStore _lifestyleStore;
-    private IActivatorResolver _activatorResolver;
     #endregion
 
     #region Methods
     public virtual void Initialize()
     {
       IActivatorResolver activatorResolver = CreateDependencyResolver();
-      IServiceEntryFactory entryFactory = new ServiceEntryFactory();
-      IServiceDependencyInspector inspector = new ServiceDependencyInspector();
+      IServiceEntryFactory serviceEntryFactory = new ServiceEntryFactory();
+      IServiceDependencyInspector serviceDependencyInspector = new ServiceDependencyInspector();
       IServiceGraph serviceGraph = new ServiceGraph();
-      _resolver = new ServiceEntryResolver(serviceGraph, entryFactory, activatorResolver);
-      _activatorResolver = activatorResolver;
-      _activatorStrategy = new DefaultActivatorStrategy(new DotNetObjectFactory(), _resolver, inspector);
-      ILifestyleFactory lifestyleFactory = new LifestyleFactory(_activatorStrategy);
-      _activatorStore = new ActivatorStore(_activatorStrategy, lifestyleFactory);
-      _lifestyleStore = new LifestyleStore(lifestyleFactory);
+      _resolver = new ServiceEntryResolver(serviceGraph, serviceEntryFactory, activatorResolver);
+      _activatorStrategy = new DefaultActivatorStrategy(new DotNetObjectFactory(), _resolver, serviceDependencyInspector);
+      _lifestyleStore = new LifestyleStore(new LifestyleFactory(_activatorStrategy));
+      _activatorStore = new ActivatorStore(_activatorStrategy, _lifestyleStore);
     }
 
     public virtual IActivatorResolver CreateDependencyResolver()
     {
-      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new ActivatorLookupDependencyResolver(), new ThrowsPendingActivatorResolver());
+      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new DefaultLifestyleAwareActivatorResolver(), new ThrowsPendingActivatorResolver());
     }
     #endregion
 
     #region IHighLevelContainer Members
+    public void AddService<TService>()
+    {
+      ServiceEntry entry = _resolver.CreateEntryIfMissing(typeof(TService));
+    }
+
     public void AddService<TService>(Type implementationType)
     {
-      _resolver.CreateEntryIfMissing(typeof(TService), implementationType);
+      ServiceEntry entry = _resolver.CreateEntryIfMissing(typeof(TService), implementationType);
     }
 
     public void AddService<TService, TImpl>(LifestyleType lifestyleType)
     {
-      _resolver.CreateEntryIfMissing(typeof(TService), typeof(TImpl)).LifestyleType = lifestyleType;
+      ServiceEntry entry = _resolver.CreateEntryIfMissing(typeof(TService), typeof(TImpl));
+      entry.LifestyleType = lifestyleType;
     }
 
     public void AddService<TService>(LifestyleType lifestyleType)
     {
-      _resolver.CreateEntryIfMissing(typeof(TService)).LifestyleType = lifestyleType;
+      ServiceEntry entry = _resolver.CreateEntryIfMissing(typeof(TService));
+      entry.LifestyleType = lifestyleType;
     }
 
     public void Add<TService>(object instance)
     {
       ServiceEntry entry = _resolver.CreateEntryIfMissing(typeof(TService));
-      _activatorStore.AddActivator(entry, _activatorStrategy.CreateStaticActivator(entry, instance));
-      entry.AreDependenciesResolved = true;
+      IActivator activator = _activatorStrategy.CreateStaticActivator(entry, instance);
+      _activatorStore.AddActivator(entry, activator);
     }
 
     public T Resolve<T>()
@@ -66,24 +70,24 @@ namespace Machine.Container
       return ResolveWithOverrides<T>();
     }
 
-    public T ResolveWithOverrides<T>(params object[] serviceOverrides)
-    {
-      IOverrideLookup overrides = new StaticOverrideLookup(serviceOverrides);
-      ICreationServices services = new CreationServices(_activatorStore, _lifestyleStore, _activatorStrategy, overrides);
-      ServiceEntry entry = _resolver.ResolveEntry(services, typeof(T));
-      return (T)entry.Activator.Create(services);
-    }
-
     public T New<T>(params object[] serviceOverrides)
     {
-      _resolver.CreateEntryIfMissing(typeof(T)).LifestyleType = LifestyleType.Transient;
+      AddService<T>(LifestyleType.Transient);
       return ResolveWithOverrides<T>(serviceOverrides);
+    }
+
+    public T ResolveWithOverrides<T>(params object[] serviceOverrides)
+    {
+      ICreationServices services = CreateCreationServices(serviceOverrides);
+      ResolvedServiceEntry entry = _resolver.ResolveEntry(services, typeof(T));
+      return (T)entry.Activator.Activate(services);
     }
 
     public bool HasService<T>()
     {
-      ICreationServices services = new CreationServices(_activatorStore, _lifestyleStore, _activatorStrategy, new EmptyOverrides());
-      return _resolver.ResolveEntry(services, typeof(T)).AreDependenciesResolved;
+      ICreationServices services = CreateCreationServices();
+      ResolvedServiceEntry entry = _resolver.ResolveEntry(services, typeof(T));
+      return entry != null;
     }
     #endregion
 
@@ -92,5 +96,28 @@ namespace Machine.Container
     {
     }
     #endregion
+
+    #region Methods
+    protected virtual ICreationServices CreateCreationServices(params object[] serviceOverrides)
+    {
+      IOverrideLookup overrides = new StaticOverrideLookup(serviceOverrides);
+      return new CreationServices(_activatorStore, _lifestyleStore, _activatorStrategy, overrides);
+    }
+    #endregion
+  }
+  public class ServiceEntryInitializer
+  {
+    private readonly ILifestyleStore _lifestyleStore;
+    private readonly IActivatorStore _activatorStore;
+    private readonly ILifestyleFactory _lifestyleFactory;
+    private readonly IActivatorStrategy _activatorStrategy;
+
+    public ServiceEntryInitializer(ILifestyleStore lifestyleStore, IActivatorStore activatorStore, ILifestyleFactory lifestyleFactory, IActivatorStrategy activatorStrategy)
+    {
+      _lifestyleStore = lifestyleStore;
+      _activatorStore = activatorStore;
+      _lifestyleFactory = lifestyleFactory;
+      _activatorStrategy = activatorStrategy;
+    }
   }
 }

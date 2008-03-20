@@ -29,7 +29,7 @@ namespace Machine.Container.Services.Impl
     {
       using (_mocks.Record())
       {
-        Expect.Call(Get<ILifestyleFactory>().CreateLifestyle(_entry)).Return(Get<ILifestyle>());
+        Expect.Call(Get<ILifestyleStore>().ResolveLifestyle(_entry)).Return(Get<ILifestyle>());
         Expect.Call(Get<IActivatorStrategy>().CreateLifestyleActivator(Get<ILifestyle>())).Return(Get<IActivator>());
       }
       using (_mocks.Playback())
@@ -43,7 +43,7 @@ namespace Machine.Container.Services.Impl
     {
       using (_mocks.Record())
       {
-        Expect.Call(Get<ILifestyleFactory>().CreateLifestyle(_entry)).Return(Get<ILifestyle>());
+        Expect.Call(Get<ILifestyleStore>().ResolveLifestyle(_entry)).Return(Get<ILifestyle>());
         Expect.Call(Get<IActivatorStrategy>().CreateLifestyleActivator(Get<ILifestyle>())).Return(Get<IActivator>());
       }
       using (_mocks.Playback())

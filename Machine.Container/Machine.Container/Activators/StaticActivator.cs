@@ -27,7 +27,7 @@ namespace Machine.Container.Activators
       return true;
     }
 
-    public object Create(ICreationServices services)
+    public object Activate(ICreationServices services)
     {
       return _instance;
     }

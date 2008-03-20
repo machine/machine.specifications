@@ -18,21 +18,26 @@ namespace Machine.Container.Services.Impl
     #region Methods
     public ServiceEntry Lookup(Type type)
     {
-      if (_map.ContainsKey(type))
-      {
-        return _map[type];
-      }
-      return null;
+      return LookupLazily(type);
     }
 
     public ServiceEntry LookupLazily(Type type)
     {
+      List<ServiceEntry> matches = new List<ServiceEntry>();
       foreach (ServiceEntry entry in _map.Values)
       {
         if (type.IsAssignableFrom(entry.ConcreteType))
         {
-          return entry;
+          matches.Add(entry);
         }
+      }
+      if (matches.Count == 1)
+      {
+        return matches[0];
+      }
+      else if (matches.Count > 1)
+      {
+        throw new AmbiguousServicesException();
       }
       return null;
     }

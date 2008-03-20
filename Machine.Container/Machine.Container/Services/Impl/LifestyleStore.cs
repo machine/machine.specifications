@@ -30,7 +30,7 @@ namespace Machine.Container.Services.Impl
       {
         return _cache[entry];
       }
-      _log.Info("Creating On Demand: " + entry);
+      _log.Info("Creating: " + entry);
       return _cache[entry] = _lifestyleFactory.CreateLifestyle(entry);
     }
 
@@ -38,6 +38,11 @@ namespace Machine.Container.Services.Impl
     {
       _log.Info("Adding: " + entry + " " + lifestyle);
       _cache[entry] = lifestyle;
+    }
+
+    public bool HasLifestyle(ServiceEntry entry)
+    {
+      return _cache.ContainsKey(entry);
     }
     #endregion
   }

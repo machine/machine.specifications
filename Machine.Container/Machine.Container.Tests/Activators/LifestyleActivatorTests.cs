@@ -17,14 +17,25 @@ namespace Machine.Container.Activators
 
     #region Test Methods
     [Test]
+    public void CanActivate_Always_DefersToLifestyle()
+    {
+      _instance = new object();
+      Run(delegate
+      {
+        Expect.Call(Get<ILifestyle>().CanActivate(Get<ICreationServices>())).Return(true);
+      });
+      Assert.IsTrue(_target.CanActivate(Get<ICreationServices>()));
+    }
+
+    [Test]
     public void Create_Always_DefersToLifestyle()
     {
       _instance = new object();
       Run(delegate
       {
-        Expect.Call(Get<ILifestyle>().Create(Get<ICreationServices>())).Return(_instance);
+        Expect.Call(Get<ILifestyle>().Activate(Get<ICreationServices>())).Return(_instance);
       });
-      object instance = _target.Create(Get<ICreationServices>());
+      object instance = _target.Activate(Get<ICreationServices>());
       Assert.AreEqual(_instance, instance);
     }
     #endregion

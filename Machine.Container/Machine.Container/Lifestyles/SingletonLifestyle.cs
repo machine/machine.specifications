@@ -29,11 +29,11 @@ namespace Machine.Container.Lifestyles
       return true;
     }
 
-    public override object Create(ICreationServices services)
+    public override object Activate(ICreationServices services)
     {
       if (_instance == null)
       {
-        _instance = base.Create(services);
+        _instance = base.Activate(services);
       }
       return _instance;
     }

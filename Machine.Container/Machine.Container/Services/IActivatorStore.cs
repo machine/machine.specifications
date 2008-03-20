@@ -9,5 +9,6 @@ namespace Machine.Container.Services
   {
     IActivator ResolveActivator(ServiceEntry entry);
     void AddActivator(ServiceEntry entry, IActivator activator);
+    bool HasActivator(ServiceEntry entry);
   }
 }

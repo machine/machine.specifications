@@ -24,9 +24,9 @@ namespace Machine.Container.Activators
       return _lifestyle.CanActivate(services);
     }
 
-    public object Create(ICreationServices services)
+    public object Activate(ICreationServices services)
     {
-      return _lifestyle.Create(services);
+      return _lifestyle.Activate(services);
     }
     #endregion
   }
