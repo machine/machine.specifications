@@ -5,10 +5,10 @@ using Machine.Container.Model;
 
 namespace Machine.Container.Services.Impl
 {
-  public class OverridableDependencyResolver : IDependencyResolver
+  public class StaticLookupActivatorResolver : IActivatorResolver
   {
-    #region IDependencyResolver Members
-    public IActivator ResolveDependency(ICreationServices services, ServiceEntry serviceEntry)
+    #region IActivatorResolver Members
+    public IActivator ResolveActivator(ICreationServices services, ServiceEntry serviceEntry)
     {
       object value = services.Overrides.LookupOverride(serviceEntry);
       if (value == null)

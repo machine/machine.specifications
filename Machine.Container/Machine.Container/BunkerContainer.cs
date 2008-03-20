@@ -13,25 +13,28 @@ namespace Machine.Container
     private IServiceEntryResolver _resolver;
     private IActivatorStrategy _activatorStrategy;
     private IActivatorStore _activatorStore;
-    private IDependencyResolver _dependencyResolver;
+    private ILifestyleStore _lifestyleStore;
+    private IActivatorResolver _activatorResolver;
     #endregion
 
     #region Methods
     public virtual void Initialize()
     {
-      IDependencyResolver dependencyResolver = CreateDependencyResolver();
+      IActivatorResolver activatorResolver = CreateDependencyResolver();
       IServiceEntryFactory entryFactory = new ServiceEntryFactory();
       IServiceDependencyInspector inspector = new ServiceDependencyInspector();
       IServiceGraph serviceGraph = new ServiceGraph();
-      _resolver = new ServiceEntryResolver(serviceGraph, entryFactory, dependencyResolver);
-      _dependencyResolver = dependencyResolver;
+      _resolver = new ServiceEntryResolver(serviceGraph, entryFactory, activatorResolver);
+      _activatorResolver = activatorResolver;
       _activatorStrategy = new DefaultActivatorStrategy(new DotNetObjectFactory(), _resolver, inspector);
-      _activatorStore = new ActivatorStore(_activatorStrategy, new LifestyleFactory(_activatorStrategy));
+      ILifestyleFactory lifestyleFactory = new LifestyleFactory(_activatorStrategy);
+      _activatorStore = new ActivatorStore(_activatorStrategy, lifestyleFactory);
+      _lifestyleStore = new LifestyleStore(lifestyleFactory);
     }
 
-    public virtual IDependencyResolver CreateDependencyResolver()
+    public virtual IActivatorResolver CreateDependencyResolver()
     {
-      return new RootDependencyResolver(new OverridableDependencyResolver(), new ActivatorLookupDependencyResolver(), new ThrowingDependencyResolver());
+      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new ActivatorLookupDependencyResolver(), new ThrowsPendingActivatorResolver());
     }
     #endregion
 
@@ -66,7 +69,7 @@ namespace Machine.Container
     public T ResolveWithOverrides<T>(params object[] serviceOverrides)
     {
       IOverrideLookup overrides = new StaticOverrideLookup(serviceOverrides);
-      ICreationServices services = new CreationServices(_activatorStrategy, _activatorStore, overrides);
+      ICreationServices services = new CreationServices(_activatorStore, _lifestyleStore, _activatorStrategy, overrides);
       ServiceEntry entry = _resolver.ResolveEntry(services, typeof(T));
       return (T)entry.Activator.Create(services);
     }
@@ -79,7 +82,7 @@ namespace Machine.Container
 
     public bool HasService<T>()
     {
-      ICreationServices services = new CreationServices(_activatorStrategy, _activatorStore, new EmptyOverrides());
+      ICreationServices services = new CreationServices(_activatorStore, _lifestyleStore, _activatorStrategy, new EmptyOverrides());
       return _resolver.ResolveEntry(services, typeof(T)).AreDependenciesResolved;
     }
     #endregion

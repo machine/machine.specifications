@@ -9,7 +9,7 @@ using Rhino.Mocks;
 namespace Machine.Container.Services.Impl
 {
   [TestFixture]
-  public class ActivatorStoreTests : ScaffoldTests<ActivatorStore>
+  public class LifestyleStoreTests : ScaffoldTests<LifestyleStore>
   {
     #region Member Data
     private ServiceEntry _entry;
@@ -30,11 +30,10 @@ namespace Machine.Container.Services.Impl
       using (_mocks.Record())
       {
         Expect.Call(Get<ILifestyleFactory>().CreateLifestyle(_entry)).Return(Get<ILifestyle>());
-        Expect.Call(Get<IActivatorStrategy>().CreateLifestyleActivator(Get<ILifestyle>())).Return(Get<IActivator>());
       }
       using (_mocks.Playback())
       {
-        Assert.AreEqual(Get<IActivator>(), _target.ResolveActivator(_entry));
+        Assert.AreEqual(Get<ILifestyle>(), _target.ResolveLifestyle(_entry));
       }
     }
 
@@ -44,12 +43,11 @@ namespace Machine.Container.Services.Impl
       using (_mocks.Record())
       {
         Expect.Call(Get<ILifestyleFactory>().CreateLifestyle(_entry)).Return(Get<ILifestyle>());
-        Expect.Call(Get<IActivatorStrategy>().CreateLifestyleActivator(Get<ILifestyle>())).Return(Get<IActivator>());
       }
       using (_mocks.Playback())
       {
-        Assert.AreEqual(Get<IActivator>(), _target.ResolveActivator(_entry));
-        Assert.AreEqual(Get<IActivator>(), _target.ResolveActivator(_entry));
+        Assert.AreEqual(Get<ILifestyle>(), _target.ResolveLifestyle(_entry));
+        Assert.AreEqual(Get<ILifestyle>(), _target.ResolveLifestyle(_entry));
       }
     }
 
@@ -58,11 +56,11 @@ namespace Machine.Container.Services.Impl
     {
       using (_mocks.Record())
       {
-        _target.AddActivator(_entry, Get<IActivator>());
+        _target.AddLifestyle(_entry, Get<ILifestyle>());
       }
       using (_mocks.Playback())
       {
-        Assert.AreEqual(Get<IActivator>(), _target.ResolveActivator(_entry));
+        Assert.AreEqual(Get<ILifestyle>(), _target.ResolveLifestyle(_entry));
       }
     }
     #endregion

@@ -5,8 +5,8 @@ using Machine.Container.Model;
 
 namespace Machine.Container.Services
 {
-  public interface IDependencyResolver
+  public interface IActivatorResolver
   {
-    IActivator ResolveDependency(ICreationServices services, ServiceEntry serviceEntry);
+    IActivator ResolveActivator(ICreationServices services, ServiceEntry serviceEntry);
   }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using Machine.Container.Services;
@@ -18,10 +18,10 @@ namespace Machine.Container.AutoMocking
       _mocks = mocks;
     }
 
-    public override IDependencyResolver CreateDependencyResolver()
+    public override IActivatorResolver CreateDependencyResolver()
     {
       _mockingDependencyResolver = new MockingDependencyResolver(_mocks);
-      return new RootDependencyResolver(new OverridableDependencyResolver(), new ActivatorLookupDependencyResolver(), _mockingDependencyResolver, new ThrowingDependencyResolver());
+      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new ActivatorLookupDependencyResolver(), _mockingDependencyResolver, new ThrowsPendingActivatorResolver());
     }
 
     public virtual TService Get<TService>()

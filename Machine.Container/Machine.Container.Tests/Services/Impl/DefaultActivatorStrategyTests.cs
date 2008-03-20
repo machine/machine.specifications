@@ -13,7 +13,7 @@ namespace Machine.Container.Services.Impl
   {
     #region Member Data
     private IObjectFactory _objectFactory;
-    private IDependencyResolver _dependencyResolver;
+    private IActivatorResolver _activatorResolver;
     private IServiceDependencyInspector _serviceDependencyInspector;
     private IServiceEntryResolver _serviceEntryResolver;
     private DefaultActivatorStrategy _strategy;
@@ -26,7 +26,7 @@ namespace Machine.Container.Services.Impl
       base.Setup();
       _entry = ServiceEntryHelper.NewEntry();
       _objectFactory = _mocks.CreateMock<IObjectFactory>();
-      _dependencyResolver = _mocks.DynamicMock<IDependencyResolver>();
+      _activatorResolver = _mocks.DynamicMock<IActivatorResolver>();
       _serviceDependencyInspector = _mocks.DynamicMock<IServiceDependencyInspector>();
       _serviceEntryResolver = _mocks.DynamicMock<IServiceEntryResolver>();
       _strategy = new DefaultActivatorStrategy(_objectFactory, _serviceEntryResolver, _serviceDependencyInspector);

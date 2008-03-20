@@ -10,29 +10,36 @@ namespace Machine.Container.Services.Impl
   {
     #region Member Data
     private readonly Stack<ServiceEntry> _progress = new Stack<ServiceEntry>();
-    private readonly IActivatorStrategy _activatorStrategy;
     private readonly IActivatorStore _activatorStore;
+    private readonly ILifestyleStore _lifestyleStore;
+    private readonly IActivatorStrategy _activatorStrategy;
     private readonly IOverrideLookup _overrideLookup;
     #endregion
 
     #region CreationServices()
-    public CreationServices(IActivatorStrategy activatorStrategy, IActivatorStore activatorStore, IOverrideLookup overrideLookup)
+    public CreationServices(IActivatorStore activatorStore, ILifestyleStore lifestyleStore, IActivatorStrategy activatorStrategy, IOverrideLookup overrideLookup)
     {
-      _activatorStrategy = activatorStrategy;
       _activatorStore = activatorStore;
+      _lifestyleStore = lifestyleStore;
+      _activatorStrategy = activatorStrategy;
       _overrideLookup = overrideLookup;
     }
     #endregion
 
     #region ICreationServices Members
-    public IActivatorStrategy ActivatorStrategy
-    {
-      get { return _activatorStrategy; }
-    }
-
     public IActivatorStore ActivatorStore
     {
       get { return _activatorStore; }
+    }
+
+    public ILifestyleStore LifestyleStore
+    {
+      get { return _lifestyleStore; }
+    }
+
+    public IActivatorStrategy ActivatorStrategy
+    {
+      get { return _activatorStrategy; }
     }
 
     public Stack<ServiceEntry> Progress

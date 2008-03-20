@@ -8,7 +8,7 @@ using Rhino.Mocks;
 
 namespace Machine.Container.AutoMocking
 {
-  public class MockingDependencyResolver : IDependencyResolver
+  public class MockingDependencyResolver : IActivatorResolver
   {
     #region Member Data
     private readonly MockRepository _mocks;
@@ -22,8 +22,8 @@ namespace Machine.Container.AutoMocking
     }
     #endregion
 
-    #region IDependencyResolver Members
-    public IActivator ResolveDependency(ICreationServices services, ServiceEntry serviceEntry)
+    #region IActivatorResolver Members
+    public IActivator ResolveActivator(ICreationServices services, ServiceEntry serviceEntry)
     {
       if (serviceEntry.ServiceType.IsInterface)
       {

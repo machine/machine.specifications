@@ -72,13 +72,14 @@
     <Compile Include="Services\Impl\EmptyOverridesTests.cs" />
     <Compile Include="Activators\LifestyleActivatorTests.cs" />
     <Compile Include="Services\Impl\LifestyleFactoryTests.cs" />
-    <Compile Include="Services\Impl\OverridableDependencyResolverTests.cs" />
-    <Compile Include="Services\Impl\RootDependencyResolverTests.cs" />
+    <Compile Include="Services\Impl\LifestyleStoreTests.cs" />
+    <Compile Include="Services\Impl\StaticLookupActivatorResolverTests.cs" />
+    <Compile Include="Services\Impl\RootActivatorResolverTests.cs" />
     <Compile Include="Services\Impl\ServiceDependencyInspectorTests.cs" />
     <Compile Include="Services\Impl\ServiceEntryResolverTests.cs" />
     <Compile Include="Activators\StaticActivatorTests.cs" />
     <Compile Include="Services\Impl\StaticOverrideLookupTests.cs" />
-    <Compile Include="Services\Impl\ThrowingDependencyResolverTests.cs" />
+    <Compile Include="Services\Impl\ThrowsPendingActivatorResolverTests.cs" />
     <Compile Include="Utility\StackPopperTests.cs" />
   </ItemGroup>
   <ItemGroup>

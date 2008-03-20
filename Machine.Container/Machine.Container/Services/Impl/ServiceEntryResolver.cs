@@ -11,14 +11,14 @@ namespace Machine.Container.Services.Impl
     #region Member Data
     private readonly IServiceGraph _serviceGraph;
     private readonly IServiceEntryFactory _serviceEntryFactory;
-    private readonly IDependencyResolver _dependencyResolver;
+    private readonly IActivatorResolver _activatorResolver;
     #endregion
 
     #region ServiceEntryResolver()
-    public ServiceEntryResolver(IServiceGraph serviceGraph, IServiceEntryFactory serviceEntryFactory, IDependencyResolver dependencyResolver)
+    public ServiceEntryResolver(IServiceGraph serviceGraph, IServiceEntryFactory serviceEntryFactory, IActivatorResolver activatorResolver)
     {
       _serviceGraph = serviceGraph;
-      _dependencyResolver = dependencyResolver;
+      _activatorResolver = activatorResolver;
       _serviceEntryFactory = serviceEntryFactory;
     }
     #endregion
@@ -62,7 +62,7 @@ namespace Machine.Container.Services.Impl
       {
         return entry;
       }
-      IActivator activator = _dependencyResolver.ResolveDependency(services, entry);
+      IActivator activator = _activatorResolver.ResolveActivator(services, entry);
       if (activator != null)
       {
         entry.Activator = activator;

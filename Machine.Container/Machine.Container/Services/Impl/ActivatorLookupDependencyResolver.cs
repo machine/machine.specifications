@@ -5,10 +5,10 @@ using Machine.Container.Model;
 
 namespace Machine.Container.Services.Impl
 {
-  public class ActivatorLookupDependencyResolver : IDependencyResolver
+  public class ActivatorLookupDependencyResolver : IActivatorResolver
   {
-    #region IDependencyResolver Members
-    public IActivator ResolveDependency(ICreationServices services, ServiceEntry serviceEntry)
+    #region IActivatorResolver Members
+    public IActivator ResolveActivator(ICreationServices services, ServiceEntry serviceEntry)
     {
       IActivator activator =  services.ActivatorStore.ResolveActivator(serviceEntry);
       if (activator.CanActivate(services))
