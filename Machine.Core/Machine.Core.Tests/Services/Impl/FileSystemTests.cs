@@ -79,6 +79,14 @@ namespace Machine.Core.Services.Impl
     }
 
     [Test]
+    public void OpenText_IsFile_GetsStream()
+    {
+      using (StreamReader stream = _target.OpenText(typeof(FileSystem).Assembly.Location))
+      {
+      }
+    }
+
+    [Test]
     [ExpectedException(typeof(FileNotFoundException))]
     public void OpenFile_IsNotFile_Throws()
     {

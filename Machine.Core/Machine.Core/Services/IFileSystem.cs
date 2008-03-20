@@ -13,7 +13,9 @@ namespace Machine.Core.Services
     bool IsFile(string path);
     bool IsDirectory(string path);
     Stream OpenFile(string path);
+    StreamReader OpenText(string path);
     Stream CreateFile(string path);
+    StreamWriter CreateText(string path);
     void CopyFile(string source, string destination, bool overwrite);
     TemporaryDirectoryHandle CreateTemporaryDirectory();
     TemporaryDirectoryHandle CreateTemporaryDirectory(string path);

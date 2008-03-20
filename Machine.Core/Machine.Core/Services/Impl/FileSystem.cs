@@ -32,9 +32,19 @@ namespace Machine.Core.Services.Impl
       return File.OpenRead(path);
     }
 
+    public StreamReader OpenText(string path)
+    {
+      return File.OpenText(path);
+    }
+
     public Stream CreateFile(string path)
     {
       return File.Create(path);
+    }
+
+    public StreamWriter CreateText(string path)
+    {
+      return File.CreateText(path);
     }
 
     public void CopyFile(string source, string destination, bool overwrite)

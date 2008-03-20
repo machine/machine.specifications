@@ -33,6 +33,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\Castle\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.DynamicProxy2, Version=2.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\Castle\Castle.DynamicProxy2.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\Logging\log4net.dll</HintPath>
@@ -43,6 +51,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aspects\BackgroundInvokeAttribute.cs" />
+    <Compile Include="Aspects\BackgroundInvokeInterceptor.cs" />
+    <Compile Include="Aspects\SynchronizeInvokeIgnoreAttribute.cs" />
+    <Compile Include="Aspects\SynchronizeInvokeInterceptor.cs" />
+    <Compile Include="Aspects\ViewProxyGenerator.cs" />
     <Compile Include="LoggingUtilities\Log4NetNdc.cs" />
     <Compile Include="MsBuildUtilities\Log4NetMsBuildAppender.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -56,6 +69,7 @@
     <Compile Include="Services\TemporaryDirectoryHandle.cs" />
     <Compile Include="Services\INamer.cs" />
     <Compile Include="SingletonAttribute.cs" />
+    <Compile Include="Utility\ListHelper.cs" />
     <Compile Include="Utility\LockingHelpers.cs" />
     <Compile Include="Utility\XmlSerializationHelper.cs" />
   </ItemGroup>
