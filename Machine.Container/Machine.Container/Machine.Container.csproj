@@ -70,7 +70,6 @@
     <Compile Include="Services\IHighLevelContainer.cs" />
     <Compile Include="Services\ILifestyle.cs" />
     <Compile Include="Services\ILifestyleFactory.cs" />
-    <Compile Include="Services\ILifestyleStore.cs" />
     <Compile Include="Services\Impl\DefaultLifestyleAwareActivatorResolver.cs" />
     <Compile Include="Services\Impl\ActivatorStore.cs" />
     <Compile Include="Services\Impl\CreationServices.cs" />
@@ -80,7 +79,6 @@
     <Compile Include="Services\Impl\EmptyOverrides.cs" />
     <Compile Include="Activators\LifestyleActivator.cs" />
     <Compile Include="Services\Impl\LifestyleFactory.cs" />
-    <Compile Include="Services\Impl\LifestyleStore.cs" />
     <Compile Include="Services\Impl\StaticLookupActivatorResolver.cs" />
     <Compile Include="Services\Impl\ResolutionMessageBuilder.cs" />
     <Compile Include="Services\Impl\RootActivatorResolver.cs" />

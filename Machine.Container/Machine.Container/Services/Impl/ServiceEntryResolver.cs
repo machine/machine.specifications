@@ -47,6 +47,11 @@ namespace Machine.Container.Services.Impl
       return entry;
     }
 
+    public ServiceEntry LookupEntry(Type serviceType)
+    {
+      return _serviceGraph.Lookup(serviceType);
+    }
+
     public ResolvedServiceEntry ResolveEntry(ICreationServices services, Type serviceType)
     {
       _log.Info("ResolveEntry: " + serviceType);
@@ -54,6 +59,11 @@ namespace Machine.Container.Services.Impl
       if (entry == null)
       {
         entry = _serviceEntryFactory.CreateServiceEntry(serviceType, serviceType, LifestyleType.Transient);
+      }
+      else if (!services.ActivatorStore.HasActivator(entry))
+      {
+        ILifestyle lifestyle = services.LifestyleFactory.CreateLifestyle(entry);
+        services.ActivatorStore.AddActivator(entry, services.ActivatorStrategy.CreateLifestyleActivator(lifestyle));
       }
       IActivator activator = _activatorResolver.ResolveActivator(services, entry);
       if (activator != null)

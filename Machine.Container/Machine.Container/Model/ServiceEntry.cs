@@ -10,8 +10,8 @@ namespace Machine.Container.Model
     #region Member Data
     private readonly Type _serviceType;
     private readonly Type _implementationType;
-    private ConstructorCandidate _constructorCandidate;
     private LifestyleType _lifestyleType;
+    private ConstructorCandidate _constructorCandidate;
     #endregion
 
     #region Properties

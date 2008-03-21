@@ -76,7 +76,6 @@
     <Compile Include="Services\Impl\EmptyOverridesTests.cs" />
     <Compile Include="Activators\LifestyleActivatorTests.cs" />
     <Compile Include="Services\Impl\LifestyleFactoryTests.cs" />
-    <Compile Include="Services\Impl\LifestyleStoreTests.cs" />
     <Compile Include="Services\Impl\StaticLookupActivatorResolverTests.cs" />
     <Compile Include="Services\Impl\RootActivatorResolverTests.cs" />
     <Compile Include="Services\Impl\ServiceDependencyInspectorTests.cs" />

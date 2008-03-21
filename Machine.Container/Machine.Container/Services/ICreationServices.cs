@@ -12,12 +12,12 @@ namespace Machine.Container.Services
       get;
     }
 
-    ILifestyleStore LifestyleStore
+    IActivatorStrategy ActivatorStrategy
     {
       get;
     }
 
-    IActivatorStrategy ActivatorStrategy
+    ILifestyleFactory LifestyleFactory
     {
       get;
     }

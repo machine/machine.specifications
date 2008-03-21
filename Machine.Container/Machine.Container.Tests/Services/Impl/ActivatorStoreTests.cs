@@ -25,32 +25,24 @@ namespace Machine.Container.Services.Impl
 
     #region Test Methods
     [Test]
-    public void ResolveActivator_First_AsksStrategy()
+    [ExpectedException(typeof(KeyNotFoundException))]
+    public void ResolveActivator_DoesNotHaveOne_Throws()
     {
       using (_mocks.Record())
       {
-        Expect.Call(Get<ILifestyleStore>().ResolveLifestyle(_entry)).Return(Get<ILifestyle>());
         Expect.Call(Get<IActivatorStrategy>().CreateLifestyleActivator(Get<ILifestyle>())).Return(Get<IActivator>());
       }
-      using (_mocks.Playback())
-      {
-        Assert.AreEqual(Get<IActivator>(), _target.ResolveActivator(_entry));
-      }
+      _target.ResolveActivator(_entry);
     }
 
     [Test]
-    public void ResolveActivator_Second_ReturnsFirst()
+    public void ResolveActivator_HasOne_ReturnsIt()
     {
       using (_mocks.Record())
       {
-        Expect.Call(Get<ILifestyleStore>().ResolveLifestyle(_entry)).Return(Get<ILifestyle>());
-        Expect.Call(Get<IActivatorStrategy>().CreateLifestyleActivator(Get<ILifestyle>())).Return(Get<IActivator>());
       }
-      using (_mocks.Playback())
-      {
-        Assert.AreEqual(Get<IActivator>(), _target.ResolveActivator(_entry));
-        Assert.AreEqual(Get<IActivator>(), _target.ResolveActivator(_entry));
-      }
+      _target.AddActivator(_entry, Get<IActivator>());
+      Assert.AreEqual(Get<IActivator>(), _target.ResolveActivator(_entry));
     }
 
     [Test]
@@ -60,10 +52,7 @@ namespace Machine.Container.Services.Impl
       {
         _target.AddActivator(_entry, Get<IActivator>());
       }
-      using (_mocks.Playback())
-      {
-        Assert.AreEqual(Get<IActivator>(), _target.ResolveActivator(_entry));
-      }
+      Assert.AreEqual(Get<IActivator>(), _target.ResolveActivator(_entry));
     }
     #endregion
   }

@@ -14,8 +14,12 @@ namespace Machine.Container.Services.Impl
     #region IActivatorResolver Members
     public IActivator ResolveActivator(ICreationServices services, ServiceEntry serviceEntry)
     {
-      ILifestyle lifestyle = services.LifestyleStore.ResolveLifestyle(serviceEntry);
-      IActivator activator = services.ActivatorStrategy.CreateLifestyleActivator(lifestyle);
+      _log.Info("ResolveActivator: " + serviceEntry);
+      if (!services.ActivatorStore.HasActivator(serviceEntry))
+      {
+        return null;
+      }
+      IActivator activator = services.ActivatorStore.ResolveActivator(serviceEntry);
       if (activator.CanActivate(services))
       {
         return activator;

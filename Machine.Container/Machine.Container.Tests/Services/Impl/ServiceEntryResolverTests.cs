@@ -25,7 +25,7 @@ namespace Machine.Container.Services.Impl
       _serviceGraph = Get<IServiceGraph>();
       _serviceDependencyInspector = Get<IServiceDependencyInspector>();
       _serviceEntryFactory = Get<IServiceEntryFactory>();
-      _creationServices = new CreationServices(Get<IActivatorStore>(), Get<ILifestyleStore>(), Get<IActivatorStrategy>(), Get<IOverrideLookup>());
+      _creationServices = new CreationServices(Get<IActivatorStrategy>(), Get<IActivatorStore>(), Get<ILifestyleFactory>(), Get<IOverrideLookup>());
     }
     #endregion
 

@@ -13,7 +13,7 @@ namespace Machine.Container
     private IServiceEntryResolver _resolver;
     private IActivatorStrategy _activatorStrategy;
     private IActivatorStore _activatorStore;
-    private ILifestyleStore _lifestyleStore;
+    private ILifestyleFactory _lifestyleFactory;
     #endregion
 
     #region Methods
@@ -25,8 +25,8 @@ namespace Machine.Container
       IServiceGraph serviceGraph = new ServiceGraph();
       _resolver = new ServiceEntryResolver(serviceGraph, serviceEntryFactory, activatorResolver);
       _activatorStrategy = new DefaultActivatorStrategy(new DotNetObjectFactory(), _resolver, serviceDependencyInspector);
-      _lifestyleStore = new LifestyleStore(new LifestyleFactory(_activatorStrategy));
-      _activatorStore = new ActivatorStore(_activatorStrategy, _lifestyleStore);
+      _activatorStore = new ActivatorStore();
+      _lifestyleFactory = new LifestyleFactory(_activatorStrategy);
     }
 
     public virtual IActivatorResolver CreateDependencyResolver()
@@ -85,8 +85,7 @@ namespace Machine.Container
 
     public bool HasService<T>()
     {
-      ICreationServices services = CreateCreationServices();
-      ResolvedServiceEntry entry = _resolver.ResolveEntry(services, typeof(T));
+      ServiceEntry entry = _resolver.LookupEntry(typeof(T));
       return entry != null;
     }
     #endregion
@@ -101,23 +100,8 @@ namespace Machine.Container
     protected virtual ICreationServices CreateCreationServices(params object[] serviceOverrides)
     {
       IOverrideLookup overrides = new StaticOverrideLookup(serviceOverrides);
-      return new CreationServices(_activatorStore, _lifestyleStore, _activatorStrategy, overrides);
+      return new CreationServices(_activatorStrategy, _activatorStore, _lifestyleFactory, overrides);
     }
     #endregion
-  }
-  public class ServiceEntryInitializer
-  {
-    private readonly ILifestyleStore _lifestyleStore;
-    private readonly IActivatorStore _activatorStore;
-    private readonly ILifestyleFactory _lifestyleFactory;
-    private readonly IActivatorStrategy _activatorStrategy;
-
-    public ServiceEntryInitializer(ILifestyleStore lifestyleStore, IActivatorStore activatorStore, ILifestyleFactory lifestyleFactory, IActivatorStrategy activatorStrategy)
-    {
-      _lifestyleStore = lifestyleStore;
-      _activatorStore = activatorStore;
-      _lifestyleFactory = lifestyleFactory;
-      _activatorStrategy = activatorStrategy;
-    }
   }
 }

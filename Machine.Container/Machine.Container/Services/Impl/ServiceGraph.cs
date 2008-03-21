@@ -37,7 +37,7 @@ namespace Machine.Container.Services.Impl
       }
       else if (matches.Count > 1)
       {
-        throw new AmbiguousServicesException();
+        throw new AmbiguousServicesException(type.ToString());
       }
       return null;
     }
