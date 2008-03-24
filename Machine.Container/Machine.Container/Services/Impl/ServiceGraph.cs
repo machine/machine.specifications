@@ -15,11 +15,18 @@ namespace Machine.Container.Services.Impl
     private readonly Dictionary<Type, ServiceEntry> _map = new Dictionary<Type, ServiceEntry>();
     #endregion
 
-    #region Methods
+    #region IServiceGraph Members
     public ServiceEntry Lookup(Type type)
     {
       return LookupLazily(type);
     }
+
+    public void Add(ServiceEntry entry)
+    {
+      _log.Info("Adding: " + entry);
+      _map[entry.ServiceType] = entry;
+    }
+    #endregion
 
     public ServiceEntry LookupLazily(Type type)
     {
@@ -41,12 +48,5 @@ namespace Machine.Container.Services.Impl
       }
       return null;
     }
-
-    public void Add(ServiceEntry entry)
-    {
-      _log.Info("Adding: " + entry);
-      _map[entry.ServiceType] = entry;
-    }
-    #endregion
   }
 }

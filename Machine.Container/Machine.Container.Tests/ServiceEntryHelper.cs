@@ -11,7 +11,17 @@ namespace Machine.Container
     #region Member Data
     public static ServiceEntry NewEntry()
     {
-      return new ServiceEntry(typeof(IService1), typeof(Service1DependsOn2), LifestyleType.Singleton);
+      return NewEntry(typeof(IService1), typeof(Service1DependsOn2));
+    }
+
+    public static ServiceEntry NewEntry(Type serviceType)
+    {
+      return new ServiceEntry(serviceType, serviceType, LifestyleType.Singleton);
+    }
+
+    public static ServiceEntry NewEntry(Type serviceType, Type implementationTyoe)
+    {
+      return new ServiceEntry(serviceType, implementationTyoe, LifestyleType.Singleton);
     }
 
     public static ServiceEntry NewEntry(LifestyleType lifestyleType)
