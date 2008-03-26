@@ -8,7 +8,7 @@ using Rhino.Mocks;
 
 namespace Machine.Container.AutoMocking
 {
-  public class AutoMockingContainer : BunkerContainer
+  public class AutoMockingContainer : MachineContainer
   {
     private readonly MockRepository _mocks;
     private MockingDependencyResolver _mockingDependencyResolver;

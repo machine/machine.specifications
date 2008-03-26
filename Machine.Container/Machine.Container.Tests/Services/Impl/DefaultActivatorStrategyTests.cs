@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace Machine.Container.Services.Impl
 {
   [TestFixture]
-  public class DefaultActivatorStrategyTests : BunkerTests
+  public class DefaultActivatorStrategyTests : MachineContainerTestsFixture
   {
     #region Member Data
     private IObjectFactory _objectFactory;

@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace Machine.Container.Activators
 {
   [TestFixture]
-  public class StaticActivatorTests : BunkerTests
+  public class StaticActivatorTests : MachineContainerTestsFixture
   {
     #region Member Data
     private StaticActivator _activator;

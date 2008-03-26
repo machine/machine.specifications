@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace Machine.Container.Services.Impl
 {
   [TestFixture]
-  public class ServiceDependencyInspectorTests : BunkerTests
+  public class ServiceDependencyInspectorTests : MachineContainerTestsFixture
   {
     #region Member Data
     private ServiceDependencyInspector _inspector;

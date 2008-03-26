@@ -7,7 +7,7 @@ using Machine.Container.Services.Impl;
 
 namespace Machine.Container
 {
-  public class BunkerContainer : IHighLevelContainer
+  public class MachineContainer : IHighLevelContainer
   {
     #region Member Data
     private IServiceEntryResolver _resolver;

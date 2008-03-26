@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using Machine.Container.Services;
@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace Machine.Container
 {
   [TestFixture]
-  public class IoCTests : BunkerTests
+  public class IoCTests : MachineContainerTestsFixture
   {
     [Test]
     [ExpectedException(typeof(ArgumentNullException))]

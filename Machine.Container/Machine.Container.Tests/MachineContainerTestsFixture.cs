@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+
 using log4net.Appender;
 using Machine.Container.AutoMocking;
 using Machine.Container.Model;
 
 using NUnit.Framework;
-
 using Rhino.Mocks;
 
 namespace Machine.Container
 {
-  public class BunkerTests
+  public class MachineContainerTestsFixture
   {
     #region Member Data
     protected static bool _loggingInitialized;

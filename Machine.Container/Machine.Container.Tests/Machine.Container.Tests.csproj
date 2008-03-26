@@ -50,8 +50,8 @@
   <ItemGroup>
     <Compile Include="AutoMocking\AutoMockingContainer.cs" />
     <Compile Include="AutoMocking\MockingDependencyResolver.cs" />
-    <Compile Include="BunkerContainerTests.cs" />
-    <Compile Include="BunkerTests.cs" />
+    <Compile Include="MachineContainerTests.cs" />
+    <Compile Include="MachineContainerTestsFixture.cs" />
     <Compile Include="IoCTests.cs" />
     <Compile Include="Lifestyles\SingletonLifestyleTests.cs" />
     <Compile Include="Lifestyles\TransientLifestyleTests.cs" />

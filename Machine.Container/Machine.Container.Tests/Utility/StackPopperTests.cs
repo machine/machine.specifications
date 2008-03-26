@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace Machine.Container.Utility
 {
   [TestFixture]
-  public class StackPopperTests : BunkerTests
+  public class StackPopperTests : MachineContainerTestsFixture
   {
     #region Member Data
     private Stack<string> _stack;

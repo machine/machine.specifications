@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Machine.Container
 {
-  public class ScaffoldTests<TObject> : BunkerTests
+  public class ScaffoldTests<TObject> : MachineContainerTestsFixture
   {
     #region Member Data
     protected delegate void Block();

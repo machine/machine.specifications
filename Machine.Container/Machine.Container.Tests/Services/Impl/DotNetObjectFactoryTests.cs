@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace Machine.Container.Services.Impl
 {
   [TestFixture]
-  public class DotNetObjectFactoryTests : BunkerTests
+  public class DotNetObjectFactoryTests : MachineContainerTestsFixture
   {
     #region Member Data
     private DotNetObjectFactory _factory;

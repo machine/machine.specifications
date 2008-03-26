@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BunkerContainer.cs" />
+    <Compile Include="MachineContainer.cs" />
     <Compile Include="IoC.cs" />
     <Compile Include="Lifestyles\SingletonLifestyle.cs" />
     <Compile Include="Lifestyles\TransientLifestyle.cs" />
