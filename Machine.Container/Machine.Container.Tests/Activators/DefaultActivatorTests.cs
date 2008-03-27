@@ -66,7 +66,7 @@ namespace Machine.Container.Activators
       using (_mocks.Record())
       {
         SetupMocks(typeof(IService1));
-        Expect.Call(Get<IServiceEntryResolver>().ResolveEntry(Get<ICreationServices>(), typeof(IService1))).Return(resolvedServiceEntry);
+        Expect.Call(Get<IServiceEntryResolver>().ResolveEntry(Get<ICreationServices>(), typeof(IService1), false)).Return(resolvedServiceEntry);
         Expect.Call(Get<IActivator>().Activate(Get<ICreationServices>())).Return(_parameter1);
         Expect.Call(Get<IObjectFactory>().CreateObject(_entry.ConstructorCandidate, new object[] { _parameter1 })).Return(_instance);
       }

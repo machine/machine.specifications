@@ -79,7 +79,7 @@ namespace Machine.Container
     public T ResolveWithOverrides<T>(params object[] serviceOverrides)
     {
       ICreationServices services = CreateCreationServices(serviceOverrides);
-      ResolvedServiceEntry entry = _resolver.ResolveEntry(services, typeof(T));
+      ResolvedServiceEntry entry = _resolver.ResolveEntry(services, typeof(T), true);
       return (T)entry.Activator.Activate(services);
     }
 

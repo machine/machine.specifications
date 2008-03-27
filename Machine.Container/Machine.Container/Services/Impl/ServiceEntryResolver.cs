@@ -52,10 +52,10 @@ namespace Machine.Container.Services.Impl
       return _serviceGraph.Lookup(serviceType);
     }
 
-    public ResolvedServiceEntry ResolveEntry(ICreationServices services, Type serviceType)
+    public ResolvedServiceEntry ResolveEntry(ICreationServices services, Type serviceType, bool throwIfAmbiguous)
     {
       _log.Info("ResolveEntry: " + serviceType);
-      ServiceEntry entry = _serviceGraph.Lookup(serviceType);
+      ServiceEntry entry = _serviceGraph.Lookup(serviceType, throwIfAmbiguous);
       if (entry == null)
       {
         entry = _serviceEntryFactory.CreateServiceEntry(serviceType, serviceType, LifestyleType.Transient);

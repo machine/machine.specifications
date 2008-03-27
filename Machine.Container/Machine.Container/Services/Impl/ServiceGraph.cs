@@ -16,9 +16,14 @@ namespace Machine.Container.Services.Impl
     #endregion
 
     #region IServiceGraph Members
+    public ServiceEntry Lookup(Type type, bool throwIfAmbiguous)
+    {
+      return LookupLazily(type, throwIfAmbiguous);
+    }
+
     public ServiceEntry Lookup(Type type)
     {
-      return LookupLazily(type);
+      return LookupLazily(type, true);
     }
 
     public void Add(ServiceEntry entry)
@@ -28,12 +33,12 @@ namespace Machine.Container.Services.Impl
     }
     #endregion
 
-    public ServiceEntry LookupLazily(Type type)
+    public ServiceEntry LookupLazily(Type type, bool throwIfAmbiguous)
     {
       List<ServiceEntry> matches = new List<ServiceEntry>();
       foreach (ServiceEntry entry in _map.Values)
       {
-        if (type.IsAssignableFrom(entry.ConcreteType))
+        if (type.IsAssignableFrom(entry.ServiceType))
         {
           matches.Add(entry);
         }
@@ -42,7 +47,7 @@ namespace Machine.Container.Services.Impl
       {
         return matches[0];
       }
-      else if (matches.Count > 1)
+      else if (matches.Count > 1 && throwIfAmbiguous)
       {
         throw new AmbiguousServicesException(type.ToString());
       }

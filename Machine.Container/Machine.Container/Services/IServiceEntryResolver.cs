@@ -10,6 +10,6 @@ namespace Machine.Container.Services
     ServiceEntry CreateEntryIfMissing(Type serviceType);
     ServiceEntry CreateEntryIfMissing(Type serviceType, Type implementationType);
     ServiceEntry LookupEntry(Type serviceType);
-    ResolvedServiceEntry ResolveEntry(ICreationServices services, Type serviceType);
+    ResolvedServiceEntry ResolveEntry(ICreationServices services, Type serviceType, bool throwIfAmbiguous);
   }
 }

@@ -7,6 +7,7 @@ namespace Machine.Container.Services
 {
   public interface IServiceGraph
   {
+    ServiceEntry Lookup(Type type, bool throwIfAmbiguous);
     ServiceEntry Lookup(Type type);
     void Add(ServiceEntry entry);
   }

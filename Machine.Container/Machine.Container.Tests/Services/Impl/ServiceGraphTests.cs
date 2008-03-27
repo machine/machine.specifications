@@ -33,12 +33,28 @@ namespace Machine.Container.Services.Impl
     }
 
     [Test]
+    public void Lookup_SubclassInGraphThatDoesntHaveConcreteType_IsThatEntry()
+    {
+      ServiceEntry entry = ServiceEntryHelper.NewEntry(typeof(IService1), typeof(IService1));
+      _target.Add(entry);
+      Assert.AreEqual(entry, _target.Lookup(typeof(IService1)));
+    }
+
+    [Test]
     [ExpectedException(typeof(AmbiguousServicesException))]
     public void Lookup_MultipleSubclassesInGraph_Throws()
     {
       _target.Add(ServiceEntryHelper.NewEntry(typeof(Service1DependsOn2)));
       _target.Add(ServiceEntryHelper.NewEntry(typeof(Service1)));
       _target.Lookup(typeof(IService1));
+    }
+
+    [Test]
+    public void Lookup_MultipleSubclassesInGraphNotThrowing_Throws()
+    {
+      _target.Add(ServiceEntryHelper.NewEntry(typeof(Service1DependsOn2)));
+      _target.Add(ServiceEntryHelper.NewEntry(typeof(Service1)));
+      Assert.IsNull(_target.Lookup(typeof(IService1), false));
     }
   }
 }
