@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Impl\ClockTests.cs" />
+    <Compile Include="Services\Impl\DotNetObjectActivatorTests.cs" />
     <Compile Include="Services\Impl\FileSystemTests.cs" />
     <Compile Include="Services\Impl\NamerTests.cs" />
     <Compile Include="Services\Impl\ThreadManagerTests.cs" />

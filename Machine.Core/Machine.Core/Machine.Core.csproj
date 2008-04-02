@@ -62,9 +62,11 @@
     <Compile Include="Services\IClock.cs" />
     <Compile Include="Services\IFileSystem.cs" />
     <Compile Include="Services\Impl\Clock.cs" />
+    <Compile Include="Services\Impl\DotNetObjectActivator.cs" />
     <Compile Include="Services\Impl\FileSystem.cs" />
     <Compile Include="Services\Impl\Namer.cs" />
     <Compile Include="Services\Impl\ThreadManager.cs" />
+    <Compile Include="Services\IObjectActivator.cs" />
     <Compile Include="Services\IThreadManager.cs" />
     <Compile Include="Services\TemporaryDirectoryHandle.cs" />
     <Compile Include="Services\INamer.cs" />
