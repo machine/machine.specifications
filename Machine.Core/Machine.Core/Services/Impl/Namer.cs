@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Machine.Core.Services.Impl
 {
+  [Castle.Core.Transient]
   public class Namer : INamer
   {
     private readonly Random _random = new Random();

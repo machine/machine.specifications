@@ -4,6 +4,7 @@ using System.Threading;
 
 namespace Machine.Core.Services.Impl
 {
+  [Castle.Core.Transient]
   public class ThreadManager : IThreadManager
   {
     #region IThreadManager Members

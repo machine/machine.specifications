@@ -38,7 +38,13 @@ namespace Machine.Container
     #region IHighLevelContainer Members
     public void AddService<TService>()
     {
-      ServiceEntry entry = _resolver.CreateEntryIfMissing(typeof(TService));
+      AddService(typeof(TService), LifestyleType.Singleton);
+    }
+
+    public void AddService(Type serviceType, LifestyleType lifestyleType)
+    {
+      ServiceEntry entry = _resolver.CreateEntryIfMissing(serviceType);
+      entry.LifestyleType = lifestyleType;
     }
 
     public void AddService<TService>(Type implementationType)
