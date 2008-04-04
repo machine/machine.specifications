@@ -7,7 +7,7 @@ namespace Machine.Core.Utility
   {
     public static TType[] GetAttributes<TType>(Type type, bool inherit) where TType : Attribute
     {
-      return (TType[])type.GetCustomAttributes(type, inherit);
+      return (TType[])type.GetCustomAttributes(typeof(TType), inherit);
     }
 
     public static TType GetAttribute<TType>(Type type, bool inherit) where TType : Attribute
