@@ -48,8 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoMocking\AutoMockingContainer.cs" />
-    <Compile Include="AutoMocking\MockingDependencyResolver.cs" />
     <Compile Include="MachineContainerTests.cs" />
     <Compile Include="MachineContainerTestsFixture.cs" />
     <Compile Include="IoCTests.cs" />
@@ -79,6 +77,10 @@
     <Compile Include="Utility\StackPopperTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Machine.Testing\Machine.Testing.csproj">
+      <Project>{DB751178-BF97-4477-861B-B169AAB964D3}</Project>
+      <Name>Machine.Testing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Machine.Container\Machine.Container.csproj">
       <Project>{311CA93B-3D01-448F-8408-BF6398F0F5FC}</Project>
       <Name>Machine.Container</Name>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 
 using log4net.Appender;
-using Machine.Container.AutoMocking;
+using Machine.Testing.AutoMocking;
 using Machine.Container.Model;
 
 using NUnit.Framework;

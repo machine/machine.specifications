@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-
+using Machine.Container;
 using Machine.Container.Services;
 using Machine.Container.Services.Impl;
 
 using Rhino.Mocks;
 
-namespace Machine.Container.AutoMocking
+namespace Machine.Testing.AutoMocking
 {
   public class AutoMockingContainer : MachineContainer
   {

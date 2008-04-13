@@ -6,7 +6,7 @@ using Machine.Container.Services;
 
 using Rhino.Mocks;
 
-namespace Machine.Container.AutoMocking
+namespace Machine.Testing.AutoMocking
 {
   public class MockingDependencyResolver : IActivatorResolver
   {
@@ -43,7 +43,7 @@ namespace Machine.Container.AutoMocking
     {
       if (!_objects.ContainsKey(serviceType))
       {
-        _objects[serviceType] = _mocks.CreateMock(serviceType);
+        _objects[serviceType] = _mocks.DynamicMock(serviceType);
       }
       return _objects[serviceType];
     }
