@@ -11,7 +11,7 @@ namespace Machine.Container.Services
     void AddService<TService>(Type implementation);
     void AddService<TService, TImpl>(LifestyleType lifestyleType);
     void AddService<TService>(LifestyleType lifestyleType);
-    void Add<TService>(object instance);
+    void AddService<TService>(object instance);
     T Resolve<T>();
     T ResolveWithOverrides<T>(params object[] serviceOverrides);
     T New<T>(params object[] serviceOverrides);

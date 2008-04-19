@@ -27,6 +27,7 @@ namespace Machine.Container
       _activatorStrategy = new DefaultActivatorStrategy(new DotNetObjectFactory(), _resolver, serviceDependencyInspector);
       _activatorStore = new ActivatorStore();
       _lifestyleFactory = new LifestyleFactory(_activatorStrategy);
+      AddService<IHighLevelContainer>(this);
     }
 
     public virtual IActivatorResolver CreateDependencyResolver()
@@ -64,7 +65,7 @@ namespace Machine.Container
       entry.LifestyleType = lifestyleType;
     }
 
-    public void Add<TService>(object instance)
+    public void AddService<TService>(object instance)
     {
       ServiceEntry entry = _resolver.CreateEntryIfMissing(typeof(TService));
       IActivator activator = _activatorStrategy.CreateStaticActivator(entry, instance);
