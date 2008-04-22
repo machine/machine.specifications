@@ -74,7 +74,12 @@ namespace Machine.Container
 
     public T Resolve<T>()
     {
-      return ResolveWithOverrides<T>();
+      return (T)Resolve(typeof(T));
+    }
+
+    public object Resolve(Type serviceType)
+    {
+      return ResolveWithOverrides(serviceType);
     }
 
     public T New<T>(params object[] serviceOverrides)
@@ -85,9 +90,14 @@ namespace Machine.Container
 
     public T ResolveWithOverrides<T>(params object[] serviceOverrides)
     {
+      return (T) ResolveWithOverrides(typeof (T), serviceOverrides);
+    }
+
+    public object ResolveWithOverrides(Type serviceType, params object[] serviceOverrides)
+    {
       ICreationServices services = CreateCreationServices(serviceOverrides);
-      ResolvedServiceEntry entry = _resolver.ResolveEntry(services, typeof(T), true);
-      return (T)entry.Activator.Activate(services);
+      ResolvedServiceEntry entry = _resolver.ResolveEntry(services, serviceType, true);
+      return entry.Activator.Activate(services);
     }
 
     public bool HasService<T>()

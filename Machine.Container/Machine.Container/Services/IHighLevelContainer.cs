@@ -13,6 +13,7 @@ namespace Machine.Container.Services
     void AddService<TService>(LifestyleType lifestyleType);
     void AddService<TService>(object instance);
     T Resolve<T>();
+    object Resolve(Type type);
     T ResolveWithOverrides<T>(params object[] serviceOverrides);
     T New<T>(params object[] serviceOverrides);
     bool HasService<T>();
