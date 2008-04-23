@@ -18,6 +18,16 @@ namespace Machine.Core.Services.Impl
       return Directory.GetFiles(path);
     }
 
+    public string[] GetEntries(string path)
+    {
+      return Directory.GetFileSystemEntries(path);
+    }
+
+    public FileProperties GetFileProperties(string path)
+    {
+      return new FileProperties(new FileInfo(path));
+    }
+
     public bool IsFile(string path)
     {
       return File.Exists(path);

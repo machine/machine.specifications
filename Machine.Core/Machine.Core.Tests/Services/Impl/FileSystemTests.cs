@@ -33,7 +33,22 @@ namespace Machine.Core.Services.Impl
     }
 
     [Test]
-    public void GetFiles_ValidPath_ReturnsSubDirectories()
+    [ExpectedException(typeof(DirectoryNotFoundException))]
+    public void GetEntries_InValidPath_Throws()
+    {
+      _target.GetEntries(@"C:\SomeMissingDirectory");
+    }
+
+    [Test]
+    public void GetEntries_ValidPath_ReturnsSubDirectoriesAndFiles()
+    {
+      string[] actual = _target.GetEntries(_testDirectory);
+      CollectionAssert.Contains(actual, Path.Combine(_testDirectory, "csc.exe"));
+      CollectionAssert.Contains(actual, Path.Combine(_testDirectory, "CONFIG"));
+    }
+
+    [Test]
+    public void GetFiles_ValidPath_ReturnsSubFiles()
     {
       string[] actual = _target.GetFiles(_testDirectory);
       CollectionAssert.Contains(actual, Path.Combine(_testDirectory, "csc.exe"));
@@ -50,6 +65,13 @@ namespace Machine.Core.Services.Impl
     public void IsFile_IsAFile_IsTrue()
     {
       Assert.IsTrue(_target.IsFile(typeof(FileSystem).Assembly.Location));
+    }
+
+    [Test]
+    public void GetFileProperties_IsAFile_HasProperties()
+    {
+      FileProperties actual = _target.GetFileProperties(typeof(FileSystem).Assembly.Location);
+      Assert.Greater(actual.Length, 0);
     }
 
     [Test]

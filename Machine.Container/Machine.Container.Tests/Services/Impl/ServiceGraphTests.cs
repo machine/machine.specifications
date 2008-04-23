@@ -25,6 +25,23 @@ namespace Machine.Container.Services.Impl
     }
 
     [Test]
+    public void RegisteredServices_IsEmpty_IsEmpty()
+    {
+      List<ServiceRegistration> actual = new List<ServiceRegistration>(_target.RegisteredServices);
+      CollectionAssert.IsEmpty(actual);
+    }
+
+    [Test]
+    public void RegisteredServices_NotEmpty_HasThatEntry()
+    {
+      ServiceEntry entry = ServiceEntryHelper.NewEntry();
+      _target.Add(entry);
+      List<ServiceRegistration> actual = new List<ServiceRegistration>(_target.RegisteredServices);
+      Assert.AreEqual(entry.ServiceType, actual[0].ServiceType);
+      Assert.AreEqual(entry.ImplementationType, actual[0].ImplementationType);
+    }
+
+    [Test]
     public void Lookup_SubclassInGraph_IsThatEntry()
     {
       ServiceEntry entry = ServiceEntryHelper.NewEntry(typeof(Service1DependsOn2));

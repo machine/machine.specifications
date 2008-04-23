@@ -14,6 +14,7 @@ namespace Machine.Container
     private IActivatorStrategy _activatorStrategy;
     private IActivatorStore _activatorStore;
     private ILifestyleFactory _lifestyleFactory;
+    private IServiceGraph _serviceGraph;
     #endregion
 
     #region Methods
@@ -22,8 +23,8 @@ namespace Machine.Container
       IActivatorResolver activatorResolver = CreateDependencyResolver();
       IServiceEntryFactory serviceEntryFactory = new ServiceEntryFactory();
       IServiceDependencyInspector serviceDependencyInspector = new ServiceDependencyInspector();
-      IServiceGraph serviceGraph = new ServiceGraph();
-      _resolver = new ServiceEntryResolver(serviceGraph, serviceEntryFactory, activatorResolver);
+      _serviceGraph = new ServiceGraph();
+      _resolver = new ServiceEntryResolver(_serviceGraph, serviceEntryFactory, activatorResolver);
       _activatorStrategy = new DefaultActivatorStrategy(new DotNetObjectFactory(), _resolver, serviceDependencyInspector);
       _activatorStore = new ActivatorStore();
       _lifestyleFactory = new LifestyleFactory(_activatorStrategy);
@@ -90,7 +91,7 @@ namespace Machine.Container
 
     public T ResolveWithOverrides<T>(params object[] serviceOverrides)
     {
-      return (T) ResolveWithOverrides(typeof (T), serviceOverrides);
+      return (T)ResolveWithOverrides(typeof(T), serviceOverrides);
     }
 
     public object ResolveWithOverrides(Type serviceType, params object[] serviceOverrides)
@@ -104,6 +105,11 @@ namespace Machine.Container
     {
       ServiceEntry entry = _resolver.LookupEntry(typeof(T));
       return entry != null;
+    }
+
+    public IEnumerable<ServiceRegistration> RegisteredServices
+    {
+      get { return _serviceGraph.RegisteredServices; }
     }
     #endregion
 

@@ -31,6 +31,17 @@ namespace Machine.Container.Services.Impl
       _log.Info("Adding: " + entry);
       _map[entry.ServiceType] = entry;
     }
+
+    public IEnumerable<ServiceRegistration> RegisteredServices
+    {
+      get
+      {
+        foreach (ServiceEntry serviceEntry in _map.Values)
+        {
+          yield return new ServiceRegistration(serviceEntry.ServiceType, serviceEntry.ImplementationType);
+        }
+      }
+    }
     #endregion
 
     public ServiceEntry LookupLazily(Type type, bool throwIfAmbiguous)

@@ -5,12 +5,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{DB751178-BF97-4477-861B-B169AAB964D3}</ProjectGuid>
+    <ProjectGuid>{B464DBC2-EBF7-4428-9D5C-12F83500143A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Machine.Testing</RootNamespace>
-    <AssemblyName>Machine.Testing</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <RootNamespace>Machine.MsWcf</RootNamespace>
+    <AssemblyName>Machine.MsWcf</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -31,30 +31,29 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.4.1.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libraries\Testing\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.Mocks, Version=3.4.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libraries\Testing\Rhino.Mocks.dll</HintPath>
+      <HintPath>..\Libraries\Logging\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoMocking\AutoMockingContainer.cs" />
-    <Compile Include="AutoMocking\MockingDependencyResolver.cs" />
-    <Compile Include="FluentFixtures\BaseCreator.cs" />
-    <Compile Include="FluentFixtures\CurrentService.cs" />
-    <Compile Include="FluentFixtures\FixtureContext.cs" />
-    <Compile Include="FluentFixtures\FixtureContextAware.cs" />
-    <Compile Include="FluentFixtures\IExistingService.cs" />
-    <Compile Include="FluentFixtures\IFixtureContext.cs" />
-    <Compile Include="FluentFixtures\NewService.cs" />
+    <Compile Include="MachineServiceHostFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestsFor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Container\Machine.Container\Machine.Container.csproj">

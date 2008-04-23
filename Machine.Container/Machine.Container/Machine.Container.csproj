@@ -59,6 +59,7 @@
     <Compile Include="Model\ResolvedServiceEntry.cs" />
     <Compile Include="Model\ServiceDependency.cs" />
     <Compile Include="Model\ServiceEntry.cs" />
+    <Compile Include="Model\ServiceRegistration.cs" />
     <Compile Include="Model\ServiceState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceResolutionException.cs" />

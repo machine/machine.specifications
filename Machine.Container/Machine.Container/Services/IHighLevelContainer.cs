@@ -17,5 +17,9 @@ namespace Machine.Container.Services
     T ResolveWithOverrides<T>(params object[] serviceOverrides);
     T New<T>(params object[] serviceOverrides);
     bool HasService<T>();
+    IEnumerable<ServiceRegistration> RegisteredServices
+    {
+      get;
+    }
   }
 }
