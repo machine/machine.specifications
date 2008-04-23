@@ -31,11 +31,13 @@ namespace Machine.Core.Services
     private string _fullName;
     private long _length;
     private DateTime _lastAccessTime;
-    private DateTime _lastAccessTimeUtc;
     private DateTime _lastWriteTime;
-    private DateTime _lastWriteTimeUtc;
     private DateTime _creationTime;
+#if !SILVERLIGHT
+    private DateTime _lastWriteTimeUtc;
+    private DateTime _lastAccessTimeUtc;
     private DateTime _creationTimeUtc;
+#endif
 
     public string FullName
     {
@@ -55,22 +57,10 @@ namespace Machine.Core.Services
       set { _lastAccessTime = value; }
     }
 
-    public DateTime LastAccessTimeUtc
-    {
-      get { return _lastAccessTimeUtc; }
-      set { _lastAccessTimeUtc = value; }
-    }
-
     public DateTime LastWriteTime
     {
       get { return _lastWriteTime; }
       set { _lastWriteTime = value; }
-    }
-
-    public DateTime LastWriteTimeUtc
-    {
-      get { return _lastWriteTimeUtc; }
-      set { _lastWriteTimeUtc = value; }
     }
 
     public DateTime CreationTime
@@ -79,22 +69,38 @@ namespace Machine.Core.Services
       set { _creationTime = value; }
     }
 
+#if !SILVERLIGHT
+    public DateTime LastAccessTimeUtc
+    {
+      get { return _lastAccessTimeUtc; }
+      set { _lastAccessTimeUtc = value; }
+    }
+
+    public DateTime LastWriteTimeUtc
+    {
+      get { return _lastWriteTimeUtc; }
+      set { _lastWriteTimeUtc = value; }
+    }
+
     public DateTime CreationTimeUtc
     {
       get { return _creationTimeUtc; }
       set { _creationTimeUtc = value; }
     }
+#endif
 
     public FileProperties(FileInfo fileInfo)
     {
       _fullName = fileInfo.FullName;
       _length = fileInfo.Length;
       _lastAccessTime = fileInfo.LastAccessTime;
-      _lastAccessTimeUtc = fileInfo.LastAccessTimeUtc;
-      _lastWriteTime = fileInfo.LastWriteTime;
-      _lastWriteTimeUtc = fileInfo.LastWriteTimeUtc;
       _creationTime = fileInfo.CreationTime;
+      _lastWriteTime = fileInfo.LastWriteTime;
+#if !SILVERLIGHT
+      _lastAccessTimeUtc = fileInfo.LastAccessTimeUtc;
+      _lastWriteTimeUtc = fileInfo.LastWriteTimeUtc;
       _creationTimeUtc = fileInfo.CreationTimeUtc;
+#endif
     }
 
     public FileProperties()

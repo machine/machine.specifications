@@ -29,6 +29,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.NHibernateExtension
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Testing", "Machine.Testing\Machine.Testing.csproj", "{DB751178-BF97-4477-861B-B169AAB964D3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Core.Silverlight", "Machine.Core\Machine.Core\Machine.Core.Silverlight.csproj", "{7BF9A463-93E6-4AA3-B2EE-E785239E8B2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Container.Silverlight", "Machine.Container\Machine.Container\Machine.Container.Silverlight.csproj", "{CF133487-0A5B-4D91-B38C-2858D2680BF1}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.MsMvc", "Machine.MsMvc\Machine.MsMvc.csproj", "{DF69AA8C-54B3-4EE3-AAC1-F1210B0A257C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.MsWcf", "Machine.MsWcf\Machine.MsWcf.csproj", "{B464DBC2-EBF7-4428-9D5C-12F83500143A}"
@@ -97,6 +101,14 @@ Global
 		{DB751178-BF97-4477-861B-B169AAB964D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB751178-BF97-4477-861B-B169AAB964D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB751178-BF97-4477-861B-B169AAB964D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BF9A463-93E6-4AA3-B2EE-E785239E8B2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BF9A463-93E6-4AA3-B2EE-E785239E8B2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BF9A463-93E6-4AA3-B2EE-E785239E8B2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BF9A463-93E6-4AA3-B2EE-E785239E8B2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF133487-0A5B-4D91-B38C-2858D2680BF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF133487-0A5B-4D91-B38C-2858D2680BF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF133487-0A5B-4D91-B38C-2858D2680BF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF133487-0A5B-4D91-B38C-2858D2680BF1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DF69AA8C-54B3-4EE3-AAC1-F1210B0A257C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DF69AA8C-54B3-4EE3-AAC1-F1210B0A257C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF69AA8C-54B3-4EE3-AAC1-F1210B0A257C}.Release|Any CPU.ActiveCfg = Release|Any CPU

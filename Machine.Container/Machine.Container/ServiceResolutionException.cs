@@ -20,9 +20,11 @@ namespace Machine.Container
     {
     }
 
+    #if !SILVERLIGHT
     protected ServiceResolutionException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }
+    #endif
   }
 
   [Serializable]
@@ -41,9 +43,11 @@ namespace Machine.Container
     {
     }
 
+    #if !SILVERLIGHT
     protected YouFoundABugException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }
+    #endif
   }
 
   [Serializable]
@@ -62,9 +66,11 @@ namespace Machine.Container
     {
     }
 
+    #if !SILVERLIGHT
     protected CircularDependencyException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }
+    #endif
   }
 
   [Serializable]
@@ -83,9 +89,11 @@ namespace Machine.Container
     {
     }
 
+    #if !SILVERLIGHT
     protected PendingDependencyException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }
+    #endif
   }
 
   [Serializable]
@@ -104,9 +112,11 @@ namespace Machine.Container
     {
     }
 
+    #if !SILVERLIGHT
     protected MissingServiceException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }
+    #endif
   }
 
   [Serializable]
@@ -125,8 +135,10 @@ namespace Machine.Container
     {
     }
 
+    #if !SILVERLIGHT
     protected AmbiguousServicesException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }
+    #endif
   }
 }
