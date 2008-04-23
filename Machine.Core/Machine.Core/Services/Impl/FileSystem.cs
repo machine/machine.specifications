@@ -4,7 +4,6 @@ using System.IO;
 
 namespace Machine.Core.Services.Impl
 {
-  [Castle.Core.Transient]
   public class FileSystem : IFileSystem
   {
     #region IFileSystem Members

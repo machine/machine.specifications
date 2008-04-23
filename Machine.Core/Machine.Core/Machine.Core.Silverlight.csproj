@@ -65,7 +65,6 @@
     <Compile Include="Services\IObjectActivator.cs" />
     <Compile Include="Services\IThreadManager.cs" />
     <Compile Include="Services\TemporaryDirectoryHandle.cs" />
-    <Compile Include="SilverlightHacks.cs" />
     <Compile Include="Utility\ListHelper.cs" />
     <Compile Include="Utility\ReflectionHelper.cs" />
   </ItemGroup>

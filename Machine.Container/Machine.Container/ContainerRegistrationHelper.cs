@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using Castle.Core;
+using Machine.Container.Model;
 using Machine.Core.Utility;
 
 namespace Machine.Container
