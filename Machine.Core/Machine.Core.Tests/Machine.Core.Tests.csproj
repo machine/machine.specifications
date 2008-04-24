@@ -52,6 +52,7 @@
     <Compile Include="Services\Impl\ThreadManagerTests.cs" />
     <Compile Include="StandardFixture.cs" />
     <Compile Include="Utility\ListHelperTests.cs" />
+    <Compile Include="Utility\TimeSpanHelperTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Core\Machine.Core.csproj">

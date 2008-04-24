@@ -73,6 +73,7 @@
     <Compile Include="Utility\ListHelper.cs" />
     <Compile Include="Utility\LockingHelpers.cs" />
     <Compile Include="Utility\ReflectionHelper.cs" />
+    <Compile Include="Utility\TimeSpanHelper.cs" />
     <Compile Include="Utility\XmlSerializationHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
