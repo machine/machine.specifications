@@ -24,7 +24,7 @@ namespace Machine.Core
 
     public virtual TType Create()
     {
-      throw new InvalidOperationException();
+      throw new NotImplementedException();
     }
 
     public TMock GetNormal<TMock>()
