@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+
 using Machine.Container.Model;
+using Machine.Core.Services.Impl;
 using Machine.Core.Utility;
 
 namespace Machine.Container
@@ -36,6 +38,14 @@ namespace Machine.Container
         }
       }
     }
-  }
 
+    public virtual void AddCore()
+    {
+      _container.AddService<Clock>();
+      _container.AddService<Namer>();
+      _container.AddService<FileSystem>();
+      _container.AddService<DotNetObjectActivator>();
+      _container.AddService<ThreadManager>();
+    }
+  }
 }

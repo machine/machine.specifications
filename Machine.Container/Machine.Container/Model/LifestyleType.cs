@@ -15,18 +15,18 @@ namespace Machine.Container.Model
   }
   
   [AttributeUsage(AttributeTargets.Class)]
-  public class SingletonAttribute : Attribute
+  public class SingletonAttribute : LifestyleAttribute
   {
-    public LifestyleType Lifestyle
+    public override LifestyleType Lifestyle
     {
       get { return LifestyleType.Singleton; }
     }
   }
   
   [AttributeUsage(AttributeTargets.Class)]
-  public class TransientAttribute : Attribute
+  public class TransientAttribute : LifestyleAttribute
   {
-    public LifestyleType Lifestyle
+    public override LifestyleType Lifestyle
     {
       get { return LifestyleType.Transient; }
     }
