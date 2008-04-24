@@ -48,12 +48,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MachineToWindsorBridge.cs" />
     <Compile Include="MachineWindsorContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProvidesServiceAttribute.cs" />
     <Compile Include="ProvidesSingletonAttribute.cs" />
     <Compile Include="ProvidesTransientAttribute.cs" />
     <Compile Include="WindsorWrapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Machine.Container\Machine.Container\Machine.Container.csproj">
+      <Project>{311CA93B-3D01-448F-8408-BF6398F0F5FC}</Project>
+      <Name>Machine.Container</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

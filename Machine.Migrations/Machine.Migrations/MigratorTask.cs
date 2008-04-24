@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Castle.Windsor;
 
+using Machine.Container.Services;
 using Machine.Migrations.DatabaseProviders;
 using Machine.Migrations.SchemaProviders;
+
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
@@ -37,7 +38,7 @@ namespace Machine.Migrations
       log4net.Config.BasicConfigurator.Configure(new Log4NetMsBuildAppender(this.Log, new log4net.Layout.PatternLayout("%-5p %x %m")));
       using (Machine.Core.LoggingUtilities.Log4NetNdc.Push(String.Empty))
       {
-        IWindsorContainer container = migratorContainerFactory.CreateAndPopulateContainer(this);
+        IHighLevelContainer container = migratorContainerFactory.CreateAndPopulateContainer(this);
         container.Resolve<IMigrator>().RunMigrator();
       }
       return true;

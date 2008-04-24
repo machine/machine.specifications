@@ -54,6 +54,11 @@ namespace Machine.Container
       ServiceEntry entry = _resolver.CreateEntryIfMissing(typeof(TService), implementationType);
     }
 
+    public void AddService<TService, TImpl>()
+    {
+      AddService<TService, TImpl>(LifestyleType.Singleton);
+    }
+
     public void AddService<TService, TImpl>(LifestyleType lifestyleType)
     {
       ServiceEntry entry = _resolver.CreateEntryIfMissing(typeof(TService), typeof(TImpl));

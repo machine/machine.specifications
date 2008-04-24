@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Castle.Windsor;
-
+using Machine.Container;
+using Machine.Container.Services;
 using Machine.Core.Services;
 using Machine.Core.Services.Impl;
 using Machine.IoC;
@@ -14,10 +14,10 @@ namespace Machine.Migrations.Services.Impl
   public class MigratorContainerFactory : IMigratorContainerFactory
   {
     #region IMigratorContainerFactory Members
-    public virtual IWindsorContainer CreateAndPopulateContainer(IConfiguration configuration)
+    public virtual IHighLevelContainer CreateAndPopulateContainer(IConfiguration configuration)
     {
-      IWindsorContainer windsor = CreateContainer();
-      WindsorWrapper container = new WindsorWrapper(windsor);
+      IHighLevelContainer container = CreateContainer();
+      container.Initialize();
       container.AddService<IConnectionProvider>(configuration.ConnectionProviderType);
       container.AddService<ITransactionProvider, TransactionProvider>();
       container.AddService<IDatabaseProvider>(configuration.DatabaseProviderType);
@@ -34,16 +34,16 @@ namespace Machine.Migrations.Services.Impl
       container.AddService<IVersionStateFactory, VersionStateFactory>();
       container.AddService<IWorkingDirectoryManager, WorkingDirectoryManager>();
       container.AddService<ICommonTransformations, CommonTransformations>();
-      container.AddService(configuration);
+      container.AddService<IConfiguration>(configuration);
       container.AddService<CSharpMigrationFactory>();
       container.AddService<BooMigrationFactory>();
-      return windsor;
+      return container;
     }
     #endregion
 
-    public virtual IWindsorContainer CreateContainer()
+    public virtual IHighLevelContainer CreateContainer()
     {
-      return new WindsorContainer();
+      return new MachineContainer();
     }
   }
 }

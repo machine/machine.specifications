@@ -1,4 +1,6 @@
 using System;
+
+using Castle.Core;
 using Castle.Windsor;
 
 namespace Machine.IoC
@@ -12,17 +14,37 @@ namespace Machine.IoC
       _container = container;
     }
 
+    public void AddService(Type service, LifestyleType lifestyleType)
+    {
+      _container.AddComponentWithLifestyle(MakeKey(service), service, lifestyleType);
+    }
+
     public void AddService<TService>(Type implementation)
     {
       _container.AddComponent(MakeKey(implementation), typeof(TService), implementation);
     }
 
-    public void AddService<TService, TImpl>() where TImpl : TService
+    public void AddService<TService>(Type implementation, LifestyleType lifestyleType)
+    {
+      _container.AddComponentWithLifestyle(MakeKey(implementation), typeof(TService), implementation, lifestyleType);
+    }
+
+    public void AddService<TService, TImpl>()
     {
       AddService<TService>(typeof(TImpl));
     }
 
+    public void AddService<TService, TImpl>(LifestyleType lifestyleType)
+    {
+      AddService<TService>(typeof(TImpl), lifestyleType);
+    }
+
     public void AddService<TService>(TService implementation)
+    {
+      _container.Kernel.AddComponentInstance(MakeKey(implementation.GetType()), typeof(TService), implementation);
+    }
+
+    public void AddService<TService>(object implementation)
     {
       _container.Kernel.AddComponentInstance(MakeKey(implementation.GetType()), typeof(TService), implementation);
     }

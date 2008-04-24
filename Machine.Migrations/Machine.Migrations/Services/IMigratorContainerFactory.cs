@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Castle.Windsor;
+using Machine.Container.Services;
 
 namespace Machine.Migrations.Services
 {
   public interface IMigratorContainerFactory
   {
-    IWindsorContainer CreateAndPopulateContainer(IConfiguration configuration);
+    IHighLevelContainer CreateAndPopulateContainer(IConfiguration configuration);
   }
 }
