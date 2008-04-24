@@ -9,16 +9,16 @@ using Castle.Windsor.Configuration;
 
 namespace Machine.IoC
 {
-  public class MachineContainer : WindsorContainer
+  public class MachineWindsorContainer : WindsorContainer
   {
     private long _counter;
 
-    public MachineContainer(IConfigurationInterpreter interpreter)
+    public MachineWindsorContainer(IConfigurationInterpreter interpreter)
      : base(interpreter)
     {
     }
 
-    public MachineContainer()
+    public MachineWindsorContainer()
     {
     }
 

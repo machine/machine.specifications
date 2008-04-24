@@ -48,7 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MachineContainer.cs" />
+    <Compile Include="MachineWindsorContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProvidesServiceAttribute.cs" />
     <Compile Include="ProvidesSingletonAttribute.cs" />
