@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MvcContrib, Version=0.0.1.101, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\MsMvcContrib\MvcContrib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -58,12 +62,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttributeAwareControllerPreparer.cs" />
+    <Compile Include="DefaultAvailableViewEngines.cs" />
+    <Compile Include="DemultiplexingViewFactory.cs" />
+    <Compile Include="IAvailableViewEnginesProvider.cs" />
     <Compile Include="ReflectiveControllerTypeMap.cs" />
     <Compile Include="IControllerTypeMap.cs" />
     <Compile Include="IControllerPreparer.cs" />
     <Compile Include="MachineControllerFactory.cs" />
     <Compile Include="NullControllerPreparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewEngineAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Container\Machine.Container\Machine.Container.csproj">
