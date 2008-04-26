@@ -6,6 +6,6 @@ namespace Machine.MsMvc
 {
   public interface IControllerPreparer
   {
-    IController PrepareController(IController controller);
+    IController PrepareController(Type controllerType, IController controller);
   }
 }

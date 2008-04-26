@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttributeAwareControllerPreparer.cs" />
     <Compile Include="ReflectiveControllerTypeMap.cs" />
     <Compile Include="IControllerTypeMap.cs" />
     <Compile Include="IControllerPreparer.cs" />

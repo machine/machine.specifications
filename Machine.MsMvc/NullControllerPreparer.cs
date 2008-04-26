@@ -7,7 +7,7 @@ namespace Machine.MsMvc
   public class NullControllerPreparer : IControllerPreparer
   {
     #region IControllerPreparer Members
-    public IController PrepareController(IController controller)
+    public IController PrepareController(Type controllerType, IController controller)
     {
       return controller;
     }
