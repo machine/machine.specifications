@@ -112,7 +112,7 @@
       <Project>{CC4332BD-DC7F-4B89-8C38-F8B51CADC991}</Project>
       <Name>Machine.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Machine.IoC\Machine.IoC\Machine.WindsorExtensions.csproj">
+    <ProjectReference Include="..\..\Machine.WindsorExtensions\Machine.WindsorExtensions\Machine.WindsorExtensions.csproj">
       <Project>{8DABCD9B-546A-4789-87C3-94FCEB38110D}</Project>
       <Name>Machine.WindsorExtensions</Name>
     </ProjectReference>
