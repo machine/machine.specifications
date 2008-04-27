@@ -1,7 +1,7 @@
 using System;
 using Castle.Core;
 
-namespace Machine.IoC
+namespace Machine.WindsorExtensions
 {
   [AttributeUsage(AttributeTargets.Class)]
   public class ProvidesTransientAttribute : ProvidesServiceAttribute

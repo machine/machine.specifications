@@ -8,8 +8,8 @@
     <ProjectGuid>{8DABCD9B-546A-4789-87C3-94FCEB38110D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Machine.IoC</RootNamespace>
-    <AssemblyName>Machine.IoC</AssemblyName>
+    <RootNamespace>Machine.WindsorExtensions</RootNamespace>
+    <AssemblyName>Machine.WindsorExtensions</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Castle.Core;
 
-namespace Machine.IoC
+namespace Machine.WindsorExtensions
 {
   [AttributeUsage(AttributeTargets.Class)]
   public class ProvidesSingletonAttribute : ProvidesServiceAttribute

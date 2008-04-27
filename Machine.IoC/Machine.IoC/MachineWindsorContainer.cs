@@ -7,7 +7,7 @@ using Castle.MicroKernel;
 using Castle.Windsor;
 using Castle.Windsor.Configuration;
 
-namespace Machine.IoC
+namespace Machine.WindsorExtensions
 {
   public class MachineWindsorContainer : WindsorContainer
   {

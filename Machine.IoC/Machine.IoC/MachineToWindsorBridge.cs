@@ -5,7 +5,7 @@ using Castle.Windsor;
 
 using Machine.Container.Services;
 
-namespace Machine.IoC
+namespace Machine.WindsorExtensions
 {
   public class MachineToWindsorBridge : IHighLevelContainer
   {

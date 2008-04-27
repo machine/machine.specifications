@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Container", "Machin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Container.Tests", "Machine.Container\Machine.Container.Tests\Machine.Container.Tests.csproj", "{F5EF7CA1-E4A1-47C8-BBB3-BDF36EDB5514}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.IoC", "Machine.IoC\Machine.IoC\Machine.IoC.csproj", "{8DABCD9B-546A-4789-87C3-94FCEB38110D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.WindsorExtensions", "Machine.IoC\Machine.IoC\Machine.WindsorExtensions.csproj", "{8DABCD9B-546A-4789-87C3-94FCEB38110D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Migrations", "Machine.Migrations\Machine.Migrations\Machine.Migrations.csproj", "{03796A8D-51A4-4308-A706-D27960E59896}"
 EndProject

@@ -5,7 +5,7 @@ using Machine.Container;
 using Machine.Container.Services;
 using Machine.Core.Services;
 using Machine.Core.Services.Impl;
-using Machine.IoC;
+using Machine.WindsorExtensions;
 using Machine.Migrations.DatabaseProviders;
 using Machine.Migrations.SchemaProviders;
 

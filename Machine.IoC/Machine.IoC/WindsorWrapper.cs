@@ -3,7 +3,7 @@ using System;
 using Castle.Core;
 using Castle.Windsor;
 
-namespace Machine.IoC
+namespace Machine.WindsorExtensions
 {
   public class WindsorWrapper
   {
