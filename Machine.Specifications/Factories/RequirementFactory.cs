@@ -27,7 +27,7 @@ namespace Machine.Specifications.Factories
     {
       It it = (It)requirementField.GetValue(instance);
 
-      var requirement = new ItRequirement(requirementField.Name.ReplaceUnderscores(), it);
+      var requirement = new ItRequirement(requirementField, it);
       return requirement;
     }
 
@@ -35,7 +35,7 @@ namespace Machine.Specifications.Factories
     {
       It_should_throw it = (It_should_throw)requirementField.GetValue(instance);
 
-      var requirement = new ItShouldThrowRequirement(requirementField.Name.ReplaceUnderscores(), it);
+      var requirement = new ItShouldThrowRequirement(requirementField, it);
       return requirement;
     }
   }

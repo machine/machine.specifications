@@ -8,8 +8,8 @@
     <ProjectGuid>{7CB38828-8299-4BDB-924F-D590A8C44230}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Machine.SpecificationsAdapter</RootNamespace>
-    <AssemblyName>Machine.SpecificationsAdapter</AssemblyName>
+    <RootNamespace>Machine.Specifications.GallioAdapter</RootNamespace>
+    <AssemblyName>Machine.Specifications.GallioAdapter</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -49,8 +49,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MachineSpecificationExplorer.cs" />
-    <Compile Include="MachineSpecificationFramework.cs" />
+    <Compile Include="MachineSpecificationsExplorer.cs" />
+    <Compile Include="MachineSpecificationsFramework.cs" />
+    <Compile Include="Model\MachineRequirementTest.cs" />
+    <Compile Include="Model\MachineSpecificationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -70,6 +72,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Machine.Specifications.GallioAdapter.Plugin" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

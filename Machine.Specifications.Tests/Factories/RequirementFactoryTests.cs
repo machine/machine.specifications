@@ -23,6 +23,12 @@ namespace Machine.Specifications.Factories
     {
       requirement.ItClause.ShouldEqual("is a requirement");
     }
+
+    [Test]
+    public void ShouldHaveFieldInfo()
+    {
+      requirement.Field.Name.ShouldEqual("is_a_requirement");
+    }
   }
 
   [TestFixture]

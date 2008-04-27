@@ -5,22 +5,9 @@ using System.Text;
 
 namespace Machine.Specifications.Example
 {
-  public abstract class with_from_account_and_to_account : Context
-  {
-    protected static Account fromAccount;
-    protected static Account toAccount;
-
-    public override void SetupContext()
-    {
-      fromAccount = new Account { Balance = 1m };
-      toAccount = new Account { Balance = 1m };
-    }
-  }
-
   [Specification]
   public class When_transfering_between_two_accounts_with_no_context
   {
-    private int foo;
     When the_transfer_is_made =()=>
     {
       fromAccount = new Account { Balance = 1m };
@@ -64,6 +51,18 @@ namespace Machine.Specifications.Example
     protected static Account fromAccount;
     protected static Account toAccount;
     public void SetupContext()
+    {
+      fromAccount = new Account { Balance = 1m };
+      toAccount = new Account { Balance = 1m };
+    }
+  }
+
+  public abstract class with_from_account_and_to_account : Context
+  {
+    protected static Account fromAccount;
+    protected static Account toAccount;
+
+    public override void SetupContext()
     {
       fromAccount = new Account { Balance = 1m };
       toAccount = new Account { Balance = 1m };

@@ -10,9 +10,15 @@ namespace Machine.Specifications.Model
   {
     public string ItClause { get; private set; }
 
-    public Requirement(string itClause)
+    public FieldInfo Field
     {
-      ItClause = itClause;
+      get; private set;
+    }
+
+    protected Requirement(FieldInfo fieldInfo)
+    {
+      ItClause = fieldInfo.Name.ReplaceUnderscores();
+      Field = fieldInfo;
     }
 
     public abstract RequirementVerificationResult Verify(VerificationContext verificationContext);
@@ -22,7 +28,7 @@ namespace Machine.Specifications.Model
   {
     private It _verifier;
 
-    public ItRequirement(string itClause, It verifier) : base(itClause)
+    public ItRequirement(FieldInfo fieldInfo, It verifier) : base(fieldInfo)
     {
       _verifier = verifier;
     }
@@ -39,7 +45,7 @@ namespace Machine.Specifications.Model
   {
     private It_should_throw _verifier;
 
-    public ItShouldThrowRequirement(string itClause, It_should_throw verifier) : base(itClause)
+    public ItShouldThrowRequirement(FieldInfo fieldInfo, It_should_throw verifier) : base(fieldInfo)
     {
       _verifier = verifier;
     }

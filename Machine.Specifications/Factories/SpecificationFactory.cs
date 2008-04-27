@@ -58,7 +58,7 @@ namespace Machine.Specifications.Factories
         }
       };
 
-      var specification = new Specification(type.Name.ReplaceUnderscores(), instance, contextSetup) { 
+      var specification = new Specification(type, instance, contextSetup) { 
             WhenClause = whenClause
           };
 

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Machine.SpecificationsAdapter.Properties {
+namespace Machine.Specifications.GallioAdapter.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Machine.SpecificationsAdapter.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Machine.SpecificationsAdapter.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Machine.Specifications.GallioAdapter.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

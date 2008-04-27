@@ -5,7 +5,7 @@ using Gallio.Model;
 
 namespace Machine.Specifications.GallioAdapter
 {
-  public class MachineSpecificationFramework : BaseTestFramework
+  public class MachineSpecificationsFramework : BaseTestFramework
   {
     public override string Name
     {
@@ -14,7 +14,7 @@ namespace Machine.Specifications.GallioAdapter
 
     public override ITestExplorer CreateTestExplorer(TestModel testModel)
     {
-      return new MachineSpecificationExplorer(testModel);
+      return new MachineSpecificationsExplorer(testModel);
     }
   }
 }

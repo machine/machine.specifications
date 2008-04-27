@@ -22,9 +22,15 @@ namespace Machine.Specifications.Model
       get { return _requirements; }
     }
 
-    public Specification(string name, object instance, Action<VerificationContext> contextSetup)
+    public Type Type
     {
-      Name = name;
+      get; private set;
+    }
+
+    public Specification(Type type, object instance, Action<VerificationContext> contextSetup)
+    {
+      Name = type.Name.ReplaceUnderscores();
+      Type = type;
       _instance = instance;
       _contextSetup = contextSetup;
       _requirements = new List<Requirement>();
@@ -37,17 +43,17 @@ namespace Machine.Specifications.Model
 
     public SpecificationVerificationResult Verify()
     {
-      var verificationContext = new VerificationContext();
-      var requirementResults = VerifyRequirements(verificationContext).ToList();
+      var requirementResults = VerifyRequirements().ToList();
       return new SpecificationVerificationResult(requirementResults);
     }
 
-    private IEnumerable<RequirementVerificationResult> VerifyRequirements(VerificationContext verificationContext)
+    private IEnumerable<RequirementVerificationResult> VerifyRequirements()
     {
+      var context = new VerificationContext();
       foreach (Requirement requirement in _requirements)
       {
-        _contextSetup(verificationContext);
-        yield return requirement.Verify(verificationContext);
+        _contextSetup(context);
+        yield return requirement.Verify(context);
       }
     }
   }

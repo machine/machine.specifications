@@ -6,6 +6,7 @@ using Gallio.Model;
 using Gallio.Reflection;
 using Machine.Specifications.Example;
 using Machine.SpecificationsAdapter;
+using Machine.SpecificationsAdapter.Model;
 using NUnit.Framework;
 
 namespace Machine.Specifications.GallioAdapter.Tests
@@ -15,7 +16,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
   {
     protected override Gallio.Model.ITestFramework CreateFramework()
     {
-      return new MachineSpecificationFramework();
+      return new MachineSpecificationsFramework();
     }
 
     protected override System.Reflection.Assembly GetSampleAssembly()
@@ -64,6 +65,48 @@ namespace Machine.Specifications.GallioAdapter.Tests
       Assert.AreEqual(sampleAssembly.GetName().Name, assemblyTest.Name);
       Assert.IsFalse(assemblyTest.IsTestCase);
       Assert.GreaterOrEqual(assemblyTest.Children.Count, 1);
+    }
+
+    [Test]
+    public void SpecificationTestShouldBeValid()
+    {
+      PopulateTestTree();
+      RootTest rootTest = testModel.RootTest;
+      BaseTest frameworkTest = (BaseTest)rootTest.Children[0];
+      BaseTest assemblyTest = (BaseTest)frameworkTest.Children[0];
+      MachineSpecificationTest fixtureTest =
+        (MachineSpecificationTest)
+          GetDescendantByName(assemblyTest, "When transfering an amount greater than the balance of the from account");
+      Assert.AreSame(assemblyTest, fixtureTest.Parent);
+      Assert.AreEqual(TestKinds.Fixture, fixtureTest.Kind);
+      Assert.AreEqual(new CodeReference(sampleAssembly.FullName, "Machine.Specifications.Example", "Machine.Specifications.Example.When_transfering_an_amount_greater_than_the_balance_of_the_from_account", null, null),
+          fixtureTest.CodeElement.CodeReference);
+      Assert.AreEqual("When transfering an amount greater than the balance of the from account", fixtureTest.Name);
+      Assert.IsFalse(fixtureTest.IsTestCase);
+      Assert.AreEqual(1, fixtureTest.Children.Count);
+    }
+
+    [Test]
+    public void RequirementTestShouldBeValid()
+    {
+      PopulateTestTree();
+      RootTest rootTest = testModel.RootTest;
+      BaseTest frameworkTest = (BaseTest)rootTest.Children[0];
+      BaseTest assemblyTest = (BaseTest)frameworkTest.Children[0];
+      MachineSpecificationTest fixtureTest =
+        (MachineSpecificationTest)
+          GetDescendantByName(assemblyTest, "When transfering an amount greater than the balance of the from account");
+
+      MachineRequirementTest test = (MachineRequirementTest) GetDescendantByName(fixtureTest, "a System Exception");
+      Assert.AreSame(fixtureTest, test.Parent);
+      Assert.AreEqual(TestKinds.Test, test.Kind);
+      Assert.AreEqual(
+        new CodeReference(sampleAssembly.FullName, "Machine.Specifications.Example",
+          "Machine.Specifications.Example.When_transfering_an_amount_greater_than_the_balance_of_the_from_account", "a_System_Exception", null),
+        test.CodeElement.CodeReference);
+      Assert.AreEqual("a System Exception", test.Name);
+      Assert.IsTrue(test.IsTestCase);
+      Assert.AreEqual(0, test.Children.Count);
     }
   }
 }

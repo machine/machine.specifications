@@ -1,13 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using Gallio.Model;
 using Gallio.Reflection;
-using Machine.SpecificationsAdapter.Properties;
+using Machine.Specifications.Explorers;
+using Machine.Specifications.GallioAdapter.Properties;
+using Machine.Specifications.Model;
+using Machine.SpecificationsAdapter.Model;
 
 namespace Machine.Specifications.GallioAdapter
 {
-  public class MachineSpecificationExplorer : BaseTestExplorer
+  public class MachineSpecificationsExplorer : BaseTestExplorer
   {
     private const string MachineSpecificationsAssemblyDisplayName = @"Machine.Specifications";
 
@@ -15,7 +19,7 @@ namespace Machine.Specifications.GallioAdapter
     public readonly Dictionary<IAssemblyInfo, ITest> assemblyTests;
     public readonly Dictionary<ITypeInfo, ITest> typeTests;
 
-    public MachineSpecificationExplorer(TestModel testModel)
+    public MachineSpecificationsExplorer(TestModel testModel)
       : base(testModel)
     {
       frameworkTests = new Dictionary<Version, ITest>();
@@ -69,11 +73,31 @@ namespace Machine.Specifications.GallioAdapter
 
       if (populateRecursively)
       {
-        foreach (ITypeInfo type in assembly.GetExportedTypes())
-          TryGetTypeTest(type, assemblyTest);
+        PopulateAssemblyTest(assembly, assemblyTest);
       }
 
       return assemblyTest;
+    }
+
+    private void PopulateAssemblyTest(IAssemblyInfo assembly, ITest assemblyTest)
+    {
+      AssemblyExplorer explorer = new AssemblyExplorer();
+      var specifications = explorer.FindSpecificationsIn(assembly.Resolve());
+      foreach (var specification in specifications)
+      {
+        var specificationTest = new MachineSpecificationTest(specification);
+        assemblyTest.AddChild(specificationTest);
+
+        PopulateSpecificationTest(specification, specificationTest);
+      }
+    }
+
+    private void PopulateSpecificationTest(Specification specification, MachineSpecificationTest test)
+    {
+      foreach (var requirement in specification.Requirements)
+      {
+        test.AddChild(new MachineRequirementTest(requirement));
+      }
     }
 
     private static ITest CreateFrameworkTest(Version frameworkVersion)
@@ -94,6 +118,7 @@ namespace Machine.Specifications.GallioAdapter
 
       return assemblyTest;
     }
+
     private ITest TryGetTypeTest(ITypeInfo type, ITest assemblyTest)
     {
       ITest typeTest;
