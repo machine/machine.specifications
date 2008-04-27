@@ -39,6 +39,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.MsWcf", "Machine.Ms
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.MsMvc.Tests", "Machine.MsMvc.Tests\Machine.MsMvc.Tests.csproj", "{25154EAD-4903-4E8E-AF3B-F293C4FBA558}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications", "Machine.Specifications\Machine.Specifications.csproj", "{CCD02629-1262-4F78-9E9F-AC97B942D0E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter", "Machine.SpecificationsAdapter\Machine.Specifications.GallioAdapter.csproj", "{7CB38828-8299-4BDB-924F-D590A8C44230}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.Tests", "Machine.Specifications.GallioAdapter.Tests\Machine.Specifications.GallioAdapter.Tests.csproj", "{C0B4E7EB-7D1F-44B9-B8C1-F989A91D3655}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example", "Machine.Specifications.Example\Machine.Specifications.Example.csproj", "{2C28C643-31A2-44CA-B762-953A963F6F61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Tests", "Machine.Specifications.Tests\Machine.Specifications.Tests.csproj", "{FE10826D-F2C7-4FF3-A135-9EA9EF2C9CB4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +131,26 @@ Global
 		{25154EAD-4903-4E8E-AF3B-F293C4FBA558}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25154EAD-4903-4E8E-AF3B-F293C4FBA558}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25154EAD-4903-4E8E-AF3B-F293C4FBA558}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCD02629-1262-4F78-9E9F-AC97B942D0E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCD02629-1262-4F78-9E9F-AC97B942D0E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCD02629-1262-4F78-9E9F-AC97B942D0E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCD02629-1262-4F78-9E9F-AC97B942D0E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CB38828-8299-4BDB-924F-D590A8C44230}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CB38828-8299-4BDB-924F-D590A8C44230}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CB38828-8299-4BDB-924F-D590A8C44230}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CB38828-8299-4BDB-924F-D590A8C44230}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0B4E7EB-7D1F-44B9-B8C1-F989A91D3655}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0B4E7EB-7D1F-44B9-B8C1-F989A91D3655}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0B4E7EB-7D1F-44B9-B8C1-F989A91D3655}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0B4E7EB-7D1F-44B9-B8C1-F989A91D3655}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C28C643-31A2-44CA-B762-953A963F6F61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C28C643-31A2-44CA-B762-953A963F6F61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C28C643-31A2-44CA-B762-953A963F6F61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C28C643-31A2-44CA-B762-953A963F6F61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE10826D-F2C7-4FF3-A135-9EA9EF2C9CB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE10826D-F2C7-4FF3-A135-9EA9EF2C9CB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE10826D-F2C7-4FF3-A135-9EA9EF2C9CB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE10826D-F2C7-4FF3-A135-9EA9EF2C9CB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
