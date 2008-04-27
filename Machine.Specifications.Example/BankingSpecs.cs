@@ -18,7 +18,7 @@ namespace Machine.Specifications.Example
   }
 
   [Specification]
-  public class when_transfering_between_two_accounts_with_no_context
+  public class When_transfering_between_two_accounts_with_no_context
   {
     private int foo;
     When the_transfer_is_made =()=>
@@ -43,7 +43,7 @@ namespace Machine.Specifications.Example
   }
 
   [Specification]
-  public class when_transfering_between_two_accounts_has_context
+  public class When_transfering_between_two_accounts_has_context
     : IHasContext
   {
     When the_transfer_is_made =()=>
@@ -71,7 +71,7 @@ namespace Machine.Specifications.Example
   }
 
   [Specification]
-  public class when_transfering_between_two_accounts 
+  public class When_transfering_between_two_accounts 
     : with_from_account_and_to_account
   {
     When the_transfer_is_made =()=>
@@ -91,7 +91,7 @@ namespace Machine.Specifications.Example
   }
 
   [Specification]
-  public class when_transfering_an_amount_greater_than_the_balance_of_the_from_account
+  public class When_transfering_an_amount_greater_than_the_balance_of_the_from_account
     : with_from_account_and_to_account
   {
     When the_transfer_is_made =()=>
@@ -99,14 +99,9 @@ namespace Machine.Specifications.Example
       fromAccount.Transfer(2m, toAccount);
     };
 
-    It should_not_allow_the_transfer =()=>
+    It_should_throw a_System_Exception =x=>
     {
-      exception.ShouldNotBeNull();
-    };
-
-    It should_raise_System_Exception =()=>
-    {
-      exception.ShouldBeOfType(typeof(Exception));
+      x.ShouldBeOfType<Exception>();
     };
   }
 }

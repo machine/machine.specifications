@@ -58,6 +58,11 @@ namespace Machine.Specifications
       Assert.IsInstanceOfType(expected, actual);
     }
 
+    public static void ShouldBeOfType<T>(this object actual)
+    {
+      Assert.IsInstanceOfType(typeof(T), actual);
+    }
+
     public static void ShouldBe(this object actual, Type expected)
     {
       Assert.IsInstanceOfType(expected, actual);
@@ -148,7 +153,12 @@ namespace Machine.Specifications
       StringAssert.Contains(expected, exception.Message);
     }
 
-    public static void ShouldHaveSameContentsAs<T>(this IEnumerable<T> actual, IEnumerable<T> expected)
+    public static void ShouldContainOnly<T>(this IEnumerable<T> actual, params T[] expected)
+    {
+      CollectionAssert.AreEqual(expected, actual);
+    }
+
+    public static void ShouldContainOnly<T>(this IEnumerable<T> actual, IEnumerable<T> expected)
     {
       CollectionAssert.AreEqual(expected, actual);
     }

@@ -53,9 +53,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExampleSpecifications.cs" />
     <Compile Include="Explorers\AssemblyExplorerTests.cs" />
+    <Compile Include="Factories\RequirementFactoryTests.cs" />
     <Compile Include="GeneralTests.cs" />
+    <Compile Include="Model\RequirementTests.cs" />
+    <Compile Include="Model\SpecificationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Verifiers\SpecificationVerifierTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications.Example\Machine.Specifications.Example.csproj">

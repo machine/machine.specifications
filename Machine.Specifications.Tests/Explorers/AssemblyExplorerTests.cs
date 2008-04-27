@@ -17,7 +17,7 @@ namespace Machine.Specifications.Explorers
 
     public override void BeforeEachTest()
     {
-      specifications = Target.FindSpecifications(typeof (Account).Assembly);
+      specifications = Target.FindSpecificationsIn(typeof (Account).Assembly);
     }
 
     [Test]
@@ -31,11 +31,11 @@ namespace Machine.Specifications.Explorers
     public void ShouldReturnFourSpecificationsNamedCorrectly()
     {
       var names = specifications.Select(x => x.Name).ToList();
-      names.ShouldHaveSameContentsAs(new [] { 
-      "when transfering between two accounts with no context",
-      "when transfering between two accounts has context",
-      "when transfering between two accounts",
-      "when transfering an amount greater than the balance of the from account"});
+      names.ShouldContainOnly(
+        "When transfering between two accounts with no context",
+        "When transfering between two accounts has context",
+        "When transfering between two accounts",
+        "When transfering an amount greater than the balance of the from account");
     }
   }
 
@@ -47,9 +47,9 @@ namespace Machine.Specifications.Explorers
 
     public override void  BeforeEachTest()
     {
-      specifications = Target.FindSpecifications(typeof (Account).Assembly);
+      specifications = Target.FindSpecificationsIn(typeof (Account).Assembly);
       specification =
-        specifications.Where(x => x.Name == "when transfering between two accounts with no context").FirstOrDefault();
+        specifications.Where(x => x.Name == "When transfering between two accounts with no context").FirstOrDefault();
       specification.ShouldNotBeNull();
     }
 
@@ -63,9 +63,9 @@ namespace Machine.Specifications.Explorers
     public void ShouldHaveRequirementsWithCorrectItClauses()
     {
       var names = specification.Requirements.Select(x => x.ItClause).ToList();
-      names.ShouldHaveSameContentsAs(new [] {
+      names.ShouldContainOnly(
         "should debit the from account by the amount transferred",
-        "should credit the to account by the amount transferred"});
+        "should credit the to account by the amount transferred");
     }
 
     [Test]

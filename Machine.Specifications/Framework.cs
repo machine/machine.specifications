@@ -8,6 +8,7 @@ namespace Machine.Specifications
   public delegate void Given();
   public delegate void When();
   public delegate void It();
+  public delegate void It_should_throw(Exception exception);
 
   public interface IHasContext
   {

@@ -52,11 +52,18 @@
     <Compile Include="Explorers\AssemblyExplorer.cs" />
     <Compile Include="Explorers\SpecificationExplorer.cs" />
     <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="Factories\RequirementFactory.cs" />
+    <Compile Include="Factories\SpecificationFactory.cs" />
     <Compile Include="Model\Requirement.cs" />
+    <Compile Include="Model\RequirementVerificationResult.cs" />
     <Compile Include="Model\Specification.cs" />
+    <Compile Include="Model\SpecificationVerificationResult.cs" />
+    <Compile Include="Model\VerificationContext.cs" />
     <Compile Include="Naming.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Framework.cs" />
+    <Compile Include="ReflectionHelper.cs" />
+    <Compile Include="Verifiers\SpecificationVerifier.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
