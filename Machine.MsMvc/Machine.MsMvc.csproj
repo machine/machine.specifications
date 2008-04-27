@@ -63,7 +63,7 @@
   <ItemGroup>
     <Compile Include="AttributeAwareControllerPreparer.cs" />
     <Compile Include="DefaultAvailableViewEngines.cs" />
-    <Compile Include="DemultiplexingViewFactory.cs" />
+    <Compile Include="DemultiplexingViewEngine.cs" />
     <Compile Include="IAvailableViewEnginesProvider.cs" />
     <Compile Include="ReflectiveControllerTypeMap.cs" />
     <Compile Include="IControllerTypeMap.cs" />

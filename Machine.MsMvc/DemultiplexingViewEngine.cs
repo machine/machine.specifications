@@ -7,13 +7,13 @@ using MvcContrib.ViewFactories;
 
 namespace Machine.MsMvc
 {
-  public class DemultiplexingViewFactory : IViewEngine
+  public class DemultiplexingViewEngine : IViewEngine
   {
     private readonly IViewSourceLoader _viewSourceLoader;
     private readonly IAvailableViewEnginesProvider _availableViewEngines;
     private readonly Dictionary<string, IViewEngine> _cache = new Dictionary<string, IViewEngine>();
 
-    public DemultiplexingViewFactory(IViewSourceLoader viewSourceLoader, IAvailableViewEnginesProvider availableViewEngines)
+    public DemultiplexingViewEngine(IViewSourceLoader viewSourceLoader, IAvailableViewEnginesProvider availableViewEngines)
     {
       _viewSourceLoader = viewSourceLoader;
       _availableViewEngines = availableViewEngines;
