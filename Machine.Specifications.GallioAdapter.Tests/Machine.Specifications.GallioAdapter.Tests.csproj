@@ -62,7 +62,7 @@
       <Project>{2C28C643-31A2-44CA-B762-953A963F6F61}</Project>
       <Name>Machine.Specifications.Example</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Machine.SpecificationsAdapter\Machine.Specifications.GallioAdapter.csproj">
+    <ProjectReference Include="..\Machine.Specifications.GallioAdapter\Machine.Specifications.GallioAdapter.csproj">
       <Project>{7CB38828-8299-4BDB-924F-D590A8C44230}</Project>
       <Name>Machine.Specifications.GallioAdapter</Name>
     </ProjectReference>

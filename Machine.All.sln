@@ -41,7 +41,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.MsMvc.Tests", "Mach
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications", "Machine.Specifications\Machine.Specifications.csproj", "{CCD02629-1262-4F78-9E9F-AC97B942D0E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter", "Machine.SpecificationsAdapter\Machine.Specifications.GallioAdapter.csproj", "{7CB38828-8299-4BDB-924F-D590A8C44230}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter", "Machine.Specifications.GallioAdapter\Machine.Specifications.GallioAdapter.csproj", "{7CB38828-8299-4BDB-924F-D590A8C44230}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.Tests", "Machine.Specifications.GallioAdapter.Tests\Machine.Specifications.GallioAdapter.Tests.csproj", "{C0B4E7EB-7D1F-44B9-B8C1-F989A91D3655}"
 EndProject
