@@ -76,14 +76,14 @@ namespace Machine.Specifications.GallioAdapter.Tests
       BaseTest assemblyTest = (BaseTest)frameworkTest.Children[0];
       MachineSpecificationTest fixtureTest =
         (MachineSpecificationTest)
-          GetDescendantByName(assemblyTest, "When transfering an amount greater than the balance of the from account");
+          GetDescendantByName(assemblyTest, "Transferring between from account and to account");
       Assert.AreSame(assemblyTest, fixtureTest.Parent);
       Assert.AreEqual(TestKinds.Fixture, fixtureTest.Kind);
-      Assert.AreEqual(new CodeReference(sampleAssembly.FullName, "Machine.Specifications.Example", "Machine.Specifications.Example.When_transfering_an_amount_greater_than_the_balance_of_the_from_account", null, null),
+      Assert.AreEqual(new CodeReference(sampleAssembly.FullName, "Machine.Specifications.Example", "Machine.Specifications.Example.Transferring_between_from_account_and_to_account", null, null),
           fixtureTest.CodeElement.CodeReference);
-      Assert.AreEqual("When transfering an amount greater than the balance of the from account", fixtureTest.Name);
+      Assert.AreEqual("Transferring between from account and to account", fixtureTest.Name);
       Assert.IsFalse(fixtureTest.IsTestCase);
-      Assert.AreEqual(1, fixtureTest.Children.Count);
+      Assert.AreEqual(2, fixtureTest.Children.Count);
     }
 
     [Test]
@@ -95,16 +95,16 @@ namespace Machine.Specifications.GallioAdapter.Tests
       BaseTest assemblyTest = (BaseTest)frameworkTest.Children[0];
       MachineSpecificationTest fixtureTest =
         (MachineSpecificationTest)
-          GetDescendantByName(assemblyTest, "When transfering an amount greater than the balance of the from account");
+          GetDescendantByName(assemblyTest, "Transferring between from account and to account");
 
-      MachineRequirementTest test = (MachineRequirementTest) GetDescendantByName(fixtureTest, "a System Exception");
+      MachineRequirementTest test = (MachineRequirementTest) GetDescendantByName(fixtureTest, "should debit the from account by the amount transferred");
       Assert.AreSame(fixtureTest, test.Parent);
       Assert.AreEqual(TestKinds.Test, test.Kind);
       Assert.AreEqual(
         new CodeReference(sampleAssembly.FullName, "Machine.Specifications.Example",
-          "Machine.Specifications.Example.When_transfering_an_amount_greater_than_the_balance_of_the_from_account", "a_System_Exception", null),
+          "Machine.Specifications.Example.Transferring_between_from_account_and_to_account", "should_debit_the_from_account_by_the_amount_transferred", null),
         test.CodeElement.CodeReference);
-      Assert.AreEqual("a System Exception", test.Name);
+      Assert.AreEqual("should debit the from account by the amount transferred", test.Name);
       Assert.IsTrue(test.IsTestCase);
       Assert.AreEqual(0, test.Children.Count);
     }

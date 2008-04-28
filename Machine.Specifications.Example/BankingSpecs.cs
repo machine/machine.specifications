@@ -11,11 +11,6 @@ namespace Machine.Specifications.Example
     static Account fromAccount;
     static Account toAccount;
 
-    Before all =()=>
-    {
-      Console.WriteLine("Starting!!!");
-    };
-
     Before each =()=>
     {
       fromAccount = new Account {Balance = 1m};
