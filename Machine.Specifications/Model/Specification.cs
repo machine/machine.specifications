@@ -9,7 +9,11 @@ namespace Machine.Specifications.Model
   {
     private List<Requirement> _requirements;
     private object _instance;
-    private Action<VerificationContext> _contextSetup;
+    private IEnumerable<Before> _beforeEachs;
+    private IEnumerable<Before> _beforeAlls;
+    private IEnumerable<After> _afterEachs;
+    private IEnumerable<After> _afterAlls;
+    private When _when;
     public string Name { get; private set; }
     public string WhenClause { get; set; }
     public object Instance
@@ -27,12 +31,16 @@ namespace Machine.Specifications.Model
       get; private set;
     }
 
-    public Specification(Type type, object instance, Action<VerificationContext> contextSetup)
+    public Specification(Type type, object instance, IEnumerable<Before> beforeEachs, IEnumerable<Before> beforeAlls, IEnumerable<After> afterEachs, IEnumerable<After> afterAlls, When when)
     {
       Name = type.Name.ReplaceUnderscores();
       Type = type;
       _instance = instance;
-      _contextSetup = contextSetup;
+      _when = when;
+      _afterAlls = afterAlls;
+      _afterEachs = afterEachs;
+      _beforeAlls = beforeAlls;
+      _beforeEachs = beforeEachs;
       _requirements = new List<Requirement>();
     }
 
@@ -49,12 +57,36 @@ namespace Machine.Specifications.Model
 
     private IEnumerable<RequirementVerificationResult> VerifyRequirements()
     {
+      _beforeAlls.InvokeAll();
+      var results = ExecuteRequirements();
+      _afterAlls.InvokeAll();
+
+      return results;
+    }
+
+    private IEnumerable<RequirementVerificationResult> ExecuteRequirements()
+    {
       var context = new VerificationContext();
+      var results = new List<RequirementVerificationResult>();
       foreach (Requirement requirement in _requirements)
       {
-        _contextSetup(context);
-        yield return requirement.Verify(context);
+        _beforeEachs.InvokeAll();
+        if (_when != null)
+        {
+          try
+          {
+            _when();
+          }
+          catch (Exception exception)
+          {
+            context.ThrownException = exception;
+          }
+        }
+        results.Add(requirement.Verify(context));
+        _afterEachs.InvokeAll();
       }
+
+      return results;
     }
   }
 }

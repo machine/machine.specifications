@@ -5,7 +5,12 @@ using System.Text;
 
 namespace Machine.Specifications
 {
-  public class SpecificationWithThrowingRequirement
+  public interface IFakeSpecification
+  {
+    void Reset();
+  }
+
+  public class SpecificationWithThrowingRequirement : IFakeSpecification
   {
     public static bool WhenInvoked = false;
     public static bool ItInvoked = false;
@@ -19,12 +24,33 @@ namespace Machine.Specifications
     {
       ItInvoked = true;
     };
+
+    public void Reset()
+    {
+      WhenInvoked = false;
+      ItInvoked = false;
+    }
   }
 
-  public class SpecificationWithSingleRequirement
+  public class SpecificationWithSingleRequirement : IFakeSpecification
   {
     public static bool WhenInvoked = false;
     public static bool ItInvoked = false;
+    public static bool BeforeEachInvoked = false;
+    public static bool BeforeAllInvoked = false;
+    public static bool AfterEachInvoked = false;
+    public static bool AfterAllInvoked = false;
+
+    Before each =()=>
+    {
+      BeforeEachInvoked = true;
+    };
+
+    Before all =()=>
+    {
+      BeforeAllInvoked = true;
+    };
+
     When it_happens = () =>
     {
       WhenInvoked = true;
@@ -34,5 +60,49 @@ namespace Machine.Specifications
     {
       ItInvoked = true;
     };
+
+    After _each =()=>
+    {
+      AfterEachInvoked = true;
+    };
+
+    After _all =()=>
+    {
+      AfterAllInvoked = true;
+    };
+
+    public void Reset()
+    {
+      WhenInvoked = false;
+      ItInvoked = false;
+      BeforeEachInvoked = false;
+      BeforeAllInvoked = false;
+      AfterEachInvoked = false;
+      AfterAllInvoked = false;
+    }
+  }
+
+  public class SpecificationWithBadlyNamedBefore : IFakeSpecification
+  {
+    Before foo =()=>
+    {
+      
+    };
+
+    public void Reset()
+    {
+    }
+  }
+
+  public class SpecificationWithBadlyNamedAfter : IFakeSpecification
+  {
+    After foo =()=>
+    {
+      
+    };
+
+    public void Reset()
+    {
+    }
   }
 }

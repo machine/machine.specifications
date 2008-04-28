@@ -23,8 +23,7 @@ namespace Machine.Specifications.Explorers
     [Test]
     public void ShouldReturnFourSpecifications()
     {
-
-      specifications.Count().ShouldEqual(4);
+      specifications.Count().ShouldEqual(3);
     }
 
     [Test]
@@ -32,10 +31,9 @@ namespace Machine.Specifications.Explorers
     {
       var names = specifications.Select(x => x.Name).ToList();
       names.ShouldContainOnly(
-        "When transfering between two accounts with no context",
-        "When transfering between two accounts has context",
-        "When transfering between two accounts",
-        "When transfering an amount greater than the balance of the from account");
+        "Transferring between from account and to account",
+        "Transferring between two accounts",
+        "Transferring an amount greater than the balance of the from account");
     }
   }
 
@@ -49,7 +47,7 @@ namespace Machine.Specifications.Explorers
     {
       specifications = Target.FindSpecificationsIn(typeof (Account).Assembly);
       specification =
-        specifications.Where(x => x.Name == "When transfering between two accounts with no context").FirstOrDefault();
+        specifications.Where(x => x.Name == "Transferring between from account and to account").FirstOrDefault();
       specification.ShouldNotBeNull();
     }
 

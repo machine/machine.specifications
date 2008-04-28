@@ -25,6 +25,14 @@ namespace Machine.Specifications.Factories
       FieldInfo whenFieldInfo = null;
       When when = null;
 
+      var beforeAlls = ExtractPrivateFieldValues<Before>(instance, "all");
+      var beforeEachs = ExtractPrivateFieldValues<Before>(instance, "each");
+      beforeAlls.Reverse();
+      beforeEachs.Reverse();
+
+      var afterAlls = ExtractPrivateFieldValues<After>(instance, "_all");
+      var afterEachs = ExtractPrivateFieldValues<After>(instance, "_each");
+
       foreach (FieldInfo info in fieldInfos)
       {
         if (info.FieldType == typeof (When))
@@ -33,32 +41,14 @@ namespace Machine.Specifications.Factories
           whenClause = info.Name.ReplaceUnderscores();
           when = (When)whenFieldInfo.GetValue(instance);
         }
-        if (info.FieldType == typeof(It) ||
+        else if (info.FieldType == typeof(It) ||
             info.FieldType == typeof(It_should_throw))
         {
           itFieldInfos.Add(info);
         }
       }
 
-      var instanceWithContext = instance as IHasContext;
-      Action<VerificationContext> contextSetup = context=>
-      {
-        if (instanceWithContext != null)
-          instanceWithContext.SetupContext();
-        if (when != null)
-        {
-          try
-          {
-            when();
-          }
-          catch (Exception exception)
-          {
-            context.ThrownException = exception;
-          }
-        }
-      };
-
-      var specification = new Specification(type, instance, contextSetup) { 
+      var specification = new Specification(type, instance, beforeEachs, beforeAlls, afterEachs, afterAlls, when) { 
             WhenClause = whenClause
           };
 
@@ -69,6 +59,25 @@ namespace Machine.Specifications.Factories
       }
 
       return specification;
+    }
+
+    private List<T> ExtractPrivateFieldValues<T>(object instance, string name)
+    {
+      var delegates = new List<T>();
+      var type = instance.GetType();
+      while (type != null)
+      {
+        FieldInfo field = type.GetPrivateFieldsWith(typeof(T)).Where(x => x.Name == name).FirstOrDefault();
+        if (field != null)
+        {
+          T val = (T)field.GetValue(instance);
+          delegates.Add(val);
+        }
+
+        type = type.BaseType;
+      }
+
+      return delegates;
     }
   }
 }

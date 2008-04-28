@@ -7,7 +7,25 @@ using NUnit.Framework;
 
 namespace Machine.Specifications
 {
-  public static class ExtensionMethods
+  public static class RandomExtensionMethods
+  {
+    public static void InvokeAll(this IEnumerable<Before> befores)
+    {
+      foreach (Before before in befores)
+      {
+        before();
+      }
+    }
+
+    public static void InvokeAll(this IEnumerable<After> afters)
+    {
+      foreach (After after in afters)
+      {
+        after();
+      }
+    }
+  }
+  public static class ShouldExtensionMethods
   {
     public static void ShouldBeFalse(this bool condition)
     {

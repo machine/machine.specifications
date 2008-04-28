@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace Machine.Specifications.Factories
 {
   [TestFixture]
-  public class SpecificationFactoryTests : WithSpecificationWithSingleRequirement
+  public class SpecificationFactoryTests : With<SpecificationWithSingleRequirement>
   {
     [Test]
     public void ShouldSetType()

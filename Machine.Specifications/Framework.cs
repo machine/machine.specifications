@@ -5,25 +5,11 @@ using System.Text;
 
 namespace Machine.Specifications
 {
-  public delegate void Given();
+  public delegate void Before();
   public delegate void When();
   public delegate void It();
   public delegate void It_should_throw(Exception exception);
-
-  public interface IHasContext
-  {
-    void SetupContext();
-  }
-
-  public class Context : IHasContext
-  {
-    protected static Exception exception;
-
-    public virtual void SetupContext()
-    {
-      
-    }
-  }
+  public delegate void After();
 
   [AttributeUsage(AttributeTargets.Class)]
   public class SpecificationAttribute : Attribute

@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace Machine.Specifications.Model
 {
   [TestFixture]
-  public class SpecificationTests : WithSpecificationWithSingleRequirement
+  public class SpecificationTests : With<SpecificationWithSingleRequirement>
   {
     public override void BeforeEachTest()
     {
@@ -23,14 +23,41 @@ namespace Machine.Specifications.Model
     {
       SpecificationWithSingleRequirement.WhenInvoked.ShouldBeTrue();
     }
+
+    [Test]
+    public void ShouldCallBeforeAll()
+    {
+      SpecificationWithSingleRequirement.BeforeAllInvoked.ShouldBeTrue();
+    }
+
+    [Test]
+    public void ShouldCallBeforeEach()
+    {
+      SpecificationWithSingleRequirement.BeforeEachInvoked.ShouldBeTrue();
+    }
+
+    [Test]
+    public void ShouldCallAfterEach()
+    {
+      SpecificationWithSingleRequirement.AfterEachInvoked.ShouldBeTrue();
+    }
+
+    [Test]
+    public void ShouldCallAfterAll()
+    {
+      SpecificationWithSingleRequirement.AfterAllInvoked.ShouldBeTrue();
+    }
   }
 
-  public class WithSpecificationWithSingleRequirement : TestsFor<SpecificationFactory>
+  public class With<T> : TestsFor<SpecificationFactory> where T : IFakeSpecification, new()
   {
     protected Specification specification;
     public override void BeforeEachTest()
     {
-      specification = Target.CreateSpecificationFrom(new SpecificationWithSingleRequirement());
+      IFakeSpecification fakeSpecification = new T();
+      fakeSpecification.Reset();
+
+      specification = Target.CreateSpecificationFrom(fakeSpecification);
     }
   }
 }
