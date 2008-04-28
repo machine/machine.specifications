@@ -5,7 +5,7 @@
       <components>
         <component id="MachineSpecifications.TestFramework"
                    service="Gallio.Model.ITestFramework, Gallio"
-                   type="Machine.Specifications.GallioAdapter.MachineSpecificationTestFramework, Machine.Specifications.GallioAdapter" />
+                   type="Machine.Specifications.GallioAdapter.MachineSpecificationsFramework, Machine.Specifications.GallioAdapter" />
       </components>
     </runtime>
   </gallio>
