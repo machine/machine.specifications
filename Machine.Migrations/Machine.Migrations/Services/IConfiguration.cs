@@ -10,6 +10,11 @@ namespace Machine.Migrations.Services
       get;
     }
 
+    Type TransactionProviderType
+    {
+      get;
+    }
+
     Type SchemaProviderType
     {
       get;
@@ -44,5 +49,12 @@ namespace Machine.Migrations.Services
     {
       get;
     }
+
+    int CommandTimeout
+    { 
+      get;
+    }
+
+    void SetCommandTimeout(int commandTimeout);
   }
 }

@@ -61,6 +61,11 @@ namespace Machine.Migrations
       _commonTransformations = commonTransformations;
     }
 
+    public void SetCommandTimeout(int timeout)
+    {
+      _configuration.SetCommandTimeout(timeout);
+    }
+
     public abstract void Up();
 
     public abstract void Down();

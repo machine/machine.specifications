@@ -15,11 +15,13 @@ namespace Machine.Migrations.DatabaseProviders
     #region Member Data
     private readonly IConnectionProvider _connectionProvider;
     private readonly ITransactionProvider _transactionProvider;
+    private readonly IConfiguration _configuration;
     #endregion
 
     #region SqlServerDatabaseProvider()
-    public SqlServerDatabaseProvider(IConnectionProvider connectionProvider, ITransactionProvider transactionProvider)
+    public SqlServerDatabaseProvider(IConnectionProvider connectionProvider, ITransactionProvider transactionProvider, IConfiguration configuration)
     {
+      _configuration = configuration;
       _connectionProvider = connectionProvider;
       _transactionProvider = transactionProvider;
     }
@@ -86,6 +88,7 @@ namespace Machine.Migrations.DatabaseProviders
     private IDbCommand PrepareCommand(string sql, object[] objects)
     {
       IDbCommand command = this.DatabaseConnection.CreateCommand();
+      command.CommandTimeout = _configuration.CommandTimeout;
       command.CommandText = String.Format(sql, objects);
       _transactionProvider.Enlist(command);
       _log.Info(command.CommandText);

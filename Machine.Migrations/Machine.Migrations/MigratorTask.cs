@@ -19,6 +19,7 @@ namespace Machine.Migrations
     private string _migrationsDirectory;
     private string _connectionString;
     private short _desiredVersion;
+    private int _commandTimeout = 30;
     private bool _diagnostics;
     private string[] _references;
 
@@ -83,17 +84,33 @@ namespace Machine.Migrations
       set { _references = value; }
     }
 
-    public Type ConnectionProviderType
+    public int CommandTimeout
+    {
+      get { return _commandTimeout; }
+      set { _commandTimeout = value; }
+    }
+
+    public void SetCommandTimeout(int commandTimeout)
+    {
+      this.CommandTimeout = commandTimeout;
+    }
+
+    public virtual Type ConnectionProviderType
     {
       get { return typeof(SqlServerConnectionProvider); }
     }
 
-    public Type SchemaProviderType
+    public virtual Type TransactionProviderType
+    {
+      get { return typeof(TransactionProvider); }
+    }
+
+    public virtual Type SchemaProviderType
     {
       get { return typeof(SqlServerSchemaProvider); }
     }
 
-    public Type DatabaseProviderType
+    public virtual Type DatabaseProviderType
     {
       get { return typeof(SqlServerDatabaseProvider); }
     }

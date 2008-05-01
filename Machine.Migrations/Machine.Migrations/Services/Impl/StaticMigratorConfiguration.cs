@@ -16,6 +16,7 @@ namespace Machine.Migrations.Services.Impl
     private short _desiredVersion = -1;
     private bool _showDiagnostics;
     private string[] _references = new string[0];
+    private int _commandTimeout = 30;
     #endregion
 
     #region StaticMigratorConfiguration()
@@ -92,6 +93,22 @@ namespace Machine.Migrations.Services.Impl
     {
       get { return _connectionProviderType; }
       set { _connectionProviderType = value; }
+    }
+
+    public int CommandTimeout 
+    {
+      get { return _commandTimeout; }
+      set { _commandTimeout = value; }
+    }
+
+    public void SetCommandTimeout(int commandTimeout)
+    {
+      this.CommandTimeout = commandTimeout;
+    }
+
+    public virtual Type TransactionProviderType
+    {
+      get { return typeof(TransactionProvider); }
     }
     #endregion
   }

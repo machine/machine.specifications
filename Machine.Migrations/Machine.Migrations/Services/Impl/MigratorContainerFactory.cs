@@ -19,7 +19,7 @@ namespace Machine.Migrations.Services.Impl
       IHighLevelContainer container = CreateContainer();
       container.Initialize();
       container.AddService<IConnectionProvider>(configuration.ConnectionProviderType);
-      container.AddService<ITransactionProvider, TransactionProvider>();
+      container.AddService<ITransactionProvider>(configuration.TransactionProviderType);
       container.AddService<IDatabaseProvider>(configuration.DatabaseProviderType);
       container.AddService<ISchemaProvider>(configuration.SchemaProviderType);
       container.AddService<IFileSystem, FileSystem>();
