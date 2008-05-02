@@ -9,19 +9,11 @@ namespace Machine.Specifications
 {
   public static class RandomExtensionMethods
   {
-    public static void InvokeAll(this IEnumerable<Before> befores)
+    public static void InvokeAll(this IEnumerable<Context> contextActions)
     {
-      foreach (Before before in befores)
+      foreach (Context contextAction in contextActions)
       {
-        before();
-      }
-    }
-
-    public static void InvokeAll(this IEnumerable<After> afters)
-    {
-      foreach (After after in afters)
-      {
-        after();
+        contextAction();
       }
     }
   }

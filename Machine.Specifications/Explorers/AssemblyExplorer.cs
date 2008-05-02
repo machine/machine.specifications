@@ -21,7 +21,7 @@ namespace Machine.Specifications.Explorers
     {
       foreach (Type type in assembly.GetExportedTypes())
       {
-        if (type.IsDefined(typeof(SpecificationAttribute), false))
+        if (type.IsDefined(typeof(DescriptionAttribute), false))
         {
           object instance = Activator.CreateInstance(type);
           yield return _specificationFactory.CreateSpecificationFrom(instance);

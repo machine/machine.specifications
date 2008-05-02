@@ -5,13 +5,13 @@ using System.Text;
 
 namespace Machine.Specifications.Example
 {
-  [Specification]
+  [Description]
   public class Transferring_between_from_account_and_to_account
   {
     static Account fromAccount;
     static Account toAccount;
 
-    Before each =()=>
+    Context before_each =()=>
     {
       fromAccount = new Account {Balance = 1m};
       toAccount = new Account {Balance = 1m};
@@ -38,14 +38,14 @@ namespace Machine.Specifications.Example
     protected static Account fromAccount;
     protected static Account toAccount;
 
-    Before each =()=>
+    Context before_each =()=>
     {
       fromAccount = new Account {Balance = 1m};
       toAccount = new Account {Balance = 1m};
     };
   }
 
-  [Specification]
+  [Description]
   public class Transferring_between_two_accounts 
     : with_from_account_and_to_account
   {
@@ -65,7 +65,7 @@ namespace Machine.Specifications.Example
     };
   }
 
-  [Specification]
+  [Description]
   public class Transferring_an_amount_greater_than_the_balance_of_the_from_account
     : with_from_account_and_to_account
   {

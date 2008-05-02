@@ -25,13 +25,13 @@ namespace Machine.Specifications.Factories
       FieldInfo whenFieldInfo = null;
       When when = null;
 
-      var beforeAlls = ExtractPrivateFieldValues<Before>(instance, "all");
-      var beforeEachs = ExtractPrivateFieldValues<Before>(instance, "each");
+      var beforeAlls = ExtractPrivateFieldValues<Context>(instance, "before_all");
+      var beforeEachs = ExtractPrivateFieldValues<Context>(instance, "before_each");
       beforeAlls.Reverse();
       beforeEachs.Reverse();
 
-      var afterAlls = ExtractPrivateFieldValues<After>(instance, "_all");
-      var afterEachs = ExtractPrivateFieldValues<After>(instance, "_each");
+      var afterAlls = ExtractPrivateFieldValues<Context>(instance, "after_all");
+      var afterEachs = ExtractPrivateFieldValues<Context>(instance, "after_each");
 
       foreach (FieldInfo info in fieldInfos)
       {

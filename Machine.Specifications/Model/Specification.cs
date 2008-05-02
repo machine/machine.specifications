@@ -9,10 +9,10 @@ namespace Machine.Specifications.Model
   {
     private List<Requirement> _requirements;
     private object _instance;
-    private IEnumerable<Before> _beforeEachs;
-    private IEnumerable<Before> _beforeAlls;
-    private IEnumerable<After> _afterEachs;
-    private IEnumerable<After> _afterAlls;
+    private IEnumerable<Context> _beforeEachs;
+    private IEnumerable<Context> _beforeAlls;
+    private IEnumerable<Context> _afterEachs;
+    private IEnumerable<Context> _afterAlls;
     private When _when;
     public string Name { get; private set; }
     public string WhenClause { get; set; }
@@ -31,7 +31,7 @@ namespace Machine.Specifications.Model
       get; private set;
     }
 
-    public Specification(Type type, object instance, IEnumerable<Before> beforeEachs, IEnumerable<Before> beforeAlls, IEnumerable<After> afterEachs, IEnumerable<After> afterAlls, When when)
+    public Specification(Type type, object instance, IEnumerable<Context> beforeEachs, IEnumerable<Context> beforeAlls, IEnumerable<Context> afterEachs, IEnumerable<Context> afterAlls, When when)
     {
       Name = type.Name.ReplaceUnderscores();
       Type = type;

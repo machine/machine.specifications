@@ -41,12 +41,12 @@ namespace Machine.Specifications
     public static bool AfterEachInvoked = false;
     public static bool AfterAllInvoked = false;
 
-    Before each =()=>
+    Context before_each =()=>
     {
       BeforeEachInvoked = true;
     };
 
-    Before all =()=>
+    Context before_all =()=>
     {
       BeforeAllInvoked = true;
     };
@@ -61,12 +61,12 @@ namespace Machine.Specifications
       ItInvoked = true;
     };
 
-    After _each =()=>
+    Context after_each =()=>
     {
       AfterEachInvoked = true;
     };
 
-    After _all =()=>
+    Context after_all =()=>
     {
       AfterAllInvoked = true;
     };
@@ -84,7 +84,7 @@ namespace Machine.Specifications
 
   public class SpecificationWithBadlyNamedBefore : IFakeSpecification
   {
-    Before foo =()=>
+    Context foo =()=>
     {
       
     };
@@ -96,7 +96,7 @@ namespace Machine.Specifications
 
   public class SpecificationWithBadlyNamedAfter : IFakeSpecification
   {
-    After foo =()=>
+    Context foo =()=>
     {
       
     };
