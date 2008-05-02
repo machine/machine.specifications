@@ -5,11 +5,11 @@ using System.Reflection;
 using Gallio.Model;
 using Gallio.Reflection;
 using Machine.Specifications.Explorers;
+using Machine.Specifications.GallioAdapter.Model;
 using Machine.Specifications.GallioAdapter.Properties;
 using Machine.Specifications.Model;
-using Machine.SpecificationsAdapter.Model;
 
-namespace Machine.Specifications.GallioAdapter
+namespace Machine.Specifications.GallioAdapter.Services
 {
   public class MachineSpecificationsExplorer : BaseTestExplorer
   {
@@ -117,35 +117,6 @@ namespace Machine.Specifications.GallioAdapter
       ModelUtils.PopulateMetadataFromAssembly(assembly, assemblyTest.Metadata);
 
       return assemblyTest;
-    }
-
-    private ITest TryGetTypeTest(ITypeInfo type, ITest assemblyTest)
-    {
-      ITest typeTest;
-      if (!typeTests.TryGetValue(type, out typeTest))
-      {
-        /*
-        try
-        {
-          XunitTypeInfoAdapter xunitTypeInfo = new XunitTypeInfoAdapter(type);
-          ITestClassCommand command = TestClassCommandFactory.Make(xunitTypeInfo);
-          if (command != null)
-            typeTest = CreateTypeTest(xunitTypeInfo, command);
-        }
-        catch (Exception ex)
-        {
-          TestModel.AddAnnotation(new Annotation(AnnotationType.Error, type, "An exception was thrown while exploring an xUnit.Net test type.", ex));
-        }
-
-        if (typeTest != null)
-        {
-          assemblyTest.AddChild(typeTest);
-          typeTests.Add(type, typeTest);
-        }
-        */
-      }
-
-      return typeTest;
     }
   }
 }

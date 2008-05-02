@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using Gallio.Model;
+using Machine.Specifications.GallioAdapter.Services;
 
 namespace Machine.Specifications.GallioAdapter
 {

@@ -51,7 +51,7 @@ namespace Machine.Specifications.Model
 
     public SpecificationVerificationResult Verify()
     {
-      var requirementResults = VerifyRequirements().ToList();
+      var requirementResults = VerifyRequirements();
       return new SpecificationVerificationResult(requirementResults);
     }
 
@@ -66,27 +66,45 @@ namespace Machine.Specifications.Model
 
     private IEnumerable<RequirementVerificationResult> ExecuteRequirements()
     {
-      var context = new VerificationContext();
       var results = new List<RequirementVerificationResult>();
       foreach (Requirement requirement in _requirements)
       {
-        _beforeEachs.InvokeAll();
-        if (_when != null)
-        {
-          try
-          {
-            _when();
-          }
-          catch (Exception exception)
-          {
-            context.ThrownException = exception;
-          }
-        }
-        results.Add(requirement.Verify(context));
-        _afterEachs.InvokeAll();
+        var result = VerifyRequirement(requirement);
+        results.Add(result);
       }
 
       return results;
+    }
+
+    public RequirementVerificationResult VerifyRequirement(Requirement requirement)
+    {
+      VerificationContext context = new VerificationContext();
+      _beforeEachs.InvokeAll();
+      if (_when != null)
+      {
+        try
+        {
+          _when();
+        }
+        catch (Exception exception)
+        {
+          context.ThrownException = exception;
+        }
+      }
+      var result = requirement.Verify(context);
+      _afterEachs.InvokeAll();
+
+      return result;
+    }
+
+    public void RunContextBeforeAll()
+    {
+      _beforeAlls.InvokeAll();
+    }
+
+    public void RunContextAfterAll()
+    {
+      _afterAlls.InvokeAll();
     }
   }
 }

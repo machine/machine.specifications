@@ -35,9 +35,16 @@ namespace Machine.Specifications.Model
 
     public override RequirementVerificationResult Verify(VerificationContext verificationContext)
     {
-      _verifier();
+      try
+      {
+        _verifier();
+      }
+      catch (Exception err)
+      {
+        return new RequirementVerificationResult(err);
+      }
 
-      return new RequirementVerificationResult();
+      return new RequirementVerificationResult(true);
     }
   }
 
@@ -52,9 +59,21 @@ namespace Machine.Specifications.Model
 
     public override RequirementVerificationResult Verify(VerificationContext verificationContext)
     {
-      _verifier(verificationContext.ThrownException);
+      if (verificationContext.ThrownException == null)
+      {
+        return new RequirementVerificationResult(false);
+      }
 
-      return new RequirementVerificationResult();
+      try
+      {
+        _verifier(verificationContext.ThrownException);
+      }
+      catch (Exception err)
+      {
+        return new RequirementVerificationResult(err);
+      }
+
+      return new RequirementVerificationResult(true);
     }
   }
 }

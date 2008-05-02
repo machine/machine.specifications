@@ -5,8 +5,7 @@ using System.Text;
 using Gallio.Model;
 using Gallio.Reflection;
 using Machine.Specifications.Example;
-using Machine.SpecificationsAdapter;
-using Machine.SpecificationsAdapter.Model;
+using Machine.Specifications.GallioAdapter.Model;
 using NUnit.Framework;
 
 namespace Machine.Specifications.GallioAdapter.Tests
