@@ -16,7 +16,7 @@ namespace Machine.Core.ValueTypes
     {
       public ObjectEqualityFunction AreEqual;
       public CalculateHashCodeFunction CalculateHashCode;
-      public ToStringFunction ToString;
+      public ToStringFunction MakeString;
     }
 
     public static bool AreEqual<TType>(TType a, TType b)
@@ -35,17 +35,26 @@ namespace Machine.Core.ValueTypes
 
     public static bool AreEqual(object a, object b)
     {
-      throw new InvalidOperationException("You must use generic version of AreEqual!");
+      if (a.GetType().Equals(b.GetType()))
+      {
+        return Lookup(a.GetType()).AreEqual(a, b);
+      }
+      return false;
     }
 
-    public static Int32 CalculateHashCode<TType>(TType a)
+    public static Int32 CalculateHashCode<TType>(TType value)
     {
-      return Lookup(typeof(TType)).CalculateHashCode(a);
+      return Lookup(typeof(TType)).CalculateHashCode(value);
+    }
+
+    public static Int32 CalculateHashCode(object value)
+    {
+      return Lookup(value.GetType()).CalculateHashCode(value);
     }
 
     public static string ToString<TType>(TType a)
     {
-      return Lookup(typeof(TType)).ToString(a);
+      return Lookup(typeof(TType)).MakeString(a);
     }
 
     private static CacheEntry Lookup(Type type)
@@ -62,7 +71,7 @@ namespace Machine.Core.ValueTypes
         entry = _cache[type] = new CacheEntry();
         _cache[type].AreEqual = _objectEqualityFunctionFactory.CreateObjectEqualityFunction(type);
         _cache[type].CalculateHashCode = _calculateHashCodeFunctionFactory.CreateCalculateHashCodeFunction(type);
-        _cache[type].ToString = _toStringFunctionFactory.CreateToStringFunction(type);
+        _cache[type].MakeString = _toStringFunctionFactory.CreateToStringFunction(type);
       }
       _lock.ReleaseLock();
       return entry;

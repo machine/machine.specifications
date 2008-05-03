@@ -28,10 +28,19 @@ namespace Machine.Core.ValueTypes
         MethodInfo getHashCode = field.FieldType.GetMethod("GetHashCode", new Type[0]);
         il.Emit(OpCodes.Ldarg_0);
         il.Emit(OpCodes.Castclass, type);
-        if (field.FieldType.IsValueType && !field.FieldType.IsEnum)
+        if (field.FieldType.IsValueType)
         {
-          il.Emit(OpCodes.Ldflda, field);
-          il.Emit(OpCodes.Call, getHashCode);
+          if (field.FieldType.IsEnum)
+          {
+            il.Emit(OpCodes.Ldfld, field);
+            il.Emit(OpCodes.Box, field.FieldType);
+            il.Emit(OpCodes.Callvirt, getHashCode);
+          }
+          else
+          {
+            il.Emit(OpCodes.Ldflda, field);
+            il.Emit(OpCodes.Call, getHashCode);
+          }
         }
         else
         {

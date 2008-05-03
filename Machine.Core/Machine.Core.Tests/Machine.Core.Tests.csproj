@@ -68,6 +68,7 @@
     <Compile Include="ValueTypes\ValueTypeHelperTests_TypeHasTwoFields.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ValueTypes\ValueTypeHelperTests_TypeWithOnlyEnum.cs" />
     <Compile Include="ValueTypes\ValueTypeHelperTests_VeryComplexType.cs">
       <SubType>Code</SubType>
     </Compile>

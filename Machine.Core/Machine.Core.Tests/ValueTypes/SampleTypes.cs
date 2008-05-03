@@ -7,7 +7,7 @@ namespace Machine.Core.ValueTypes
   public class Message1
   {
   }
-  public class Message2
+  public class Message2 : ClassTypeAsValueType
   {
     private string _name;
 
@@ -20,16 +20,6 @@ namespace Machine.Core.ValueTypes
     public Message2(string name)
     {
       _name = name;
-    }
-
-    public override bool Equals(object obj)
-    {
-      return ValueTypeHelper.AreEqual<Message2>(this, obj);
-    }
-
-    public override int GetHashCode()
-    {
-      return ValueTypeHelper.CalculateHashCode(this);
     }
   }
   public class Message3
@@ -82,7 +72,7 @@ namespace Machine.Core.ValueTypes
   }
   public enum YesNoMaybe
   {
-    Yes, No, Maybe
+    Yes = 0, No, Maybe
   }
   public class TypeWithABunchOfTypes
   {
@@ -104,15 +94,14 @@ namespace Machine.Core.ValueTypes
       _aString = aString;
       _aEnum = aEnum;
     }
+  }
+  public class TypeWithOnlyEnum
+  {
+    private readonly YesNoMaybe _maybe;
 
-    public override string ToString()
+    public TypeWithOnlyEnum(YesNoMaybe maybe)
     {
-      StringBuilder sb = new StringBuilder();
-      sb.Append("A<");
-      sb.Append(_aString);
-      sb.Append(_aDateTime);
-      sb.Append(">");
-      return sb.ToString();
+      _maybe = maybe;
     }
   }
 }
