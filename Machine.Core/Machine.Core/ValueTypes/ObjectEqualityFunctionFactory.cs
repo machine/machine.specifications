@@ -16,7 +16,7 @@ namespace Machine.Core.ValueTypes
 
     public ObjectEqualityFunction CreateObjectEqualityFunction(Type type)
     {
-      DynamicMethod method = new DynamicMethod("CreateObjectEqualityFunction_" + type.FullName, typeof(bool), new Type[] { typeof(Object), typeof(Object) }, type);
+      DynamicMethod method = NewMethod(type, typeof(bool), new Type[] { typeof(object), typeof(object) });
       ILGenerator il = method.GetILGenerator();
       MethodInfo objectEquals = typeof(Object).GetMethod("Equals", new Type[] { typeof(Object), typeof(Object) });
       bool hasState = false;

@@ -23,7 +23,16 @@ namespace Machine.Core.ValueTypes
       DateTime when = DateTime.Now;
       TypeWithABunchOfTypes a = new TypeWithABunchOfTypes(true, 1, 2L, 3, "A", YesNoMaybe.Yes, when);
       TypeWithABunchOfTypes b = new TypeWithABunchOfTypes(true, 1, 2L, 3, "A", YesNoMaybe.Yes, when);
-      Assert.AreEqual(ValueTypeHelper.GetHashCode(a), ValueTypeHelper.GetHashCode(b));
+      Assert.AreEqual(ValueTypeHelper.CalculateHashCode(a), ValueTypeHelper.CalculateHashCode(b));
+    }
+
+    [Test]
+    public void ToString_AValue_IsString()
+    {
+      TypeWithABunchOfTypes a = new TypeWithABunchOfTypes(true, 1, 2L, 3, "Jacob", YesNoMaybe.Yes, DateTime.Now);
+      string value = ValueTypeHelper.ToString(a);
+      Console.WriteLine(value);
+      Assert.IsTrue(value.Contains("Jacob"));
     }
   }
 }

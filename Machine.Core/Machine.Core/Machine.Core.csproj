@@ -78,6 +78,7 @@
     <Compile Include="ValueTypes\AbstractValueTypeInspector.cs" />
     <Compile Include="ValueTypes\CalculateHashCodeFunctionFactory.cs" />
     <Compile Include="ValueTypes\ObjectEqualityFunctionFactory.cs" />
+    <Compile Include="ValueTypes\ToStringFunctionFactory.cs" />
     <Compile Include="ValueTypes\ValueTypeHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

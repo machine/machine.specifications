@@ -32,7 +32,7 @@ namespace Machine.Core.ValueTypes
     {
       Message4 aMessage4 = new Message4("A", 1, new Message2("B"));
       Message4 bMessage4 = new Message4("A", 1, new Message2("C"));
-      Assert.AreNotEqual(ValueTypeHelper.GetHashCode(aMessage4), ValueTypeHelper.GetHashCode(bMessage4));
+      Assert.AreNotEqual(ValueTypeHelper.CalculateHashCode(aMessage4), ValueTypeHelper.CalculateHashCode(bMessage4));
     }
   }
 }

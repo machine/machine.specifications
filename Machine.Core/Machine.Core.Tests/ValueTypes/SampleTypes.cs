@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Machine.Core.ValueTypes
 {
@@ -28,7 +29,7 @@ namespace Machine.Core.ValueTypes
 
     public override int GetHashCode()
     {
-      return ValueTypeHelper.GetHashCode(this);
+      return ValueTypeHelper.CalculateHashCode(this);
     }
   }
   public class Message3
@@ -102,6 +103,16 @@ namespace Machine.Core.ValueTypes
       _aShort = aShort;
       _aString = aString;
       _aEnum = aEnum;
+    }
+
+    public override string ToString()
+    {
+      StringBuilder sb = new StringBuilder();
+      sb.Append("A<");
+      sb.Append(_aString);
+      sb.Append(_aDateTime);
+      sb.Append(">");
+      return sb.ToString();
     }
   }
 }

@@ -39,25 +39,32 @@ namespace Machine.Core.ValueTypes
     [Test]
     public void GetHashCode_WithEqualValues_AreEqual()
     {
-      Assert.AreEqual(ValueTypeHelper.GetHashCode(new Message2("A")), ValueTypeHelper.GetHashCode(new Message2("A")));
+      Assert.AreEqual(ValueTypeHelper.CalculateHashCode(new Message2("A")), ValueTypeHelper.CalculateHashCode(new Message2("A")));
     }
 
     [Test]
     public void GetHashCode_WithDifferentValues_AreNotEqual()
     {
-      Assert.AreNotEqual(ValueTypeHelper.GetHashCode(new Message2("B")), ValueTypeHelper.GetHashCode(new Message2("A")));
+      Assert.AreNotEqual(ValueTypeHelper.CalculateHashCode(new Message2("B")), ValueTypeHelper.CalculateHashCode(new Message2("A")));
     }
 
     [Test]
     public void GetHashCode_BothAreNull_AreEqual()
     {
-      Assert.AreEqual(ValueTypeHelper.GetHashCode(new Message2(null)), ValueTypeHelper.GetHashCode(new Message2(null)));
+      Assert.AreEqual(ValueTypeHelper.CalculateHashCode(new Message2(null)), ValueTypeHelper.CalculateHashCode(new Message2(null)));
     }
 
     [Test]
     public void GetHashCode_OneIsNull_AreNotEqual()
     {
-      Assert.AreNotEqual(ValueTypeHelper.GetHashCode(new Message2("A")), ValueTypeHelper.GetHashCode(new Message2(null)));
+      Assert.AreNotEqual(ValueTypeHelper.CalculateHashCode(new Message2("A")), ValueTypeHelper.CalculateHashCode(new Message2(null)));
+    }
+
+    [Test]
+    public void ToString_AValue_IsString()
+    {
+      string value = ValueTypeHelper.ToString(new Message2("Jacob"));
+      Assert.IsTrue(value.Contains("Jacob"));
     }
   }
 }

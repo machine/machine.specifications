@@ -32,5 +32,21 @@ namespace Machine.Core.ValueTypes
       isFalse();
       il.MarkLabel(done);
     }
+
+    public DynamicMethod NewMethod(Type owner, Type returnType, Type[] parameterTypes)
+    {
+      return new DynamicMethod(GetType().Name + "_" + owner.FullName, returnType, parameterTypes, owner);
+    }
+
+    public void ThrowIfArg0CastFailsOrNull(ILGenerator il, Type type)
+    {
+      il.Emit(OpCodes.Ldarg_0);
+      il.Emit(OpCodes.Castclass, type);
+      IfNull(il, delegate() {
+           il.Emit(OpCodes.Newobj, typeof(ArgumentNullException).GetConstructor(new Type[0]));
+           il.Emit(OpCodes.Throw);
+         }, delegate() { }
+      );
+    }
   }
 }

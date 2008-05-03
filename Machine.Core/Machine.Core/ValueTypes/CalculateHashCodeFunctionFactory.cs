@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Text;
 
 namespace Machine.Core.ValueTypes
 {
@@ -16,16 +17,10 @@ namespace Machine.Core.ValueTypes
 
     public CalculateHashCodeFunction CreateCalculateHashCodeFunction(Type type)
     {
-      DynamicMethod method = new DynamicMethod("CreateCalculateHashCodeFunction_" + type.FullName, typeof(Int32), new Type[] { typeof(Object) }, type);
+      DynamicMethod method = NewMethod(type, typeof(Int32), new Type[] { typeof(object) });
       ILGenerator il = method.GetILGenerator();
 
-      il.Emit(OpCodes.Ldarg_0);
-      il.Emit(OpCodes.Castclass, type);
-      IfNull(il, delegate() {
-           il.Emit(OpCodes.Newobj, typeof(ArgumentNullException).GetConstructor(new Type[0]));
-           il.Emit(OpCodes.Throw);
-         }, delegate() { }
-      );
+      ThrowIfArg0CastFailsOrNull(il, type);
 
       bool hasState = false;
       foreach (FieldInfo field in AllFields(type))

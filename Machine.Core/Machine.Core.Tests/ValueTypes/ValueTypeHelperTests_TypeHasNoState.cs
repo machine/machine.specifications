@@ -14,9 +14,23 @@ namespace Machine.Core.ValueTypes
 
     [Test]
     [ExpectedException(typeof(ArgumentNullException))]
-    public void GetHashCode_NullValue_Throws()
+    public void CalculateHashCode_NullValue_Throws()
     {
-      ValueTypeHelper.GetHashCode<Message1>(null);
+      ValueTypeHelper.CalculateHashCode<Message1>(null);
+    }
+
+    [Test]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void ToString_NullValue_Throws()
+    {
+      ValueTypeHelper.ToString<Message1>(null);
+    }
+
+    [Test]
+    public void ToString_AValue_IsString()
+    {
+      string value = ValueTypeHelper.ToString(new Message1());
+      Console.WriteLine(value);
     }
   }
 }
