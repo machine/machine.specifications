@@ -53,6 +53,24 @@
     <Compile Include="StandardFixture.cs" />
     <Compile Include="Utility\ListHelperTests.cs" />
     <Compile Include="Utility\TimeSpanHelperTests.cs" />
+    <Compile Include="ValueTypes\SampleTypes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ValueTypes\ValueHelperTests_TypeHasNoState.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ValueTypes\ValueHelperTests_TypeHasOneField.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ValueTypes\ValueHelperTests_TypeHasThreeFieldsOneIsAlsoValuedClassType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ValueTypes\ValueHelperTests_TypeHasTwoFields.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ValueTypes\ValueHelperTests_VeryComplexType.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Core\Machine.Core.csproj">

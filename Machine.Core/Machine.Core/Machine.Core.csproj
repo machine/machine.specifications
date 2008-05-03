@@ -75,6 +75,10 @@
     <Compile Include="Utility\ReflectionHelper.cs" />
     <Compile Include="Utility\TimeSpanHelper.cs" />
     <Compile Include="Utility\XmlSerializationHelper.cs" />
+    <Compile Include="ValueTypes\AbstractValueTypeInspector.cs" />
+    <Compile Include="ValueTypes\CalculateHashCodeFunctionFactory.cs" />
+    <Compile Include="ValueTypes\ObjectEqualityFunctionFactory.cs" />
+    <Compile Include="ValueTypes\ValueHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
