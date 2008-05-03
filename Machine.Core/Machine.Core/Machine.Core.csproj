@@ -78,7 +78,7 @@
     <Compile Include="ValueTypes\AbstractValueTypeInspector.cs" />
     <Compile Include="ValueTypes\CalculateHashCodeFunctionFactory.cs" />
     <Compile Include="ValueTypes\ObjectEqualityFunctionFactory.cs" />
-    <Compile Include="ValueTypes\ValueHelper.cs" />
+    <Compile Include="ValueTypes\ValueTypeHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

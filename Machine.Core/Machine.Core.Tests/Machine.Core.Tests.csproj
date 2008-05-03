@@ -56,19 +56,19 @@
     <Compile Include="ValueTypes\SampleTypes.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ValueTypes\ValueHelperTests_TypeHasNoState.cs">
+    <Compile Include="ValueTypes\ValueTypeHelperTests_TypeHasNoState.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ValueTypes\ValueHelperTests_TypeHasOneField.cs">
+    <Compile Include="ValueTypes\ValueTypeHelperTests_TypeHasOneField.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ValueTypes\ValueHelperTests_TypeHasThreeFieldsOneIsAlsoValuedClassType.cs">
+    <Compile Include="ValueTypes\ValueTypeHelperTests_TypeHasThreeFieldsOneIsAlsoValuedClassType.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ValueTypes\ValueHelperTests_TypeHasTwoFields.cs">
+    <Compile Include="ValueTypes\ValueTypeHelperTests_TypeHasTwoFields.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ValueTypes\ValueHelperTests_VeryComplexType.cs">
+    <Compile Include="ValueTypes\ValueTypeHelperTests_VeryComplexType.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

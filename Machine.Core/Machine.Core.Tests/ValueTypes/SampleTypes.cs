@@ -23,12 +23,12 @@ namespace Machine.Core.ValueTypes
 
     public override bool Equals(object obj)
     {
-      return ValueHelper.AreEqual<Message2>(this, obj);
+      return ValueTypeHelper.AreEqual<Message2>(this, obj);
     }
 
     public override int GetHashCode()
     {
-      return ValueHelper.GetHashCode(this);
+      return ValueTypeHelper.GetHashCode(this);
     }
   }
   public class Message3

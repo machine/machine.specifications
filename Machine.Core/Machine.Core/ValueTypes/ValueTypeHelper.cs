@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Machine.Core.ValueTypes
 {
-  public class ValueHelper
+  public class ValueTypeHelper
   {
     private static readonly ObjectEqualityFunctionFactory _objectEqualityFunctionFactory = new ObjectEqualityFunctionFactory();
     private static readonly CalculateHashCodeFunctionFactory _calculateHashCodeFunctionFactory = new CalculateHashCodeFunctionFactory();
     private static readonly Dictionary<Type, CacheEntry> _cache = new Dictionary<Type, CacheEntry>();
+    private static readonly ReaderWriterLock _lock = new ReaderWriterLock();
 
     private class CacheEntry
     {
@@ -41,14 +43,21 @@ namespace Machine.Core.ValueTypes
 
     private static CacheEntry Lookup(Type type)
     {
+      CacheEntry entry;
+      _lock.AcquireReaderLock(Timeout.Infinite);
       if (_cache.ContainsKey(type))
       {
-        return _cache[type];
+        entry = _cache[type];
       }
-      _cache[type] = new CacheEntry();
-      _cache[type].AreEqual = _objectEqualityFunctionFactory.CreateObjectEqualityFunction(type);
-      _cache[type].CalculateHashCode = _calculateHashCodeFunctionFactory.CreateCalculateHashCodeFunction(type);
-      return _cache[type];
+      else
+      {
+        _lock.UpgradeToWriterLock(Timeout.Infinite);
+        entry = _cache[type] = new CacheEntry();
+        _cache[type].AreEqual = _objectEqualityFunctionFactory.CreateObjectEqualityFunction(type);
+        _cache[type].CalculateHashCode = _calculateHashCodeFunctionFactory.CreateCalculateHashCodeFunction(type);
+      }
+      _lock.ReleaseLock();
+      return entry;
     }
   }
 }

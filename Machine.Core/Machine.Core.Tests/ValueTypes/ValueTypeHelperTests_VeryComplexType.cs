@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace Machine.Core.ValueTypes
 {
   [TestFixture]
-  public class ValueHelperTests_VeryComplexType
+  public class ValueTypeHelperTests_VeryComplexType
   {
     [Test]
     public void AreEqual_AllEqual_IsTrue()
@@ -14,7 +14,7 @@ namespace Machine.Core.ValueTypes
       DateTime when = DateTime.Now;
       TypeWithABunchOfTypes a = new TypeWithABunchOfTypes(true, 1, 2L, 3, "A", YesNoMaybe.Yes, when);
       TypeWithABunchOfTypes b = new TypeWithABunchOfTypes(true, 1, 2L, 3, "A", YesNoMaybe.Yes, when);
-      Assert.IsTrue(ValueHelper.AreEqual(a, b));
+      Assert.IsTrue(ValueTypeHelper.AreEqual(a, b));
     }
 
     [Test]
@@ -23,7 +23,7 @@ namespace Machine.Core.ValueTypes
       DateTime when = DateTime.Now;
       TypeWithABunchOfTypes a = new TypeWithABunchOfTypes(true, 1, 2L, 3, "A", YesNoMaybe.Yes, when);
       TypeWithABunchOfTypes b = new TypeWithABunchOfTypes(true, 1, 2L, 3, "A", YesNoMaybe.Yes, when);
-      Assert.AreEqual(ValueHelper.GetHashCode(a), ValueHelper.GetHashCode(b));
+      Assert.AreEqual(ValueTypeHelper.GetHashCode(a), ValueTypeHelper.GetHashCode(b));
     }
   }
 }
