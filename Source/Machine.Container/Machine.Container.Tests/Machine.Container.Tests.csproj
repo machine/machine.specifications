@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F5EF7CA1-E4A1-47C8-BBB3-BDF36EDB5514}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Machine.Container</RootNamespace>
+    <AssemblyName>Machine.Container.Tests</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Build\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Build\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Libraries\Logging\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.4.1.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Libraries\Testing\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks, Version=3.3.0.1097, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Libraries\Testing\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MachineContainerTests.cs" />
+    <Compile Include="MachineContainerTestsFixture.cs" />
+    <Compile Include="IoCTests.cs" />
+    <Compile Include="Lifestyles\SingletonLifestyleTests.cs" />
+    <Compile Include="Lifestyles\TransientLifestyleTests.cs" />
+    <Compile Include="Model\ServiceEntryTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScaffoldTests.cs" />
+    <Compile Include="ServiceEntryHelper.cs" />
+    <Compile Include="Services\Impl\DefaultLifestyleAwareActivatorResolverTests.cs" />
+    <Compile Include="Services\Impl\ActivatorStoreTests.cs" />
+    <Compile Include="Services\Impl\DefaultActivatorStrategyTests.cs" />
+    <Compile Include="Activators\DefaultActivatorTests.cs" />
+    <Compile Include="Services\Impl\DotNetObjectFactoryTests.cs" />
+    <Compile Include="Services\Impl\EmptyOverridesTests.cs" />
+    <Compile Include="Activators\LifestyleActivatorTests.cs" />
+    <Compile Include="Services\Impl\LifestyleFactoryTests.cs" />
+    <Compile Include="Services\Impl\ServiceEntryFactoryTests.cs" />
+    <Compile Include="Services\Impl\ServiceGraphTests.cs" />
+    <Compile Include="Services\Impl\StaticLookupActivatorResolverTests.cs" />
+    <Compile Include="Services\Impl\RootActivatorResolverTests.cs" />
+    <Compile Include="Services\Impl\ServiceDependencyInspectorTests.cs" />
+    <Compile Include="Services\Impl\ServiceEntryResolverTests.cs" />
+    <Compile Include="Activators\StaticActivatorTests.cs" />
+    <Compile Include="Services\Impl\StaticOverrideLookupTests.cs" />
+    <Compile Include="Services\Impl\ThrowsPendingActivatorResolverTests.cs" />
+    <Compile Include="Utility\StackPopperTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Machine.Testing\Machine.Testing.csproj">
+      <Project>{DB751178-BF97-4477-861B-B169AAB964D3}</Project>
+      <Name>Machine.Testing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Machine.Container\Machine.Container.csproj">
+      <Project>{311CA93B-3D01-448F-8408-BF6398F0F5FC}</Project>
+      <Name>Machine.Container</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
