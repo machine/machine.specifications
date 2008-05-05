@@ -37,7 +37,7 @@ namespace Machine.Specifications.Factories
     [Test]
     public void ShouldHaveCorrectItClause()
     {
-      requirement.ItClause.ShouldEqual("an exception");
+      requirement.ItClause.ShouldEqual("should throw an exception");
     }
   }
 

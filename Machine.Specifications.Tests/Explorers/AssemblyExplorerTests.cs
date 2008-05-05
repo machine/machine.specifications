@@ -24,6 +24,7 @@ namespace Machine.Specifications.Explorers
     public void ShouldReturnFourSpecifications()
     {
       specifications.Count().ShouldEqual(3);
+      Assert.Fail();
     }
 
     [Test]

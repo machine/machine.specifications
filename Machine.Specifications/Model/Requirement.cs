@@ -15,9 +15,13 @@ namespace Machine.Specifications.Model
       get; private set;
     }
 
-    protected Requirement(FieldInfo fieldInfo)
+    protected Requirement(FieldInfo fieldInfo) : this("", fieldInfo)
     {
-      ItClause = fieldInfo.Name.ReplaceUnderscores();
+    }
+
+    protected Requirement(string specificationPrefix, FieldInfo fieldInfo)
+    {
+      ItClause = specificationPrefix + fieldInfo.Name.ReplaceUnderscores();
       Field = fieldInfo;
     }
 
@@ -52,7 +56,7 @@ namespace Machine.Specifications.Model
   {
     private It_should_throw _verifier;
 
-    public ItShouldThrowRequirement(FieldInfo fieldInfo, It_should_throw verifier) : base(fieldInfo)
+    public ItShouldThrowRequirement(FieldInfo fieldInfo, It_should_throw verifier) : base("should throw ", fieldInfo)
     {
       _verifier = verifier;
     }
