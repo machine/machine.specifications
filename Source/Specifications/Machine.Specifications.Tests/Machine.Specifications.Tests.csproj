@@ -72,7 +72,7 @@
       <Project>{CCD02629-1262-4F78-9E9F-AC97B942D0E7}</Project>
       <Name>Machine.Specifications</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Machine.Testing\Machine.Testing.csproj">
+    <ProjectReference Include="..\..\Machine.Testing\Machine.Testing.csproj">
       <Project>{DB751178-BF97-4477-861B-B169AAB964D3}</Project>
       <Name>Machine.Testing</Name>
     </ProjectReference>
