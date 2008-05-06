@@ -19,17 +19,17 @@ namespace Machine.Specifications.Explorers
 
     public IEnumerable<Description> FindDescriptionsIn(Assembly assembly)
     {
-      return EnumerateDescriptionsIn(assembly).Select(x => CreateSpecificationFrom(x));
+      return EnumerateDescriptionsIn(assembly).Select(x => CreateDescriptionFrom(x));
     }
 
     public IEnumerable<Description> FindDescriptionsIn(Assembly assembly, string targetNamespace)
     {
       return EnumerateDescriptionsIn(assembly)
         .Where(x => x.Namespace == targetNamespace)
-        .Select(x => CreateSpecificationFrom(x));
+        .Select(x => CreateDescriptionFrom(x));
     }
 
-    private Description CreateSpecificationFrom(Type type)
+    private Description CreateDescriptionFrom(Type type)
     {
       object instance = Activator.CreateInstance(type);
       return _descriptionFactory.CreateSpecificationFrom(instance);
@@ -43,6 +43,16 @@ namespace Machine.Specifications.Explorers
     private static IEnumerable<Type> EnumerateDescriptionsIn(Assembly assembly)
     {
       return assembly.GetExportedTypes().Where(HasDescriptionAttribute);
+    }
+
+    public Description FindDescription(Type type)
+    {
+      if (HasDescriptionAttribute(type))
+      {
+        return CreateDescriptionFrom(type);
+      }
+
+      return null;
     }
   }
 }

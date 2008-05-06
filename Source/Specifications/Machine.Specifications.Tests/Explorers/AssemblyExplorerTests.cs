@@ -54,12 +54,35 @@ namespace Machine.Specifications.Explorers
     }
 
     [Test]
-    public void ShouldReturnFourDescriptionsNamedCorrectly()
+    public void ShouldReturnTwoDescriptionsNamedCorrectly()
     {
       var names = descriptions.Select(x => x.Name).ToList();
       names.ShouldContainOnly(
         "InExampleA 1",
         "InExampleA 2");
+    }
+  }
+
+  [TestFixture]
+  public class AssemblyExplorer_FindDescription_WithClass : TestsFor<AssemblyExplorer>
+  {
+    private Description description;
+
+    public override void BeforeEachTest()
+    {
+      description = Target.FindDescription(typeof(ExampleC.InExampleC_1));
+    }
+
+    [Test]
+    public void ShouldReturnADescription()
+    {
+      description.ShouldNotBeNull();
+    }
+
+    [Test]
+    public void ShouldReturnCorrectName()
+    {
+      description.Name.ShouldEqual("InExampleC 1");
     }
   }
 

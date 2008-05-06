@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -11,15 +12,26 @@ namespace Machine.Specifications.TDNetRunner
 {
   public class SpecificationRunner : ITestRunner
   {
+    private AssemblyExplorer explorer;
+    public SpecificationRunner()
+    {
+      explorer = new AssemblyExplorer();
+    }
+
     public TestRunState RunAssembly(ITestListener testListener, Assembly assembly)
     {
-      var testResults = new List<TestResult>();
-      var explorer = new AssemblyExplorer();
       var descriptions = explorer.FindDescriptionsIn(assembly);
 
+      return RunDescriptions(descriptions, testListener);
+    }
+
+    private TestRunState RunDescriptions(IEnumerable<Description> descriptions, ITestListener testListener)
+    {
       if (descriptions.Count() == 0) return TestRunState.NoTests;
 
+      var testResults = new List<TestResult>();
       bool failure = false;
+
       foreach (var description in descriptions)
       {
         testListener.WriteLine(String.Format("{0}\n  When {1}", description.Name, description.WhenClause), Category.Output);
@@ -61,14 +73,24 @@ namespace Machine.Specifications.TDNetRunner
       return failure ? TestRunState.Failure : TestRunState.Success;
     }
 
-    public TestRunState RunNamespace(ITestListener testListener, Assembly assembly, string ns)
+    public TestRunState RunNamespace(ITestListener testListener, Assembly assembly, string targetNamespace)
     {
-      return RunAssembly(testListener, assembly);
+      var descriptions = explorer.FindDescriptionsIn(assembly, targetNamespace);
+
+      return RunDescriptions(descriptions, testListener);
     }
 
     public TestRunState RunMember(ITestListener testListener, Assembly assembly, MemberInfo member)
     {
-      throw new NotImplementedException();
+      if (member.MemberType != MemberTypes.TypeInfo)
+      {
+        return TestRunState.NoTests;
+      }
+
+      Type type = (Type)member;
+      var description = explorer.FindDescription(type);
+
+      return RunDescriptions(new[] {description}, testListener);
     }
   }
 }
