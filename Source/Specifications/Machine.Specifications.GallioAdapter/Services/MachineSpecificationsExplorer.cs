@@ -85,18 +85,18 @@ namespace Machine.Specifications.GallioAdapter.Services
       var specifications = explorer.FindDescriptionsIn(assembly.Resolve());
       foreach (var specification in specifications)
       {
-        var specificationTest = new MachineSpecificationTest(specification);
+        var specificationTest = new MachineDescriptionTest(specification);
         assemblyTest.AddChild(specificationTest);
 
         PopulateSpecificationTest(specification, specificationTest);
       }
     }
 
-    private void PopulateSpecificationTest(Description description, MachineSpecificationTest test)
+    private void PopulateSpecificationTest(Description description, MachineDescriptionTest test)
     {
-      foreach (var requirement in description.Requirements)
+      foreach (var specification in description.Specifications)
       {
-        test.AddChild(new MachineRequirementTest(requirement));
+        test.AddChild(new MachineSpecificationTest(specification));
       }
     }
 

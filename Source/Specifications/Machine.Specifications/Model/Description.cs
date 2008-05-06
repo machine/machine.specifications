@@ -7,7 +7,7 @@ namespace Machine.Specifications.Model
 {
   public class Description
   {
-    private List<Requirement> _requirements;
+    private List<Specification> _specifications;
     private object _instance;
     private IEnumerable<Context> _beforeEachs;
     private IEnumerable<Context> _beforeAlls;
@@ -21,9 +21,9 @@ namespace Machine.Specifications.Model
       get { return _instance; }
     }
 
-    public IEnumerable<Requirement> Requirements
+    public IEnumerable<Specification> Specifications
     {
-      get { return _requirements; }
+      get { return _specifications; }
     }
 
     public Type Type
@@ -41,42 +41,42 @@ namespace Machine.Specifications.Model
       _afterEachs = afterEachs;
       _beforeAlls = beforeAlls;
       _beforeEachs = beforeEachs;
-      _requirements = new List<Requirement>();
+      _specifications = new List<Specification>();
     }
 
-    public void AddRequirement(Requirement requirement)
+    public void AddSpecification(Specification specification)
     {
-      _requirements.Add(requirement);
+      _specifications.Add(specification);
     }
 
     public DescriptionVerificationResult Verify()
     {
-      var requirementResults = VerifyRequirements();
-      return new DescriptionVerificationResult(requirementResults);
+      var verificationResults = VerifySpecifications();
+      return new DescriptionVerificationResult(verificationResults);
     }
 
-    private IEnumerable<RequirementVerificationResult> VerifyRequirements()
+    private IEnumerable<SpecificationVerificationResult> VerifySpecifications()
     {
       _beforeAlls.InvokeAll();
-      var results = ExecuteRequirements();
+      var results = ExecuteSpecifications();
       _afterAlls.InvokeAll();
 
       return results;
     }
 
-    private IEnumerable<RequirementVerificationResult> ExecuteRequirements()
+    private IEnumerable<SpecificationVerificationResult> ExecuteSpecifications()
     {
-      var results = new List<RequirementVerificationResult>();
-      foreach (Requirement requirement in _requirements)
+      var results = new List<SpecificationVerificationResult>();
+      foreach (Specification specification in _specifications)
       {
-        var result = VerifyRequirement(requirement);
+        var result = VerifySpecification(specification);
         results.Add(result);
       }
 
       return results;
     }
 
-    public RequirementVerificationResult VerifyRequirement(Requirement requirement)
+    public SpecificationVerificationResult VerifySpecification(Specification specification)
     {
       VerificationContext context = new VerificationContext();
       _beforeEachs.InvokeAll();
@@ -91,7 +91,7 @@ namespace Machine.Specifications.Model
           context.ThrownException = exception;
         }
       }
-      var result = requirement.Verify(context);
+      var result = specification.Verify(context);
       _afterEachs.InvokeAll();
 
       return result;

@@ -5,18 +5,18 @@ using System.Text;
 
 namespace Machine.Specifications.Model
 {
-  public class RequirementVerificationResult
+  public class SpecificationVerificationResult
   {
     public bool Passed { get; private set; }
     public Exception Exception { get; private set; }
 
-    public RequirementVerificationResult(Exception exception)
+    public SpecificationVerificationResult(Exception exception)
     {
       this.Passed = false;
       this.Exception = exception;
     }
 
-    public RequirementVerificationResult(bool passed)
+    public SpecificationVerificationResult(bool passed)
     {
       this.Passed = passed;
     }

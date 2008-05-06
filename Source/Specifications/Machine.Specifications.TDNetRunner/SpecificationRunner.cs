@@ -25,15 +25,15 @@ namespace Machine.Specifications.TDNetRunner
         testListener.WriteLine(String.Format("{0}\n  When {1}", description.Name, description.WhenClause), Category.Output);
         description.RunContextBeforeAll();
 
-        foreach (var requirement in description.Requirements)
+        foreach (var specification in description.Specifications)
         {
-          var result = description.VerifyRequirement(requirement);
+          var result = description.VerifySpecification(specification);
           var prefix = result.Passed ? "    " : "!!! ";
           var suffix = result.Passed ? "" : " !!!";
-          testListener.WriteLine(String.Format("{1}* It {0}{2}", requirement.ItClause, prefix, suffix), Category.Output);
+          testListener.WriteLine(String.Format("{1}* It {0}{2}", specification.ItClause, prefix, suffix), Category.Output);
 
           TestResult testResult = new TestResult();
-          testResult.Name = requirement.ItClause;
+          testResult.Name = specification.ItClause;
           if (result.Passed)
           {
             testResult.State = TestState.Passed;

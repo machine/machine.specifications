@@ -8,19 +8,19 @@ using NUnit.Framework;
 namespace Machine.Specifications.Model
 {
   [TestFixture]
-  public class Requirement_Verify : WithSingleRequirement
+  public class Specification_Verify : WithSingleSpecification
   {
     public override void BeforeEachTest()
     {
       base.BeforeEachTest();
-      SpecificationWithSingleRequirement.ItInvoked = false;
-      requirement.Verify(new VerificationContext());
+      DescriptionWithSingleSpecification.ItInvoked = false;
+      specification.Verify(new VerificationContext());
     }
 
     [Test]
     public void ShouldHaveBeenInvoked()
     {
-      SpecificationWithSingleRequirement.ItInvoked.ShouldBeTrue();
+      DescriptionWithSingleSpecification.ItInvoked.ShouldBeTrue();
     }
   }
 }

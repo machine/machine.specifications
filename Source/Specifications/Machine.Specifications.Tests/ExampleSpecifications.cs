@@ -51,12 +51,12 @@ namespace Machine.Specifications
     }
   }
 
-  public interface IFakeSpecification
+  public interface IFakeDescription
   {
     void Reset();
   }
 
-  public class SpecificationWithThrowingRequirement : IFakeSpecification
+  public class DescriptionWithThrowingSpecification : IFakeDescription
   {
     public static bool WhenInvoked = false;
     public static bool ItInvoked = false;
@@ -78,7 +78,7 @@ namespace Machine.Specifications
     }
   }
 
-  public class SpecificationWithSingleRequirement : IFakeSpecification
+  public class DescriptionWithSingleSpecification : IFakeDescription
   {
     public static bool WhenInvoked = false;
     public static bool ItInvoked = false;
@@ -102,7 +102,7 @@ namespace Machine.Specifications
       WhenInvoked = true;
     };
 
-    It is_a_requirement = () =>
+    It is_a_specification = () =>
     {
       ItInvoked = true;
     };
@@ -128,7 +128,7 @@ namespace Machine.Specifications
     }
   }
 
-  public class SpecificationWithBadlyNamedBefore : IFakeSpecification
+  public class DescriptionWithBadlyNamedBefore : IFakeDescription
   {
     Context foo =()=>
     {
@@ -140,7 +140,7 @@ namespace Machine.Specifications
     }
   }
 
-  public class SpecificationWithBadlyNamedAfter : IFakeSpecification
+  public class DescriptionWithBadlyNamedAfter : IFakeDescription
   {
     Context foo =()=>
     {

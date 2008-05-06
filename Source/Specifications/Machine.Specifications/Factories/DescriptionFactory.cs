@@ -9,11 +9,11 @@ namespace Machine.Specifications.Factories
 {
   public class DescriptionFactory
   {
-    private RequirementFactory _requirementFactory;
+    private SpecificationFactory _specificationFactory;
 
     public DescriptionFactory()
     {
-      _requirementFactory = new RequirementFactory();
+      _specificationFactory = new SpecificationFactory();
     }
 
     public Description CreateSpecificationFrom(object instance)
@@ -48,17 +48,17 @@ namespace Machine.Specifications.Factories
         }
       }
 
-      var specification = new Description(type, instance, beforeEachs, beforeAlls, afterEachs, afterAlls, when) { 
+      var description = new Description(type, instance, beforeEachs, beforeAlls, afterEachs, afterAlls, when) { 
             WhenClause = whenClause
           };
 
       foreach (FieldInfo info in itFieldInfos)
       {
-        Requirement requirement = _requirementFactory.CreateRequirement(instance, info);
-        specification.AddRequirement(requirement);
+        Specification specification = _specificationFactory.CreateSpecification(instance, info);
+        description.AddSpecification(specification);
       }
 
-      return specification;
+      return description;
     }
 
     private List<T> ExtractPrivateFieldValues<T>(object instance, string name)

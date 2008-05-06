@@ -28,9 +28,9 @@ namespace Machine.Specifications.Verifiers
     }
 
     [Test]
-    public void ShouldBeExactlyFiveRequirementResults()
+    public void ShouldBeExactlyFiveSpecificationResults()
     {
-      results.SelectMany(x => x.RequirementResults).Count().ShouldEqual(5);
+      results.SelectMany(x => x.SpecificationResults).Count().ShouldEqual(5);
     }
   }
 }

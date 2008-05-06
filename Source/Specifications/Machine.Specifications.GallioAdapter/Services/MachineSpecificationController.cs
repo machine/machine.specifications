@@ -36,15 +36,15 @@ namespace Machine.Specifications.GallioAdapter.Services
       progressMonitor.SetStatus(test.Name);
 
       bool passed;
-      MachineRequirementTest requirement = test as MachineRequirementTest;
       MachineSpecificationTest specification = test as MachineSpecificationTest;
-      if (requirement != null)
+      MachineDescriptionTest description = test as MachineDescriptionTest;
+      if (specification != null)
       {
-        //RunRequirement(requirement, testComman);
+        //RunDescriptionTest(specification, testComman);
       }
-      else if (specification != null)
+      else if (description != null)
       {
-        RunSpecification(specification, testCommand, parentTestStep);
+        RunDescriptionTest(description, testCommand, parentTestStep);
       }
       else
       {
@@ -52,36 +52,36 @@ namespace Machine.Specifications.GallioAdapter.Services
       }
     }
 
-    private void RunSpecification(MachineSpecificationTest specification, ITestCommand testCommand, ITestStep parentTestStep)
+    private void RunDescriptionTest(MachineDescriptionTest description, ITestCommand testCommand, ITestStep parentTestStep)
     {
       ITestContext testContext = testCommand.StartPrimaryChildStep(parentTestStep);
 
       testContext.LifecyclePhase = LifecyclePhases.SetUp;
-      specification.SetupContext();
+      description.SetupContext();
       bool passed = true;
 
       foreach (ITestCommand child in testCommand.Children)
       {
-        MachineRequirementTest requirement = child.Test as MachineRequirementTest;
+        MachineSpecificationTest specification = child.Test as MachineSpecificationTest;
 
-        if (requirement != null)
+        if (specification != null)
         {
-          passed &= RunRequirement(requirement, child, testContext.TestStep);
+          passed &= RunSpecificationTest(specification, child, testContext.TestStep);
         }
       }
 
       testContext.LifecyclePhase = LifecyclePhases.TearDown;
-      specification.TeardownContext();
+      description.TeardownContext();
 
       testContext.FinishStep(passed ? TestOutcome.Passed : TestOutcome.Failed, null);
     }
 
-    private bool RunRequirement(MachineRequirementTest requirement, ITestCommand testCommand, ITestStep parentTestStep)
+    private bool RunSpecificationTest(MachineSpecificationTest specification, ITestCommand testCommand, ITestStep parentTestStep)
     {
       ITestContext testContext = testCommand.StartPrimaryChildStep(parentTestStep);
       testContext.LifecyclePhase = LifecyclePhases.Execute;
 
-      var result = requirement.Execute();
+      var result = specification.Execute();
 
       if (result.Passed)
       {

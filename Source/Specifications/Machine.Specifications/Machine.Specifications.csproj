@@ -51,10 +51,10 @@
   <ItemGroup>
     <Compile Include="Explorers\AssemblyExplorer.cs" />
     <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="Factories\RequirementFactory.cs" />
+    <Compile Include="Factories\SpecificationFactory.cs" />
     <Compile Include="Factories\DescriptionFactory.cs" />
-    <Compile Include="Model\Requirement.cs" />
-    <Compile Include="Model\RequirementVerificationResult.cs" />
+    <Compile Include="Model\Specification.cs" />
+    <Compile Include="Model\SpecificationVerificationResult.cs" />
     <Compile Include="Model\Description.cs" />
     <Compile Include="Model\DescriptionVerificationResult.cs" />
     <Compile Include="Model\VerificationContext.cs" />

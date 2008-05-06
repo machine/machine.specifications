@@ -67,14 +67,14 @@ namespace Machine.Specifications.GallioAdapter.Tests
     }
 
     [Test]
-    public void SpecificationTestShouldBeValid()
+    public void DescriptionTestShouldBeValid()
     {
       PopulateTestTree();
       RootTest rootTest = testModel.RootTest;
       BaseTest frameworkTest = (BaseTest)rootTest.Children[0];
       BaseTest assemblyTest = (BaseTest)frameworkTest.Children[0];
-      MachineSpecificationTest fixtureTest =
-        (MachineSpecificationTest)
+      MachineDescriptionTest fixtureTest =
+        (MachineDescriptionTest)
           GetDescendantByName(assemblyTest, "Transferring between from account and to account");
       Assert.AreSame(assemblyTest, fixtureTest.Parent);
       Assert.AreEqual(TestKinds.Fixture, fixtureTest.Kind);
@@ -86,17 +86,17 @@ namespace Machine.Specifications.GallioAdapter.Tests
     }
 
     [Test]
-    public void RequirementTestShouldBeValid()
+    public void SpecificationTestShouldBeValid()
     {
       PopulateTestTree();
       RootTest rootTest = testModel.RootTest;
       BaseTest frameworkTest = (BaseTest)rootTest.Children[0];
       BaseTest assemblyTest = (BaseTest)frameworkTest.Children[0];
-      MachineSpecificationTest fixtureTest =
-        (MachineSpecificationTest)
+      MachineDescriptionTest fixtureTest =
+        (MachineDescriptionTest)
           GetDescendantByName(assemblyTest, "Transferring between from account and to account");
 
-      MachineRequirementTest test = (MachineRequirementTest) GetDescendantByName(fixtureTest, "should debit the from account by the amount transferred");
+      MachineSpecificationTest test = (MachineSpecificationTest) GetDescendantByName(fixtureTest, "should debit the from account by the amount transferred");
       Assert.AreSame(fixtureTest, test.Parent);
       Assert.AreEqual(TestKinds.Test, test.Kind);
       Assert.AreEqual(

@@ -3,35 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Gallio.Model;
+using Gallio.Model.Execution;
 using Gallio.Reflection;
+using Machine.Specifications.GallioAdapter.Services;
 using Machine.Specifications.Model;
 
 namespace Machine.Specifications.GallioAdapter.Model
 {
   public class MachineSpecificationTest : MachineTest
   {
-    private readonly Description _description;
+    private readonly Specification _specification;
 
-    public Description Description
+    /*
+    public Specification Specification
     {
-      get { return _description; }
+      get { return _specification; }
+    }
+    */
+
+    public MachineSpecificationTest(Specification specification) : base(specification.ItClause, Reflector.Wrap(specification.Field))
+    {
+      this.Kind = TestKinds.Test;
+      this.IsTestCase = true;
+      _specification = specification;
     }
 
-    public MachineSpecificationTest(Description description) 
-      : base(description.Name, Reflector.Wrap(description.Type))
+    public SpecificationVerificationResult Execute()
     {
-      this.Kind = TestKinds.Fixture;
-      _description = description;
-    }
+      MachineDescriptionTest parent = this.Parent as MachineDescriptionTest;
+      if (parent == null) throw new Exception("Specification has non-Description parent???");
 
-    public void SetupContext()
-    {
-      _description.RunContextBeforeAll();
-    }
-
-    public void TeardownContext()
-    {
-      _description.RunContextAfterAll();
+      var result = parent.Description.VerifySpecification(_specification);
+      return result;
     }
   }
 }

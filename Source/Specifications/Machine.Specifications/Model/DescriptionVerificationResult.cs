@@ -7,16 +7,16 @@ namespace Machine.Specifications.Model
 {
   public class DescriptionVerificationResult
   {
-    private IEnumerable<RequirementVerificationResult> _requirementResults;
+    private readonly IEnumerable<SpecificationVerificationResult> _specificationResults;
 
-    public IEnumerable<RequirementVerificationResult> RequirementResults
+    public IEnumerable<SpecificationVerificationResult> SpecificationResults
     {
-      get { return _requirementResults; }
+      get { return _specificationResults; }
     }
 
-    public DescriptionVerificationResult(IEnumerable<RequirementVerificationResult> requirementResults)
+    public DescriptionVerificationResult(IEnumerable<SpecificationVerificationResult> specificationResults)
     {
-      _requirementResults = requirementResults;
+      _specificationResults = specificationResults;
     }
   }
 }

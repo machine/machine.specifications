@@ -21,13 +21,13 @@ namespace Machine.Specifications.Explorers
     }
 
     [Test]
-    public void ShouldReturnFourSpecifications()
+    public void ShouldReturnFourDescriptions()
     {
       specifications.Count().ShouldEqual(3);
     }
 
     [Test]
-    public void ShouldReturnFourSpecificationsNamedCorrectly()
+    public void ShouldReturnFourDescriptionsNamedCorrectly()
     {
       var names = specifications.Select(x => x.Name).ToList();
       names.ShouldContainOnly(
@@ -38,25 +38,25 @@ namespace Machine.Specifications.Explorers
   }
 
   [TestFixture]
-  public class AssemblyExplorer_FindSpecifications_WithOneOfManyNamespaces : TestsFor<AssemblyExplorer>
+  public class AssemblyExplorer_FindDescriptions_WithOneOfManyNamespaces : TestsFor<AssemblyExplorer>
   {
-    private IEnumerable<Description> specifications;
+    private IEnumerable<Description> descriptions;
 
     public override void BeforeEachTest()
     {
-      specifications = Target.FindDescriptionsIn(typeof(ExampleA.InExampleA_1).Assembly, "Machine.Specifications.ExampleA");
+      descriptions = Target.FindDescriptionsIn(typeof(ExampleA.InExampleA_1).Assembly, "Machine.Specifications.ExampleA");
     }
 
     [Test]
-    public void ShouldReturnTwoSpecifications()
+    public void ShouldReturnTwoDescriptions()
     {
-      specifications.Count().ShouldEqual(2);
+      descriptions.Count().ShouldEqual(2);
     }
 
     [Test]
-    public void ShouldReturnFourSpecificationsNamedCorrectly()
+    public void ShouldReturnFourDescriptionsNamedCorrectly()
     {
-      var names = specifications.Select(x => x.Name).ToList();
+      var names = descriptions.Select(x => x.Name).ToList();
       names.ShouldContainOnly(
         "InExampleA 1",
         "InExampleA 2");
@@ -64,36 +64,36 @@ namespace Machine.Specifications.Explorers
   }
 
   [TestFixture]
-  public class AssemblyExplorer_FindSpecifications_WithFirstSpecificationOfExampleAssemblyTests : TestsFor<AssemblyExplorer>
+  public class AssemblyExplorer_FindDescription_WithFirstDescriptionOfExampleAssemblyTests : TestsFor<AssemblyExplorer>
   {
-    private IEnumerable<Description> specifications;
+    private IEnumerable<Description> descriptions;
     private Description description;
 
     public override void  BeforeEachTest()
     {
-      specifications = Target.FindDescriptionsIn(typeof (Account).Assembly);
+      descriptions = Target.FindDescriptionsIn(typeof (Account).Assembly);
       description =
-        specifications.Where(x => x.Name == "Transferring between from account and to account").FirstOrDefault();
+        descriptions.Where(x => x.Name == "Transferring between from account and to account").FirstOrDefault();
       description.ShouldNotBeNull();
     }
 
     [Test]
-    public void ShouldHaveTwoRequirements()
+    public void ShouldHaveTwoSpecifications()
     {
-      description.Requirements.Count().ShouldEqual(2);
+      description.Specifications.Count().ShouldEqual(2);
     }
 
     [Test]
-    public void ShouldHaveRequirementsWithCorrectItClauses()
+    public void ShouldHaveSpecificationsWithCorrectItClauses()
     {
-      var names = description.Requirements.Select(x => x.ItClause).ToList();
+      var names = description.Specifications.Select(x => x.ItClause).ToList();
       names.ShouldContainOnly(
         "should debit the from account by the amount transferred",
         "should credit the to account by the amount transferred");
     }
 
     [Test]
-    public void ShouldHaveRequirementsWithCorrectWhenClauses()
+    public void ShouldHaveSpecificationsWithCorrectWhenClauses()
     {
       description.WhenClause.ShouldEqual("the transfer is made");
     }

@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace Machine.Specifications.Model
 {
   [TestFixture]
-  public class SpecificationTests : With<SpecificationWithSingleRequirement>
+  public class SpecificationTests : With<DescriptionWithSingleSpecification>
   {
     public override void BeforeEachTest()
     {
@@ -21,43 +21,43 @@ namespace Machine.Specifications.Model
     [Test]
     public void ShouldCallWhen()
     {
-      SpecificationWithSingleRequirement.WhenInvoked.ShouldBeTrue();
+      DescriptionWithSingleSpecification.WhenInvoked.ShouldBeTrue();
     }
 
     [Test]
     public void ShouldCallBeforeAll()
     {
-      SpecificationWithSingleRequirement.BeforeAllInvoked.ShouldBeTrue();
+      DescriptionWithSingleSpecification.BeforeAllInvoked.ShouldBeTrue();
     }
 
     [Test]
     public void ShouldCallBeforeEach()
     {
-      SpecificationWithSingleRequirement.BeforeEachInvoked.ShouldBeTrue();
+      DescriptionWithSingleSpecification.BeforeEachInvoked.ShouldBeTrue();
     }
 
     [Test]
     public void ShouldCallAfterEach()
     {
-      SpecificationWithSingleRequirement.AfterEachInvoked.ShouldBeTrue();
+      DescriptionWithSingleSpecification.AfterEachInvoked.ShouldBeTrue();
     }
 
     [Test]
     public void ShouldCallAfterAll()
     {
-      SpecificationWithSingleRequirement.AfterAllInvoked.ShouldBeTrue();
+      DescriptionWithSingleSpecification.AfterAllInvoked.ShouldBeTrue();
     }
   }
 
-  public class With<T> : TestsFor<DescriptionFactory> where T : IFakeSpecification, new()
+  public class With<T> : TestsFor<DescriptionFactory> where T : IFakeDescription, new()
   {
     protected Description description;
     public override void BeforeEachTest()
     {
-      IFakeSpecification fakeSpecification = new T();
-      fakeSpecification.Reset();
+      IFakeDescription fakeDescription = new T();
+      fakeDescription.Reset();
 
-      description = Target.CreateSpecificationFrom(fakeSpecification);
+      description = Target.CreateSpecificationFrom(fakeDescription);
     }
   }
 }
