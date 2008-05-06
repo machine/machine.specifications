@@ -30,34 +30,16 @@ namespace Machine.Specifications.TDNetRunner
       if (descriptions.Count() == 0) return TestRunState.NoTests;
 
       var testResults = new List<TestResult>();
-      bool failure = false;
 
       foreach (var description in descriptions)
       {
+        if (description.Specifications.Count() == 0) continue;
         testListener.WriteLine(String.Format("{0}\n  When {1}", description.Name, description.WhenClause), Category.Output);
         description.RunContextBeforeAll();
 
         foreach (var specification in description.Specifications)
         {
-          var result = description.VerifySpecification(specification);
-          var prefix = result.Passed ? "    " : "!!! ";
-          var suffix = result.Passed ? "" : " !!!";
-          testListener.WriteLine(String.Format("{1}* It {0}{2}", specification.ItClause, prefix, suffix), Category.Output);
-
-          TestResult testResult = new TestResult();
-          testResult.Name = specification.ItClause;
-          if (result.Passed)
-          {
-            testResult.State = TestState.Passed;
-          }
-          else
-          {
-            testResult.State = TestState.Failed;
-            testResult.StackTrace = result.Exception.ToString();
-            failure = true;
-            //testListener.WriteLine(result.Exception.ToString().Split(new [] {'\r', '\n'}).Last(), Category.Output);
-          }
-
+          TestResult testResult = GetTestResult(testListener, description, specification);
           testResults.Add(testResult);
         }
 
@@ -65,12 +47,42 @@ namespace Machine.Specifications.TDNetRunner
         testListener.WriteLine("", Category.Output);
       }
 
+      if (testResults.Count == 0)
+      {
+        return TestRunState.NoTests;
+      }
+
+      bool failure = false;
+
       foreach (var testResult in testResults)
       {
         testListener.TestFinished(testResult);
+        failure |= testResult.State == TestState.Failed;
       }
 
       return failure ? TestRunState.Failure : TestRunState.Success;
+    }
+
+    private TestResult GetTestResult(ITestListener testListener, Description description, Specification specification)
+    {
+      var result = description.VerifySpecification(specification);
+      var prefix = result.Passed ? "    " : "!!! ";
+      var suffix = result.Passed ? "" : " !!!";
+      testListener.WriteLine(String.Format("{1}* It {0}{2}", specification.Name, prefix, suffix), Category.Output);
+
+      TestResult testResult = new TestResult();
+      testResult.Name = specification.Name;
+      if (result.Passed)
+      {
+        testResult.State = TestState.Passed;
+      }
+      else
+      {
+        testResult.State = TestState.Failed;
+        testResult.StackTrace = result.Exception.ToString();
+        //testListener.WriteLine(result.Exception.ToString().Split(new [] {'\r', '\n'}).Last(), Category.Output);
+      }
+      return testResult;
     }
 
     public TestRunState RunNamespace(ITestListener testListener, Assembly assembly, string targetNamespace)
@@ -82,15 +94,24 @@ namespace Machine.Specifications.TDNetRunner
 
     public TestRunState RunMember(ITestListener testListener, Assembly assembly, MemberInfo member)
     {
-      if (member.MemberType != MemberTypes.TypeInfo)
+      if (member.MemberType == MemberTypes.TypeInfo)
+      {
+        Type type = (Type)member;
+        var description = explorer.FindDescription(type);
+
+        return RunDescriptions(new[] {description}, testListener);
+      }
+      else if (member.MemberType == MemberTypes.Field)
+      {
+        FieldInfo fieldInfo = (FieldInfo)member;
+        var description = explorer.FindDescription(fieldInfo);
+
+        return RunDescriptions(new[] {description}, testListener);
+      }
+      else
       {
         return TestRunState.NoTests;
       }
-
-      Type type = (Type)member;
-      var description = explorer.FindDescription(type);
-
-      return RunDescriptions(new[] {description}, testListener);
     }
   }
 }

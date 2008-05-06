@@ -21,7 +21,7 @@ namespace Machine.Specifications.Factories
     [Test]
     public void ShouldHaveCorrectItClause()
     {
-      specification.ItClause.ShouldEqual("is a specification");
+      specification.Name.ShouldEqual("is a specification");
     }
 
     [Test]
@@ -37,7 +37,7 @@ namespace Machine.Specifications.Factories
     [Test]
     public void ShouldHaveCorrectItClause()
     {
-      specification.ItClause.ShouldEqual("should throw an exception");
+      specification.Name.ShouldEqual("should throw an exception");
     }
   }
 

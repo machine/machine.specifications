@@ -8,7 +8,7 @@ namespace Machine.Specifications.Model
 {
   public abstract class Specification
   {
-    public string ItClause { get; private set; }
+    public string Name { get; private set; }
 
     public FieldInfo Field
     {
@@ -21,7 +21,7 @@ namespace Machine.Specifications.Model
 
     protected Specification(string specificationPrefix, FieldInfo fieldInfo)
     {
-      ItClause = specificationPrefix + fieldInfo.Name.ReplaceUnderscores();
+      Name = specificationPrefix + fieldInfo.Name.ReplaceUnderscores();
       Field = fieldInfo;
     }
 

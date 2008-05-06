@@ -32,7 +32,13 @@ namespace Machine.Specifications.Explorers
     private Description CreateDescriptionFrom(Type type)
     {
       object instance = Activator.CreateInstance(type);
-      return _descriptionFactory.CreateSpecificationFrom(instance);
+      return _descriptionFactory.CreateDescriptionFrom(instance);
+    }
+
+    private Description CreateDescriptionFrom(Type type, FieldInfo fieldInfo)
+    {
+      object instance = Activator.CreateInstance(type);
+      return _descriptionFactory.CreateDescriptionFrom(instance, fieldInfo);
     }
 
     private static bool HasDescriptionAttribute(Type type)
@@ -50,6 +56,17 @@ namespace Machine.Specifications.Explorers
       if (HasDescriptionAttribute(type))
       {
         return CreateDescriptionFrom(type);
+      }
+
+      return null;
+    }
+
+    public Description FindDescription(FieldInfo info)
+    {
+      Type type = info.ReflectedType;
+      if (HasDescriptionAttribute(type))
+      {
+        return CreateDescriptionFrom(type, info);
       }
 
       return null;

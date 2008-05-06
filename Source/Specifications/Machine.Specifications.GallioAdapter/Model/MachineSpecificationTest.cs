@@ -21,7 +21,7 @@ namespace Machine.Specifications.GallioAdapter.Model
     }
     */
 
-    public MachineSpecificationTest(Specification specification) : base(specification.ItClause, Reflector.Wrap(specification.Field))
+    public MachineSpecificationTest(Specification specification) : base(specification.Name, Reflector.Wrap(specification.Field))
     {
       this.Kind = TestKinds.Test;
       this.IsTestCase = true;

@@ -16,7 +16,20 @@ namespace Machine.Specifications.Factories
       _specificationFactory = new SpecificationFactory();
     }
 
-    public Description CreateSpecificationFrom(object instance)
+    public Description CreateDescriptionFrom(object instance, FieldInfo fieldInfo)
+    {
+      return CreateDescriptionFrom(instance, new[] {fieldInfo});
+    }
+
+    public Description CreateDescriptionFrom(object instance)
+    {
+      var type = instance.GetType();
+      var fieldInfos = type.GetPrivateFields();
+
+      return CreateDescriptionFrom(instance, fieldInfos);
+    }
+
+    private Description CreateDescriptionFrom(object instance, IEnumerable<FieldInfo> acceptedSpecificationFields)
     {
       var type = instance.GetType();
       var fieldInfos = type.GetPrivateFields();
@@ -41,8 +54,9 @@ namespace Machine.Specifications.Factories
           whenClause = info.Name.ReplaceUnderscores();
           when = (When)whenFieldInfo.GetValue(instance);
         }
-        else if (info.FieldType == typeof(It) ||
-            info.FieldType == typeof(It_should_throw))
+        else if (acceptedSpecificationFields.Contains(info) &&
+          (info.FieldType == typeof(It) ||
+           info.FieldType == typeof(It_should_throw)))
         {
           itFieldInfos.Add(info);
         }

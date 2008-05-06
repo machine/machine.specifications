@@ -41,7 +41,8 @@ namespace Machine.Specifications
     [Description]
     public class InExampleC_1
     {
-      
+      It is_spec_1 =()=> { };
+      It is_spec_2 =()=> { };
     }
 
     [Description]

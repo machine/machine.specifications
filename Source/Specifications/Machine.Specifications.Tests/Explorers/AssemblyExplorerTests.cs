@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Machine.Specifications.Example;
 using Machine.Specifications.Explorers;
@@ -64,7 +65,7 @@ namespace Machine.Specifications.Explorers
   }
 
   [TestFixture]
-  public class AssemblyExplorer_FindDescription_WithClass : TestsFor<AssemblyExplorer>
+  public class AssemblyExplorer_FindDescription_WithFieldInfo : TestsFor<AssemblyExplorer>
   {
     private Description description;
 
@@ -83,6 +84,37 @@ namespace Machine.Specifications.Explorers
     public void ShouldReturnCorrectName()
     {
       description.Name.ShouldEqual("InExampleC 1");
+    }
+  }
+
+  [TestFixture]
+  public class AssemblyExplorer_FindDescription_WithClass : TestsFor<AssemblyExplorer>
+  {
+    private Description description;
+
+    public override void BeforeEachTest()
+    {
+      FieldInfo fieldInfo = typeof(ExampleC.InExampleC_1).GetField("is_spec_1",
+        BindingFlags.Instance | BindingFlags.NonPublic);
+      description = Target.FindDescription(fieldInfo);
+    }
+
+    [Test]
+    public void ShouldReturnADescription()
+    {
+      description.ShouldNotBeNull();
+    }
+
+    [Test]
+    public void ShouldReturnOneSpecification()
+    {
+      description.Specifications.Count().ShouldEqual(1);
+    }
+    
+    [Test]
+    public void ShouldReturnOneSpecificationNamedCorrectly()
+    {
+      description.Specifications.First().Name.ShouldEqual("is spec 1");
     }
   }
 
@@ -109,7 +141,7 @@ namespace Machine.Specifications.Explorers
     [Test]
     public void ShouldHaveSpecificationsWithCorrectItClauses()
     {
-      var names = description.Specifications.Select(x => x.ItClause).ToList();
+      var names = description.Specifications.Select(x => x.Name).ToList();
       names.ShouldContainOnly(
         "should debit the from account by the amount transferred",
         "should credit the to account by the amount transferred");

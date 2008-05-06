@@ -57,7 +57,7 @@ namespace Machine.Specifications.Model
       IFakeDescription fakeDescription = new T();
       fakeDescription.Reset();
 
-      description = Target.CreateSpecificationFrom(fakeDescription);
+      description = Target.CreateDescriptionFrom(fakeDescription);
     }
   }
 }
