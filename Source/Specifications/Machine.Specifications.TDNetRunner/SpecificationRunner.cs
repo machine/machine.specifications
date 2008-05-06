@@ -15,19 +15,19 @@ namespace Machine.Specifications.TDNetRunner
     {
       var testResults = new List<TestResult>();
       var explorer = new AssemblyExplorer();
-      var specifications = explorer.FindSpecificationsIn(assembly);
+      var descriptions = explorer.FindDescriptionsIn(assembly);
 
-      if (specifications.Count() == 0) return TestRunState.NoTests;
+      if (descriptions.Count() == 0) return TestRunState.NoTests;
 
       bool failure = false;
-      foreach (var specification in specifications)
+      foreach (var description in descriptions)
       {
-        testListener.WriteLine(String.Format("{0}\n  When {1}", specification.Name, specification.WhenClause), Category.Output);
-        specification.RunContextBeforeAll();
+        testListener.WriteLine(String.Format("{0}\n  When {1}", description.Name, description.WhenClause), Category.Output);
+        description.RunContextBeforeAll();
 
-        foreach (var requirement in specification.Requirements)
+        foreach (var requirement in description.Requirements)
         {
-          var result = specification.VerifyRequirement(requirement);
+          var result = description.VerifyRequirement(requirement);
           var prefix = result.Passed ? "    " : "!!! ";
           var suffix = result.Passed ? "" : " !!!";
           testListener.WriteLine(String.Format("{1}* It {0}{2}", requirement.ItClause, prefix, suffix), Category.Output);
@@ -49,7 +49,7 @@ namespace Machine.Specifications.TDNetRunner
           testResults.Add(testResult);
         }
 
-        specification.RunContextAfterAll();
+        description.RunContextAfterAll();
         testListener.WriteLine("", Category.Output);
       }
 

@@ -82,7 +82,7 @@ namespace Machine.Specifications.GallioAdapter.Services
     private void PopulateAssemblyTest(IAssemblyInfo assembly, ITest assemblyTest)
     {
       AssemblyExplorer explorer = new AssemblyExplorer();
-      var specifications = explorer.FindSpecificationsIn(assembly.Resolve());
+      var specifications = explorer.FindDescriptionsIn(assembly.Resolve());
       foreach (var specification in specifications)
       {
         var specificationTest = new MachineSpecificationTest(specification);
@@ -92,9 +92,9 @@ namespace Machine.Specifications.GallioAdapter.Services
       }
     }
 
-    private void PopulateSpecificationTest(Specification specification, MachineSpecificationTest test)
+    private void PopulateSpecificationTest(Description description, MachineSpecificationTest test)
     {
-      foreach (var requirement in specification.Requirements)
+      foreach (var requirement in description.Requirements)
       {
         test.AddChild(new MachineRequirementTest(requirement));
       }

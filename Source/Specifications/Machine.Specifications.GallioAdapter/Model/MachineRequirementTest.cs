@@ -13,7 +13,7 @@ namespace Machine.Specifications.GallioAdapter.Model
   public class MachineRequirementTest : MachineTest
   {
     private readonly Requirement _requirement;
-    private readonly Specification _specification;
+    private readonly Description _description;
 
     /*
     public Requirement Requirement
@@ -34,7 +34,7 @@ namespace Machine.Specifications.GallioAdapter.Model
       MachineSpecificationTest parent = this.Parent as MachineSpecificationTest;
       if (parent == null) throw new Exception("Requirement has non-specification parent???");
 
-      var result = parent.Specification.VerifyRequirement(_requirement);
+      var result = parent.Description.VerifyRequirement(_requirement);
       return result;
     }
   }

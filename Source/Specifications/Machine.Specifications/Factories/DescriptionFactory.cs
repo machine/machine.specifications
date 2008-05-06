@@ -7,16 +7,16 @@ using Machine.Specifications.Model;
 
 namespace Machine.Specifications.Factories
 {
-  public class SpecificationFactory
+  public class DescriptionFactory
   {
     private RequirementFactory _requirementFactory;
 
-    public SpecificationFactory()
+    public DescriptionFactory()
     {
       _requirementFactory = new RequirementFactory();
     }
 
-    public Specification CreateSpecificationFrom(object instance)
+    public Description CreateSpecificationFrom(object instance)
     {
       var type = instance.GetType();
       var fieldInfos = type.GetPrivateFields();
@@ -48,7 +48,7 @@ namespace Machine.Specifications.Factories
         }
       }
 
-      var specification = new Specification(type, instance, beforeEachs, beforeAlls, afterEachs, afterAlls, when) { 
+      var specification = new Description(type, instance, beforeEachs, beforeAlls, afterEachs, afterAlls, when) { 
             WhenClause = whenClause
           };
 

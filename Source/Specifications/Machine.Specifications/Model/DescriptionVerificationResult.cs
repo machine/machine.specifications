@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Machine.Specifications.Model
 {
-  public class SpecificationVerificationResult
+  public class DescriptionVerificationResult
   {
     private IEnumerable<RequirementVerificationResult> _requirementResults;
 
@@ -14,7 +14,7 @@ namespace Machine.Specifications.Model
       get { return _requirementResults; }
     }
 
-    public SpecificationVerificationResult(IEnumerable<RequirementVerificationResult> requirementResults)
+    public DescriptionVerificationResult(IEnumerable<RequirementVerificationResult> requirementResults)
     {
       _requirementResults = requirementResults;
     }

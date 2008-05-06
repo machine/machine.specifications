@@ -13,7 +13,7 @@ namespace Machine.Specifications.Factories
     [Test]
     public void ShouldSetType()
     {
-      specification.Type.Name.ShouldEqual("SpecificationWithSingleRequirement");
+      description.Type.Name.ShouldEqual("SpecificationWithSingleRequirement");
     }
   }
 }

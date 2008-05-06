@@ -5,6 +5,52 @@ using System.Text;
 
 namespace Machine.Specifications
 {
+  namespace ExampleA
+  {
+    namespace ExampleB
+    {
+      [Description]
+      public class InExampleB_1
+      {
+        
+      }
+        
+      [Description]
+      public class InExampleB_2
+      {
+        
+      }
+        
+    }
+
+    [Description]
+    public class InExampleA_1
+    {
+      
+    }
+
+    [Description]
+    public class InExampleA_2
+    {
+      
+    }
+  }
+
+  namespace ExampleC
+  {
+    [Description]
+    public class InExampleC_1
+    {
+      
+    }
+
+    [Description]
+    public class InExampleC_2
+    {
+      
+    }
+  }
+
   public interface IFakeSpecification
   {
     void Reset();

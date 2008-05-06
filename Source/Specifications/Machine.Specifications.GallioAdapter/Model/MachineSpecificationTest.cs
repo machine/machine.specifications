@@ -10,28 +10,28 @@ namespace Machine.Specifications.GallioAdapter.Model
 {
   public class MachineSpecificationTest : MachineTest
   {
-    private readonly Specification _specification;
+    private readonly Description _description;
 
-    public Specification Specification
+    public Description Description
     {
-      get { return _specification; }
+      get { return _description; }
     }
 
-    public MachineSpecificationTest(Specification specification) 
-      : base(specification.Name, Reflector.Wrap(specification.Type))
+    public MachineSpecificationTest(Description description) 
+      : base(description.Name, Reflector.Wrap(description.Type))
     {
       this.Kind = TestKinds.Fixture;
-      _specification = specification;
+      _description = description;
     }
 
     public void SetupContext()
     {
-      _specification.RunContextBeforeAll();
+      _description.RunContextBeforeAll();
     }
 
     public void TeardownContext()
     {
-      _specification.RunContextAfterAll();
+      _description.RunContextAfterAll();
     }
   }
 }

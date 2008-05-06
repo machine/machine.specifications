@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Machine.Specifications.Model
 {
-  public class Specification
+  public class Description
   {
     private List<Requirement> _requirements;
     private object _instance;
@@ -31,7 +31,7 @@ namespace Machine.Specifications.Model
       get; private set;
     }
 
-    public Specification(Type type, object instance, IEnumerable<Context> beforeEachs, IEnumerable<Context> beforeAlls, IEnumerable<Context> afterEachs, IEnumerable<Context> afterAlls, When when)
+    public Description(Type type, object instance, IEnumerable<Context> beforeEachs, IEnumerable<Context> beforeAlls, IEnumerable<Context> afterEachs, IEnumerable<Context> afterAlls, When when)
     {
       Name = type.Name.ReplaceUnderscores();
       Type = type;
@@ -49,10 +49,10 @@ namespace Machine.Specifications.Model
       _requirements.Add(requirement);
     }
 
-    public SpecificationVerificationResult Verify()
+    public DescriptionVerificationResult Verify()
     {
       var requirementResults = VerifyRequirements();
-      return new SpecificationVerificationResult(requirementResults);
+      return new DescriptionVerificationResult(requirementResults);
     }
 
     private IEnumerable<RequirementVerificationResult> VerifyRequirements()
