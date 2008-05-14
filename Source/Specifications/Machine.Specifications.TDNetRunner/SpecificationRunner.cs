@@ -13,9 +13,11 @@ namespace Machine.Specifications.TDNetRunner
   public class SpecificationRunner : ITestRunner
   {
     private AssemblyExplorer explorer;
+    private ResultFormatterFactory resultFormatterFactory;
     public SpecificationRunner()
     {
       explorer = new AssemblyExplorer();
+      resultFormatterFactory = new ResultFormatterFactory();
     }
 
     public TestRunState RunAssembly(ITestListener testListener, Assembly assembly)
@@ -66,9 +68,9 @@ namespace Machine.Specifications.TDNetRunner
     private TestResult GetTestResult(ITestListener testListener, Description description, Specification specification)
     {
       var result = description.VerifySpecification(specification);
-      var prefix = result.Passed ? "    " : "!!! ";
-      var suffix = result.Passed ? "" : " !!!";
-      testListener.WriteLine(String.Format("{1}* It {0}{2}", specification.Name, prefix, suffix), Category.Output);
+      var formatter = resultFormatterFactory.GetResultFormatterFor(result);
+
+      testListener.WriteLine(formatter.FormatResult(specification), Category.Output);
 
       TestResult testResult = new TestResult();
       testResult.Name = specification.Name;
@@ -79,7 +81,10 @@ namespace Machine.Specifications.TDNetRunner
       else
       {
         testResult.State = TestState.Failed;
-        testResult.StackTrace = result.Exception.ToString();
+        if (result.Exception != null)
+        {
+          testResult.StackTrace = result.Exception.ToString();
+        }
         //testListener.WriteLine(result.Exception.ToString().Split(new [] {'\r', '\n'}).Last(), Category.Output);
       }
       return testResult;

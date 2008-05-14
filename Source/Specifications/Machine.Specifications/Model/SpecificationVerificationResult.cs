@@ -5,20 +5,43 @@ using System.Text;
 
 namespace Machine.Specifications.Model
 {
+  public enum Result
+  {
+    Failed,
+    Passed,
+    Unknown
+  }
+
   public class SpecificationVerificationResult
   {
-    public bool Passed { get; private set; }
+    readonly Result _result;
+
+    public bool Passed 
+    { 
+      get { return _result == Result.Passed; } 
+    }
+
     public Exception Exception { get; private set; }
+
+    public Result Result
+    {
+      get { return _result; }
+    }
 
     public SpecificationVerificationResult(Exception exception)
     {
-      this.Passed = false;
+      _result = Result.Failed;
       this.Exception = exception;
     }
 
-    public SpecificationVerificationResult(bool passed)
+    public SpecificationVerificationResult()
     {
-      this.Passed = passed;
+      _result = Result.Passed;
+    }
+
+    public SpecificationVerificationResult(Result result)
+    {
+      this._result = result;
     }
   }
 }

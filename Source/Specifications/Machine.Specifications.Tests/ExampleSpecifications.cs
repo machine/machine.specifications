@@ -1,4 +1,5 @@
-﻿using System;
+﻿#pragma warning disable 169
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -55,6 +56,40 @@ namespace Machine.Specifications
   public interface IFakeDescription
   {
     void Reset();
+  }
+
+  public class DescriptionWithEmptyWhen : IFakeDescription
+  {
+    public static bool ItInvoked = false;
+
+    When nothing_happens;
+
+    It should_do_stuff =()=>
+    {
+      ItInvoked = true;
+    };
+
+    public void Reset()
+    {
+      ItInvoked = false;
+    }
+  }
+
+  public class DescriptionWithEmptySpecification : IFakeDescription
+  {
+    public static bool WhenInvoked = false;
+
+    When not_called =()=>
+    {
+      WhenInvoked = true;
+    };
+
+    It should_do_stuff;
+
+    public void Reset()
+    {
+      WhenInvoked = false;
+    }
   }
 
   public class DescriptionWithThrowingSpecification : IFakeDescription

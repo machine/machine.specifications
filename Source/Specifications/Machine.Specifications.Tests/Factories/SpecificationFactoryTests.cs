@@ -41,6 +41,28 @@ namespace Machine.Specifications.Factories
     }
   }
 
+  [TestFixture]
+  public  class SpecificationFactory_CreateUndefinedSpecification : WithUndefinedSpecification
+  {
+    [Test]
+    public void ShouldCreateUnknownSpecification()
+    {
+      specification.IsDefined.ShouldBeFalse();
+    }
+  }
+
+  public class WithUndefinedSpecification : TestsFor<SpecificationFactory>
+  {
+    protected Specification specification;
+    public override void BeforeEachTest()
+    {
+      Type type = typeof(DescriptionWithEmptySpecification);
+      FieldInfo field = type.GetPrivateFieldsWith(typeof(It)).First();
+
+      specification = Target.CreateSpecification(new DescriptionWithEmptySpecification(), field);
+    }
+  }
+
   public class WithSingleSpecification : TestsFor<SpecificationFactory>
   {
     protected Specification specification;

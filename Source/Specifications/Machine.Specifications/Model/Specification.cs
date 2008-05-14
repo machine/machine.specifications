@@ -15,6 +15,8 @@ namespace Machine.Specifications.Model
       get; private set;
     }
 
+    public abstract bool IsDefined { get; }
+
     protected Specification(FieldInfo fieldInfo) : this("", fieldInfo)
     {
     }
@@ -25,19 +27,34 @@ namespace Machine.Specifications.Model
       Field = fieldInfo;
     }
 
-    public abstract SpecificationVerificationResult Verify(VerificationContext verificationContext);
+    public virtual SpecificationVerificationResult Verify(VerificationContext verificationContext)
+    {
+      if (!IsDefined)
+      {
+        return new SpecificationVerificationResult(Result.Unknown);
+      }
+
+      return InternalVerify(verificationContext);
+    }
+
+    protected abstract SpecificationVerificationResult InternalVerify(VerificationContext verificationContext);
   }
 
   public class ItSpecification : Specification
   {
     private It _verifier;
+    
+    public override bool IsDefined
+    {
+      get { return _verifier != null; }
+    }
 
     public ItSpecification(FieldInfo fieldInfo, It verifier) : base(fieldInfo)
     {
       _verifier = verifier;
     }
 
-    public override SpecificationVerificationResult Verify(VerificationContext verificationContext)
+    protected override SpecificationVerificationResult InternalVerify(VerificationContext verificationContext)
     {
       try
       {
@@ -48,7 +65,7 @@ namespace Machine.Specifications.Model
         return new SpecificationVerificationResult(err);
       }
 
-      return new SpecificationVerificationResult(true);
+      return new SpecificationVerificationResult(Result.Passed);
     }
   }
 
@@ -56,16 +73,21 @@ namespace Machine.Specifications.Model
   {
     private It_should_throw _verifier;
 
+    public override bool IsDefined
+    {
+      get { return _verifier != null; }
+    }
+
     public ItShouldThrowSpecification(FieldInfo fieldInfo, It_should_throw verifier) : base("should throw ", fieldInfo)
     {
       _verifier = verifier;
     }
 
-    public override SpecificationVerificationResult Verify(VerificationContext verificationContext)
+    protected override SpecificationVerificationResult InternalVerify(VerificationContext verificationContext)
     {
       if (verificationContext.ThrownException == null)
       {
-        return new SpecificationVerificationResult(false);
+        return new SpecificationVerificationResult(Result.Failed);
       }
 
       try
@@ -77,7 +99,7 @@ namespace Machine.Specifications.Model
         return new SpecificationVerificationResult(err);
       }
 
-      return new SpecificationVerificationResult(true);
+      return new SpecificationVerificationResult(Result.Passed);
     }
   }
 }
