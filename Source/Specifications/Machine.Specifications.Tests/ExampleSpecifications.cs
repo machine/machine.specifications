@@ -10,43 +10,40 @@ namespace Machine.Specifications
   {
     namespace ExampleB
     {
-      [Description]
       public class InExampleB_1
       {
+        It is_spec_1 =()=> { };
         
       }
         
-      [Description]
       public class InExampleB_2
       {
+        It is_spec_1 =()=> { };
         
       }
         
     }
 
-    [Description]
     public class InExampleA_1
     {
+      It is_spec_1 =()=> { };
       
     }
 
-    [Description]
     public class InExampleA_2
     {
-      
+      It is_spec_1 =()=> { };
     }
   }
 
   namespace ExampleC
   {
-    [Description]
     public class InExampleC_1
     {
       It is_spec_1 =()=> { };
       It is_spec_2 =()=> { };
     }
 
-    [Description]
     public class InExampleC_2
     {
       

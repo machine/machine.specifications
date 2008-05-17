@@ -6,7 +6,6 @@ using Rhino.Mocks;
 
 namespace Machine.Specifications.ConsoleRunner.Specs
 {
-  [Description]
   public class Running_with_no_command_line_arguments
   {
     static Runner runner;
@@ -25,7 +24,6 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       console.Verify(x => x.WriteLine(Arg<string>.Matches(y => true)));
   }
 
-  [Description]
   public class Running_with_assemblies_in_the_command_line
   {
     static Runner runner;

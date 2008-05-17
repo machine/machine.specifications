@@ -94,16 +94,4 @@ namespace Machine.Specifications.Model
       DescriptionWithSingleSpecification.AfterAllInvoked.ShouldBeTrue();
     }
   }
-
-  public class With<T> : TestsFor<DescriptionFactory> where T : IFakeDescription, new()
-  {
-    protected Description description;
-    public override void BeforeEachTest()
-    {
-      IFakeDescription fakeDescription = new T();
-      fakeDescription.Reset();
-
-      description = Target.CreateDescriptionFrom(fakeDescription);
-    }
-  }
 }

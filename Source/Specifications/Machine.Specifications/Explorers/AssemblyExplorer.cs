@@ -41,19 +41,31 @@ namespace Machine.Specifications.Explorers
       return _descriptionFactory.CreateDescriptionFrom(instance, fieldInfo);
     }
 
+    private static bool IsDescription(Type type)
+    {
+      return HasSpecificationMembers(type);
+    }
+
+    private static bool HasSpecificationMembers(Type type)
+    {
+      return type.GetPrivateFieldsWith(typeof(It)).Any() || type.GetPrivateFieldsWith(typeof(It_should_throw)).Any();
+    }
+
+    /*
     private static bool HasDescriptionAttribute(Type type)
     {
       return type.IsDefined(typeof(DescriptionAttribute), false);
     }
+    */
 
     private static IEnumerable<Type> EnumerateDescriptionsIn(Assembly assembly)
     {
-      return assembly.GetExportedTypes().Where(HasDescriptionAttribute);
+      return assembly.GetExportedTypes().Where(IsDescription);
     }
 
     public Description FindDescription(Type type)
     {
-      if (HasDescriptionAttribute(type))
+      if (IsDescription(type))
       {
         return CreateDescriptionFrom(type);
       }
@@ -64,7 +76,7 @@ namespace Machine.Specifications.Explorers
     public Description FindDescription(FieldInfo info)
     {
       Type type = info.ReflectedType;
-      if (HasDescriptionAttribute(type))
+      if (IsDescription(type))
       {
         return CreateDescriptionFrom(type, info);
       }

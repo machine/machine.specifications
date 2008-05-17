@@ -104,6 +104,11 @@ namespace Machine.Specifications.TDNetRunner
         Type type = (Type)member;
         var description = explorer.FindDescription(type);
 
+        if (description == null)
+        {
+          return TestRunState.NoTests;
+        }
+
         return RunDescriptions(new[] {description}, testListener);
       }
       else if (member.MemberType == MemberTypes.Field)
