@@ -66,6 +66,7 @@
     <Compile Include="Framework.cs" />
     <Compile Include="ReflectionHelper.cs" />
     <Compile Include="Properties\SharedAssemblyInfo.cs" />
+    <Compile Include="SpecificationExceptions.cs" />
     <Compile Include="Verifiers\DescriptionVerifier.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

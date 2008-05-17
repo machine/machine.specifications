@@ -42,13 +42,10 @@ namespace Machine.Specifications.TDNetRunner
 
         foreach (var specification in description.Specifications)
         {
-          if (specification.WhenClause != lastWhenPrinted)
+          if (specification.HasWhenClause && specification.WhenClause != lastWhenPrinted)
           {
             lastWhenPrinted = specification.WhenClause;
-            if (!String.IsNullOrEmpty(specification.WhenClause))
-            {
-              testListener.WriteLine(String.Format("  When {0}", specification.WhenClause), Category.Output);
-            }
+            testListener.WriteLine(String.Format("  When {0}", specification.WhenClause), Category.Output);
           }
 
           TestResult testResult = GetTestResult(testListener, description, specification);

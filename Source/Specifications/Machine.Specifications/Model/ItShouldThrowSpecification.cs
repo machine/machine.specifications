@@ -13,16 +13,23 @@ namespace Machine.Specifications.Model
     {
       if (verificationContext.ThrownException == null)
       {
-        return new SpecificationVerificationResult(Result.Failed);
+        try
+        {
+          throw new SpecificationException("Expected a thrown exception but didn't get one.");
+        }
+        catch (Exception exception)
+        {
+          return new SpecificationVerificationResult(exception);
+        }
       }
 
       try
       {
         InvokeSpecificationField(verificationContext, verificationContext.ThrownException);
       }
-      catch (Exception err)
+      catch (TargetInvocationException exception)
       {
-        return new SpecificationVerificationResult(err);
+        return new SpecificationVerificationResult(exception.InnerException);
       }
 
       return new SpecificationVerificationResult(Result.Passed);

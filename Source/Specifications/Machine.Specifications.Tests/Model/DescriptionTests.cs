@@ -26,6 +26,30 @@ namespace Machine.Specifications.Model
   }
 
   [TestFixture]
+  public class ExpectingThrowButDoesntTests : With<DescriptionWithSpecificationExpectingThrowThatDoesnt>
+  {
+    DescriptionVerificationResult results;
+
+    public override void BeforeEachTest()
+    {
+      base.BeforeEachTest();
+      results = description.Verify();
+    }
+
+    [Test]
+    public void ShouldHaveException()
+    {
+      results.SpecificationResults.First().Exception.ShouldNotBeNull();
+    }
+
+    [Test]
+    public void ShouldFail()
+    {
+      results.SpecificationResults.First().Passed.ShouldBeFalse();
+    }
+  }
+
+  [TestFixture]
   public class ThrowingWhenTests : With<DescriptionWithThrowingWhenAndPassingSpecification>
   {
     DescriptionVerificationResult results;

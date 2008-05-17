@@ -17,6 +17,7 @@ namespace Machine.Specifications.Model
     public void InvokeOn(object instance, params object[] arguments)
     {
       Delegate action = (Delegate)Field.GetValue(instance);
+
       action.DynamicInvoke(arguments);
     }
 

@@ -14,8 +14,8 @@ namespace Machine.Mocks.Specs
   public class Interceptor_intercepting_equals 
     : with_interceptor
   {
-    Context[] before_each = {()=>
-      invocation.Stub(x=>x.Method).Return(typeof(object).GetMethod("Equals"))};
+    Context before_each = ()=>
+      invocation.Stub(x=>x.Method).Return(typeof(object).GetMethod("Equals", new [] {typeof(object)}));
 
     When Intercept_is_called = ()=>
       interceptor.Intercept(invocation);
@@ -27,8 +27,8 @@ namespace Machine.Mocks.Specs
   public class Interceptor_intercepting_to_string 
     : with_interceptor
   {
-    Context[] before_each = {()=>
-      invocation.Stub(x=>x.Method).Return(typeof(object).GetMethod("ToString"))};
+    Context before_each = ()=>
+      invocation.Stub(x=>x.Method).Return(typeof(object).GetMethod("ToString"));
 
     When Intercept_is_called = ()=>
       interceptor.Intercept(invocation);
@@ -46,7 +46,7 @@ namespace Machine.Mocks.Specs
     When Intercept_is_called = ()=>
       interceptor.Intercept(invocation);
 
-    It should_proceed = ()=>
+    It should_not_proceed = ()=>
       invocation.AssertWasNotCalled(x=>x.Proceed());
   }
   

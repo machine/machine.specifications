@@ -6,8 +6,7 @@ using Machine.Specifications;
 
 namespace Machine.Mocks.Specs
 {
-  
-  public class Creating_a_mock_interface
+  public class Creating_mock_interfaces
   {
     static IFoo mock;
 
@@ -20,13 +19,8 @@ namespace Machine.Mocks.Specs
     {
       mock.ShouldNotBeNull();
     };
-  }
 
-  public class Creating_a_mock_interface_with_constructor_arguments
-  {
-    static IFoo mock;
-
-    When a_mock_is_created_with_constructor_arguments = () =>
+    When a_mock_is_created_with_constructor_arguments =()=>
     {
       mock = Mock.Of<IFoo>(0);
     };
@@ -37,7 +31,7 @@ namespace Machine.Mocks.Specs
     };
   }
 
-  public class Creating_a_mock_class
+  public class Creating_mock_classes
   {
     static Foo mock;
 

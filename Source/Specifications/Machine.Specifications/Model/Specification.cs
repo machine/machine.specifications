@@ -58,19 +58,24 @@ namespace Machine.Specifications.Model
         return new SpecificationVerificationResult(Result.Unknown);
       }
 
-      if (_whenField.CanInvokeOn(verificationContext.Instance))
+      InvokeWhenField(verificationContext);
+
+      return InternalVerify(verificationContext);
+    }
+
+    void InvokeWhenField(VerificationContext verificationContext)
+    {
+      if (_whenField != null && _whenField.CanInvokeOn(verificationContext.Instance))
       {
         try
         {
           _whenField.InvokeOn(verificationContext.Instance);
         }
-        catch (Exception exception)
+        catch (TargetInvocationException exception)
         {
-          verificationContext.ThrownException = exception;
+          verificationContext.ThrownException = exception.InnerException;
         }
       }
-
-      return InternalVerify(verificationContext);
     }
 
     protected abstract SpecificationVerificationResult InternalVerify(VerificationContext verificationContext);

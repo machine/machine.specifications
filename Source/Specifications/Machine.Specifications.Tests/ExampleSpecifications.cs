@@ -55,6 +55,24 @@ namespace Machine.Specifications
     void Reset();
   }
 
+  public class DescriptionWithSpecificationExpectingThrowThatDoesnt : IFakeDescription
+  {
+    public static bool ItInvoked;
+
+    When does_nothing =()=>
+    {
+    };
+
+    It_should_throw but_it_wont =exception=>
+    {
+    };
+
+    public void Reset()
+    {
+      ItInvoked = false;
+    }
+  }
+
   public class DescriptionWithThrowingWhenAndPassingSpecification : IFakeDescription
   {
     public static bool ItInvoked;

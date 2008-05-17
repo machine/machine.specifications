@@ -20,9 +20,9 @@ namespace Machine.Specifications.Model
       {
         InvokeSpecificationField(verificationContext);
       }
-      catch (Exception err)
+      catch (TargetInvocationException exception)
       {
-        return new SpecificationVerificationResult(err);
+        return new SpecificationVerificationResult(exception.InnerException);
       }
 
       return new SpecificationVerificationResult(Result.Passed);
