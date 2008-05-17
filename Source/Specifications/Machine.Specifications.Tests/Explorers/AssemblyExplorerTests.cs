@@ -22,9 +22,9 @@ namespace Machine.Specifications.Explorers
     }
 
     [Test]
-    public void ShouldReturnFourDescriptions()
+    public void ShouldReturnOneDescription()
     {
-      specifications.Count().ShouldEqual(3);
+      specifications.Count().ShouldEqual(1);
     }
 
     [Test]
@@ -32,9 +32,8 @@ namespace Machine.Specifications.Explorers
     {
       var names = specifications.Select(x => x.Name).ToList();
       names.ShouldContainOnly(
-        "Transferring between from account and to account",
-        "Transferring between two accounts",
-        "Transferring an amount greater than the balance of the from account");
+        "Transferring between accounts"
+        );
     }
   }
 
@@ -128,14 +127,14 @@ namespace Machine.Specifications.Explorers
     {
       descriptions = Target.FindDescriptionsIn(typeof(Account).Assembly);
       description =
-        descriptions.Where(x => x.Name == "Transferring between from account and to account").FirstOrDefault();
+        descriptions.Where(x => x.Name == "Transferring between accounts").FirstOrDefault();
       description.ShouldNotBeNull();
     }
 
     [Test]
-    public void ShouldHaveTwoSpecifications()
+    public void ShouldHaveThreeSpecifications()
     {
-      description.Specifications.Count().ShouldEqual(2);
+      description.Specifications.Count().ShouldEqual(3);
     }
 
     [Test]
@@ -144,13 +143,15 @@ namespace Machine.Specifications.Explorers
       var names = description.Specifications.Select(x => x.Name).ToList();
       names.ShouldContainOnly(
         "should debit the from account by the amount transferred",
-        "should credit the to account by the amount transferred");
+        "should credit the to account by the amount transferred",
+        "should throw a System Exception");
     }
 
     [Test]
     public void ShouldHaveSpecificationsWithCorrectWhenClauses()
     {
-      description.Specifications.Select(x => x.WhenClause).Distinct().ToList().ShouldContainOnly("the transfer is made");
+      description.Specifications.Select(x => x.WhenClause).Distinct().ToList().ShouldContainOnly(
+        "the transfer is made", "a transfer is made that is too large");
     }
   }
 }

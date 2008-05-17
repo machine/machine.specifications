@@ -60,7 +60,7 @@
     <Compile Include="Model\Description.cs" />
     <Compile Include="Model\DescriptionVerificationResult.cs" />
     <Compile Include="Model\VerificationContext.cs" />
-    <Compile Include="Model\WhenDescriptor.cs" />
+    <Compile Include="Model\DelegateField.cs" />
     <Compile Include="Naming.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Framework.cs" />

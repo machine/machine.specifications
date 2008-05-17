@@ -22,15 +22,15 @@ namespace Machine.Specifications.Verifiers
     }
 
     [Test]
-    public void ShouldBeExactlyThreeResults()
+    public void ShouldBeExactlyOneResult()
     {
-      results.Count().ShouldEqual(3);
+      results.Count().ShouldEqual(1);
     }
 
     [Test]
-    public void ShouldBeExactlyFiveSpecificationResults()
+    public void ShouldBeExactlyThreeSpecificationResults()
     {
-      results.SelectMany(x => x.SpecificationResults).Count().ShouldEqual(5);
+      results.SelectMany(x => x.SpecificationResults).Count().ShouldEqual(3);
     }
   }
 }
