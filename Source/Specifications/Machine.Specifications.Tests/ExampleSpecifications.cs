@@ -55,6 +55,26 @@ namespace Machine.Specifications
     void Reset();
   }
 
+  public class DescriptionWithThrowingWhenAndPassingSpecification : IFakeDescription
+  {
+    public static bool ItInvoked;
+
+    When throws =()=>
+    {
+      throw new Exception();
+    };
+
+    It should_fail =()=>
+    {
+      ItInvoked = true;
+    };
+
+    public void Reset()
+    {
+      ItInvoked = false;
+    }
+  }
+
   public class DescriptionWithEmptyWhen : IFakeDescription
   {
     public static bool ItInvoked = false;
@@ -69,6 +89,42 @@ namespace Machine.Specifications
     public void Reset()
     {
       ItInvoked = false;
+    }
+  }
+
+  public class DescriptionWithTwoWhens : IFakeDescription
+  {
+    public static bool When1Invoked = false;
+    public static bool When2Invoked = false;
+    public static bool ItForWhen1Invoked = false;
+    public static bool ItForWhen2Invoked = false;
+
+    When _1 =()=>
+    {
+      When1Invoked = true;
+    };
+
+    It for_when_1 =()=>
+    {
+      ItForWhen1Invoked = true;
+    };
+
+    When _2 =()=>
+    {
+      When2Invoked = true;
+    };
+
+    It for_when_2 =()=>
+    {
+      ItForWhen2Invoked = true;
+    };
+
+    public void Reset()
+    {
+      When1Invoked = false;
+      When2Invoked = false;
+      ItForWhen1Invoked = false;
+      ItForWhen2Invoked = false;
     }
   }
 

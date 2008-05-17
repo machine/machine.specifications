@@ -13,7 +13,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     Context before_each =()=>
     {
       MockRepository mocks = new MockRepository();
-      console = mocks.ToBeNamedMock<IConsole>();
+      console = mocks.DynamicMock<IConsole>();
       runner = new Runner(console);
     };
 
@@ -21,7 +21,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       runner.Run(new string[] {});
 
     It should_print_usage_statement =()=>
-      console.Verify(x => x.WriteLine(Arg<string>.Matches(y => true)));
+      console.AssertWasCalled(x => x.WriteLine(Arg<string>.Matches(y => true)));
   }
 
   public class Running_with_assemblies_in_the_command_line
@@ -31,7 +31,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     Context before_each =()=>
     {
       MockRepository mocks = new MockRepository();
-      console = mocks.ToBeNamedMock<IConsole>();
+      console = mocks.DynamicMock<IConsole>();
       runner = new Runner(console);
     };
 
@@ -39,6 +39,6 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       runner.Run(new string[] {"Machine.Specifications.Example.dll"});
 
     It should_print_the_results =()=>
-      console.Verify(x => x.WriteLine(Arg<string>.Matches(y => y.IndexOf("It should") >= 0)), c => c.Repeat.Times(5));
+      console.AssertWasCalled(x => x.WriteLine(Arg<string>.Matches(y => y.IndexOf("It should") >= 0)), c => c.Repeat.Times(5));
   }
 }

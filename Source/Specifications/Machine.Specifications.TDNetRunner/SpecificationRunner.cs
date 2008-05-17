@@ -36,11 +36,21 @@ namespace Machine.Specifications.TDNetRunner
       foreach (var description in descriptions)
       {
         if (description.Specifications.Count() == 0) continue;
-        testListener.WriteLine(String.Format("{0}\n  When {1}", description.Name, description.WhenClause), Category.Output);
+        testListener.WriteLine(description.Name, Category.Output);
         description.RunContextBeforeAll();
+        string lastWhenPrinted = "";
 
         foreach (var specification in description.Specifications)
         {
+          if (specification.WhenClause != lastWhenPrinted)
+          {
+            lastWhenPrinted = specification.WhenClause;
+            if (!String.IsNullOrEmpty(specification.WhenClause))
+            {
+              testListener.WriteLine(String.Format("  When {0}", specification.WhenClause), Category.Output);
+            }
+          }
+
           TestResult testResult = GetTestResult(testListener, description, specification);
           testResults.Add(testResult);
         }

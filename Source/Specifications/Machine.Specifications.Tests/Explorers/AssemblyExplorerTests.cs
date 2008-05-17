@@ -126,7 +126,7 @@ namespace Machine.Specifications.Explorers
 
     public override void  BeforeEachTest()
     {
-      descriptions = Target.FindDescriptionsIn(typeof (Account).Assembly);
+      descriptions = Target.FindDescriptionsIn(typeof(Account).Assembly);
       description =
         descriptions.Where(x => x.Name == "Transferring between from account and to account").FirstOrDefault();
       description.ShouldNotBeNull();
@@ -150,7 +150,7 @@ namespace Machine.Specifications.Explorers
     [Test]
     public void ShouldHaveSpecificationsWithCorrectWhenClauses()
     {
-      description.WhenClause.ShouldEqual("the transfer is made");
+      description.Specifications.Select(x => x.WhenClause).Distinct().ToList().ShouldContainOnly("the transfer is made");
     }
   }
 }

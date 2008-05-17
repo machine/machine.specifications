@@ -36,7 +36,6 @@ namespace Machine.Specifications.Factories
       string whenClause = "";
       List<FieldInfo> itFieldInfos = new List<FieldInfo>();
       FieldInfo whenFieldInfo = null;
-      When when = null;
 
       var beforeAlls = ExtractPrivateFieldValues<Context>(instance, "before_all");
       var beforeEachs = ExtractPrivateFieldValues<Context>(instance, "before_each");
@@ -46,30 +45,21 @@ namespace Machine.Specifications.Factories
       var afterAlls = ExtractPrivateFieldValues<Context>(instance, "after_all");
       var afterEachs = ExtractPrivateFieldValues<Context>(instance, "after_each");
 
+      var description = new Description(type, instance, beforeEachs, beforeAlls, afterEachs, afterAlls);
+
       foreach (FieldInfo info in fieldInfos)
       {
-        if (info.FieldType == typeof (When))
+        if (info.FieldType == typeof(When))
         {
           whenFieldInfo = info;
-          whenClause = info.Name.ReplaceUnderscores();
-          when = (When)whenFieldInfo.GetValue(instance);
         }
         else if (acceptedSpecificationFields.Contains(info) &&
           (info.FieldType == typeof(It) ||
            info.FieldType == typeof(It_should_throw)))
         {
-          itFieldInfos.Add(info);
+          Specification specification = _specificationFactory.CreateSpecification(info, whenFieldInfo);
+          description.AddSpecification(specification);
         }
-      }
-
-      var description = new Description(type, instance, beforeEachs, beforeAlls, afterEachs, afterAlls, when) { 
-            WhenClause = whenClause
-          };
-
-      foreach (FieldInfo info in itFieldInfos)
-      {
-        Specification specification = _specificationFactory.CreateSpecification(instance, info);
-        description.AddSpecification(specification);
       }
 
       return description;

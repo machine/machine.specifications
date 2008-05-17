@@ -8,98 +8,81 @@ namespace Machine.Specifications.Model
 {
   public abstract class Specification
   {
-    public string Name { get; private set; }
+    readonly string _specificationPrefix;
+    DelegateField _specificationField;
+    DelegateField _whenField;
 
-    public FieldInfo Field
+    public FieldInfo SpecificationField
     {
-      get; private set;
+      get { return _specificationField.Field; } 
     }
 
-    public abstract bool IsDefined { get; }
+    public FieldInfo WhenField
+    {
+      get { return _whenField.Field; } 
+    }
 
-    protected Specification(FieldInfo fieldInfo) : this("", fieldInfo)
+    public string Name 
+    { 
+      get { return _specificationPrefix + _specificationField.Name; }
+    }
+
+    public string WhenClause 
+    { 
+      get { return _whenField.Name; }
+    }
+
+    public bool HasWhenClause
+    {
+      get { return _whenField != null; }
+    }
+
+    protected Specification(FieldInfo itField, FieldInfo whenField) : this("", itField, whenField)
     {
     }
 
-    protected Specification(string specificationPrefix, FieldInfo fieldInfo)
+    protected Specification(string specificationPrefix, FieldInfo itField, FieldInfo whenField)
     {
-      Name = specificationPrefix + fieldInfo.Name.ReplaceUnderscores();
-      Field = fieldInfo;
+      _specificationPrefix = specificationPrefix;
+      _specificationField = new DelegateField(itField);
+      if (whenField != null)
+      {
+        _whenField = new DelegateField(whenField);
+      }
     }
 
     public virtual SpecificationVerificationResult Verify(VerificationContext verificationContext)
     {
-      if (!IsDefined)
+      if (!IsDefined(verificationContext))
       {
         return new SpecificationVerificationResult(Result.Unknown);
+      }
+
+      if (_whenField.CanInvokeOn(verificationContext.Instance))
+      {
+        try
+        {
+          _whenField.InvokeOn(verificationContext.Instance);
+        }
+        catch (Exception exception)
+        {
+          verificationContext.ThrownException = exception;
+        }
       }
 
       return InternalVerify(verificationContext);
     }
 
     protected abstract SpecificationVerificationResult InternalVerify(VerificationContext verificationContext);
-  }
 
-  public class ItSpecification : Specification
-  {
-    private It _verifier;
-    
-    public override bool IsDefined
+    public virtual bool IsDefined(VerificationContext verificationContext)
     {
-      get { return _verifier != null; }
+      return _specificationField.CanInvokeOn(verificationContext.Instance);
     }
 
-    public ItSpecification(FieldInfo fieldInfo, It verifier) : base(fieldInfo)
+    protected virtual void InvokeSpecificationField(VerificationContext verificationContext, params object[] arguments)
     {
-      _verifier = verifier;
-    }
-
-    protected override SpecificationVerificationResult InternalVerify(VerificationContext verificationContext)
-    {
-      try
-      {
-        _verifier();
-      }
-      catch (Exception err)
-      {
-        return new SpecificationVerificationResult(err);
-      }
-
-      return new SpecificationVerificationResult(Result.Passed);
-    }
-  }
-
-  public class ItShouldThrowSpecification : Specification
-  {
-    private It_should_throw _verifier;
-
-    public override bool IsDefined
-    {
-      get { return _verifier != null; }
-    }
-
-    public ItShouldThrowSpecification(FieldInfo fieldInfo, It_should_throw verifier) : base("should throw ", fieldInfo)
-    {
-      _verifier = verifier;
-    }
-
-    protected override SpecificationVerificationResult InternalVerify(VerificationContext verificationContext)
-    {
-      if (verificationContext.ThrownException == null)
-      {
-        return new SpecificationVerificationResult(Result.Failed);
-      }
-
-      try
-      {
-        _verifier(verificationContext.ThrownException);
-      }
-      catch (Exception err)
-      {
-        return new SpecificationVerificationResult(err);
-      }
-
-      return new SpecificationVerificationResult(Result.Passed);
+      _specificationField.InvokeOn(verificationContext.Instance, arguments);
     }
   }
 }

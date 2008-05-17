@@ -6,89 +6,33 @@ using System.Text;
 
 namespace Machine.Specifications.Example
 {
-  public static class Will
-  {
-    public static T WillReturn<T>(this T obj, T ret)
-    {
-      return obj;
-    }
-
-    public static void Throw(object toThrow)
-    {
-      
-    }
-  }
-
-  public static class Should
-  {
-    public static void ShouldHaveBeenCalled(this object obj)
-    {
-      
-    }
-
-    public static void ShouldNotHaveBeenCalled<T>(this object obj)
-    {
-      
-    }
-
-    public static void HaveBeenCalled()
-    {
-      
-    }
-
-    public static void NotHaveBeenCalled()
-    {
-      
-    }
-  }
-
-  public static class With
-  {
-    public static T Any<T>()
-    {
-      return default(T);
-    }
-
-    public static T Matching<T>(Func<T, bool> match)
-    {
-      return default(T);
-    }
-
-    public static T Any<T>(Func<T, bool> match)
-    {
-      return default(T);
-    }
-  }
-  public class Outside
+  public class Transferring_between_from_account_and_to_account
   {
     static Account fromAccount;
     static Account toAccount;
 
-    public class Transferring_between_from_account_and_to_account
+    Context before_each = () =>
     {
-      Context before_each = () =>
-      {
-        fromAccount = new Account { Balance = 1m };
-        toAccount = new Account { Balance = 1m };
+      fromAccount = new Account { Balance = 1m };
+      toAccount = new Account { Balance = 1m };
 
-        //fromAccount.Transfer(With.Matching<decimal>(x => x > 0m), With.Any<Account>());Will.Throw(new Exception());
-      };
+      //fromAccount.Transfer(With.Matching<decimal>(x => x > 0m), With.Any<Account>());Will.Throw(new Exception());
+    };
 
-      When the_transfer_is_made = () =>
-      {
-        fromAccount.Transfer(1m, toAccount);
-      };
+    When the_transfer_is_made = () =>
+    {
+      fromAccount.Transfer(1m, toAccount);
+    };
 
-      It should_debit_the_from_account_by_the_amount_transferred = () =>
-      {
-        fromAccount.Balance.ShouldEqual(0m);
-      };
+    It should_debit_the_from_account_by_the_amount_transferred = () =>
+    {
+      fromAccount.Balance.ShouldEqual(0m);
+    };
 
-      It credit_the_to_account_by_the_amount_transferred = () =>
-      {
-        toAccount.Balance.ShouldEqual(2m);
-      };
-    }
+    It should_credit_the_to_account_by_the_amount_transferred = () =>
+    {
+      toAccount.Balance.ShouldEqual(2m);
+    };
   }
 
   public abstract class with_from_account_and_to_account

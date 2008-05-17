@@ -10,6 +10,46 @@ using NUnit.Framework;
 namespace Machine.Specifications.Model
 {
   [TestFixture]
+  public class DescriptionWithTwoWhensTests : With<DescriptionWithTwoWhens>
+  {
+    [Test]
+    public void ShouldHaveTwoSpecifications()
+    {
+      description.Specifications.Count().ShouldEqual(2);
+    }
+
+    [Test]
+    public void ShouldHaveTwoDifferentWhens()
+    {
+      //description.Specifications.Select()
+    }
+  }
+
+  [TestFixture]
+  public class ThrowingWhenTests : With<DescriptionWithThrowingWhenAndPassingSpecification>
+  {
+    DescriptionVerificationResult results;
+
+    public override void BeforeEachTest()
+    {
+      base.BeforeEachTest();
+      results = description.Verify();
+    }
+
+    [Test]
+    public void ShouldNotCallIt()
+    {
+      DescriptionWithThrowingWhenAndPassingSpecification.ItInvoked.ShouldBeFalse();
+    }
+
+    [Test]
+    public void ShouldFail()
+    {
+      results.SpecificationResults.First().Passed.ShouldBeFalse();
+    }
+  }
+
+  [TestFixture]
   public class EmptyDescriptionTests : With<DescriptionWithEmptyWhen>
   {
     public override void BeforeEachTest()
@@ -37,9 +77,9 @@ namespace Machine.Specifications.Model
     }
 
     [Test]
-    public void ShouldCallWhen()
+    public void ShouldNotCallWhen()
     {
-      DescriptionWithEmptySpecification.WhenInvoked.ShouldBeTrue();
+      DescriptionWithEmptySpecification.WhenInvoked.ShouldBeFalse();
     }
 
     [Test]

@@ -27,7 +27,7 @@ namespace Machine.Specifications.Factories
     [Test]
     public void ShouldHaveFieldInfo()
     {
-      specification.Field.Name.ShouldEqual("is_a_specification");
+      specification.SpecificationField.Name.ShouldEqual("is_a_specification");
     }
   }
 
@@ -47,7 +47,7 @@ namespace Machine.Specifications.Factories
     [Test]
     public void ShouldCreateUnknownSpecification()
     {
-      specification.IsDefined.ShouldBeFalse();
+      specification.IsDefined(new VerificationContext(new DescriptionWithEmptySpecification())).ShouldBeFalse();
     }
   }
 
@@ -58,8 +58,9 @@ namespace Machine.Specifications.Factories
     {
       Type type = typeof(DescriptionWithEmptySpecification);
       FieldInfo field = type.GetPrivateFieldsWith(typeof(It)).First();
+      FieldInfo whenField = type.GetPrivateFieldsWith(typeof(When)).First();
 
-      specification = Target.CreateSpecification(new DescriptionWithEmptySpecification(), field);
+      specification = Target.CreateSpecification(field, whenField);
     }
   }
 
@@ -70,8 +71,9 @@ namespace Machine.Specifications.Factories
     {
       Type type = typeof(DescriptionWithSingleSpecification);
       FieldInfo field = type.GetPrivateFieldsWith(typeof(It)).First();
+      FieldInfo whenField = type.GetPrivateFieldsWith(typeof(When)).First();
 
-      specification = Target.CreateSpecification(new DescriptionWithSingleSpecification(), field);
+      specification = Target.CreateSpecification(field, whenField);
     }
   }
 
@@ -82,8 +84,9 @@ namespace Machine.Specifications.Factories
     {
       Type type = typeof(DescriptionWithThrowingSpecification);
       FieldInfo field = type.GetPrivateFieldsWith(typeof(It_should_throw)).First();
+      FieldInfo whenField = type.GetPrivateFieldsWith(typeof(When)).First();
 
-      specification = Target.CreateSpecification(new DescriptionWithThrowingSpecification(), field);
+      specification = Target.CreateSpecification(field, whenField);
     }
   }
 

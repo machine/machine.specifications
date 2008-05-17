@@ -9,33 +9,29 @@ namespace Machine.Specifications.Factories
 {
   public class SpecificationFactory
   {
-    private Dictionary<Type, Func<object, FieldInfo, Specification>> _creationMethods;
+    private Dictionary<Type, Func<FieldInfo, FieldInfo, Specification>> _creationMethods;
     public SpecificationFactory()
     {
-      _creationMethods = new Dictionary<Type, Func<object, FieldInfo, Specification>>();
+      _creationMethods = new Dictionary<Type, Func<FieldInfo, FieldInfo, Specification>>();
 
       _creationMethods[typeof(It)] = CreateItSpecification;
       _creationMethods[typeof(It_should_throw)] = CreateItThrowsSpecification;
     }
 
-    public Specification CreateSpecification(object instance, FieldInfo specificationField)
+    public Specification CreateSpecification(FieldInfo specificationField, FieldInfo whenField)
     {
-      return _creationMethods[specificationField.FieldType](instance, specificationField);
+      return _creationMethods[specificationField.FieldType](specificationField, whenField);
     }
 
-    private static Specification CreateItSpecification(object instance, FieldInfo specificationField)
+    private static Specification CreateItSpecification(FieldInfo specificationField, FieldInfo whenField)
     {
-      It it = (It)specificationField.GetValue(instance);
-
-      var specification = new ItSpecification(specificationField, it);
+      var specification = new ItSpecification(specificationField, whenField);
       return specification;
     }
 
-    private static Specification CreateItThrowsSpecification(object instance, FieldInfo specificationField)
+    private static Specification CreateItThrowsSpecification(FieldInfo specificationField, FieldInfo whenField)
     {
-      It_should_throw it = (It_should_throw)specificationField.GetValue(instance);
-
-      var specification = new ItShouldThrowSpecification(specificationField, it);
+      var specification = new ItShouldThrowSpecification(specificationField, whenField);
       return specification;
     }
   }

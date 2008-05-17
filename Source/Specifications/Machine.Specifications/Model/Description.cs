@@ -13,9 +13,7 @@ namespace Machine.Specifications.Model
     private IEnumerable<Context> _beforeAlls;
     private IEnumerable<Context> _afterEachs;
     private IEnumerable<Context> _afterAlls;
-    private When _when;
     public string Name { get; private set; }
-    public string WhenClause { get; set; }
     public object Instance
     {
       get { return _instance; }
@@ -31,12 +29,11 @@ namespace Machine.Specifications.Model
       get; private set;
     }
 
-    public Description(Type type, object instance, IEnumerable<Context> beforeEachs, IEnumerable<Context> beforeAlls, IEnumerable<Context> afterEachs, IEnumerable<Context> afterAlls, When when)
+    public Description(Type type, object instance, IEnumerable<Context> beforeEachs, IEnumerable<Context> beforeAlls, IEnumerable<Context> afterEachs, IEnumerable<Context> afterAlls)
     {
       Name = type.Name.ReplaceUnderscores();
       Type = type;
       _instance = instance;
-      _when = when;
       _afterAlls = afterAlls;
       _afterEachs = afterEachs;
       _beforeAlls = beforeAlls;
@@ -78,21 +75,25 @@ namespace Machine.Specifications.Model
 
     public SpecificationVerificationResult VerifySpecification(Specification specification)
     {
-      VerificationContext context = new VerificationContext();
-      _beforeEachs.InvokeAll();
-      if (_when != null)
+      VerificationContext context = new VerificationContext(_instance);
+      try
       {
-        try
-        {
-          _when();
-        }
-        catch (Exception exception)
-        {
-          context.ThrownException = exception;
-        }
+        _beforeEachs.InvokeAll();
       }
+      catch (Exception err)
+      {
+        return new SpecificationVerificationResult(err);
+      }
+
       var result = specification.Verify(context);
-      _afterEachs.InvokeAll();
+      try
+      {
+        _afterEachs.InvokeAll();
+      }
+      catch (Exception err)
+      {
+        return new SpecificationVerificationResult(err);
+      }
 
       return result;
     }
