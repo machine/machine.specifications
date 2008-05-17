@@ -45,7 +45,7 @@ namespace Machine.Specifications.TDNetRunner
           if (specification.HasWhenClause && specification.WhenClause != lastWhenPrinted)
           {
             lastWhenPrinted = specification.WhenClause;
-            testListener.WriteLine(String.Format("  When {0}", specification.WhenClause), Category.Output);
+            testListener.WriteLine(String.Format("\n  When {0}", specification.WhenClause), Category.Output);
           }
 
           TestResult testResult = GetTestResult(testListener, description, specification);

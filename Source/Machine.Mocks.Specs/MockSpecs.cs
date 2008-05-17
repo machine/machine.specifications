@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Machine.Specifications;
 
-namespace Machine.Mocks.Specs
+namespace Machine.Mocks.MockSpecs
 {
   public class Creating_mock_interfaces
   {
@@ -86,20 +86,5 @@ namespace Machine.Mocks.Specs
     {
       exception.ShouldBeOfType<MockVerificationException>();
     };
-  }
-
-  public class Foo
-  {
-
-  }
-
-  public interface IFoo
-  {
-    bool Query();
-    int QueryInt(int i);
-    string QueryString(string s);
-    void CommandInt(int i);
-    void CommandString(string i);
-    void Command();
   }
 }

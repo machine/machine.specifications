@@ -110,6 +110,39 @@ namespace Machine.Specifications
     }
   }
 
+  public class DescriptionWithWhenAndOrWhen : IFakeDescription
+  {
+    public static bool WhenInvoked = false;
+    public static bool OrWhenInvoked = false;
+    public static bool ItInvoked = false;
+
+    When _1 =()=>
+    {
+      WhenInvoked = true;
+    };
+
+    Or_when _2 =()=>
+    {
+      WhenInvoked = true;
+    };
+
+    It clause_1 =()=>
+    {
+      ItInvoked = true;
+    };
+
+    It clause_2 =()=>
+    {
+      ItInvoked = true;
+    };
+
+    public void Reset()
+    {
+      WhenInvoked = false;
+      OrWhenInvoked = false;
+    }
+  }
+
   public class DescriptionWithTwoWhens : IFakeDescription
   {
     public static bool When1Invoked = false;

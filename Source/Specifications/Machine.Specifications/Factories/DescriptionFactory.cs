@@ -18,7 +18,7 @@ namespace Machine.Specifications.Factories
 
     public Description CreateDescriptionFrom(object instance, FieldInfo fieldInfo)
     {
-      return CreateDescriptionFrom(instance, new[] {fieldInfo});
+      return CreateDescriptionFrom(instance, new[] { fieldInfo });
     }
 
     public Description CreateDescriptionFrom(object instance)
@@ -35,7 +35,7 @@ namespace Machine.Specifications.Factories
       var fieldInfos = type.GetPrivateFields();
       string whenClause = "";
       List<FieldInfo> itFieldInfos = new List<FieldInfo>();
-      FieldInfo whenFieldInfo = null;
+      List<FieldInfo> whenFieldInfos = new List<FieldInfo>();
 
       var beforeAlls = ExtractPrivateFieldValues<Context>(instance, "before_all");
       var beforeEachs = ExtractPrivateFieldValues<Context>(instance, "before_each");
@@ -51,18 +51,54 @@ namespace Machine.Specifications.Factories
       {
         if (info.FieldType == typeof(When))
         {
-          whenFieldInfo = info;
+          CreateSpecifications(whenFieldInfos, itFieldInfos, description);
+          whenFieldInfos.Clear();
+          itFieldInfos.Clear();
+          whenFieldInfos.Add(info);
+        }
+        if (info.FieldType == typeof(Or_when))
+        {
+          if (whenFieldInfos.Count == 0)
+          {
+            throw new SpecificationUsageException("Must have at least one When before Or_when");
+          }
+          whenFieldInfos.Add(info);
         }
         else if (acceptedSpecificationFields.Contains(info) &&
           (info.FieldType == typeof(It) ||
            info.FieldType == typeof(It_should_throw)))
         {
-          Specification specification = _specificationFactory.CreateSpecification(info, whenFieldInfo);
-          description.AddSpecification(specification);
+          itFieldInfos.Add(info);
         }
       }
 
+      CreateSpecifications(whenFieldInfos, itFieldInfos, description);
+
       return description;
+    }
+
+    void CreateSpecifications(List<FieldInfo> whenFieldInfos, List<FieldInfo> itFieldInfos, Description description)
+    {
+      if (whenFieldInfos.Count > 0)
+      {
+        foreach (var whenFieldInfo in whenFieldInfos)
+        {
+          CreateSpecificationsForEachIt(whenFieldInfo, itFieldInfos, description);
+        }
+      }
+      else
+      {
+        CreateSpecificationsForEachIt(null, itFieldInfos, description);
+      }
+    }
+
+    void CreateSpecificationsForEachIt(FieldInfo whenFieldInfo, List<FieldInfo> itFieldInfos, Description description)
+    {
+      foreach (var itFieldInfo in itFieldInfos)
+      {
+        Specification specification = _specificationFactory.CreateSpecification(itFieldInfo, whenFieldInfo);
+        description.AddSpecification(specification);
+      }
     }
 
     private List<T> ExtractPrivateFieldValues<T>(object instance, string name)

@@ -15,7 +15,7 @@ namespace Machine.Specifications.Model
       {
         try
         {
-          throw new SpecificationException("Expected a thrown exception but didn't get one.");
+          throw new SpecificationVerificationException("Expected a thrown exception but didn't get one.");
         }
         catch (Exception exception)
         {

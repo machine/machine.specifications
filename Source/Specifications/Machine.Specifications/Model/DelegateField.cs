@@ -11,7 +11,7 @@ namespace Machine.Specifications.Model
     public DelegateField(FieldInfo field)
     {
       Field = field;
-      Name = field.Name.ReplaceUnderscores();
+      Name = field.Name.ReplaceUnderscores().Trim();
     }
 
     public void InvokeOn(object instance, params object[] arguments)

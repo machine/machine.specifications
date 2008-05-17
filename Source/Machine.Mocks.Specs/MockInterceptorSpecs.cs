@@ -9,57 +9,78 @@ using Machine.Specifications;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
 
-namespace Machine.Mocks.Specs
+namespace Machine.Mocks.InterceptorSpecs
 {
-  public class Interceptor_intercepting_equals 
+  public class Interceptor_intercepting_methods
     : with_interceptor
   {
-    Context before_each = ()=>
-      invocation.Stub(x=>x.Method).Return(typeof(object).GetMethod("Equals", new [] {typeof(object)}));
+    When Intercepting_Equals = () =>
+      InterceptMethod(typeof(object).GetMethod("Equals", new[] { typeof(object) }));
 
-    When Intercept_is_called = ()=>
+    Or_when Intercepting_ToString = () =>
+      InterceptMethod(typeof(object).GetMethod("ToString"));
+
+    Or_when Intercepting_GetHashCode = () =>
+      InterceptMethod(typeof(object).GetMethod("GetHashCode"));
+
+    Or_when Intercepting_GetType = () =>
+      InterceptMethod(typeof(object).GetMethod("GetType"));
+
+    It should_proceed = () =>
+      invocation.AssertWasCalled(x => x.Proceed());
+
+
+
+
+    When Intercepting_non_object_method = () =>
+      InterceptMethod(typeof(IFoo).GetMethod("Query"));
+
+    It should_not_proceed = () =>
+      invocation.AssertWasNotCalled(x => x.Proceed());
+
+    static void InterceptMethod(MethodInfo methodInfo)
+    {
+      invocation.Stub(x => x.Method).Return(methodInfo);
       interceptor.Intercept(invocation);
-
-    It should_proceed = ()=>
-      invocation.AssertWasCalled(x=>x.Proceed());
+    }
   }
-  
-  public class Interceptor_intercepting_to_string 
+
+  public class Interceptor_intercepting_to_string
     : with_interceptor
   {
-    Context before_each = ()=>
-      invocation.Stub(x=>x.Method).Return(typeof(object).GetMethod("ToString"));
+    Context before_each = () =>
+      invocation.Stub(x => x.Method).Return(typeof(object).GetMethod("ToString"));
 
-    When Intercept_is_called = ()=>
+    When Intercept_is_called = () =>
       interceptor.Intercept(invocation);
 
-    It should_proceed = ()=>
-      invocation.AssertWasCalled(x=>x.Proceed());
+    It should_proceed = () =>
+      invocation.AssertWasCalled(x => x.Proceed());
   }
-  
-  public class Interceptor_intercepting_non_object_method 
+
+  public class Interceptor_intercepting_non_object_method
     : with_interceptor
   {
-    Context before_each = ()=>
-      invocation.Stub(x=>x.Method).Return(typeof(IFoo).GetMethod("Query"));
+    Context before_each = () =>
+      invocation.Stub(x => x.Method).Return(typeof(IFoo).GetMethod("Query"));
 
-    When Intercept_is_called = ()=>
+    When Intercept_is_called = () =>
       interceptor.Intercept(invocation);
 
-    It should_not_proceed = ()=>
-      invocation.AssertWasNotCalled(x=>x.Proceed());
+    It should_not_proceed = () =>
+      invocation.AssertWasNotCalled(x => x.Proceed());
   }
-  
+
   public class with_interceptor
   {
     protected static MockInterceptor interceptor;
     protected static IInvocation invocation;
 
-    Context before_each = ()=>
+    Context before_each = () =>
     {
       interceptor = new MockInterceptor();
       invocation = MockRepository.GenerateStub<IInvocation>();
     };
-    
+
   }
 }

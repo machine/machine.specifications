@@ -8,7 +8,7 @@
     <ProjectGuid>{E2297ADF-3E8E-4A90-84EF-A09A6CD578CB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Machine.Mocks.Specs</RootNamespace>
+    <RootNamespace>Machine.Mocks</RootNamespace>
     <AssemblyName>Machine.Mocks.Specs</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -52,6 +52,7 @@
     <Compile Include="MockSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RhinoMocksHacks.cs" />
+    <Compile Include="TestSubjects.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mocks\Machine.Mocks\Machine.Mocks.csproj">

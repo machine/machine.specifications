@@ -7,7 +7,7 @@ using System.Text;
 namespace Machine.Specifications
 {
   [Serializable]
-  public class SpecificationException : Exception
+  public class SpecificationUsageException : Exception
   {
     //
     // For guidelines regarding the creation of new exception types, see
@@ -16,19 +16,47 @@ namespace Machine.Specifications
     //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
     //
 
-    public SpecificationException()
+    public SpecificationUsageException()
     {
     }
 
-    public SpecificationException(string message) : base(message)
+    public SpecificationUsageException(string message) : base(message)
     {
     }
 
-    public SpecificationException(string message, Exception inner) : base(message, inner)
+    public SpecificationUsageException(string message, Exception inner) : base(message, inner)
     {
     }
 
-    protected SpecificationException(
+    protected SpecificationUsageException(
+      SerializationInfo info,
+      StreamingContext context) : base(info, context)
+    {
+    }
+  }
+  [Serializable]
+  public class SpecificationVerificationException : Exception
+  {
+    //
+    // For guidelines regarding the creation of new exception types, see
+    //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/cpconerrorraisinghandlingguidelines.asp
+    // and
+    //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
+    //
+
+    public SpecificationVerificationException()
+    {
+    }
+
+    public SpecificationVerificationException(string message) : base(message)
+    {
+    }
+
+    public SpecificationVerificationException(string message, Exception inner) : base(message, inner)
+    {
+    }
+
+    protected SpecificationVerificationException(
       SerializationInfo info,
       StreamingContext context) : base(info, context)
     {
