@@ -33,7 +33,6 @@ namespace Machine.Specifications.Factories
     {
       var type = instance.GetType();
       var fieldInfos = type.GetPrivateFields();
-      string whenClause = "";
       List<FieldInfo> itFieldInfos = new List<FieldInfo>();
       List<FieldInfo> whenFieldInfos = new List<FieldInfo>();
 

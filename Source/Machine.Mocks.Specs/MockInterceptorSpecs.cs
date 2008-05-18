@@ -45,32 +45,6 @@ namespace Machine.Mocks.InterceptorSpecs
     }
   }
 
-  public class Interceptor_intercepting_to_string
-    : with_interceptor
-  {
-    Context before_each = () =>
-      invocation.Stub(x => x.Method).Return(typeof(object).GetMethod("ToString"));
-
-    When Intercept_is_called = () =>
-      interceptor.Intercept(invocation);
-
-    It should_proceed = () =>
-      invocation.AssertWasCalled(x => x.Proceed());
-  }
-
-  public class Interceptor_intercepting_non_object_method
-    : with_interceptor
-  {
-    Context before_each = () =>
-      invocation.Stub(x => x.Method).Return(typeof(IFoo).GetMethod("Query"));
-
-    When Intercept_is_called = () =>
-      interceptor.Intercept(invocation);
-
-    It should_not_proceed = () =>
-      invocation.AssertWasNotCalled(x => x.Proceed());
-  }
-
   public class with_interceptor
   {
     protected static MockInterceptor interceptor;

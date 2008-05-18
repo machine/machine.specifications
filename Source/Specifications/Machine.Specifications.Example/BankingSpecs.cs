@@ -24,6 +24,7 @@ namespace Machine.Specifications.Example
       toAccount.Balance.ShouldEqual(2m);
     };
 
+
     When a_transfer_is_made_that_is_too_large =()=>
     {
       fromAccount.Transfer(2m, toAccount);
