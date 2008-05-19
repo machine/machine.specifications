@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Machine.Specifications
+namespace Machine.Specifications.Utility
 {
   public static class ReflectionHelper
   {

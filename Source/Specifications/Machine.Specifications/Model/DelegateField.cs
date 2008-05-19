@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Model
 {

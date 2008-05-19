@@ -7,16 +7,6 @@ using NUnit.Framework;
 
 namespace Machine.Specifications
 {
-  public static class RandomExtensionMethods
-  {
-    public static void InvokeAll(this IEnumerable<Context> contextActions)
-    {
-      foreach (Context contextAction in contextActions)
-      {
-        contextAction();
-      }
-    }
-  }
   public static class ShouldExtensionMethods
   {
     public static void ShouldBeFalse(this bool condition)
@@ -179,11 +169,10 @@ namespace Machine.Specifications
 
       Assert.IsNotNull(exception);
       Assert.AreEqual(exceptionType, exception.GetType());
-
       return exception;
     }
 
-    public static Exception GetException(this Action method)
+    private static Exception GetException(this Action method)
     {
       Exception exception = null;
 

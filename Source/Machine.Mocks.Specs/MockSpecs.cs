@@ -20,7 +20,7 @@ namespace Machine.Mocks.MockSpecs
       mock.ShouldNotBeNull();
     };
 
-    When a_mock_is_created_with_constructor_arguments =()=>
+    When a_mock_of_an_interface_is_created_with_constructor_arguments =()=>
     {
       mock = Mock.Of<IFoo>(0);
     };

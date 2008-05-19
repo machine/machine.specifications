@@ -34,6 +34,7 @@ namespace Machine.Specifications
     {
     }
   }
+
   [Serializable]
   public class SpecificationVerificationException : Exception
   {

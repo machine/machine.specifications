@@ -10,11 +10,4 @@ namespace Machine.Specifications
   public delegate void Or_when();
   public delegate void It();
   public delegate void It_should_throw(Exception exception);
-
-  /*
-  [AttributeUsage(AttributeTargets.Class)]
-  public class DescriptionAttribute : Attribute
-  {
-    
-  }*/
 }
