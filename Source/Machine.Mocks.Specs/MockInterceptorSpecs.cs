@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Castle.Core.Interceptor;
+using Machine.Mocks.Implementation;
 using Machine.Specifications;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;

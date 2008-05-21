@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Machine.Mocks.Exceptions;
 using Machine.Specifications;
 
 namespace Machine.Mocks.MockSpecs
