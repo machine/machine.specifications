@@ -12,38 +12,59 @@ using Rhino.Mocks.Interfaces;
 
 namespace Machine.Mocks.InterceptorSpecs
 {
-  public class Interceptor_intercepting_methods
+  [Concern(typeof(MockInterceptor))]
+  public class When_intercepting_invocation_of_Equals
     : with_interceptor
   {
-    When Intercepting_Equals = () =>
+    Because of = () =>
       InterceptMethod(typeof(object).GetMethod("Equals", new[] { typeof(object) }));
 
-    Or_when Intercepting_ToString = () =>
+    It should_proceed = () =>
+      invocation.AssertWasCalled(x => x.Proceed());
+  }
+
+  [Concern(typeof(MockInterceptor))]
+  public class When_intercepting_invocation_of_ToString
+    : with_interceptor
+  {
+    Because of = () =>
       InterceptMethod(typeof(object).GetMethod("ToString"));
 
-    Or_when Intercepting_GetHashCode = () =>
+    It should_proceed = () =>
+      invocation.AssertWasCalled(x => x.Proceed());
+  }
+
+  [Concern(typeof(MockInterceptor))]
+  public class When_intercepting_invocation_of_GetHashCode
+    : with_interceptor
+  {
+    Because of = () =>
       InterceptMethod(typeof(object).GetMethod("GetHashCode"));
 
-    Or_when Intercepting_GetType = () =>
+    It should_proceed = () =>
+      invocation.AssertWasCalled(x => x.Proceed());
+  }
+
+  [Concern(typeof(MockInterceptor))]
+  public class When_intercepting_invocation_of_GetType
+    : with_interceptor
+  {
+    Because of = () =>
       InterceptMethod(typeof(object).GetMethod("GetType"));
 
     It should_proceed = () =>
       invocation.AssertWasCalled(x => x.Proceed());
+  }
 
-
-
-
-    When Intercepting_non_object_method = () =>
+  [Concern(typeof(MockInterceptor))]
+  public class When_intercepting_invocation_of_non_object_method
+    : with_interceptor
+  {
+    Because Intercepting_non_object_method = () =>
       InterceptMethod(typeof(IFoo).GetMethod("Query"));
 
     It should_not_proceed = () =>
       invocation.AssertWasNotCalled(x => x.Proceed());
-
-    static void InterceptMethod(MethodInfo methodInfo)
-    {
-      invocation.Stub(x => x.Method).Return(methodInfo);
-      interceptor.Intercept(invocation);
-    }
   }
 
   public class with_interceptor
@@ -57,5 +78,10 @@ namespace Machine.Mocks.InterceptorSpecs
       invocation = MockRepository.GenerateStub<IInvocation>();
     };
 
+    protected static void InterceptMethod(MethodInfo methodInfo)
+    {
+      invocation.Stub(x => x.Method).Return(methodInfo);
+      interceptor.Intercept(invocation);
+    }
   }
 }

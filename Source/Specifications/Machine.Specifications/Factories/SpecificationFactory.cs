@@ -15,7 +15,7 @@ namespace Machine.Specifications.Factories
       _creationMethods = new Dictionary<Type, Func<FieldInfo, FieldInfo, Specification>>();
 
       _creationMethods[typeof(It)] = CreateItSpecification;
-      _creationMethods[typeof(It_should_throw)] = CreateItThrowsSpecification;
+      //_creationMethods[typeof(It_should_throw)] = CreateItThrowsSpecification;
     }
 
     public Specification CreateSpecification(FieldInfo specificationField, FieldInfo whenField)

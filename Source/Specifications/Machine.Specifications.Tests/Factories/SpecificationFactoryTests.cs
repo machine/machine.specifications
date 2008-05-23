@@ -59,7 +59,7 @@ namespace Machine.Specifications.Factories
     {
       Type type = typeof(DescriptionWithEmptySpecification);
       FieldInfo field = type.GetPrivateFieldsWith(typeof(It)).First();
-      FieldInfo whenField = type.GetPrivateFieldsWith(typeof(When)).First();
+      FieldInfo whenField = type.GetPrivateFieldsWith(typeof(Because)).First();
 
       specification = Target.CreateSpecification(field, whenField);
     }
@@ -72,7 +72,7 @@ namespace Machine.Specifications.Factories
     {
       Type type = typeof(DescriptionWithSingleSpecification);
       FieldInfo field = type.GetPrivateFieldsWith(typeof(It)).First();
-      FieldInfo whenField = type.GetPrivateFieldsWith(typeof(When)).First();
+      FieldInfo whenField = type.GetPrivateFieldsWith(typeof(Because)).First();
 
       specification = Target.CreateSpecification(field, whenField);
     }
@@ -84,8 +84,8 @@ namespace Machine.Specifications.Factories
     public override void BeforeEachTest()
     {
       Type type = typeof(DescriptionWithThrowingSpecification);
-      FieldInfo field = type.GetPrivateFieldsWith(typeof(It_should_throw)).First();
-      FieldInfo whenField = type.GetPrivateFieldsWith(typeof(When)).First();
+      FieldInfo field = type.GetPrivateFieldsWith(typeof(It)).First();
+      FieldInfo whenField = type.GetPrivateFieldsWith(typeof(Because)).First();
 
       specification = Target.CreateSpecification(field, whenField);
     }

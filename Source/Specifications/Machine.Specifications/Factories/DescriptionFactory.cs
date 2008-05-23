@@ -49,24 +49,15 @@ namespace Machine.Specifications.Factories
 
       foreach (FieldInfo info in fieldInfos)
       {
-        if (info.FieldType == typeof(When))
+        if (info.FieldType == typeof(Because))
         {
           CreateSpecifications(whenFieldInfos, itFieldInfos, description);
           whenFieldInfos.Clear();
           itFieldInfos.Clear();
           whenFieldInfos.Add(info);
         }
-        if (info.FieldType == typeof(Or_when))
-        {
-          if (whenFieldInfos.Count == 0)
-          {
-            throw new SpecificationUsageException("Must have at least one When before Or_when");
-          }
-          whenFieldInfos.Add(info);
-        }
         else if (acceptedSpecificationFields.Contains(info) &&
-          (info.FieldType == typeof(It) ||
-           info.FieldType == typeof(It_should_throw)))
+          info.FieldType == typeof(It))
         {
           itFieldInfos.Add(info);
         }

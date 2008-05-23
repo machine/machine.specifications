@@ -6,10 +6,11 @@ using System.Text;
 
 namespace Machine.Specifications.Example
 {
-  public class Transferring_between_accounts
+  [Concern(typeof(Account), "Funds transfer")]
+  public class When_transferring_between_two_accounts
     : with_from_account_and_to_account
   {
-    When the_transfer_is_made = () =>
+    Because of = () =>
     {
       fromAccount.Transfer(1m, toAccount);
     };
@@ -18,16 +19,22 @@ namespace Machine.Specifications.Example
     {
       fromAccount.Balance.ShouldEqual(0m);
     };
+  }
 
 
-    When a_transfer_is_made_that_is_too_large =()=>
+  [Concern(typeof(Account), "Funds transfer")]
+  public class When_transferring_an_amount_larger_than_the_balance_of_the_from_account
+    : with_from_account_and_to_account
+  {
+    static Exception exception;
+    Because of =()=>
     {
-      fromAccount.Transfer(2m, toAccount);
+      exception = Catch.Exception(()=>fromAccount.Transfer(2m, toAccount));
     };
 
-    It_should_throw a_System_Exception =x=>
+    It should_not_allow_the_transfer =()=>
     {
-      x.ShouldBeOfType<Exception>();
+      exception.ShouldBeOfType<Exception>();
     };
   }
 

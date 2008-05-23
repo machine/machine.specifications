@@ -58,13 +58,16 @@ namespace Machine.Specifications
   public class DescriptionWithSpecificationExpectingThrowThatDoesnt : IFakeDescription
   {
     public static bool ItInvoked;
+    static Exception exception;
 
-    When does_nothing =()=>
+    Because of =()=>
     {
+      exception = null;
     };
 
-    It_should_throw but_it_wont =exception=>
+    It should_throw_but_it_wont =()=>
     {
+      exception.ShouldNotBeNull();
     };
 
     public void Reset()
@@ -77,7 +80,7 @@ namespace Machine.Specifications
   {
     public static bool ItInvoked;
 
-    When throws =()=>
+    Because throws =()=>
     {
       throw new Exception();
     };
@@ -97,7 +100,7 @@ namespace Machine.Specifications
   {
     public static bool ItInvoked = false;
 
-    When nothing_happens;
+    Because nothing_happens;
 
     It should_do_stuff =()=>
     {
@@ -110,39 +113,6 @@ namespace Machine.Specifications
     }
   }
 
-  public class DescriptionWithWhenAndOrWhen : IFakeDescription
-  {
-    public static bool WhenInvoked = false;
-    public static bool OrWhenInvoked = false;
-    public static bool ItInvoked = false;
-
-    When _1 =()=>
-    {
-      WhenInvoked = true;
-    };
-
-    Or_when _2 =()=>
-    {
-      WhenInvoked = true;
-    };
-
-    It clause_1 =()=>
-    {
-      ItInvoked = true;
-    };
-
-    It clause_2 =()=>
-    {
-      ItInvoked = true;
-    };
-
-    public void Reset()
-    {
-      WhenInvoked = false;
-      OrWhenInvoked = false;
-    }
-  }
-
   public class DescriptionWithTwoWhens : IFakeDescription
   {
     public static bool When1Invoked = false;
@@ -150,7 +120,7 @@ namespace Machine.Specifications
     public static bool ItForWhen1Invoked = false;
     public static bool ItForWhen2Invoked = false;
 
-    When _1 =()=>
+    Because _1 =()=>
     {
       When1Invoked = true;
     };
@@ -160,7 +130,7 @@ namespace Machine.Specifications
       ItForWhen1Invoked = true;
     };
 
-    When _2 =()=>
+    Because _2 =()=>
     {
       When2Invoked = true;
     };
@@ -183,7 +153,7 @@ namespace Machine.Specifications
   {
     public static bool WhenInvoked = false;
 
-    When not_called =()=>
+    Because not_called =()=>
     {
       WhenInvoked = true;
     };
@@ -200,13 +170,14 @@ namespace Machine.Specifications
   {
     public static bool WhenInvoked = false;
     public static bool ItInvoked = false;
-    When it_happens = () =>
+    public static Exception exception;
+    Because it_happens = () =>
     {
       WhenInvoked = true;
-      throw new Exception();
+      exception = Catch.Exception(() => { throw new Exception(); });
     };
 
-    It_should_throw an_exception = x =>
+    It should_throw_an_exception = () =>
     {
       ItInvoked = true;
     };
@@ -237,7 +208,7 @@ namespace Machine.Specifications
       BeforeAllInvoked = true;
     };
 
-    When it_happens = () =>
+    Because it_happens = () =>
     {
       WhenInvoked = true;
     };

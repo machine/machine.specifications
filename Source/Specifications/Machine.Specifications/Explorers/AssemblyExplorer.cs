@@ -49,7 +49,7 @@ namespace Machine.Specifications.Explorers
 
     private static bool HasSpecificationMembers(Type type)
     {
-      return type.GetPrivateFieldsWith(typeof(It)).Any() || type.GetPrivateFieldsWith(typeof(It_should_throw)).Any();
+      return type.GetPrivateFieldsWith(typeof(It)).Any();
     }
 
     /*

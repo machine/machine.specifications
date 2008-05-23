@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Catch.cs" />
+    <Compile Include="ConcernAttribute.cs" />
     <Compile Include="Explorers\AssemblyExplorer.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Factories\SpecificationFactory.cs" />

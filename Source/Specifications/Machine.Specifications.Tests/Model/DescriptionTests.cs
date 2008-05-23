@@ -10,50 +10,6 @@ using NUnit.Framework;
 namespace Machine.Specifications.Model
 {
   [TestFixture]
-  public class DescriptionWithWhenAndOrWhenTests : With<DescriptionWithWhenAndOrWhen>
-  {
-    [Test]
-    public void ShouldHaveFourSpecifications()
-    {
-      description.Specifications.Count().ShouldEqual(4);
-    }
-
-    [Test]
-    public void ShouldHaveTwoDifferentWhens()
-    {
-      description.Specifications.Select(x=>x.WhenClause).Distinct().Count().ShouldEqual(2);
-    }
-
-    [Test]
-    public void ShouldHaveFourSpecificationsWithTwoSameFields()
-    {
-      description.Specifications.Select(x=>x.SpecificationField).Distinct().Count().ShouldEqual(2);
-    }
-
-    [Test]
-    public void ShouldOrderSpecificationsBasedOnWhen()
-    {
-      description.Specifications.Select(x=>x.WhenClause).ToList().ShouldContainOnly("1", "1", "2", "2");
-    }
-  }
-
-  [TestFixture]
-  public class DescriptionWithTwoWhensTests : With<DescriptionWithTwoWhens>
-  {
-    [Test]
-    public void ShouldHaveTwoSpecifications()
-    {
-      description.Specifications.Count().ShouldEqual(2);
-    }
-
-    [Test]
-    public void ShouldHaveTwoDifferentWhens()
-    {
-      description.Specifications.Select(x=>x.WhenClause).Distinct().Count();
-    }
-  }
-
-  [TestFixture]
   public class ExpectingThrowButDoesntTests : With<DescriptionWithSpecificationExpectingThrowThatDoesnt>
   {
     DescriptionVerificationResult results;

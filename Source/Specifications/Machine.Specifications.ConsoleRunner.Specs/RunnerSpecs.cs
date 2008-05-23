@@ -17,7 +17,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       runner = new Runner(console);
     };
 
-    When run =()=>
+    Because run =()=>
       runner.Run(new string[] {});
 
     It should_print_usage_statement =()=>
@@ -35,7 +35,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       runner = new Runner(console);
     };
 
-    When run =()=>
+    Because run =()=>
       runner.Run(new string[] {"Machine.Specifications.Example.dll"});
 
     It should_print_the_results =()=>

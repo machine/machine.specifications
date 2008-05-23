@@ -7,11 +7,12 @@ using Machine.Specifications;
 
 namespace Machine.Mocks.MockSpecs
 {
-  public class Creating_mock_interfaces
+  [Concern(typeof(Mock))]
+  public class When_creating_a_mock
   {
     static IFoo mock;
 
-    When a_mock_is_created = () =>
+    Context before_each = () =>
     {
       mock = Mock.Of<IFoo>();
     };
@@ -20,23 +21,33 @@ namespace Machine.Mocks.MockSpecs
     {
       mock.ShouldNotBeNull();
     };
+  }
 
-    When a_mock_of_an_interface_is_created_with_constructor_arguments =()=>
+  [Concern(typeof(Mock))]
+  public class When_creating_a_mock_of_an_interface_with_constructor_arguments
+  {
+    static IFoo mock;
+    static Exception exception;
+
+    Context before_each =()=>
     {
-      mock = Mock.Of<IFoo>(0);
+      exception = Catch.Exception(()=>
+        mock = Mock.Of<IFoo>(0)
+      );
     };
 
-    It_should_throw a_mock_exception = exception =>
+    It should_throw_a_mock_exception = ()=>
     {
       exception.ShouldBeOfType<MockUsageException>();
     };
   }
 
-  public class Creating_mock_classes
+  [Concern(typeof(Mock))]
+  public class When_creating_a_mock_of_a_class
   {
     static Foo mock;
 
-    When a_mock_is_created = () =>
+    Because a_mock_is_created = () =>
     {
       mock = Mock.Of<Foo>();
     };
@@ -47,7 +58,8 @@ namespace Machine.Mocks.MockSpecs
     };
   }
 
-  public class Verifying_a_command_on_a_mock_that_was_called
+  [Concern(typeof(Mock))]
+  public class When_verifying_a_command_on_a_mock_that_was_called
   {
     static IFoo mock;
 
@@ -57,7 +69,7 @@ namespace Machine.Mocks.MockSpecs
       mock.Command();
     };
 
-    When command_call_is_verified = () =>
+    Because of = () =>
     {
       mock.Command();
       Should.HaveBeenCalled();
@@ -68,22 +80,27 @@ namespace Machine.Mocks.MockSpecs
     };
   }
 
-  public class Verifying_a_command_on_a_mock_that_was_not_called
+  [Concern(typeof(Mock))]
+  public class When_verifying_a_command_on_a_mock_that_was_not_called
   {
     static IFoo mock;
+    static Exception exception;
 
     Context before_each = () =>
     {
       mock = Mock.Of<IFoo>();
     };
 
-    When command_call_is_verified = () =>
+    Because of = () =>
     {
-      mock.Command();
-      Should.HaveBeenCalled();
+      exception = Catch.Exception(()=>
+      {
+        mock.Command();
+        Should.HaveBeenCalled();
+      });
     };
 
-    It_should_throw a_mock_verification_exception = exception =>
+    It should_throw_a_mock_verification_exception = ()=>
     {
       exception.ShouldBeOfType<MockVerificationException>();
     };
