@@ -6,14 +6,6 @@ using System.Text;
 
 namespace Machine.Specifications.Example
 {
-  public static class foo
-  {   
-    public static void ie (this string str, Action action)
-    {
-      
-    }
-  }
-
   public class Transferring_between_accounts
     : with_from_account_and_to_account
   {
@@ -22,15 +14,10 @@ namespace Machine.Specifications.Example
       fromAccount.Transfer(1m, toAccount);
     };
 
-    Specify_that the_from_account_should_be_debite_by_the_amount_transferred = () =>
+    It should_debit_the_from_account_by_the_amount_transferred = () =>
     {
       fromAccount.Balance.ShouldEqual(0m);
     };
-
-    It should_credit_the_to_account_by_the_amount_transferred {set
-    {
-      toAccount.Balance.ShouldEqual(2m);
-    }}
 
 
     When a_transfer_is_made_that_is_too_large =()=>
