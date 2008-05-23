@@ -14,7 +14,7 @@ namespace Machine.Specifications.Explorers
   [TestFixture]
   public class AssemblyExplorer_FindSpecifications_WithExampleAssemblyTests : TestsFor<AssemblyExplorer>
   {
-    private IEnumerable<Description> specifications;
+    private IEnumerable<Model.Context> specifications;
 
     public override void BeforeEachTest()
     {
@@ -24,15 +24,16 @@ namespace Machine.Specifications.Explorers
     [Test]
     public void ShouldReturnOneDescription()
     {
-      specifications.Count().ShouldEqual(1);
+      specifications.Count().ShouldEqual(2);
     }
 
     [Test]
-    public void ShouldReturnFourDescriptionsNamedCorrectly()
+    public void ShouldReturnTwoContextsNamedCorrectly()
     {
       var names = specifications.Select(x => x.Name).ToList();
       names.ShouldContainOnly(
-        "Transferring between accounts"
+        "When transferring between two accounts",
+        "When transferring an amount larger than the balance of the from account"
         );
     }
   }
@@ -40,7 +41,7 @@ namespace Machine.Specifications.Explorers
   [TestFixture]
   public class AssemblyExplorer_FindDescriptions_WithOneOfManyNamespaces : TestsFor<AssemblyExplorer>
   {
-    private IEnumerable<Description> descriptions;
+    private IEnumerable<Model.Context> descriptions;
 
     public override void BeforeEachTest()
     {
@@ -66,92 +67,84 @@ namespace Machine.Specifications.Explorers
   [TestFixture]
   public class AssemblyExplorer_FindDescription_WithFieldInfo : TestsFor<AssemblyExplorer>
   {
-    private Description description;
+    private Model.Context context;
 
     public override void BeforeEachTest()
     {
-      description = Target.FindDescription(typeof(ExampleC.InExampleC_1));
+      context = Target.FindDescription(typeof(ExampleC.InExampleC_1));
     }
 
     [Test]
     public void ShouldReturnADescription()
     {
-      description.ShouldNotBeNull();
+      context.ShouldNotBeNull();
     }
 
     [Test]
     public void ShouldReturnCorrectName()
     {
-      description.Name.ShouldEqual("InExampleC 1");
+      context.Name.ShouldEqual("InExampleC 1");
     }
   }
 
   [TestFixture]
   public class AssemblyExplorer_FindDescription_WithClass : TestsFor<AssemblyExplorer>
   {
-    private Description description;
+    private Model.Context context;
 
     public override void BeforeEachTest()
     {
       FieldInfo fieldInfo = typeof(ExampleC.InExampleC_1).GetField("is_spec_1",
         BindingFlags.Instance | BindingFlags.NonPublic);
-      description = Target.FindDescription(fieldInfo);
+      context = Target.FindDescription(fieldInfo);
     }
 
     [Test]
     public void ShouldReturnADescription()
     {
-      description.ShouldNotBeNull();
+      context.ShouldNotBeNull();
     }
 
     [Test]
     public void ShouldReturnOneSpecification()
     {
-      description.Specifications.Count().ShouldEqual(1);
+      context.Specifications.Count().ShouldEqual(1);
     }
     
     [Test]
     public void ShouldReturnOneSpecificationNamedCorrectly()
     {
-      description.Specifications.First().Name.ShouldEqual("is spec 1");
+      context.Specifications.First().Name.ShouldEqual("is spec 1");
     }
   }
 
   [TestFixture]
   public class AssemblyExplorer_FindDescription_WithFirstDescriptionOfExampleAssemblyTests : TestsFor<AssemblyExplorer>
   {
-    private IEnumerable<Description> descriptions;
-    private Description description;
+    private IEnumerable<Model.Context> descriptions;
+    private Model.Context context;
 
     public override void  BeforeEachTest()
     {
       descriptions = Target.FindDescriptionsIn(typeof(Account).Assembly);
-      description =
-        descriptions.Where(x => x.Name == "Transferring between accounts").FirstOrDefault();
-      description.ShouldNotBeNull();
+      context =
+        descriptions.Where(x => x.Name == "When transferring between two accounts").FirstOrDefault();
+      context.ShouldNotBeNull();
     }
 
     [Test]
-    public void ShouldHaveThreeSpecifications()
+    public void ShouldHaveTwoSpecifications()
     {
-      description.Specifications.Count().ShouldEqual(3);
+      context.Specifications.Count().ShouldEqual(2);
     }
 
     [Test]
     public void ShouldHaveSpecificationsWithCorrectItClauses()
     {
-      var names = description.Specifications.Select(x => x.Name).ToList();
+      var names = context.Specifications.Select(x => x.Name).ToList();
       names.ShouldContainOnly(
         "should debit the from account by the amount transferred",
-        "should credit the to account by the amount transferred",
-        "should throw a System Exception");
-    }
-
-    [Test]
-    public void ShouldHaveSpecificationsWithCorrectWhenClauses()
-    {
-      description.Specifications.Select(x => x.WhenClause).Distinct().ToList().ShouldContainOnly(
-        "the transfer is made", "a transfer is made that is too large");
+        "should credit the to account by the amount transferred");
     }
   }
 }

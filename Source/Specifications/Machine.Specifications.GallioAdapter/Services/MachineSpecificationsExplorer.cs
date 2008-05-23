@@ -109,9 +109,9 @@ namespace Machine.Specifications.GallioAdapter.Services
       }
     }
 
-    private void PopulateSpecificationTest(Description description, MachineDescriptionTest test)
+    private void PopulateSpecificationTest(Specifications.Model.Context context, MachineDescriptionTest test)
     {
-      foreach (var specification in description.Specifications)
+      foreach (var specification in context.Specifications)
       {
         test.AddChild(new MachineSpecificationTest(specification));
       }

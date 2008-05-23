@@ -8,9 +8,9 @@ namespace Machine.Specifications.Verifiers
 {
   public class DescriptionVerifier
   {
-    public IEnumerable<DescriptionVerificationResult> VerifyDescription(IEnumerable<Description> descriptions)
+    public IEnumerable<DescriptionVerificationResult> VerifyDescription(IEnumerable<Model.Context> descriptions)
     {
-      foreach (Description description in descriptions)
+      foreach (Model.Context description in descriptions)
       {
         yield return description.Verify();
       }

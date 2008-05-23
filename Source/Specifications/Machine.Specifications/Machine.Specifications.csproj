@@ -54,12 +54,11 @@
     <Compile Include="Explorers\AssemblyExplorer.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Factories\SpecificationFactory.cs" />
-    <Compile Include="Factories\DescriptionFactory.cs" />
-    <Compile Include="Model\ItShouldThrowSpecification.cs" />
+    <Compile Include="Factories\ContextFactory.cs" />
     <Compile Include="Model\ItSpecification.cs" />
     <Compile Include="Model\Specification.cs" />
     <Compile Include="Model\SpecificationVerificationResult.cs" />
-    <Compile Include="Model\Description.cs" />
+    <Compile Include="Model\Context.cs" />
     <Compile Include="Model\DescriptionVerificationResult.cs" />
     <Compile Include="Model\VerificationContext.cs" />
     <Compile Include="Model\DelegateField.cs" />

@@ -11,35 +11,35 @@ namespace Machine.Specifications.Explorers
 {
   public class AssemblyExplorer
   {
-    private readonly DescriptionFactory _descriptionFactory;
+    private readonly ContextFactory contextFactory;
 
     public AssemblyExplorer()
     {
-      _descriptionFactory = new DescriptionFactory();
+      contextFactory = new ContextFactory();
     }
 
-    public IEnumerable<Description> FindDescriptionsIn(Assembly assembly)
+    public IEnumerable<Model.Context> FindDescriptionsIn(Assembly assembly)
     {
       return EnumerateDescriptionsIn(assembly).Select(x => CreateDescriptionFrom(x));
     }
 
-    public IEnumerable<Description> FindDescriptionsIn(Assembly assembly, string targetNamespace)
+    public IEnumerable<Model.Context> FindDescriptionsIn(Assembly assembly, string targetNamespace)
     {
       return EnumerateDescriptionsIn(assembly)
         .Where(x => x.Namespace == targetNamespace)
         .Select(x => CreateDescriptionFrom(x));
     }
 
-    private Description CreateDescriptionFrom(Type type)
+    private Model.Context CreateDescriptionFrom(Type type)
     {
       object instance = Activator.CreateInstance(type);
-      return _descriptionFactory.CreateDescriptionFrom(instance);
+      return contextFactory.CreateContextFrom(instance);
     }
 
-    private Description CreateDescriptionFrom(Type type, FieldInfo fieldInfo)
+    private Model.Context CreateDescriptionFrom(Type type, FieldInfo fieldInfo)
     {
       object instance = Activator.CreateInstance(type);
-      return _descriptionFactory.CreateDescriptionFrom(instance, fieldInfo);
+      return contextFactory.CreateContextFrom(instance, fieldInfo);
     }
 
     private static bool IsDescription(Type type)
@@ -64,7 +64,7 @@ namespace Machine.Specifications.Explorers
       return assembly.GetExportedTypes().Where(IsDescription);
     }
 
-    public Description FindDescription(Type type)
+    public Model.Context FindDescription(Type type)
     {
       if (IsDescription(type))
       {
@@ -74,7 +74,7 @@ namespace Machine.Specifications.Explorers
       return null;
     }
 
-    public Description FindDescription(FieldInfo info)
+    public Model.Context FindDescription(FieldInfo info)
     {
       Type type = info.ReflectedType;
       if (IsDescription(type))

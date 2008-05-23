@@ -27,7 +27,7 @@ namespace Machine.Specifications.TDNetRunner
       return RunDescriptions(descriptions, testListener);
     }
 
-    private TestRunState RunDescriptions(IEnumerable<Description> descriptions, ITestListener testListener)
+    private TestRunState RunDescriptions(IEnumerable<Model.Context> descriptions, ITestListener testListener)
     {
       if (descriptions.Count() == 0) return TestRunState.NoTests;
 
@@ -38,16 +38,9 @@ namespace Machine.Specifications.TDNetRunner
         if (description.Specifications.Count() == 0) continue;
         testListener.WriteLine(description.Name, Category.Output);
         description.RunContextBeforeAll();
-        string lastWhenPrinted = "";
 
         foreach (var specification in description.Specifications)
         {
-          if (specification.HasWhenClause && specification.WhenClause != lastWhenPrinted)
-          {
-            lastWhenPrinted = specification.WhenClause;
-            testListener.WriteLine(String.Format("\n  When {0}", specification.WhenClause), Category.Output);
-          }
-
           TestResult testResult = GetTestResult(testListener, description, specification);
           testResults.Add(testResult);
         }
@@ -72,9 +65,9 @@ namespace Machine.Specifications.TDNetRunner
       return failure ? TestRunState.Failure : TestRunState.Success;
     }
 
-    private TestResult GetTestResult(ITestListener testListener, Description description, Specification specification)
+    private TestResult GetTestResult(ITestListener testListener, Model.Context context, Specification specification)
     {
-      var result = description.VerifySpecification(specification);
+      var result = context.VerifySpecification(specification);
       var formatter = resultFormatterFactory.GetResultFormatterFor(result);
 
       testListener.WriteLine(formatter.FormatResult(specification), Category.Output);

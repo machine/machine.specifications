@@ -8,29 +8,29 @@ using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Factories
 {
-  public class DescriptionFactory
+  public class ContextFactory
   {
     private SpecificationFactory _specificationFactory;
 
-    public DescriptionFactory()
+    public ContextFactory()
     {
       _specificationFactory = new SpecificationFactory();
     }
 
-    public Description CreateDescriptionFrom(object instance, FieldInfo fieldInfo)
+    public Model.Context CreateContextFrom(object instance, FieldInfo fieldInfo)
     {
-      return CreateDescriptionFrom(instance, new[] { fieldInfo });
+      return CreateContextFrom(instance, new[] { fieldInfo });
     }
 
-    public Description CreateDescriptionFrom(object instance)
+    public Model.Context CreateContextFrom(object instance)
     {
       var type = instance.GetType();
       var fieldInfos = type.GetPrivateFields();
 
-      return CreateDescriptionFrom(instance, fieldInfos);
+      return CreateContextFrom(instance, fieldInfos);
     }
 
-    private Description CreateDescriptionFrom(object instance, IEnumerable<FieldInfo> acceptedSpecificationFields)
+    private Model.Context CreateContextFrom(object instance, IEnumerable<FieldInfo> acceptedSpecificationFields)
     {
       var type = instance.GetType();
       var fieldInfos = type.GetPrivateFields();
@@ -45,7 +45,7 @@ namespace Machine.Specifications.Factories
       var afterAlls = ExtractPrivateFieldValues<Context>(instance, "after_all");
       var afterEachs = ExtractPrivateFieldValues<Context>(instance, "after_each");
 
-      var description = new Description(type, instance, beforeEachs, beforeAlls, afterEachs, afterAlls);
+      var description = new Model.Context(type, instance, beforeEachs, beforeAlls, afterEachs, afterAlls);
 
       foreach (FieldInfo info in fieldInfos)
       {
@@ -68,27 +68,27 @@ namespace Machine.Specifications.Factories
       return description;
     }
 
-    void CreateSpecifications(List<FieldInfo> whenFieldInfos, List<FieldInfo> itFieldInfos, Description description)
+    void CreateSpecifications(List<FieldInfo> whenFieldInfos, List<FieldInfo> itFieldInfos, Model.Context context)
     {
       if (whenFieldInfos.Count > 0)
       {
         foreach (var whenFieldInfo in whenFieldInfos)
         {
-          CreateSpecificationsForEachIt(whenFieldInfo, itFieldInfos, description);
+          CreateSpecificationsForEachIt(whenFieldInfo, itFieldInfos, context);
         }
       }
       else
       {
-        CreateSpecificationsForEachIt(null, itFieldInfos, description);
+        CreateSpecificationsForEachIt(null, itFieldInfos, context);
       }
     }
 
-    void CreateSpecificationsForEachIt(FieldInfo whenFieldInfo, List<FieldInfo> itFieldInfos, Description description)
+    void CreateSpecificationsForEachIt(FieldInfo whenFieldInfo, List<FieldInfo> itFieldInfos, Model.Context context)
     {
       foreach (var itFieldInfo in itFieldInfos)
       {
         Specification specification = _specificationFactory.CreateSpecification(itFieldInfo, whenFieldInfo);
-        description.AddSpecification(specification);
+        context.AddSpecification(specification);
       }
     }
 

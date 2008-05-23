@@ -15,7 +15,7 @@ namespace Machine.Specifications.Model
     public override void BeforeEachTest()
     {
       base.BeforeEachTest();
-      var results = description.Verify();
+      var results = context.Verify();
     }
 
     [Test]
@@ -49,15 +49,15 @@ namespace Machine.Specifications.Model
     }
   }
 
-  public class With<T> : TestsFor<DescriptionFactory> where T : IFakeDescription, new()
+  public class With<T> : TestsFor<ContextFactory> where T : IFakeDescription, new()
   {
-    protected Description description;
+    protected Context context;
     public override void BeforeEachTest()
     {
       IFakeDescription fakeDescription = new T();
       fakeDescription.Reset();
 
-      description = Target.CreateDescriptionFrom(fakeDescription);
+      context = Target.CreateContextFrom(fakeDescription);
     }
   }
 }

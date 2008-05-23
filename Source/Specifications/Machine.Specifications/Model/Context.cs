@@ -6,14 +6,14 @@ using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Model
 {
-  public class Description
+  public class Context
   {
     private List<Specification> _specifications;
     private object _instance;
-    private IEnumerable<Context> _beforeEachs;
-    private IEnumerable<Context> _beforeAlls;
-    private IEnumerable<Context> _afterEachs;
-    private IEnumerable<Context> _afterAlls;
+    private IEnumerable<Specifications.Context> _beforeEachs;
+    private IEnumerable<Specifications.Context> _beforeAlls;
+    private IEnumerable<Specifications.Context> _afterEachs;
+    private IEnumerable<Specifications.Context> _afterAlls;
     public string Name { get; private set; }
     public object Instance
     {
@@ -30,7 +30,7 @@ namespace Machine.Specifications.Model
       get; private set;
     }
 
-    public Description(Type type, object instance, IEnumerable<Context> beforeEachs, IEnumerable<Context> beforeAlls, IEnumerable<Context> afterEachs, IEnumerable<Context> afterAlls)
+    public Context(Type type, object instance, IEnumerable<Specifications.Context> beforeEachs, IEnumerable<Specifications.Context> beforeAlls, IEnumerable<Specifications.Context> afterEachs, IEnumerable<Specifications.Context> afterAlls)
     {
       Name = type.Name.ReplaceUnderscores();
       Type = type;

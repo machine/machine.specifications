@@ -31,9 +31,9 @@ namespace Machine.Specifications.GallioAdapter.Model
     public SpecificationVerificationResult Execute()
     {
       MachineDescriptionTest parent = this.Parent as MachineDescriptionTest;
-      if (parent == null) throw new Exception("Specification has non-Description parent???");
+      if (parent == null) throw new Exception("Specification has non-Context parent???");
 
-      var result = parent.Description.VerifySpecification(_specification);
+      var result = parent.Context.VerifySpecification(_specification);
       return result;
     }
   }

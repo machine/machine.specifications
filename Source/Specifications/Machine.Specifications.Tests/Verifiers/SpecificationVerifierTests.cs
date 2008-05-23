@@ -24,7 +24,7 @@ namespace Machine.Specifications.Verifiers
     [Test]
     public void ShouldBeExactlyOneResult()
     {
-      results.Count().ShouldEqual(1);
+      results.Count().ShouldEqual(2);
     }
 
     [Test]

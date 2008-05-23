@@ -13,7 +13,7 @@ namespace Machine.Specifications.Factories
     [Test]
     public void ShouldSetType()
     {
-      description.Type.Name.ShouldEqual("DescriptionWithSingleSpecification");
+      context.Type.Name.ShouldEqual("DescriptionWithSingleSpecification");
     }
   }
 }

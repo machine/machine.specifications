@@ -28,11 +28,5 @@ namespace Machine.Specifications.Factories
       var specification = new ItSpecification(specificationField, whenField);
       return specification;
     }
-
-    private static Specification CreateItThrowsSpecification(FieldInfo specificationField, FieldInfo whenField)
-    {
-      var specification = new ItShouldThrowSpecification(specificationField, whenField);
-      return specification;
-    }
   }
 }

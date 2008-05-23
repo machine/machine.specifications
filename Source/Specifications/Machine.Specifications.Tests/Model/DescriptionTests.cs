@@ -17,7 +17,7 @@ namespace Machine.Specifications.Model
     public override void BeforeEachTest()
     {
       base.BeforeEachTest();
-      results = description.Verify();
+      results = context.Verify();
     }
 
     [Test]
@@ -41,7 +41,7 @@ namespace Machine.Specifications.Model
     public override void BeforeEachTest()
     {
       base.BeforeEachTest();
-      results = description.Verify();
+      results = context.Verify();
     }
 
     [Test]
@@ -63,7 +63,7 @@ namespace Machine.Specifications.Model
     public override void BeforeEachTest()
     {
       base.BeforeEachTest();
-      var results = description.Verify();
+      var results = context.Verify();
     }
 
     [Test]
@@ -81,7 +81,7 @@ namespace Machine.Specifications.Model
     public override void BeforeEachTest()
     {
       base.BeforeEachTest();
-      results = description.Verify();
+      results = context.Verify();
     }
 
     [Test]
@@ -109,7 +109,7 @@ namespace Machine.Specifications.Model
     public override void BeforeEachTest()
     {
       base.BeforeEachTest();
-      var results = description.Verify();
+      var results = context.Verify();
     }
 
     [Test]
