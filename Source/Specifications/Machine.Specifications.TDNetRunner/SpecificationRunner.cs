@@ -6,53 +6,37 @@ using System.Reflection;
 using System.Text;
 using Machine.Specifications.Explorers;
 using Machine.Specifications.Model;
+using Machine.Specifications.Runner;
+using Machine.Specifications.TDNetRunner;
 using TestDriven.Framework;
 
 namespace Machine.Specifications.TDNetRunner
 {
-  public class SpecificationRunner : ITestRunner
+  public class TDNetRunListener : ISpecificationRunListener
   {
-    private AssemblyExplorer explorer;
-    private ResultFormatterFactory resultFormatterFactory;
-    public SpecificationRunner()
+    readonly ITestListener testListener;
+    readonly ResultFormatterFactory resultFormatterFactory;
+    TestRunState testRunState = TestRunState.NoTests;
+    readonly List<TestResult> testResults = new List<TestResult>();
+
+    public TestRunState TestRunState
     {
-      explorer = new AssemblyExplorer();
+      get { return testRunState; }
+    }
+
+    public TDNetRunListener(ITestListener testListener)
+    {
+      this.testListener = testListener;
       resultFormatterFactory = new ResultFormatterFactory();
     }
 
-    public TestRunState RunAssembly(ITestListener testListener, Assembly assembly)
+    public void OnRunStart()
     {
-      var descriptions = explorer.FindDescriptionsIn(assembly);
-
-      return RunDescriptions(descriptions, testListener);
     }
 
-    private TestRunState RunDescriptions(IEnumerable<Model.Context> descriptions, ITestListener testListener)
+    public void OnRunEnd()
     {
-      if (descriptions.Count() == 0) return TestRunState.NoTests;
-
-      var testResults = new List<TestResult>();
-
-      foreach (var description in descriptions)
-      {
-        if (description.Specifications.Count() == 0) continue;
-        testListener.WriteLine(description.Name, Category.Output);
-        description.RunContextBeforeAll();
-
-        foreach (var specification in description.Specifications)
-        {
-          TestResult testResult = GetTestResult(testListener, description, specification);
-          testResults.Add(testResult);
-        }
-
-        description.RunContextAfterAll();
-        testListener.WriteLine("", Category.Output);
-      }
-
-      if (testResults.Count == 0)
-      {
-        return TestRunState.NoTests;
-      }
+      if (testResults.Count == 0) return;
 
       bool failure = false;
 
@@ -62,14 +46,26 @@ namespace Machine.Specifications.TDNetRunner
         failure |= testResult.State == TestState.Failed;
       }
 
-      return failure ? TestRunState.Failure : TestRunState.Success;
+      testRunState = failure ? TestRunState.Failure : TestRunState.Success;
     }
 
-    private TestResult GetTestResult(ITestListener testListener, Model.Context context, Specification specification)
+    public void OnContextStart(Model.Context context)
     {
-      var result = context.VerifySpecification(specification);
-      var formatter = resultFormatterFactory.GetResultFormatterFor(result);
+      testListener.WriteLine(context.Name, Category.Output);
+    }
 
+    public void OnContextEnd(Model.Context context)
+    {
+      testListener.WriteLine("", Category.Output);
+    }
+
+    public void OnSpecificationStart(Specification specification)
+    {
+    }
+
+    public void OnSpecificationEnd(Specification specification, SpecificationVerificationResult result)
+    {
+      var formatter = resultFormatterFactory.GetResultFormatterFor(result);
       testListener.WriteLine(formatter.FormatResult(specification), Category.Output);
 
       TestResult testResult = new TestResult();
@@ -85,43 +81,43 @@ namespace Machine.Specifications.TDNetRunner
         {
           testResult.StackTrace = result.Exception.ToString();
         }
-        //testListener.WriteLine(result.Exception.ToString().Split(new [] {'\r', '\n'}).Last(), Category.Output);
       }
-      return testResult;
+
+      testResults.Add(testResult);
+    }
+  }
+
+  public class SpecificationRunner : ITestRunner
+  {
+    public SpecificationRunner()
+    {
     }
 
-    public TestRunState RunNamespace(ITestListener testListener, Assembly assembly, string targetNamespace)
+    public TestRunState RunAssembly(ITestListener testListener, Assembly assembly)
     {
-      var descriptions = explorer.FindDescriptionsIn(assembly, targetNamespace);
+      var listener = new TDNetRunListener(testListener);
+      var runner = new Runner.SpecificationRunner(listener);
+      runner.RunAssembly(assembly);
 
-      return RunDescriptions(descriptions, testListener);
+      return listener.TestRunState;
+    }
+
+    public TestRunState RunNamespace(ITestListener testListener, Assembly assembly, string ns)
+    {
+      var listener = new TDNetRunListener(testListener);
+      var runner = new Runner.SpecificationRunner(listener);
+      runner.RunNamespace(assembly, ns);
+
+      return listener.TestRunState;
     }
 
     public TestRunState RunMember(ITestListener testListener, Assembly assembly, MemberInfo member)
     {
-      if (member.MemberType == MemberTypes.TypeInfo)
-      {
-        Type type = (Type)member;
-        var description = explorer.FindDescription(type);
+      var listener = new TDNetRunListener(testListener);
+      var runner = new Runner.SpecificationRunner(listener);
+      runner.RunMember(assembly, member);
 
-        if (description == null)
-        {
-          return TestRunState.NoTests;
-        }
-
-        return RunDescriptions(new[] {description}, testListener);
-      }
-      else if (member.MemberType == MemberTypes.Field)
-      {
-        FieldInfo fieldInfo = (FieldInfo)member;
-        var description = explorer.FindDescription(fieldInfo);
-
-        return RunDescriptions(new[] {description}, testListener);
-      }
-      else
-      {
-        return TestRunState.NoTests;
-      }
+      return listener.TestRunState;
     }
   }
 }

@@ -18,7 +18,7 @@ namespace Machine.Specifications.Explorers
 
     public override void BeforeEachTest()
     {
-      specifications = Target.FindDescriptionsIn(typeof(Account).Assembly);
+      specifications = Target.FindContextsIn(typeof(Account).Assembly);
     }
 
     [Test]
@@ -45,7 +45,7 @@ namespace Machine.Specifications.Explorers
 
     public override void BeforeEachTest()
     {
-      descriptions = Target.FindDescriptionsIn(typeof(ExampleA.InExampleA_1).Assembly, "Machine.Specifications.ExampleA");
+      descriptions = Target.FindContextsIn(typeof(ExampleA.InExampleA_1).Assembly, "Machine.Specifications.ExampleA");
     }
 
     [Test]
@@ -71,7 +71,7 @@ namespace Machine.Specifications.Explorers
 
     public override void BeforeEachTest()
     {
-      context = Target.FindDescription(typeof(ExampleC.InExampleC_1));
+      context = Target.FindContexts(typeof(ExampleC.InExampleC_1));
     }
 
     [Test]
@@ -96,7 +96,7 @@ namespace Machine.Specifications.Explorers
     {
       FieldInfo fieldInfo = typeof(ExampleC.InExampleC_1).GetField("is_spec_1",
         BindingFlags.Instance | BindingFlags.NonPublic);
-      context = Target.FindDescription(fieldInfo);
+      context = Target.FindContexts(fieldInfo);
     }
 
     [Test]
@@ -126,7 +126,7 @@ namespace Machine.Specifications.Explorers
 
     public override void  BeforeEachTest()
     {
-      descriptions = Target.FindDescriptionsIn(typeof(Account).Assembly);
+      descriptions = Target.FindContextsIn(typeof(Account).Assembly);
       context =
         descriptions.Where(x => x.Name == "When transferring between two accounts").FirstOrDefault();
       context.ShouldNotBeNull();

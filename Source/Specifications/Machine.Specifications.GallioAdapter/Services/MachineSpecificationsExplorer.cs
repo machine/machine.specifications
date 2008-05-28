@@ -99,7 +99,7 @@ namespace Machine.Specifications.GallioAdapter.Services
     private void PopulateAssemblyTest(IAssemblyInfo assembly, ITest assemblyTest)
     {
       AssemblyExplorer explorer = new AssemblyExplorer();
-      var specifications = explorer.FindDescriptionsIn(assembly.Resolve());
+      var specifications = explorer.FindContextsIn(assembly.Resolve());
       foreach (var specification in specifications)
       {
         var specificationTest = new MachineDescriptionTest(specification);

@@ -17,7 +17,7 @@ namespace Machine.Specifications.Verifiers
     public override void BeforeEachTest()
     {
       AssemblyExplorer explorer = new AssemblyExplorer();
-      var specifications = explorer.FindDescriptionsIn(typeof(Account).Assembly);
+      var specifications = explorer.FindContextsIn(typeof(Account).Assembly);
       results = Target.VerifyDescription(specifications);
     }
 

@@ -18,31 +18,31 @@ namespace Machine.Specifications.Explorers
       contextFactory = new ContextFactory();
     }
 
-    public IEnumerable<Model.Context> FindDescriptionsIn(Assembly assembly)
+    public IEnumerable<Model.Context> FindContextsIn(Assembly assembly)
     {
-      return EnumerateDescriptionsIn(assembly).Select(x => CreateDescriptionFrom(x));
+      return EnumerateContextsIn(assembly).Select(x => CreateContextFrom(x));
     }
 
-    public IEnumerable<Model.Context> FindDescriptionsIn(Assembly assembly, string targetNamespace)
+    public IEnumerable<Model.Context> FindContextsIn(Assembly assembly, string targetNamespace)
     {
-      return EnumerateDescriptionsIn(assembly)
+      return EnumerateContextsIn(assembly)
         .Where(x => x.Namespace == targetNamespace)
-        .Select(x => CreateDescriptionFrom(x));
+        .Select(x => CreateContextFrom(x));
     }
 
-    private Model.Context CreateDescriptionFrom(Type type)
+    private Model.Context CreateContextFrom(Type type)
     {
       object instance = Activator.CreateInstance(type);
       return contextFactory.CreateContextFrom(instance);
     }
 
-    private Model.Context CreateDescriptionFrom(Type type, FieldInfo fieldInfo)
+    private Model.Context CreateContextFrom(Type type, FieldInfo fieldInfo)
     {
       object instance = Activator.CreateInstance(type);
       return contextFactory.CreateContextFrom(instance, fieldInfo);
     }
 
-    private static bool IsDescription(Type type)
+    private static bool IsContext(Type type)
     {
       return HasSpecificationMembers(type);
     }
@@ -59,27 +59,27 @@ namespace Machine.Specifications.Explorers
     }
     */
 
-    private static IEnumerable<Type> EnumerateDescriptionsIn(Assembly assembly)
+    private static IEnumerable<Type> EnumerateContextsIn(Assembly assembly)
     {
-      return assembly.GetExportedTypes().Where(IsDescription);
+      return assembly.GetExportedTypes().Where(IsContext);
     }
 
-    public Model.Context FindDescription(Type type)
+    public Model.Context FindContexts(Type type)
     {
-      if (IsDescription(type))
+      if (IsContext(type))
       {
-        return CreateDescriptionFrom(type);
+        return CreateContextFrom(type);
       }
 
       return null;
     }
 
-    public Model.Context FindDescription(FieldInfo info)
+    public Model.Context FindContexts(FieldInfo info)
     {
       Type type = info.ReflectedType;
-      if (IsDescription(type))
+      if (IsContext(type))
       {
-        return CreateDescriptionFrom(type, info);
+        return CreateContextFrom(type, info);
       }
 
       return null;
