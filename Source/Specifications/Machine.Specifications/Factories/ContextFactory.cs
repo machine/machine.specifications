@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+
 using Machine.Specifications.Model;
 using Machine.Specifications.Utility;
 
@@ -10,7 +11,7 @@ namespace Machine.Specifications.Factories
 {
   public class ContextFactory
   {
-    private SpecificationFactory _specificationFactory;
+    SpecificationFactory _specificationFactory;
 
     public ContextFactory()
     {
@@ -19,7 +20,7 @@ namespace Machine.Specifications.Factories
 
     public Model.Context CreateContextFrom(object instance, FieldInfo fieldInfo)
     {
-      return CreateContextFrom(instance, new[] { fieldInfo });
+      return CreateContextFrom(instance, new[] {fieldInfo});
     }
 
     public Model.Context CreateContextFrom(object instance)
@@ -30,7 +31,7 @@ namespace Machine.Specifications.Factories
       return CreateContextFrom(instance, fieldInfos);
     }
 
-    private Model.Context CreateContextFrom(object instance, IEnumerable<FieldInfo> acceptedSpecificationFields)
+    Model.Context CreateContextFrom(object instance, IEnumerable<FieldInfo> acceptedSpecificationFields)
     {
       var type = instance.GetType();
       var fieldInfos = type.GetPrivateFields();
@@ -92,13 +93,13 @@ namespace Machine.Specifications.Factories
       }
     }
 
-    private List<T> ExtractPrivateFieldValues<T>(object instance, string name)
+    List<T> ExtractPrivateFieldValues<T>(object instance, string name)
     {
       var delegates = new List<T>();
       var type = instance.GetType();
       while (type != null)
       {
-        FieldInfo field = type.GetPrivateFieldsWith(typeof(T)).Where(x => x.Name == name).FirstOrDefault();
+        FieldInfo field = type.GetPrivateFieldsWith(typeof(T)).Where(x=>x.Name == name).FirstOrDefault();
         if (field != null)
         {
           T val = (T)field.GetValue(instance);

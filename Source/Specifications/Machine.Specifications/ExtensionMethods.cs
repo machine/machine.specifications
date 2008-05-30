@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System.Text;
+
 using NUnit.Framework;
 
 namespace Machine.Specifications
@@ -136,7 +137,8 @@ namespace Machine.Specifications
       StringAssert.EndsWith(expected, actual);
     }
 
-    public static void ShouldBeSurroundedWith(this string actual, string expectedStartDelimiter, string expectedEndDelimiter)
+    public static void ShouldBeSurroundedWith(this string actual, string expectedStartDelimiter,
+      string expectedEndDelimiter)
     {
       StringAssert.StartsWith(expectedStartDelimiter, actual);
       StringAssert.EndsWith(expectedEndDelimiter, actual);
@@ -172,7 +174,7 @@ namespace Machine.Specifications
       return exception;
     }
 
-    private static Exception GetException(this Action method)
+    static Exception GetException(this Action method)
     {
       Exception exception = null;
 

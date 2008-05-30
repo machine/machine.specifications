@@ -22,7 +22,7 @@ namespace Machine.Specifications
     {
       this._typeConcernedWith = typeConcernedWith;
     }
-    
+
     public ConcernAttribute(Type typeConcernedWith, string concern)
     {
       _typeConcernedWith = typeConcernedWith;

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using Rhino.Mocks;
 
 namespace Machine.Specifications.ConsoleRunner.Specs
@@ -11,17 +12,18 @@ namespace Machine.Specifications.ConsoleRunner.Specs
   {
     static Runner runner;
     static IConsole console;
-    Context before_each =()=>
+
+    Context before_each = ()=>
     {
       console = MockRepository.GenerateStub<IConsole>();
       runner = new Runner(console);
     };
 
-    Because of =()=>
+    Because of = ()=>
       runner.Run(new string[] {});
 
-    It should_print_usage_statement =()=>
-      console.AssertWasCalled(x => x.WriteLine(Arg<string>.Matches(y => true)));
+    It should_print_usage_statement = ()=>
+      console.AssertWasCalled(x=>x.WriteLine(Arg<string>.Matches(y=>true)));
   }
 
   [Concern(typeof(Runner))]
@@ -29,16 +31,17 @@ namespace Machine.Specifications.ConsoleRunner.Specs
   {
     static Runner runner;
     static IConsole console;
-    Context before_each =()=>
+
+    Context before_each = ()=>
     {
       console = MockRepository.GenerateStub<IConsole>();
       runner = new Runner(console);
     };
 
-    Because of =()=>
+    Because of = ()=>
       runner.Run(new string[] {"Machine.Specifications.Example.dll"});
 
-    It should_print_the_results =()=>
-      console.AssertWasCalled(x => x.WriteLine(Arg<string>.Matches(y => y.IndexOf("It should") >= 0)), c => c.Repeat.Times(5));
+    It should_print_the_results = ()=>
+      console.AssertWasCalled(x=>x.WriteLine(Arg<string>.Matches(y=>y.IndexOf("It should") >= 0)), c=>c.Repeat.Times(5));
   }
 }

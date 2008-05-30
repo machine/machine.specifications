@@ -1,20 +1,22 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Model
 {
   public class Context
   {
-    private List<Specification> _specifications;
-    private object _instance;
-    private IEnumerable<Specifications.Context> _beforeEachs;
-    private IEnumerable<Specifications.Context> _beforeAlls;
-    private IEnumerable<Specifications.Context> _afterEachs;
-    private IEnumerable<Specifications.Context> _afterAlls;
+    List<Specification> _specifications;
+    object _instance;
+    IEnumerable<Specifications.Context> _beforeEachs;
+    IEnumerable<Specifications.Context> _beforeAlls;
+    IEnumerable<Specifications.Context> _afterEachs;
+    IEnumerable<Specifications.Context> _afterAlls;
     public string Name { get; private set; }
+
     public object Instance
     {
       get { return _instance; }
@@ -25,12 +27,11 @@ namespace Machine.Specifications.Model
       get { return _specifications; }
     }
 
-    public Type Type
-    {
-      get; private set;
-    }
+    public Type Type { get; private set; }
 
-    public Context(Type type, object instance, IEnumerable<Specifications.Context> beforeEachs, IEnumerable<Specifications.Context> beforeAlls, IEnumerable<Specifications.Context> afterEachs, IEnumerable<Specifications.Context> afterAlls)
+    public Context(Type type, object instance, IEnumerable<Specifications.Context> beforeEachs,
+      IEnumerable<Specifications.Context> beforeAlls, IEnumerable<Specifications.Context> afterEachs,
+      IEnumerable<Specifications.Context> afterAlls)
     {
       Name = type.Name.ReplaceUnderscores();
       Type = type;
@@ -53,7 +54,7 @@ namespace Machine.Specifications.Model
       return new DescriptionVerificationResult(verificationResults);
     }
 
-    private IEnumerable<SpecificationVerificationResult> VerifySpecifications()
+    IEnumerable<SpecificationVerificationResult> VerifySpecifications()
     {
       _beforeAlls.InvokeAll();
       var results = ExecuteSpecifications();
@@ -62,7 +63,7 @@ namespace Machine.Specifications.Model
       return results;
     }
 
-    private IEnumerable<SpecificationVerificationResult> ExecuteSpecifications()
+    IEnumerable<SpecificationVerificationResult> ExecuteSpecifications()
     {
       var results = new List<SpecificationVerificationResult>();
       foreach (Specification specification in _specifications)

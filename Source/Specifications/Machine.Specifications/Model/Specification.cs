@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -14,21 +14,21 @@ namespace Machine.Specifications.Model
 
     public FieldInfo SpecificationField
     {
-      get { return _specificationField.Field; } 
+      get { return _specificationField.Field; }
     }
 
     public FieldInfo WhenField
     {
-      get { return _whenField.Field; } 
+      get { return _whenField.Field; }
     }
 
-    public string Name 
-    { 
+    public string Name
+    {
       get { return _specificationPrefix + _specificationField.Name; }
     }
 
-    public string WhenClause 
-    { 
+    public string WhenClause
+    {
       get { return _whenField.Name; }
     }
 

@@ -1,4 +1,4 @@
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +15,7 @@ namespace Machine.Specifications.TDNetRunner
   {
     public string FormatResult(Specification specification)
     {
-      return String.Format("  Â» {0}", specification.Name);
+      return String.Format("  » {0}", specification.Name);
     }
   }
 
@@ -23,7 +23,7 @@ namespace Machine.Specifications.TDNetRunner
   {
     public string FormatResult(Specification specification)
     {
-      return String.Format("!!Â» {0} !!", specification.Name);
+      return String.Format("!!» {0} !!", specification.Name);
     }
   }
 
@@ -31,7 +31,7 @@ namespace Machine.Specifications.TDNetRunner
   {
     public string FormatResult(Specification specification)
     {
-      return String.Format("??Â» {0} ??", specification.Name);
+      return String.Format("??» {0} ??", specification.Name);
     }
   }
 }

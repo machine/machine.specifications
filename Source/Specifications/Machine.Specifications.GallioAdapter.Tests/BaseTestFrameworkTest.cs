@@ -1,4 +1,4 @@
-﻿// Copyright 2005-2008 Gallio Project - http://www.gallio.org/
+// Copyright 2005-2008 Gallio Project - http://www.gallio.org/
 // Portions Copyright 2000-2004 Jonathan De Halleux, Jamie Cansdale
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
     protected ITestFramework framework;
     protected TestModel testModel;
 
-    private ITestHarness harness;
+    ITestHarness harness;
 
     protected abstract Assembly GetSampleAssembly();
 
@@ -49,7 +49,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
       sampleAssembly = GetSampleAssembly();
 
       harness = new DefaultTestHarness(TestContextTrackerAccessor.GetInstance(),
-          RuntimeAccessor.Instance.Resolve<ILoader>());
+        RuntimeAccessor.Instance.Resolve<ILoader>());
 
       framework = CreateFramework();
       harness.AddTestFramework(framework);

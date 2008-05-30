@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -15,7 +15,7 @@ namespace Machine.Specifications.Utility
 
     public static IEnumerable<FieldInfo> GetPrivateFieldsWith(this Type type, Type fieldType)
     {
-      return type.GetPrivateFields().Where(x => x.FieldType == fieldType);
+      return type.GetPrivateFields().Where(x=>x.FieldType == fieldType);
     }
   }
 }

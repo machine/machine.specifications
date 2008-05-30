@@ -1,4 +1,4 @@
-﻿#pragma warning disable 169
+#pragma warning disable 169
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,9 +16,9 @@ namespace Machine.Specifications.Model
   {
     readonly Result _result;
 
-    public bool Passed 
-    { 
-      get { return _result == Result.Passed; } 
+    public bool Passed
+    {
+      get { return _result == Result.Passed; }
     }
 
     public Exception Exception { get; private set; }

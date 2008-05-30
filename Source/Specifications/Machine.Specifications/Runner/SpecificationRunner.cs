@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+
 using Machine.Specifications.Explorers;
 using Machine.Specifications.Model;
 
@@ -11,7 +12,8 @@ namespace Machine.Specifications.Runner
   public class SpecificationRunner : ISpecificationRunner
   {
     readonly ISpecificationRunListener _listener;
-    private AssemblyExplorer _explorer;
+    AssemblyExplorer _explorer;
+
     public SpecificationRunner(ISpecificationRunListener listener)
     {
       _listener = listener;
@@ -48,7 +50,7 @@ namespace Machine.Specifications.Runner
       _listener.OnRunEnd();
     }
 
-    private void GetTestResult(Model.Context context, Specification specification)
+    void GetTestResult(Model.Context context, Specification specification)
     {
       _listener.OnSpecificationStart(specification);
 

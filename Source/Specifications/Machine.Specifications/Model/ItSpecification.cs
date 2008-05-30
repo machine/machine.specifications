@@ -27,6 +27,5 @@ namespace Machine.Specifications.Model
 
       return new SpecificationVerificationResult(Result.Passed);
     }
-
   }
 }
