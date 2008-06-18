@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Machine.Specifications.Example
 {
-  [Concern(typeof(Account), "Funds transfer")]
+  [Concerning(typeof(Account), "Funds transfer")]
   public class When_transferring_between_two_accounts
     : with_from_account_and_to_account
   {
@@ -26,7 +26,7 @@ namespace Machine.Specifications.Example
     };
   }
 
-  [Concern(typeof(Account), "Funds transfer")]
+  [Concerning(typeof(Account), "Funds transfer")]
   public class When_transferring_an_amount_larger_than_the_balance_of_the_from_account
     : with_from_account_and_to_account
   {

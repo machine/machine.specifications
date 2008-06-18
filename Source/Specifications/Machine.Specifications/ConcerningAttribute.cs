@@ -3,33 +3,33 @@ using System;
 namespace Machine.Specifications
 {
   [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-  public sealed class ConcernAttribute : Attribute
+  public sealed class ConcerningAttribute : Attribute
   {
     readonly Type _typeConcernedWith;
     readonly string _concern;
 
-    public Type typeConcernedWith
+    public Type TypeConcernedWith
     {
       get { return _typeConcernedWith; }
     }
 
-    public string concern
+    public string SpecificConcern
     {
       get { return _concern; }
     }
 
-    public ConcernAttribute(Type typeConcernedWith)
+    public ConcerningAttribute(Type typeConcernedWith)
     {
       this._typeConcernedWith = typeConcernedWith;
     }
 
-    public ConcernAttribute(Type typeConcernedWith, string concern)
+    public ConcerningAttribute(Type typeConcernedWith, string concern)
     {
       _typeConcernedWith = typeConcernedWith;
       _concern = concern;
     }
 
-    public ConcernAttribute(string concern)
+    public ConcerningAttribute(string concern)
     {
       _concern = concern;
     }

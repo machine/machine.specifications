@@ -11,6 +11,7 @@ namespace Machine.Specifications.Model
   {
     readonly List<Specification> _specifications;
     readonly object _instance;
+    readonly Concern _concern;
     IEnumerable<Establish> _beforeEachs;
     IEnumerable<Establish> _beforeAlls;
     IEnumerable<Cleanup> _afterEachs;
@@ -29,9 +30,14 @@ namespace Machine.Specifications.Model
 
     public Type Type { get; private set; }
 
+    public Concern Concern
+    {
+      get { return _concern; }
+    }
+
     public Context(Type type, object instance, IEnumerable<Establish> beforeEachs,
       IEnumerable<Establish> beforeAlls, IEnumerable<Cleanup> afterEachs,
-      IEnumerable<Cleanup> afterAlls)
+      IEnumerable<Cleanup> afterAlls, Concern concern)
     {
       Name = type.Name.ReplaceUnderscores();
       Type = type;
@@ -41,6 +47,7 @@ namespace Machine.Specifications.Model
       _beforeAlls = beforeAlls;
       _beforeEachs = beforeEachs;
       _specifications = new List<Specification>();
+      _concern = concern;
     }
 
     public void AddSpecification(Specification specification)

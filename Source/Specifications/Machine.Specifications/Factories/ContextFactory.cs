@@ -46,7 +46,9 @@ namespace Machine.Specifications.Factories
       var afterAlls = ExtractPrivateFieldValues<Cleanup>(instance, "after_all");
       var afterEachs = ExtractPrivateFieldValues<Cleanup>(instance, "after_each");
 
-      var description = new Model.Context(type, instance, beforeEachs, beforeAlls, afterEachs, afterAlls);
+      var concern = ExtractConcern(type);
+
+      var description = new Model.Context(type, instance, beforeEachs, beforeAlls, afterEachs, afterAlls, concern);
 
       foreach (FieldInfo info in fieldInfos)
       {
@@ -67,6 +69,20 @@ namespace Machine.Specifications.Factories
       CreateSpecifications(whenFieldInfos, itFieldInfos, description);
 
       return description;
+    }
+
+    Concern ExtractConcern(Type type)
+    {
+      var attributes = type.GetCustomAttributes(typeof(ConcerningAttribute), true);
+
+      if (attributes.Length > 1)
+        throw new SpecificationUsageException("Cannot have more than one Concern on a Context");
+
+      if (attributes.Length == 0) return null;
+
+      var attribute = (ConcerningAttribute)attributes[0];
+
+      return new Concern(attribute.TypeConcernedWith, attribute.SpecificConcern);
     }
 
     void CreateSpecifications(List<FieldInfo> whenFieldInfos, List<FieldInfo> itFieldInfos, Model.Context context)

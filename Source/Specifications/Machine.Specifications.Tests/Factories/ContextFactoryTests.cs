@@ -16,4 +16,22 @@ namespace Machine.Specifications.Factories
       context.Type.Name.ShouldEqual("ContextWithSingleSpecification");
     }
   }
+
+  [Concerning(typeof(ContextFactory))]
+  public class when_creating_a_context_with_a_concern
+  {
+    static Context newContext;
+
+    Establish context = ()=>
+    {
+      var factory = new ContextFactory();
+      newContext = factory.CreateContextFrom(new ContextWithConcern());
+    };
+
+    It should_capture_the_concerns_type = ()=>
+      newContext.Concern.Type.ShouldEqual(typeof(int));
+
+    It should_capture_the_concerns_description = ()=>
+      newContext.Concern.Description.ShouldEqual("Some description");
+  }
 }

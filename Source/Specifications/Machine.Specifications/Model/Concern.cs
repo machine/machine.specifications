@@ -15,9 +15,27 @@ namespace Machine.Specifications.Model
       get { return _type; }
     }
 
-    public string Context
+    public string Description
     {
       get { return _description; }
+    }
+
+    public string FullConcern
+    {
+      get
+      {
+        if (_type == null)
+        {
+          return _description;
+        }
+
+        if (_description == null)
+        {
+          return _type.Name;
+        }
+
+        return _type.Name + " " + _description;
+      }
     }
 
     public Concern(Type type, string description)

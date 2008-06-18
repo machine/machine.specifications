@@ -56,6 +56,7 @@
     <Compile Include="ResultFormatter.cs" />
     <Compile Include="ResultFormatterFactory.cs" />
     <Compile Include="SpecificationRunner.cs" />
+    <Compile Include="TDNetRunListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj">

@@ -7,7 +7,7 @@ using Rhino.Mocks;
 
 namespace Machine.Specifications.ConsoleRunner.Specs
 {
-  [Concern(typeof(Runner))]
+  [Concerning(typeof(Runner))]
   public class When_running_with_no_command_line_arguments
   {
     static Runner runner;
@@ -26,7 +26,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       console.AssertWasCalled(x=>x.WriteLine(Arg<string>.Matches(y=>true)));
   }
 
-  [Concern(typeof(Runner))]
+  [Concerning(typeof(Runner))]
   public class When_running_with_assemblies_in_the_command_line
   {
     static Runner runner;
