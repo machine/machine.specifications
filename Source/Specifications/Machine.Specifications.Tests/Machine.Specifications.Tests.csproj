@@ -56,7 +56,7 @@
     <Compile Include="ExampleSpecifications.cs" />
     <Compile Include="Explorers\AssemblyExplorerTests.cs" />
     <Compile Include="Factories\SpecificationFactoryTests.cs" />
-    <Compile Include="Factories\DescriptionFactoryTests.cs" />
+    <Compile Include="Factories\ContextFactoryTests.cs" />
     <Compile Include="GeneralTests.cs" />
     <Compile Include="Model\SpecificationTests.cs" />
     <Compile Include="Model\DescriptionTests.cs" />

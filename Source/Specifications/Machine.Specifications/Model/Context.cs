@@ -9,12 +9,12 @@ namespace Machine.Specifications.Model
 {
   public class Context
   {
-    List<Specification> _specifications;
-    object _instance;
-    IEnumerable<Specifications.Context> _beforeEachs;
-    IEnumerable<Specifications.Context> _beforeAlls;
-    IEnumerable<Specifications.Context> _afterEachs;
-    IEnumerable<Specifications.Context> _afterAlls;
+    readonly List<Specification> _specifications;
+    readonly object _instance;
+    IEnumerable<Establish> _beforeEachs;
+    IEnumerable<Establish> _beforeAlls;
+    IEnumerable<Cleanup> _afterEachs;
+    IEnumerable<Cleanup> _afterAlls;
     public string Name { get; private set; }
 
     public object Instance
@@ -29,9 +29,9 @@ namespace Machine.Specifications.Model
 
     public Type Type { get; private set; }
 
-    public Context(Type type, object instance, IEnumerable<Specifications.Context> beforeEachs,
-      IEnumerable<Specifications.Context> beforeAlls, IEnumerable<Specifications.Context> afterEachs,
-      IEnumerable<Specifications.Context> afterAlls)
+    public Context(Type type, object instance, IEnumerable<Establish> beforeEachs,
+      IEnumerable<Establish> beforeAlls, IEnumerable<Cleanup> afterEachs,
+      IEnumerable<Cleanup> afterAlls)
     {
       Name = type.Name.ReplaceUnderscores();
       Type = type;
@@ -48,10 +48,10 @@ namespace Machine.Specifications.Model
       _specifications.Add(specification);
     }
 
-    public DescriptionVerificationResult Verify()
+    public ContextVerificationResult Verify()
     {
       var verificationResults = VerifySpecifications();
-      return new DescriptionVerificationResult(verificationResults);
+      return new ContextVerificationResult(verificationResults);
     }
 
     IEnumerable<SpecificationVerificationResult> VerifySpecifications()

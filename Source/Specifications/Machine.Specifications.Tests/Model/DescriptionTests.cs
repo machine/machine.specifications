@@ -10,9 +10,9 @@ using NUnit.Framework;
 namespace Machine.Specifications.Model
 {
   [TestFixture]
-  public class ExpectingThrowButDoesntTests : With<DescriptionWithSpecificationExpectingThrowThatDoesnt>
+  public class ExpectingThrowButDoesntTests : With<ContextWithSpecificationExpectingThrowThatDoesnt>
   {
-    DescriptionVerificationResult results;
+    ContextVerificationResult results;
 
     public override void BeforeEachTest()
     {
@@ -34,9 +34,9 @@ namespace Machine.Specifications.Model
   }
 
   [TestFixture]
-  public class ThrowingWhenTests : With<DescriptionWithThrowingWhenAndPassingSpecification>
+  public class ThrowingWhenTests : With<ContextWithThrowingWhenAndPassingSpecification>
   {
-    DescriptionVerificationResult results;
+    ContextVerificationResult results;
 
     public override void BeforeEachTest()
     {
@@ -47,7 +47,7 @@ namespace Machine.Specifications.Model
     [Test]
     public void ShouldNotCallIt()
     {
-      DescriptionWithThrowingWhenAndPassingSpecification.ItInvoked.ShouldBeFalse();
+      ContextWithThrowingWhenAndPassingSpecification.ItInvoked.ShouldBeFalse();
     }
 
     [Test]
@@ -58,7 +58,7 @@ namespace Machine.Specifications.Model
   }
 
   [TestFixture]
-  public class EmptyDescriptionTests : With<DescriptionWithEmptyWhen>
+  public class EmptyContextTests : With<ContextWithEmptyWhen>
   {
     public override void BeforeEachTest()
     {
@@ -69,14 +69,14 @@ namespace Machine.Specifications.Model
     [Test]
     public void ShouldCallIt()
     {
-      DescriptionWithEmptyWhen.ItInvoked.ShouldBeTrue();
+      ContextWithEmptyWhen.ItInvoked.ShouldBeTrue();
     }
   }
 
   [TestFixture]
-  public class EmptySpecificationTests : With<DescriptionWithEmptySpecification>
+  public class EmptySpecificationTests : With<ContextWithEmptySpecification>
   {
-    DescriptionVerificationResult results;
+    ContextVerificationResult results;
 
     public override void BeforeEachTest()
     {
@@ -87,7 +87,7 @@ namespace Machine.Specifications.Model
     [Test]
     public void ShouldNotCallWhen()
     {
-      DescriptionWithEmptySpecification.WhenInvoked.ShouldBeFalse();
+      ContextWithEmptySpecification.WhenInvoked.ShouldBeFalse();
     }
 
     [Test]
@@ -104,7 +104,7 @@ namespace Machine.Specifications.Model
   }
 
   [TestFixture]
-  public class DescriptionTests : With<DescriptionWithSingleSpecification>
+  public class ContextTests : With<ContextWithSingleSpecification>
   {
     public override void BeforeEachTest()
     {
@@ -115,31 +115,31 @@ namespace Machine.Specifications.Model
     [Test]
     public void ShouldCallWhen()
     {
-      DescriptionWithSingleSpecification.WhenInvoked.ShouldBeTrue();
+      ContextWithSingleSpecification.WhenInvoked.ShouldBeTrue();
     }
 
     [Test]
     public void ShouldCallBeforeAll()
     {
-      DescriptionWithSingleSpecification.BeforeAllInvoked.ShouldBeTrue();
+      ContextWithSingleSpecification.BeforeAllInvoked.ShouldBeTrue();
     }
 
     [Test]
     public void ShouldCallBeforeEach()
     {
-      DescriptionWithSingleSpecification.BeforeEachInvoked.ShouldBeTrue();
+      ContextWithSingleSpecification.BeforeEachInvoked.ShouldBeTrue();
     }
 
     [Test]
     public void ShouldCallAfterEach()
     {
-      DescriptionWithSingleSpecification.AfterEachInvoked.ShouldBeTrue();
+      ContextWithSingleSpecification.AfterEachInvoked.ShouldBeTrue();
     }
 
     [Test]
     public void ShouldCallAfterAll()
     {
-      DescriptionWithSingleSpecification.AfterAllInvoked.ShouldBeTrue();
+      ContextWithSingleSpecification.AfterAllInvoked.ShouldBeTrue();
     }
   }
 }

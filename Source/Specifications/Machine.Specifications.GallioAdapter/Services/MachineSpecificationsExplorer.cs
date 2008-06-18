@@ -102,14 +102,14 @@ namespace Machine.Specifications.GallioAdapter.Services
       var specifications = explorer.FindContextsIn(assembly.Resolve());
       foreach (var specification in specifications)
       {
-        var specificationTest = new MachineDescriptionTest(specification);
+        var specificationTest = new MachineContextTest(specification);
         assemblyTest.AddChild(specificationTest);
 
         PopulateSpecificationTest(specification, specificationTest);
       }
     }
 
-    private void PopulateSpecificationTest(Specifications.Model.Context context, MachineDescriptionTest test)
+    private void PopulateSpecificationTest(Specifications.Model.Context context, MachineContextTest test)
     {
       foreach (var specification in context.Specifications)
       {

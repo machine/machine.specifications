@@ -8,7 +8,7 @@ using Machine.Specifications.Model;
 
 namespace Machine.Specifications.GallioAdapter.Model
 {
-  public class MachineDescriptionTest : MachineTest
+  public class MachineContextTest : MachineTest
   {
     private readonly Specifications.Model.Context context;
 
@@ -17,7 +17,7 @@ namespace Machine.Specifications.GallioAdapter.Model
       get { return context; }
     }
 
-    public MachineDescriptionTest(Specifications.Model.Context context) 
+    public MachineContextTest(Specifications.Model.Context context) 
       : base(context.Name, Reflector.Wrap(context.Type))
     {
       this.Kind = TestKinds.Fixture;

@@ -53,14 +53,14 @@ namespace Machine.Specifications.GallioAdapter.Services
       progressMonitor.SetStatus(test.Name);
 
       MachineSpecificationTest specification = test as MachineSpecificationTest;
-      MachineDescriptionTest description = test as MachineDescriptionTest;
+      MachineContextTest description = test as MachineContextTest;
       if (specification != null)
       {
-        //RunDescriptionTest(specification, testComman);
+        //RunContextTest(specification, testComman);
       }
       else if (description != null)
       {
-        RunDescriptionTest(description, testCommand, parentTestStep);
+        RunContextTest(description, testCommand, parentTestStep);
       }
       else
       {
@@ -68,7 +68,7 @@ namespace Machine.Specifications.GallioAdapter.Services
       }
     }
 
-    private void RunDescriptionTest(MachineDescriptionTest description, ITestCommand testCommand, ITestStep parentTestStep)
+    private void RunContextTest(MachineContextTest description, ITestCommand testCommand, ITestStep parentTestStep)
     {
       ITestContext testContext = testCommand.StartPrimaryChildStep(parentTestStep);
 

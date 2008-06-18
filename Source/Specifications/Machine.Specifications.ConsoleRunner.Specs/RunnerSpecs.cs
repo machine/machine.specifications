@@ -13,7 +13,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     static Runner runner;
     static IConsole console;
 
-    Context before_each = ()=>
+    Establish context = ()=>
     {
       console = MockRepository.GenerateStub<IConsole>();
       runner = new Runner(console);
@@ -32,7 +32,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     static Runner runner;
     static IConsole console;
 
-    Context before_each = ()=>
+    Establish context = ()=>
     {
       console = MockRepository.GenerateStub<IConsole>();
       runner = new Runner(console);

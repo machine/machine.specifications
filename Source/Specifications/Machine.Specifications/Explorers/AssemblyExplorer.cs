@@ -54,9 +54,9 @@ namespace Machine.Specifications.Explorers
     }
 
     /*
-    private static bool HasDescriptionAttribute(Type type)
+    private static bool HasContextAttribute(Type type)
     {
-      return type.IsDefined(typeof(DescriptionAttribute), false);
+      return type.IsDefined(typeof(ContextAttribute), false);
     }
     */
 

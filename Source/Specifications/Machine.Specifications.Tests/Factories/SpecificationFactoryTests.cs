@@ -48,7 +48,7 @@ namespace Machine.Specifications.Factories
     [Test]
     public void ShouldCreateUnknownSpecification()
     {
-      specification.IsDefined(new VerificationContext(new DescriptionWithEmptySpecification())).ShouldBeFalse();
+      specification.IsDefined(new VerificationContext(new ContextWithEmptySpecification())).ShouldBeFalse();
     }
   }
 
@@ -57,7 +57,7 @@ namespace Machine.Specifications.Factories
     protected Specification specification;
     public override void BeforeEachTest()
     {
-      Type type = typeof(DescriptionWithEmptySpecification);
+      Type type = typeof(ContextWithEmptySpecification);
       FieldInfo field = type.GetPrivateFieldsWith(typeof(It)).First();
       FieldInfo whenField = type.GetPrivateFieldsWith(typeof(Because)).First();
 
@@ -70,7 +70,7 @@ namespace Machine.Specifications.Factories
     protected Specification specification;
     public override void BeforeEachTest()
     {
-      Type type = typeof(DescriptionWithSingleSpecification);
+      Type type = typeof(ContextWithSingleSpecification);
       FieldInfo field = type.GetPrivateFieldsWith(typeof(It)).First();
       FieldInfo whenField = type.GetPrivateFieldsWith(typeof(Because)).First();
 
@@ -83,7 +83,7 @@ namespace Machine.Specifications.Factories
     protected Specification specification;
     public override void BeforeEachTest()
     {
-      Type type = typeof(DescriptionWithThrowingSpecification);
+      Type type = typeof(ContextWithThrowingSpecification);
       FieldInfo field = type.GetPrivateFieldsWith(typeof(It)).First();
       FieldInfo whenField = type.GetPrivateFieldsWith(typeof(Because)).First();
 

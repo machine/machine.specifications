@@ -47,7 +47,7 @@ namespace Machine.Specifications.Example
     protected static Account fromAccount;
     protected static Account toAccount;
 
-    Context before_each =()=>
+    Establish context =()=>
     {
       fromAccount = new Account {Balance = 1m};
       toAccount = new Account {Balance = 1m};

@@ -7,9 +7,9 @@ using Machine.Specifications.Model;
 
 namespace Machine.Specifications.Verifiers
 {
-  public class DescriptionVerifier
+  public class ContextVerifier
   {
-    public IEnumerable<DescriptionVerificationResult> VerifyDescription(IEnumerable<Model.Context> descriptions)
+    public IEnumerable<ContextVerificationResult> VerifyContext(IEnumerable<Model.Context> descriptions)
     {
       foreach (Model.Context description in descriptions)
       {

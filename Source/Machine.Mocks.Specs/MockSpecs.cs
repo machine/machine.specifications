@@ -12,7 +12,7 @@ namespace Machine.Mocks.MockSpecs
   {
     static IFoo mock;
 
-    Context before_each = () =>
+    Establish context = () =>
     {
       mock = Mock.Of<IFoo>();
     };
@@ -29,7 +29,7 @@ namespace Machine.Mocks.MockSpecs
     static IFoo mock;
     static Exception exception;
 
-    Context before_each =()=>
+    Establish context =()=>
     {
       exception = Catch.Exception(()=>
         mock = Mock.Of<IFoo>(0)
@@ -63,7 +63,7 @@ namespace Machine.Mocks.MockSpecs
   {
     static IFoo mock;
 
-    Context before_each = () =>
+    Establish context = () =>
     {
       mock = Mock.Of<IFoo>();
       mock.Command();
@@ -86,7 +86,7 @@ namespace Machine.Mocks.MockSpecs
     static IFoo mock;
     static Exception exception;
 
-    Context before_each = () =>
+    Establish context = () =>
     {
       mock = Mock.Of<IFoo>();
     };

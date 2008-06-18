@@ -72,7 +72,7 @@ namespace Machine.Mocks.InterceptorSpecs
     protected static MockInterceptor interceptor;
     protected static IInvocation invocation;
 
-    Context before_each = () =>
+    Establish context = () =>
     {
       interceptor = new MockInterceptor();
       invocation = MockRepository.GenerateStub<IInvocation>();

@@ -38,13 +38,13 @@ namespace Machine.Specifications.Factories
       List<FieldInfo> itFieldInfos = new List<FieldInfo>();
       List<FieldInfo> whenFieldInfos = new List<FieldInfo>();
 
-      var beforeAlls = ExtractPrivateFieldValues<Context>(instance, "before_all");
-      var beforeEachs = ExtractPrivateFieldValues<Context>(instance, "before_each");
+      var beforeAlls = ExtractPrivateFieldValues<Establish>(instance, "context_once");
+      var beforeEachs = ExtractPrivateFieldValues<Establish>(instance, "context");
       beforeAlls.Reverse();
       beforeEachs.Reverse();
 
-      var afterAlls = ExtractPrivateFieldValues<Context>(instance, "after_all");
-      var afterEachs = ExtractPrivateFieldValues<Context>(instance, "after_each");
+      var afterAlls = ExtractPrivateFieldValues<Cleanup>(instance, "after_all");
+      var afterEachs = ExtractPrivateFieldValues<Cleanup>(instance, "after_each");
 
       var description = new Model.Context(type, instance, beforeEachs, beforeAlls, afterEachs, afterAlls);
 

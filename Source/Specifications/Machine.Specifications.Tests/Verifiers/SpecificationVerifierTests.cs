@@ -11,14 +11,14 @@ using NUnit.Framework;
 namespace Machine.Specifications.Verifiers
 {
   [TestFixture]
-  public class SpecificationVerifier_Verify_SpecificationsFromExample : TestsFor<DescriptionVerifier>
+  public class SpecificationVerifier_Verify_SpecificationsFromExample : TestsFor<ContextVerifier>
   {
-    private IEnumerable<DescriptionVerificationResult> results;
+    private IEnumerable<ContextVerificationResult> results;
     public override void BeforeEachTest()
     {
       AssemblyExplorer explorer = new AssemblyExplorer();
       var specifications = explorer.FindContextsIn(typeof(Account).Assembly);
-      results = Target.VerifyDescription(specifications);
+      results = Target.VerifyContext(specifications);
     }
 
     [Test]

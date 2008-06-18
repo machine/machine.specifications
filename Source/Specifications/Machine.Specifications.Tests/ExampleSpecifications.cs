@@ -50,12 +50,12 @@ namespace Machine.Specifications
     }
   }
 
-  public interface IFakeDescription
+  public interface IFakeContext
   {
     void Reset();
   }
 
-  public class DescriptionWithSpecificationExpectingThrowThatDoesnt : IFakeDescription
+  public class ContextWithSpecificationExpectingThrowThatDoesnt : IFakeContext
   {
     public static bool ItInvoked;
     static Exception exception;
@@ -76,7 +76,7 @@ namespace Machine.Specifications
     }
   }
 
-  public class DescriptionWithThrowingWhenAndPassingSpecification : IFakeDescription
+  public class ContextWithThrowingWhenAndPassingSpecification : IFakeContext
   {
     public static bool ItInvoked;
 
@@ -96,7 +96,7 @@ namespace Machine.Specifications
     }
   }
 
-  public class DescriptionWithEmptyWhen : IFakeDescription
+  public class ContextWithEmptyWhen : IFakeContext
   {
     public static bool ItInvoked = false;
 
@@ -113,7 +113,7 @@ namespace Machine.Specifications
     }
   }
 
-  public class DescriptionWithTwoWhens : IFakeDescription
+  public class ContextWithTwoWhens : IFakeContext
   {
     public static bool When1Invoked = false;
     public static bool When2Invoked = false;
@@ -149,7 +149,7 @@ namespace Machine.Specifications
     }
   }
 
-  public class DescriptionWithEmptySpecification : IFakeDescription
+  public class ContextWithEmptySpecification : IFakeContext
   {
     public static bool WhenInvoked = false;
 
@@ -166,7 +166,7 @@ namespace Machine.Specifications
     }
   }
 
-  public class DescriptionWithThrowingSpecification : IFakeDescription
+  public class ContextWithThrowingSpecification : IFakeContext
   {
     public static bool WhenInvoked = false;
     public static bool ItInvoked = false;
@@ -189,7 +189,14 @@ namespace Machine.Specifications
     }
   }
 
-  public class DescriptionWithSingleSpecification : IFakeDescription
+  public class ContextWithConcern : IFakeContext
+  {
+    public void Reset()
+    {
+    }
+  }
+
+  public class ContextWithSingleSpecification : IFakeContext
   {
     public static bool WhenInvoked = false;
     public static bool ItInvoked = false;
@@ -198,12 +205,12 @@ namespace Machine.Specifications
     public static bool AfterEachInvoked = false;
     public static bool AfterAllInvoked = false;
 
-    Context before_each =()=>
+    Establish context =()=>
     {
       BeforeEachInvoked = true;
     };
 
-    Context before_all =()=>
+    Establish context_once =()=>
     {
       BeforeAllInvoked = true;
     };
@@ -218,12 +225,12 @@ namespace Machine.Specifications
       ItInvoked = true;
     };
 
-    Context after_each =()=>
+    Cleanup after_each =()=>
     {
       AfterEachInvoked = true;
     };
 
-    Context after_all =()=>
+    Cleanup after_all =()=>
     {
       AfterAllInvoked = true;
     };
@@ -239,9 +246,9 @@ namespace Machine.Specifications
     }
   }
 
-  public class DescriptionWithBadlyNamedBefore : IFakeDescription
+  public class ContextWithBadlyNamedBefore : IFakeContext
   {
-    Context foo =()=>
+    Establish foo =()=>
     {
       
     };
@@ -251,9 +258,9 @@ namespace Machine.Specifications
     }
   }
 
-  public class DescriptionWithBadlyNamedAfter : IFakeDescription
+  public class ContextWithBadlyNamedAfter : IFakeContext
   {
-    Context foo =()=>
+    Establish foo =()=>
     {
       
     };

@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace Machine.Specifications.Model
 {
   [TestFixture]
-  public class SpecificationTests : With<DescriptionWithSingleSpecification>
+  public class SpecificationTests : With<ContextWithSingleSpecification>
   {
     public override void BeforeEachTest()
     {
@@ -21,43 +21,43 @@ namespace Machine.Specifications.Model
     [Test]
     public void ShouldCallWhen()
     {
-      DescriptionWithSingleSpecification.WhenInvoked.ShouldBeTrue();
+      ContextWithSingleSpecification.WhenInvoked.ShouldBeTrue();
     }
 
     [Test]
     public void ShouldCallBeforeAll()
     {
-      DescriptionWithSingleSpecification.BeforeAllInvoked.ShouldBeTrue();
+      ContextWithSingleSpecification.BeforeAllInvoked.ShouldBeTrue();
     }
 
     [Test]
     public void ShouldCallBeforeEach()
     {
-      DescriptionWithSingleSpecification.BeforeEachInvoked.ShouldBeTrue();
+      ContextWithSingleSpecification.BeforeEachInvoked.ShouldBeTrue();
     }
 
     [Test]
     public void ShouldCallAfterEach()
     {
-      DescriptionWithSingleSpecification.AfterEachInvoked.ShouldBeTrue();
+      ContextWithSingleSpecification.AfterEachInvoked.ShouldBeTrue();
     }
 
     [Test]
     public void ShouldCallAfterAll()
     {
-      DescriptionWithSingleSpecification.AfterAllInvoked.ShouldBeTrue();
+      ContextWithSingleSpecification.AfterAllInvoked.ShouldBeTrue();
     }
   }
 
-  public class With<T> : TestsFor<ContextFactory> where T : IFakeDescription, new()
+  public class With<T> : TestsFor<ContextFactory> where T : IFakeContext, new()
   {
     protected Context context;
     public override void BeforeEachTest()
     {
-      IFakeDescription fakeDescription = new T();
-      fakeDescription.Reset();
+      IFakeContext fakeContext = new T();
+      fakeContext.Reset();
 
-      context = Target.CreateContextFrom(fakeDescription);
+      context = Target.CreateContextFrom(fakeContext);
     }
   }
 }

@@ -22,7 +22,7 @@ namespace Machine.Specifications.Explorers
     }
 
     [Test]
-    public void ShouldReturnOneDescription()
+    public void ShouldReturnOneContext()
     {
       specifications.Count().ShouldEqual(2);
     }
@@ -39,7 +39,7 @@ namespace Machine.Specifications.Explorers
   }
 
   [TestFixture]
-  public class AssemblyExplorer_FindDescriptions_WithOneOfManyNamespaces : TestsFor<AssemblyExplorer>
+  public class AssemblyExplorer_FindContexts_WithOneOfManyNamespaces : TestsFor<AssemblyExplorer>
   {
     private IEnumerable<Model.Context> descriptions;
 
@@ -49,13 +49,13 @@ namespace Machine.Specifications.Explorers
     }
 
     [Test]
-    public void ShouldReturnTwoDescriptions()
+    public void ShouldReturnTwoContexts()
     {
       descriptions.Count().ShouldEqual(2);
     }
 
     [Test]
-    public void ShouldReturnTwoDescriptionsNamedCorrectly()
+    public void ShouldReturnTwoContextsNamedCorrectly()
     {
       var names = descriptions.Select(x => x.Name).ToList();
       names.ShouldContainOnly(
@@ -65,7 +65,7 @@ namespace Machine.Specifications.Explorers
   }
 
   [TestFixture]
-  public class AssemblyExplorer_FindDescription_WithFieldInfo : TestsFor<AssemblyExplorer>
+  public class AssemblyExplorer_FindContext_WithFieldInfo : TestsFor<AssemblyExplorer>
   {
     private Model.Context context;
 
@@ -75,7 +75,7 @@ namespace Machine.Specifications.Explorers
     }
 
     [Test]
-    public void ShouldReturnADescription()
+    public void ShouldReturnAContext()
     {
       context.ShouldNotBeNull();
     }
@@ -88,7 +88,7 @@ namespace Machine.Specifications.Explorers
   }
 
   [TestFixture]
-  public class AssemblyExplorer_FindDescription_WithClass : TestsFor<AssemblyExplorer>
+  public class AssemblyExplorer_FindContext_WithClass : TestsFor<AssemblyExplorer>
   {
     private Model.Context context;
 
@@ -100,7 +100,7 @@ namespace Machine.Specifications.Explorers
     }
 
     [Test]
-    public void ShouldReturnADescription()
+    public void ShouldReturnAContext()
     {
       context.ShouldNotBeNull();
     }
@@ -119,7 +119,7 @@ namespace Machine.Specifications.Explorers
   }
 
   [TestFixture]
-  public class AssemblyExplorer_FindDescription_WithFirstDescriptionOfExampleAssemblyTests : TestsFor<AssemblyExplorer>
+  public class AssemblyExplorer_FindContext_WithFirstContextOfExampleAssemblyTests : TestsFor<AssemblyExplorer>
   {
     private IEnumerable<Model.Context> descriptions;
     private Model.Context context;

@@ -58,7 +58,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
     {
       PopulateTestTree();
       RootTest rootTest = testModel.RootTest;
-      Version expectedVersion = typeof(DescriptionAttribute).Assembly.GetName().Version;
+      Version expectedVersion = typeof(ConcernAttribute).Assembly.GetName().Version;
       BaseTest frameworkTest = (BaseTest)rootTest.Children[0];
       Assert.AreSame(testModel.RootTest, frameworkTest.Parent);
       Assert.AreEqual(TestKinds.Framework, frameworkTest.Kind);
@@ -84,14 +84,14 @@ namespace Machine.Specifications.GallioAdapter.Tests
     }
 
     [Test]
-    public void DescriptionTestShouldBeValid()
+    public void ContextTestShouldBeValid()
     {
       PopulateTestTree();
       RootTest rootTest = testModel.RootTest;
       BaseTest frameworkTest = (BaseTest)rootTest.Children[0];
       BaseTest assemblyTest = (BaseTest)frameworkTest.Children[0];
-      MachineDescriptionTest fixtureTest =
-        (MachineDescriptionTest)
+      MachineContextTest fixtureTest =
+        (MachineContextTest)
           GetDescendantByName(assemblyTest, "Transferring between from account and to account");
       Assert.AreSame(assemblyTest, fixtureTest.Parent);
       Assert.AreEqual(TestKinds.Fixture, fixtureTest.Kind);
@@ -109,8 +109,8 @@ namespace Machine.Specifications.GallioAdapter.Tests
       RootTest rootTest = testModel.RootTest;
       BaseTest frameworkTest = (BaseTest)rootTest.Children[0];
       BaseTest assemblyTest = (BaseTest)frameworkTest.Children[0];
-      MachineDescriptionTest fixtureTest =
-        (MachineDescriptionTest)
+      MachineContextTest fixtureTest =
+        (MachineContextTest)
           GetDescendantByName(assemblyTest, "Transferring between from account and to account");
 
       MachineSpecificationTest test = (MachineSpecificationTest) GetDescendantByName(fixtureTest, "should debit the from account by the amount transferred");

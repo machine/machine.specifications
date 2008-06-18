@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Machine.Specifications
 {
-  public delegate void Context();
+  public delegate void Establish();
 
   public delegate void Because();
 

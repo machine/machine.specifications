@@ -4,9 +4,17 @@ namespace Machine.Specifications.Utility
 {
   public static class RandomExtensionMethods
   {
-    public static void InvokeAll(this IEnumerable<Context> contextActions)
+    public static void InvokeAll(this IEnumerable<Establish> contextActions)
     {
-      foreach (Context contextAction in contextActions)
+      foreach (Establish contextAction in contextActions)
+      {
+        contextAction();
+      }
+    }
+
+    public static void InvokeAll(this IEnumerable<Cleanup> contextActions)
+    {
+      foreach (Cleanup contextAction in contextActions)
       {
         contextAction();
       }

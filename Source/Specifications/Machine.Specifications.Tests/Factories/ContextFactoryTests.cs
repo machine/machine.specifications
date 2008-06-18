@@ -8,12 +8,12 @@ using NUnit.Framework;
 namespace Machine.Specifications.Factories
 {
   [TestFixture]
-  public class DescriptionFactoryTests : With<DescriptionWithSingleSpecification>
+  public class ContextFactoryTests : With<ContextWithSingleSpecification>
   {
     [Test]
     public void ShouldSetType()
     {
-      context.Type.Name.ShouldEqual("DescriptionWithSingleSpecification");
+      context.Type.Name.ShouldEqual("ContextWithSingleSpecification");
     }
   }
 }
