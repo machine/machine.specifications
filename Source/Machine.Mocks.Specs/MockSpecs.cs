@@ -7,7 +7,7 @@ using Machine.Specifications;
 
 namespace Machine.Mocks.MockSpecs
 {
-  [Concern(typeof(Mock))]
+  [Concerning(typeof(Mock))]
   public class When_creating_a_mock
   {
     static IFoo mock;
@@ -23,7 +23,7 @@ namespace Machine.Mocks.MockSpecs
     };
   }
 
-  [Concern(typeof(Mock))]
+  [Concerning(typeof(Mock))]
   public class When_creating_a_mock_of_an_interface_with_constructor_arguments
   {
     static IFoo mock;
@@ -42,7 +42,7 @@ namespace Machine.Mocks.MockSpecs
     };
   }
 
-  [Concern(typeof(Mock))]
+  [Concerning(typeof(Mock))]
   public class When_creating_a_mock_of_a_class
   {
     static Foo mock;
@@ -58,7 +58,7 @@ namespace Machine.Mocks.MockSpecs
     };
   }
 
-  [Concern(typeof(Mock))]
+  [Concerning(typeof(Mock))]
   public class When_verifying_a_command_on_a_mock_that_was_called
   {
     static IFoo mock;
@@ -80,7 +80,7 @@ namespace Machine.Mocks.MockSpecs
     };
   }
 
-  [Concern(typeof(Mock))]
+  [Concerning(typeof(Mock))]
   public class When_verifying_a_command_on_a_mock_that_was_not_called
   {
     static IFoo mock;

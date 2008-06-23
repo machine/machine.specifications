@@ -12,7 +12,7 @@ using Rhino.Mocks.Interfaces;
 
 namespace Machine.Mocks.InterceptorSpecs
 {
-  [Concern(typeof(MockInterceptor))]
+  [Concerning(typeof(MockInterceptor))]
   public class When_intercepting_invocation_of_Equals
     : with_interceptor
   {
@@ -23,7 +23,7 @@ namespace Machine.Mocks.InterceptorSpecs
       invocation.AssertWasCalled(x => x.Proceed());
   }
 
-  [Concern(typeof(MockInterceptor))]
+  [Concerning(typeof(MockInterceptor))]
   public class When_intercepting_invocation_of_ToString
     : with_interceptor
   {
@@ -34,7 +34,7 @@ namespace Machine.Mocks.InterceptorSpecs
       invocation.AssertWasCalled(x => x.Proceed());
   }
 
-  [Concern(typeof(MockInterceptor))]
+  [Concerning(typeof(MockInterceptor))]
   public class When_intercepting_invocation_of_GetHashCode
     : with_interceptor
   {
@@ -45,7 +45,7 @@ namespace Machine.Mocks.InterceptorSpecs
       invocation.AssertWasCalled(x => x.Proceed());
   }
 
-  [Concern(typeof(MockInterceptor))]
+  [Concerning(typeof(MockInterceptor))]
   public class When_intercepting_invocation_of_GetType
     : with_interceptor
   {
@@ -56,7 +56,7 @@ namespace Machine.Mocks.InterceptorSpecs
       invocation.AssertWasCalled(x => x.Proceed());
   }
 
-  [Concern(typeof(MockInterceptor))]
+  [Concerning(typeof(MockInterceptor))]
   public class When_intercepting_invocation_of_non_object_method
     : with_interceptor
   {
