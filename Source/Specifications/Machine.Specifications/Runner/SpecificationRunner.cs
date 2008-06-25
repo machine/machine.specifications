@@ -24,7 +24,9 @@ namespace Machine.Specifications.Runner
     {
       var contexts = _explorer.FindContextsIn(assembly);
 
+      _listener.OnAssemblyStart(assembly);
       RunContexts(contexts);
+      _listener.OnAssemblyEnd(assembly);
     }
 
     public void RunContexts(IEnumerable<Model.Context> contexts)

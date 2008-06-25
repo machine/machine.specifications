@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 using Machine.Specifications.Model;
 using Machine.Specifications.Runner;
@@ -24,6 +25,14 @@ namespace Machine.Specifications.TDNetRunner
     {
       this.testListener = testListener;
       resultFormatterFactory = new ResultFormatterFactory();
+    }
+
+    public void OnAssemblyStart(Assembly assembly)
+    {
+    }
+
+    public void OnAssemblyEnd(Assembly assembly)
+    {
     }
 
     public void OnRunStart()

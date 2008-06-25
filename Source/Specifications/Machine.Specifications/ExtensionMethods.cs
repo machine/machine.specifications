@@ -74,9 +74,12 @@ namespace Machine.Specifications
       Assert.IsNotInstanceOfType(expected, actual);
     }
 
-    public static void ShouldContain(this IList actual, object expected)
+    public static void ShouldContain(this IList actual, params object[] expected)
     {
-      Assert.Contains(expected, actual);
+      foreach (var item in expected)
+      {
+        Assert.Contains(item, actual);
+      }
     }
 
     public static void ShouldNotContain(this IList collection, object expected)

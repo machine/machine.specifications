@@ -1,29 +1,26 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-
-[assembly : AssemblyTitle("Machine.Specifications.ConsoleRunner")]
-[assembly : AssemblyDescription("")]
-[assembly : AssemblyConfiguration("")]
-[assembly : AssemblyCompany("Microsoft")]
-[assembly : AssemblyProduct("Machine.Specifications.ConsoleRunner")]
-[assembly : AssemblyCopyright("Copyright � Microsoft 2008")]
-[assembly : AssemblyTrademark("")]
-[assembly : AssemblyCulture("")]
+[assembly: AssemblyTitle("Machine.Specifications.FailingExample")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Eleutian Technology")]
+[assembly: AssemblyProduct("Machine.Specifications.FailingExample")]
+[assembly: AssemblyCopyright("Copyright © Eleutian Technology 2008")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
-
-[assembly : ComVisible(false)]
+[assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-
-[assembly : Guid("c3c1cde1-f517-4ca8-8657-5465be3e1556")]
+[assembly: Guid("39a975ce-a297-41ac-9df4-38face7457ff")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -35,8 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-
-[assembly : AssemblyVersion("1.0.0.0")]
-[assembly : AssemblyFileVersion("1.0.0.0")]
-
-[assembly : InternalsVisibleTo("Machine.Specifications.ConsoleRunner.Specs")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

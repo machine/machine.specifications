@@ -54,9 +54,6 @@ namespace Machine.Specifications.Factories
       {
         if (info.FieldType == typeof(Because))
         {
-          CreateSpecifications(whenFieldInfos, itFieldInfos, description);
-          whenFieldInfos.Clear();
-          itFieldInfos.Clear();
           whenFieldInfos.Add(info);
         }
         else if (acceptedSpecificationFields.Contains(info) &&

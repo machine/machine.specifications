@@ -5,11 +5,10 @@ using System.Text;
 
 namespace Machine.Specifications.ConsoleRunner
 {
-  public class Program
+  public enum ExitCode
   {
-    public static void Main(string[] args)
-    {
-
-    }
+    Success = 0,
+    Error = 1,
+    Failure
   }
 }
