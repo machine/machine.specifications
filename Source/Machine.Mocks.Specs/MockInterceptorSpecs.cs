@@ -60,7 +60,7 @@ namespace Machine.Mocks.InterceptorSpecs
   public class When_intercepting_invocation_of_non_object_method
     : with_interceptor
   {
-    Because Intercepting_non_object_method = () =>
+    Because of = () =>
       InterceptMethod(typeof(IFoo).GetMethod("Query"));
 
     It should_not_proceed = () =>

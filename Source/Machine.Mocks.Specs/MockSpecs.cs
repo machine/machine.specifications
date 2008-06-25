@@ -47,7 +47,7 @@ namespace Machine.Mocks.MockSpecs
   {
     static Foo mock;
 
-    Because a_mock_is_created = () =>
+    Because of = () =>
     {
       mock = Mock.Of<Foo>();
     };
