@@ -68,9 +68,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mocks", "Mocks", "{A1D05C60
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Mocks", "Mocks\Machine.Mocks\Machine.Mocks.csproj", "{370FD4D5-3FBA-4242-9C5F-39BB8A6D138B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Mocks.Specs", "Machine.Mocks.Specs\Machine.Mocks.Specs.csproj", "{E2297ADF-3E8E-4A90-84EF-A09A6CD578CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.FailingExample", "Specifications\Machine.Specifications.FailingExample\Machine.Specifications.FailingExample.csproj", "{89ECD0D1-6CC4-4319-B1B2-389E0B48F40D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.FailingExample", "Machine.Specifications.FailingExample\Machine.Specifications.FailingExample.csproj", "{89ECD0D1-6CC4-4319-B1B2-389E0B48F40D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Mocks.Specs", "Mocks\Machine.Mocks.Specs\Machine.Mocks.Specs.csproj", "{E2297ADF-3E8E-4A90-84EF-A09A6CD578CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -186,14 +186,14 @@ Global
 		{370FD4D5-3FBA-4242-9C5F-39BB8A6D138B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{370FD4D5-3FBA-4242-9C5F-39BB8A6D138B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{370FD4D5-3FBA-4242-9C5F-39BB8A6D138B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E2297ADF-3E8E-4A90-84EF-A09A6CD578CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2297ADF-3E8E-4A90-84EF-A09A6CD578CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2297ADF-3E8E-4A90-84EF-A09A6CD578CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2297ADF-3E8E-4A90-84EF-A09A6CD578CB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{89ECD0D1-6CC4-4319-B1B2-389E0B48F40D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{89ECD0D1-6CC4-4319-B1B2-389E0B48F40D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89ECD0D1-6CC4-4319-B1B2-389E0B48F40D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89ECD0D1-6CC4-4319-B1B2-389E0B48F40D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2297ADF-3E8E-4A90-84EF-A09A6CD578CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2297ADF-3E8E-4A90-84EF-A09A6CD578CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2297ADF-3E8E-4A90-84EF-A09A6CD578CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2297ADF-3E8E-4A90-84EF-A09A6CD578CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
