@@ -6,7 +6,7 @@ using Machine.Specifications.Runner;
 
 namespace Machine.Specifications.ConsoleRunner
 {
-  public class Listener : ISpecificationRunListener
+  public class RunListener : ISpecificationRunListener
   {
     readonly IConsole _console;
     string _assemblyName;
@@ -16,7 +16,7 @@ namespace Machine.Specifications.ConsoleRunner
       get; private set;
     }
 
-    public Listener(IConsole console)
+    public RunListener(IConsole console)
     {
       _console = console;
     }
