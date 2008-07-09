@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Castle.Core.Interceptor;
 using Castle.DynamicProxy;
 
+using Machine.Container.Activators;
 using Machine.Container.Model;
 using Machine.Container.Services;
 
@@ -15,10 +16,12 @@ namespace Machine.Container.DynamicProxySupport
     private readonly IProxyBuilder _proxyBuilder;
     private readonly IActivator _target;
     private readonly ProxyGenerator _proxyGenerator;
+    private readonly ServiceEntry _entry;
 
-    public DynamicProxyActivator(IMachineContainer container, IProxyBuilder proxyBuilder, IActivator target)
+    public DynamicProxyActivator(IMachineContainer container, IProxyBuilder proxyBuilder, IActivator target, ServiceEntry entry)
     {
       _container = container;
+      _entry = entry;
       _proxyBuilder = proxyBuilder;
       _target = target;
       _proxyGenerator = new ProxyGenerator(_proxyBuilder);
@@ -32,20 +35,20 @@ namespace Machine.Container.DynamicProxySupport
 
     public Activation Activate(IResolutionServices services)
     {
+      Activation activation = _target.Activate(services);
+      ServiceEntry entry = activation.Entry;
+      if (!entry.HasInterceptorsApplied)
+      {
+        throw new ServiceContainerException("Entry should have interceptors: " + entry);
+      }
       try
       {
-        Activation activation = _target.Activate(services);
-        if (!activation.Entry.HasInterceptors)
-        {
-          throw new ServiceContainerException("You should have interceptors!");
-        }
-        ServiceEntry entry = activation.Entry;
         object proxied = _proxyGenerator.CreateInterfaceProxyWithTarget(entry.ServiceType, activation.Instance, ProxyGenerationOptions.Default, FindInterceptors(entry));
         return new Activation(activation.Entry, proxied);
       }
-      catch (Exception ex)
+      catch (Exception error)
       {
-        throw new ServiceContainerException("Error activating with DynamicProxy", ex);
+        throw new DynamicProxyException("Error activating with DynamicProxy", error);
       }
     }
 
@@ -60,7 +63,14 @@ namespace Machine.Container.DynamicProxySupport
       List<IInterceptor> interceptors = new List<IInterceptor>();
       foreach (InterceptorApplication interceptor in entry.Interceptors)
       {
-        interceptors.Add((IInterceptor)_container.Resolve.Object(interceptor.InterceptorType));
+        try
+        {
+          interceptors.Add((IInterceptor)_container.Resolve.Object(interceptor.InterceptorType));
+        }
+        catch (Exception error)
+        {
+          throw new DynamicProxyException("Error resolving Interceptor: " + interceptor, error);
+        }
       }
       return interceptors.ToArray();
     }

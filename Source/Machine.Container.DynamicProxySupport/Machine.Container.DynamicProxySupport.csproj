@@ -45,7 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DynamicProxyActivator.cs" />
-    <Compile Include="DynamicProxyActivatorResolver.cs" />
+    <Compile Include="DynamicProxyActivatorFactory.cs" />
+    <Compile Include="DynamicProxyException.cs" />
     <Compile Include="DynamicProxyPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
