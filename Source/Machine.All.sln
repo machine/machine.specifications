@@ -72,6 +72,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Fail
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Mocks.Specs", "Mocks\Machine.Mocks.Specs\Machine.Mocks.Specs.csproj", "{E2297ADF-3E8E-4A90-84EF-A09A6CD578CB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Container.DynamicProxySupport", "Machine.Container.DynamicProxySupport\Machine.Container.DynamicProxySupport.csproj", "{37BCCFC1-AA9E-4E79-9B5D-BB8F44B0BA55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -194,6 +196,10 @@ Global
 		{E2297ADF-3E8E-4A90-84EF-A09A6CD578CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2297ADF-3E8E-4A90-84EF-A09A6CD578CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2297ADF-3E8E-4A90-84EF-A09A6CD578CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37BCCFC1-AA9E-4E79-9B5D-BB8F44B0BA55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37BCCFC1-AA9E-4E79-9B5D-BB8F44B0BA55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37BCCFC1-AA9E-4E79-9B5D-BB8F44B0BA55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37BCCFC1-AA9E-4E79-9B5D-BB8F44B0BA55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -201,6 +207,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F5EF7CA1-E4A1-47C8-BBB3-BDF36EDB5514} = {6813B43F-BE1F-4F77-BD31-A4B21284753B}
 		{311CA93B-3D01-448F-8408-BF6398F0F5FC} = {6813B43F-BE1F-4F77-BD31-A4B21284753B}
+		{37BCCFC1-AA9E-4E79-9B5D-BB8F44B0BA55} = {6813B43F-BE1F-4F77-BD31-A4B21284753B}
 		{16843E67-2FF1-465E-9DC6-3703E4E78160} = {77B81B8D-6683-4C6A-BBE4-24631F4F6D37}
 		{171FA58C-6AA8-4B63-A6A7-68F026F7A400} = {77B81B8D-6683-4C6A-BBE4-24631F4F6D37}
 		{11EA06FF-F2C5-4A49-94F8-A0B13550B5A5} = {77B81B8D-6683-4C6A-BBE4-24631F4F6D37}
