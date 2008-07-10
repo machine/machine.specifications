@@ -21,6 +21,10 @@ namespace Machine.Container.DynamicProxySupport
       IActivatorFactory defaultActivatorFactory = services.Factory.FindChainedItemByType(typeof(DefaultActivatorFactory));
       services.Factory.AddBefore(typeof(DefaultActivatorFactory), new DynamicProxyActivatorFactory(services.Container, _proxyBuilder, defaultActivatorFactory));
     }
+
+    public void ReadyForServices(PluginServices services)
+    {
+    }
     #endregion
 
     #region IDisposable Members
