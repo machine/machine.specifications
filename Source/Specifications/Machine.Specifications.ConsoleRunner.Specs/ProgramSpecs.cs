@@ -2,6 +2,10 @@ using Machine.Specifications.ConsoleRunner.Properties;
 
 namespace Machine.Specifications.ConsoleRunner.Specs
 {
+  // TODO: Add Concern count
+  // TODO: Add Tag and filter by tag
+  // TODO: Add awesome client side reporting stuff
+
   [Concern("Console runner")]
   public class when_arguments_are_not_provided
     : with_runner 
@@ -20,11 +24,14 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     Because of = ()=>
       program.Run(new [] {"Machine.Specifications.Example.dll"});
 
+    It should_write_the_assembly_name = ()=>
+      console.ShouldContainLineWith("Machine.Specifications.Example");
+
     It should_write_the_specifications = ()=>
       console.Lines.ShouldContain(
-        "should debit the from account by the amount transferred", 
-        "should credit the to account by the amount transferred", 
-        "should not allow the transfer");
+        "» should debit the from account by the amount transferred", 
+        "» should credit the to account by the amount transferred", 
+        "» should not allow the transfer");
 
     It should_write_the_contexts = ()=>
       console.Lines.ShouldContain(
@@ -32,10 +39,10 @@ namespace Machine.Specifications.ConsoleRunner.Specs
         "Account Funds transfer, when transferring an amount larger than the balance of the from account"
         );
 
-    It should_write_the_number_of_contexts = ()=>
+    It should_write_the_count_of_contexts = ()=>
       console.ShouldContainLineWith("Contexts: 2");
 
-    It should_write_the_number_of_specifications = ()=>
+    It should_write_the_count_of_specifications = ()=>
       console.ShouldContainLineWith("Specifications: 3");
   }
 
@@ -66,8 +73,11 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     Because of = ()=>
       exitCode = program.Run(new string[] {assemblyWithFailingSpecification + ".dll"});
 
-    It should_output_the_name_of_the_failing_specification = ()=>
-      console.Lines.ShouldContain(string.Format(Resources.FailingSpecificationError, failingSpecificationName, assemblyWithFailingSpecification));
+    It should_write_the_failure = ()=>
+      console.ShouldContainLineWith("Exception");
+
+    It should_write_the_count_of_failed_specifications = ()=>
+      console.ShouldContainLineWith("1 failed");
 
     It should_return_the_Failure_exit_code = ()=>
       exitCode.ShouldEqual(ExitCode.Failure);

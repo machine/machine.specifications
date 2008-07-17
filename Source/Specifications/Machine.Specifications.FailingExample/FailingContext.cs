@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Machine.Specifications.FailingExample
 {
-  [Concern("Epic Failure")]
-  public class FailingContext
+  [Concern("Scott Bellware")]
+  public class at_any_given_moment
   {
-    It should_fail = ()=>
+    It will_fail = ()=>
     {
-      throw new Exception("hi");
+      throw new Exception("hi scott, love you, miss you.");
     };
   }
 }

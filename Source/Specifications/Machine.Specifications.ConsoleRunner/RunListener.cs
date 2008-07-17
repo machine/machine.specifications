@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 
 using Machine.Specifications.ConsoleRunner.Properties;
@@ -12,6 +13,7 @@ namespace Machine.Specifications.ConsoleRunner
     string _assemblyName;
     int _contextCount;
     int _specificationCount;
+    int _failedSpecificationCount;
 
     public bool FailureOccured
     {
@@ -26,6 +28,9 @@ namespace Machine.Specifications.ConsoleRunner
     public void OnAssemblyStart(Assembly assembly)
     {
       _assemblyName = assembly.GetName().Name;
+      _console.WriteLine("");
+      _console.WriteLine("Specs in " + _assemblyName + ":");
+      _console.WriteLine("");
     }
 
     public void OnAssemblyEnd(Assembly assembly)
@@ -36,11 +41,19 @@ namespace Machine.Specifications.ConsoleRunner
     {
       _contextCount = 0;
       _specificationCount = 0;
+      _failedSpecificationCount = 0;
     }
 
     public void OnRunEnd()
     {
-      _console.WriteLine("Contexts: {0} Specifications: {1}", _contextCount, _specificationCount);
+      var line = String.Format("Contexts: {0}, Specifications: {1}", _contextCount, _specificationCount);
+
+      if (_failedSpecificationCount > 0)
+      {
+        line += String.Format(" ({0} failed)", _failedSpecificationCount);
+      }
+
+      _console.WriteLine(line);
     }
 
     public void OnContextStart(Context context)
@@ -50,12 +63,13 @@ namespace Machine.Specifications.ConsoleRunner
 
     public void OnContextEnd(Context context)
     {
+      _console.WriteLine("");
       _contextCount += 1;
     }
 
     public void OnSpecificationStart(Specification specification)
     {
-      _console.WriteLine(specification.Name);
+      _console.WriteLine("» " + specification.Name);
     }
 
     public void OnSpecificationEnd(Specification specification, SpecificationVerificationResult result)
@@ -63,8 +77,9 @@ namespace Machine.Specifications.ConsoleRunner
       _specificationCount += 1;
       if (!result.Passed)
       {
+        _failedSpecificationCount += 1;
         FailureOccured = true;
-        _console.WriteLine(Resources.FailingSpecificationError, specification.Name, _assemblyName);
+        _console.WriteLine(result.Exception.ToString());
       }
     }
   }

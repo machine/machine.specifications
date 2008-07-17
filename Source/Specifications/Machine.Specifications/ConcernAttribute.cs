@@ -3,7 +3,7 @@ using System;
 namespace Machine.Specifications
 {
   [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-  public sealed class ConcerningAttribute : Attribute
+  public sealed class ConcernAttribute : Attribute
   {
     readonly Type _typeConcernedWith;
     readonly string _concern;
@@ -18,18 +18,18 @@ namespace Machine.Specifications
       get { return _concern; }
     }
 
-    public ConcerningAttribute(Type typeConcernedWith)
+    public ConcernAttribute(Type typeConcernedWith)
     {
       this._typeConcernedWith = typeConcernedWith;
     }
 
-    public ConcerningAttribute(Type typeConcernedWith, string concern)
+    public ConcernAttribute(Type typeConcernedWith, string concern)
     {
       _typeConcernedWith = typeConcernedWith;
       _concern = concern;
     }
 
-    public ConcerningAttribute(string concern)
+    public ConcernAttribute(string concern)
     {
       _concern = concern;
     }
