@@ -70,14 +70,14 @@ namespace Machine.Specifications.Factories
 
     Concern ExtractConcern(Type type)
     {
-      var attributes = type.GetCustomAttributes(typeof(ConcerningAttribute), true);
+      var attributes = type.GetCustomAttributes(typeof(ConcernAttribute), true);
 
       if (attributes.Length > 1)
         throw new SpecificationUsageException("Cannot have more than one Concern on a Context");
 
       if (attributes.Length == 0) return null;
 
-      var attribute = (ConcerningAttribute)attributes[0];
+      var attribute = (ConcernAttribute)attributes[0];
 
       return new Concern(attribute.TypeConcernedWith, attribute.SpecificConcern);
     }

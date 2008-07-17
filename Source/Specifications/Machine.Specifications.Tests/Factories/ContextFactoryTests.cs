@@ -17,7 +17,7 @@ namespace Machine.Specifications.Factories
     }
   }
 
-  [Concerning(typeof(ContextFactory))]
+  [Concern(typeof(ContextFactory))]
   public class when_creating_a_context_with_a_concern
   {
     static Context newContext;

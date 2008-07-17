@@ -10,6 +10,8 @@ namespace Machine.Specifications.ConsoleRunner
   {
     readonly IConsole _console;
     string _assemblyName;
+    int _contextCount;
+    int _specificationCount;
 
     public bool FailureOccured
     {
@@ -32,22 +34,23 @@ namespace Machine.Specifications.ConsoleRunner
 
     public void OnRunStart()
     {
-      //no-op
+      _contextCount = 0;
+      _specificationCount = 0;
     }
 
     public void OnRunEnd()
     {
-      //no-op
+      _console.WriteLine("Contexts: {0} Specifications: {1}", _contextCount, _specificationCount);
     }
 
     public void OnContextStart(Context context)
     {
-      //no-op
+      _console.WriteLine(context.FullName);
     }
 
     public void OnContextEnd(Context context)
     {
-      //no-op
+      _contextCount += 1;
     }
 
     public void OnSpecificationStart(Specification specification)
@@ -57,6 +60,7 @@ namespace Machine.Specifications.ConsoleRunner
 
     public void OnSpecificationEnd(Specification specification, SpecificationVerificationResult result)
     {
+      _specificationCount += 1;
       if (!result.Passed)
       {
         FailureOccured = true;

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Machine.Specifications.FailingExample
 {
-  [Concerning("Epic Failure")]
+  [Concern("Epic Failure")]
   public class FailingContext
   {
     It should_fail = ()=>

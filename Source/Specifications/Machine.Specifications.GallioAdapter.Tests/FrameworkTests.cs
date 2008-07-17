@@ -58,7 +58,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
     {
       PopulateTestTree();
       RootTest rootTest = testModel.RootTest;
-      Version expectedVersion = typeof(ConcerningAttribute).Assembly.GetName().Version;
+      Version expectedVersion = typeof(ConcernAttribute).Assembly.GetName().Version;
       BaseTest frameworkTest = (BaseTest)rootTest.Children[0];
       Assert.AreSame(testModel.RootTest, frameworkTest.Parent);
       Assert.AreEqual(TestKinds.Framework, frameworkTest.Kind);

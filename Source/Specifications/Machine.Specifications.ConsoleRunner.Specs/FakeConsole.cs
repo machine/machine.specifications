@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Machine.Specifications.ConsoleRunner.Specs
 {
@@ -16,9 +17,14 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       _lines.Add(line);
     }
 
-    public void WriteLine(string line, params string[] parameters)
+    public void WriteLine(string line, params object[] parameters)
     {
       _lines.Add(string.Format(line, parameters));
+    }
+
+    public void ShouldContainLineWith(string s)
+    {
+      _lines.Where(x=>x.Contains(s)).Count().ShouldBeGreaterThan(0);
     }
   }
 }

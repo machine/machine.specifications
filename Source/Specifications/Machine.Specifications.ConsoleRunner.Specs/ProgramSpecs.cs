@@ -1,15 +1,9 @@
-using System;
-using System.Linq;
-using System.Text;
-
 using Machine.Specifications.ConsoleRunner.Properties;
-
-using Rhino.Mocks;
 
 namespace Machine.Specifications.ConsoleRunner.Specs
 {
-  [Concerning(typeof(Program))]
-  public class when_running_with_no_command_line_arguments
+  [Concern("Console runner")]
+  public class when_arguments_are_not_provided
     : with_runner 
   {
     Because of = ()=>
@@ -19,21 +13,33 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       console.Lines.ShouldContain(Resources.UsageStatement);
   }
 
-  [Concerning(typeof(Program))]
-  public class when_running_with_one_assembly_on_the_command_line
+  [Concern("Console runner")]
+  public class when_running_a_specification_assembly
     : with_runner 
   {
     Because of = ()=>
       program.Run(new [] {"Machine.Specifications.Example.dll"});
 
-    It should_output_the_results_from_all_the_specifications_in_that_assembly = ()=>
+    It should_write_the_specifications = ()=>
       console.Lines.ShouldContain(
         "should debit the from account by the amount transferred", 
         "should credit the to account by the amount transferred", 
         "should not allow the transfer");
+
+    It should_write_the_contexts = ()=>
+      console.Lines.ShouldContain(
+        "Account Funds transfer, when transferring between two accounts",
+        "Account Funds transfer, when transferring an amount larger than the balance of the from account"
+        );
+
+    It should_write_the_number_of_contexts = ()=>
+      console.ShouldContainLineWith("Contexts: 2");
+
+    It should_write_the_number_of_specifications = ()=>
+      console.ShouldContainLineWith("Specifications: 3");
   }
 
-  [Concerning(typeof(Program))]
+  [Concern("Console runner")]
   public class when_specifying_a_missing_assembly_on_the_command_line
     : with_runner 
   {
@@ -50,7 +56,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       exitCode.ShouldEqual(ExitCode.Error);
   }
 
-  [Concerning(typeof(Program))]
+  [Concern("Console runner")]
   public class when_a_specification_fails : with_runner
   {
     public static ExitCode exitCode;

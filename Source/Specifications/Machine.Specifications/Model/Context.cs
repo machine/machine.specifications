@@ -116,5 +116,21 @@ namespace Machine.Specifications.Model
     {
       _afterAlls.InvokeAll();
     }
+
+    // TODO: Rename to Name
+    public string FullName
+    {
+      get
+      {
+        string line = "";
+
+        if (Concern != null)
+        {
+          line += Concern.FullConcern + ", ";
+        }
+
+        return line + Name;
+      }
+    }
   }
 }

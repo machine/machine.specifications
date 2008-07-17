@@ -189,7 +189,7 @@ namespace Machine.Specifications
     }
   }
 
-  [Concerning(typeof(int), "Some description")]
+  [Concern(typeof(int), "Some description")]
   public class ContextWithConcern : IFakeContext
   {
     public void Reset()

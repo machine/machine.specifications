@@ -12,7 +12,7 @@ namespace Machine.Specifications.ConsoleRunner
       Console.WriteLine(line);
     }
 
-    public void WriteLine(string line, params string[] parameters)
+    public void WriteLine(string line, params object[] parameters)
     {
       Console.WriteLine(String.Format(line, parameters));
     }

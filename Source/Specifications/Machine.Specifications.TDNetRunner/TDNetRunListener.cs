@@ -56,14 +56,7 @@ namespace Machine.Specifications.TDNetRunner
 
     public void OnContextStart(Model.Context context)
     {
-      string line = "";
-
-      if (context.Concern != null)
-      {
-        line += context.Concern.FullConcern + ", ";
-      }
-
-      testListener.WriteLine(line + context.Name, Category.Output);
+      testListener.WriteLine(context.FullName, Category.Output);
     }
 
     public void OnContextEnd(Model.Context context)

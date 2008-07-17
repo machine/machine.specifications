@@ -8,6 +8,6 @@ namespace Machine.Specifications.ConsoleRunner
   public interface IConsole
   {
     void WriteLine(string line);
-    void WriteLine(string line, params string[] parameters);
+    void WriteLine(string line, params object[] parameters);
   }
 }

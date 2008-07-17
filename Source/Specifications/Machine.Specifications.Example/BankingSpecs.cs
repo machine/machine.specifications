@@ -6,8 +6,8 @@ using System.Text;
 
 namespace Machine.Specifications.Example
 {
-  [Concerning(typeof(Account), "Funds transfer")]
-  public class When_transferring_between_two_accounts
+  [Concern(typeof(Account), "Funds transfer")]
+  public class when_transferring_between_two_accounts
     : with_from_account_and_to_account
   {
     Because of = () =>
@@ -26,7 +26,7 @@ namespace Machine.Specifications.Example
     };
   }
 
-  [Concerning(typeof(Account), "Funds transfer")]
+  [Concern(typeof(Account), "Funds transfer")]
   public class when_transferring_an_amount_larger_than_the_balance_of_the_from_account
     : with_from_account_and_to_account
   {
