@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Castle.Core.Interceptor;
 using Castle.DynamicProxy;
 
-using Machine.Container.Activators;
 using Machine.Container.Model;
 using Machine.Container.Services;
 
