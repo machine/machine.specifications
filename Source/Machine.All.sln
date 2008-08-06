@@ -72,7 +72,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Fail
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Mocks.Specs", "Mocks\Machine.Mocks.Specs\Machine.Mocks.Specs.csproj", "{E2297ADF-3E8E-4A90-84EF-A09A6CD578CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Container.DynamicProxySupport", "Machine.Container.DynamicProxySupport\Machine.Container.DynamicProxySupport.csproj", "{37BCCFC1-AA9E-4E79-9B5D-BB8F44B0BA55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Container.DynamicProxySupport", "Container\Machine.Container.DynamicProxySupport\Machine.Container.DynamicProxySupport.csproj", "{37BCCFC1-AA9E-4E79-9B5D-BB8F44B0BA55}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Utility.ThreadPool", "Machine.Utility\Machine.Utility.ThreadPool\Machine.Utility.ThreadPool.csproj", "{DB74F574-F8A4-4870-B632-7E09A62EF358}"
 EndProject
