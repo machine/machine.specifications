@@ -5,4 +5,5 @@ _ReSharper.*
 *.resharper.user
 *.resharper
 *.suo
+*.cache
 /Build
