@@ -5,14 +5,18 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.RegularExpressions;
 
 using Machine.Specifications.ConsoleRunner.Properties;
+using Machine.Specifications.Reporting;
 using Machine.Specifications.Runner;
 
 namespace Machine.Specifications.ConsoleRunner
 {
   public class Program
   {
+
+    [STAThread]
     public static void Main(string[] args)
     {
       var program = new Program(new DefaultConsole());
@@ -32,18 +36,45 @@ namespace Machine.Specifications.ConsoleRunner
     {
       ExitCode exitCode;
       ExceptionReporter reporter = new ExceptionReporter(_console);
-      var listener = new RunListener(_console);
-
+      var runListener = new RunListener(_console);
+      var reportingListener = new ReportingRunListener();
+      List<ISpecificationRunListener> listeners = new List<ISpecificationRunListener>();
+      
       try
       {
-        if (arguments.Length == 0)
+
+        Options options = new Options();
+        if (!options.ParseArguments(arguments))
         {
           _console.WriteLine(Resources.UsageStatement);
           return ExitCode.Failure;
         }
 
+        if (!options.HtmlPath.Equals(string.Empty))
+        {
+          listeners.Add(reportingListener);
+          if (!Directory.Exists(options.HtmlPath))
+          {
+            _console.WriteLine("Invalid html path: " + options.HtmlPath);
+            _console.WriteLine(Resources.UsageStatement);
+            return ExitCode.Failure;
+          }
+        }
+
+        
+        if (!options.Silent)
+          listeners.Add(runListener);
+        
+        if (options.assemblyFiles.Count == 0)
+        {
+          _console.WriteLine(Resources.UsageStatement);
+          return ExitCode.Failure;
+        }
+
+        var listener = new AggregateRunListener(listeners);
+        
         SpecificationRunner specificationRunner = new SpecificationRunner(listener);
-        foreach (string assemblyName in arguments)
+        foreach (string assemblyName in options.assemblyFiles)
         {
           if (!File.Exists(assemblyName))
           {
@@ -60,7 +91,7 @@ namespace Machine.Specifications.ConsoleRunner
         return ExitCode.Error;
       }
 
-      if (listener.FailureOccured)
+      if (runListener.FailureOccured)
       {
         return ExitCode.Failure;
       }

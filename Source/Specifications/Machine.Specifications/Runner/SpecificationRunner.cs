@@ -29,6 +29,11 @@ namespace Machine.Specifications.Runner
       _listener.OnAssemblyEnd(assembly);
     }
 
+    public void RunAssembly(object assembly)
+    {
+      RunAssembly((Assembly) assembly);
+    }
+
     public void RunContexts(IEnumerable<Model.Context> contexts)
     {
       _listener.OnRunStart();

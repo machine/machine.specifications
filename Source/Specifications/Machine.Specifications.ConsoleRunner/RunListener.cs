@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 using Machine.Specifications.ConsoleRunner.Properties;
@@ -10,7 +11,7 @@ namespace Machine.Specifications.ConsoleRunner
   public class RunListener : ISpecificationRunListener
   {
     readonly IConsole _console;
-    string _assemblyName;
+    string _currentAssemblyName;
     int _contextCount;
     int _specificationCount;
     int _failedSpecificationCount;
@@ -27,9 +28,9 @@ namespace Machine.Specifications.ConsoleRunner
 
     public void OnAssemblyStart(Assembly assembly)
     {
-      _assemblyName = assembly.GetName().Name;
+      _currentAssemblyName = assembly.GetName().Name;
       _console.WriteLine("");
-      _console.WriteLine("Specs in " + _assemblyName + ":");
+      _console.WriteLine("Specs in " + _currentAssemblyName + ":");
       _console.WriteLine("");
     }
 
