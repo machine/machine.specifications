@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using CommandLine;
 using CommandLine.Text;
+using Machine.Specifications.ConsoleRunner.Properties;
 
 namespace Machine.Specifications.ConsoleRunner
 {
@@ -12,8 +13,7 @@ namespace Machine.Specifications.ConsoleRunner
 
     [Option(null,
       "html",
-      HelpText = "Path to output HTML file(s). Formatted as: AssemblyName-MMDDYYYY-HHMM.html. " + 
-      "Will create an index-MMDDYYYY-HHMM.html in the case of multiple assemblies.")] 
+      HelpText = "Ouputs HTML (one-per-assembly) at the specified path.")] 
     public string HtmlPath = string.Empty;
 
     [Option("s",
@@ -27,9 +27,18 @@ namespace Machine.Specifications.ConsoleRunner
     [HelpOption]
     public string GetUsage()
     {
-      HelpText info = new HelpText("Machine.Specifications");
-      info.AddOptions(this);
-      return info;
+      StringBuilder sb = new StringBuilder();
+      sb.AppendLine("Machine.Specifications");
+      sb.AppendLine("Copyright (C) 2007, 2008");
+      sb.AppendLine("");
+      sb.AppendLine(Resources.UsageStatement);
+      sb.AppendLine("Options:");
+      sb.AppendLine("  -s, --silent      Suppress console output");
+      sb.AppendLine("  --html <PATH>     Outputs an HTML file(s) to path, one-per-assembly");
+      sb.AppendLine("  -h                Shows this help message");
+
+
+      return sb.ToString();
     }
 
     public virtual bool ParseArguments(string[] args)

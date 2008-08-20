@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -10,113 +11,176 @@ namespace Machine.Specifications.Reporting
 {
 	public class ReportGenerator
 	{
-    
-	  private string _writePath;
-    
-    public ReportGenerator()
+	  private static string _path;
+	  private static Dictionary<string, List<Context>> _contextsByAssembly;
+    private static Dictionary<Context, List<Specification>> _specificationsByContext;
+    private static Dictionary<Specification, SpecificationVerificationResult> _resultsBySpecification;
+	  private const string noContextKey = "none";
+
+	  public ReportGenerator()
     {
-      _writePath = string.Empty;
+      _path = string.Empty;
     }
 
-    /*
-	  public virtual void WriteReport(Assembly assemblyUnderTest)
+    public ReportGenerator(string path)
+    {
+      _path = path;
+    }
+
+	  public ReportGenerator(string path, Dictionary<string, List<Context>> contextsByAssembly, Dictionary<Context, List<Specification>> specificationsByContext, Dictionary<Specification, SpecificationVerificationResult> resultsBySpecification)
+	  {
+	    _path = path;
+	    _contextsByAssembly = contextsByAssembly;
+	    _specificationsByContext = specificationsByContext;
+	    _resultsBySpecification = resultsBySpecification;
+	  }
+
+
+    public virtual void WriteReports()
 		{
-			SpecificationDataset specificationDataset = SpecificationDataset.Build(assemblyUnderTest);
+      List<string> htmlPaths = new List<string>();
+	    _contextsByAssembly.Keys.ToList().ForEach(assembly =>
+	    {
+        string generatedReport = Render(assembly, _contextsByAssembly[assembly]);
 
-			string generatedReport = Render(specificationDataset);
+	      string reportFilePath = GetReportFilePath(assembly);
+        htmlPaths.Add(reportFilePath);
 
-			string reportFilePath = assemblyUnderTest.GetName().Name + ".html";
+	      if (File.Exists(reportFilePath))
+        {
+          File.Delete(reportFilePath);
+        }
 
-			if (File.Exists(reportFilePath))
-			{
-				File.Delete(reportFilePath);
-			}
+        TextWriter tw = new StreamWriter(reportFilePath);
 
-			TextWriter tw = new StreamWriter(reportFilePath);
-
-			tw.Write(generatedReport);
-			tw.Close();
+        tw.Write(generatedReport);
+        tw.Close();
+	    });
 		}
 
-		public static string Render(SpecificationDataset specificationDataset)
+	  public string GetReportFilePath(string assembly)
+	  {
+	    string month = "";
+	    string day = "";
+	    string hour = "";
+	    string minute = "";
+	    string second = "";
+	    month = DateTime.Now.Month < 10 ? "0" + DateTime.Now.Month.ToString() : DateTime.Now.Month.ToString();
+	    day = DateTime.Now.Day < 10 ? "0" + DateTime.Now.Day.ToString() : DateTime.Now.Day.ToString();
+	    hour = DateTime.Now.Hour < 10 ? "0" + DateTime.Now.Hour.ToString() : DateTime.Now.Hour.ToString();
+	    minute = DateTime.Now.Minute < 10 ? "0" + DateTime.Now.Minute.ToString() : DateTime.Now.Minute.ToString();
+      second = DateTime.Now.Second < 10 ? "0" + DateTime.Now.Second.ToString() : DateTime.Now.Second.ToString();
+
+	    return _path + 
+	           Path.DirectorySeparatorChar +
+             assembly+
+             "_" +
+             month+
+	           day+
+	           DateTime.Now.Year.ToString()+
+	           "_"+
+	           hour+
+	           minute+
+             second+
+	           ".html";
+	  }
+
+	  public static string Render(string assemblyName, List<Context> contextsInAssembly)
 		{
 			StringBuilder reportBuilder = new StringBuilder();
 
-			RenderTitle(specificationDataset, reportBuilder);
+	    Dictionary<string, List<Context>> contextsOrganizedByConcern = 
+        OrganizeContextsByConcern(contextsInAssembly);
+
+
+      RenderTitle(assemblyName, contextsOrganizedByConcern, reportBuilder);
 			RenderHR(reportBuilder);
 
-			Concern[] concerns =
-				(from Concern c in specificationDataset.Concerns
-				orderby c.Type.Name
-				select c).ToArray();
-
-			RenderConcerns(concerns, reportBuilder);
+			RenderConcerns(contextsOrganizedByConcern, reportBuilder);
 
 			string reportBody = reportBuilder.ToString();
 
-			return String.Format(GetTemplate(), specificationDataset.Name, reportBody);
+			return String.Format(GetTemplate(), assemblyName, reportBody);
 		}
 
-		private static void RenderTitle(SpecificationDataset specificationDataset, StringBuilder reportBuilder)
-		{
-			string concernsCaption = ConcernsCaption(specificationDataset.Concerns);
-			string contextsCaption = ContextsCaption(specificationDataset.Concerns);
-			string specificationsCaption = SpecificationsCaption(specificationDataset.Concerns);
+	  static Dictionary<string, List<Context>> OrganizeContextsByConcern(List<Context> contextsInAssembly)
+	  {
+	    Dictionary<string,List<Context>> organized = new Dictionary<string, List<Context>>();
+      organized.Add(noContextKey, new List<Context>());
 
-			string title = String.Format("<h1>{0}&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"count\">{1}, {2}, {3}</span></h1>", specificationDataset.Name, concernsCaption, contextsCaption, specificationsCaption);
+      contextsInAssembly.ForEach(context =>
+        AddContextToOrganizedCollectionByConcern(context, organized)
+      );
+
+      if (organized[noContextKey].Count == 0)
+        organized.Remove(noContextKey);
+	    return organized;
+	  }
+
+	  public static void AddContextToOrganizedCollectionByConcern(Context context, Dictionary<string, List<Context>> organized)
+	  {
+	    if (context.Concern == null)
+	    {
+	      organized[noContextKey].Add(context);
+	      return;
+	    }
+	    
+      if(!organized.ContainsKey(context.Concern.FullConcern))
+	      organized.Add(context.Concern.FullConcern,new List<Context>());
+	    organized[context.Concern.FullConcern].Add(context);
+	  }
+
+	  private static void RenderTitle(string assemblyName, Dictionary<string,List<Context>> contextsByConcern, StringBuilder reportBuilder)
+		{
+	    string concernsCaption = ConcernsCaption(contextsByConcern);
+			string contextsCaption = ContextsCaption(contextsByConcern);
+      string specificationsCaption = SpecificationsCaption(contextsByConcern);
+
+			string title = String.Format("<h1>{0}&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"count\"></h1><h2>{1}, {2}, {3}</span></h1>", assemblyName, concernsCaption, contextsCaption, specificationsCaption);
 			reportBuilder.Append(title);
 		}
 
-		public static string RenderTitle(SpecificationDataset specificationDataset)
+    private static void RenderConcerns(Dictionary<string, List<Context>> contextsByConcern, StringBuilder reportBuilder)
 		{
-			StringBuilder reportBuilder = new StringBuilder();
-			RenderTitle(specificationDataset, reportBuilder);
-			return reportBuilder.ToString();
-		}
-
-		private static void RenderConcerns(Concern[] concerns, StringBuilder reportBuilder)
-		{
-			foreach (Concern concern in concerns)
+			foreach (string concern in contextsByConcern.Keys)
 			{
-				RenderConcern(concern, reportBuilder);
+				RenderConcern(concern, contextsByConcern[concern], reportBuilder);
 			}
 		}
 
-		private static void RenderConcern(Concern concern, StringBuilder reportBuilder)
+		private static void RenderConcern(string concernName, List<Context> contextsInConcern, StringBuilder reportBuilder)
 		{
-			string concernText = RenderConcern(concern);
+      string concernText = RenderConcern(concernName, contextsInConcern);
 			reportBuilder.Append(concernText);
 		}
 
-		public static string RenderConcern(Concern concern)
+    public static string RenderConcern(string concernName, List<Context> contextsInConcern)
 		{
 			StringBuilder reportBuilder = new StringBuilder();
 
-			string concernHeader = RenderConcernHeader(concern);
+			string concernHeader = RenderConcernHeader(concernName, contextsInConcern);
 			concernHeader = String.Format("{0}\n\n", concernHeader);
 			reportBuilder.Append(concernHeader);
 
-			RenderContexts(concern.Contexts, reportBuilder);
+			RenderContexts(contextsInConcern, reportBuilder);
 
 			RenderHR(reportBuilder);
 
 			return reportBuilder.ToString();
 		}
 
-		public static string RenderConcernHeader(Concern concern)
+		public static string RenderConcernHeader(string concernName, List<Context> contexts)
 		{
-			string contextsCaption = ContextsCaption(concern);
-			string specificationsCaption = SpecificationsCaption(concern);
+			string contextsCaption = ContextsCaption(contexts);
+			string specificationsCaption = SpecificationsCaption(contexts);
 
-			return String.Format("<h2 class=\"concern\">{0} specifications&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"count\">{1}, {2}</span></h2>", concern.Name, contextsCaption, specificationsCaption);
+			return String.Format("<h2 class=\"concern\">{0} specifications&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"count\">{1}, {2}</span></h2>", concernName, contextsCaption, specificationsCaption);
 		}
 
-		private static void RenderContexts(Context[] contexts, StringBuilder reportBuilder)
+		private static void RenderContexts(List<Context> contexts, StringBuilder reportBuilder)
 		{
-			foreach (Context context in contexts)
-			{
-				reportBuilder.Append(RenderContext(context));
-			}
+      contexts.ForEach(context =>
+        reportBuilder.Append(RenderContext(context)));
 		}
 
 		public static string RenderContext(Context context)
@@ -127,14 +191,16 @@ namespace Machine.Specifications.Reporting
 			string contextHeader = RenderContextHeader(context);
 			reportBuilder.Append(contextHeader);
 
+      /*
 			string behavesLike = context.BehavesLike;
 			if (behavesLike != null)
 			{
 				reportBuilder.Append(RenderBehavesLike(behavesLike));
 				reportBuilder.Append("\n\n");
 			}
+      */
 
-			string specificationList = RenderSpecificationList(context.Specifications);
+			string specificationList = RenderSpecificationList(_specificationsByContext[context]);
 			reportBuilder.Append(specificationList);
 			reportBuilder.Append("\n\n");
 
@@ -152,14 +218,27 @@ namespace Machine.Specifications.Reporting
 			return String.Format("<h3 class=\"context\">{0}&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"count\">{1}</span></h3>", context.Name, specificationsCaption);
 		}
 
-		public static string RenderSpecificationList(Specification[] specifications)
+		public static string RenderSpecificationList(List<Specification> specifications)
 		{
 			StringBuilder specificationListBuilder = new StringBuilder();
 
 			foreach (Specification specification in specifications)
 			{
-				string specificationListItem = String.Format("\t<li>{0}</li>\n", specification.Name);
-				specificationListBuilder.Append(specificationListItem);
+			  SpecificationVerificationResult result = _resultsBySpecification[specification];
+			  string specificationListItem = "";
+        if(result.Passed)
+        {
+          specificationListItem = String.Format("\t<li>{0}", specification.Name);
+        }
+        else
+        {
+          specificationListItem = String.Format("\t<li class=\"failure\">{0}", specification.Name);
+          specificationListItem += "<p class=\"exception_type\">" + result.Exception.GetType().ToString();
+          specificationListItem += "<pre class=\"exception_message\">" + "Message:\n"+result.Exception.Message+"\nStack Trace:\n" +result.Exception.StackTrace + "</pre></p>";
+        }
+			  specificationListItem += "</li>\n";
+        specificationListBuilder.Append(specificationListItem);
+        // TODO: pass/fail goes here?
 			}
 
 			return String.Format("<ul>\n{0}</ul>", specificationListBuilder);
@@ -192,12 +271,34 @@ namespace Machine.Specifications.Reporting
 				margin-left: 20px;
 				margin-top: -10px;
 			}}
+      
+      .failure {{
+        color: red;
+        font-weight: bold;
+      }}
 
+      p.exception_type {{
+        color: black;
+        font-weight: bold;
+      }}
+
+      pre.exception_message {{
+        border-style: dashed;
+        border-color: #FF828D;
+        border-width: thin;
+        background-color: #FFD2CF;
+        white-space: pre-wrap; /* CSS2.1 compliant */
+        white-space: -moz-pre-wrap; /* Mozilla-based browsers */
+        white-space: o-pre-wrap; /* Opera 7+ */
+      }}
+      
 			hr {{
 				color: LightGrey;
 				border: 1px solid LightGrey;
 				height: 1px;
 			}}
+      
+      
 		</style>
 	</head>
 	<body>
@@ -217,24 +318,28 @@ namespace Machine.Specifications.Reporting
 			return caption; 
 		}
 
-		private static string ConcernsCaption(Concern[] concerns)
+    private static string ConcernsCaption(Dictionary<string, List<Context>> contextsByConcern)
 		{
-			int concernsCount = concerns.Length;
-			string concernsCaption = String.Format("{0} {1}", concernsCount, Pluralize("concern", concernsCount));
+      int concernsCount = contextsByConcern.Keys.Count;
+			
+      string concernsCaption = String.Format("{0} {1}", concernsCount, Pluralize("concern", concernsCount));
 			return concernsCaption;
 		}
 
-		private static string ContextsCaption(Concern[] concerns)
+		private static string ContextsCaption(Dictionary<string,List<Context>> contextsByConcern)
 		{
-			int contextCount = concerns.Sum(c => c.Contexts.Length);
+		  int contextCount = 0;
+      contextsByConcern.Keys.ToList().ForEach(concern =>
+      {
+        contextCount += contextsByConcern[concern].Count;
+      }); 
 			return ContextsCaption(contextCount);
 		}
 
-		private static string ContextsCaption(Concern concern)
-		{
-			int contextCount = concern.Contexts.Length;
-			return ContextsCaption(contextCount);
-		}
+    private static string ContextsCaption(List<Context> contexts)
+    {
+      return ContextsCaption(contexts.Count);
+    }
 
 		private static string ContextsCaption(int contextCount)
 		{
@@ -248,30 +353,35 @@ namespace Machine.Specifications.Reporting
 			return specificationCaption;
 		}
 
-		private static string SpecificationsCaption(Concern[] concerns)
+    private static string SpecificationsCaption(Dictionary<string,List<Context>> contextsByConcern)
+    {
+      int specificationCount = 0;
+
+      contextsByConcern.Keys.ToList().ForEach(concern =>
+      {
+        contextsByConcern[concern].ForEach(context =>
+        {
+          specificationCount += _specificationsByContext[context].Count;
+        });
+      });
+
+      return SpecificationsCaption(specificationCount);
+    }
+
+		private static string SpecificationsCaption(List<Context> contexts)
 		{
-			int specificationCount = concerns.Sum(c => c.Contexts.Sum(ctx => ctx.Specifications.Length));
-			return SpecificationsCaption(specificationCount);
+		  int specificationCount = 0;
+			contexts.ForEach(context =>
+		  {
+		    specificationCount += _specificationsByContext[context].Count;
+		  });
+      return SpecificationsCaption(specificationCount);
 		}
 
-		private static string SpecificationsCaption(Concern concern)
-		{
-			int specificationCount = concern.Contexts.Sum(c => c.Specifications.Length);
-			return SpecificationsCaption(specificationCount);
-		}
-
-		private static string SpecificationsCaption(Context context)
-		{
-			int specificationCount = context.Specifications.Length;
-			return SpecificationsCaption(specificationCount);
-		}
-    */
-
-	  public string WritePath
-	  {
-	    get { return _writePath;}
-      set { _writePath = value; }
-	  }
+    private static string SpecificationsCaption(Context context)
+    {
+      return SpecificationsCaption(_specificationsByContext[context].Count);
+    }
 	}
   
 }

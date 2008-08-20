@@ -79,7 +79,7 @@ namespace Machine.Specifications.ConsoleRunner.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Usage: mspec-runner.exe &lt;assemblies&gt;.
+        ///   Looks up a localized string similar to Usage: mspec-runner.exe [options] &lt;assemblies&gt;.
         /// </summary>
         internal static string UsageStatement {
             get {

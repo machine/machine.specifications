@@ -37,7 +37,7 @@ namespace Machine.Specifications.ConsoleRunner
       ExitCode exitCode;
       ExceptionReporter reporter = new ExceptionReporter(_console);
       var runListener = new RunListener(_console);
-      var reportingListener = new ReportingRunListener();
+      
       List<ISpecificationRunListener> listeners = new List<ISpecificationRunListener>();
       
       try
@@ -50,18 +50,13 @@ namespace Machine.Specifications.ConsoleRunner
           return ExitCode.Failure;
         }
 
-        if (!options.HtmlPath.Equals(string.Empty))
+        if (!IsHtmlPathUnspecifiedOrSpecifiedAndValid(options, listeners))
         {
-          listeners.Add(reportingListener);
-          if (!Directory.Exists(options.HtmlPath))
-          {
-            _console.WriteLine("Invalid html path: " + options.HtmlPath);
-            _console.WriteLine(Resources.UsageStatement);
-            return ExitCode.Failure;
-          }
+          _console.WriteLine("Invalid html path:" + options.HtmlPath);
+          _console.WriteLine(Resources.UsageStatement);
+          return ExitCode.Failure;
         }
 
-        
         if (!options.Silent)
           listeners.Add(runListener);
         
@@ -97,6 +92,21 @@ namespace Machine.Specifications.ConsoleRunner
       }
 
       return ExitCode.Success;
+    }
+
+    public bool IsHtmlPathUnspecifiedOrSpecifiedAndValid(Options options, List<ISpecificationRunListener> listeners)
+    {
+      if (!options.HtmlPath.Equals(string.Empty))
+      {
+        if (!Directory.Exists(options.HtmlPath))
+        {
+          return false;
+        }
+        var reportingListener = new GenerateHtmlReportRunListener(options.HtmlPath);
+        listeners.Add(reportingListener);
+        return true;
+      }
+      return true;
     }
   }
 }
