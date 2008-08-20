@@ -135,12 +135,72 @@ namespace Machine.Specifications.Reporting
 	    string concernsCaption = ConcernsCaption(contextsByConcern);
 			string contextsCaption = ContextsCaption(contextsByConcern);
       string specificationsCaption = SpecificationsCaption(contextsByConcern);
+	    
+      string rawFailureCaption = SpecFailuresCaption(contextsByConcern);
+	    string specFailuresCaption = string.Empty;
+      if (rawFailureCaption != string.Empty)
+        specFailuresCaption = ", <span class=\"failure\">"+rawFailureCaption+"</span>";
 
-			string title = String.Format("<h1>{0}&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"count\"></h1><h2>{1}, {2}, {3}</span></h1>", assemblyName, concernsCaption, contextsCaption, specificationsCaption);
+      string title = String.Format("<h1>{0}&nbsp;&nbsp;&nbsp;&nbsp;</h1><span class=\"count\"><h2>{1}, {2}, {3}{4} </h2></span>", assemblyName, concernsCaption, contextsCaption, specificationsCaption, specFailuresCaption);
 			reportBuilder.Append(title);
 		}
 
-    private static void RenderConcerns(Dictionary<string, List<Context>> contextsByConcern, StringBuilder reportBuilder)
+	  static string SpecFailuresCaption(Dictionary<string, List<Context>> contextsByConcern)
+	  {
+      List<SpecificationVerificationResult> failedResults = new List<SpecificationVerificationResult>();
+	    
+      contextsByConcern.Keys.ToList().ForEach(concern =>
+      {
+        contextsByConcern[concern].ForEach(context =>
+        {
+          _specificationsByContext[context].ForEach(spec =>
+          {
+            if(!_resultsBySpecification[spec].Passed)
+              failedResults.Add(_resultsBySpecification[spec]);
+          });
+        });
+      });
+
+
+      if (failedResults.Count == 0)
+        return string.Empty;
+      return String.Format("{0} {1}", failedResults.Count, Pluralize("failure", failedResults.Count));
+	  }
+
+    private static string SpecFailuresCaption(List<Context> contexts)
+    {
+      var failedResults = new List<SpecificationVerificationResult>();
+
+      contexts.ForEach(context =>
+      {
+        _specificationsByContext[context].ForEach(spec =>
+        {
+          if (!_resultsBySpecification[spec].Passed)
+            failedResults.Add(_resultsBySpecification[spec]);
+        });
+      });
+
+      if (failedResults.Count == 0)
+        return string.Empty;
+      return String.Format("{0} {1}", failedResults.Count, Pluralize("failure", failedResults.Count));
+    }
+
+    private static string SpecFailuresCaption(Context context)
+    {
+      var failedResults = new List<SpecificationVerificationResult>();
+
+      _specificationsByContext[context].ForEach(spec =>
+      {
+        if (!_resultsBySpecification[spec].Passed)
+          failedResults.Add(_resultsBySpecification[spec]);
+      });
+
+      if (failedResults.Count == 0)
+        return string.Empty;
+      return String.Format("{0} {1}", failedResults.Count, Pluralize("failure", failedResults.Count));
+    }
+
+	  private static void RenderConcerns(Dictionary<string, List<Context>> contextsByConcern, StringBuilder reportBuilder)
 		{
 			foreach (string concern in contextsByConcern.Keys)
 			{
@@ -174,7 +234,12 @@ namespace Machine.Specifications.Reporting
 			string contextsCaption = ContextsCaption(contexts);
 			string specificationsCaption = SpecificationsCaption(contexts);
 
-			return String.Format("<h2 class=\"concern\">{0} specifications&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"count\">{1}, {2}</span></h2>", concernName, contextsCaption, specificationsCaption);
+      string rawFailureCaption = SpecFailuresCaption(contexts);
+      string specFailuresCaption = string.Empty;
+      if (rawFailureCaption != string.Empty)
+        specFailuresCaption = ", <span class=\"failure\">" + rawFailureCaption + "</span>";
+
+      return String.Format("<h2 class=\"concern\">{0} specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class=\"count\">{1}, {2}{3}</span></h3>", concernName, contextsCaption, specificationsCaption, specFailuresCaption);
 		}
 
 		private static void RenderContexts(List<Context> contexts, StringBuilder reportBuilder)
@@ -207,15 +272,15 @@ namespace Machine.Specifications.Reporting
 			return reportBuilder.ToString();
 		}
 
-		private static string RenderBehavesLike(string behavesLike)
-		{
-			return String.Format("<p class=\"behaves_like\">behaves like: {0}</p>", behavesLike);
-		}
-
 		public static string RenderContextHeader(Context context)
 		{
+      string rawFailureCaption = SpecFailuresCaption(context);
+      string specFailuresCaption = string.Empty;
+      if (rawFailureCaption != string.Empty)
+        specFailuresCaption = ", <span class=\"failure\">" + rawFailureCaption + "</span>";
+
 			string specificationsCaption = SpecificationsCaption(context);
-			return String.Format("<h3 class=\"context\">{0}&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"count\">{1}</span></h3>", context.Name, specificationsCaption);
+			return String.Format("<h3 class=\"context\">{0}&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class=\"count\">{1}{2}</span></h4>", context.Name, specificationsCaption, specFailuresCaption);
 		}
 
 		public static string RenderSpecificationList(List<Specification> specifications)
