@@ -38,52 +38,119 @@ namespace Machine.Specifications.Reporting
 
     public virtual void WriteReports()
 		{
-      List<string> htmlPaths = new List<string>();
+
+      if (IsProvidedPathAValidDirectoryPath(_path))
+      {
+        GenerateAndWriteReportsWhenProvidedAValidDirectoryPath();
+      }
+      else if (IsProvidedPathAValidFilePath(_path))
+      {
+        GenerateAndWriteReportsWhenProvidedAValidFilePath();
+      }
+		}
+
+	  void GenerateAndWriteReportsWhenProvidedAValidFilePath()
+	  {
+	    string reportFilePath = _path;
+	    string generatedReport = GetTemplateHeader();
+
 	    _contextsByAssembly.Keys.ToList().ForEach(assembly =>
 	    {
-        string generatedReport = Render(assembly, _contextsByAssembly[assembly]);
+        generatedReport += Render(assembly, _contextsByAssembly[assembly]) + "<br><br>";
+	    });
+
+	    generatedReport += GetTemplateFooter();
+
+      if (File.Exists(reportFilePath))
+      {
+        File.Delete(reportFilePath);
+      }
+
+      TextWriter tw = new StreamWriter(reportFilePath);
+
+      tw.Write(generatedReport);
+      tw.Close();
+	  }
+
+	  void GenerateAndWriteReportsWhenProvidedAValidDirectoryPath()
+	  {
+
+
+	    List<string> htmlPaths = new List<string>();
+	    _contextsByAssembly.Keys.ToList().ForEach(assembly =>
+	    {
+        string generatedReport = GetTemplateHeader();
+	      generatedReport += Render(assembly, _contextsByAssembly[assembly]);
+	      generatedReport += GetTemplateFooter();
 
 	      string reportFilePath = GetReportFilePath(assembly);
-        htmlPaths.Add(reportFilePath);
+	      htmlPaths.Add(reportFilePath);
 
 	      if (File.Exists(reportFilePath))
-        {
-          File.Delete(reportFilePath);
-        }
+	      {
+	        File.Delete(reportFilePath);
+	      }
 
-        TextWriter tw = new StreamWriter(reportFilePath);
+	      TextWriter tw = new StreamWriter(reportFilePath);
 
-        tw.Write(generatedReport);
-        tw.Close();
+	      tw.Write(generatedReport);
+	      tw.Close();
 	    });
-		}
+	  }
 
 	  public string GetReportFilePath(string assembly)
 	  {
-	    string month = "";
-	    string day = "";
-	    string hour = "";
-	    string minute = "";
-	    string second = "";
-	    month = DateTime.Now.Month < 10 ? "0" + DateTime.Now.Month.ToString() : DateTime.Now.Month.ToString();
-	    day = DateTime.Now.Day < 10 ? "0" + DateTime.Now.Day.ToString() : DateTime.Now.Day.ToString();
-	    hour = DateTime.Now.Hour < 10 ? "0" + DateTime.Now.Hour.ToString() : DateTime.Now.Hour.ToString();
-	    minute = DateTime.Now.Minute < 10 ? "0" + DateTime.Now.Minute.ToString() : DateTime.Now.Minute.ToString();
+     
+      string month = "";
+      string day = "";
+      string hour = "";
+      string minute = "";
+      string second = "";
+      month = DateTime.Now.Month < 10 ? "0" + DateTime.Now.Month.ToString() : DateTime.Now.Month.ToString();
+      day = DateTime.Now.Day < 10 ? "0" + DateTime.Now.Day.ToString() : DateTime.Now.Day.ToString();
+      hour = DateTime.Now.Hour < 10 ? "0" + DateTime.Now.Hour.ToString() : DateTime.Now.Hour.ToString();
+      minute = DateTime.Now.Minute < 10 ? "0" + DateTime.Now.Minute.ToString() : DateTime.Now.Minute.ToString();
       second = DateTime.Now.Second < 10 ? "0" + DateTime.Now.Second.ToString() : DateTime.Now.Second.ToString();
 
-	    return _path + 
-	           Path.DirectorySeparatorChar +
-             assembly+
+      return _path +
+             Path.DirectorySeparatorChar +
+             assembly +
              "_" +
-             month+
-	           day+
-	           DateTime.Now.Year.ToString()+
-	           "_"+
-	           hour+
-	           minute+
-             second+
-	           ".html";
+             month +
+             day +
+             DateTime.Now.Year.ToString() +
+             "_" +
+             hour +
+             minute +
+             second +
+             ".html";
+      
 	  }
+
+    public static bool IsProvidedPathAValidDirectoryPath(string path)
+    {
+      try
+      {
+        if (Directory.Exists(path))
+        {
+          return true;
+        }
+      }
+      catch (NullReferenceException e)
+      {
+        return false;
+      }
+      return false;
+    }
+
+    public static bool IsProvidedPathAValidFilePath(string path)
+    {
+      if (new FileInfo(path).Directory.Exists)
+      {
+        return true;
+      }
+      return false;
+    }
 
 	  public static string Render(string assemblyName, List<Context> contextsInAssembly)
 		{
@@ -100,7 +167,7 @@ namespace Machine.Specifications.Reporting
 
 			string reportBody = reportBuilder.ToString();
 
-			return String.Format(GetTemplate(), assemblyName, reportBody);
+	    return reportBody;
 		}
 
 	  static Dictionary<string, List<Context>> OrganizeContextsByConcern(List<Context> contextsInAssembly)
@@ -315,39 +382,39 @@ namespace Machine.Specifications.Reporting
 			reportBuilder.Append(hr);
 		}
 
-		private static string GetTemplate()
+		private static string GetTemplateHeader()
 		{
-			string template = @"<html>
+			return @"<html>
 	<head>
-		<title>Specification Report for {0}</title>
+		<title>Machine.Specifications Report</title>
 		<style type=""text/css"">
-			body {{
+			body {
 				font-family: Arial,Helvetica,sans-serif;
 				font-size: .9em;
-			}}
+			}
 
-			.count {{
+			.count {
 				color: LightGrey;
-			}}
+			}
 
-			.behaves_like {{
+			.behaves_like {
 				color: DarkGrey;
 				font-weight: bold;
 				margin-left: 20px;
 				margin-top: -10px;
-			}}
+			}
       
-      .failure {{
+      .failure {
         color: red;
         font-weight: bold;
-      }}
+      }
 
-      p.exception_type {{
+      p.exception_type {
         color: black;
         font-weight: bold;
-      }}
+      }
 
-      pre.exception_message {{
+      pre.exception_message {
         border-style: dashed;
         border-color: #FF828D;
         border-width: thin;
@@ -355,23 +422,28 @@ namespace Machine.Specifications.Reporting
         white-space: pre-wrap; /* CSS2.1 compliant */
         white-space: -moz-pre-wrap; /* Mozilla-based browsers */
         white-space: o-pre-wrap; /* Opera 7+ */
-      }}
+        padding: 1em;
+      }
       
-			hr {{
+			hr {
 				color: LightGrey;
 				border: 1px solid LightGrey;
 				height: 1px;
-			}}
+			}
       
       
 		</style>
 	</head>
 	<body>
-		{1}
-	</body>
-</html>";
-			return template;
+		";
 		}
+
+    public static string GetTemplateFooter()
+    {
+      return @"
+</body>
+</html>";
+    }
 
 		public static string Pluralize(string caption, int count)
 		{

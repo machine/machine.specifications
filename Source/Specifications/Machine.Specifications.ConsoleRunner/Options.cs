@@ -34,8 +34,8 @@ namespace Machine.Specifications.ConsoleRunner
       sb.AppendLine(Resources.UsageStatement);
       sb.AppendLine("Options:");
       sb.AppendLine("  -s, --silent      Suppress console output");
-      sb.AppendLine("  --html <PATH>     Outputs an HTML file(s) to path, one-per-assembly");
-      sb.AppendLine("  -h                Shows this help message");
+      sb.AppendLine("  --html <PATH>     Outputs an HTML file(s) to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)");
+      sb.AppendLine("  -h, --help        Shows this help message");
 
 
       return sb.ToString();

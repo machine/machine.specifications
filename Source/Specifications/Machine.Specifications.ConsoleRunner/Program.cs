@@ -98,10 +98,6 @@ namespace Machine.Specifications.ConsoleRunner
     {
       if (!options.HtmlPath.Equals(string.Empty))
       {
-        if (!Directory.Exists(options.HtmlPath))
-        {
-          return false;
-        }
         var reportingListener = new GenerateHtmlReportRunListener(options.HtmlPath);
         listeners.Add(reportingListener);
         return true;

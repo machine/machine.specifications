@@ -20,6 +20,7 @@ namespace Machine.Specifications.Reporting
     {
       base.OnRunEnd();
       ReportGenerator reportGenerator = new ReportGenerator(this._htmlPath,this.ContextsByAssembly, this.SpecificationsByContext,this.ResultsBySpecification);
+
       reportGenerator.WriteReports();
     }
 
