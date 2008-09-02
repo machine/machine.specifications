@@ -147,4 +147,23 @@ namespace Machine.Specifications.Explorers
         "should credit the to account by the amount transferred");
     }
   }
+
+  [TestFixture]
+  public class AssemblyExplorer_FindAssemblyContextsIn_WithinAnAssembly : TestsFor<AssemblyExplorer>
+  {
+    private List<IAssemblyContext> assemblyContexts;
+
+    public override void BeforeEachTest()
+    {
+      var assembly = Assembly.GetExecutingAssembly();
+      assemblyContexts = new List<IAssemblyContext>(Target.FindAssemblyContextsIn(assembly));
+    }
+
+    [Test]
+    public void ShouldHaveOneAssemblyContext()
+    {
+      assemblyContexts.Count.ShouldEqual(1);
+    }
+
+  }
 }
