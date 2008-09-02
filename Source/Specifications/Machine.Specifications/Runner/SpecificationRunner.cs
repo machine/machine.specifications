@@ -26,11 +26,11 @@ namespace Machine.Specifications.Runner
 
       var assemblyContexts = new List<IAssemblyContext>(_explorer.FindAssemblyContextsIn(assembly));
 
+      _listener.OnAssemblyStart(assembly);
+      
       assemblyContexts.ForEach(assemblyContext=>
         assemblyContext.OnAssemblyStart());
 
-      _listener.OnAssemblyStart(assembly);
-      
       RunContexts(contexts);
       
       assemblyContexts.ForEach(assemblyContext=>
