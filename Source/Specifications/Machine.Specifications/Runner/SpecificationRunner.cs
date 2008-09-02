@@ -24,8 +24,18 @@ namespace Machine.Specifications.Runner
     {
       var contexts = _explorer.FindContextsIn(assembly);
 
+      var assemblyContexts = new List<IAssemblyContext>(_explorer.FindAssemblyContextsIn(assembly));
+
+      assemblyContexts.ForEach(assemblyContext=>
+        assemblyContext.OnAssemblyStart());
+
       _listener.OnAssemblyStart(assembly);
+      
       RunContexts(contexts);
+      
+      assemblyContexts.ForEach(assemblyContext=>
+        assemblyContext.OnAssemblyComplete());
+      
       _listener.OnAssemblyEnd(assembly);
     }
 

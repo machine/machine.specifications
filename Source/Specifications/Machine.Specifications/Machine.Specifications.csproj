@@ -55,6 +55,7 @@
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Factories\SpecificationFactory.cs" />
     <Compile Include="Factories\ContextFactory.cs" />
+    <Compile Include="IAssemblyContext.cs" />
     <Compile Include="Model\Concern.cs" />
     <Compile Include="Model\ItSpecification.cs" />
     <Compile Include="Model\Specification.cs" />

@@ -31,6 +31,14 @@ namespace Machine.Specifications.Explorers
         .Select(x=>CreateContextFrom(x));
     }
 
+    public IEnumerable<IAssemblyContext> FindAssemblyContextsIn(Assembly assembly)
+    {
+      return assembly.GetExportedTypes()
+        .Where(x =>
+               x.GetInterfaces().Contains(typeof (IAssemblyContext)))
+        .Select(x => (IAssemblyContext)Activator.CreateInstance(x));
+    }
+
     Model.Context CreateContextFrom(Type type)
     {
       object instance = Activator.CreateInstance(type);
