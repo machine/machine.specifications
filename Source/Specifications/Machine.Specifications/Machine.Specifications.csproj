@@ -49,6 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Catch.cs" />
     <Compile Include="ConcernAttribute.cs" />
     <Compile Include="Explorers\AssemblyExplorer.cs" />
@@ -73,7 +76,6 @@
     <Compile Include="Framework.cs" />
     <Compile Include="Utility\RandomExtensionMethods.cs" />
     <Compile Include="Utility\ReflectionHelper.cs" />
-    <Compile Include="Properties\SharedAssemblyInfo.cs" />
     <Compile Include="SpecificationExceptions.cs" />
     <Compile Include="Verifiers\DescriptionVerifier.cs" />
   </ItemGroup>
