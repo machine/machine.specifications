@@ -60,7 +60,7 @@ namespace Machine.Specifications.ConsoleRunner
         if (!options.Silent)
           listeners.Add(runListener);
         
-        if (options.assemblyFiles.Count == 0)
+        if (options.AssemblyFiles.Count == 0)
         {
           _console.WriteLine(Resources.UsageStatement);
           return ExitCode.Failure;
@@ -69,7 +69,7 @@ namespace Machine.Specifications.ConsoleRunner
         var listener = new AggregateRunListener(listeners);
         
         SpecificationRunner specificationRunner = new SpecificationRunner(listener);
-        foreach (string assemblyName in options.assemblyFiles)
+        foreach (string assemblyName in options.AssemblyFiles)
         {
           if (!File.Exists(assemblyName))
           {
@@ -98,7 +98,7 @@ namespace Machine.Specifications.ConsoleRunner
     {
       if (!options.HtmlPath.Equals(string.Empty))
       {
-        var reportingListener = new GenerateHtmlReportRunListener(options.HtmlPath);
+        var reportingListener = new GenerateHtmlReportRunListener(options.HtmlPath, options.ShowTimeInformation);
         listeners.Add(reportingListener);
         return true;
       }

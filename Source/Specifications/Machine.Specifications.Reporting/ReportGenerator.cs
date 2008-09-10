@@ -15,6 +15,7 @@ namespace Machine.Specifications.Reporting
 	  private static Dictionary<string, List<Context>> _contextsByAssembly;
     private static Dictionary<Context, List<Specification>> _specificationsByContext;
     private static Dictionary<Specification, SpecificationVerificationResult> _resultsBySpecification;
+	  private static bool _showTimeInfo;
 	  private const string noContextKey = "none";
 
 	  public ReportGenerator()
@@ -27,12 +28,13 @@ namespace Machine.Specifications.Reporting
       _path = path;
     }
 
-	  public ReportGenerator(string path, Dictionary<string, List<Context>> contextsByAssembly, Dictionary<Context, List<Specification>> specificationsByContext, Dictionary<Specification, SpecificationVerificationResult> resultsBySpecification)
+	  public ReportGenerator(string path, Dictionary<string, List<Context>> contextsByAssembly, Dictionary<Context, List<Specification>> specificationsByContext, Dictionary<Specification, SpecificationVerificationResult> resultsBySpecification, bool showTimeInfo)
 	  {
 	    _path = path;
 	    _contextsByAssembly = contextsByAssembly;
 	    _specificationsByContext = specificationsByContext;
 	    _resultsBySpecification = resultsBySpecification;
+	    _showTimeInfo = showTimeInfo;
 	  }
 
 
@@ -207,10 +209,21 @@ namespace Machine.Specifications.Reporting
 	    string specFailuresCaption = string.Empty;
       if (rawFailureCaption != string.Empty)
         specFailuresCaption = ", <span class=\"failure\">"+rawFailureCaption+"</span>";
+	    string generatedOnCaption = GeneratedOnCaption(_showTimeInfo);
 
-      string title = String.Format("<h1>{0}&nbsp;&nbsp;&nbsp;&nbsp;</h1><span class=\"count\"><h2>{1}, {2}, {3}{4} </h2></span>", assemblyName, concernsCaption, contextsCaption, specificationsCaption, specFailuresCaption);
+      string title = String.Format("<h1>{0}&nbsp;&nbsp;&nbsp;&nbsp;</h1><span class=\"count\"><h2>{1}, {2}, {3}{4} </h2><br>{5}</span>", assemblyName, concernsCaption, contextsCaption, specificationsCaption, specFailuresCaption,generatedOnCaption);
 			reportBuilder.Append(title);
 		}
+
+	  static string GeneratedOnCaption(bool show)
+	  {
+	    string retVal = string.Empty;
+      if (!show)
+        return retVal;
+	    DateTime now = DateTime.Now;
+	    retVal = @"<i>Generated on " + now.ToLongDateString() + " at " + now.ToLongTimeString() + "</i>";
+	    return retVal;
+	  }
 
 	  static string SpecFailuresCaption(Dictionary<string, List<Context>> contextsByConcern)
 	  {

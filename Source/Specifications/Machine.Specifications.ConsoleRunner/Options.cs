@@ -21,8 +21,13 @@ namespace Machine.Specifications.ConsoleRunner
       HelpText = "Suppresses all console output.")]
     public bool Silent = false;
 
+    [Option("t",
+      "timeinfo",
+      HelpText = "Adds time-related information in HTML output")] 
+    public bool ShowTimeInformation = false;
+
     [ValueList(typeof(List<string>))]
-    public IList<string> assemblyFiles = null;
+    public IList<string> AssemblyFiles = null;
 
     [HelpOption]
     public string GetUsage()
@@ -33,6 +38,7 @@ namespace Machine.Specifications.ConsoleRunner
       sb.AppendLine("");
       sb.AppendLine(Resources.UsageStatement);
       sb.AppendLine("Options:");
+      sb.AppendLine("  -t, --timeinfo    Shows time-related information in HTML output");
       sb.AppendLine("  -s, --silent      Suppress console output");
       sb.AppendLine("  --html <PATH>     Outputs an HTML file(s) to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)");
       sb.AppendLine("  -h, --help        Shows this help message");
