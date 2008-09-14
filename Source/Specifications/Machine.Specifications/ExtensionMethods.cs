@@ -82,6 +82,15 @@ namespace Machine.Specifications
       }
     }
 
+    public static void ShouldContain<T>(this IEnumerable<T> actual, params T[] expected)
+    {
+      var actualList = new List<T>(actual);
+      foreach (var item in expected)
+      {
+        Assert.Contains(item, actualList);
+      }
+    }
+
     public static void ShouldNotContain(this IList collection, object expected)
     {
       CollectionAssert.DoesNotContain(collection, expected);
