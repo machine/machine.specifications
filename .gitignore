@@ -6,4 +6,6 @@ _ReSharper.*
 *.resharper
 *.suo
 *.cache
+*~
+*.swp
 /Build
