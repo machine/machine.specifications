@@ -299,8 +299,8 @@ namespace Machine.Specifications.Reporting
 			StringBuilder reportBuilder = new StringBuilder();
 
 			string concernHeader = RenderConcernHeader(concernName, contextsInConcern);
-			concernHeader = String.Format("{0}\n\n", concernHeader);
-			reportBuilder.Append(concernHeader);
+			concernHeader = String.Format("{0}", concernHeader);
+			reportBuilder.AppendLine(concernHeader);
 
 			RenderContexts(contextsInConcern, reportBuilder);
 
@@ -332,7 +332,7 @@ namespace Machine.Specifications.Reporting
 		{
 			StringBuilder reportBuilder = new StringBuilder();
 
-			reportBuilder.Append("\n");
+			reportBuilder.AppendLine();
 			string contextHeader = RenderContextHeader(context);
 			reportBuilder.Append(contextHeader);
 
@@ -341,13 +341,13 @@ namespace Machine.Specifications.Reporting
 			if (behavesLike != null)
 			{
 				reportBuilder.Append(RenderBehavesLike(behavesLike));
-				reportBuilder.Append("\n\n");
+				reportBuilder.AppendLine();
 			}
       */
 
 			string specificationList = RenderSpecificationList(_specificationsByContext[context]);
-			reportBuilder.Append(specificationList);
-			reportBuilder.Append("\n\n");
+			reportBuilder.AppendLine(specificationList);
+			reportBuilder.AppendLine();
 
 			return reportBuilder.ToString();
 		}
@@ -379,20 +379,20 @@ namespace Machine.Specifications.Reporting
         {
           specificationListItem = String.Format("\t<li class=\"failure\">{0}", specification.Name);
           specificationListItem += "<p class=\"exception_type\">" + result.Exception.GetType().ToString();
-          specificationListItem += "<pre class=\"exception_message\">" + "Message:\n"+result.Exception.Message+"\nStack Trace:\n" +result.Exception.StackTrace + "</pre></p>";
+          specificationListItem += "<pre class=\"exception_message\">" + "Message:" + Environment.NewLine + result.Exception.Message + Environment.NewLine + "Stack Trace:" + Environment.NewLine + result.Exception.StackTrace + "</pre></p>";
         }
-			  specificationListItem += "</li>\n";
-        specificationListBuilder.Append(specificationListItem);
+			  specificationListItem += "</li>";
+        specificationListBuilder.AppendLine(specificationListItem);
         // TODO: pass/fail goes here?
 			}
 
-			return String.Format("<ul>\n{0}</ul>", specificationListBuilder);
+			return String.Format("<ul>{0}</ul>", specificationListBuilder);
 		}
 
 		private static void RenderHR(StringBuilder reportBuilder)
 		{
-			string hr = "<hr>\n\n";
-			reportBuilder.Append(hr);
+			string hr = "<hr>";
+			reportBuilder.AppendLine(hr);
 		}
 
 		private static string GetTemplateHeader()
