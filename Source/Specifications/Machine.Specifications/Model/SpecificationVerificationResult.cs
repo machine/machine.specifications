@@ -10,7 +10,6 @@ namespace Machine.Specifications.Model
     Failed,
     Passed,
     NotImplemented,
-    Unknown
   }
 
   public class SpecificationVerificationResult
