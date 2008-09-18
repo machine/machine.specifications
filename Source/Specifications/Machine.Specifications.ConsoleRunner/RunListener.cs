@@ -88,6 +88,7 @@ namespace Machine.Specifications.ConsoleRunner
           break;
         case Result.Unimplemented:
           _unimplementedSpecificationCount += 1;
+          _console.WriteLine("   ...unimplemented");
           break;
         default:
           _failedSpecificationCount += 1;
