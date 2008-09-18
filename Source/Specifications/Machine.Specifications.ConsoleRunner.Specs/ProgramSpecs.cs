@@ -42,10 +42,10 @@ namespace Machine.Specifications.ConsoleRunner.Specs
         );
 
     It should_write_the_count_of_contexts = ()=>
-      console.ShouldContainLineWith("Contexts: 2");
+      console.ShouldContainLineWith("Contexts: 3");
 
     It should_write_the_count_of_specifications = ()=>
-      console.ShouldContainLineWith("Specifications: 3");
+      console.ShouldContainLineWith("Specifications: 6");
   }
 
   [Concern("Console runner")]

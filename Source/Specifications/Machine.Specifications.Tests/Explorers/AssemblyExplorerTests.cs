@@ -22,9 +22,9 @@ namespace Machine.Specifications.Explorers
     }
 
     [Test]
-    public void ShouldReturnOneContext()
+    public void ShouldReturnThreeContexts()
     {
-      specifications.Count().ShouldEqual(2);
+      specifications.Count().ShouldEqual(3);
     }
 
     [Test]
@@ -32,8 +32,9 @@ namespace Machine.Specifications.Explorers
     {
       var names = specifications.Select(x => x.Name).ToList();
       names.ShouldContainOnly(
-        "When transferring between two accounts",
-        "When transferring an amount larger than the balance of the from account"
+        "when a customer first views the account summary page",
+        "when transferring between two accounts",
+        "when transferring an amount larger than the balance of the from account"
         );
     }
   }
@@ -128,7 +129,7 @@ namespace Machine.Specifications.Explorers
     {
       descriptions = Target.FindContextsIn(typeof(Account).Assembly);
       context =
-        descriptions.Where(x => x.Name == "When transferring between two accounts").FirstOrDefault();
+        descriptions.Where(x => x.Name == "when transferring between two accounts").FirstOrDefault();
       context.ShouldNotBeNull();
     }
 
