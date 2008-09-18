@@ -13,7 +13,7 @@ namespace Machine.Specifications.TDNetRunner
     {
       _formatters[Result.Passed] = new PassedResultFormatter();
       _formatters[Result.Failed] = new FailedResultFormatter();
-      _formatters[Result.Unknown] = new UnknownResultFormatter();
+      _formatters[Result.NotImplemented] = new NotImplementedResultFormatter();
     }
 
     public IResultFormatter GetResultFormatterFor(SpecificationVerificationResult verificationResult)

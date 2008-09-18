@@ -12,6 +12,16 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       get { return _lines; }
     }
 
+    public void Write(string line)
+    {
+      _lines.Add(line);
+    }
+
+    public void Write(string line, params object[] parameters)
+    {
+      _lines.Add(string.Format(line, parameters));
+    }
+
     public void WriteLine(string line)
     {
       _lines.Add(line);

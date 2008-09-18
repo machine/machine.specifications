@@ -27,11 +27,11 @@ namespace Machine.Specifications.TDNetRunner
     }
   }
 
-  public class UnknownResultFormatter : IResultFormatter
+  public class NotImplementedResultFormatter : IResultFormatter
   {
     public string FormatResult(Specification specification)
     {
-      return String.Format("» {0} (UNKNOWN)", specification.Name);
+      return String.Format("» {0} (NOT IMPLEMENTED)", specification.Name);
     }
   }
 }

@@ -57,7 +57,9 @@ namespace Machine.Specifications.ConsoleRunner
       {
         line += String.Format("\n  {0} passed, {1} failed", _passedSpecificationCount,_failedSpecificationCount);
         if (_unimplementedSpecificationCount > 0)
-          line += String.Format(", {0} unimplemented", _unimplementedSpecificationCount);
+        {
+          line += String.Format(", {0} not implemented", _unimplementedSpecificationCount);
+        }
       }
       _console.WriteLine(line);
     }
@@ -75,7 +77,7 @@ namespace Machine.Specifications.ConsoleRunner
 
     public void OnSpecificationStart(Specification specification)
     {
-      _console.WriteLine("» " + specification.Name);
+      _console.Write("» " + specification.Name);
     }
 
     public void OnSpecificationEnd(Specification specification, SpecificationVerificationResult result)
@@ -85,14 +87,16 @@ namespace Machine.Specifications.ConsoleRunner
       {
         case Result.Passed:
           _passedSpecificationCount += 1;
+          _console.WriteLine("");
           break;
-        case Result.Unimplemented:
+        case Result.NotImplemented:
           _unimplementedSpecificationCount += 1;
-          _console.WriteLine("   ...unimplemented");
+          _console.WriteLine(" (NOT IMPLEMENTED)");
           break;
         default:
           _failedSpecificationCount += 1;
           FailureOccured = true;
+          _console.WriteLine(" (FAIL)");
           _console.WriteLine(result.Exception.ToString());
           break;
       }

@@ -91,9 +91,9 @@ namespace Machine.Specifications.Model
     }
 
     [Test]
-    public void ShouldHaveUnknownResult()
+    public void ShouldHaveNotImplementedResult()
     {
-      results.SpecificationResults.First().Result.ShouldEqual(Result.Unknown);
+      results.SpecificationResults.First().Result.ShouldEqual(Result.NotImplemented);
     }
     
     [Test]
