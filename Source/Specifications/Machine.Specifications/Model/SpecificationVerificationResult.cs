@@ -9,6 +9,7 @@ namespace Machine.Specifications.Model
   {
     Failed,
     Passed,
+    Unimplemented,
     Unknown
   }
 

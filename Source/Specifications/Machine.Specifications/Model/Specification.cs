@@ -55,7 +55,7 @@ namespace Machine.Specifications.Model
     {
       if (!IsDefined(verificationContext))
       {
-        return new SpecificationVerificationResult(Result.Unknown);
+        return new SpecificationVerificationResult(Result.Unimplemented);
       }
 
       InvokeWhenField(verificationContext);

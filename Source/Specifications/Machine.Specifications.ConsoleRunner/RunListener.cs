@@ -15,6 +15,8 @@ namespace Machine.Specifications.ConsoleRunner
     int _contextCount;
     int _specificationCount;
     int _failedSpecificationCount;
+    int _unimplementedSpecificationCount;
+    int _passedSpecificationCount;
 
     public bool FailureOccured
     {
@@ -43,17 +45,20 @@ namespace Machine.Specifications.ConsoleRunner
       _contextCount = 0;
       _specificationCount = 0;
       _failedSpecificationCount = 0;
+      _unimplementedSpecificationCount = 0;
+      _passedSpecificationCount = 0;
     }
 
     public void OnRunEnd()
     {
       var line = String.Format("Contexts: {0}, Specifications: {1}", _contextCount, _specificationCount);
-
-      if (_failedSpecificationCount > 0)
+      
+      if (_failedSpecificationCount > 0 || _unimplementedSpecificationCount > 0)
       {
-        line += String.Format(" ({0} failed)", _failedSpecificationCount);
+        line += String.Format("\n  {0} passed, {1} failed", _passedSpecificationCount,_failedSpecificationCount);
+        if (_unimplementedSpecificationCount > 0)
+          line += String.Format(", {0} unimplemented", _unimplementedSpecificationCount);
       }
-
       _console.WriteLine(line);
     }
 
@@ -76,11 +81,19 @@ namespace Machine.Specifications.ConsoleRunner
     public void OnSpecificationEnd(Specification specification, SpecificationVerificationResult result)
     {
       _specificationCount += 1;
-      if (!result.Passed)
+      switch(result.Result)
       {
-        _failedSpecificationCount += 1;
-        FailureOccured = true;
-        _console.WriteLine(result.Exception.ToString());
+        case Result.Passed:
+          _passedSpecificationCount += 1;
+          break;
+        case Result.Unimplemented:
+          _unimplementedSpecificationCount += 1;
+          break;
+        default:
+          _failedSpecificationCount += 1;
+          FailureOccured = true;
+          _console.WriteLine(result.Exception.ToString());
+          break;
       }
     }
   }
