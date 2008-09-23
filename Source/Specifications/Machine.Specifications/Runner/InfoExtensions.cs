@@ -16,7 +16,13 @@ namespace Machine.Specifications.Runner
 
     public static ContextInfo GetInfo(this Context context)
     {
-      return new ContextInfo(context.Name, context.Concern.FullConcern);
+      string concern = "";
+      if (context.Concern != null)
+      {
+        concern = context.Concern.FullConcern;
+      }
+
+      return new ContextInfo(context.Name, concern);
     }
 
     public static SpecificationInfo GetInfo(this Specification specification)

@@ -59,7 +59,6 @@
     <Compile Include="Explorers\AssemblyExplorerTests.cs" />
     <Compile Include="Factories\SpecificationFactoryTests.cs" />
     <Compile Include="Factories\ContextFactoryTests.cs" />
-    <Compile Include="GeneralTests.cs" />
     <Compile Include="Model\SpecificationTests.cs" />
     <Compile Include="Model\ContextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -16,7 +16,7 @@ namespace Machine.Specifications.Runner
       {
         string line = "";
 
-        if (Concern != null)
+        if (!String.IsNullOrEmpty(Concern))
         {
           line += Concern + ", ";
         }

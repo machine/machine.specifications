@@ -9,9 +9,18 @@ namespace Machine.Specifications.Runner
 {
   public class AppDomainRunner : ISpecificationRunner
   {
+    readonly ISpecificationRunListener listener;
+    readonly SpecificationRunner runner;
+
+    public AppDomainRunner(ISpecificationRunListener listener)
+    {
+      this.listener = listener;
+      runner = new SpecificationRunner(new RemoteRunListener(listener));
+    }
+
     public void RunAssembly(Assembly assembly)
     {
-      throw new System.NotImplementedException();
+      runner.RunAssembly(assembly);
     }
 
     public void RunContexts(IEnumerable<Context> contexts)

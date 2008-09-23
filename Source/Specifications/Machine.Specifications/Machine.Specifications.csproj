@@ -74,6 +74,7 @@
     <Compile Include="Runner\InfoExtensions.cs" />
     <Compile Include="Runner\ISpecificationRunListener.cs" />
     <Compile Include="Runner\ISpecificationRunner.cs" />
+    <Compile Include="Runner\RemoteRunListener.cs" />
     <Compile Include="Runner\SpecificationInfo.cs" />
     <Compile Include="Runner\SpecificationRunner.cs" />
     <Compile Include="Utility\Naming.cs" />
