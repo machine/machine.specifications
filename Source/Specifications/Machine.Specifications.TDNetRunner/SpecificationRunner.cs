@@ -18,7 +18,7 @@ namespace Machine.Specifications.TDNetRunner
     public TestRunState RunAssembly(ITestListener testListener, Assembly assembly)
     {
       var listener = new TDNetRunListener(testListener);
-      var runner = new Runner.SpecificationRunner(listener);
+      var runner = new Runner.AppDomainRunner(listener);
       runner.RunAssembly(assembly);
 
       return listener.TestRunState;
@@ -27,7 +27,7 @@ namespace Machine.Specifications.TDNetRunner
     public TestRunState RunNamespace(ITestListener testListener, Assembly assembly, string ns)
     {
       var listener = new TDNetRunListener(testListener);
-      var runner = new Runner.SpecificationRunner(listener);
+      var runner = new Runner.AppDomainRunner(listener);
       runner.RunNamespace(assembly, ns);
 
       return listener.TestRunState;
@@ -36,7 +36,7 @@ namespace Machine.Specifications.TDNetRunner
     public TestRunState RunMember(ITestListener testListener, Assembly assembly, MemberInfo member)
     {
       var listener = new TDNetRunListener(testListener);
-      var runner = new Runner.SpecificationRunner(listener);
+      var runner = new Runner.AppDomainRunner(listener);
       runner.RunMember(assembly, member);
 
       return listener.TestRunState;

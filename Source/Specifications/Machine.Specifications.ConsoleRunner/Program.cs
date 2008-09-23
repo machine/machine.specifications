@@ -69,7 +69,7 @@ namespace Machine.Specifications.ConsoleRunner
 
         var listener = new AggregateRunListener(listeners);
         
-        SpecificationRunner specificationRunner = new SpecificationRunner(listener);
+        ISpecificationRunner specificationRunner = new AppDomainRunner(listener);
         foreach (string assemblyName in options.AssemblyFiles)
         {
           if (!File.Exists(assemblyName))
