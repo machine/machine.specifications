@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Machine.Specifications.Model;
+using Machine.Specifications.Runner;
 
 namespace Machine.Specifications.TDNetRunner
 {
   public interface IResultFormatter
   {
-    string FormatResult(Specification specification);
+    string FormatResult(SpecificationInfo specification);
   }
 
   public class PassedResultFormatter : IResultFormatter
   {
-    public string FormatResult(Specification specification)
+    public string FormatResult(SpecificationInfo specification)
     {
       return String.Format("» {0}", specification.Name);
     }
@@ -21,7 +22,7 @@ namespace Machine.Specifications.TDNetRunner
 
   public class FailedResultFormatter : IResultFormatter
   {
-    public string FormatResult(Specification specification)
+    public string FormatResult(SpecificationInfo specification)
     {
       return String.Format("» {0} (FAIL)", specification.Name);
     }
@@ -29,7 +30,7 @@ namespace Machine.Specifications.TDNetRunner
 
   public class NotImplementedResultFormatter : IResultFormatter
   {
-    public string FormatResult(Specification specification)
+    public string FormatResult(SpecificationInfo specification)
     {
       return String.Format("» {0} (NOT IMPLEMENTED)", specification.Name);
     }

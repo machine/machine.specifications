@@ -68,8 +68,13 @@
     <Compile Include="Model\VerificationContext.cs" />
     <Compile Include="Model\DelegateField.cs" />
     <Compile Include="Runner\AggregateRunListener.cs" />
+    <Compile Include="Runner\AppDomainRunner.cs" />
+    <Compile Include="Runner\AssemblyInfo.cs" />
+    <Compile Include="Runner\ContextInfo.cs" />
+    <Compile Include="Runner\InfoExtensions.cs" />
     <Compile Include="Runner\ISpecificationRunListener.cs" />
     <Compile Include="Runner\ISpecificationRunner.cs" />
+    <Compile Include="Runner\SpecificationInfo.cs" />
     <Compile Include="Runner\SpecificationRunner.cs" />
     <Compile Include="Utility\Naming.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

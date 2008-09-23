@@ -11,42 +11,42 @@ namespace Machine.Specifications.Reporting
   public class CollectReportingInformationRunListener : ISpecificationRunListener
   {
     string _currentAssemblyName;
-    Context _currentContext;
-    Dictionary<string, List<Context>> _contextsByAssembly;
-    Dictionary<Context, List<Specification>> _specificationsByContext;
-    Dictionary<Specification, SpecificationVerificationResult> _resultsBySpecification;
+    ContextInfo _currentContext;
+    readonly Dictionary<string, List<ContextInfo>> _contextsByAssembly;
+    readonly Dictionary<ContextInfo, List<SpecificationInfo>> _specificationsByContext;
+    readonly Dictionary<SpecificationInfo, SpecificationVerificationResult> _resultsBySpecification;
 
     public CollectReportingInformationRunListener()
     {
       _currentAssemblyName = "";
       _currentContext = null;
-      _contextsByAssembly = new Dictionary<string, List<Context>>();
-      _specificationsByContext = new Dictionary<Context, List<Specification>>();
-      _resultsBySpecification = new Dictionary<Specification, SpecificationVerificationResult>();
+      _contextsByAssembly = new Dictionary<string, List<ContextInfo>>();
+      _specificationsByContext = new Dictionary<ContextInfo, List<SpecificationInfo>>();
+      _resultsBySpecification = new Dictionary<SpecificationInfo, SpecificationVerificationResult>();
     }
 
-    public Dictionary<Specification, SpecificationVerificationResult> ResultsBySpecification
+    public Dictionary<SpecificationInfo, SpecificationVerificationResult> ResultsBySpecification
     {
       get { return _resultsBySpecification; }
     }
 
-    public Dictionary<Context, List<Specification>> SpecificationsByContext
+    public Dictionary<ContextInfo, List<SpecificationInfo>> SpecificationsByContext
     {
       get { return _specificationsByContext; }
     }
 
-    public Dictionary<string, List<Context>> ContextsByAssembly
+    public Dictionary<string, List<ContextInfo>> ContextsByAssembly
     {
       get { return _contextsByAssembly; }
     }
 
-    public virtual void OnAssemblyStart(System.Reflection.Assembly assembly)
+    public virtual void OnAssemblyStart(AssemblyInfo assembly)
     {
-      _currentAssemblyName = assembly.GetName().Name;
-      _contextsByAssembly.Add(_currentAssemblyName, new List<Context>());
+      _currentAssemblyName = assembly.Name;
+      _contextsByAssembly.Add(_currentAssemblyName, new List<ContextInfo>());
     }
 
-    public virtual void OnAssemblyEnd(System.Reflection.Assembly assembly)
+    public virtual void OnAssemblyEnd(AssemblyInfo assembly)
     {
     }
 
@@ -58,22 +58,22 @@ namespace Machine.Specifications.Reporting
     {
     }
 
-    public virtual void OnContextStart(Machine.Specifications.Model.Context context)
+    public virtual void OnContextStart(ContextInfo context)
     {
       _contextsByAssembly[_currentAssemblyName].Add(context);
       _currentContext = context;
-      _specificationsByContext.Add(_currentContext, new List<Specification>());
+      _specificationsByContext.Add(_currentContext, new List<SpecificationInfo>());
     }
 
-    public virtual void OnContextEnd(Machine.Specifications.Model.Context context)
+    public virtual void OnContextEnd(ContextInfo context)
     {
     }
 
-    public virtual void OnSpecificationStart(Machine.Specifications.Model.Specification specification)
+    public virtual void OnSpecificationStart(SpecificationInfo specification)
     {
     }
 
-    public virtual void OnSpecificationEnd(Machine.Specifications.Model.Specification specification, Machine.Specifications.Model.SpecificationVerificationResult result)
+    public virtual void OnSpecificationEnd(SpecificationInfo specification, SpecificationVerificationResult result)
     {
       _specificationsByContext[_currentContext].Add(specification);
       _resultsBySpecification.Add(specification,result);

@@ -6,13 +6,13 @@ namespace Machine.Specifications.Runner
 {
   public interface ISpecificationRunListener
   {
-    void OnAssemblyStart(Assembly assembly);
-    void OnAssemblyEnd(Assembly assembly);
+    void OnAssemblyStart(AssemblyInfo assembly);
+    void OnAssemblyEnd(AssemblyInfo assembly);
     void OnRunStart();
     void OnRunEnd();
-    void OnContextStart(Model.Context context);
-    void OnContextEnd(Model.Context context);
-    void OnSpecificationStart(Specification specification);
-    void OnSpecificationEnd(Specification specification, SpecificationVerificationResult result);
+    void OnContextStart(ContextInfo context);
+    void OnContextEnd(ContextInfo context);
+    void OnSpecificationStart(SpecificationInfo specification);
+    void OnSpecificationEnd(SpecificationInfo specification, SpecificationVerificationResult result);
   }
 }

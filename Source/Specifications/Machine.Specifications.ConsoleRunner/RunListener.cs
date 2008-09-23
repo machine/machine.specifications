@@ -28,15 +28,15 @@ namespace Machine.Specifications.ConsoleRunner
       _console = console;
     }
 
-    public void OnAssemblyStart(Assembly assembly)
+    public void OnAssemblyStart(AssemblyInfo assembly)
     {
-      _currentAssemblyName = assembly.GetName().Name;
+      _currentAssemblyName = assembly.Name;
       _console.WriteLine("");
       _console.WriteLine("Specs in " + _currentAssemblyName + ":");
       _console.WriteLine("");
     }
 
-    public void OnAssemblyEnd(Assembly assembly)
+    public void OnAssemblyEnd(AssemblyInfo assembly)
     {
     }
 
@@ -64,23 +64,23 @@ namespace Machine.Specifications.ConsoleRunner
       _console.WriteLine(line);
     }
 
-    public void OnContextStart(Context context)
+    public void OnContextStart(ContextInfo context)
     {
       _console.WriteLine(context.FullName);
     }
 
-    public void OnContextEnd(Context context)
+    public void OnContextEnd(ContextInfo context)
     {
       _console.WriteLine("");
       _contextCount += 1;
     }
 
-    public void OnSpecificationStart(Specification specification)
+    public void OnSpecificationStart(SpecificationInfo specification)
     {
       _console.Write("» " + specification.Name);
     }
 
-    public void OnSpecificationEnd(Specification specification, SpecificationVerificationResult result)
+    public void OnSpecificationEnd(SpecificationInfo specification, SpecificationVerificationResult result)
     {
       _specificationCount += 1;
       switch(result.Result)

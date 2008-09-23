@@ -21,7 +21,7 @@ namespace Machine.Specifications.Reporting
     public override void OnRunEnd()
     {
       base.OnRunEnd();
-      ReportGenerator reportGenerator = new ReportGenerator(this._htmlPath,this.ContextsByAssembly, this.SpecificationsByContext,this.ResultsBySpecification, _showTimeInfo);
+      ReportGenerator reportGenerator = new ReportGenerator(_htmlPath, ContextsByAssembly, SpecificationsByContext, ResultsBySpecification, _showTimeInfo);
       reportGenerator.WriteReports();
     }
 

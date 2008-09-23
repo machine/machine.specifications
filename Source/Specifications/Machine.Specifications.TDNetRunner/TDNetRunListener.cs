@@ -27,11 +27,11 @@ namespace Machine.Specifications.TDNetRunner
       resultFormatterFactory = new ResultFormatterFactory();
     }
 
-    public void OnAssemblyStart(Assembly assembly)
+    public void OnAssemblyStart(AssemblyInfo assembly)
     {
     }
 
-    public void OnAssemblyEnd(Assembly assembly)
+    public void OnAssemblyEnd(AssemblyInfo assembly)
     {
     }
 
@@ -54,21 +54,21 @@ namespace Machine.Specifications.TDNetRunner
       testRunState = failure ? TestRunState.Failure : TestRunState.Success;
     }
 
-    public void OnContextStart(Model.Context context)
+    public void OnContextStart(ContextInfo context)
     {
       testListener.WriteLine(context.FullName, Category.Output);
     }
 
-    public void OnContextEnd(Model.Context context)
+    public void OnContextEnd(ContextInfo context)
     {
       testListener.WriteLine("", Category.Output);
     }
 
-    public void OnSpecificationStart(Specification specification)
+    public void OnSpecificationStart(SpecificationInfo specification)
     {
     }
 
-    public void OnSpecificationEnd(Specification specification, SpecificationVerificationResult result)
+    public void OnSpecificationEnd(SpecificationInfo specification, SpecificationVerificationResult result)
     {
       var formatter = resultFormatterFactory.GetResultFormatterFor(result);
       testListener.WriteLine(formatter.FormatResult(specification), Category.Output);

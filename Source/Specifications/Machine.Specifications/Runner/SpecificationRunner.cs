@@ -26,7 +26,7 @@ namespace Machine.Specifications.Runner
 
       var assemblyContexts = new List<IAssemblyContext>(_explorer.FindAssemblyContextsIn(assembly));
 
-      _listener.OnAssemblyStart(assembly);
+      _listener.OnAssemblyStart(assembly.GetInfo());
       
       assemblyContexts.ForEach(assemblyContext=>
         assemblyContext.OnAssemblyStart());
@@ -36,7 +36,7 @@ namespace Machine.Specifications.Runner
       assemblyContexts.ForEach(assemblyContext=>
         assemblyContext.OnAssemblyComplete());
       
-      _listener.OnAssemblyEnd(assembly);
+      _listener.OnAssemblyEnd(assembly.GetInfo());
     }
 
     public void RunAssembly(object assembly)
@@ -52,7 +52,7 @@ namespace Machine.Specifications.Runner
       foreach (var context in contexts)
       {
         if (context.Specifications.Count() == 0) continue;
-        _listener.OnContextStart(context);
+        _listener.OnContextStart(context.GetInfo());
         context.RunContextBeforeAll();
 
         foreach (var specification in context.Specifications)
@@ -61,7 +61,7 @@ namespace Machine.Specifications.Runner
         }
 
         context.RunContextAfterAll();
-        _listener.OnContextEnd(context);
+        _listener.OnContextEnd(context.GetInfo());
       }
 
       _listener.OnRunEnd();
@@ -69,11 +69,11 @@ namespace Machine.Specifications.Runner
 
     void GetTestResult(Model.Context context, Specification specification)
     {
-      _listener.OnSpecificationStart(specification);
+      _listener.OnSpecificationStart(specification.GetInfo());
 
       var result = context.VerifySpecification(specification);
 
-      _listener.OnSpecificationEnd(specification, result);
+      _listener.OnSpecificationEnd(specification.GetInfo(), result);
     }
 
     public void RunNamespace(Assembly assembly, string targetNamespace)

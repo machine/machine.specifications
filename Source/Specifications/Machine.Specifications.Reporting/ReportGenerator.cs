@@ -6,15 +6,16 @@ using System.Text;
 using System.Linq;
 
 using Machine.Specifications.Model;
+using Machine.Specifications.Runner;
 
 namespace Machine.Specifications.Reporting
 {
 	public class ReportGenerator
 	{
 	  private static string _path;
-	  private static Dictionary<string, List<Context>> _contextsByAssembly;
-    private static Dictionary<Context, List<Specification>> _specificationsByContext;
-    private static Dictionary<Specification, SpecificationVerificationResult> _resultsBySpecification;
+	  private static Dictionary<string, List<ContextInfo>> _contextsByAssembly;
+    private static Dictionary<ContextInfo, List<SpecificationInfo>> _specificationsByContext;
+    private static Dictionary<SpecificationInfo, SpecificationVerificationResult> _resultsBySpecification;
 	  private static bool _showTimeInfo;
 	  private const string noContextKey = "none";
 
@@ -28,7 +29,7 @@ namespace Machine.Specifications.Reporting
       _path = path;
     }
 
-	  public ReportGenerator(string path, Dictionary<string, List<Context>> contextsByAssembly, Dictionary<Context, List<Specification>> specificationsByContext, Dictionary<Specification, SpecificationVerificationResult> resultsBySpecification, bool showTimeInfo)
+	  public ReportGenerator(string path, Dictionary<string, List<ContextInfo>> contextsByAssembly, Dictionary<ContextInfo, List<SpecificationInfo>> specificationsByContext, Dictionary<SpecificationInfo, SpecificationVerificationResult> resultsBySpecification, bool showTimeInfo)
 	  {
 	    _path = path;
 	    _contextsByAssembly = contextsByAssembly;
@@ -154,11 +155,11 @@ namespace Machine.Specifications.Reporting
       return false;
     }
 
-	  public static string Render(string assemblyName, List<Context> contextsInAssembly)
+	  public static string Render(string assemblyName, List<ContextInfo> contextsInAssembly)
 		{
 			StringBuilder reportBuilder = new StringBuilder();
 
-	    Dictionary<string, List<Context>> contextsOrganizedByConcern = 
+	    var contextsOrganizedByConcern = 
         OrganizeContextsByConcern(contextsInAssembly);
 
 
@@ -172,10 +173,10 @@ namespace Machine.Specifications.Reporting
 	    return reportBody;
 		}
 
-	  static Dictionary<string, List<Context>> OrganizeContextsByConcern(List<Context> contextsInAssembly)
+	  static Dictionary<string, List<ContextInfo>> OrganizeContextsByConcern(List<ContextInfo> contextsInAssembly)
 	  {
-	    Dictionary<string,List<Context>> organized = new Dictionary<string, List<Context>>();
-      organized.Add(noContextKey, new List<Context>());
+	    var organized = new Dictionary<string, List<ContextInfo>>();
+      organized.Add(noContextKey, new List<ContextInfo>());
 
       contextsInAssembly.ForEach(context =>
         AddContextToOrganizedCollectionByConcern(context, organized)
@@ -186,7 +187,7 @@ namespace Machine.Specifications.Reporting
 	    return organized;
 	  }
 
-	  public static void AddContextToOrganizedCollectionByConcern(Context context, Dictionary<string, List<Context>> organized)
+	  public static void AddContextToOrganizedCollectionByConcern(ContextInfo context, Dictionary<string, List<ContextInfo>> organized)
 	  {
 	    if (context.Concern == null)
 	    {
@@ -194,12 +195,12 @@ namespace Machine.Specifications.Reporting
 	      return;
 	    }
 	    
-      if(!organized.ContainsKey(context.Concern.FullConcern))
-	      organized.Add(context.Concern.FullConcern,new List<Context>());
-	    organized[context.Concern.FullConcern].Add(context);
+      if(!organized.ContainsKey(context.Concern))
+	      organized.Add(context.Concern, new List<ContextInfo>());
+	    organized[context.Concern].Add(context);
 	  }
 
-	  private static void RenderTitle(string assemblyName, Dictionary<string,List<Context>> contextsByConcern, StringBuilder reportBuilder)
+	  private static void RenderTitle(string assemblyName, Dictionary<string,List<ContextInfo>> contextsByConcern, StringBuilder reportBuilder)
 		{
 	    string concernsCaption = ConcernsCaption(contextsByConcern);
 			string contextsCaption = ContextsCaption(contextsByConcern);
@@ -222,7 +223,7 @@ namespace Machine.Specifications.Reporting
 	    retVal = @"<i>Generated on " + now.ToLongDateString() + " at " + now.ToLongTimeString() + "</i>";
 	    return retVal;
 	  }
-	  static int CountOfSpecsWithDesiredResultIn(Dictionary<string, List<Context>> contextsByConcern, Result result)
+	  static int CountOfSpecsWithDesiredResultIn(Dictionary<string, List<ContextInfo>> contextsByConcern, Result result)
 	  {
 	    var niResults = 0;
       contextsByConcern.Keys.ToList().ForEach(concern =>
@@ -230,7 +231,7 @@ namespace Machine.Specifications.Reporting
 	    return niResults;
 	  }
 
-    private static int CountOfSpecsWithDesiredResultIn(List<Context> contexts, Result result)
+    private static int CountOfSpecsWithDesiredResultIn(List<ContextInfo> contexts, Result result)
     {
       var niResults = 0;
       contexts.ForEach(context =>
@@ -238,7 +239,7 @@ namespace Machine.Specifications.Reporting
       return niResults;
     }
 
-    private static int CountOfSpecsWithDesiredResultIn(Context context, Result result)
+    private static int CountOfSpecsWithDesiredResultIn(ContextInfo context, Result result)
     {
       var niResults = 0;
       niResults += iterateOverSpecsAndReturnThoseThatMatchResults(context, result).Count;
@@ -250,7 +251,7 @@ namespace Machine.Specifications.Reporting
       return count > 0 ? String.Format(", <span class=\""+formatClass+"\">{0} {1}</span>", count, Pluralize(itemToPluralize, count)) : string.Empty;
     }
 
-	  private static List<SpecificationVerificationResult> iterateOverSpecsAndReturnThoseThatMatchResults(Context context, Result result)
+	  private static List<SpecificationVerificationResult> iterateOverSpecsAndReturnThoseThatMatchResults(ContextInfo context, Result result)
     {
       var niResults = new List<SpecificationVerificationResult>();
       _specificationsByContext[context].ForEach(spec =>
@@ -261,7 +262,7 @@ namespace Machine.Specifications.Reporting
       return niResults;
     }
 
-	  private static void RenderConcerns(Dictionary<string, List<Context>> contextsByConcern, StringBuilder reportBuilder)
+	  private static void RenderConcerns(Dictionary<string, List<ContextInfo>> contextsByConcern, StringBuilder reportBuilder)
 		{
 			foreach (string concern in contextsByConcern.Keys)
 			{
@@ -269,13 +270,13 @@ namespace Machine.Specifications.Reporting
 			}
 		}
 
-		private static void RenderConcern(string concernName, List<Context> contextsInConcern, StringBuilder reportBuilder)
+		private static void RenderConcern(string concernName, List<ContextInfo> contextsInConcern, StringBuilder reportBuilder)
 		{
       string concernText = RenderConcern(concernName, contextsInConcern);
 			reportBuilder.Append(concernText);
 		}
 
-    public static string RenderConcern(string concernName, List<Context> contextsInConcern)
+    public static string RenderConcern(string concernName, List<ContextInfo> contextsInConcern)
 		{
 			StringBuilder reportBuilder = new StringBuilder();
 
@@ -290,7 +291,7 @@ namespace Machine.Specifications.Reporting
 			return reportBuilder.ToString();
 		}
 
-		public static string RenderConcernHeader(string concernName, List<Context> contexts)
+		public static string RenderConcernHeader(string concernName, List<ContextInfo> contexts)
 		{
 			string contextsCaption = ContextsCaption(contexts);
 			string specificationsCaption = SpecificationsCaption(contexts);
@@ -301,13 +302,13 @@ namespace Machine.Specifications.Reporting
       return String.Format("<h2 class=\"concern\">{0} specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class=\"count\">{1}, {2}{3}{4}</span></h3>", concernName, contextsCaption, specificationsCaption, specFailuresCaption,specNotImplCaption);
 		}
 
-		private static void RenderContexts(List<Context> contexts, StringBuilder reportBuilder)
+		private static void RenderContexts(List<ContextInfo> contexts, StringBuilder reportBuilder)
 		{
       contexts.ForEach(context =>
         reportBuilder.Append(RenderContext(context)));
 		}
 
-		public static string RenderContext(Context context)
+		public static string RenderContext(ContextInfo context)
 		{
 			StringBuilder reportBuilder = new StringBuilder();
 
@@ -331,7 +332,7 @@ namespace Machine.Specifications.Reporting
 			return reportBuilder.ToString();
 		}
 
-		public static string RenderContextHeader(Context context)
+		public static string RenderContextHeader(ContextInfo context)
 		{
 	    string specFailuresCaption = FormatCountString(CountOfSpecsWithDesiredResultIn(context, Result.Failed),"failure", "failure");
 	    string specNotImplCaption = FormatCountString(CountOfSpecsWithDesiredResultIn(context, Result.NotImplemented),"not implemented spec", "notimplemented");
@@ -340,11 +341,11 @@ namespace Machine.Specifications.Reporting
 			return String.Format("<h3 class=\"context\">{0}&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class=\"count\">{1}{2}{3}</span></h4>", context.Name, specificationsCaption, specFailuresCaption, specNotImplCaption);
 		}
 
-		public static string RenderSpecificationList(List<Specification> specifications)
+		public static string RenderSpecificationList(List<SpecificationInfo> specifications)
 		{
 			StringBuilder specificationListBuilder = new StringBuilder();
 
-			foreach (Specification specification in specifications)
+			foreach (SpecificationInfo specification in specifications)
 			{
 			  SpecificationVerificationResult result = _resultsBySpecification[specification];
 			  string specificationListItem = "";
@@ -457,7 +458,7 @@ namespace Machine.Specifications.Reporting
 			return caption; 
 		}
 
-    private static string ConcernsCaption(Dictionary<string, List<Context>> contextsByConcern)
+    private static string ConcernsCaption(Dictionary<string, List<ContextInfo>> contextsByConcern)
 		{
       int concernsCount = contextsByConcern.Keys.Count;
 			
@@ -465,7 +466,7 @@ namespace Machine.Specifications.Reporting
 			return concernsCaption;
 		}
 
-		private static string ContextsCaption(Dictionary<string,List<Context>> contextsByConcern)
+		private static string ContextsCaption(Dictionary<string,List<ContextInfo>> contextsByConcern)
 		{
 		  int contextCount = 0;
       contextsByConcern.Keys.ToList().ForEach(concern =>
@@ -475,7 +476,7 @@ namespace Machine.Specifications.Reporting
 			return ContextsCaption(contextCount);
 		}
 
-    private static string ContextsCaption(List<Context> contexts)
+    private static string ContextsCaption(List<ContextInfo> contexts)
     {
       return ContextsCaption(contexts.Count);
     }
@@ -492,7 +493,7 @@ namespace Machine.Specifications.Reporting
 			return specificationCaption;
 		}
 
-    private static string SpecificationsCaption(Dictionary<string,List<Context>> contextsByConcern)
+    private static string SpecificationsCaption(Dictionary<string,List<ContextInfo>> contextsByConcern)
     {
       int specificationCount = 0;
 
@@ -507,7 +508,7 @@ namespace Machine.Specifications.Reporting
       return SpecificationsCaption(specificationCount);
     }
 
-		private static string SpecificationsCaption(List<Context> contexts)
+		private static string SpecificationsCaption(List<ContextInfo> contexts)
 		{
 		  int specificationCount = 0;
 			contexts.ForEach(context =>
@@ -517,7 +518,7 @@ namespace Machine.Specifications.Reporting
       return SpecificationsCaption(specificationCount);
 		}
 
-    private static string SpecificationsCaption(Context context)
+    private static string SpecificationsCaption(ContextInfo context)
     {
       return SpecificationsCaption(_specificationsByContext[context].Count);
     }
