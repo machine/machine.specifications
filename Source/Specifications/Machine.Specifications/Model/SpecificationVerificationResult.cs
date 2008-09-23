@@ -12,6 +12,7 @@ namespace Machine.Specifications.Model
     NotImplemented,
   }
 
+  [Serializable]
   public class SpecificationVerificationResult
   {
     readonly Result _result;

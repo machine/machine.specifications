@@ -17,6 +17,7 @@ namespace Machine.Specifications.ConsoleRunner
   {
 
     [STAThread]
+    //[LoaderOptimization]
     public static void Main(string[] args)
     {
       var program = new Program(new DefaultConsole());

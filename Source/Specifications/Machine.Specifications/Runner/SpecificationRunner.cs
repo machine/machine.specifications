@@ -12,7 +12,7 @@ namespace Machine.Specifications.Runner
   public class SpecificationRunner : ISpecificationRunner
   {
     readonly ISpecificationRunListener _listener;
-    AssemblyExplorer _explorer;
+    readonly AssemblyExplorer _explorer;
 
     public SpecificationRunner(ISpecificationRunListener listener)
     {
@@ -39,12 +39,7 @@ namespace Machine.Specifications.Runner
       _listener.OnAssemblyEnd(assembly.GetInfo());
     }
 
-    public void RunAssembly(object assembly)
-    {
-      RunAssembly((Assembly) assembly);
-    }
-
-    public void RunContexts(IEnumerable<Model.Context> contexts)
+    private void RunContexts(IEnumerable<Context> contexts)
     {
       _listener.OnRunStart();
       if (contexts.Count() == 0) return;
@@ -67,7 +62,7 @@ namespace Machine.Specifications.Runner
       _listener.OnRunEnd();
     }
 
-    void GetTestResult(Model.Context context, Specification specification)
+    void GetTestResult(Context context, Specification specification)
     {
       _listener.OnSpecificationStart(specification.GetInfo());
 
