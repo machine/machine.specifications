@@ -49,6 +49,14 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="GenerateHtmlReportRunListener.cs" />
+    <Compile Include="Model\Assembly.cs" />
+    <Compile Include="Model\Concern.cs" />
+    <Compile Include="Model\Context.cs" />
+    <Compile Include="Model\ISpecificationNode.cs" />
+    <Compile Include="Model\ISpecificationVisitor.cs" />
+    <Compile Include="Model\Run.cs" />
+    <Compile Include="Model\Specification.cs" />
+    <Compile Include="Model\SpecificationContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportGenerator.cs" />
     <Compile Include="CollectReportingInformationRunListener.cs" />
