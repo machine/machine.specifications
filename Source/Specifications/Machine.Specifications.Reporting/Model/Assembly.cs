@@ -37,5 +37,10 @@ namespace Machine.Specifications.Reporting.Model
     {
       visitor.Visit(this);
     }
+
+    public IEnumerable<ISpecificationNode> Children
+    {
+      get { return _concerns.Cast<ISpecificationNode>(); }
+    }
   }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace Machine.Specifications.Reporting.Model
 {
@@ -21,6 +22,11 @@ namespace Machine.Specifications.Reporting.Model
     public void Accept(ISpecificationVisitor visitor)
     {
       visitor.Visit(this);
+    }
+
+    public IEnumerable<ISpecificationNode> Children
+    {
+      get { return _specifications.Cast<ISpecificationNode>(); }
     }
   }
 }
