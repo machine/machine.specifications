@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-
-using Machine.Specifications.Model;
 using Machine.Specifications.Runner;
 
 using TestDriven.Framework;

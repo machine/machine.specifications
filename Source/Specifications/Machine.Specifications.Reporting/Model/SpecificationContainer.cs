@@ -13,9 +13,9 @@ namespace Machine.Specifications.Reporting.Model
     protected SpecificationContainer(IEnumerable<Specification> specifications)
     {
       _totalSpecifications = specifications.Count();
-      _passingSpecifications = specifications.Where(x => x.Status == SpecificationStatus.Passing).Count();
-      _failingSpecifications = specifications.Where(x => x.Status == SpecificationStatus.Failing).Count();
-      _notImplementedSpecifications = specifications.Where(x => x.Status == SpecificationStatus.NotImplemented).Count();
+      _passingSpecifications = specifications.Where(x => x.Status == Status.Passing).Count();
+      _failingSpecifications = specifications.Where(x => x.Status == Status.Failing).Count();
+      _notImplementedSpecifications = specifications.Where(x => x.Status == Status.NotImplemented).Count();
     }
     
     protected SpecificationContainer(IEnumerable<SpecificationContainer> specificationContainers)

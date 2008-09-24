@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Machine.Specifications.Example;
 using Machine.Specifications.Explorers;
-using Machine.Specifications.Model;
 using Machine.Testing;
 using NUnit.Framework;
 

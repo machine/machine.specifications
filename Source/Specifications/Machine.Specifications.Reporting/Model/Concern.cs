@@ -9,11 +9,18 @@ namespace Machine.Specifications.Reporting.Model
   {
     readonly IEnumerable<Context> _contexts;
     readonly int _totalContexts;
+    readonly string _name;
 
-    public Concern(IEnumerable<Context> contexts) : base(contexts.Cast<SpecificationContainer>())
+    public Concern(string name, IEnumerable<Context> contexts) : base(contexts.Cast<SpecificationContainer>())
     {
+      _name = name;
       _contexts = contexts;
       _totalContexts = contexts.Count();
+    }
+
+    public string Name
+    {
+      get { return _name; }
     }
 
     public IEnumerable<Context> Contexts

@@ -49,7 +49,7 @@ namespace Machine.Specifications.Runner
       _listeners.ForEach(listener => listener.OnSpecificationStart(specification));
     }
 
-    public void OnSpecificationEnd(SpecificationInfo specification, Machine.Specifications.Model.SpecificationVerificationResult result)
+    public void OnSpecificationEnd(SpecificationInfo specification, SpecificationVerificationResult result)
     {
       _listeners.ForEach(listener => listener.OnSpecificationEnd(specification,result));
 

@@ -25,7 +25,7 @@ namespace Machine.Specifications.Model
         return new SpecificationVerificationResult(exception.InnerException);
       }
 
-      return new SpecificationVerificationResult(Result.Passed);
+      return new SpecificationVerificationResult(Status.Passing);
     }
   }
 }

@@ -1,7 +1,5 @@
 using System.Reflection;
 
-using Machine.Specifications.Model;
-
 namespace Machine.Specifications.Runner
 {
   public interface ISpecificationRunListener

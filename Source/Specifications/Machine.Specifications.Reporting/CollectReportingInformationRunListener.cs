@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Machine.Specifications;
-using Machine.Specifications.Model;
 using Machine.Specifications.Runner;
 
 namespace Machine.Specifications.Reporting
@@ -52,6 +51,7 @@ namespace Machine.Specifications.Reporting
 
     public virtual void OnRunStart()
     {
+
     }
 
     public virtual void OnRunEnd()

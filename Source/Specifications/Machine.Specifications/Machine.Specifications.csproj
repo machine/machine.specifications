@@ -62,9 +62,9 @@
     <Compile Include="Model\Concern.cs" />
     <Compile Include="Model\ItSpecification.cs" />
     <Compile Include="Model\Specification.cs" />
-    <Compile Include="Model\SpecificationVerificationResult.cs" />
+    <Compile Include="SpecificationVerificationResult.cs" />
     <Compile Include="Model\Context.cs" />
-    <Compile Include="Model\DescriptionVerificationResult.cs" />
+    <Compile Include="DescriptionVerificationResult.cs" />
     <Compile Include="Model\VerificationContext.cs" />
     <Compile Include="Model\DelegateField.cs" />
     <Compile Include="Runner\AggregateRunListener.cs" />

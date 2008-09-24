@@ -4,8 +4,6 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Linq;
-
-using Machine.Specifications.Model;
 using Machine.Specifications.Runner;
 
 namespace Machine.Specifications.Reporting
@@ -139,7 +137,7 @@ namespace Machine.Specifications.Reporting
           return true;
         }
       }
-      catch (NullReferenceException e)
+      catch (NullReferenceException)
       {
         return false;
       }
@@ -206,8 +204,8 @@ namespace Machine.Specifications.Reporting
 			string contextsCaption = ContextsCaption(contextsByConcern);
       string specificationsCaption = SpecificationsCaption(contextsByConcern);
 	    
-	    string specFailuresCaption = FormatCountString(CountOfSpecsWithDesiredResultIn(contextsByConcern, Result.Failed),"failure", "failure");
-	    string specNotImplCaption = FormatCountString(CountOfSpecsWithDesiredResultIn(contextsByConcern, Result.NotImplemented),"not implemented spec", "notimplemented");
+	    string specFailuresCaption = FormatCountString(CountOfSpecsWithDesiredResultIn(contextsByConcern, Status.Failing),"failure", "failure");
+	    string specNotImplCaption = FormatCountString(CountOfSpecsWithDesiredResultIn(contextsByConcern, Status.NotImplemented),"not implemented spec", "notimplemented");
 	    string generatedOnCaption = GeneratedOnCaption(_showTimeInfo);
 
       string title = String.Format("<h1>{0}&nbsp;&nbsp;&nbsp;&nbsp;</h1><span class=\"count\"><h2>{1}, {2}, {3}{4}{5} </h2><br>{6}</span>", assemblyName, concernsCaption, contextsCaption, specificationsCaption, specFailuresCaption,specNotImplCaption,generatedOnCaption);
@@ -223,26 +221,26 @@ namespace Machine.Specifications.Reporting
 	    retVal = @"<i>Generated on " + now.ToLongDateString() + " at " + now.ToLongTimeString() + "</i>";
 	    return retVal;
 	  }
-	  static int CountOfSpecsWithDesiredResultIn(Dictionary<string, List<ContextInfo>> contextsByConcern, Result result)
+	  static int CountOfSpecsWithDesiredResultIn(Dictionary<string, List<ContextInfo>> contextsByConcern, Status status)
 	  {
 	    var niResults = 0;
       contextsByConcern.Keys.ToList().ForEach(concern =>
-        niResults += CountOfSpecsWithDesiredResultIn(contextsByConcern[concern], result));
+        niResults += CountOfSpecsWithDesiredResultIn(contextsByConcern[concern], status));
 	    return niResults;
 	  }
 
-    private static int CountOfSpecsWithDesiredResultIn(List<ContextInfo> contexts, Result result)
+    private static int CountOfSpecsWithDesiredResultIn(List<ContextInfo> contexts, Status status)
     {
       var niResults = 0;
       contexts.ForEach(context =>
-        niResults += CountOfSpecsWithDesiredResultIn(context, result));
+        niResults += CountOfSpecsWithDesiredResultIn(context, status));
       return niResults;
     }
 
-    private static int CountOfSpecsWithDesiredResultIn(ContextInfo context, Result result)
+    private static int CountOfSpecsWithDesiredResultIn(ContextInfo context, Status status)
     {
       var niResults = 0;
-      niResults += iterateOverSpecsAndReturnThoseThatMatchResults(context, result).Count;
+      niResults += iterateOverSpecsAndReturnThoseThatMatchResults(context, status).Count;
       return niResults;
     }
 
@@ -251,12 +249,12 @@ namespace Machine.Specifications.Reporting
       return count > 0 ? String.Format(", <span class=\""+formatClass+"\">{0} {1}</span>", count, Pluralize(itemToPluralize, count)) : string.Empty;
     }
 
-	  private static List<SpecificationVerificationResult> iterateOverSpecsAndReturnThoseThatMatchResults(ContextInfo context, Result result)
+	  private static List<SpecificationVerificationResult> iterateOverSpecsAndReturnThoseThatMatchResults(ContextInfo context, Status status)
     {
       var niResults = new List<SpecificationVerificationResult>();
       _specificationsByContext[context].ForEach(spec =>
       {
-        if (_resultsBySpecification[spec].Result == result)
+        if (_resultsBySpecification[spec].Status == status)
           niResults.Add(_resultsBySpecification[spec]);
       });
       return niResults;
@@ -296,8 +294,8 @@ namespace Machine.Specifications.Reporting
 			string contextsCaption = ContextsCaption(contexts);
 			string specificationsCaption = SpecificationsCaption(contexts);
 
-	    string specFailuresCaption = FormatCountString(CountOfSpecsWithDesiredResultIn(contexts, Result.Failed),"failure", "failure");
-	    string specNotImplCaption = FormatCountString(CountOfSpecsWithDesiredResultIn(contexts, Result.NotImplemented),"not implemented spec", "notimplemented");
+	    string specFailuresCaption = FormatCountString(CountOfSpecsWithDesiredResultIn(contexts, Status.Failing),"failure", "failure");
+	    string specNotImplCaption = FormatCountString(CountOfSpecsWithDesiredResultIn(contexts, Status.NotImplemented),"not implemented spec", "notimplemented");
 
       return String.Format("<h2 class=\"concern\">{0} specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class=\"count\">{1}, {2}{3}{4}</span></h3>", concernName, contextsCaption, specificationsCaption, specFailuresCaption,specNotImplCaption);
 		}
@@ -334,8 +332,8 @@ namespace Machine.Specifications.Reporting
 
 		public static string RenderContextHeader(ContextInfo context)
 		{
-	    string specFailuresCaption = FormatCountString(CountOfSpecsWithDesiredResultIn(context, Result.Failed),"failure", "failure");
-	    string specNotImplCaption = FormatCountString(CountOfSpecsWithDesiredResultIn(context, Result.NotImplemented),"not implemented spec", "notimplemented");
+	    string specFailuresCaption = FormatCountString(CountOfSpecsWithDesiredResultIn(context, Status.Failing),"failure", "failure");
+	    string specNotImplCaption = FormatCountString(CountOfSpecsWithDesiredResultIn(context, Status.NotImplemented),"not implemented spec", "notimplemented");
 
 			string specificationsCaption = SpecificationsCaption(context);
 			return String.Format("<h3 class=\"context\">{0}&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class=\"count\">{1}{2}{3}</span></h4>", context.Name, specificationsCaption, specFailuresCaption, specNotImplCaption);
@@ -349,17 +347,17 @@ namespace Machine.Specifications.Reporting
 			{
 			  SpecificationVerificationResult result = _resultsBySpecification[specification];
 			  string specificationListItem = "";
-        switch (result.Result)
+        switch (result.Status)
         {
-          case Result.Passed:
+          case Status.Passing:
             specificationListItem = String.Format("\t<li>{0}", specification.Name);
             break;
-          case Result.Failed:
+          case Status.Failing:
             specificationListItem = String.Format("\t<li>{0}", specification.Name + " <div class=\"failure\">&lt;--FAILED</div><br/>");
             specificationListItem += "<p class=\"exception_type\">" + result.Exception.GetType().ToString();
             specificationListItem += "<pre class=\"exception_message\">" + "Message:" + Environment.NewLine + result.Exception.Message + Environment.NewLine + "Stack Trace:" + Environment.NewLine + result.Exception.StackTrace + "</pre></p>";
             break;
-          case Result.NotImplemented:
+          case Status.NotImplemented:
             specificationListItem = String.Format("\t<li>{0}", specification.Name + " <div class=\"notimplemented\">&lt;--NOT IMPLEMENTED</div><br/>");
             break;
         }

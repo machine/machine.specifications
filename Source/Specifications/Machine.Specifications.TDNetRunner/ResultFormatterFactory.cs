@@ -2,28 +2,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Machine.Specifications.Model;
 
 namespace Machine.Specifications.TDNetRunner
 {
   public class ResultFormatterFactory
   {
-    private Dictionary<Result, IResultFormatter> _formatters = new Dictionary<Result, IResultFormatter>();
+    private Dictionary<Status, IResultFormatter> _formatters = new Dictionary<Status, IResultFormatter>();
     public ResultFormatterFactory()
     {
-      _formatters[Result.Passed] = new PassedResultFormatter();
-      _formatters[Result.Failed] = new FailedResultFormatter();
-      _formatters[Result.NotImplemented] = new NotImplementedResultFormatter();
+      _formatters[Status.Passing] = new PassedResultFormatter();
+      _formatters[Status.Failing] = new FailedResultFormatter();
+      _formatters[Status.NotImplemented] = new NotImplementedResultFormatter();
     }
 
     public IResultFormatter GetResultFormatterFor(SpecificationVerificationResult verificationResult)
     {
-      if (_formatters.ContainsKey(verificationResult.Result))
+      if (_formatters.ContainsKey(verificationResult.Status))
       {
-        return _formatters[verificationResult.Result];
+        return _formatters[verificationResult.Status];
       }
 
-      throw new Exception("Unknown Verification Result! " + verificationResult.Result);
+      throw new Exception("Unknown Verification Result! " + verificationResult.Status);
     }
   }
 }

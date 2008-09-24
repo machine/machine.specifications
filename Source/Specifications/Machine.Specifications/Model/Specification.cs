@@ -9,8 +9,8 @@ namespace Machine.Specifications.Model
   public abstract class Specification
   {
     readonly string _specificationPrefix;
-    DelegateField _specificationField;
-    DelegateField _whenField;
+    readonly DelegateField _specificationField;
+    readonly DelegateField _whenField;
 
     public FieldInfo SpecificationField
     {
@@ -55,7 +55,7 @@ namespace Machine.Specifications.Model
     {
       if (!IsDefined(verificationContext))
       {
-        return new SpecificationVerificationResult(Result.NotImplemented);
+        return new SpecificationVerificationResult(Status.NotImplemented);
       }
 
       InvokeWhenField(verificationContext);

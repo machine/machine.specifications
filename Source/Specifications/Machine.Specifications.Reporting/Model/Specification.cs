@@ -5,25 +5,25 @@ using System.Text;
 
 namespace Machine.Specifications.Reporting.Model
 {
-  public enum SpecificationStatus
-  {
-    Passing,
-    Failing,
-    NotImplemented
-  }
-
   public class Specification : ISpecificationNode
   {
-    readonly SpecificationStatus _status;
+    readonly Status _status;
+    readonly string _name;
 
-    public Specification(SpecificationStatus _status)
+    public Specification(string name, Status status)
     {
-      this._status = _status;
+      _status = status;
+      _name = name;
     }
 
-    public SpecificationStatus Status
+    public Status Status
     {
       get { return _status; }
+    }
+
+    public string Name
+    {
+      get { return _name; }
     }
 
     public void Accept(ISpecificationVisitor visitor)

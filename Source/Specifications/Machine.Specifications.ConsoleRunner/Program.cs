@@ -35,7 +35,6 @@ namespace Machine.Specifications.ConsoleRunner
 
     public ExitCode Run(string[] arguments)
     {
-      ExitCode exitCode;
       ExceptionReporter reporter = new ExceptionReporter(_console);
       var runListener = new RunListener(_console);
       

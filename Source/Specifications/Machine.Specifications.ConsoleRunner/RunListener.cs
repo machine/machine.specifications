@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 
 using Machine.Specifications.ConsoleRunner.Properties;
-using Machine.Specifications.Model;
 using Machine.Specifications.Runner;
 
 namespace Machine.Specifications.ConsoleRunner
@@ -83,13 +82,13 @@ namespace Machine.Specifications.ConsoleRunner
     public void OnSpecificationEnd(SpecificationInfo specification, SpecificationVerificationResult result)
     {
       _specificationCount += 1;
-      switch(result.Result)
+      switch(result.Status)
       {
-        case Result.Passed:
+        case Status.Passing:
           _passedSpecificationCount += 1;
           _console.WriteLine("");
           break;
-        case Result.NotImplemented:
+        case Status.NotImplemented:
           _unimplementedSpecificationCount += 1;
           _console.WriteLine(" (NOT IMPLEMENTED)");
           break;

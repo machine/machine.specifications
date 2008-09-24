@@ -24,6 +24,5 @@ namespace Machine.Specifications.Reporting
       ReportGenerator reportGenerator = new ReportGenerator(_htmlPath, ContextsByAssembly, SpecificationsByContext, ResultsBySpecification, _showTimeInfo);
       reportGenerator.WriteReports();
     }
-
   }
 }

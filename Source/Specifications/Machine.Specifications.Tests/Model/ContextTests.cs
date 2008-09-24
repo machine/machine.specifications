@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using Machine.Specifications.Factories;
-using Machine.Testing;
 using NUnit.Framework;
 
 namespace Machine.Specifications.Model
@@ -93,7 +87,7 @@ namespace Machine.Specifications.Model
     [Test]
     public void ShouldHaveNotImplementedResult()
     {
-      results.SpecificationResults.First().Result.ShouldEqual(Result.NotImplemented);
+      results.SpecificationResults.First().Status.ShouldEqual(Status.NotImplemented);
     }
     
     [Test]
