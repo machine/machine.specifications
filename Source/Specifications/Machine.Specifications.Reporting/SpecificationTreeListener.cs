@@ -11,7 +11,7 @@ namespace Machine.Specifications.Reporting
   {
     public static Assembly ToNode(this AssemblyInfo assemblyInfo, IEnumerable<Concern> concerns)
     {
-      return new Assembly(concerns);
+      return new Assembly(assemblyInfo.Name, concerns);
     }
     
     public static Context ToNode(this ContextInfo contextInfo, IEnumerable<Specification> specifications)

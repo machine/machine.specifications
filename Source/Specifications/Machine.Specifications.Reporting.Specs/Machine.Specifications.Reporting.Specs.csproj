@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{490496AF-BEA5-4454-88B0-F73C62C22987}</ProjectGuid>
+    <ProjectGuid>{97BD55A5-03CA-4E8E-8AE0-55722C39E0AF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Machine.Specifications.Reporting</RootNamespace>
-    <AssemblyName>Machine.Specifications.Reporting</AssemblyName>
+    <RootNamespace>Machine.Specifications.Reporting.Specs</RootNamespace>
+    <AssemblyName>Machine.Specifications.Reporting.Specs</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -17,24 +17,21 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\Build\Debug\Specifications\Tests\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <NoWarn>169</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\Build\Release\Specifications\Tests\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=1.3.2.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Libraries\MassTransit\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -49,31 +46,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="GenerateHtmlReportRunListener.cs" />
-    <Compile Include="Model\Assembly.cs" />
-    <Compile Include="Model\Concern.cs" />
-    <Compile Include="Model\Context.cs" />
-    <Compile Include="Model\ISpecificationNode.cs" />
-    <Compile Include="Model\ISpecificationVisitor.cs" />
-    <Compile Include="Model\Run.cs" />
-    <Compile Include="Model\Specification.cs" />
-    <Compile Include="Model\SpecificationContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReportGenerator.cs" />
-    <Compile Include="CollectReportingInformationRunListener.cs" />
-    <Compile Include="SpecificationTreeListener.cs" />
+    <Compile Include="SpecificationTreeListenerSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Machine.Specifications.Example\Machine.Specifications.Example.csproj">
+      <Project>{2C28C643-31A2-44CA-B762-953A963F6F61}</Project>
+      <Name>Machine.Specifications.Example</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Machine.Specifications.Reporting\Machine.Specifications.Reporting.csproj">
+      <Project>{490496AF-BEA5-4454-88B0-F73C62C22987}</Project>
+      <Name>Machine.Specifications.Reporting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj">
       <Project>{CCD02629-1262-4F78-9E9F-AC97B942D0E7}</Project>
       <Name>Machine.Specifications</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Visitors\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

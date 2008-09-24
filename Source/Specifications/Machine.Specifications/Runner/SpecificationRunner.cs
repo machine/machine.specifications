@@ -23,25 +23,47 @@ namespace Machine.Specifications.Runner
     public void RunAssembly(Assembly assembly)
     {
       var contexts = _explorer.FindContextsIn(assembly);
+      var map = CreateMap(assembly, contexts);
 
-      var assemblyContexts = new List<IAssemblyContext>(_explorer.FindAssemblyContextsIn(assembly));
+      StartRun(map);
+    }
 
-      _listener.OnAssemblyStart(assembly.GetInfo());
-      
-      assemblyContexts.ForEach(assemblyContext=>
-        assemblyContext.OnAssemblyStart());
+    Dictionary<Assembly, IEnumerable<Context>> CreateMap(Assembly assembly, IEnumerable<Context> contexts)
+    {
+      var map = new Dictionary<Assembly, IEnumerable<Context>>();
+      map[assembly] = contexts;
+      return map;
+    }
 
-      RunContexts(contexts);
-      
-      assemblyContexts.ForEach(assemblyContext=>
-        assemblyContext.OnAssemblyComplete());
-      
-      _listener.OnAssemblyEnd(assembly.GetInfo());
+    private void StartRun(IDictionary<Assembly, IEnumerable<Context>> contextMap)
+    {
+      _listener.OnRunStart();
+
+      foreach (var pair in contextMap)
+      {
+        var assembly = pair.Key;
+        var contexts = pair.Value;
+
+        var assemblyContexts = new List<IAssemblyContext>(_explorer.FindAssemblyContextsIn(assembly));
+
+        _listener.OnAssemblyStart(assembly.GetInfo());
+        
+        assemblyContexts.ForEach(assemblyContext=>
+          assemblyContext.OnAssemblyStart());
+
+        RunContexts(contexts);
+        
+        assemblyContexts.ForEach(assemblyContext=>
+          assemblyContext.OnAssemblyComplete());
+        
+        _listener.OnAssemblyEnd(assembly.GetInfo());
+      }
+
+      _listener.OnRunEnd();
     }
 
     private void RunContexts(IEnumerable<Context> contexts)
     {
-      _listener.OnRunStart();
       if (contexts.Count() == 0) return;
 
       foreach (var context in contexts)
@@ -58,8 +80,6 @@ namespace Machine.Specifications.Runner
         context.RunContextAfterAll();
         _listener.OnContextEnd(context.GetInfo());
       }
-
-      _listener.OnRunEnd();
     }
 
     void GetTestResult(Context context, Specification specification)
@@ -75,7 +95,7 @@ namespace Machine.Specifications.Runner
     {
       var contexts = _explorer.FindContextsIn(assembly, targetNamespace);
 
-      RunContexts(contexts);
+      StartRun(CreateMap(assembly, contexts));
     }
 
     public void RunMember(Assembly assembly, MemberInfo member)
@@ -83,21 +103,21 @@ namespace Machine.Specifications.Runner
       if (member.MemberType == MemberTypes.TypeInfo)
       {
         Type type = (Type)member;
-        var description = _explorer.FindContexts(type);
+        var context = _explorer.FindContexts(type);
 
-        if (description == null)
+        if (context == null)
         {
           return;
         }
 
-        RunContexts(new[] {description});
+        StartRun(CreateMap(assembly, new[] {context}));
       }
       else if (member.MemberType == MemberTypes.Field)
       {
         FieldInfo fieldInfo = (FieldInfo)member;
-        var description = _explorer.FindContexts(fieldInfo);
+        var context = _explorer.FindContexts(fieldInfo);
 
-        RunContexts(new[] {description});
+        StartRun(CreateMap(assembly, new[] {context}));
       }
     }
   }

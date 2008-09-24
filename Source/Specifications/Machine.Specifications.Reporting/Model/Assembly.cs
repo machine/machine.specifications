@@ -2,20 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace Machine.Specifications.Reporting.Model
 {
   public class Assembly : SpecificationContainer, ISpecificationNode
   {
+    readonly string _name;
     readonly IEnumerable<Concern> _concerns;
     readonly int _totalConerns;
     readonly int _totalContexts;
 
-    public Assembly(IEnumerable<Concern> concerns) : base(concerns.Cast<SpecificationContainer>())
+    public Assembly(string name, IEnumerable<Concern> concerns) : base(concerns.Cast<SpecificationContainer>())
     {
-      _concerns = concerns;
+      _name = name;
+      _concerns = concerns.OrderBy(x => x.Name).ToList();
       _totalConerns = concerns.Count();
       _totalContexts = concerns.Sum(x => x.TotalContexts);
+    }
+
+    public string Name
+    {
+      get { return _name; }
     }
 
     public IEnumerable<Concern> Concerns
@@ -38,6 +46,7 @@ namespace Machine.Specifications.Reporting.Model
       visitor.Visit(this);
     }
 
+    [JsonIgnore]
     public IEnumerable<ISpecificationNode> Children
     {
       get { return _concerns.Cast<ISpecificationNode>(); }

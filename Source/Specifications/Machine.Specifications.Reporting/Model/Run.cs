@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace Machine.Specifications.Reporting.Model
 {
@@ -45,6 +46,7 @@ namespace Machine.Specifications.Reporting.Model
       visitor.Visit(this);
     }
 
+    [JsonIgnore]
     public IEnumerable<ISpecificationNode> Children
     {
       get { return _assemblies.Cast<ISpecificationNode>(); }
