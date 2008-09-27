@@ -9,7 +9,6 @@ namespace Machine.Specifications
   {
     public void OnAssemblyStart()
     {
-      throw new NotFiniteNumberException("fail");
     }
 
     public void OnAssemblyComplete()
