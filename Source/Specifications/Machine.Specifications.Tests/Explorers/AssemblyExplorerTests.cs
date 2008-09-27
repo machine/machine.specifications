@@ -165,6 +165,16 @@ namespace Machine.Specifications.Explorers
     {
       assemblyContexts.Count.ShouldEqual(1);
     }
+  }
 
+  public class TestAssemblyContext : IAssemblyContext
+  {
+    public void OnAssemblyStart()
+    {
+    }
+
+    public void OnAssemblyComplete()
+    {
+    }
   }
 }

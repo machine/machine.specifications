@@ -53,6 +53,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Catch.cs" />
+    <Compile Include="Model\Tag.cs" />
     <Compile Include="SubjectAttribute.cs" />
     <Compile Include="Explorers\AssemblyExplorer.cs" />
     <Compile Include="ExtensionMethods.cs" />

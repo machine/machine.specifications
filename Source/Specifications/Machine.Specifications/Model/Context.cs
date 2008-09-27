@@ -15,39 +15,21 @@ namespace Machine.Specifications.Model
     readonly Because _because;
     readonly IEnumerable<Cleanup> _afterEachs;
     readonly IEnumerable<Cleanup> _afterAlls;
+    readonly IEnumerable<Tag> _tags;
+
     public string Name { get; private set; }
     public bool IsIgnored { get; private set; }
-
-    public object Instance
-    {
-      get { return _instance; }
-    }
-
-    public IEnumerable<Specification> Specifications
-    {
-      get { return _specifications; }
-    }
-
+    public IEnumerable<Tag> Tags { get { return _tags; } }
+    public object Instance { get { return _instance; } }
+    public IEnumerable<Specification> Specifications { get { return _specifications; } }
     public Type Type { get; private set; }
-
-    public Subject Subject
-    {
-      get { return _subject; }
-    }
-
-    public bool HasBecauseClause
-    {
-      get { return _because != null; }
-    }
-
-    public Result CriticalContextFailure
-    {
-      get; private set;
-    }
+    public Subject Subject { get { return _subject; } }
+    public bool HasBecauseClause { get { return _because != null; } }
+    public Result CriticalContextFailure { get; private set; }
 
     public Context(Type type, object instance, IEnumerable<Establish> beforeEachs,
       IEnumerable<Establish> beforeAlls, Because because, IEnumerable<Cleanup> afterEachs,
-      IEnumerable<Cleanup> afterAlls, Subject subject, bool isIgnored)
+      IEnumerable<Cleanup> afterAlls, Subject subject, bool isIgnored, IEnumerable<Tag> tags)
     {
       Name = type.Name.ReplaceUnderscores();
       Type = type;
@@ -60,6 +42,7 @@ namespace Machine.Specifications.Model
       _specifications = new List<Specification>();
       _subject = subject;
       IsIgnored = isIgnored;
+      _tags = tags;
     }
 
     public void AddSpecification(Specification specification)

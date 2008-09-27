@@ -5,6 +5,16 @@ using System.Text;
 
 namespace Machine.Specifications.Specs
 {
+  public class context_with_duplicate_tags : Tags<example>, Tags<example, example>
+  {
+    It bla_bla = ()=> { };
+  }
+
+  public class context_with_tags : Tags<example>, Tags<some_other_tag, one_more_tag>
+  {
+    It bla_bla = ()=> { };
+  }
+
   [Ignore]
   public class context_with_ignore : context_with_no_specs
   {

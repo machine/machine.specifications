@@ -62,7 +62,8 @@ namespace Machine.Specifications.Factories
       var concern = ExtractSubject(type);
 
       var isIgnored = type.HasAttribute<IgnoreAttribute>();
-      var context = new Context(type, instance, beforeEachs, beforeAlls, becauses.FirstOrDefault(), afterEachs, afterAlls, concern, isIgnored);
+      var tags = GetTags(type);
+      var context = new Context(type, instance, beforeEachs, beforeAlls, becauses.FirstOrDefault(), afterEachs, afterAlls, concern, isIgnored, tags);
 
       foreach (FieldInfo info in fieldInfos)
       {
@@ -76,6 +77,27 @@ namespace Machine.Specifications.Factories
       CreateSpecifications(itFieldInfos, context);
 
       return context;
+    }
+
+    static IEnumerable<Tag> GetTags(Type type)
+    {
+      var tags = new List<Tag>();
+      var tagInterfaces = type.GetInterfaces().Where(x => x.FullName.StartsWith("Machine.Specifications.Tags`"));
+
+      foreach (var tagInterface in tagInterfaces)
+      {
+        var tagTypes = tagInterface.GetGenericArguments();
+        foreach (var tagType in tagTypes)
+        {
+          var tag = new Tag(tagType);
+          if (!tags.Contains(tag))
+          {
+            tags.Add(tag);
+          }
+        }
+      }
+
+      return tags;
     }
 
     static Subject ExtractSubject(Type type)
