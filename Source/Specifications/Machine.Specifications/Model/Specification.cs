@@ -8,7 +8,6 @@ namespace Machine.Specifications.Model
 {
   public abstract class Specification
   {
-    readonly string _specificationPrefix;
     readonly DelegateField _specificationField;
     readonly bool _isIgnored;
 
@@ -19,7 +18,7 @@ namespace Machine.Specifications.Model
 
     public string Name
     {
-      get { return _specificationPrefix + _specificationField.Name; }
+      get { return _specificationField.Name; }
     }
 
     public bool IsIgnored
@@ -27,14 +26,9 @@ namespace Machine.Specifications.Model
       get { return _isIgnored; }
     }
 
-    protected Specification(FieldInfo itField) : this("", itField)
-    {
-    }
-
-    protected Specification(string specificationPrefix, FieldInfo itField)
+    protected Specification(FieldInfo itField) 
     {
       _isIgnored = DetermineIfIgnored(itField);
-      _specificationPrefix = specificationPrefix;
       _specificationField = new DelegateField(itField);
     }
 
