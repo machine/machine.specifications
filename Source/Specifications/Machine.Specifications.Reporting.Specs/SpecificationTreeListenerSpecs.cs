@@ -8,7 +8,7 @@ using Machine.Specifications.Runner;
 
 namespace Machine.Specifications.Reporting.Specs.SpecificationTreeListenerSpecs
 {
-  [Concern(typeof(SpecificationTreeListener))]
+  [Subject(typeof(SpecificationTreeListener))]
   public class when_getting_a_tree_from_a_spec_run
   {
     static SpecificationRunner runner;

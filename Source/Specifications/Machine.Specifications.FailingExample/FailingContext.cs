@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Machine.Specifications.FailingExample
 {
-  [Concern("Scott Bellware")]
+  [Subject("Scott Bellware")]
   public class at_any_given_moment
   {
     It will_fail = ()=>

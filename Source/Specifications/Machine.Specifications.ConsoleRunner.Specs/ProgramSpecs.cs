@@ -8,7 +8,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
   // TODO: Add Tag and filter by tag
   // TODO: Add awesome client side reporting stuff
 
-  [Concern("Console runner")]
+  [Subject("Console runner")]
   public class when_arguments_are_not_provided
     : with_runner 
   {
@@ -19,7 +19,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       console.Lines.ShouldContain(Resources.UsageStatement);
   }
 
-  [Concern("Console runner")]
+  [Subject("Console runner")]
   public class when_running_a_specification_assembly
     : with_runner 
   {
@@ -48,7 +48,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       console.ShouldContainLineWith("Specifications: 6");
   }
 
-  [Concern("Console runner")]
+  [Subject("Console runner")]
   public class when_specifying_a_missing_assembly_on_the_command_line
     : with_runner 
   {
@@ -65,7 +65,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       exitCode.ShouldEqual(ExitCode.Error);
   }
 
-  [Concern("Console runner")]
+  [Subject("Console runner")]
   public class when_a_specification_fails : with_runner
   {
     public static ExitCode exitCode;

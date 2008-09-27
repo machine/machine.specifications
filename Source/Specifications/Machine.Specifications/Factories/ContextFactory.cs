@@ -70,16 +70,16 @@ namespace Machine.Specifications.Factories
 
     Concern ExtractConcern(Type type)
     {
-      var attributes = type.GetCustomAttributes(typeof(ConcernAttribute), true);
+      var attributes = type.GetCustomAttributes(typeof(SubjectAttribute), true);
 
       if (attributes.Length > 1)
         throw new SpecificationUsageException("Cannot have more than one Concern on a Context");
 
       if (attributes.Length == 0) return null;
 
-      var attribute = (ConcernAttribute)attributes[0];
+      var attribute = (SubjectAttribute)attributes[0];
 
-      return new Concern(attribute.TypeConcernedWith, attribute.SpecificConcern);
+      return new Concern(attribute.SubjectType, attribute.SubjectText);
     }
 
     void CreateSpecifications(List<FieldInfo> whenFieldInfos, List<FieldInfo> itFieldInfos, Model.Context context)
