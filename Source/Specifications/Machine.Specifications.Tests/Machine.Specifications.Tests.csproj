@@ -63,6 +63,8 @@
     <Compile Include="Model\ContextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runner\AppDomainRunnerTests.cs" />
+    <Compile Include="Runner\SpecificationRunner.cs" />
+    <Compile Include="Runner\TestSpecs.cs" />
     <Compile Include="Verifiers\SpecificationVerifierTests.cs" />
   </ItemGroup>
   <ItemGroup>

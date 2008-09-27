@@ -73,7 +73,7 @@ namespace Machine.Specifications.Explorers
       return assembly.GetExportedTypes().Where(IsContext);
     }
 
-    public Model.Context FindContexts(Type type)
+    public Context FindContexts(Type type)
     {
       if (IsContext(type))
       {
@@ -83,7 +83,7 @@ namespace Machine.Specifications.Explorers
       return null;
     }
 
-    public Model.Context FindContexts(FieldInfo info)
+    public Context FindContexts(FieldInfo info)
     {
       Type type = info.ReflectedType;
       if (IsContext(type))
