@@ -1,0 +1,72 @@
+<!-- 
+Based on original work from Alexander Groß
+http://www.therightstuff.de/2008/09/16/ReSharper-Type-Members-Layout-For-MSpec-02.aspx 
+-->
+<!-- Order Machine.Specifications methods: Members, Establish, Cleanup, Because, It -->
+<Pattern>
+    <Match>
+        <And Weight="100">
+            <Kind Is="class"/>
+            <HasAttribute CLRName="Machine.Specifications.SubjectAttribute"
+                          Inherit="true"/>
+        </And>
+    </Match>
+    <Entry>
+        <Match>
+            <And>
+                <Kind Is="field"/>
+                <Or>
+                    <Access Is="protected"/>
+                    <Static/>
+                </Or>
+            </And>
+        </Match>
+    </Entry>
+    <Entry>
+        <Match>
+            <And>
+                <Kind Is="field"/>
+                <Name Is="context_once"
+                      IgnoreCase="true"/>
+            </And>
+        </Match>
+    </Entry>
+    <Entry>
+        <Match>
+            <And>
+                <Kind Is="field"/>
+                <Name Is="context"
+                      IgnoreCase="true"/>
+            </And>
+        </Match>
+    </Entry>
+    <Entry>
+        <Match>
+            <And>
+                <Kind Is="field"/>
+                <Name Is="after_each"
+                      IgnoreCase="true"/>
+            </And>
+        </Match>
+    </Entry>
+    <Entry>
+        <Match>
+            <And>
+                <Kind Is="field"/>
+                <Name Is="after_all"
+                      IgnoreCase="true"/>
+            </And>
+        </Match>
+    </Entry>
+    <Entry>
+        <Match>
+            <And>
+                <Kind Is="field"/>
+                <Name Is="of"
+                      IgnoreCase="true"/>
+            </And>
+        </Match>
+    </Entry>
+    <!--All other members-->
+    <Entry/>
+</Pattern>
