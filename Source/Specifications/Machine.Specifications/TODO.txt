@@ -1,0 +1,8 @@
+﻿make sure exceptions thrown from cleanup are handled gracefully
+add tags attribute
+add support for including or excluding tags while running
+look into inner class thing for contexts
+figure out how to handle exceptions thrown during befoerall and aftereach
+clean up stack traces
+remove dependency on nunit
+incorporate browser links
