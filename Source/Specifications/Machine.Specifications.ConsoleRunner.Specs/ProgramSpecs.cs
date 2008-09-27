@@ -85,6 +85,20 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       exitCode.ShouldEqual(ExitCode.Failure);
   }
 
+  [Subject("Console runner")]
+  public class when_specifying_an_include_filter : with_runner
+  {
+    Because of = ()=>
+      program.Run(new [] {"Machine.Specifications.Example.dll", "--include", "failure"});
+
+    It should_execute_specs_with_the_included_tag = () =>
+      console.ShouldContainLineWith(
+        "Account Funds transfer, when transferring an amount larger than the balance of the from account");
+
+    It should_not_execute_specs_that_are_not_included = () =>
+      console.ShouldNotContainLineWith("Account Funds transfer, when transferring between two accounts");
+  }
+
   public class with_runner
   {
     public static Program program;

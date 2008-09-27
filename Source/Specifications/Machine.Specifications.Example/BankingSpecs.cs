@@ -22,7 +22,7 @@ namespace Machine.Specifications.Example
 
   [Subject(typeof(Account), "Funds transfer")]
   public class when_transferring_an_amount_larger_than_the_balance_of_the_from_account
-    : with_from_account_and_to_account
+    : with_from_account_and_to_account, Tags<failure>
   {
     static Exception exception;
     Because of =()=>
@@ -31,6 +31,8 @@ namespace Machine.Specifications.Example
     It should_not_allow_the_transfer =()=>
       exception.ShouldBeOfType<Exception>();
   }
+
+  public class failure {}
 
   public abstract class with_from_account_and_to_account
   {
