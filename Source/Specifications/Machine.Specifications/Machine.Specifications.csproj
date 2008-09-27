@@ -65,7 +65,6 @@
     <Compile Include="Result.cs" />
     <Compile Include="Model\Context.cs" />
     <Compile Include="Model\VerificationContext.cs" />
-    <Compile Include="Model\DelegateField.cs" />
     <Compile Include="Runner\AggregateRunListener.cs" />
     <Compile Include="Runner\AppDomainRunner.cs" />
     <Compile Include="Runner\AssemblyInfo.cs" />
