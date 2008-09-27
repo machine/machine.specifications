@@ -50,7 +50,7 @@ namespace Machine.Specifications.Runner
       _listener.OnSpecificationStart(specification);
     }
 
-    public void OnSpecificationEnd(SpecificationInfo specification, SpecificationVerificationResult result)
+    public void OnSpecificationEnd(SpecificationInfo specification, Result result)
     {
       _listener.OnSpecificationEnd(specification, result);
     }

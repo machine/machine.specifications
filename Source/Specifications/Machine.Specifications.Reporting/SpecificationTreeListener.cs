@@ -19,7 +19,7 @@ namespace Machine.Specifications.Reporting
       return new Context(contextInfo.Name, specifications);
     }
 
-    public static Specification ToNode(this SpecificationInfo specification, SpecificationVerificationResult result)
+    public static Specification ToNode(this SpecificationInfo specification, Result result)
     {
       return new Specification(specification.Name, result.Status);
     }
@@ -83,7 +83,7 @@ namespace Machine.Specifications.Reporting
     {
     }
 
-    public void OnSpecificationEnd(SpecificationInfo specification, SpecificationVerificationResult result)
+    public void OnSpecificationEnd(SpecificationInfo specification, Result result)
     {
       _specifications.Add(specification.ToNode(result));
     }

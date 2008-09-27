@@ -11,6 +11,6 @@ namespace Machine.Specifications.Runner
     void OnContextStart(ContextInfo context);
     void OnContextEnd(ContextInfo context);
     void OnSpecificationStart(SpecificationInfo specification);
-    void OnSpecificationEnd(SpecificationInfo specification, SpecificationVerificationResult result);
+    void OnSpecificationEnd(SpecificationInfo specification, Result result);
   }
 }

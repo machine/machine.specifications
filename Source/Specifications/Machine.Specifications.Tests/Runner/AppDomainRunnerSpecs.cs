@@ -79,7 +79,7 @@ namespace Machine.Specifications.Runner
     {
     }
 
-    public void OnSpecificationEnd(SpecificationInfo specification, SpecificationVerificationResult result)
+    public void OnSpecificationEnd(SpecificationInfo specification, Result result)
     {
       SpecCount++;
     }

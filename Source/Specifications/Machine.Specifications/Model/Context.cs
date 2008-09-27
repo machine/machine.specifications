@@ -61,7 +61,7 @@ namespace Machine.Specifications.Model
       _specifications.Add(specification);
     }
 
-    public IEnumerable<SpecificationVerificationResult> VerifyAllSpecifications()
+    public IEnumerable<Result> VerifyAllSpecifications()
     {
       return EnumerateAndVerifyAllSpecifications().Where(x => x.Result != null).Select(x => x.Result).ToList();
     }
@@ -85,7 +85,7 @@ namespace Machine.Specifications.Model
         }
       }
 
-      SpecificationVerificationResult result = null;
+      Result result = null;
       Specification current = null;
       foreach (var next in Specifications)
       {
@@ -102,11 +102,11 @@ namespace Machine.Specifications.Model
       }
     }
 
-    private SpecificationVerificationResult VerifyOrIgnoreSpecification(Specification specification)
+    private Result VerifyOrIgnoreSpecification(Specification specification)
     {
       if (specification.IsIgnored)
       {
-        return SpecificationVerificationResult.Ignored;
+        return Result.Ignored;
       }
       else
       {
@@ -114,7 +114,7 @@ namespace Machine.Specifications.Model
       }
     }
     
-    public SpecificationVerificationResult VerifySpecification(Specification specification)
+    public Result VerifySpecification(Specification specification)
     {
       VerificationContext context = new VerificationContext(_instance);
       try
@@ -124,7 +124,7 @@ namespace Machine.Specifications.Model
       }
       catch (Exception err)
       {
-        return new SpecificationVerificationResult(err);
+        return new Result(err);
       }
 
       var result = specification.Verify(context);
@@ -136,7 +136,7 @@ namespace Machine.Specifications.Model
       {
         if (result.Passed)
         {
-          return new SpecificationVerificationResult(err);
+          return new Result(err);
         }
         return result;
       }
@@ -144,7 +144,7 @@ namespace Machine.Specifications.Model
       return result;
     }
 
-    public SpecificationVerificationResult RunContextBeforeAll()
+    public Result RunContextBeforeAll()
     {
       try
       {
@@ -152,12 +152,12 @@ namespace Machine.Specifications.Model
       }
       catch (Exception err)
       {
-        return new SpecificationVerificationResult(err);
+        return new Result(err);
       }
       return null;
     }
 
-    public SpecificationVerificationResult RunContextAfterAll()
+    public Result RunContextAfterAll()
     {
       try
       {
@@ -165,7 +165,7 @@ namespace Machine.Specifications.Model
       }
       catch (Exception err)
       {
-        return new SpecificationVerificationResult(err);
+        return new Result(err);
       }
       return null;
     }
@@ -191,9 +191,9 @@ namespace Machine.Specifications.Model
   {
     public Specification Next { get; private set; }
     public Specification Current { get; private set; }
-    public SpecificationVerificationResult Result { get; private set; }
+    public Result Result { get; private set; }
 
-    public SpecificationVerificationIteration(Specification current, SpecificationVerificationResult result, Specification next)
+    public SpecificationVerificationIteration(Specification current, Result result, Specification next)
     {
       Next = next;
       Current = current;

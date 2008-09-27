@@ -13,7 +13,7 @@ namespace Machine.Specifications.Reporting
     ContextInfo _currentContext;
     readonly Dictionary<string, List<ContextInfo>> _contextsByAssembly;
     readonly Dictionary<ContextInfo, List<SpecificationInfo>> _specificationsByContext;
-    readonly Dictionary<SpecificationInfo, SpecificationVerificationResult> _resultsBySpecification;
+    readonly Dictionary<SpecificationInfo, Result> _resultsBySpecification;
 
     public CollectReportingInformationRunListener()
     {
@@ -21,10 +21,10 @@ namespace Machine.Specifications.Reporting
       _currentContext = null;
       _contextsByAssembly = new Dictionary<string, List<ContextInfo>>();
       _specificationsByContext = new Dictionary<ContextInfo, List<SpecificationInfo>>();
-      _resultsBySpecification = new Dictionary<SpecificationInfo, SpecificationVerificationResult>();
+      _resultsBySpecification = new Dictionary<SpecificationInfo, Result>();
     }
 
-    public Dictionary<SpecificationInfo, SpecificationVerificationResult> ResultsBySpecification
+    public Dictionary<SpecificationInfo, Result> ResultsBySpecification
     {
       get { return _resultsBySpecification; }
     }
@@ -73,7 +73,7 @@ namespace Machine.Specifications.Reporting
     {
     }
 
-    public virtual void OnSpecificationEnd(SpecificationInfo specification, SpecificationVerificationResult result)
+    public virtual void OnSpecificationEnd(SpecificationInfo specification, Result result)
     {
       _specificationsByContext[_currentContext].Add(specification);
       _resultsBySpecification.Add(specification,result);

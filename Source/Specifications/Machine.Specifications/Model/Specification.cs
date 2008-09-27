@@ -43,17 +43,17 @@ namespace Machine.Specifications.Model
       return field.GetCustomAttributes(typeof(IgnoreAttribute), false).Any();
     }
 
-    public virtual SpecificationVerificationResult Verify(VerificationContext verificationContext)
+    public virtual Result Verify(VerificationContext verificationContext)
     {
       if (!IsDefined(verificationContext))
       {
-        return new SpecificationVerificationResult(Status.NotImplemented);
+        return new Result(Status.NotImplemented);
       }
 
       return InternalVerify(verificationContext);
     }
 
-    protected abstract SpecificationVerificationResult InternalVerify(VerificationContext verificationContext);
+    protected abstract Result InternalVerify(VerificationContext verificationContext);
 
     public virtual bool IsDefined(VerificationContext verificationContext)
     {

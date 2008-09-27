@@ -9,11 +9,11 @@ namespace Machine.Specifications.Model
     {
     }
 
-    protected override SpecificationVerificationResult InternalVerify(VerificationContext verificationContext)
+    protected override Result InternalVerify(VerificationContext verificationContext)
     {
       if (verificationContext.ThrownException != null)
       {
-        return new SpecificationVerificationResult(verificationContext.ThrownException);
+        return new Result(verificationContext.ThrownException);
       }
 
       try
@@ -22,10 +22,10 @@ namespace Machine.Specifications.Model
       }
       catch (TargetInvocationException exception)
       {
-        return new SpecificationVerificationResult(exception.InnerException);
+        return new Result(exception.InnerException);
       }
 
-      return new SpecificationVerificationResult(Status.Passing);
+      return new Result(Status.Passing);
     }
   }
 }

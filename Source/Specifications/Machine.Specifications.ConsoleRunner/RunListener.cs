@@ -79,7 +79,7 @@ namespace Machine.Specifications.ConsoleRunner
       _console.Write("» " + specification.Name);
     }
 
-    public void OnSpecificationEnd(SpecificationInfo specification, SpecificationVerificationResult result)
+    public void OnSpecificationEnd(SpecificationInfo specification, Result result)
     {
       _specificationCount += 1;
       switch(result.Status)

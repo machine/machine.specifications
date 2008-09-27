@@ -63,7 +63,7 @@
     <Compile Include="Model\Subject.cs" />
     <Compile Include="Model\ItSpecification.cs" />
     <Compile Include="Model\Specification.cs" />
-    <Compile Include="SpecificationVerificationResult.cs" />
+    <Compile Include="Result.cs" />
     <Compile Include="Model\Context.cs" />
     <Compile Include="Model\VerificationContext.cs" />
     <Compile Include="Model\DelegateField.cs" />

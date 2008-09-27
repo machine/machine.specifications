@@ -15,7 +15,7 @@ namespace Machine.Specifications.TDNetRunner
       _formatters[Status.NotImplemented] = new NotImplementedResultFormatter();
     }
 
-    public IResultFormatter GetResultFormatterFor(SpecificationVerificationResult verificationResult)
+    public IResultFormatter GetResultFormatterFor(Result verificationResult)
     {
       if (_formatters.ContainsKey(verificationResult.Status))
       {

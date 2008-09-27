@@ -13,7 +13,7 @@ namespace Machine.Specifications.Reporting
 	  private static string _path;
 	  private static Dictionary<string, List<ContextInfo>> _contextsByAssembly;
     private static Dictionary<ContextInfo, List<SpecificationInfo>> _specificationsByContext;
-    private static Dictionary<SpecificationInfo, SpecificationVerificationResult> _resultsBySpecification;
+    private static Dictionary<SpecificationInfo, Result> _resultsBySpecification;
 	  private static bool _showTimeInfo;
 	  private const string noContextKey = "none";
 
@@ -27,7 +27,7 @@ namespace Machine.Specifications.Reporting
       _path = path;
     }
 
-	  public ReportGenerator(string path, Dictionary<string, List<ContextInfo>> contextsByAssembly, Dictionary<ContextInfo, List<SpecificationInfo>> specificationsByContext, Dictionary<SpecificationInfo, SpecificationVerificationResult> resultsBySpecification, bool showTimeInfo)
+	  public ReportGenerator(string path, Dictionary<string, List<ContextInfo>> contextsByAssembly, Dictionary<ContextInfo, List<SpecificationInfo>> specificationsByContext, Dictionary<SpecificationInfo, Result> resultsBySpecification, bool showTimeInfo)
 	  {
 	    _path = path;
 	    _contextsByAssembly = contextsByAssembly;
@@ -249,9 +249,9 @@ namespace Machine.Specifications.Reporting
       return count > 0 ? String.Format(", <span class=\""+formatClass+"\">{0} {1}</span>", count, Pluralize(itemToPluralize, count)) : string.Empty;
     }
 
-	  private static List<SpecificationVerificationResult> iterateOverSpecsAndReturnThoseThatMatchResults(ContextInfo context, Status status)
+	  private static List<Result> iterateOverSpecsAndReturnThoseThatMatchResults(ContextInfo context, Status status)
     {
-      var niResults = new List<SpecificationVerificationResult>();
+      var niResults = new List<Result>();
       _specificationsByContext[context].ForEach(spec =>
       {
         if (_resultsBySpecification[spec].Status == status)
@@ -345,7 +345,7 @@ namespace Machine.Specifications.Reporting
 
 			foreach (SpecificationInfo specification in specifications)
 			{
-			  SpecificationVerificationResult result = _resultsBySpecification[specification];
+			  Result result = _resultsBySpecification[specification];
 			  string specificationListItem = "";
         switch (result.Status)
         {

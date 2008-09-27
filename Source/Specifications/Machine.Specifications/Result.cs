@@ -11,7 +11,7 @@ namespace Machine.Specifications
   }
 
   [Serializable]
-  public class SpecificationVerificationResult
+  public class Result
   {
     readonly Status _status;
 
@@ -27,25 +27,25 @@ namespace Machine.Specifications
       get { return _status; }
     }
 
-    public SpecificationVerificationResult(Exception exception)
+    public Result(Exception exception)
     {
       _status = Status.Failing;
       this.Exception = exception;
     }
 
-    public SpecificationVerificationResult()
+    public Result()
     {
       _status = Status.Passing;
     }
 
-    public SpecificationVerificationResult(Status status)
+    public Result(Status status)
     {
       _status = status;
     }
 
-    public static SpecificationVerificationResult Ignored
+    public static Result Ignored
     {
-      get { return new SpecificationVerificationResult(Status.Ignored); }
+      get { return new Result(Status.Ignored); }
     }
   }
 }
