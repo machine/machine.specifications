@@ -11,10 +11,6 @@ namespace Machine.Specifications.TDNetRunner
 {
   public class SpecificationRunner : ITestRunner
   {
-    public SpecificationRunner()
-    {
-    }
-
     public TestRunState RunAssembly(ITestListener testListener, Assembly assembly)
     {
       var listener = new TDNetRunListener(testListener);

@@ -20,13 +20,20 @@ namespace Machine.Specifications.Factories
 
     public Context CreateContextFrom(object instance, FieldInfo fieldInfo)
     {
-      return CreateContextFrom(instance, new[] {fieldInfo});
+      if (fieldInfo.FieldType == typeof(It))
+      {
+        return CreateContextFrom(instance, new[] {fieldInfo});
+      }
+      else
+      {
+        return CreateContextFrom(instance);
+      }
     }
 
     public Context CreateContextFrom(object instance)
     {
       var type = instance.GetType();
-      var fieldInfos = type.GetPrivateFields();
+      var fieldInfos = type.GetPrivateFieldsOfType<It>();
 
       return CreateContextFrom(instance, fieldInfos);
     }

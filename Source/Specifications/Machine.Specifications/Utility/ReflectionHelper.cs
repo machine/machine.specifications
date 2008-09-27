@@ -13,6 +13,11 @@ namespace Machine.Specifications.Utility
       return type.GetFields(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.NonPublic);
     }
 
+    public static IEnumerable<FieldInfo> GetPrivateFieldsOfType<T>(this Type type)
+    {
+      return type.GetFields(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.NonPublic).Where(x=>x.FieldType == typeof(T));
+    }
+
     public static IEnumerable<FieldInfo> GetPrivateFieldsWith(this Type type, Type fieldType)
     {
       return type.GetPrivateFields().Where(x=>x.FieldType == fieldType);
