@@ -53,6 +53,18 @@ namespace Machine.Specifications.Runner
 
     It should_not_run_the_spec =()=>
       context_with_ignore_on_one_spec.IgnoredSpecRan.ShouldBeFalse();
+
+    It should_not_establish_the_context =()=>
+      context_with_ignore_on_one_spec.ContextEstablished.ShouldBeFalse();
+
+    It should_not_establish_the_one_time_context =()=>
+      context_with_ignore_on_one_spec.OneTimeContextEstablished.ShouldBeFalse();
+
+    It should_not_cleanup =()=>
+      context_with_ignore_on_one_spec.CleanupOccurred.ShouldBeFalse();
+
+    It should_not_perform_one_time_cleanup =()=>
+      context_with_ignore_on_one_spec.CleanupOnceOccurred.ShouldBeFalse();
   }
 
 }

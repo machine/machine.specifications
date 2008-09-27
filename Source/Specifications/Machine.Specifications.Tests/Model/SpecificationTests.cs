@@ -15,7 +15,7 @@ namespace Machine.Specifications.Model
     public override void BeforeEachTest()
     {
       base.BeforeEachTest();
-      var results = context.Verify();
+      var results = context.VerifyAllSpecifications();
     }
 
     [Test]

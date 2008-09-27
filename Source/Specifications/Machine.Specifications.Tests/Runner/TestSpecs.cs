@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Machine.Specifications.Runner
 {
-  public class context_with_ignore_on_one_spec
+  public class context_with_ignore_on_one_spec : context_with_no_specs
   {
     public static bool IgnoredSpecRan;
 

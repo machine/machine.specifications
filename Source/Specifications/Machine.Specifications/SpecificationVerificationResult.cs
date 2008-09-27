@@ -7,6 +7,7 @@ namespace Machine.Specifications
     Failing,
     Passing,
     NotImplemented,
+    Ignored
   }
 
   [Serializable]
@@ -40,6 +41,11 @@ namespace Machine.Specifications
     public SpecificationVerificationResult(Status status)
     {
       _status = status;
+    }
+
+    public static SpecificationVerificationResult Ignored
+    {
+      get { return new SpecificationVerificationResult(Status.Ignored); }
     }
   }
 }

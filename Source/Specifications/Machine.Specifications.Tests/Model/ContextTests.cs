@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 
@@ -6,36 +7,36 @@ namespace Machine.Specifications.Model
   [TestFixture]
   public class ExpectingThrowButDoesntTests : With<ContextWithSpecificationExpectingThrowThatDoesnt>
   {
-    ContextVerificationResult results;
+    IEnumerable<SpecificationVerificationResult> results;
 
     public override void BeforeEachTest()
     {
       base.BeforeEachTest();
-      results = context.Verify();
+      results = context.VerifyAllSpecifications();
     }
 
     [Test]
     public void ShouldHaveException()
     {
-      results.SpecificationResults.First().Exception.ShouldNotBeNull();
+      results.First().Exception.ShouldNotBeNull();
     }
 
     [Test]
     public void ShouldFail()
     {
-      results.SpecificationResults.First().Passed.ShouldBeFalse();
+      results.First().Passed.ShouldBeFalse();
     }
   }
 
   [TestFixture]
   public class ThrowingWhenTests : With<ContextWithThrowingWhenAndPassingSpecification>
   {
-    ContextVerificationResult results;
+    IEnumerable<SpecificationVerificationResult> results;
 
     public override void BeforeEachTest()
     {
       base.BeforeEachTest();
-      results = context.Verify();
+      results = context.VerifyAllSpecifications();
     }
 
     [Test]
@@ -47,7 +48,7 @@ namespace Machine.Specifications.Model
     [Test]
     public void ShouldFail()
     {
-      results.SpecificationResults.First().Passed.ShouldBeFalse();
+      results.First().Passed.ShouldBeFalse();
     }
   }
 
@@ -57,7 +58,7 @@ namespace Machine.Specifications.Model
     public override void BeforeEachTest()
     {
       base.BeforeEachTest();
-      var results = context.Verify();
+      var results = context.VerifyAllSpecifications();
     }
 
     [Test]
@@ -70,12 +71,12 @@ namespace Machine.Specifications.Model
   [TestFixture]
   public class EmptySpecificationTests : With<ContextWithEmptySpecification>
   {
-    ContextVerificationResult results;
+    IEnumerable<SpecificationVerificationResult> results;
 
     public override void BeforeEachTest()
     {
       base.BeforeEachTest();
-      results = context.Verify();
+      results = context.VerifyAllSpecifications();
     }
 
     [Test]
@@ -87,13 +88,13 @@ namespace Machine.Specifications.Model
     [Test]
     public void ShouldHaveNotImplementedResult()
     {
-      results.SpecificationResults.First().Status.ShouldEqual(Status.NotImplemented);
+      results.First().Status.ShouldEqual(Status.NotImplemented);
     }
     
     [Test]
     public void ShouldHaveFailedResult()
     {
-      results.SpecificationResults.First().Passed.ShouldBeFalse();
+      results.First().Passed.ShouldBeFalse();
     }
   }
 
@@ -103,7 +104,7 @@ namespace Machine.Specifications.Model
     public override void BeforeEachTest()
     {
       base.BeforeEachTest();
-      var results = context.Verify();
+      var results = context.VerifyAllSpecifications();
     }
 
     [Test]

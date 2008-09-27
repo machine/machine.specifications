@@ -10,6 +10,7 @@ namespace Machine.Specifications.Model
   {
     readonly string _specificationPrefix;
     readonly DelegateField _specificationField;
+    readonly bool _isIgnored;
 
     public FieldInfo SpecificationField
     {
@@ -21,14 +22,25 @@ namespace Machine.Specifications.Model
       get { return _specificationPrefix + _specificationField.Name; }
     }
 
+    public bool IsIgnored
+    {
+      get { return _isIgnored; }
+    }
+
     protected Specification(FieldInfo itField) : this("", itField)
     {
     }
 
     protected Specification(string specificationPrefix, FieldInfo itField)
     {
+      _isIgnored = DetermineIfIgnored(itField);
       _specificationPrefix = specificationPrefix;
       _specificationField = new DelegateField(itField);
+    }
+
+    static bool DetermineIfIgnored(FieldInfo field)
+    {
+      return field.GetCustomAttributes(typeof(IgnoreAttribute), false).Any();
     }
 
     public virtual SpecificationVerificationResult Verify(VerificationContext verificationContext)

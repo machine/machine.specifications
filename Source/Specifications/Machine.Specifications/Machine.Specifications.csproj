@@ -65,7 +65,6 @@
     <Compile Include="Model\Specification.cs" />
     <Compile Include="SpecificationVerificationResult.cs" />
     <Compile Include="Model\Context.cs" />
-    <Compile Include="DescriptionVerificationResult.cs" />
     <Compile Include="Model\VerificationContext.cs" />
     <Compile Include="Model\DelegateField.cs" />
     <Compile Include="Runner\AggregateRunListener.cs" />
@@ -84,7 +83,6 @@
     <Compile Include="Utility\RandomExtensionMethods.cs" />
     <Compile Include="Utility\ReflectionHelper.cs" />
     <Compile Include="SpecificationExceptions.cs" />
-    <Compile Include="Verifiers\DescriptionVerifier.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

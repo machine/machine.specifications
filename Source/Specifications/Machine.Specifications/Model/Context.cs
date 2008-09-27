@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-
 using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Model
@@ -64,33 +61,59 @@ namespace Machine.Specifications.Model
       _specifications.Add(specification);
     }
 
-    public ContextVerificationResult Verify()
+    public IEnumerable<SpecificationVerificationResult> VerifyAllSpecifications()
     {
-      var verificationResults = VerifySpecifications();
-      return new ContextVerificationResult(verificationResults);
+      return EnumerateAndVerifyAllSpecifications().Where(x => x.Result != null).Select(x => x.Result).ToList();
     }
 
-    IEnumerable<SpecificationVerificationResult> VerifySpecifications()
+    public IEnumerable<SpecificationVerificationIteration> EnumerateAndVerifyAllSpecifications()
     {
-      _beforeAlls.InvokeAll();
-      var results = ExecuteSpecifications();
-      _afterAlls.InvokeAll();
+      if (!Specifications.Any()) yield break;
 
-      return results;
-    }
+      bool hasRunnableSpecifications = Specifications.Where(x => !x.IsIgnored).Any();
 
-    IEnumerable<SpecificationVerificationResult> ExecuteSpecifications()
-    {
-      var results = new List<SpecificationVerificationResult>();
-      foreach (Specification specification in _specifications)
+      if (hasRunnableSpecifications)
       {
-        var result = VerifySpecification(specification);
-        results.Add(result);
+        try
+        {
+          _beforeAlls.InvokeAll();
+        }
+        catch (Exception err)
+        {
+          
+          throw;
+        }
       }
 
-      return results;
+      SpecificationVerificationResult result = null;
+      Specification current = null;
+      foreach (var next in Specifications)
+      {
+        yield return new SpecificationVerificationIteration(current, result, next);
+        current = next;
+        result = VerifyOrIgnoreSpecification(current);
+      }
+
+      yield return new SpecificationVerificationIteration(current, result, null);
+
+      if (hasRunnableSpecifications)
+      {
+        _afterAlls.InvokeAll();
+      }
     }
 
+    private SpecificationVerificationResult VerifyOrIgnoreSpecification(Specification specification)
+    {
+      if (specification.IsIgnored)
+      {
+        return SpecificationVerificationResult.Ignored;
+      }
+      else
+      {
+        return VerifySpecification(specification);
+      }
+    }
+    
     public SpecificationVerificationResult VerifySpecification(Specification specification)
     {
       VerificationContext context = new VerificationContext(_instance);
@@ -161,6 +184,20 @@ namespace Machine.Specifications.Model
 
         return line + Name;
       }
+    }
+  }
+
+  public class SpecificationVerificationIteration
+  {
+    public Specification Next { get; private set; }
+    public Specification Current { get; private set; }
+    public SpecificationVerificationResult Result { get; private set; }
+
+    public SpecificationVerificationIteration(Specification current, SpecificationVerificationResult result, Specification next)
+    {
+      Next = next;
+      Current = current;
+      Result = result;
     }
   }
 }

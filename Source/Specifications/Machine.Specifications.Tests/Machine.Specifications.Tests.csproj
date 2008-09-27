@@ -62,10 +62,9 @@
     <Compile Include="Model\SpecificationTests.cs" />
     <Compile Include="Model\ContextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Runner\AppDomainRunnerTests.cs" />
-    <Compile Include="Runner\SpecificationRunner.cs" />
+    <Compile Include="Runner\AppDomainRunnerSpecs.cs" />
+    <Compile Include="Runner\SpecificationRunnerSpecs.cs" />
     <Compile Include="Runner\TestSpecs.cs" />
-    <Compile Include="Verifiers\SpecificationVerifierTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications.Example\Machine.Specifications.Example.csproj">

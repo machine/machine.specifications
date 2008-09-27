@@ -69,26 +69,24 @@ namespace Machine.Specifications.Runner
       foreach (var context in contexts)
       {
         if (context.Specifications.Count() == 0) continue;
-        _listener.OnContextStart(context.GetInfo());
-        context.RunContextBeforeAll();
 
-        foreach (var specification in context.Specifications)
+        _listener.OnContextStart(context.GetInfo());
+
+        foreach (var iteration in context.EnumerateAndVerifyAllSpecifications())
         {
-          GetTestResult(context, specification);
+          if (iteration.Current != null)
+          {
+            _listener.OnSpecificationEnd(iteration.Current.GetInfo(), iteration.Result);
+          }
+
+          if (iteration.Next != null)
+          {
+            _listener.OnSpecificationStart(iteration.Next.GetInfo());
+          }
         }
 
-        context.RunContextAfterAll();
         _listener.OnContextEnd(context.GetInfo());
       }
-    }
-
-    void GetTestResult(Context context, Specification specification)
-    {
-      _listener.OnSpecificationStart(specification.GetInfo());
-
-      var result = context.VerifySpecification(specification);
-
-      _listener.OnSpecificationEnd(specification.GetInfo(), result);
     }
 
     public void RunNamespace(Assembly assembly, string targetNamespace)
