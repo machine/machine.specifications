@@ -6,6 +6,7 @@ using System.Text;
 
 using Machine.Specifications.Explorers;
 using Machine.Specifications.Model;
+using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Runner
 {
@@ -24,6 +25,15 @@ namespace Machine.Specifications.Runner
     {
       var contexts = _explorer.FindContextsIn(assembly);
       var map = CreateMap(assembly, contexts);
+
+      StartRun(map);
+    }
+
+    public void RunAssemblies(IEnumerable<Assembly> assemblies)
+    {
+      var map = new Dictionary<Assembly, IEnumerable<Context>>();
+
+      assemblies.Each(assembly => map.Add(assembly, _explorer.FindContextsIn(assembly)));
 
       StartRun(map);
     }

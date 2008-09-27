@@ -5,21 +5,65 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Machine.Specifications.Model;
+using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Runner
 {
   public class AppDomainRunner : ISpecificationRunner
   {
-    readonly ISpecificationRunListener listener;
+    readonly ISpecificationRunListener _listener;
+    readonly ISpecificationRunListener _internalListener;
 
     public AppDomainRunner(ISpecificationRunListener listener)
     {
-      this.listener = new RemoteRunListener(listener);
+      _internalListener = listener;
+      _listener = new RemoteRunListener(listener);
     }
 
     public void RunAssembly(Assembly assembly)
     {
+      _internalListener.OnRunStart();
+
+      InternalRunAssembly(assembly);
+
+      _internalListener.OnRunEnd();
+    }
+
+    public void RunAssemblies(IEnumerable<Assembly> assemblies)
+    {
+      _internalListener.OnRunStart();
+
+      assemblies.Each(InternalRunAssembly);
+
+      _internalListener.OnRunEnd();
+    }
+
+    public void RunNamespace(Assembly assembly, string targetNamespace)
+    {
+      _internalListener.OnRunStart();
       AppDomain appDomain = CreateAppDomain(assembly);
+
+      CreateRunner("Namespace", appDomain, assembly, targetNamespace);
+
+      AppDomain.Unload(appDomain);
+      _internalListener.OnRunEnd();
+    }
+
+    public void RunMember(Assembly assembly, MemberInfo member)
+    {
+      _internalListener.OnRunStart();
+      AppDomain appDomain = CreateAppDomain(assembly);
+
+      CreateRunner("Member", appDomain, assembly, member);
+
+      AppDomain.Unload(appDomain);
+      _internalListener.OnRunEnd();
+    }
+
+    void InternalRunAssembly(Assembly assembly)
+    {
+      AppDomain appDomain = CreateAppDomain(assembly);
+
       CreateRunner("Assembly", appDomain, assembly);
 
       AppDomain.Unload(appDomain);
@@ -32,7 +76,7 @@ namespace Machine.Specifications.Runner
       var mspecAssemblyName = AssemblyName.GetAssemblyName(mspecAssemblyFilename);
 
       var constructorArgs = new object[args.Length + 2];
-      constructorArgs[0] = listener;
+      constructorArgs[0] = _listener;
       constructorArgs[1] = assembly;
       Array.Copy(args, 0, constructorArgs, 2, args.Length);
 
@@ -48,22 +92,6 @@ namespace Machine.Specifications.Runner
       appDomainSetup.ConfigurationFile = GetConfigFile(assembly);
 
       return AppDomain.CreateDomain(appDomainSetup.ApplicationName, null, appDomainSetup);
-    }
-
-    public void RunNamespace(Assembly assembly, string targetNamespace)
-    {
-      AppDomain appDomain = CreateAppDomain(assembly);
-      CreateRunner("Namespace", appDomain, assembly, targetNamespace);
-
-      AppDomain.Unload(appDomain);
-    }
-
-    public void RunMember(Assembly assembly, MemberInfo member)
-    {
-      AppDomain appDomain = CreateAppDomain(assembly);
-      CreateRunner("Member", appDomain, assembly, member);
-
-      AppDomain.Unload(appDomain);
     }
 
     static string GetConfigFile(Assembly assembly)

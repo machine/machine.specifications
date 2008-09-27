@@ -27,12 +27,10 @@ namespace Machine.Specifications.Runner
 
     public void OnRunStart()
     {
-      _listener.OnRunStart();
     }
 
     public void OnRunEnd()
     {
-      _listener.OnRunEnd();
     }
 
     public void OnContextStart(ContextInfo context)

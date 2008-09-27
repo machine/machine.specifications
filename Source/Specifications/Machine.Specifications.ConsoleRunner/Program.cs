@@ -69,6 +69,7 @@ namespace Machine.Specifications.ConsoleRunner
         var listener = new AggregateRunListener(listeners);
         
         ISpecificationRunner specificationRunner = new AppDomainRunner(listener);
+        List<Assembly> assemblies = new List<Assembly>();
         foreach (string assemblyName in options.AssemblyFiles)
         {
           if (!File.Exists(assemblyName))
@@ -77,8 +78,10 @@ namespace Machine.Specifications.ConsoleRunner
           }
 
           Assembly assembly = Assembly.LoadFrom(assemblyName);
-          specificationRunner.RunAssembly(assembly);
+          assemblies.Add(assembly);
         }
+
+        specificationRunner.RunAssemblies(assemblies);
       }
       catch(Exception ex)
       {
