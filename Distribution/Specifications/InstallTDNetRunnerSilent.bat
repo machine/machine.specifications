@@ -13,3 +13,4 @@ echo @="5" >> MSpecTDNet.reg
 
 regedit /s MSpecTDNet.reg 
 
+del MSpecTDNet.reg
