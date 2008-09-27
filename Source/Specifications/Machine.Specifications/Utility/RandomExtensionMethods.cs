@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace Machine.Specifications.Utility
 {
@@ -25,6 +27,11 @@ namespace Machine.Specifications.Utility
       {
         contextAction();
       }
+    }
+
+    public static bool HasAttribute<TAttribute>(this ICustomAttributeProvider attributeProvider)
+    {
+      return attributeProvider.GetCustomAttributes(typeof(TAttribute), true).Any();
     }
   }
 }

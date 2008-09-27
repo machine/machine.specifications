@@ -54,7 +54,8 @@ namespace Machine.Specifications.Factories
 
       var concern = ExtractSubject(type);
 
-      var context = new Context(type, instance, beforeEachs, beforeAlls, becauses.FirstOrDefault(), afterEachs, afterAlls, concern);
+      var isIgnored = type.HasAttribute<IgnoreAttribute>();
+      var context = new Context(type, instance, beforeEachs, beforeAlls, becauses.FirstOrDefault(), afterEachs, afterAlls, concern, isIgnored);
 
       foreach (FieldInfo info in fieldInfos)
       {

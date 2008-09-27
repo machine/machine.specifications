@@ -13,17 +13,13 @@ namespace Machine.Specifications.Factories
   {
     public Specification CreateSpecification(Context context, FieldInfo specificationField)
     {
-      bool isIgnored = DetermineIfIgnored(specificationField);
+      bool isIgnored = context.IsIgnored || specificationField.HasAttribute<IgnoreAttribute>();
       It it = (It)specificationField.GetValue(context.Instance);
       string name = specificationField.Name.ReplaceUnderscores().Trim();
 
       return new Specification(name, it, isIgnored, specificationField);
     }
 
-    static bool DetermineIfIgnored(FieldInfo field)
-    {
-      return field.GetCustomAttributes(typeof(IgnoreAttribute), false).Any();
-    }
 
   }
 }

@@ -16,6 +16,7 @@ namespace Machine.Specifications.Model
     readonly IEnumerable<Cleanup> _afterEachs;
     readonly IEnumerable<Cleanup> _afterAlls;
     public string Name { get; private set; }
+    public bool IsIgnored { get; private set; }
 
     public object Instance
     {
@@ -46,7 +47,7 @@ namespace Machine.Specifications.Model
 
     public Context(Type type, object instance, IEnumerable<Establish> beforeEachs,
       IEnumerable<Establish> beforeAlls, Because because, IEnumerable<Cleanup> afterEachs,
-      IEnumerable<Cleanup> afterAlls, Subject subject)
+      IEnumerable<Cleanup> afterAlls, Subject subject, bool isIgnored)
     {
       Name = type.Name.ReplaceUnderscores();
       Type = type;
@@ -58,7 +59,7 @@ namespace Machine.Specifications.Model
       _beforeEachs = beforeEachs;
       _specifications = new List<Specification>();
       _subject = subject;
-      
+      IsIgnored = isIgnored;
     }
 
     public void AddSpecification(Specification specification)
