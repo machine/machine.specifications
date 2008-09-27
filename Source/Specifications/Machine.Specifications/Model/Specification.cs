@@ -10,16 +10,16 @@ namespace Machine.Specifications.Model
   {
     readonly string _specificationPrefix;
     readonly DelegateField _specificationField;
-    readonly DelegateField _whenField;
+    readonly DelegateField _becauseField;
 
     public FieldInfo SpecificationField
     {
       get { return _specificationField.Field; }
     }
 
-    public FieldInfo WhenField
+    public FieldInfo BecauseField
     {
-      get { return _whenField.Field; }
+      get { return _becauseField.Field; }
     }
 
     public string Name
@@ -27,27 +27,27 @@ namespace Machine.Specifications.Model
       get { return _specificationPrefix + _specificationField.Name; }
     }
 
-    public string WhenClause
+    public string BecauseClause
     {
-      get { return _whenField.Name; }
+      get { return _becauseField.Name; }
     }
 
-    public bool HasWhenClause
+    public bool HasBecauseClause
     {
-      get { return _whenField != null; }
+      get { return _becauseField != null; }
     }
 
-    protected Specification(FieldInfo itField, FieldInfo whenField) : this("", itField, whenField)
+    protected Specification(FieldInfo itField, FieldInfo becauseField) : this("", itField, becauseField)
     {
     }
 
-    protected Specification(string specificationPrefix, FieldInfo itField, FieldInfo whenField)
+    protected Specification(string specificationPrefix, FieldInfo itField, FieldInfo becauseField)
     {
       _specificationPrefix = specificationPrefix;
       _specificationField = new DelegateField(itField);
-      if (whenField != null)
+      if (becauseField != null)
       {
-        _whenField = new DelegateField(whenField);
+        _becauseField = new DelegateField(becauseField);
       }
     }
 
@@ -58,18 +58,18 @@ namespace Machine.Specifications.Model
         return new SpecificationVerificationResult(Status.NotImplemented);
       }
 
-      InvokeWhenField(verificationContext);
+      InvokeBecauseField(verificationContext);
 
       return InternalVerify(verificationContext);
     }
 
-    void InvokeWhenField(VerificationContext verificationContext)
+    void InvokeBecauseField(VerificationContext verificationContext)
     {
-      if (_whenField != null && _whenField.CanInvokeOn(verificationContext.Instance))
+      if (_becauseField != null && _becauseField.CanInvokeOn(verificationContext.Instance))
       {
         try
         {
-          _whenField.InvokeOn(verificationContext.Instance);
+          _becauseField.InvokeOn(verificationContext.Instance);
         }
         catch (TargetInvocationException exception)
         {
