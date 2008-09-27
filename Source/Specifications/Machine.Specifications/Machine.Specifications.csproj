@@ -53,6 +53,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Catch.cs" />
+    <Compile Include="Factories\ITagExtractor.cs" />
     <Compile Include="Model\Tag.cs" />
     <Compile Include="SubjectAttribute.cs" />
     <Compile Include="Explorers\AssemblyExplorer.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Runner\RemoteRunListener.cs" />
     <Compile Include="Runner\SpecificationInfo.cs" />
     <Compile Include="Runner\SpecificationRunner.cs" />
+    <Compile Include="Tags.cs" />
     <Compile Include="TagsAttribute.cs" />
     <Compile Include="Utility\Naming.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

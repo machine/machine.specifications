@@ -7,13 +7,13 @@ namespace Machine.Specifications.Specs
 {
   [Tags(tag.example, tag.example)]
   [Tags(tag.example)]
-  public class context_with_duplicate_tags 
+  public class context_with_duplicate_tags : Tags<example>
   {
     It bla_bla = ()=> { };
   }
 
-  [Tags(tag.example, tag.some_other_tag, tag.one_more_tag)]
-  public class context_with_tags 
+  [Tags(tag.some_other_tag, tag.one_more_tag)]
+  public class context_with_tags : Tags<example>
   {
     It bla_bla = ()=> { };
   }

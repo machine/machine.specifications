@@ -81,9 +81,8 @@ namespace Machine.Specifications.Factories
 
     static IEnumerable<Tag> ExtractTags(Type type)
     {
-      var tags = type.GetCustomAttributes(typeof(TagsAttribute), true).SelectMany(x => ((TagsAttribute)x).Tags).Distinct();
-
-      return tags.ToList();
+      var extractor = new HybridTagExtractor();
+      return extractor.ExtractTags(type);
     }
 
     static Subject ExtractSubject(Type type)
