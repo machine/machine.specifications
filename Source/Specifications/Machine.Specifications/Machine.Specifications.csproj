@@ -61,7 +61,6 @@
     <Compile Include="IAssemblyContext.cs" />
     <Compile Include="IgnoreAttribute.cs" />
     <Compile Include="Model\Subject.cs" />
-    <Compile Include="Model\ItSpecification.cs" />
     <Compile Include="Model\Specification.cs" />
     <Compile Include="Result.cs" />
     <Compile Include="Model\Context.cs" />

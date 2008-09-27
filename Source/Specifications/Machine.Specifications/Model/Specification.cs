@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Machine.Specifications.Model
 {
-  public abstract class Specification
+  public class Specification
   {
     readonly DelegateField _specificationField;
     readonly bool _isIgnored;
@@ -26,7 +26,7 @@ namespace Machine.Specifications.Model
       get { return _isIgnored; }
     }
 
-    protected Specification(FieldInfo itField) 
+    public Specification(FieldInfo itField) 
     {
       _isIgnored = DetermineIfIgnored(itField);
       _specificationField = new DelegateField(itField);
@@ -47,7 +47,24 @@ namespace Machine.Specifications.Model
       return InternalVerify(verificationContext);
     }
 
-    protected abstract Result InternalVerify(VerificationContext verificationContext);
+    protected virtual Result InternalVerify(VerificationContext verificationContext)
+    {
+      if (verificationContext.ThrownException != null)
+      {
+        return Result.Failure(verificationContext.ThrownException);
+      }
+
+      try
+      {
+        InvokeSpecificationField(verificationContext);
+      }
+      catch (TargetInvocationException exception)
+      {
+        return Result.Failure(exception.InnerException);
+      }
+
+      return Result.Pass();
+    }
 
     public virtual bool IsDefined(VerificationContext verificationContext)
     {
