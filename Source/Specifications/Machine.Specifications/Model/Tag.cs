@@ -1,25 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Machine.Specifications.Model
+﻿namespace Machine.Specifications.Model
 {
   public class Tag
   {
-    readonly Type type;
-    public string Name { get { return type.Name; } }
+    readonly string _name;
+    public string Name { get { return _name; } }
 
-    public Tag(Type type)
+    public Tag(string name)
     {
-      this.type = type;
+      _name = name;
     }
 
     public bool Equals(Tag obj)
     {
       if (ReferenceEquals(null, obj)) return false;
       if (ReferenceEquals(this, obj)) return true;
-      return Equals(obj.type, type);
+      return Equals(obj._name, _name);
     }
 
     public override bool Equals(object obj)
@@ -32,7 +27,7 @@ namespace Machine.Specifications.Model
 
     public override int GetHashCode()
     {
-      return (type != null ? type.GetHashCode() : 0);
+      return (_name != null ? _name.GetHashCode() : 0);
     }
   }
 }

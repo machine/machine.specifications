@@ -5,12 +5,15 @@ using System.Text;
 
 namespace Machine.Specifications.Specs
 {
-  public class context_with_duplicate_tags : Tags<example>, Tags<example, example>
+  [Tags(tag.example, tag.example)]
+  [Tags(tag.example)]
+  public class context_with_duplicate_tags 
   {
     It bla_bla = ()=> { };
   }
 
-  public class context_with_tags : Tags<example>, Tags<some_other_tag, one_more_tag>
+  [Tags(tag.example, tag.some_other_tag, tag.one_more_tag)]
+  public class context_with_tags 
   {
     It bla_bla = ()=> { };
   }
@@ -33,7 +36,9 @@ namespace Machine.Specifications.Specs
       IgnoredSpecRan = true;
   }
 
-  public class context_with_no_specs : Tags<example>
+
+  [Tags(tag.example)]
+  public class context_with_no_specs 
   {
     public static bool ContextEstablished;
     public static bool OneTimeContextEstablished;
@@ -62,7 +67,8 @@ namespace Machine.Specifications.Specs
   }
 
   [Subject(typeof(int), "Some description")]
-  public class context_with_subject : Tags<example>
+  [Tags(tag.example)]
+  public class context_with_subject
   {
     public void Reset()
     {
