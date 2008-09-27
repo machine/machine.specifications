@@ -13,9 +13,9 @@ namespace Machine.Specifications.Runner
     public static ContextInfo GetInfo(this Context context)
     {
       string concern = "";
-      if (context.Concern != null)
+      if (context.Subject != null)
       {
-        concern = context.Concern.FullConcern;
+        concern = context.Subject.FullConcern;
       }
 
       return new ContextInfo(context.Name, concern);

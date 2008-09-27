@@ -60,7 +60,7 @@
     <Compile Include="Factories\ContextFactory.cs" />
     <Compile Include="IAssemblyContext.cs" />
     <Compile Include="IgnoreAttribute.cs" />
-    <Compile Include="Model\Concern.cs" />
+    <Compile Include="Model\Subject.cs" />
     <Compile Include="Model\ItSpecification.cs" />
     <Compile Include="Model\Specification.cs" />
     <Compile Include="SpecificationVerificationResult.cs" />

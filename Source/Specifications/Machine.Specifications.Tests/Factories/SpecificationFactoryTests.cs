@@ -59,9 +59,8 @@ namespace Machine.Specifications.Factories
     {
       Type type = typeof(ContextWithEmptySpecification);
       FieldInfo field = type.GetPrivateFieldsWith(typeof(It)).First();
-      FieldInfo whenField = type.GetPrivateFieldsWith(typeof(Because)).First();
 
-      specification = Target.CreateSpecification(field, whenField);
+      specification = Target.CreateSpecification(field);
     }
   }
 
@@ -72,9 +71,8 @@ namespace Machine.Specifications.Factories
     {
       Type type = typeof(ContextWithSingleSpecification);
       FieldInfo field = type.GetPrivateFieldsWith(typeof(It)).First();
-      FieldInfo whenField = type.GetPrivateFieldsWith(typeof(Because)).First();
 
-      specification = Target.CreateSpecification(field, whenField);
+      specification = Target.CreateSpecification(field);
     }
   }
 
@@ -85,9 +83,8 @@ namespace Machine.Specifications.Factories
     {
       Type type = typeof(ContextWithThrowingSpecification);
       FieldInfo field = type.GetPrivateFieldsWith(typeof(It)).First();
-      FieldInfo whenField = type.GetPrivateFieldsWith(typeof(Because)).First();
 
-      specification = Target.CreateSpecification(field, whenField);
+      specification = Target.CreateSpecification(field);
     }
   }
 

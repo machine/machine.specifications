@@ -100,7 +100,7 @@ namespace Machine.Specifications
   {
     public static bool ItInvoked = false;
 
-    Because nothing_happens;
+    Because of;
 
     It should_do_stuff =()=>
     {
@@ -153,7 +153,7 @@ namespace Machine.Specifications
   {
     public static bool WhenInvoked = false;
 
-    Because not_called =()=>
+    Because of =()=>
     {
       WhenInvoked = true;
     };
@@ -199,7 +199,7 @@ namespace Machine.Specifications
 
   public class ContextWithSingleSpecification : IFakeContext
   {
-    public static bool WhenInvoked = false;
+    public static bool BecauseInvoked = false;
     public static bool ItInvoked = false;
     public static bool BeforeEachInvoked = false;
     public static bool BeforeAllInvoked = false;
@@ -216,9 +216,9 @@ namespace Machine.Specifications
       BeforeAllInvoked = true;
     };
 
-    Because it_happens = () =>
+    Because of = () =>
     {
-      WhenInvoked = true;
+      BecauseInvoked = true;
     };
 
     It is_a_specification = () =>
@@ -238,7 +238,7 @@ namespace Machine.Specifications
 
     public void Reset()
     {
-      WhenInvoked = false;
+      BecauseInvoked = false;
       ItInvoked = false;
       BeforeEachInvoked = false;
       BeforeAllInvoked = false;

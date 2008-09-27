@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 using Machine.Specifications.Utility;
@@ -11,11 +12,12 @@ namespace Machine.Specifications.Model
   {
     readonly List<Specification> _specifications;
     readonly object _instance;
-    readonly Concern _concern;
-    IEnumerable<Establish> _beforeEachs;
-    IEnumerable<Establish> _beforeAlls;
-    IEnumerable<Cleanup> _afterEachs;
-    IEnumerable<Cleanup> _afterAlls;
+    readonly Subject _subject;
+    readonly IEnumerable<Establish> _beforeEachs;
+    readonly IEnumerable<Establish> _beforeAlls;
+    readonly Because _because;
+    readonly IEnumerable<Cleanup> _afterEachs;
+    readonly IEnumerable<Cleanup> _afterAlls;
     public string Name { get; private set; }
 
     public object Instance
@@ -30,14 +32,19 @@ namespace Machine.Specifications.Model
 
     public Type Type { get; private set; }
 
-    public Concern Concern
+    public Subject Subject
     {
-      get { return _concern; }
+      get { return _subject; }
+    }
+
+    public bool HasBecauseClause
+    {
+      get { return _because != null; }
     }
 
     public Context(Type type, object instance, IEnumerable<Establish> beforeEachs,
-      IEnumerable<Establish> beforeAlls, IEnumerable<Cleanup> afterEachs,
-      IEnumerable<Cleanup> afterAlls, Concern concern)
+      IEnumerable<Establish> beforeAlls, Because because, IEnumerable<Cleanup> afterEachs,
+      IEnumerable<Cleanup> afterAlls, Subject subject)
     {
       Name = type.Name.ReplaceUnderscores();
       Type = type;
@@ -45,9 +52,11 @@ namespace Machine.Specifications.Model
       _afterAlls = afterAlls;
       _afterEachs = afterEachs;
       _beforeAlls = beforeAlls;
+      _because = because;
       _beforeEachs = beforeEachs;
       _specifications = new List<Specification>();
-      _concern = concern;
+      _subject = subject;
+      
     }
 
     public void AddSpecification(Specification specification)
@@ -88,6 +97,7 @@ namespace Machine.Specifications.Model
       try
       {
         _beforeEachs.InvokeAll();
+        _because.InvokeIfNotNull();
       }
       catch (Exception err)
       {
@@ -144,9 +154,9 @@ namespace Machine.Specifications.Model
       {
         string line = "";
 
-        if (Concern != null)
+        if (Subject != null)
         {
-          line += Concern.FullConcern + ", ";
+          line += Subject.FullConcern + ", ";
         }
 
         return line + Name;

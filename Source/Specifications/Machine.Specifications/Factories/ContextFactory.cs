@@ -11,19 +11,19 @@ namespace Machine.Specifications.Factories
 {
   public class ContextFactory
   {
-    SpecificationFactory _specificationFactory;
+    readonly SpecificationFactory _specificationFactory;
 
     public ContextFactory()
     {
       _specificationFactory = new SpecificationFactory();
     }
 
-    public Model.Context CreateContextFrom(object instance, FieldInfo fieldInfo)
+    public Context CreateContextFrom(object instance, FieldInfo fieldInfo)
     {
       return CreateContextFrom(instance, new[] {fieldInfo});
     }
 
-    public Model.Context CreateContextFrom(object instance)
+    public Context CreateContextFrom(object instance)
     {
       var type = instance.GetType();
       var fieldInfos = type.GetPrivateFields();
@@ -31,7 +31,7 @@ namespace Machine.Specifications.Factories
       return CreateContextFrom(instance, fieldInfos);
     }
 
-    Model.Context CreateContextFrom(object instance, IEnumerable<FieldInfo> acceptedSpecificationFields)
+    Context CreateContextFrom(object instance, IEnumerable<FieldInfo> acceptedSpecificationFields)
     {
       var type = instance.GetType();
       var fieldInfos = type.GetPrivateFields();
@@ -46,67 +46,55 @@ namespace Machine.Specifications.Factories
       var afterAlls = ExtractPrivateFieldValues<Cleanup>(instance, "after_all");
       var afterEachs = ExtractPrivateFieldValues<Cleanup>(instance, "after_each");
 
-      var concern = ExtractConcern(type);
+      var becauses = ExtractPrivateFieldValues<Because>(instance, "of");
 
-      var description = new Model.Context(type, instance, beforeEachs, beforeAlls, afterEachs, afterAlls, concern);
+      if (becauses.Count > 1)
+      {
+        throw new SpecificationUsageException("There can only be one Because clause.");
+      }
+
+      var concern = ExtractSubject(type);
+
+      var description = new Context(type, instance, beforeEachs, beforeAlls, becauses.FirstOrDefault(), afterEachs, afterAlls, concern);
 
       foreach (FieldInfo info in fieldInfos)
       {
-        if (info.FieldType == typeof(Because))
-        {
-          whenFieldInfos.Add(info);
-        }
-        else if (acceptedSpecificationFields.Contains(info) &&
+        if (acceptedSpecificationFields.Contains(info) &&
           info.FieldType == typeof(It))
         {
           itFieldInfos.Add(info);
         }
       }
 
-      CreateSpecifications(whenFieldInfos, itFieldInfos, description);
+      CreateSpecifications(itFieldInfos, description);
 
       return description;
     }
 
-    Concern ExtractConcern(Type type)
+    static Subject ExtractSubject(Type type)
     {
       var attributes = type.GetCustomAttributes(typeof(SubjectAttribute), true);
 
       if (attributes.Length > 1)
-        throw new SpecificationUsageException("Cannot have more than one Concern on a Context");
+        throw new SpecificationUsageException("Cannot have more than one Subject on a Context");
 
       if (attributes.Length == 0) return null;
 
       var attribute = (SubjectAttribute)attributes[0];
 
-      return new Concern(attribute.SubjectType, attribute.SubjectText);
+      return new Subject(attribute.SubjectType, attribute.SubjectText);
     }
 
-    void CreateSpecifications(List<FieldInfo> whenFieldInfos, List<FieldInfo> itFieldInfos, Model.Context context)
-    {
-      if (whenFieldInfos.Count > 0)
-      {
-        foreach (var whenFieldInfo in whenFieldInfos)
-        {
-          CreateSpecificationsForEachIt(whenFieldInfo, itFieldInfos, context);
-        }
-      }
-      else
-      {
-        CreateSpecificationsForEachIt(null, itFieldInfos, context);
-      }
-    }
-
-    void CreateSpecificationsForEachIt(FieldInfo whenFieldInfo, List<FieldInfo> itFieldInfos, Model.Context context)
+    void CreateSpecifications(IEnumerable<FieldInfo> itFieldInfos, Context context)
     {
       foreach (var itFieldInfo in itFieldInfos)
       {
-        Specification specification = _specificationFactory.CreateSpecification(itFieldInfo, whenFieldInfo);
+        Specification specification = _specificationFactory.CreateSpecification(itFieldInfo);
         context.AddSpecification(specification);
       }
     }
 
-    List<T> ExtractPrivateFieldValues<T>(object instance, string name)
+    static List<T> ExtractPrivateFieldValues<T>(object instance, string name)
     {
       var delegates = new List<T>();
       var type = instance.GetType();

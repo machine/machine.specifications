@@ -5,7 +5,7 @@ namespace Machine.Specifications.Model
 {
   public class ItSpecification : Specification
   {
-    public ItSpecification(FieldInfo itField, FieldInfo whenField) : base(itField, whenField)
+    public ItSpecification(FieldInfo itField) : base(itField)
     {
     }
 

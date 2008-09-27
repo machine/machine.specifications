@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Machine.Specifications.Model
 {
-  public class Concern
+  public class Subject
   {
     readonly string _description;
     readonly Type _type;
@@ -38,7 +38,7 @@ namespace Machine.Specifications.Model
       }
     }
 
-    public Concern(Type type, string description)
+    public Subject(Type type, string description)
     {
       _type = type;
       _description = description;

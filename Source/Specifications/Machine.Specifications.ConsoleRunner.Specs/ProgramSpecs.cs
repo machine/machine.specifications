@@ -4,7 +4,7 @@ using Machine.Specifications.Runner;
 
 namespace Machine.Specifications.ConsoleRunner.Specs
 {
-  // TODO: Add Concern count
+  // TODO: Add Subject count
   // TODO: Add Tag and filter by tag
   // TODO: Add awesome client side reporting stuff
 

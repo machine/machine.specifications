@@ -29,9 +29,9 @@ namespace Machine.Specifications.Factories
     };
 
     It should_capture_the_concerns_type = ()=>
-      newContext.Concern.Type.ShouldEqual(typeof(int));
+      newContext.Subject.Type.ShouldEqual(typeof(int));
 
     It should_capture_the_concerns_description = ()=>
-      newContext.Concern.Description.ShouldEqual("Some description");
+      newContext.Subject.Description.ShouldEqual("Some description");
   }
 }

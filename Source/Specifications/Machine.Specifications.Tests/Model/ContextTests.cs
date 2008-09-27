@@ -109,7 +109,7 @@ namespace Machine.Specifications.Model
     [Test]
     public void ShouldCallWhen()
     {
-      ContextWithSingleSpecification.WhenInvoked.ShouldBeTrue();
+      ContextWithSingleSpecification.BecauseInvoked.ShouldBeTrue();
     }
 
     [Test]
