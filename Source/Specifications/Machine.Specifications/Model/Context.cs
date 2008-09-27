@@ -39,6 +39,11 @@ namespace Machine.Specifications.Model
       get { return _because != null; }
     }
 
+    public Result CriticalContextFailure
+    {
+      get; private set;
+    }
+
     public Context(Type type, object instance, IEnumerable<Establish> beforeEachs,
       IEnumerable<Establish> beforeAlls, Because because, IEnumerable<Cleanup> afterEachs,
       IEnumerable<Cleanup> afterAlls, Subject subject)
@@ -74,15 +79,7 @@ namespace Machine.Specifications.Model
 
       if (hasRunnableSpecifications)
       {
-        try
-        {
-          _beforeAlls.InvokeAll();
-        }
-        catch (Exception err)
-        {
-          
-          throw;
-        }
+        RunContextBeforeAll();
       }
 
       Result result = null;
@@ -98,8 +95,10 @@ namespace Machine.Specifications.Model
 
       if (hasRunnableSpecifications)
       {
-        _afterAlls.InvokeAll();
+        RunContextAfterAll();
       }
+
+      CriticalContextFailure = null;
     }
 
     private Result VerifyOrIgnoreSpecification(Specification specification)
@@ -108,13 +107,35 @@ namespace Machine.Specifications.Model
       {
         return Result.Ignored();
       }
+      else if (CriticalContextFailure != null)
+      {
+        return CriticalContextFailure;
+      }
       else
       {
-        return VerifySpecification(specification);
+        return InternalVerifySpecification(specification);
       }
     }
-    
+
     public Result VerifySpecification(Specification specification)
+    {
+      RunContextBeforeAll();
+
+      var result = InternalVerifySpecification(specification);
+      
+      RunContextAfterAll();
+
+      if (result.Passed && CriticalContextFailure != null)
+      {
+        result = CriticalContextFailure;
+      }
+
+      CriticalContextFailure = null;
+
+      return result;
+    }
+    
+    private Result InternalVerifySpecification(Specification specification)
     {
       VerificationContext context = new VerificationContext(_instance);
       try
@@ -128,6 +149,7 @@ namespace Machine.Specifications.Model
       }
 
       var result = specification.Verify(context);
+
       try
       {
         _afterEachs.InvokeAll();
@@ -144,7 +166,7 @@ namespace Machine.Specifications.Model
       return result;
     }
 
-    public Result RunContextBeforeAll()
+    public void RunContextBeforeAll()
     {
       try
       {
@@ -152,12 +174,11 @@ namespace Machine.Specifications.Model
       }
       catch (Exception err)
       {
-        return Result.ContextFailure(err);
+        CriticalContextFailure = Result.ContextFailure(err);
       }
-      return null;
     }
 
-    public Result RunContextAfterAll()
+    public void RunContextAfterAll()
     {
       try
       {
@@ -165,9 +186,8 @@ namespace Machine.Specifications.Model
       }
       catch (Exception err)
       {
-        return Result.ContextFailure(err);
+        CriticalContextFailure = Result.ContextFailure(err);
       }
-      return null;
     }
 
     // TODO: Rename to Name

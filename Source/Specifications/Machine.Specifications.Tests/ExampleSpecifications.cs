@@ -80,7 +80,7 @@ namespace Machine.Specifications
   {
     public static bool ItInvoked;
 
-    Because throws =()=>
+    Because of =()=>
     {
       throw new Exception();
     };
