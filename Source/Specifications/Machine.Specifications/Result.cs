@@ -7,8 +7,7 @@ namespace Machine.Specifications
     Failing,
     Passing,
     NotImplemented,
-    Ignored,
-    ContextFailed
+    Ignored
   }
 
   [Serializable]
@@ -61,7 +60,7 @@ namespace Machine.Specifications
 
     public static Result ContextFailure(Exception exception)
     {
-      return new Result(Status.ContextFailed, exception);
+      return new Result(Status.Failing, exception);
     }
   }
 }

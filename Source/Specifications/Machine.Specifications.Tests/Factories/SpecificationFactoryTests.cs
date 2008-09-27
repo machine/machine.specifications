@@ -28,7 +28,7 @@ namespace Machine.Specifications.Factories
     [Test]
     public void ShouldHaveFieldInfo()
     {
-      specification.SpecificationField.Name.ShouldEqual("is_a_specification");
+      specification.FieldInfo.Name.ShouldEqual("is_a_specification");
     }
   }
 
@@ -48,7 +48,7 @@ namespace Machine.Specifications.Factories
     [Test]
     public void ShouldCreateUnknownSpecification()
     {
-      specification.IsDefined(new VerificationContext(new ContextWithEmptySpecification())).ShouldBeFalse();
+      specification.IsDefined.ShouldBeFalse();
     }
   }
 
@@ -59,8 +59,10 @@ namespace Machine.Specifications.Factories
     {
       Type type = typeof(ContextWithEmptySpecification);
       FieldInfo field = type.GetPrivateFieldsWith(typeof(It)).First();
+      ContextFactory factory = new ContextFactory();
+      var context = factory.CreateContextFrom(new ContextWithEmptySpecification());
 
-      specification = Target.CreateSpecification(field);
+      specification = Target.CreateSpecification(context, field);
     }
   }
 
@@ -71,8 +73,10 @@ namespace Machine.Specifications.Factories
     {
       Type type = typeof(ContextWithSingleSpecification);
       FieldInfo field = type.GetPrivateFieldsWith(typeof(It)).First();
+      ContextFactory factory = new ContextFactory();
+      var context = factory.CreateContextFrom(new ContextWithSingleSpecification());
 
-      specification = Target.CreateSpecification(field);
+      specification = Target.CreateSpecification(context, field);
     }
   }
 
@@ -83,8 +87,10 @@ namespace Machine.Specifications.Factories
     {
       Type type = typeof(ContextWithThrowingSpecification);
       FieldInfo field = type.GetPrivateFieldsWith(typeof(It)).First();
+      ContextFactory factory = new ContextFactory();
+      var context = factory.CreateContextFrom(new ContextWithThrowingSpecification());
 
-      specification = Target.CreateSpecification(field);
+      specification = Target.CreateSpecification(context, field);
     }
   }
 

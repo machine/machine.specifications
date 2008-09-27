@@ -61,14 +61,10 @@ namespace Machine.Specifications
     static Exception exception;
 
     Because of =()=>
-    {
       exception = null;
-    };
 
-    It should_throw_but_it_wont =()=>
-    {
+    It should_throw_but_it_wont =()=> 
       exception.ShouldNotBeNull();
-    };
 
     public void Reset()
     {

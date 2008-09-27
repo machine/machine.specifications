@@ -15,6 +15,7 @@ namespace Machine.Specifications.ConsoleRunner
     int _specificationCount;
     int _failedSpecificationCount;
     int _unimplementedSpecificationCount;
+    int _ignoredSpecificationCount;
     int _passedSpecificationCount;
 
     public bool FailureOccured
@@ -45,6 +46,7 @@ namespace Machine.Specifications.ConsoleRunner
       _specificationCount = 0;
       _failedSpecificationCount = 0;
       _unimplementedSpecificationCount = 0;
+      _ignoredSpecificationCount = 0;
       _passedSpecificationCount = 0;
     }
 
@@ -58,6 +60,10 @@ namespace Machine.Specifications.ConsoleRunner
         if (_unimplementedSpecificationCount > 0)
         {
           line += String.Format(", {0} not implemented", _unimplementedSpecificationCount);
+        }
+        if (_ignoredSpecificationCount > 0)
+        {
+          line += String.Format(", {0} ignored", _ignoredSpecificationCount);
         }
       }
       _console.WriteLine(line);
@@ -91,6 +97,10 @@ namespace Machine.Specifications.ConsoleRunner
         case Status.NotImplemented:
           _unimplementedSpecificationCount += 1;
           _console.WriteLine(" (NOT IMPLEMENTED)");
+          break;
+        case Status.Ignored:
+          _ignoredSpecificationCount += 1;
+          _console.WriteLine(" (IGNORED)");
           break;
         default:
           _failedSpecificationCount += 1;

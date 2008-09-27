@@ -8,17 +8,19 @@ namespace Machine.Specifications.Model
 {
   public class Specification
   {
-    readonly DelegateField _specificationField;
+    readonly string _name;
+    readonly It _it;
     readonly bool _isIgnored;
+    readonly FieldInfo _fieldInfo;
 
-    public FieldInfo SpecificationField
+    public FieldInfo FieldInfo
     {
-      get { return _specificationField.Field; }
+      get { return _fieldInfo; }
     }
 
     public string Name
     {
-      get { return _specificationField.Name; }
+      get { return _name; }
     }
 
     public bool IsIgnored
@@ -26,20 +28,17 @@ namespace Machine.Specifications.Model
       get { return _isIgnored; }
     }
 
-    public Specification(FieldInfo itField) 
+    public Specification(string name, It it, bool isIgnored, FieldInfo fieldInfo)
     {
-      _isIgnored = DetermineIfIgnored(itField);
-      _specificationField = new DelegateField(itField);
-    }
-
-    static bool DetermineIfIgnored(FieldInfo field)
-    {
-      return field.GetCustomAttributes(typeof(IgnoreAttribute), false).Any();
+      _name = name;
+      _it = it;
+      _isIgnored = isIgnored;
+      _fieldInfo = fieldInfo;
     }
 
     public virtual Result Verify(VerificationContext verificationContext)
     {
-      if (!IsDefined(verificationContext))
+      if (!IsDefined)
       {
         return Result.NotImplemented();
       }
@@ -56,24 +55,24 @@ namespace Machine.Specifications.Model
 
       try
       {
-        InvokeSpecificationField(verificationContext);
+        InvokeSpecificationField();
       }
-      catch (TargetInvocationException exception)
+      catch (Exception exception)
       {
-        return Result.Failure(exception.InnerException);
+        return Result.Failure(exception);
       }
 
       return Result.Pass();
     }
 
-    public virtual bool IsDefined(VerificationContext verificationContext)
+    public bool IsDefined
     {
-      return _specificationField.CanInvokeOn(verificationContext.Instance);
+      get { return _it != null; }
     }
 
-    protected virtual void InvokeSpecificationField(VerificationContext verificationContext, params object[] arguments)
+    protected virtual void InvokeSpecificationField()
     {
-      _specificationField.InvokeOn(verificationContext.Instance, arguments);
+      _it.Invoke();
     }
   }
 }

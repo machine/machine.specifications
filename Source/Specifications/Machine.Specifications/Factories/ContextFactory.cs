@@ -36,7 +36,6 @@ namespace Machine.Specifications.Factories
       var type = instance.GetType();
       var fieldInfos = type.GetPrivateFields();
       List<FieldInfo> itFieldInfos = new List<FieldInfo>();
-      List<FieldInfo> whenFieldInfos = new List<FieldInfo>();
 
       var beforeAlls = ExtractPrivateFieldValues<Establish>(instance, "context_once");
       var beforeEachs = ExtractPrivateFieldValues<Establish>(instance, "context");
@@ -55,7 +54,7 @@ namespace Machine.Specifications.Factories
 
       var concern = ExtractSubject(type);
 
-      var description = new Context(type, instance, beforeEachs, beforeAlls, becauses.FirstOrDefault(), afterEachs, afterAlls, concern);
+      var context = new Context(type, instance, beforeEachs, beforeAlls, becauses.FirstOrDefault(), afterEachs, afterAlls, concern);
 
       foreach (FieldInfo info in fieldInfos)
       {
@@ -66,9 +65,9 @@ namespace Machine.Specifications.Factories
         }
       }
 
-      CreateSpecifications(itFieldInfos, description);
+      CreateSpecifications(itFieldInfos, context);
 
-      return description;
+      return context;
     }
 
     static Subject ExtractSubject(Type type)
@@ -89,7 +88,7 @@ namespace Machine.Specifications.Factories
     {
       foreach (var itFieldInfo in itFieldInfos)
       {
-        Specification specification = _specificationFactory.CreateSpecification(itFieldInfo);
+        Specification specification = _specificationFactory.CreateSpecification(context, itFieldInfo);
         context.AddSpecification(specification);
       }
     }

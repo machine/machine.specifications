@@ -9,9 +9,9 @@ using Machine.Specifications.GallioAdapter.Services;
 
 namespace Machine.Specifications.GallioAdapter.Model
 {
-  public abstract class MachineTest : BaseTest
+  public abstract class MachineGallioTest : BaseTest
   {
-    protected MachineTest(string name, ICodeElementInfo codeElement) : base(name, codeElement)
+    protected MachineGallioTest(string name, ICodeElementInfo codeElement) : base(name, codeElement)
     {
     }
 

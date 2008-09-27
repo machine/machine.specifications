@@ -5,19 +5,25 @@ using System.Reflection;
 using System.Text;
 
 using Machine.Specifications.Model;
+using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Factories
 {
   public class SpecificationFactory
   {
-
-    public SpecificationFactory()
+    public Specification CreateSpecification(Context context, FieldInfo specificationField)
     {
+      bool isIgnored = DetermineIfIgnored(specificationField);
+      It it = (It)specificationField.GetValue(context.Instance);
+      string name = specificationField.Name.ReplaceUnderscores().Trim();
+
+      return new Specification(name, it, isIgnored, specificationField);
     }
 
-    public Specification CreateSpecification(FieldInfo specificationField)
+    static bool DetermineIfIgnored(FieldInfo field)
     {
-      return new Specification(specificationField);
+      return field.GetCustomAttributes(typeof(IgnoreAttribute), false).Any();
     }
+
   }
 }

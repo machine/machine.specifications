@@ -75,7 +75,7 @@ namespace Machine.Specifications.Model
     {
       if (!Specifications.Any()) yield break;
 
-      bool hasRunnableSpecifications = Specifications.Where(x => !x.IsIgnored).Any();
+      bool hasRunnableSpecifications = Specifications.Where(x => !x.IsIgnored && x.IsDefined).Any();
 
       if (hasRunnableSpecifications)
       {
@@ -106,6 +106,10 @@ namespace Machine.Specifications.Model
       if (specification.IsIgnored)
       {
         return Result.Ignored();
+      }
+      else if (!specification.IsDefined)
+      {
+        return Result.NotImplemented();
       }
       else if (CriticalContextFailure != null)
       {

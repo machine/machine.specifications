@@ -52,7 +52,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Model\MachineTest.cs" />
+    <Compile Include="Model\MachineGallioTest.cs" />
     <Compile Include="Services\MachineSpecificationsExplorer.cs" />
     <Compile Include="MachineSpecificationsFramework.cs" />
     <Compile Include="Model\MachineSpecificationTest.cs" />

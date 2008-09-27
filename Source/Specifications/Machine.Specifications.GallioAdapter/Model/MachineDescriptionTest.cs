@@ -8,7 +8,7 @@ using Machine.Specifications.Model;
 
 namespace Machine.Specifications.GallioAdapter.Model
 {
-  public class MachineContextTest : MachineTest
+  public class MachineContextTest : MachineGallioTest
   {
     private readonly Specifications.Model.Context context;
 

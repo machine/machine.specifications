@@ -35,4 +35,12 @@ namespace Machine.Specifications.TDNetRunner
       return String.Format("» {0} (NOT IMPLEMENTED)", specification.Name);
     }
   }
+
+  public class IgnoredResultFormatter : IResultFormatter
+  {
+    public string FormatResult(SpecificationInfo specification)
+    {
+      return String.Format("» {0} (IGNORED)", specification.Name);
+    }
+  }
 }
