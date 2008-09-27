@@ -106,7 +106,7 @@ namespace Machine.Specifications.Model
     {
       if (specification.IsIgnored)
       {
-        return Result.Ignored;
+        return Result.Ignored();
       }
       else
       {
@@ -124,7 +124,7 @@ namespace Machine.Specifications.Model
       }
       catch (Exception err)
       {
-        return new Result(err);
+        return Result.ContextFailure(err);
       }
 
       var result = specification.Verify(context);
@@ -136,7 +136,7 @@ namespace Machine.Specifications.Model
       {
         if (result.Passed)
         {
-          return new Result(err);
+          return Result.ContextFailure(err);
         }
         return result;
       }
@@ -152,7 +152,7 @@ namespace Machine.Specifications.Model
       }
       catch (Exception err)
       {
-        return new Result(err);
+        return Result.ContextFailure(err);
       }
       return null;
     }
@@ -165,7 +165,7 @@ namespace Machine.Specifications.Model
       }
       catch (Exception err)
       {
-        return new Result(err);
+        return Result.ContextFailure(err);
       }
       return null;
     }

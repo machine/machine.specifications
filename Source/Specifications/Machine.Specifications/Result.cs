@@ -7,7 +7,8 @@ namespace Machine.Specifications
     Failing,
     Passing,
     NotImplemented,
-    Ignored
+    Ignored,
+    ContextFailed
   }
 
   [Serializable]
@@ -27,25 +28,40 @@ namespace Machine.Specifications
       get { return _status; }
     }
 
-    public Result(Exception exception)
+    private Result(Status status, Exception exception)
     {
       _status = Status.Failing;
       this.Exception = exception;
     }
 
-    public Result()
-    {
-      _status = Status.Passing;
-    }
-
-    public Result(Status status)
+    private Result(Status status)
     {
       _status = status;
     }
 
-    public static Result Ignored
+    public static Result Pass()
     {
-      get { return new Result(Status.Ignored); }
+      return new Result(Status.Passing);
+    }
+
+    public static Result Ignored()
+    {
+      return new Result(Status.Ignored);
+    }
+
+    public static Result NotImplemented()
+    {
+      return new Result(Status.NotImplemented);
+    }
+
+    public static Result Failure(Exception exception)
+    {
+      return new Result(Status.Failing, exception);
+    }
+
+    public static Result ContextFailure(Exception exception)
+    {
+      return new Result(Status.ContextFailed, exception);
     }
   }
 }

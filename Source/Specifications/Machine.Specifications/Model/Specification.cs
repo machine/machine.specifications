@@ -47,7 +47,7 @@ namespace Machine.Specifications.Model
     {
       if (!IsDefined(verificationContext))
       {
-        return new Result(Status.NotImplemented);
+        return Result.NotImplemented();
       }
 
       return InternalVerify(verificationContext);

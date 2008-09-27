@@ -13,7 +13,7 @@ namespace Machine.Specifications.Model
     {
       if (verificationContext.ThrownException != null)
       {
-        return new Result(verificationContext.ThrownException);
+        return Result.Failure(verificationContext.ThrownException);
       }
 
       try
@@ -22,10 +22,10 @@ namespace Machine.Specifications.Model
       }
       catch (TargetInvocationException exception)
       {
-        return new Result(exception.InnerException);
+        return Result.Failure(exception.InnerException);
       }
 
-      return new Result(Status.Passing);
+      return Result.Pass();
     }
   }
 }
