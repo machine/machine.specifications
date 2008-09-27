@@ -2,12 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
-using System.Text;
 
 using NUnit.Framework;
 
 namespace Machine.Specifications
 {
+  public static class CollectionExtensionMethods
+  {
+    public static ArrayList ToArrayList(this IEnumerable enumerable)
+    {
+      ArrayList arrayList = new ArrayList();
+      foreach (object obj in enumerable)
+      {
+        arrayList.Add(obj);
+      }
+      return arrayList;
+    }
+  }
   public static class ShouldExtensionMethods
   {
     public static void ShouldBeFalse(this bool condition)
@@ -91,7 +102,7 @@ namespace Machine.Specifications
       }
     }
 
-    public static void ShouldNotContain(this IList collection, object expected)
+    public static void ShouldNotContain(this IEnumerable collection, object expected)
     {
       CollectionAssert.DoesNotContain(collection, expected);
     }
@@ -108,9 +119,9 @@ namespace Machine.Specifications
       return arg2;
     }
 
-    public static void ShouldBeEmpty(this ICollection collection)
+    public static void ShouldBeEmpty(this IEnumerable collection)
     {
-      Assert.IsEmpty(collection);
+      Assert.IsEmpty(collection.ToArrayList());
     }
 
     public static void ShouldBeEmpty(this string aString)
@@ -118,9 +129,9 @@ namespace Machine.Specifications
       Assert.IsEmpty(aString);
     }
 
-    public static void ShouldNotBeEmpty(this ICollection collection)
+    public static void ShouldNotBeEmpty(this IEnumerable collection)
     {
-      Assert.IsNotEmpty(collection);
+      Assert.IsNotEmpty(collection.ToArrayList());
     }
 
     public static void ShouldNotBeEmpty(this string aString)
