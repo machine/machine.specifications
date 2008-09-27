@@ -21,7 +21,7 @@ namespace Machine.Specifications.Reporting.Specs.SpecificationTreeListenerSpecs
     };
 
     Because of = () =>
-      runner.RunAssembly(typeof(when_a_customer_first_views_the_account_summary_page).Assembly);
+      runner.RunAssembly(typeof(when_a_customer_first_views_the_account_summary_page).Assembly, RunOptions.Default);
 
     It should_set_the_total_specifications_ = () =>
       listener.Run.TotalSpecifications.ShouldEqual(6);

@@ -20,65 +20,66 @@ namespace Machine.Specifications.Runner
       _listener = new RemoteRunListener(listener);
     }
 
-    public void RunAssembly(Assembly assembly)
+    public void RunAssembly(Assembly assembly, RunOptions options)
     {
       _internalListener.OnRunStart();
 
-      InternalRunAssembly(assembly);
+      InternalRunAssembly(assembly, options);
 
       _internalListener.OnRunEnd();
     }
 
-    public void RunAssemblies(IEnumerable<Assembly> assemblies)
+    public void RunAssemblies(IEnumerable<Assembly> assemblies, RunOptions options)
     {
       _internalListener.OnRunStart();
 
-      assemblies.Each(InternalRunAssembly);
+      assemblies.Each(x => InternalRunAssembly(x, options));
 
       _internalListener.OnRunEnd();
     }
 
-    public void RunNamespace(Assembly assembly, string targetNamespace)
+    public void RunNamespace(Assembly assembly, string targetNamespace, RunOptions options)
     {
       _internalListener.OnRunStart();
       AppDomain appDomain = CreateAppDomain(assembly);
 
-      CreateRunner("Namespace", appDomain, assembly, targetNamespace);
+      CreateRunner("Namespace", appDomain, assembly, options, targetNamespace);
 
       AppDomain.Unload(appDomain);
       _internalListener.OnRunEnd();
     }
 
-    public void RunMember(Assembly assembly, MemberInfo member)
+    public void RunMember(Assembly assembly, MemberInfo member, RunOptions options)
     {
       _internalListener.OnRunStart();
       AppDomain appDomain = CreateAppDomain(assembly);
 
-      CreateRunner("Member", appDomain, assembly, member);
+      CreateRunner("Member", appDomain, assembly, options, member);
 
       AppDomain.Unload(appDomain);
       _internalListener.OnRunEnd();
     }
 
-    void InternalRunAssembly(Assembly assembly)
+    void InternalRunAssembly(Assembly assembly, RunOptions options)
     {
       AppDomain appDomain = CreateAppDomain(assembly);
 
-      CreateRunner("Assembly", appDomain, assembly);
+      CreateRunner("Assembly", appDomain, assembly, options);
 
       AppDomain.Unload(appDomain);
     }
 
-    void CreateRunner(string runMethod, AppDomain appDomain, Assembly assembly, params object[] args)
+    void CreateRunner(string runMethod, AppDomain appDomain, Assembly assembly, RunOptions options, params object[] args)
     {
       string mspecAssemblyFilename = Path.Combine(Path.GetDirectoryName(assembly.Location), "Machine.Specifications.dll");
 
       var mspecAssemblyName = AssemblyName.GetAssemblyName(mspecAssemblyFilename);
 
-      var constructorArgs = new object[args.Length + 2];
+      var constructorArgs = new object[args.Length + 3];
       constructorArgs[0] = _listener;
       constructorArgs[1] = assembly;
-      Array.Copy(args, 0, constructorArgs, 2, args.Length);
+      constructorArgs[2] = options;
+      Array.Copy(args, 0, constructorArgs, 3, args.Length);
 
       appDomain.CreateInstanceAndUnwrap(mspecAssemblyName.FullName, "Machine.Specifications.Runner.AppDomainRunner+" + runMethod + "Runner", false, 0, null, constructorArgs, null, null, null);
     }
@@ -106,28 +107,28 @@ namespace Machine.Specifications.Runner
 
     public class AssemblyRunner : MarshalByRefObject
     {
-      public AssemblyRunner(ISpecificationRunListener listener, Assembly assembly)
+      public AssemblyRunner(ISpecificationRunListener listener, Assembly assembly, RunOptions options)
       {
         var runner = new SpecificationRunner(listener);
-        runner.RunAssembly(assembly);
+        runner.RunAssembly(assembly, options);
       }
     }
 
     public class NamespaceRunner : MarshalByRefObject
     {
-      public NamespaceRunner(ISpecificationRunListener listener, Assembly assembly, string targetNamespace)
+      public NamespaceRunner(ISpecificationRunListener listener, Assembly assembly, RunOptions options, string targetNamespace)
       {
         var runner = new SpecificationRunner(listener);
-        runner.RunNamespace(assembly, targetNamespace);
+        runner.RunNamespace(assembly, targetNamespace, options);
       }
     }
 
     public class MemberRunner : MarshalByRefObject
     {
-      public MemberRunner(ISpecificationRunListener listener, Assembly assembly, MemberInfo memberInfo)
+      public MemberRunner(ISpecificationRunListener listener, Assembly assembly, RunOptions options, MemberInfo memberInfo)
       {
         var runner = new SpecificationRunner(listener);
-        runner.RunMember(assembly, memberInfo);
+        runner.RunMember(assembly, memberInfo, options);
       }
     }
   }

@@ -21,7 +21,7 @@ namespace Machine.Specifications.Runner
       _explorer = new AssemblyExplorer();
     }
 
-    public void RunAssembly(Assembly assembly)
+    public void RunAssembly(Assembly assembly, RunOptions options)
     {
       var contexts = _explorer.FindContextsIn(assembly);
       var map = CreateMap(assembly, contexts);
@@ -29,13 +29,53 @@ namespace Machine.Specifications.Runner
       StartRun(map);
     }
 
-    public void RunAssemblies(IEnumerable<Assembly> assemblies)
+    public void RunAssemblies(IEnumerable<Assembly> assemblies, RunOptions options)
     {
       var map = new Dictionary<Assembly, IEnumerable<Context>>();
 
       assemblies.Each(assembly => map.Add(assembly, _explorer.FindContextsIn(assembly)));
 
       StartRun(map);
+    }
+
+    public void RunNamespace(Assembly assembly, string targetNamespace, RunOptions options)
+    {
+      var contexts = _explorer.FindContextsIn(assembly, targetNamespace);
+
+      StartRun(CreateMap(assembly, contexts));
+    }
+
+    public void RunMember(Assembly assembly, MemberInfo member, RunOptions options)
+    {
+      if (member.MemberType == MemberTypes.TypeInfo)
+      {
+        RunClass(member, assembly);
+      }
+      else if (member.MemberType == MemberTypes.Field)
+      {
+        RunField(member, assembly);
+      }
+    }
+
+    void RunField(MemberInfo member, Assembly assembly)
+    {
+      FieldInfo fieldInfo = (FieldInfo)member;
+      var context = _explorer.FindContexts(fieldInfo);
+
+      StartRun(CreateMap(assembly, new[] {context}));
+    }
+
+    void RunClass(MemberInfo member, Assembly assembly)
+    {
+      Type type = (Type)member;
+      var context = _explorer.FindContexts(type);
+
+      if (context == null)
+      {
+        return;
+      }
+
+      StartRun(CreateMap(assembly, new[] {context}));
     }
 
     Dictionary<Assembly, IEnumerable<Context>> CreateMap(Assembly assembly, IEnumerable<Context> contexts)
@@ -99,34 +139,5 @@ namespace Machine.Specifications.Runner
       }
     }
 
-    public void RunNamespace(Assembly assembly, string targetNamespace)
-    {
-      var contexts = _explorer.FindContextsIn(assembly, targetNamespace);
-
-      StartRun(CreateMap(assembly, contexts));
-    }
-
-    public void RunMember(Assembly assembly, MemberInfo member)
-    {
-      if (member.MemberType == MemberTypes.TypeInfo)
-      {
-        Type type = (Type)member;
-        var context = _explorer.FindContexts(type);
-
-        if (context == null)
-        {
-          return;
-        }
-
-        StartRun(CreateMap(assembly, new[] {context}));
-      }
-      else if (member.MemberType == MemberTypes.Field)
-      {
-        FieldInfo fieldInfo = (FieldInfo)member;
-        var context = _explorer.FindContexts(fieldInfo);
-
-        StartRun(CreateMap(assembly, new[] {context}));
-      }
-    }
   }
 }

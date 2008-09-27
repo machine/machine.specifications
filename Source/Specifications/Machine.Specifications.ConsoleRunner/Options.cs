@@ -26,6 +26,12 @@ namespace Machine.Specifications.ConsoleRunner
       HelpText = "Adds time-related information in HTML output")] 
     public bool ShowTimeInformation = false;
 
+    [OptionList("i",
+      "include",
+      HelpText = "Executes all specifications in contexts with these comma delimited tags. Ex. foo,bar,foo_bar",
+      Separator = ',')] 
+    public IList<string> IncludeTags = null;
+
     [ValueList(typeof(List<string>))]
     public IList<string> AssemblyFiles = null;
 
@@ -38,6 +44,7 @@ namespace Machine.Specifications.ConsoleRunner
       sb.AppendLine("");
       sb.AppendLine(Resources.UsageStatement);
       sb.AppendLine("Options:");
+      sb.AppendLine("  -i, --include     Executes all specifications in contexts with these comma delimited tags. Ex. -i foo,bar,foo_bar");
       sb.AppendLine("  -t, --timeinfo    Shows time-related information in HTML output");
       sb.AppendLine("  -s, --silent      Suppress console output");
       sb.AppendLine("  --html <PATH>     Outputs an HTML file(s) to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)");

@@ -23,7 +23,7 @@ namespace Machine.Specifications.Specs.Runner
     };
 
     Because of =()=>
-      runner.RunMember(typeof(context_with_no_specs).Assembly, typeof(context_with_no_specs));
+      runner.RunMember(typeof(context_with_no_specs).Assembly, typeof(context_with_no_specs), RunOptions.Default);
 
     It should_not_establish_the_context =()=>
       context_with_no_specs.ContextEstablished.ShouldBeFalse();
@@ -51,7 +51,7 @@ namespace Machine.Specifications.Specs.Runner
     };
 
     Because of =()=>
-      runner.RunMember(typeof(context_with_ignore_on_one_spec).Assembly, typeof(context_with_ignore_on_one_spec));
+      runner.RunMember(typeof(context_with_ignore_on_one_spec).Assembly, typeof(context_with_ignore_on_one_spec), RunOptions.Default);
 
     It should_not_run_the_spec =()=>
       context_with_ignore_on_one_spec.IgnoredSpecRan.ShouldBeFalse();
@@ -82,7 +82,7 @@ namespace Machine.Specifications.Specs.Runner
     };
 
     Because of =()=>
-      runner.RunMember(typeof(context_with_ignore).Assembly, typeof(context_with_ignore));
+      runner.RunMember(typeof(context_with_ignore).Assembly, typeof(context_with_ignore), RunOptions.Default);
 
     It should_not_run_the_spec =()=>
       context_with_ignore.IgnoredSpecRan.ShouldBeFalse();

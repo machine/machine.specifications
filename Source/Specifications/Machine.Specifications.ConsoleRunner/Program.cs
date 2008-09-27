@@ -81,7 +81,7 @@ namespace Machine.Specifications.ConsoleRunner
           assemblies.Add(assembly);
         }
 
-        specificationRunner.RunAssemblies(assemblies);
+        specificationRunner.RunAssemblies(assemblies, RunOptions.Default);
       }
       catch(Exception ex)
       {

@@ -55,6 +55,7 @@
     <Compile Include="Catch.cs" />
     <Compile Include="Factories\ITagExtractor.cs" />
     <Compile Include="Model\Tag.cs" />
+    <Compile Include="Runner\RunOptions.cs" />
     <Compile Include="SubjectAttribute.cs" />
     <Compile Include="Explorers\AssemblyExplorer.cs" />
     <Compile Include="ExtensionMethods.cs" />
