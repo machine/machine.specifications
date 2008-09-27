@@ -101,20 +101,40 @@ namespace Machine.Specifications.Model
       }
       catch (Exception err)
       {
-        return new SpecificationVerificationResult(err);
+        if (result.Passed)
+        {
+          return new SpecificationVerificationResult(err);
+        }
+        return result;
       }
 
       return result;
     }
 
-    public void RunContextBeforeAll()
+    public SpecificationVerificationResult RunContextBeforeAll()
     {
-      _beforeAlls.InvokeAll();
+      try
+      {
+        _beforeAlls.InvokeAll();
+      }
+      catch (Exception err)
+      {
+        return new SpecificationVerificationResult(err);
+      }
+      return null;
     }
 
-    public void RunContextAfterAll()
+    public SpecificationVerificationResult RunContextAfterAll()
     {
-      _afterAlls.InvokeAll();
+      try
+      {
+        _afterAlls.InvokeAll();
+      }
+      catch (Exception err)
+      {
+        return new SpecificationVerificationResult(err);
+      }
+      return null;
     }
 
     // TODO: Rename to Name
