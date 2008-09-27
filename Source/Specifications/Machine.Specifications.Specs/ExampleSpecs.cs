@@ -3,8 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Machine.Specifications.Runner
+namespace Machine.Specifications.Specs
 {
+  [Ignore]
+  public class context_with_ignore : context_with_no_specs
+  {
+    public static bool IgnoredSpecRan;
+
+    It should_be_ignored = () =>
+      IgnoredSpecRan = true;
+  }
+
   public class context_with_ignore_on_one_spec : context_with_no_specs
   {
     public static bool IgnoredSpecRan;
@@ -14,7 +23,7 @@ namespace Machine.Specifications.Runner
       IgnoredSpecRan = true;
   }
 
-  public class context_with_no_specs
+  public class context_with_no_specs : Tags<example>
   {
     public static bool ContextEstablished;
     public static bool OneTimeContextEstablished;
@@ -40,5 +49,13 @@ namespace Machine.Specifications.Runner
     {
       CleanupOnceOccurred = true;
     };
+  }
+
+  [Subject(typeof(int), "Some description")]
+  public class context_with_subject : Tags<example>
+  {
+    public void Reset()
+    {
+    }
   }
 }

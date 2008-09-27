@@ -1,4 +1,3 @@
-#pragma warning disable 169
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -182,14 +181,6 @@ namespace Machine.Specifications
     {
       WhenInvoked = false;
       ItInvoked = false;
-    }
-  }
-
-  [Subject(typeof(int), "Some description")]
-  public class ContextWithConcern : IFakeContext
-  {
-    public void Reset()
-    {
     }
   }
 

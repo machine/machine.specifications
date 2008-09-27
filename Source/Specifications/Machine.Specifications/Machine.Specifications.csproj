@@ -76,6 +76,7 @@
     <Compile Include="Runner\RemoteRunListener.cs" />
     <Compile Include="Runner\SpecificationInfo.cs" />
     <Compile Include="Runner\SpecificationRunner.cs" />
+    <Compile Include="Tags.cs" />
     <Compile Include="Utility\Naming.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Framework.cs" />
