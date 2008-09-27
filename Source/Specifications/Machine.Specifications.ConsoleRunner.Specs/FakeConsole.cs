@@ -34,7 +34,12 @@ namespace Machine.Specifications.ConsoleRunner.Specs
 
     public void ShouldContainLineWith(string s)
     {
-      _lines.Where(x=>x.Contains(s)).Count().ShouldBeGreaterThan(0);
+      _lines.Where(x=>x.Contains(s)).Any().ShouldBeTrue();
+    }
+
+    public void ShouldNotContainLineWith(string s)
+    {
+      _lines.Where(x=>x.Contains(s)).Any().ShouldBeFalse();
     }
   }
 }
