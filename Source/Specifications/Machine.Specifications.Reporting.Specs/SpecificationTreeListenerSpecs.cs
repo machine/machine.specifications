@@ -17,11 +17,11 @@ namespace Machine.Specifications.Reporting.Specs.SpecificationTreeListenerSpecs
     Establish context = () =>
     {
       listener = new SpecificationTreeListener();
-      runner = new SpecificationRunner(listener);
+      runner = new SpecificationRunner(listener, RunOptions.Default);
     };
 
     Because of = () =>
-      runner.RunAssembly(typeof(when_a_customer_first_views_the_account_summary_page).Assembly, RunOptions.Default);
+      runner.RunAssembly(typeof(when_a_customer_first_views_the_account_summary_page).Assembly);
 
     It should_set_the_total_specifications_ = () =>
       listener.Run.TotalSpecifications.ShouldEqual(6);

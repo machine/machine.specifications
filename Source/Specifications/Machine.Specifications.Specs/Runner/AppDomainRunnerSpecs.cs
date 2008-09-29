@@ -16,14 +16,14 @@ namespace Machine.Specifications.Specs.Runner
     Establish context = () =>
     {
       listener = new TestListener();
-      runner = new AppDomainRunner(listener);
+      runner = new AppDomainRunner(listener, RunOptions.Default);
     };
   }
 
   public class when_running_specs_by_assembly : running_specs
   {
     Because of = () => 
-      runner.RunAssembly(typeof(Account).Assembly, RunOptions.Default);
+      runner.RunAssembly(typeof(Account).Assembly);
 
     It should_run_them_all = () => 
       listener.SpecCount.ShouldEqual(6);
@@ -32,7 +32,7 @@ namespace Machine.Specifications.Specs.Runner
   public class when_running_specs_by_namespace : running_specs
   {
     Because of = () => 
-      runner.RunNamespace(typeof(Account).Assembly, "Machine.Specifications.Example", RunOptions.Default);
+      runner.RunNamespace(typeof(Account).Assembly, "Machine.Specifications.Example");
 
     It should_run_them_all = () => 
       listener.SpecCount.ShouldEqual(6);
@@ -41,7 +41,7 @@ namespace Machine.Specifications.Specs.Runner
   public class when_running_specs_by_member : running_specs
   {
     Because of = () =>
-      runner.RunMember(typeof(Account).Assembly, typeof(when_transferring_an_amount_larger_than_the_balance_of_the_from_account).GetField("should_not_allow_the_transfer", BindingFlags.NonPublic | BindingFlags.Instance), RunOptions.Default);
+      runner.RunMember(typeof(Account).Assembly, typeof(when_transferring_an_amount_larger_than_the_balance_of_the_from_account).GetField("should_not_allow_the_transfer", BindingFlags.NonPublic | BindingFlags.Instance));
 
     It should_run = () => 
       listener.SpecCount.ShouldEqual(1);

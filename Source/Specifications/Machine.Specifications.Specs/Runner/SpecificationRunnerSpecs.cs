@@ -19,11 +19,11 @@ namespace Machine.Specifications.Specs.Runner
       context_with_no_specs.CleanupOnceOccurred = false;
       context_with_no_specs.CleanupOccurred = false;
 
-      runner = new SpecificationRunner(new TestListener());
+      runner = new SpecificationRunner(new TestListener(), RunOptions.Default);
     };
 
     Because of =()=>
-      runner.RunMember(typeof(context_with_no_specs).Assembly, typeof(context_with_no_specs), RunOptions.Default);
+      runner.RunMember(typeof(context_with_no_specs).Assembly, typeof(context_with_no_specs));
 
     It should_not_establish_the_context =()=>
       context_with_no_specs.ContextEstablished.ShouldBeFalse();
@@ -47,11 +47,11 @@ namespace Machine.Specifications.Specs.Runner
     {
       context_with_ignore_on_one_spec.IgnoredSpecRan = false;
 
-      runner = new SpecificationRunner(new TestListener());
+      runner = new SpecificationRunner(new TestListener(), RunOptions.Default);
     };
 
     Because of =()=>
-      runner.RunMember(typeof(context_with_ignore_on_one_spec).Assembly, typeof(context_with_ignore_on_one_spec), RunOptions.Default);
+      runner.RunMember(typeof(context_with_ignore_on_one_spec).Assembly, typeof(context_with_ignore_on_one_spec));
 
     It should_not_run_the_spec =()=>
       context_with_ignore_on_one_spec.IgnoredSpecRan.ShouldBeFalse();
@@ -78,11 +78,11 @@ namespace Machine.Specifications.Specs.Runner
     {
       context_with_ignore.IgnoredSpecRan = false;
 
-      runner = new SpecificationRunner(new TestListener());
+      runner = new SpecificationRunner(new TestListener(), RunOptions.Default);
     };
 
     Because of =()=>
-      runner.RunMember(typeof(context_with_ignore).Assembly, typeof(context_with_ignore), RunOptions.Default);
+      runner.RunMember(typeof(context_with_ignore).Assembly, typeof(context_with_ignore));
 
     It should_not_run_the_spec =()=>
       context_with_ignore.IgnoredSpecRan.ShouldBeFalse();

@@ -5,9 +5,9 @@ namespace Machine.Specifications.Runner
 {
   public interface ISpecificationRunner
   {
-    void RunAssembly(Assembly assembly, RunOptions options);
-    void RunAssemblies(IEnumerable<Assembly> assemblies, RunOptions options);
-    void RunNamespace(Assembly assembly, string targetNamespace, RunOptions options);
-    void RunMember(Assembly assembly, MemberInfo member, RunOptions options);
+    void RunAssembly(Assembly assembly);
+    void RunAssemblies(IEnumerable<Assembly> assemblies);
+    void RunNamespace(Assembly assembly, string targetNamespace);
+    void RunMember(Assembly assembly, MemberInfo member);
   }
 }

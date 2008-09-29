@@ -13,15 +13,17 @@ namespace Machine.Specifications.Runner
   public class SpecificationRunner : ISpecificationRunner
   {
     readonly ISpecificationRunListener _listener;
+    readonly RunOptions _options;
     readonly AssemblyExplorer _explorer;
 
-    public SpecificationRunner(ISpecificationRunListener listener)
+    public SpecificationRunner(ISpecificationRunListener listener, RunOptions options)
     {
       _listener = listener;
+      _options = options;
       _explorer = new AssemblyExplorer();
     }
 
-    public void RunAssembly(Assembly assembly, RunOptions options)
+    public void RunAssembly(Assembly assembly)
     {
       var contexts = _explorer.FindContextsIn(assembly);
       var map = CreateMap(assembly, contexts);
@@ -29,7 +31,7 @@ namespace Machine.Specifications.Runner
       StartRun(map);
     }
 
-    public void RunAssemblies(IEnumerable<Assembly> assemblies, RunOptions options)
+    public void RunAssemblies(IEnumerable<Assembly> assemblies)
     {
       var map = new Dictionary<Assembly, IEnumerable<Context>>();
 
@@ -38,14 +40,14 @@ namespace Machine.Specifications.Runner
       StartRun(map);
     }
 
-    public void RunNamespace(Assembly assembly, string targetNamespace, RunOptions options)
+    public void RunNamespace(Assembly assembly, string targetNamespace)
     {
       var contexts = _explorer.FindContextsIn(assembly, targetNamespace);
 
       StartRun(CreateMap(assembly, contexts));
     }
 
-    public void RunMember(Assembly assembly, MemberInfo member, RunOptions options)
+    public void RunMember(Assembly assembly, MemberInfo member)
     {
       if (member.MemberType == MemberTypes.TypeInfo)
       {
