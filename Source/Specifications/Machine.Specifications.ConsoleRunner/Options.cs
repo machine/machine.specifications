@@ -5,6 +5,7 @@ using System.Text;
 using CommandLine;
 using CommandLine.Text;
 using Machine.Specifications.ConsoleRunner.Properties;
+using Machine.Specifications.Runner;
 
 namespace Machine.Specifications.ConsoleRunner
 {
@@ -32,6 +33,12 @@ namespace Machine.Specifications.ConsoleRunner
       Separator = ',')] 
     public IList<string> IncludeTags = null;
 
+    [OptionList("x",
+      "exclude",
+      HelpText = "Exclude specifications in contexts with these comma delimited tags. Ex. foo,bar,foo_bar",
+      Separator = ',')] 
+    public IList<string> ExcludeTags = null;
+
     [ValueList(typeof(List<string>))]
     public IList<string> AssemblyFiles = null;
 
@@ -57,6 +64,11 @@ namespace Machine.Specifications.ConsoleRunner
     public virtual bool ParseArguments(string[] args)
     {
       return Parser.ParseArguments(args, this, Console.Out);
+    }
+
+    public virtual RunOptions GetRunOptions()
+    {
+      return new RunOptions(IncludeTags, ExcludeTags);
     }
 
   }
