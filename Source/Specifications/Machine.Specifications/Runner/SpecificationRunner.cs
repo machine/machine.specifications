@@ -94,25 +94,28 @@ namespace Machine.Specifications.Runner
         var assembly = pair.Key;
         var contexts = pair.Value;
 
-        var assemblyContexts = new List<IAssemblyContext>(_explorer.FindAssemblyContextsIn(assembly));
-
-        _listener.OnAssemblyStart(assembly.GetInfo());
-        
-        assemblyContexts.ForEach(assemblyContext=>
-          assemblyContext.OnAssemblyStart());
-
-        RunContexts(contexts);
-        
-        assemblyContexts.ForEach(assemblyContext=>
-          assemblyContext.OnAssemblyComplete());
-        
-        _listener.OnAssemblyEnd(assembly.GetInfo());
+        StartAssemblyRun(assembly, contexts);
       }
 
       _listener.OnRunEnd();
     }
 
-    private void RunContexts(IEnumerable<Context> contexts)
+    void StartAssemblyRun(Assembly assembly, IEnumerable<Context> contexts)
+    {
+      var assemblyContexts = new List<IAssemblyContext>(_explorer.FindAssemblyContextsIn(assembly));
+
+      _listener.OnAssemblyStart(assembly.GetInfo());
+        
+      assemblyContexts.ForEach(assemblyContext => assemblyContext.OnAssemblyStart());
+
+      StartContextsRun(contexts);
+        
+      assemblyContexts.ForEach(assemblyContext => assemblyContext.OnAssemblyComplete());
+        
+      _listener.OnAssemblyEnd(assembly.GetInfo());
+    }
+
+    private void StartContextsRun(IEnumerable<Context> contexts)
     {
       if (contexts.Count() == 0) return;
 

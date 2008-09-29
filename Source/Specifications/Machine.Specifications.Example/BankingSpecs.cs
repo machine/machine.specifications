@@ -20,9 +20,9 @@ namespace Machine.Specifications.Example
       toAccount.Balance.ShouldEqual(2m);
   }
 
-  [Subject(typeof(Account), "Funds transfer")]
+  [Subject(typeof(Account), "Funds transfer"), Tags("failure")]
   public class when_transferring_an_amount_larger_than_the_balance_of_the_from_account
-    : with_from_account_and_to_account, Tags<failure>
+    : with_from_account_and_to_account
   {
     static Exception exception;
     Because of =()=>

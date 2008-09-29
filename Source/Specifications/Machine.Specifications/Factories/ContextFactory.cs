@@ -81,7 +81,7 @@ namespace Machine.Specifications.Factories
 
     static IEnumerable<Tag> ExtractTags(Type type)
     {
-      var extractor = new HybridTagExtractor();
+      var extractor = new AttributeTagExtractor();
       return extractor.ExtractTags(type);
     }
 

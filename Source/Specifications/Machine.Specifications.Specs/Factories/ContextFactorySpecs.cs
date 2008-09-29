@@ -36,7 +36,7 @@ namespace Machine.Specifications.Specs.Factories
       newContext = factory.CreateContextFrom(new context_with_tags());
     };
 
-    It should_capture_the_tags = ()=>
+    It should_capture_the_tags = () =>
       newContext.Tags.ShouldContainOnly(new Tag(tag.example), new Tag(tag.some_other_tag), new Tag(tag.one_more_tag));
   }
 
