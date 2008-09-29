@@ -68,7 +68,7 @@ namespace Machine.Specifications.ConsoleRunner
 
     public virtual RunOptions GetRunOptions()
     {
-      return new RunOptions(IncludeTags, ExcludeTags);
+      return new RunOptions(IncludeTags ?? new string[0], ExcludeTags ?? new string[0]);
     }
 
   }

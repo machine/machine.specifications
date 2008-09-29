@@ -110,14 +110,14 @@ namespace Machine.Specifications.Runner
         
       assemblyContexts.ForEach(assemblyContext => assemblyContext.OnAssemblyStart());
 
-      StartContextsRun(contexts);
+      RunContexts(contexts.FilteredBy(_options));
         
       assemblyContexts.ForEach(assemblyContext => assemblyContext.OnAssemblyComplete());
         
       _listener.OnAssemblyEnd(assembly.GetInfo());
     }
 
-    private void StartContextsRun(IEnumerable<Context> contexts)
+    private void RunContexts(IEnumerable<Context> contexts)
     {
       foreach (var context in contexts)
       {
@@ -139,6 +139,29 @@ namespace Machine.Specifications.Runner
       }
 
       _listener.OnContextEnd(context.GetInfo());
+    }
+  }
+
+  public static class ContextFilteringExtensions
+  {
+    public static IEnumerable<Context> FilteredBy(this IEnumerable<Context> contexts, RunOptions options)
+    {
+      var results = contexts;
+
+      if (options.IncludeTags.Any())
+      {
+        var tags = options.IncludeTags.Select(tag => new Tag(tag));
+
+        results = results.Where(x => x.Tags.Intersect(tags).Any());
+      }
+
+      if (options.ExcludeTags.Any())
+      {
+        var tags = options.ExcludeTags.Select(tag => new Tag(tag));
+        results = results.Where(x => !x.Tags.Intersect(tags).Any());
+      }
+
+      return results;
     }
   }
 }
