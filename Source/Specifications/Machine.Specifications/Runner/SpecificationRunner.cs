@@ -78,14 +78,14 @@ namespace Machine.Specifications.Runner
       StartRun(CreateMap(assembly, new[] {context}));
     }
 
-    Dictionary<Assembly, IEnumerable<Context>> CreateMap(Assembly assembly, IEnumerable<Context> contexts)
+    static Dictionary<Assembly, IEnumerable<Context>> CreateMap(Assembly assembly, IEnumerable<Context> contexts)
     {
       var map = new Dictionary<Assembly, IEnumerable<Context>>();
       map[assembly] = contexts;
       return map;
     }
 
-    private void StartRun(IDictionary<Assembly, IEnumerable<Context>> contextMap)
+    void StartRun(IDictionary<Assembly, IEnumerable<Context>> contextMap)
     {
       _listener.OnRunStart();
 
@@ -117,30 +117,26 @@ namespace Machine.Specifications.Runner
 
     private void StartContextsRun(IEnumerable<Context> contexts)
     {
-      if (contexts.Count() == 0) return;
-
       foreach (var context in contexts)
       {
         if (context.Specifications.Count() == 0) continue;
 
-        _listener.OnContextStart(context.GetInfo());
-
-        foreach (var iteration in context.EnumerateAndVerifyAllSpecifications())
-        {
-          if (iteration.Current != null)
-          {
-            _listener.OnSpecificationEnd(iteration.Current.GetInfo(), iteration.Result);
-          }
-
-          if (iteration.Next != null)
-          {
-            _listener.OnSpecificationStart(iteration.Next.GetInfo());
-          }
-        }
-
-        _listener.OnContextEnd(context.GetInfo());
+        RunContext(context);
       }
     }
 
+    void RunContext(Context context)
+    {
+      _listener.OnContextStart(context.GetInfo());
+
+      foreach (var specification in context.EnumerateSpecificationsForVerification())
+      {
+        _listener.OnSpecificationStart(specification.GetInfo());
+        var result = context.VerifyOrIgnoreSpecification(specification);
+        _listener.OnSpecificationEnd(specification.GetInfo(), result);
+      }
+
+      _listener.OnContextEnd(context.GetInfo());
+    }
   }
 }

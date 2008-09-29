@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Machine.Specifications.Utility;
@@ -16,6 +17,7 @@ namespace Machine.Specifications.Model
     readonly IEnumerable<Cleanup> _afterEachs;
     readonly IEnumerable<Cleanup> _afterAlls;
     readonly IEnumerable<Tag> _tags;
+    bool _isGlobalContextEstablished;
 
     public string Name { get; private set; }
     public bool IsIgnored { get; private set; }
@@ -52,40 +54,17 @@ namespace Machine.Specifications.Model
 
     public IEnumerable<Result> VerifyAllSpecifications()
     {
-      return EnumerateAndVerifyAllSpecifications().Where(x => x.Result != null).Select(x => x.Result).ToList();
+      var results = new List<Result>();
+      foreach (var specification in EnumerateSpecificationsForVerification())
+      {
+        var result = VerifyOrIgnoreSpecification(specification);
+        results.Add(result);
+      }
+
+      return results;
     }
 
-    public IEnumerable<SpecificationVerificationIteration> EnumerateAndVerifyAllSpecifications()
-    {
-      if (!Specifications.Any()) yield break;
-
-      bool hasRunnableSpecifications = Specifications.Where(x => !x.IsIgnored && x.IsDefined).Any();
-
-      if (hasRunnableSpecifications)
-      {
-        RunContextBeforeAll();
-      }
-
-      Result result = null;
-      Specification current = null;
-      foreach (var next in Specifications)
-      {
-        yield return new SpecificationVerificationIteration(current, result, next);
-        current = next;
-        result = VerifyOrIgnoreSpecification(current);
-      }
-
-      yield return new SpecificationVerificationIteration(current, result, null);
-
-      if (hasRunnableSpecifications)
-      {
-        RunContextAfterAll();
-      }
-
-      CriticalContextFailure = null;
-    }
-
-    private Result VerifyOrIgnoreSpecification(Specification specification)
+    public Result VerifyOrIgnoreSpecification(Specification specification)
     {
       if (specification.IsIgnored)
       {
@@ -107,18 +86,32 @@ namespace Machine.Specifications.Model
 
     public Result VerifySpecification(Specification specification)
     {
-      RunContextBeforeAll();
-
-      var result = InternalVerifySpecification(specification);
-      
-      RunContextAfterAll();
-
-      if (result.Passed && CriticalContextFailure != null)
+      if (specification.IsIgnored)
       {
-        result = CriticalContextFailure;
+        return Result.Ignored();
       }
 
-      CriticalContextFailure = null;
+      if (!specification.IsDefined)
+      {
+        return Result.NotImplemented();
+      }
+
+      if (!_isGlobalContextEstablished)
+      {
+        RunContextBeforeAll();
+      }
+
+      if (CriticalContextFailure != null)
+      {
+        return CriticalContextFailure;
+      }
+
+      var result = InternalVerifySpecification(specification);
+
+      if (!_isGlobalContextEstablished)
+      {
+        RunContextAfterAll();
+      }
 
       return result;
     }
@@ -192,6 +185,32 @@ namespace Machine.Specifications.Model
 
         return line + Name;
       }
+    }
+
+    public IEnumerable<Specification> EnumerateSpecificationsForVerification()
+    {
+      if (!Specifications.Any()) yield break;
+
+      bool hasRunnableSpecifications = Specifications.Where(x => !x.IsIgnored && x.IsDefined).Any();
+
+      if (hasRunnableSpecifications)
+      {
+        RunContextBeforeAll();
+      }
+      _isGlobalContextEstablished = true;
+
+      foreach (var specification in Specifications)
+      {
+        yield return specification;
+      }
+
+      if (hasRunnableSpecifications)
+      {
+        RunContextAfterAll();
+      }
+
+      _isGlobalContextEstablished = false;
+      CriticalContextFailure = null;
     }
   }
 
