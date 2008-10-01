@@ -77,11 +77,18 @@ namespace Machine.Specifications.TDNetRunner
       {
         testResult.State = TestState.Passed;
       }
-      else if (result.Status == Status.Ignored || result.Status == Status.NotImplemented)
+      else if (result.Status == Status.Ignored)
       {
         testResult.State = TestState.Ignored;
+        testResult.Message = "Ignored";
       }
-      else {
+      else if (result.Status == Status.NotImplemented)
+      {
+        testResult.State = TestState.Ignored;
+        testResult.Message = "Not Implemented";
+      }
+      else 
+      {
         testResult.State = TestState.Failed;
         if (result.Exception != null)
         {
