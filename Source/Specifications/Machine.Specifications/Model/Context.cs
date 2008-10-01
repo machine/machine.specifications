@@ -19,7 +19,7 @@ namespace Machine.Specifications.Model
 
     public string Name { get; private set; }
     public bool IsIgnored { get; private set; }
-    public bool IsSetupForEachSpec { get; private set; }
+    public bool IsSetupForEachSpec { get; set; }
     public IEnumerable<Tag> Tags { get { return _tags; } }
     public object Instance { get { return _instance; } }
     public IEnumerable<Specification> Specifications { get { return _specifications; } }

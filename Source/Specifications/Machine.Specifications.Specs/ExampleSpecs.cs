@@ -102,4 +102,10 @@ namespace Machine.Specifications.Specs
     {
     }
   }
+
+  [Tags(tag.example)]
+  public class context_with_misnamed_establish_clause
+  {
+    Establish foo = () => { };
+  }
 }
