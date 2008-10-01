@@ -11,11 +11,9 @@ namespace Machine.Specifications.Model
     readonly List<Specification> _specifications;
     readonly object _instance;
     readonly Subject _subject;
-    readonly IEnumerable<Establish> _beforeEachs;
-    readonly IEnumerable<Establish> _beforeAlls;
-    readonly Because _because;
-    readonly IEnumerable<Cleanup> _afterEachs;
-    readonly IEnumerable<Cleanup> _afterAlls;
+    readonly IEnumerable<Establish> _contextClauses;
+    readonly Because _becauseClause;
+    readonly IEnumerable<Cleanup> _cleanupClauses;
     readonly IEnumerable<Tag> _tags;
     bool _isGlobalContextEstablished;
 
@@ -26,21 +24,18 @@ namespace Machine.Specifications.Model
     public IEnumerable<Specification> Specifications { get { return _specifications; } }
     public Type Type { get; private set; }
     public Subject Subject { get { return _subject; } }
-    public bool HasBecauseClause { get { return _because != null; } }
+    public bool HasBecauseClause { get { return _becauseClause != null; } }
     public Result CriticalContextFailure { get; private set; }
 
-    public Context(Type type, object instance, IEnumerable<Establish> beforeEachs,
-      IEnumerable<Establish> beforeAlls, Because because, IEnumerable<Cleanup> afterEachs,
-      IEnumerable<Cleanup> afterAlls, Subject subject, bool isIgnored, IEnumerable<Tag> tags)
+    public Context(Type type, object instance, IEnumerable<Establish> contextClauses, Because becauseClause, 
+      IEnumerable<Cleanup> cleanupClauses, Subject subject, bool isIgnored, IEnumerable<Tag> tags)
     {
       Name = type.Name.ReplaceUnderscores();
       Type = type;
       _instance = instance;
-      _afterAlls = afterAlls;
-      _afterEachs = afterEachs;
-      _beforeAlls = beforeAlls;
-      _because = because;
-      _beforeEachs = beforeEachs;
+      _cleanupClauses = cleanupClauses;
+      _contextClauses = contextClauses;
+      _becauseClause = becauseClause;
       _specifications = new List<Specification>();
       _subject = subject;
       IsIgnored = isIgnored;
@@ -119,30 +114,8 @@ namespace Machine.Specifications.Model
     private Result InternalVerifySpecification(Specification specification)
     {
       VerificationContext context = new VerificationContext(_instance);
-      try
-      {
-        _beforeEachs.InvokeAll();
-        _because.InvokeIfNotNull();
-      }
-      catch (Exception err)
-      {
-        return Result.ContextFailure(err);
-      }
 
       var result = specification.Verify(context);
-
-      try
-      {
-        _afterEachs.InvokeAll();
-      }
-      catch (Exception err)
-      {
-        if (result.Passed)
-        {
-          return Result.ContextFailure(err);
-        }
-        return result;
-      }
 
       return result;
     }
@@ -151,7 +124,8 @@ namespace Machine.Specifications.Model
     {
       try
       {
-        _beforeAlls.InvokeAll();
+        _contextClauses.InvokeAll();
+        _becauseClause.InvokeIfNotNull();
       }
       catch (Exception err)
       {
@@ -163,7 +137,7 @@ namespace Machine.Specifications.Model
     {
       try
       {
-        _afterAlls.InvokeAll();
+        _cleanupClauses.InvokeAll();
       }
       catch (Exception err)
       {

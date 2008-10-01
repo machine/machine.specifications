@@ -99,4 +99,27 @@ namespace Machine.Specifications.Specs.Runner
     It should_not_perform_one_time_cleanup =()=>
       context_with_ignore.CleanupOnceOccurred.ShouldBeFalse();
   }
+
+  [Subject("Specification Runner")]
+  public class when_running_a_context_with_multiple_specifications
+  {
+    static SpecificationRunner runner;
+
+    Establish context = () =>
+    {
+      context_with_multiple_specifications.EstablishRunCount = 0;
+      context_with_multiple_specifications.BecauseClauseRunCount = 0;
+
+      runner = new SpecificationRunner(new TestListener(), RunOptions.Default);
+    };
+
+    Because of =()=>
+      runner.RunMember(typeof(context_with_multiple_specifications).Assembly, typeof(context_with_multiple_specifications));
+
+    It should_establish_the_context_once =()=>
+      context_with_multiple_specifications.EstablishRunCount.ShouldEqual(1);
+
+    It should_invoke_the_because_clause_once =()=>
+      context_with_multiple_specifications.BecauseClauseRunCount.ShouldEqual(1);
+  }
 }

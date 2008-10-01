@@ -44,13 +44,10 @@ namespace Machine.Specifications.Factories
       var fieldInfos = type.GetPrivateFields();
       List<FieldInfo> itFieldInfos = new List<FieldInfo>();
 
-      var beforeAlls = ExtractPrivateFieldValues<Establish>(instance, "context_once");
-      var beforeEachs = ExtractPrivateFieldValues<Establish>(instance, "context");
-      beforeAlls.Reverse();
-      beforeEachs.Reverse();
+      var contextClauses = ExtractPrivateFieldValues<Establish>(instance, "context");
+      contextClauses.Reverse();
 
-      var afterAlls = ExtractPrivateFieldValues<Cleanup>(instance, "after_all");
-      var afterEachs = ExtractPrivateFieldValues<Cleanup>(instance, "after_each");
+      var cleanupClauses = ExtractPrivateFieldValues<Cleanup>(instance, "after");
 
       var becauses = ExtractPrivateFieldValues<Because>(instance, "of");
 
@@ -63,7 +60,7 @@ namespace Machine.Specifications.Factories
 
       var isIgnored = type.HasAttribute<IgnoreAttribute>();
       var tags = ExtractTags(type);
-      var context = new Context(type, instance, beforeEachs, beforeAlls, becauses.FirstOrDefault(), afterEachs, afterAlls, concern, isIgnored, tags);
+      var context = new Context(type, instance, contextClauses, becauses.FirstOrDefault(), cleanupClauses, concern, isIgnored, tags);
 
       foreach (FieldInfo info in fieldInfos)
       {

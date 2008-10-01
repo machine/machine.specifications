@@ -188,19 +188,12 @@ namespace Machine.Specifications
   {
     public static bool BecauseInvoked = false;
     public static bool ItInvoked = false;
-    public static bool BeforeEachInvoked = false;
-    public static bool BeforeAllInvoked = false;
-    public static bool AfterEachInvoked = false;
-    public static bool AfterAllInvoked = false;
+    public static bool ContextInvoked = false;
+    public static bool CleanupInvoked = false;
 
     Establish context =()=>
     {
-      BeforeEachInvoked = true;
-    };
-
-    Establish context_once =()=>
-    {
-      BeforeAllInvoked = true;
+      ContextInvoked = true;
     };
 
     Because of = () =>
@@ -213,24 +206,17 @@ namespace Machine.Specifications
       ItInvoked = true;
     };
 
-    Cleanup after_each =()=>
+    Cleanup after =()=>
     {
-      AfterEachInvoked = true;
-    };
-
-    Cleanup after_all =()=>
-    {
-      AfterAllInvoked = true;
+      CleanupInvoked = true;
     };
 
     public void Reset()
     {
       BecauseInvoked = false;
       ItInvoked = false;
-      BeforeEachInvoked = false;
-      BeforeAllInvoked = false;
-      AfterEachInvoked = false;
-      AfterAllInvoked = false;
+      ContextInvoked = false;
+      CleanupInvoked = false;
     }
   }
 

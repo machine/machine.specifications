@@ -19,33 +19,21 @@ namespace Machine.Specifications.Model
     }
 
     [Test]
-    public void ShouldCallWhen()
+    public void ShouldEstablishContext()
     {
       ContextWithSingleSpecification.BecauseInvoked.ShouldBeTrue();
     }
 
     [Test]
-    public void ShouldCallBeforeAll()
-    {
-      ContextWithSingleSpecification.BeforeAllInvoked.ShouldBeTrue();
-    }
-
-    [Test]
     public void ShouldCallBeforeEach()
     {
-      ContextWithSingleSpecification.BeforeEachInvoked.ShouldBeTrue();
+      ContextWithSingleSpecification.ContextInvoked.ShouldBeTrue();
     }
 
     [Test]
-    public void ShouldCallAfterEach()
+    public void ShouldCleanup()
     {
-      ContextWithSingleSpecification.AfterEachInvoked.ShouldBeTrue();
-    }
-
-    [Test]
-    public void ShouldCallAfterAll()
-    {
-      ContextWithSingleSpecification.AfterAllInvoked.ShouldBeTrue();
+      ContextWithSingleSpecification.CleanupInvoked.ShouldBeTrue();
     }
   }
 
