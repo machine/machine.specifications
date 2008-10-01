@@ -19,12 +19,12 @@ namespace Machine.Specifications.Explorers
       contextFactory = new ContextFactory();
     }
 
-    public IEnumerable<Model.Context> FindContextsIn(Assembly assembly)
+    public IEnumerable<Context> FindContextsIn(Assembly assembly)
     {
       return EnumerateContextsIn(assembly).Select(x=>CreateContextFrom(x));
     }
 
-    public IEnumerable<Model.Context> FindContextsIn(Assembly assembly, string targetNamespace)
+    public IEnumerable<Context> FindContextsIn(Assembly assembly, string targetNamespace)
     {
       return EnumerateContextsIn(assembly)
         .Where(x=>x.Namespace == targetNamespace)
@@ -39,13 +39,13 @@ namespace Machine.Specifications.Explorers
         .Select(x => (IAssemblyContext)Activator.CreateInstance(x));
     }
 
-    Model.Context CreateContextFrom(Type type)
+    Context CreateContextFrom(Type type)
     {
       object instance = Activator.CreateInstance(type);
       return contextFactory.CreateContextFrom(instance);
     }
 
-    Model.Context CreateContextFrom(Type type, FieldInfo fieldInfo)
+    Context CreateContextFrom(Type type, FieldInfo fieldInfo)
     {
       object instance = Activator.CreateInstance(type);
       return contextFactory.CreateContextFrom(instance, fieldInfo);
@@ -60,13 +60,6 @@ namespace Machine.Specifications.Explorers
     {
       return type.GetPrivateFieldsWith(typeof(It)).Any();
     }
-
-    /*
-    private static bool HasContextAttribute(Type type)
-    {
-      return type.IsDefined(typeof(ContextAttribute), false);
-    }
-    */
 
     static IEnumerable<Type> EnumerateContextsIn(Assembly assembly)
     {

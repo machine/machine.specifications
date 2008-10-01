@@ -133,12 +133,14 @@ namespace Machine.Specifications.Specs.Runner
   }
 
   [Subject("Specification Runner")]
-  public class when_running_a_context_with_a_misnamed_establish_clause
+  public class when_running_a_context_with_multiple_establish_clauses
     : with_runner
   {
     static Exception exception;
+
+    Because foo;
     Because of =()=>
-      exception = Catch.Exception(Run<context_with_misnamed_establish_clause>);
+      exception = Catch.Exception(Run<context_with_multiple_establish_clauses>);
 
     It should_fail =()=>
       exception.ShouldBeOfType<SpecificationUsageException>();
@@ -158,5 +160,4 @@ namespace Machine.Specifications.Specs.Runner
       runner.RunMember(typeof(T).Assembly, typeof(T));
     }
   }
-
 }

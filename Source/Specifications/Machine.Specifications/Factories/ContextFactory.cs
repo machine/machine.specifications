@@ -45,12 +45,12 @@ namespace Machine.Specifications.Factories
       var fieldInfos = type.GetPrivateFields();
       List<FieldInfo> itFieldInfos = new List<FieldInfo>();
 
-      var contextClauses = ExtractPrivateFieldValues<Establish>(instance, "context");
+      var contextClauses = ExtractPrivateFieldValues<Establish>(instance);
       contextClauses.Reverse();
 
-      var cleanupClauses = ExtractPrivateFieldValues<Cleanup>(instance, "after");
+      var cleanupClauses = ExtractPrivateFieldValues<Cleanup>(instance);
 
-      var becauses = ExtractPrivateFieldValues<Because>(instance, "of");
+      var becauses = ExtractPrivateFieldValues<Because>(instance);
 
       if (becauses.Count > 1)
       {
@@ -112,15 +112,23 @@ namespace Machine.Specifications.Factories
       }
     }
 
-    static List<T> ExtractPrivateFieldValues<T>(object instance, string name)
+    static List<T> ExtractPrivateFieldValues<T>(object instance)
     {
       var delegates = new List<T>();
       var type = instance.GetType();
       while (type != null)
       {
-        FieldInfo field = type.GetPrivateFieldsWith(typeof(T)).Where(x=>x.Name == name).FirstOrDefault();
-        if (field != null)
+        var fields = type.GetPrivateFieldsWith(typeof(T));
+
+        if (fields.Count() > 1)
         {
+          throw new SpecificationUsageException(String.Format("You cannot have more than one {0} clause in {1}", typeof(T).Name, type.FullName));
+        }
+
+        var field = fields.FirstOrDefault();
+
+        if (field != null) 
+        { 
           T val = (T)field.GetValue(instance);
           delegates.Add(val);
         }
