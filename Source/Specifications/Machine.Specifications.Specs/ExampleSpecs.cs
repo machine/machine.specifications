@@ -64,7 +64,6 @@ namespace Machine.Specifications.Specs
       IgnoredSpecRan = true;
   }
 
-
   [Tags(tag.example)]
   public class context_with_no_specs 
   {
@@ -86,9 +85,6 @@ namespace Machine.Specifications.Specs
   [Tags(tag.example)]
   public class context_with_subject
   {
-    public void Reset()
-    {
-    }
   }
 
   [Tags(tag.example)]
