@@ -5,6 +5,20 @@ using System.Text;
 
 namespace Machine.Specifications.Specs
 {
+  [SetupForEachSpecification, Tags(tag.example)]
+  public class context_with_multiple_specifications_and_setup_for_each
+  {
+    public static int EstablishRunCount;
+    public static int BecauseClauseRunCount;
+
+    Establish context = () => EstablishRunCount++;
+
+    Because of = () => BecauseClauseRunCount++;
+
+    It spec1 = () => { };
+    It spec2 = () => { };
+  }
+
   [Tags(tag.example)]
   public class context_with_multiple_specifications
   {

@@ -19,6 +19,7 @@ namespace Machine.Specifications.Model
 
     public string Name { get; private set; }
     public bool IsIgnored { get; private set; }
+    public bool IsSetupForEachSpec { get; private set; }
     public IEnumerable<Tag> Tags { get { return _tags; } }
     public object Instance { get { return _instance; } }
     public IEnumerable<Specification> Specifications { get { return _specifications; } }
@@ -27,8 +28,7 @@ namespace Machine.Specifications.Model
     public bool HasBecauseClause { get { return _becauseClause != null; } }
     public Result CriticalContextFailure { get; private set; }
 
-    public Context(Type type, object instance, IEnumerable<Establish> contextClauses, Because becauseClause, 
-      IEnumerable<Cleanup> cleanupClauses, Subject subject, bool isIgnored, IEnumerable<Tag> tags)
+    public Context(Type type, object instance, IEnumerable<Establish> contextClauses, Because becauseClause, IEnumerable<Cleanup> cleanupClauses, Subject subject, bool isIgnored, IEnumerable<Tag> tags, bool isSetupForEachSpec)
     {
       Name = type.Name.ReplaceUnderscores();
       Type = type;
@@ -40,6 +40,7 @@ namespace Machine.Specifications.Model
       _subject = subject;
       IsIgnored = isIgnored;
       _tags = tags;
+      IsSetupForEachSpec = isSetupForEachSpec;
     }
 
     public void AddSpecification(Specification specification)
@@ -52,31 +53,11 @@ namespace Machine.Specifications.Model
       var results = new List<Result>();
       foreach (var specification in EnumerateSpecificationsForVerification())
       {
-        var result = VerifyOrIgnoreSpecification(specification);
+        var result = VerifySpecification(specification);
         results.Add(result);
       }
 
       return results;
-    }
-
-    public Result VerifyOrIgnoreSpecification(Specification specification)
-    {
-      if (specification.IsIgnored)
-      {
-        return Result.Ignored();
-      }
-      else if (!specification.IsDefined)
-      {
-        return Result.NotImplemented();
-      }
-      else if (CriticalContextFailure != null)
-      {
-        return CriticalContextFailure;
-      }
-      else
-      {
-        return InternalVerifySpecification(specification);
-      }
     }
 
     public Result VerifySpecification(Specification specification)
@@ -91,9 +72,9 @@ namespace Machine.Specifications.Model
         return Result.NotImplemented();
       }
 
-      if (!_isGlobalContextEstablished)
+      if (IsSetupForEachSpec || !_isGlobalContextEstablished)
       {
-        RunContextBeforeAll();
+        EstablishContext();
       }
 
       if (CriticalContextFailure != null)
@@ -103,9 +84,9 @@ namespace Machine.Specifications.Model
 
       var result = InternalVerifySpecification(specification);
 
-      if (!_isGlobalContextEstablished)
+      if (IsSetupForEachSpec || !_isGlobalContextEstablished)
       {
-        RunContextAfterAll();
+        Cleanup();
       }
 
       return result;
@@ -120,7 +101,7 @@ namespace Machine.Specifications.Model
       return result;
     }
 
-    public void RunContextBeforeAll()
+    public void EstablishContext()
     {
       try
       {
@@ -133,7 +114,7 @@ namespace Machine.Specifications.Model
       }
     }
 
-    public void RunContextAfterAll()
+    public void Cleanup()
     {
       try
       {
@@ -167,9 +148,9 @@ namespace Machine.Specifications.Model
 
       bool hasRunnableSpecifications = Specifications.Where(x => !x.IsIgnored && x.IsDefined).Any();
 
-      if (hasRunnableSpecifications)
+      if (!IsSetupForEachSpec && hasRunnableSpecifications)
       {
-        RunContextBeforeAll();
+        EstablishContext();
       }
       _isGlobalContextEstablished = true;
 
@@ -178,9 +159,9 @@ namespace Machine.Specifications.Model
         yield return specification;
       }
 
-      if (hasRunnableSpecifications)
+      if (!IsSetupForEachSpec && hasRunnableSpecifications)
       {
-        RunContextAfterAll();
+        Cleanup();
       }
 
       _isGlobalContextEstablished = false;

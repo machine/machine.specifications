@@ -122,4 +122,27 @@ namespace Machine.Specifications.Specs.Runner
     It should_invoke_the_because_clause_once =()=>
       context_with_multiple_specifications.BecauseClauseRunCount.ShouldEqual(1);
   }
+
+  [Subject("Specification Runner")]
+  public class when_running_a_context_with_multiple_specifications_and_setup_once_per_attribute
+  {
+    static SpecificationRunner runner;
+
+    Establish context = () =>
+    {
+      context_with_multiple_specifications_and_setup_for_each.EstablishRunCount = 0;
+      context_with_multiple_specifications_and_setup_for_each.BecauseClauseRunCount = 0;
+
+      runner = new SpecificationRunner(new TestListener(), RunOptions.Default);
+    };
+
+    Because of =()=>
+      runner.RunMember(typeof(context_with_multiple_specifications_and_setup_for_each).Assembly, typeof(context_with_multiple_specifications_and_setup_for_each));
+
+    It should_establish_the_context_once =()=>
+      context_with_multiple_specifications_and_setup_for_each.EstablishRunCount.ShouldEqual(2);
+
+    It should_invoke_the_because_clause_once =()=>
+      context_with_multiple_specifications_and_setup_for_each.BecauseClauseRunCount.ShouldEqual(2);
+  }
 }

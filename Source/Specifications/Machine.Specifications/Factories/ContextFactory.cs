@@ -9,6 +9,7 @@ using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Factories
 {
+  [Subject("hi")]
   public class ContextFactory
   {
     readonly SpecificationFactory _specificationFactory;
@@ -57,10 +58,11 @@ namespace Machine.Specifications.Factories
       }
 
       var concern = ExtractSubject(type);
+      var isSetupForEachSpec = IsSetupForEachSpec(type);
 
       var isIgnored = type.HasAttribute<IgnoreAttribute>();
       var tags = ExtractTags(type);
-      var context = new Context(type, instance, contextClauses, becauses.FirstOrDefault(), cleanupClauses, concern, isIgnored, tags);
+      var context = new Context(type, instance, contextClauses, becauses.FirstOrDefault(), cleanupClauses, concern, isIgnored, tags, isSetupForEachSpec);
 
       foreach (FieldInfo info in fieldInfos)
       {
@@ -80,6 +82,11 @@ namespace Machine.Specifications.Factories
     {
       var extractor = new AttributeTagExtractor();
       return extractor.ExtractTags(type);
+    }
+
+    static bool IsSetupForEachSpec(Type type)
+    {
+      return type.GetCustomAttributes(typeof(SetupForEachSpecification), true).Any();
     }
 
     static Subject ExtractSubject(Type type)

@@ -134,7 +134,7 @@ namespace Machine.Specifications.Runner
       foreach (var specification in context.EnumerateSpecificationsForVerification())
       {
         _listener.OnSpecificationStart(specification.GetInfo());
-        var result = context.VerifyOrIgnoreSpecification(specification);
+        var result = context.VerifySpecification(specification);
         _listener.OnSpecificationEnd(specification.GetInfo(), result);
       }
 

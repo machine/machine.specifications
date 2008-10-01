@@ -26,12 +26,12 @@ namespace Machine.Specifications.GallioAdapter.Model
 
     public void SetupContext()
     {
-      context.RunContextBeforeAll();
+      context.EstablishContext();
     }
 
     public void TeardownContext()
     {
-      context.RunContextAfterAll();
+      context.Cleanup();
     }
   }
 }
