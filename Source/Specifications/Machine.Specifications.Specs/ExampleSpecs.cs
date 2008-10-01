@@ -69,16 +69,9 @@ namespace Machine.Specifications.Specs
   public class context_with_no_specs 
   {
     public static bool ContextEstablished;
-    public static bool OneTimeContextEstablished;
     public static bool CleanupOccurred;
-    public static bool CleanupOnceOccurred;
 
     Establish context = () =>
-    {
-      ContextEstablished = true;
-    };
-
-    Establish context_once = () =>
     {
       ContextEstablished = true;
     };
@@ -86,11 +79,6 @@ namespace Machine.Specifications.Specs
     Cleanup after_each = () =>
     {
       CleanupOccurred = true;
-    };
-
-    Cleanup after_all = () =>
-    {
-      CleanupOnceOccurred = true;
     };
   }
 

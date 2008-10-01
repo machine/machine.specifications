@@ -14,8 +14,6 @@ namespace Machine.Specifications.Specs.Runner
     Establish context = () =>
     {
       context_with_no_specs.ContextEstablished = false;
-      context_with_no_specs.OneTimeContextEstablished = false;
-      context_with_no_specs.CleanupOnceOccurred = false;
       context_with_no_specs.CleanupOccurred = false;
     };
 
@@ -25,14 +23,8 @@ namespace Machine.Specifications.Specs.Runner
     It should_not_establish_the_context =()=>
       context_with_no_specs.ContextEstablished.ShouldBeFalse();
 
-    It should_not_establish_the_one_time_context =()=>
-      context_with_no_specs.OneTimeContextEstablished.ShouldBeFalse();
-
     It should_not_cleanup =()=>
       context_with_no_specs.CleanupOccurred.ShouldBeFalse();
-
-    It should_not_perform_one_time_cleanup =()=>
-      context_with_no_specs.CleanupOnceOccurred.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
@@ -53,14 +45,8 @@ namespace Machine.Specifications.Specs.Runner
     It should_not_establish_the_context =()=>
       context_with_ignore_on_one_spec.ContextEstablished.ShouldBeFalse();
 
-    It should_not_establish_the_one_time_context =()=>
-      context_with_ignore_on_one_spec.OneTimeContextEstablished.ShouldBeFalse();
-
     It should_not_cleanup =()=>
       context_with_ignore_on_one_spec.CleanupOccurred.ShouldBeFalse();
-
-    It should_not_perform_one_time_cleanup =()=>
-      context_with_ignore_on_one_spec.CleanupOnceOccurred.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
@@ -81,14 +67,8 @@ namespace Machine.Specifications.Specs.Runner
     It should_not_establish_the_context =()=>
       context_with_ignore.ContextEstablished.ShouldBeFalse();
 
-    It should_not_establish_the_one_time_context =()=>
-      context_with_ignore.OneTimeContextEstablished.ShouldBeFalse();
-
     It should_not_cleanup =()=>
       context_with_ignore.CleanupOccurred.ShouldBeFalse();
-
-    It should_not_perform_one_time_cleanup =()=>
-      context_with_ignore.CleanupOnceOccurred.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
