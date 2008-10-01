@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -45,9 +46,8 @@ namespace Machine.Specifications.Runner
       _internalListener.OnRunStart();
       AppDomain appDomain = CreateAppDomain(assembly);
 
-      CreateRunner("Namespace", appDomain, assembly, targetNamespace);
+      CreateRunnerAndUnloadAppDomain("Namespace", appDomain, assembly, targetNamespace);
 
-      AppDomain.Unload(appDomain);
       _internalListener.OnRunEnd();
     }
 
@@ -56,9 +56,8 @@ namespace Machine.Specifications.Runner
       _internalListener.OnRunStart();
       AppDomain appDomain = CreateAppDomain(assembly);
 
-      CreateRunner("Member", appDomain, assembly, member);
+      CreateRunnerAndUnloadAppDomain("Member", appDomain, assembly, member);
 
-      AppDomain.Unload(appDomain);
       _internalListener.OnRunEnd();
     }
 
@@ -66,12 +65,10 @@ namespace Machine.Specifications.Runner
     {
       AppDomain appDomain = CreateAppDomain(assembly);
 
-      CreateRunner("Assembly", appDomain, assembly);
-
-      AppDomain.Unload(appDomain);
+      CreateRunnerAndUnloadAppDomain("Assembly", appDomain, assembly);
     }
 
-    void CreateRunner(string runMethod, AppDomain appDomain, Assembly assembly, params object[] args)
+    void CreateRunnerAndUnloadAppDomain(string runMethod, AppDomain appDomain, Assembly assembly, params object[] args)
     {
       string mspecAssemblyFilename = Path.Combine(Path.GetDirectoryName(assembly.Location), "Machine.Specifications.dll");
 
@@ -83,7 +80,18 @@ namespace Machine.Specifications.Runner
       constructorArgs[2] = _options;
       Array.Copy(args, 0, constructorArgs, 3, args.Length);
 
-      appDomain.CreateInstanceAndUnwrap(mspecAssemblyName.FullName, "Machine.Specifications.Runner.AppDomainRunner+" + runMethod + "Runner", false, 0, null, constructorArgs, null, null, null);
+      try
+      {
+        appDomain.CreateInstanceAndUnwrap(mspecAssemblyName.FullName, "Machine.Specifications.Runner.AppDomainRunner+" + runMethod + "Runner", false, 0, null, constructorArgs, null, null, null);
+      }
+      catch (Exception err)
+      {
+        Console.WriteLine("Runner failure: " + err.ToString());
+      }
+      finally
+      {
+        AppDomain.Unload(appDomain);
+      }
     }
 
     static AppDomain CreateAppDomain(Assembly assembly)
