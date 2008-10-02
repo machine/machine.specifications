@@ -86,7 +86,7 @@ namespace Machine.Specifications.Runner
       }
       catch (Exception err)
       {
-        Console.WriteLine("Runner failure: " + err.ToString());
+        Console.Error.WriteLine("Runner failure: " + err.ToString());
       }
       finally
       {
