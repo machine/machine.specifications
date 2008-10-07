@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
+    <Compile Include="AssemblyContext.cs" />
     <Compile Include="BankingSpecs.cs" />
     <Compile Include="EmptySpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

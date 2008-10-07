@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Machine.Specifications.Example;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Specs.Runner;
 
@@ -118,12 +119,33 @@ namespace Machine.Specifications.Specs.Runner
   {
     static Exception exception;
 
-    Because foo;
     Because of =()=>
       exception = Catch.Exception(Run<context_with_multiple_establish_clauses>);
 
     It should_fail =()=>
       exception.ShouldBeOfType<SpecificationUsageException>();
+  }
+
+  [Subject("Specification Runner")]
+  public class when_running_an_assembly_with_no_included_contexts
+  {
+    static SpecificationRunner runner;
+
+    Establish context =()=>
+    {
+      TestAssemblyContext.OnAssemblyStartRun = false;
+      TestAssemblyContext.OnAssemblyCompleteRun = false;
+      runner = new SpecificationRunner(new TestListener(), new RunOptions(new [] {"asdfasdf"}, new string[0]));
+    };
+
+    Because of =()=>
+      runner.RunAssembly(typeof(TestAssemblyContext).Assembly);
+
+    It should_not_run_assembly_start =()=>
+      TestAssemblyContext.OnAssemblyStartRun.ShouldBeFalse();
+
+    It should_not_run_assembly_complete =()=>
+      TestAssemblyContext.OnAssemblyCompleteRun.ShouldBeFalse();
   }
 
   public class with_runner

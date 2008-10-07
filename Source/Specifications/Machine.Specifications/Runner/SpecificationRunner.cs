@@ -104,13 +104,17 @@ namespace Machine.Specifications.Runner
 
     void StartAssemblyRun(Assembly assembly, IEnumerable<Context> contexts)
     {
+      var filteredContexts = contexts.FilteredBy(_options);
+
+      if (!filteredContexts.Any()) return;
+
       var assemblyContexts = new List<IAssemblyContext>(_explorer.FindAssemblyContextsIn(assembly));
 
       _listener.OnAssemblyStart(assembly.GetInfo());
         
       assemblyContexts.ForEach(assemblyContext => assemblyContext.OnAssemblyStart());
 
-      RunContexts(contexts.FilteredBy(_options));
+      RunContexts(filteredContexts);
         
       assemblyContexts.ForEach(assemblyContext => assemblyContext.OnAssemblyComplete());
         
