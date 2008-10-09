@@ -44,7 +44,7 @@ namespace Machine.Specifications.Runner.Impl
     {
       foreach (var context in contexts)
       {
-        if (context.Specifications.Count() == 0) continue;
+        if (!context.HasRunnableSpecifications) continue;
 
         RunContext(context);
       }
@@ -52,16 +52,8 @@ namespace Machine.Specifications.Runner.Impl
 
     void RunContext(Context context)
     {
-      _listener.OnContextStart(context.GetInfo());
-
-      foreach (var specification in context.EnumerateSpecificationsForVerification())
-      {
-        _listener.OnSpecificationStart(specification.GetInfo());
-        var result = context.VerifySpecification(specification);
-        _listener.OnSpecificationEnd(specification.GetInfo(), result);
-      }
-
-      _listener.OnContextEnd(context.GetInfo());
+      var runner = new ContextRunner(_listener, _options);
+      runner.Run(context);
     }
   }
 }

@@ -158,6 +158,11 @@ namespace Machine.Specifications.Model
       }
     }
 
+    public bool HasRunnableSpecifications
+    {
+      get { return Specifications.Any(); }
+    }
+
     public IEnumerable<Specification> EnumerateSpecificationsForVerification()
     {
       if (!Specifications.Any()) yield break;

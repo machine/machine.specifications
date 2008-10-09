@@ -55,6 +55,7 @@
     <Compile Include="Catch.cs" />
     <Compile Include="Factories\ITagExtractor.cs" />
     <Compile Include="Runner\Impl\AssemblyRunner.cs" />
+    <Compile Include="Runner\Impl\ContextRunner.cs" />
     <Compile Include="Utility\ConsoleStreams.cs" />
     <Compile Include="Model\Tag.cs" />
     <Compile Include="Runner\RunOptions.cs" />
