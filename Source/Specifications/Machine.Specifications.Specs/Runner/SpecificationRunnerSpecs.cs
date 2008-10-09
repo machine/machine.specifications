@@ -149,6 +149,8 @@ namespace Machine.Specifications.Specs.Runner
       TestAssemblyContext.OnAssemblyCompleteRun.ShouldBeFalse();
   }
 
+  [Subject("Specification Runner")]
+  [Ignore]
   public class when_running_a_specification_with_console_output
     : with_runner
   {
@@ -167,6 +169,7 @@ namespace Machine.Specifications.Specs.Runner
   }
 
   [Subject("Specification Runner")]
+  [Ignore]
   public class when_running_a_specification_with_console_output_and_foreach
     : with_runner
   {

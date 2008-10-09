@@ -90,7 +90,7 @@ namespace Machine.Specifications.Specs
   [Tags(tag.example)]
   public class context_with_multiple_establish_clauses
   {
-    //Establish foo = () => { };
+    Establish foo = () => { };
     Establish bar = () => { };
 
     It should = () => { };
