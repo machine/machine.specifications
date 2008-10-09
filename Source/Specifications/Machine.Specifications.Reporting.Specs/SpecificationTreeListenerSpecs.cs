@@ -5,6 +5,7 @@ using System.Text;
 using Machine.Specifications.Example;
 using Machine.Specifications.Reporting.Model;
 using Machine.Specifications.Runner;
+using Machine.Specifications.Runner.Impl;
 
 namespace Machine.Specifications.Reporting.Specs.SpecificationTreeListenerSpecs
 {

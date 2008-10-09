@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Machine.Specifications.Model;
 
-namespace Machine.Specifications.Runner
+namespace Machine.Specifications.Runner.Impl
 {
   public static class InfoExtensions
   {

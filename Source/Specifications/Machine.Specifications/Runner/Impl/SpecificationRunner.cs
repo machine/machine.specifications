@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 using Machine.Specifications.Explorers;
 using Machine.Specifications.Model;
 using Machine.Specifications.Utility;
 
-namespace Machine.Specifications.Runner
+namespace Machine.Specifications.Runner.Impl
 {
   public class SpecificationRunner : ISpecificationRunner
   {

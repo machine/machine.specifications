@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using Machine.Specifications.Example;
 using Machine.Specifications.Runner;
+using Machine.Specifications.Runner.Impl;
 
 namespace Machine.Specifications.Specs.Runner
 {

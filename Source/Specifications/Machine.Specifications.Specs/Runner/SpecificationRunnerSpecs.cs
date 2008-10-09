@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Machine.Specifications.Example;
 using Machine.Specifications.Runner;
+using Machine.Specifications.Runner.Impl;
 using Machine.Specifications.Specs.Runner;
 
 namespace Machine.Specifications.Specs.Runner

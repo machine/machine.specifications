@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Machine.Specifications.Runner
+namespace Machine.Specifications.Runner.Impl
 {
   public class AggregateRunListener : ISpecificationRunListener
   {

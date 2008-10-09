@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using Machine.Specifications.Model;
 using Machine.Specifications.Utility;
 
-namespace Machine.Specifications.Runner
+namespace Machine.Specifications.Runner.Impl
 {
   public class AppDomainRunner : ISpecificationRunner
   {
@@ -82,7 +78,7 @@ namespace Machine.Specifications.Runner
 
       try
       {
-        appDomain.CreateInstanceAndUnwrap(mspecAssemblyName.FullName, "Machine.Specifications.Runner.AppDomainRunner+" + runMethod + "Runner", false, 0, null, constructorArgs, null, null, null);
+        appDomain.CreateInstanceAndUnwrap(mspecAssemblyName.FullName, "Machine.Specifications.Runner.Impl.AppDomainRunner+" + runMethod + "Runner", false, 0, null, constructorArgs, null, null, null);
       }
       catch (Exception err)
       {

@@ -1,15 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Text.RegularExpressions;
-
 using Machine.Specifications.ConsoleRunner.Properties;
 using Machine.Specifications.Reporting;
 using Machine.Specifications.Runner;
+using Machine.Specifications.Runner.Impl;
 
 namespace Machine.Specifications.ConsoleRunner
 {
