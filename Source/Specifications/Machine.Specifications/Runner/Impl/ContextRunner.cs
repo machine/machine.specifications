@@ -12,14 +12,37 @@ namespace Machine.Specifications.Runner.Impl
   {
     public IEnumerable<Result> Run(Context context, ISpecificationRunListener listener, RunOptions options)
     {
-      var results = new List<Result>();
+      IEnumerable<Result> results;
       listener.OnContextStart(context.GetInfo());
+      Result result = Result.Pass();
 
       if (context.HasExecutableSpecifications)
       {
-        context.EstablishContext();
+        result = context.EstablishContext();
       }
 
+      if (result.Passed)
+      {
+        results = RunSpecifications(context, listener, options);
+      }
+      else
+      {
+        results = FailSpecifications(context, listener, options, result);
+      }
+
+      if (context.HasExecutableSpecifications)
+      {
+        result = context.Cleanup();
+      }
+
+      listener.OnContextEnd(context.GetInfo());
+
+      return results;
+    }
+
+    private IEnumerable<Result> RunSpecifications(Context context, ISpecificationRunListener listener, RunOptions options)
+    {
+      var results = new List<Result>();
       foreach (var specification in context.Specifications)
       {
         var runner = new SpecificationRunner(listener, options);
@@ -28,12 +51,18 @@ namespace Machine.Specifications.Runner.Impl
         results.Add(result);
       }
 
-      if (context.HasExecutableSpecifications)
-      {
-        context.Cleanup();
-      }
+      return results;
+    }
 
-      listener.OnContextEnd(context.GetInfo());
+    private IEnumerable<Result> FailSpecifications(Context context, ISpecificationRunListener listener, RunOptions options, Result result)
+    {
+      var results = new List<Result>();
+      foreach (var specification in context.Specifications)
+      {
+        listener.OnSpecificationStart(specification.GetInfo());
+        listener.OnSpecificationEnd(specification.GetInfo(), result);
+        results.Add(result);
+      }
 
       return results;
     }
@@ -48,20 +77,30 @@ namespace Machine.Specifications.Runner.Impl
 
       foreach (var specification in context.Specifications)
       {
+        Result result = Result.Pass();
+
         if (specification.IsExecutable)
         {
-          context.EstablishContext();
+          result = context.EstablishContext();
         }
 
-        var runner = new SpecificationRunner(listener, options);
-        var result = runner.Run(specification);
+        if (result.Passed)
+        {
+          var runner = new SpecificationRunner(listener, options);
+          result = runner.Run(specification);
+        }
+
+        if (specification.IsExecutable)
+        {
+          var cleanupResult = context.Cleanup();
+
+          if (result.Passed && !cleanupResult.Passed)
+          {
+            result = cleanupResult;
+          }
+        }
 
         results.Add(result);
-
-        if (specification.IsExecutable)
-        {
-          context.Cleanup();
-        }
       }
 
       listener.OnContextEnd(context.GetInfo());

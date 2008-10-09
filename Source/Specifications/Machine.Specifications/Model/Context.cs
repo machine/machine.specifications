@@ -16,8 +16,6 @@ namespace Machine.Specifications.Model
     readonly Because _becauseClause;
     readonly IEnumerable<Cleanup> _cleanupClauses;
     readonly IEnumerable<Tag> _tags;
-    bool _isGlobalContextEstablished;
-    ConsoleStreams _consoleStreamsFromEstablish;
 
     public string Name { get; private set; }
     public bool IsIgnored { get; private set; }
@@ -28,7 +26,6 @@ namespace Machine.Specifications.Model
     public Type Type { get; private set; }
     public Subject Subject { get { return _subject; } }
     public bool HasBecauseClause { get { return _becauseClause != null; } }
-    public Result CriticalContextFailure { get; private set; }
 
     public Context(Type type, object instance, IEnumerable<Establish> contextClauses, Because becauseClause, IEnumerable<Cleanup> cleanupClauses, Subject subject, bool isIgnored, IEnumerable<Tag> tags, bool isSetupForEachSpec)
     {
@@ -82,35 +79,37 @@ namespace Machine.Specifications.Model
     }
     */
 
-    public void EstablishContext()
+    public Result EstablishContext()
     {
-      ConsoleRedirection consoleRedirection;
-      using (consoleRedirection = ConsoleRedirection.RedirectConsoleStreams())
+      Result result = Result.Pass();
+
+      try
       {
-        try
-        {
-          _contextClauses.InvokeAll();
-          _becauseClause.InvokeIfNotNull();
-        }
-        catch (Exception err)
-        {
-          CriticalContextFailure = Result.ContextFailure(err);
-        }
+        _contextClauses.InvokeAll();
+        _becauseClause.InvokeIfNotNull();
+      }
+      catch (Exception err)
+      {
+        result = Result.ContextFailure(err);
       }
 
-      _consoleStreamsFromEstablish = consoleRedirection.Streams;
+      return result;
     }
 
-    public void Cleanup()
+    public Result Cleanup()
     {
+      Result result = Result.Pass();
+
       try
       {
         _cleanupClauses.InvokeAll();
       }
       catch (Exception err)
       {
-        CriticalContextFailure = Result.ContextFailure(err);
+        result = Result.ContextFailure(err);
       }
+
+      return result;
     }
 
     // TODO: Rename to Name
