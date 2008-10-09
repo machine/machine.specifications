@@ -36,21 +36,16 @@ namespace Machine.Specifications.Model
       _fieldInfo = fieldInfo;
     }
 
-    public virtual Result Verify(VerificationContext verificationContext)
+    public virtual Result Verify()
     {
+      if (IsIgnored)
+      {
+        return Result.Ignored();
+      }
+
       if (!IsDefined)
       {
         return Result.NotImplemented();
-      }
-
-      return InternalVerify(verificationContext);
-    }
-
-    protected virtual Result InternalVerify(VerificationContext verificationContext)
-    {
-      if (verificationContext.ThrownException != null)
-      {
-        return Result.Failure(verificationContext.ThrownException);
       }
 
       try
@@ -68,6 +63,11 @@ namespace Machine.Specifications.Model
     public bool IsDefined
     {
       get { return _it != null; }
+    }
+
+    public bool IsExecutable
+    {
+      get { return IsDefined && !IsIgnored; }
     }
 
     protected virtual void InvokeSpecificationField()

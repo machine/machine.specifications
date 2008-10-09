@@ -93,9 +93,13 @@ namespace Machine.Specifications.Runner.Impl
       foreach (var pair in contextMap)
       {
         var assembly = pair.Key;
-        var contexts = pair.Value;
+        // TODO: move this filtering to a more sensible place
+        var contexts = pair.Value.FilteredBy(_options);
 
-        StartAssemblyRun(assembly, contexts);
+        if (contexts.Any())
+        {
+          StartAssemblyRun(assembly, contexts);
+        }
       }
 
       _listener.OnRunEnd();
@@ -104,9 +108,8 @@ namespace Machine.Specifications.Runner.Impl
     void StartAssemblyRun(Assembly assembly, IEnumerable<Context> contexts)
     {
       var runner = new AssemblyRunner(_listener, _options);
-      runner.Run(assembly, contexts);
+      runner.Run(assembly, contexts.FilteredBy(_options));
     }
-
   }
 
   public static class ContextFilteringExtensions

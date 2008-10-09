@@ -9,7 +9,6 @@ using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Factories
 {
-  [Subject("hi")]
   public class ContextFactory
   {
     readonly SpecificationFactory _specificationFactory;

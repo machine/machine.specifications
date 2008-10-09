@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using Machine.Specifications.Runner;
+using Machine.Specifications.Runner.Impl;
 using NUnit.Framework;
 
 namespace Machine.Specifications.Model
@@ -12,7 +14,7 @@ namespace Machine.Specifications.Model
     public override void BeforeEachTest()
     {
       base.BeforeEachTest();
-      results = context.VerifyAllSpecifications();
+      results = Run(context);
     }
 
     [Test]
@@ -36,7 +38,7 @@ namespace Machine.Specifications.Model
     public override void BeforeEachTest()
     {
       base.BeforeEachTest();
-      results = context.VerifyAllSpecifications();
+      results = Run(context);
     }
 
     [Test]
@@ -58,7 +60,7 @@ namespace Machine.Specifications.Model
     public override void BeforeEachTest()
     {
       base.BeforeEachTest();
-      var results = context.VerifyAllSpecifications();
+      Run(context);
     }
 
     [Test]
@@ -76,7 +78,7 @@ namespace Machine.Specifications.Model
     public override void BeforeEachTest()
     {
       base.BeforeEachTest();
-      results = context.VerifyAllSpecifications();
+      results = Run(context);
     }
 
     [Test]
@@ -104,7 +106,8 @@ namespace Machine.Specifications.Model
     public override void BeforeEachTest()
     {
       base.BeforeEachTest();
-      var results = context.VerifyAllSpecifications();
+      
+      Run(context);
     }
 
     [Test]

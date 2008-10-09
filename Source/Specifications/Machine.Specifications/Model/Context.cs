@@ -50,30 +50,9 @@ namespace Machine.Specifications.Model
       _specifications.Add(specification);
     }
 
-    public IEnumerable<Result> VerifyAllSpecifications()
-    {
-      var results = new List<Result>();
-      foreach (var specification in EnumerateSpecificationsForVerification())
-      {
-        var result = VerifySpecification(specification);
-        results.Add(result);
-      }
-
-      return results;
-    }
-
+    /*
     public Result VerifySpecification(Specification specification)
     {
-      if (specification.IsIgnored)
-      {
-        return Result.Ignored();
-      }
-
-      if (!specification.IsDefined)
-      {
-        return Result.NotImplemented();
-      }
-
       ConsoleRedirection consoleRedirection;
       Result result;
       using (consoleRedirection = ConsoleRedirection.RedirectConsoleStreams())
@@ -101,15 +80,7 @@ namespace Machine.Specifications.Model
 
       return result;
     }
-
-    private Result InternalVerifySpecification(Specification specification)
-    {
-      VerificationContext context = new VerificationContext(_instance);
-
-      var result = specification.Verify(context);
-
-      return result;
-    }
+    */
 
     public void EstablishContext()
     {
@@ -158,35 +129,9 @@ namespace Machine.Specifications.Model
       }
     }
 
-    public bool HasRunnableSpecifications
+    public bool HasExecutableSpecifications
     {
-      get { return Specifications.Any(); }
-    }
-
-    public IEnumerable<Specification> EnumerateSpecificationsForVerification()
-    {
-      if (!Specifications.Any()) yield break;
-
-      bool hasRunnableSpecifications = Specifications.Where(x => !x.IsIgnored && x.IsDefined).Any();
-
-      if (!IsSetupForEachSpec && hasRunnableSpecifications)
-      {
-        EstablishContext();
-      }
-      _isGlobalContextEstablished = true;
-
-      foreach (var specification in Specifications)
-      {
-        yield return specification;
-      }
-
-      if (!IsSetupForEachSpec && hasRunnableSpecifications)
-      {
-        Cleanup();
-      }
-
-      _isGlobalContextEstablished = false;
-      CriticalContextFailure = null;
+      get { return Specifications.Where(x => x.IsExecutable).Any(); }
     }
   }
 

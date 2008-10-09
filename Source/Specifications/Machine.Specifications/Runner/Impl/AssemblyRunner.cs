@@ -21,39 +21,36 @@ namespace Machine.Specifications.Runner.Impl
 
     public void Run(Assembly assembly, IEnumerable<Context> contexts)
     {
-      var filteredContexts = contexts.FilteredBy(_options);
-
-      if (!filteredContexts.Any()) return;
+      bool hasExecutableSpecifications = contexts.Where(x => x.HasExecutableSpecifications).Any();
 
       var explorer = new AssemblyExplorer();
       var assemblyContexts = new List<IAssemblyContext>(explorer.FindAssemblyContextsIn(assembly));
 
       _listener.OnAssemblyStart(assembly.GetInfo());
         
-      assemblyContexts.ForEach(assemblyContext => assemblyContext.OnAssemblyStart());
+      if (hasExecutableSpecifications)
+      {
+        assemblyContexts.ForEach(assemblyContext => assemblyContext.OnAssemblyStart());
+      }
 
-      RunContexts(contexts.FilteredBy(_options));
-        
-      assemblyContexts.ForEach(assemblyContext => assemblyContext.OnAssemblyComplete());
-        
+      foreach (var context in contexts)
+      {
+        RunContext(context);
+      }
+
+      if (hasExecutableSpecifications)
+      {
+        assemblyContexts.ForEach(assemblyContext => assemblyContext.OnAssemblyComplete());
+      }
+
       _listener.OnAssemblyEnd(assembly.GetInfo());
       
     }
 
-    private void RunContexts(IEnumerable<Context> contexts)
-    {
-      foreach (var context in contexts)
-      {
-        if (!context.HasRunnableSpecifications) continue;
-
-        RunContext(context);
-      }
-    }
-
     void RunContext(Context context)
     {
-      var runner = new ContextRunner(_listener, _options);
-      runner.Run(context);
+      IContextRunner runner = ContextRunnerFactory.GetContextRunnerFor(context);
+      runner.Run(context, _listener, _options);
     }
   }
 }

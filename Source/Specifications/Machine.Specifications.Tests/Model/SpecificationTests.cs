@@ -4,6 +4,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Machine.Specifications.Factories;
+using Machine.Specifications.Runner;
+using Machine.Specifications.Runner.Impl;
 using Machine.Testing;
 using NUnit.Framework;
 
@@ -15,7 +17,7 @@ namespace Machine.Specifications.Model
     public override void BeforeEachTest()
     {
       base.BeforeEachTest();
-      var results = context.VerifyAllSpecifications();
+      Run(context);
     }
 
     [Test]
@@ -46,6 +48,12 @@ namespace Machine.Specifications.Model
       fakeContext.Reset();
 
       context = Target.CreateContextFrom(fakeContext);
+    }
+
+    public IEnumerable<Result> Run(Context context)
+    {
+      var runner = ContextRunnerFactory.GetContextRunnerFor(context);
+      return runner.Run(context, new RunListenerBase(), RunOptions.Default);
     }
   }
 }

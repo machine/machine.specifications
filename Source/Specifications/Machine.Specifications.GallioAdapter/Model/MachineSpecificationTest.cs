@@ -33,8 +33,12 @@ namespace Machine.Specifications.GallioAdapter.Model
       MachineContextTest parent = this.Parent as MachineContextTest;
       if (parent == null) throw new Exception("Specification has non-Context parent???");
 
+      throw new NotImplementedException();
+
+      /*
       var result = parent.Context.VerifySpecification(_specification);
       return result;
+      */
     }
   }
 }
