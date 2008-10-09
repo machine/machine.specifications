@@ -103,46 +103,10 @@ namespace Machine.Specifications.Runner.Impl
 
     void StartAssemblyRun(Assembly assembly, IEnumerable<Context> contexts)
     {
-      var filteredContexts = contexts.FilteredBy(_options);
-
-      if (!filteredContexts.Any()) return;
-
-      var assemblyContexts = new List<IAssemblyContext>(_explorer.FindAssemblyContextsIn(assembly));
-
-      _listener.OnAssemblyStart(assembly.GetInfo());
-        
-      assemblyContexts.ForEach(assemblyContext => assemblyContext.OnAssemblyStart());
-
-      RunContexts(filteredContexts);
-        
-      assemblyContexts.ForEach(assemblyContext => assemblyContext.OnAssemblyComplete());
-        
-      _listener.OnAssemblyEnd(assembly.GetInfo());
+      var runner = new AssemblyRunner(_listener, _options);
+      runner.Run(assembly, contexts);
     }
 
-    private void RunContexts(IEnumerable<Context> contexts)
-    {
-      foreach (var context in contexts)
-      {
-        if (context.Specifications.Count() == 0) continue;
-
-        RunContext(context);
-      }
-    }
-
-    void RunContext(Context context)
-    {
-      _listener.OnContextStart(context.GetInfo());
-
-      foreach (var specification in context.EnumerateSpecificationsForVerification())
-      {
-        _listener.OnSpecificationStart(specification.GetInfo());
-        var result = context.VerifySpecification(specification);
-        _listener.OnSpecificationEnd(specification.GetInfo(), result);
-      }
-
-      _listener.OnContextEnd(context.GetInfo());
-    }
   }
 
   public static class ContextFilteringExtensions
