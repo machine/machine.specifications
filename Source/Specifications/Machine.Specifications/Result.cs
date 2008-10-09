@@ -27,6 +27,18 @@ namespace Machine.Specifications
       get { return _status; }
     }
 
+    public string ConsoleOut
+    {
+      get;
+      internal set;
+    }
+
+    public string ConsoleError
+    {
+      get;
+      internal set;
+    }
+
     private Result(Status status, Exception exception)
     {
       _status = Status.Failing;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Machine.Specifications.Utility;
 
@@ -16,6 +17,7 @@ namespace Machine.Specifications.Model
     readonly IEnumerable<Cleanup> _cleanupClauses;
     readonly IEnumerable<Tag> _tags;
     bool _isGlobalContextEstablished;
+    ConsoleStreams _consoleStreamsFromEstablish;
 
     public string Name { get; private set; }
     public bool IsIgnored { get; private set; }
@@ -72,26 +74,34 @@ namespace Machine.Specifications.Model
         return Result.NotImplemented();
       }
 
-      if (IsSetupForEachSpec || !_isGlobalContextEstablished)
+      ConsoleRedirection consoleRedirection;
+      Result result;
+      using (consoleRedirection = ConsoleRedirection.RedirectConsoleStreams())
       {
-        EstablishContext();
+        if (IsSetupForEachSpec || !_isGlobalContextEstablished)
+        {
+          EstablishContext();
+        }
+
+        if (CriticalContextFailure != null)
+        {
+          return CriticalContextFailure;
+        }
+
+        result = InternalVerifySpecification(specification);
+
+        if (IsSetupForEachSpec || !_isGlobalContextEstablished)
+        {
+          Cleanup();
+        }
       }
 
-      if (CriticalContextFailure != null)
-      {
-        return CriticalContextFailure;
-      }
-
-      var result = InternalVerifySpecification(specification);
-
-      if (IsSetupForEachSpec || !_isGlobalContextEstablished)
-      {
-        Cleanup();
-      }
+      result.ConsoleOut = _consoleStreamsFromEstablish.Out + consoleRedirection.Streams.Out;
+      result.ConsoleError = _consoleStreamsFromEstablish.Error + consoleRedirection.Streams.Error;
 
       return result;
     }
-    
+
     private Result InternalVerifySpecification(Specification specification)
     {
       VerificationContext context = new VerificationContext(_instance);
@@ -103,15 +113,21 @@ namespace Machine.Specifications.Model
 
     public void EstablishContext()
     {
-      try
+      ConsoleRedirection consoleRedirection;
+      using (consoleRedirection = ConsoleRedirection.RedirectConsoleStreams())
       {
-        _contextClauses.InvokeAll();
-        _becauseClause.InvokeIfNotNull();
+        try
+        {
+          _contextClauses.InvokeAll();
+          _becauseClause.InvokeIfNotNull();
+        }
+        catch (Exception err)
+        {
+          CriticalContextFailure = Result.ContextFailure(err);
+        }
       }
-      catch (Exception err)
-      {
-        CriticalContextFailure = Result.ContextFailure(err);
-      }
+
+      _consoleStreamsFromEstablish = consoleRedirection.Streams;
     }
 
     public void Cleanup()

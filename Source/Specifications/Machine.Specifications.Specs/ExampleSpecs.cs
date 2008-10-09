@@ -35,15 +35,15 @@ namespace Machine.Specifications.Specs
 
   [Tags(tag.example, tag.example)]
   [Tags(tag.example)]
-  public class context_with_duplicate_tags 
+  public class context_with_duplicate_tags
   {
-    It bla_bla = ()=> { };
+    It bla_bla = () => { };
   }
 
   [Tags(tag.example, tag.some_other_tag, tag.one_more_tag)]
-  public class context_with_tags 
+  public class context_with_tags
   {
-    It bla_bla = ()=> { };
+    It bla_bla = () => { };
   }
 
   [Ignore]
@@ -65,7 +65,7 @@ namespace Machine.Specifications.Specs
   }
 
   [Tags(tag.example)]
-  public class context_with_no_specs 
+  public class context_with_no_specs
   {
     public static bool ContextEstablished;
     public static bool CleanupOccurred;
@@ -94,5 +94,73 @@ namespace Machine.Specifications.Specs
     Establish bar = () => { };
 
     It should = () => { };
+  }
+
+  [Tags(tag.example)]
+  public class context_with_console_output
+  {
+    Establish context = () =>
+    {
+      Console.Out.WriteLine("Console.Out message in establish");
+      Console.Error.WriteLine("Console.Error message in establish");
+    };
+
+    Because of = () =>
+    {
+      Console.Out.WriteLine("Console.Out message in because");
+      Console.Error.WriteLine("Console.Error message in because");
+    };
+
+    Cleanup after_each = () =>
+    {
+      Console.Out.WriteLine("Console.Out message in cleanup");
+      Console.Error.WriteLine("Console.Error message in cleanup");
+    };
+
+    It should_log_messages = () =>
+    {
+      Console.Out.WriteLine("Console.Out message in spec");
+      Console.Error.WriteLine("Console.Error message in spec");
+    };
+
+    It should_log_messages_also_for_the_nth_run = () =>
+    {
+      Console.Out.WriteLine("Console.Out message in spec");
+      Console.Error.WriteLine("Console.Error message in spec");
+    };
+  }
+
+  [SetupForEachSpecification, Tags(tag.example)]
+  public class context_with_console_output_and_for_each
+  {
+    Establish context = () =>
+    {
+      Console.Out.WriteLine("Console.Out message in establish");
+      Console.Error.WriteLine("Console.Error message in establish");
+    };
+
+    Because of = () =>
+    {
+      Console.Out.WriteLine("Console.Out message in because");
+      Console.Error.WriteLine("Console.Error message in because");
+    };
+
+    Cleanup after_each = () =>
+    {
+      Console.Out.WriteLine("Console.Out message in cleanup");
+      Console.Error.WriteLine("Console.Error message in cleanup");
+    };
+
+    It should_log_messages = () =>
+    {
+      Console.Out.WriteLine("Console.Out message in spec");
+      Console.Error.WriteLine("Console.Error message in spec");
+    };
+
+    It should_log_messages_also_for_the_nth_run = () =>
+    {
+      Console.Out.WriteLine("Console.Out message in spec");
+      Console.Error.WriteLine("Console.Error message in spec");
+    };
   }
 }

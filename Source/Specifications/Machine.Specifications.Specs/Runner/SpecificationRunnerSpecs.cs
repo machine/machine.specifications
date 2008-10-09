@@ -18,13 +18,13 @@ namespace Machine.Specifications.Specs.Runner
       context_with_no_specs.CleanupOccurred = false;
     };
 
-    Because of =()=>
+    Because of = () =>
       Run<context_with_no_specs>();
 
-    It should_not_establish_the_context =()=>
+    It should_not_establish_the_context = () =>
       context_with_no_specs.ContextEstablished.ShouldBeFalse();
 
-    It should_not_cleanup =()=>
+    It should_not_cleanup = () =>
       context_with_no_specs.CleanupOccurred.ShouldBeFalse();
   }
 
@@ -40,13 +40,13 @@ namespace Machine.Specifications.Specs.Runner
     Because of = () =>
       Run<context_with_ignore_on_one_spec>();
 
-    It should_not_run_the_spec =()=>
+    It should_not_run_the_spec = () =>
       context_with_ignore_on_one_spec.IgnoredSpecRan.ShouldBeFalse();
 
-    It should_not_establish_the_context =()=>
+    It should_not_establish_the_context = () =>
       context_with_ignore_on_one_spec.ContextEstablished.ShouldBeFalse();
 
-    It should_not_cleanup =()=>
+    It should_not_cleanup = () =>
       context_with_ignore_on_one_spec.CleanupOccurred.ShouldBeFalse();
   }
 
@@ -62,13 +62,13 @@ namespace Machine.Specifications.Specs.Runner
     Because of = () =>
       Run<context_with_ignore>();
 
-    It should_not_run_the_spec =()=>
+    It should_not_run_the_spec = () =>
       context_with_ignore.IgnoredSpecRan.ShouldBeFalse();
 
-    It should_not_establish_the_context =()=>
+    It should_not_establish_the_context = () =>
       context_with_ignore.ContextEstablished.ShouldBeFalse();
 
-    It should_not_cleanup =()=>
+    It should_not_cleanup = () =>
       context_with_ignore.CleanupOccurred.ShouldBeFalse();
   }
 
@@ -85,16 +85,16 @@ namespace Machine.Specifications.Specs.Runner
     Because of = () =>
       Run<context_with_multiple_specifications>();
 
-    It should_establish_the_context_once =()=>
+    It should_establish_the_context_once = () =>
       context_with_multiple_specifications.EstablishRunCount.ShouldEqual(1);
 
-    It should_invoke_the_because_clause_once =()=>
+    It should_invoke_the_because_clause_once = () =>
       context_with_multiple_specifications.BecauseClauseRunCount.ShouldEqual(1);
   }
 
   [Subject("Specification Runner")]
   public class when_running_a_context_with_multiple_specifications_and_setup_once_per_attribute
-    : with_runner 
+    : with_runner
   {
 
     Establish context = () =>
@@ -103,13 +103,13 @@ namespace Machine.Specifications.Specs.Runner
       context_with_multiple_specifications_and_setup_for_each.BecauseClauseRunCount = 0;
     };
 
-    Because of =()=>
+    Because of = () =>
       Run<context_with_multiple_specifications_and_setup_for_each>();
 
-    It should_establish_the_context_once =()=>
+    It should_establish_the_context_once = () =>
       context_with_multiple_specifications_and_setup_for_each.EstablishRunCount.ShouldEqual(2);
 
-    It should_invoke_the_because_clause_once =()=>
+    It should_invoke_the_because_clause_once = () =>
       context_with_multiple_specifications_and_setup_for_each.BecauseClauseRunCount.ShouldEqual(2);
   }
 
@@ -119,10 +119,10 @@ namespace Machine.Specifications.Specs.Runner
   {
     static Exception exception;
 
-    Because of =()=>
+    Because of = () =>
       exception = Catch.Exception(Run<context_with_multiple_establish_clauses>);
 
-    It should_fail =()=>
+    It should_fail = () =>
       exception.ShouldBeOfType<SpecificationUsageException>();
   }
 
@@ -148,13 +148,52 @@ namespace Machine.Specifications.Specs.Runner
       TestAssemblyContext.OnAssemblyCompleteRun.ShouldBeFalse();
   }
 
+  public class when_running_a_specification_with_console_output
+    : with_runner
+  {
+    Because of = () =>
+      Run<context_with_console_output>();
+
+    It should_capture_the_console_out_stream = () =>
+      testListener.LastResult.ConsoleOut.ShouldEqual("Console.Out message in establish\r\n" +
+        "Console.Out message in because\r\n" +
+        "Console.Out message in spec\r\n");
+
+    It should_capture_the_console_error_stream = () =>
+      testListener.LastResult.ConsoleError.ShouldEqual("Console.Error message in establish\r\n" +
+        "Console.Error message in because\r\n" +
+        "Console.Error message in spec\r\n");
+  }
+
+  [Subject("Specification Runner")]
+  public class when_running_a_specification_with_console_output_and_foreach
+    : with_runner
+  {
+    Because of = () =>
+      Run<context_with_console_output_and_for_each>();
+
+    It should_capture_the_console_out_stream = () =>
+      testListener.LastResult.ConsoleOut.ShouldEqual("Console.Out message in establish\r\n" +
+        "Console.Out message in because\r\n" +
+        "Console.Out message in spec\r\n" +
+        "Console.Out message in cleanup\r\n");
+
+    It should_capture_the_console_error_stream = () =>
+      testListener.LastResult.ConsoleError.ShouldEqual("Console.Error message in establish\r\n" +
+        "Console.Error message in because\r\n" +
+        "Console.Error message in spec\r\n" +
+        "Console.Error message in cleanup\r\n");
+  }
+
   public class with_runner
   {
     static SpecificationRunner runner;
+    protected static TestListener testListener;
 
-    Establish context =()=>
+    Establish context = () =>
     {
-      runner = new SpecificationRunner(new TestListener(), RunOptions.Default);
+      testListener = new TestListener();
+      runner = new SpecificationRunner(testListener, RunOptions.Default);
     };
 
     public static void Run<T>()

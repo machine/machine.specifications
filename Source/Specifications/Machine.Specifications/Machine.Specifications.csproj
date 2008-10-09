@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="Catch.cs" />
     <Compile Include="Factories\ITagExtractor.cs" />
+    <Compile Include="Utility\ConsoleStreams.cs" />
     <Compile Include="Model\Tag.cs" />
     <Compile Include="Runner\RunOptions.cs" />
     <Compile Include="SetupForEachSpecification.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Runner\SpecificationInfo.cs" />
     <Compile Include="Runner\SpecificationRunner.cs" />
     <Compile Include="TagsAttribute.cs" />
+    <Compile Include="Utility\ConsoleRedirection.cs" />
     <Compile Include="Utility\Naming.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Framework.cs" />
