@@ -51,8 +51,7 @@ namespace Machine.Specifications.Runner.Impl
 
     public void OnSpecificationEnd(SpecificationInfo specification, Result result)
     {
-      _listeners.ForEach(listener => listener.OnSpecificationEnd(specification,result));
-
+      _listeners.ForEach(listener => listener.OnSpecificationEnd(specification, result));
     }
   }
 }

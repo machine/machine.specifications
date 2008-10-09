@@ -111,7 +111,7 @@ namespace Machine.Specifications.Specs
       Console.Error.WriteLine("Console.Error message in because");
     };
 
-    Cleanup after_each = () =>
+    Cleanup after = () =>
     {
       Console.Out.WriteLine("Console.Out message in cleanup");
       Console.Error.WriteLine("Console.Error message in cleanup");
