@@ -9,13 +9,13 @@ using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Runner.Impl
 {
-  public class SpecificationRunner : ISpecificationRunner
+  public class DefaultRunner : ISpecificationRunner
   {
     readonly ISpecificationRunListener _listener;
     readonly RunOptions _options;
     readonly AssemblyExplorer _explorer;
 
-    public SpecificationRunner(ISpecificationRunListener listener, RunOptions options)
+    public DefaultRunner(ISpecificationRunListener listener, RunOptions options)
     {
       _listener = listener;
       _options = options;

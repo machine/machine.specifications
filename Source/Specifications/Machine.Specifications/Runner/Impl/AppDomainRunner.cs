@@ -115,7 +115,7 @@ namespace Machine.Specifications.Runner.Impl
     {
       public AssemblyRunner(ISpecificationRunListener listener, Assembly assembly, RunOptions options)
       {
-        var runner = new SpecificationRunner(listener, options);
+        var runner = new DefaultRunner(listener, options);
         runner.RunAssembly(assembly);
       }
     }
@@ -124,7 +124,7 @@ namespace Machine.Specifications.Runner.Impl
     {
       public NamespaceRunner(ISpecificationRunListener listener, Assembly assembly, RunOptions options, string targetNamespace)
       {
-        var runner = new SpecificationRunner(listener, options);
+        var runner = new DefaultRunner(listener, options);
         runner.RunNamespace(assembly, targetNamespace);
       }
     }
@@ -133,7 +133,7 @@ namespace Machine.Specifications.Runner.Impl
     {
       public MemberRunner(ISpecificationRunListener listener, Assembly assembly, RunOptions options, MemberInfo memberInfo)
       {
-        var runner = new SpecificationRunner(listener, options);
+        var runner = new DefaultRunner(listener, options);
         runner.RunMember(assembly, memberInfo);
       }
     }

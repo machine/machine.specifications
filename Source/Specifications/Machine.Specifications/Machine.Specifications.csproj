@@ -79,7 +79,7 @@
     <Compile Include="Runner\ISpecificationRunner.cs" />
     <Compile Include="Runner\Impl\RemoteRunListener.cs" />
     <Compile Include="Runner\SpecificationInfo.cs" />
-    <Compile Include="Runner\Impl\SpecificationRunner.cs" />
+    <Compile Include="Runner\Impl\DefaultRunner.cs" />
     <Compile Include="TagsAttribute.cs" />
     <Compile Include="Utility\ConsoleRedirection.cs" />
     <Compile Include="Utility\Naming.cs" />

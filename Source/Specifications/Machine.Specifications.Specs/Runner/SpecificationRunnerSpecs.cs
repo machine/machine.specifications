@@ -130,13 +130,13 @@ namespace Machine.Specifications.Specs.Runner
   [Subject("Specification Runner")]
   public class when_running_an_assembly_with_no_included_contexts
   {
-    static SpecificationRunner runner;
+    static DefaultRunner runner;
 
     Establish context =()=>
     {
       TestAssemblyContext.OnAssemblyStartRun = false;
       TestAssemblyContext.OnAssemblyCompleteRun = false;
-      runner = new SpecificationRunner(new TestListener(), new RunOptions(new [] {"asdfasdf"}, new string[0]));
+      runner = new DefaultRunner(new TestListener(), new RunOptions(new [] {"asdfasdf"}, new string[0]));
     };
 
     Because of =()=>
@@ -188,13 +188,13 @@ namespace Machine.Specifications.Specs.Runner
 
   public class with_runner
   {
-    static SpecificationRunner runner;
+    static DefaultRunner runner;
     protected static TestListener testListener;
 
     Establish context = () =>
     {
       testListener = new TestListener();
-      runner = new SpecificationRunner(testListener, RunOptions.Default);
+      runner = new DefaultRunner(testListener, RunOptions.Default);
     };
 
     public static void Run<T>()

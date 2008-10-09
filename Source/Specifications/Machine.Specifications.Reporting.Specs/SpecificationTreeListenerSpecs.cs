@@ -12,13 +12,13 @@ namespace Machine.Specifications.Reporting.Specs.SpecificationTreeListenerSpecs
   [Subject(typeof(SpecificationTreeListener))]
   public class when_getting_a_tree_from_a_spec_run
   {
-    static SpecificationRunner runner;
+    static DefaultRunner runner;
     static SpecificationTreeListener listener;
 
     Establish context = () =>
     {
       listener = new SpecificationTreeListener();
-      runner = new SpecificationRunner(listener, RunOptions.Default);
+      runner = new DefaultRunner(listener, RunOptions.Default);
     };
 
     Because of = () =>
