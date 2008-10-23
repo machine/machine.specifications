@@ -1,6 +1,0 @@
-<Configuration>
-  <CodeStyleSettings>
-    <Sharing>EXTERNAL</Sharing>
-    <ExternalPath>C:\Home\Source\Projects\machine\Misc\resharper_style.xml</ExternalPath>
-  </CodeStyleSettings>
-</Configuration>
