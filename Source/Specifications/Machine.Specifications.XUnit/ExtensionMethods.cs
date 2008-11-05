@@ -93,7 +93,7 @@ namespace Machine.Specifications
 
     public static void ShouldNotBeOfType(this object actual, Type expected)
     {
-      Assert.IsType(expected, actual);
+      Assert.IsNotType(expected, actual);
     }
 
     public static void ShouldContain(this IList actual, params object[] expected)
