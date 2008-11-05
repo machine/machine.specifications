@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using Machine.Specifications.ConsoleRunner.Properties;
-using Machine.Specifications.Runner;
 
 namespace Machine.Specifications.ConsoleRunner.Specs
 {

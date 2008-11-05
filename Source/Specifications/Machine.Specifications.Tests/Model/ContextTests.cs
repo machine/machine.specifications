@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Machine.Specifications.Runner;
-using Machine.Specifications.Runner.Impl;
 using NUnit.Framework;
 
 namespace Machine.Specifications.Model
