@@ -42,13 +42,13 @@ namespace Machine.Specifications
       Assert.True(condition);
     }
 
-    public static object ShouldEqual(this object actual, object expected)
+    public static object ShouldEqual<T>(this T actual, T expected)
     {
       Assert.Equal(expected, actual);
       return expected;
     }
 
-    public static object ShouldNotEqual(this object actual, object expected)
+    public static object ShouldNotEqual<T>(this T actual, T expected)
     {
       Assert.NotEqual(expected, actual);
       return expected;
@@ -83,7 +83,7 @@ namespace Machine.Specifications
 
     public static void ShouldBeOfType<T>(this object actual)
     {
-      Assert.IsType(typeof(T), actual);
+      Assert.IsType<T>(actual);
     }
 
     public static void ShouldBe(this object actual, Type expected)
@@ -106,10 +106,9 @@ namespace Machine.Specifications
 
     public static void ShouldContain<T>(this IEnumerable<T> actual, params T[] expected)
     {
-      var actualList = new List<T>(actual);
       foreach (var item in expected)
       {
-        Assert.Contains(item, actualList);
+        Assert.Contains(item, actual);
       }
     }
 
