@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace Machine.Specifications
 {
-  public static class CollectionExtensionMethods
+  public static class NUnitCollectionExtensionMethods
   {
     public static ArrayList ToArrayList(this IEnumerable enumerable)
     {
@@ -18,7 +18,7 @@ namespace Machine.Specifications
       return arrayList;
     }
   }
-  public static class ShouldExtensionMethods
+  public static class NUnitShouldExtensionMethods
   {
     public static void ShouldBeFalse(this bool condition)
     {

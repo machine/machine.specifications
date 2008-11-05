@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Machine.Specifications
 {
-  public static class CollectionExtensionMethods
+  public static class XUnitCollectionExtensionMethods
   {
     public static ArrayList ToArrayList(this IEnumerable enumerable)
     {
@@ -30,7 +30,7 @@ namespace Machine.Specifications
       return false;
     }
   }
-  public static class ShouldExtensionMethods
+  public static class XUnitShouldExtensionMethods
   {
     public static void ShouldBeFalse(this bool condition)
     {
