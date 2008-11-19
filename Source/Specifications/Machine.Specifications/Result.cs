@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace Machine.Specifications
 {
@@ -11,6 +12,31 @@ namespace Machine.Specifications
   }
 
   [Serializable]
+  public class ExceptionResult
+  {
+    readonly string _toString;
+
+    public string FullTypeName { get; private set; }
+    public string TypeName { get; private set; }
+    public string Message { get; private set; }
+    public string StackTrace { get; private set; }
+
+    public ExceptionResult(Exception exception)
+    {
+      FullTypeName = exception.GetType().FullName;
+      TypeName = exception.GetType().Name;
+      Message = exception.Message;
+      _toString = exception.ToString();
+      StackTrace = exception.StackTrace;
+    }
+
+    public override string ToString()
+    {
+      return _toString;
+    }
+  }
+
+  [Serializable]
   public class Result
   {
     readonly Status _status;
@@ -20,7 +46,7 @@ namespace Machine.Specifications
       get { return _status == Status.Passing; }
     }
 
-    public Exception Exception { get; private set; }
+    public ExceptionResult Exception { get; private set; }
 
     public Status Status
     {
@@ -42,7 +68,7 @@ namespace Machine.Specifications
     private Result(Status status, Exception exception)
     {
       _status = Status.Failing;
-      this.Exception = exception;
+      this.Exception = new ExceptionResult(exception);
     }
 
     private Result(Status status)
