@@ -87,5 +87,9 @@ namespace Machine.Specifications.Reporting
     {
       _specifications.Add(specification.ToNode(result));
     }
+
+    public void OnFatalError(ExceptionResult exception)
+    {
+    }
   }
 }

@@ -49,5 +49,10 @@ namespace Machine.Specifications.Runner.Impl
     {
       _listener.OnSpecificationEnd(specification, result);
     }
+
+    public void OnFatalError(ExceptionResult exception)
+    {
+      _listener.OnFatalError(exception);
+    }
   }
 }

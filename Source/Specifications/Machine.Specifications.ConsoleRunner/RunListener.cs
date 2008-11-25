@@ -110,5 +110,11 @@ namespace Machine.Specifications.ConsoleRunner
           break;
       }
     }
+
+    public void OnFatalError(ExceptionResult exception)
+    {
+      _console.WriteLine("Fatal Error");
+      _console.WriteLine(exception.ToString());
+    }
   }
 }

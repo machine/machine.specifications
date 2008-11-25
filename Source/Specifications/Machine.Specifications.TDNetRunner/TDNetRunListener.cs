@@ -98,5 +98,10 @@ namespace Machine.Specifications.TDNetRunner
 
       testResults.Add(testResult);
     }
+
+    public void OnFatalError(ExceptionResult exception)
+    {
+      testListener.WriteLine("Fatal error: " + exception.ToString(), Category.Error);
+    }
   }
 }

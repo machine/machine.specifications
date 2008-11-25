@@ -53,5 +53,10 @@ namespace Machine.Specifications.Runner.Impl
     {
       _listeners.ForEach(listener => listener.OnSpecificationEnd(specification, result));
     }
+
+    public void OnFatalError(ExceptionResult exception)
+    {
+      _listeners.ForEach(listener => listener.OnFatalError(exception));
+    }
   }
 }

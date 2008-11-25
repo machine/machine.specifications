@@ -78,5 +78,9 @@ namespace Machine.Specifications.Reporting
       _specificationsByContext[_currentContext].Add(specification);
       _resultsBySpecification.Add(specification,result);
     }
+
+    public void OnFatalError(ExceptionResult exception)
+    {
+    }
   }
 }

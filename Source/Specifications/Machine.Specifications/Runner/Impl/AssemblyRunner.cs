@@ -27,24 +27,39 @@ namespace Machine.Specifications.Runner.Impl
       var assemblyContexts = new List<IAssemblyContext>(explorer.FindAssemblyContextsIn(assembly));
 
       _listener.OnAssemblyStart(assembly.GetInfo());
-        
-      if (hasExecutableSpecifications)
-      {
-        assemblyContexts.ForEach(assemblyContext => assemblyContext.OnAssemblyStart());
-      }
 
-      foreach (var context in contexts)
-      {
-        RunContext(context);
-      }
+      var executedAssemblyContexts = new List<IAssemblyContext>();
 
-      if (hasExecutableSpecifications)
+      try
       {
-        assemblyContexts.ForEach(assemblyContext => assemblyContext.OnAssemblyComplete());
+        if (hasExecutableSpecifications)
+        {
+          assemblyContexts.ForEach(assemblyContext =>
+          {
+            assemblyContext.OnAssemblyStart();
+            executedAssemblyContexts.Add(assemblyContext);
+          });
+        }
+
+        foreach (var context in contexts)
+        {
+          RunContext(context);
+        }
+      }
+      catch (Exception err)
+      {
+        _listener.OnFatalError(new ExceptionResult(err));
+      }
+      finally
+      {
+        if (hasExecutableSpecifications)
+        {
+          executedAssemblyContexts.Reverse();
+          executedAssemblyContexts.ForEach(assemblyContext => assemblyContext.OnAssemblyComplete());
+        }
       }
 
       _listener.OnAssemblyEnd(assembly.GetInfo());
-      
     }
 
     void RunContext(Context context)

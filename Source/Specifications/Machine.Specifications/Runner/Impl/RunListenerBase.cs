@@ -38,5 +38,9 @@ namespace Machine.Specifications.Runner.Impl
     public virtual void OnSpecificationEnd(SpecificationInfo specification, Result result)
     {
     }
+
+    public void OnFatalError(ExceptionResult exception)
+    {
+    }
   }
 }

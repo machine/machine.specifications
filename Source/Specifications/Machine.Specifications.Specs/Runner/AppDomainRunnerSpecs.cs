@@ -82,5 +82,9 @@ namespace Machine.Specifications.Specs.Runner
       LastResult = result;
       SpecCount++;
     }
+
+    public void OnFatalError(ExceptionResult exception)
+    {
+    }
   }
 }
