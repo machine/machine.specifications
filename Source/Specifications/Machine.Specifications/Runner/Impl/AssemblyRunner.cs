@@ -54,8 +54,16 @@ namespace Machine.Specifications.Runner.Impl
       {
         if (hasExecutableSpecifications)
         {
-          executedAssemblyContexts.Reverse();
-          executedAssemblyContexts.ForEach(assemblyContext => assemblyContext.OnAssemblyComplete());
+          try
+          {
+            executedAssemblyContexts.Reverse();
+            executedAssemblyContexts.ForEach(assemblyContext => assemblyContext.OnAssemblyComplete());
+          }
+          catch (Exception err)
+          {
+            _listener.OnFatalError(new ExceptionResult(err));
+            throw;
+          }
         }
       }
 
