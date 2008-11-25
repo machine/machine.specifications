@@ -113,6 +113,7 @@ namespace Machine.Specifications.ConsoleRunner
 
     public void OnFatalError(ExceptionResult exception)
     {
+      FailureOccured = true;
       _console.WriteLine("Fatal Error");
       _console.WriteLine(exception.ToString());
     }
