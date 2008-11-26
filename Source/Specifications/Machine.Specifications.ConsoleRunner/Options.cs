@@ -52,7 +52,7 @@ namespace Machine.Specifications.ConsoleRunner
       sb.AppendLine(Resources.UsageStatement);
       sb.AppendLine("Options:");
       sb.AppendLine("  -i, --include     Executes all specifications in contexts with these comma delimited tags. Ex. -i \"foo,bar,foo_bar\"");
-      sb.AppendLine("  -e, --exclude     Exclude specifications in contexts with these comma delimited tags. Ex. -x \"foo,bar,foo_bar\"");
+      sb.AppendLine("  -x, --exclude     Exclude specifications in contexts with these comma delimited tags. Ex. -x \"foo,bar,foo_bar\"");
       sb.AppendLine("  -t, --timeinfo    Shows time-related information in HTML output");
       sb.AppendLine("  -s, --silent      Suppress console output");
       sb.AppendLine("  --html <PATH>     Outputs an HTML file(s) to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)");
