@@ -54,5 +54,10 @@ namespace Machine.Specifications.Runner.Impl
     {
       _listener.OnFatalError(exception);
     }
+
+    public override object InitializeLifetimeService()
+    {
+      return null;
+    }
   }
 }

@@ -118,6 +118,11 @@ namespace Machine.Specifications.Runner.Impl
         var runner = new DefaultRunner(listener, options);
         runner.RunAssembly(assembly);
       }
+
+      public override object InitializeLifetimeService()
+      {
+        return null;
+      }
     }
 
     public class NamespaceRunner : MarshalByRefObject
@@ -127,6 +132,11 @@ namespace Machine.Specifications.Runner.Impl
         var runner = new DefaultRunner(listener, options);
         runner.RunNamespace(assembly, targetNamespace);
       }
+
+      public override object InitializeLifetimeService()
+      {
+        return null;
+      }
     }
 
     public class MemberRunner : MarshalByRefObject
@@ -135,6 +145,11 @@ namespace Machine.Specifications.Runner.Impl
       {
         var runner = new DefaultRunner(listener, options);
         runner.RunMember(assembly, memberInfo);
+      }
+
+      public override object InitializeLifetimeService()
+      {
+        return null;
       }
     }
   }
