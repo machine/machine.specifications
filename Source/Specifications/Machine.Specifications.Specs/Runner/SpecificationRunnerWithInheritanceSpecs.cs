@@ -1,4 +1,4 @@
-﻿namespace Machine.Specifications.Specs.Runner
+namespace Machine.Specifications.Specs.Runner
 {
   [Subject("Specification Runner")]
   public class when_running_a_context_with_inherited_specifications

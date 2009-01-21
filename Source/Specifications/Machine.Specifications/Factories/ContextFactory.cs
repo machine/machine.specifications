@@ -48,7 +48,7 @@ namespace Machine.Specifications.Factories
     Context CreateContextFrom(object instance, IEnumerable<FieldInfo> acceptedSpecificationFields, Context rootContext)
     {
       var type = instance.GetType();
-      var fieldInfos = type.GetPrivateFields();
+	  var fieldInfos = type.GetPrivateOrInheritedFields();
       List<FieldInfo> itFieldInfos = new List<FieldInfo>();
       List<FieldInfo> itShouldBehaveLikeFieldInfos = new List<FieldInfo>();
 
@@ -159,7 +159,7 @@ namespace Machine.Specifications.Factories
       var type = instance.GetType();
       while (type != null)
       {
-        var fields = type.GetPrivateFieldsWith(typeof(T));
+		var fields = type.GetPrivateFieldsWith(typeof(T));
 
         if (fields.Count() > 1)
         {
