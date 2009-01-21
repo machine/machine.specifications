@@ -124,6 +124,36 @@ namespace Machine.Specifications.Specs.Runner
   }
 
   [Subject("Specification Runner")]
+  public class when_running_a_context_with_failing_establish_clauses
+    : with_runner
+  {
+    Because of = Run<context_with_failing_establish>;
+
+    It should_fail = () =>
+	  testListener.LastResult.Passed.ShouldBeFalse();
+  }
+
+  [Subject("Specification Runner")]
+  public class when_running_a_context_with_failing_because_clauses
+    : with_runner
+  {
+    Because of = Run<context_with_failing_because>;
+
+    It should_fail = () =>
+	  testListener.LastResult.Passed.ShouldBeFalse();
+  }
+
+  [Subject("Specification Runner")]
+  public class when_running_a_context_with_failing_specs
+	: with_runner
+  {
+	  Because of = Run<context_with_failing_specs>;
+
+	  It should_fail = () =>
+		testListener.LastResult.Passed.ShouldBeFalse();
+  }
+
+  [Subject("Specification Runner")]
   public class when_running_an_assembly_with_no_included_contexts
   {
     static DefaultRunner runner;

@@ -83,6 +83,7 @@ namespace Machine.Specifications.Runner.Impl
       catch (Exception err)
       {
         Console.Error.WriteLine("Runner failure: " + err.ToString());
+      	throw;
       }
       finally
       {
