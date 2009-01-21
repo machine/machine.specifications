@@ -24,13 +24,16 @@ namespace Machine.Specifications.Explorers
     }
 
     [Test]
-    public void ShouldReturnTwoContextsNamedCorrectly()
+    public void ShouldReturnThreeContextsNamedCorrectly()
     {
-      var names = specifications.Select(x => x.Name).ToList();
+      var names = specifications.Select(x => x.Name).OrderBy(x => x).ToList();
       names.ShouldContainOnly(
-        "when a customer first views the account summary page",
-        "when transferring between two accounts",
-        "when transferring an amount larger than the balance of the from account"
+        new[]
+		{
+		  "when a customer first views the account summary page",
+		  "when transferring between two accounts",
+		  "when transferring an amount larger than the balance of the from account"
+		}.OrderBy(x => x).ToList()
         );
     }
   }
