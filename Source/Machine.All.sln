@@ -98,6 +98,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Exam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.BindingFailure.Ref", "Specifications\Machine.Specifications.Example.BindingFailure.Ref\Machine.Specifications.Example.BindingFailure.Ref.csproj", "{2C33D385-9024-4346-8839-93CFF1AF227C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.WithInheritance", "Specifications\Machine.Specifications.Example.WithInheritance\Machine.Specifications.Example.WithInheritance.csproj", "{BE830B7E-98C5-4386-BFBB-612F5B9727EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -268,6 +270,10 @@ Global
 		{2C33D385-9024-4346-8839-93CFF1AF227C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C33D385-9024-4346-8839-93CFF1AF227C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C33D385-9024-4346-8839-93CFF1AF227C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE830B7E-98C5-4386-BFBB-612F5B9727EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE830B7E-98C5-4386-BFBB-612F5B9727EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE830B7E-98C5-4386-BFBB-612F5B9727EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE830B7E-98C5-4386-BFBB-612F5B9727EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -303,6 +309,7 @@ Global
 		{9C3D71D7-71B2-4390-86D6-C85AC3D91A47} = {06E16DAE-206D-4179-B4F8-71060813747B}
 		{A635BD1C-DA89-4FC7-8434-5DAB1A09A18D} = {06E16DAE-206D-4179-B4F8-71060813747B}
 		{2C33D385-9024-4346-8839-93CFF1AF227C} = {06E16DAE-206D-4179-B4F8-71060813747B}
+		{BE830B7E-98C5-4386-BFBB-612F5B9727EE} = {06E16DAE-206D-4179-B4F8-71060813747B}
 		{370FD4D5-3FBA-4242-9C5F-39BB8A6D138B} = {A1D05C60-637C-4695-80FD-32BEB5ACD36F}
 		{E2297ADF-3E8E-4A90-84EF-A09A6CD578CB} = {A1D05C60-637C-4695-80FD-32BEB5ACD36F}
 		{DB74F574-F8A4-4870-B632-7E09A62EF358} = {E4A4452A-CF60-40DE-B6CC-5288DC28DD47}

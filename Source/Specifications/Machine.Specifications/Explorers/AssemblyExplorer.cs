@@ -58,7 +58,7 @@ namespace Machine.Specifications.Explorers
 
     static bool HasSpecificationMembers(Type type)
     {
-      return type.GetPrivateFieldsWith(typeof(It)).Any();
+	  return !type.IsAbstract && type.GetPrivateOrInheritedFieldsWith(typeof(It)).Any();
     }
 
     static IEnumerable<Type> EnumerateContextsIn(Assembly assembly)
