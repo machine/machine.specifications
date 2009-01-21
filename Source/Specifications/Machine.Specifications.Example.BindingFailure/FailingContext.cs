@@ -1,4 +1,4 @@
-﻿using Machine.Specifications.Example.BindingFailure.Ref;
+using Machine.Specifications.Example.BindingFailure.Ref;
 
 namespace Machine.Specifications.Example.BindingFailure
 {
