@@ -130,7 +130,7 @@ namespace Machine.Specifications.Specs.Runner
     Because of = Run<context_with_failing_establish>;
 
     It should_fail = () =>
-	  testListener.LastResult.Passed.ShouldBeFalse();
+    testListener.LastResult.Passed.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
@@ -140,17 +140,17 @@ namespace Machine.Specifications.Specs.Runner
     Because of = Run<context_with_failing_because>;
 
     It should_fail = () =>
-	  testListener.LastResult.Passed.ShouldBeFalse();
+    testListener.LastResult.Passed.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
   public class when_running_a_context_with_failing_specs
-	: with_runner
+  : with_runner
   {
-	  Because of = Run<context_with_failing_specs>;
+    Because of = Run<context_with_failing_specs>;
 
-	  It should_fail = () =>
-		testListener.LastResult.Passed.ShouldBeFalse();
+    It should_fail = () =>
+    testListener.LastResult.Passed.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
@@ -158,20 +158,20 @@ namespace Machine.Specifications.Specs.Runner
   {
     static DefaultRunner runner;
 
-    Establish context =()=>
+    Establish context = () =>
     {
       TestAssemblyContext.OnAssemblyStartRun = false;
       TestAssemblyContext.OnAssemblyCompleteRun = false;
-      runner = new DefaultRunner(new TestListener(), new RunOptions(new [] {"asdfasdf"}, new string[0]));
+      runner = new DefaultRunner(new TestListener(), new RunOptions(new[] { "asdfasdf" }, new string[0]));
     };
 
-    Because of =()=>
+    Because of = () =>
       runner.RunAssembly(typeof(TestAssemblyContext).Assembly);
 
-    It should_not_run_assembly_start =()=>
+    It should_not_run_assembly_start = () =>
       TestAssemblyContext.OnAssemblyStartRun.ShouldBeFalse();
 
-    It should_not_run_assembly_complete =()=>
+    It should_not_run_assembly_complete = () =>
       TestAssemblyContext.OnAssemblyCompleteRun.ShouldBeFalse();
   }
 

@@ -23,39 +23,39 @@ namespace Machine.Specifications.Specs.Runner
 
   public class when_running_specs_by_assembly : running_specs
   {
-    Because of = () => 
+    Because of = () =>
       runner.RunAssembly(typeof(Account).Assembly);
 
-    It should_run_them_all = () => 
+    It should_run_them_all = () =>
       listener.SpecCount.ShouldEqual(6);
   }
-	
+
   public class when_running_specs_in_an_assembly_with_a_reference_that_cannot_be_bound : running_specs
   {
-  	static Exception Exception;
-  	const string ReferencedAssembly = "Machine.Specifications.Example.BindingFailure.Ref.dll";
+    static Exception Exception;
+    const string ReferencedAssembly = "Machine.Specifications.Example.BindingFailure.Ref.dll";
 
-	Establish context = () =>
-	{
-	  if (File.Exists(ReferencedAssembly))
-	  {
-	    File.Delete(ReferencedAssembly);
-	  }
-	};
+    Establish context = () =>
+    {
+      if (File.Exists(ReferencedAssembly))
+      {
+        File.Delete(ReferencedAssembly);
+      }
+    };
 
-  	Because of = () =>
-	  Exception = Catch.Exception(() => runner.RunAssembly(typeof(if_a_referenced_assembly_cannot_be_bound).Assembly));
+    Because of = () =>
+      Exception = Catch.Exception(() => runner.RunAssembly(typeof(if_a_referenced_assembly_cannot_be_bound).Assembly));
 
     It should_fail = () =>
-	  Exception.ShouldBeOfType<TargetInvocationException>();
+      Exception.ShouldBeOfType<TargetInvocationException>();
   }
 
   public class when_running_specs_by_namespace : running_specs
   {
-    Because of = () => 
+    Because of = () =>
       runner.RunNamespace(typeof(Account).Assembly, "Machine.Specifications.Example");
 
-    It should_run_them_all = () => 
+    It should_run_them_all = () =>
       listener.SpecCount.ShouldEqual(6);
   }
 
@@ -64,7 +64,7 @@ namespace Machine.Specifications.Specs.Runner
     Because of = () =>
       runner.RunMember(typeof(Account).Assembly, typeof(when_transferring_an_amount_larger_than_the_balance_of_the_from_account).GetField("should_not_allow_the_transfer", BindingFlags.NonPublic | BindingFlags.Instance));
 
-    It should_run = () => 
+    It should_run = () =>
       listener.SpecCount.ShouldEqual(1);
   }
 

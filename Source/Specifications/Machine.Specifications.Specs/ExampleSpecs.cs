@@ -95,7 +95,7 @@ namespace Machine.Specifications.Specs
 
     It should = () => { };
   }
-	
+  
   [Tags(tag.example)]
   public class context_with_failing_specs
   {
@@ -106,14 +106,14 @@ namespace Machine.Specifications.Specs
   public class context_with_failing_establish
   {
     Establish context = () => { throw new InvalidOperationException("something went wrong"); };
-	It should = () => { };
+    It should = () => { };
   }
 
   [Tags(tag.example)]
   public class context_with_failing_because
   {
     Because of = () => { throw new InvalidOperationException("something went wrong"); };
-	It should = () => { };
+    It should = () => { };
   }
 
   [Tags(tag.example)]
