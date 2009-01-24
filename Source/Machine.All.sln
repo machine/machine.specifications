@@ -100,7 +100,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Exam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.WithInheritance", "Specifications\Machine.Specifications.Example.WithInheritance\Machine.Specifications.Example.WithInheritance.csproj", "{BE830B7E-98C5-4386-BFBB-612F5B9727EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.WithInheritance", "Specifications\Machine.Specifications.Example.WithInheritance\Machine.Specifications.Example.WithInheritance.csproj", "{BE830B7E-98C5-4386-BFBB-612F5B9727EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.WithBehavior", "Specifications\Machine.Specifications.Example.WithInheritance\Machine.Specifications.Example.WithBehavior.csproj", "{BE830B7E-98C5-4386-BFBB-612F5B9727EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

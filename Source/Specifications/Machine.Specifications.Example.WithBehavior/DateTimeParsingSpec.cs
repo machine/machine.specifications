@@ -1,10 +1,10 @@
 ﻿using System;
 
 // This is a rather contrived example, but I hope it shows what you can do with it.
-// I like the concept of MbUnit's RowTest very much, especially when it comes to
+// I like the concept of MbUnit's RowTest and TypeFixture very much, especially when it comes to
 // testing the same logic with different input patterns/files, etc.
 
-namespace Machine.Specifications.Example.WithInheritance
+namespace Machine.Specifications.Example.WithBehavior
 {
   public class when_a_date_is_parsed_with_the_regular_expression_parser : with_string_parser
   {

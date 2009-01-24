@@ -8,8 +8,8 @@
     <ProjectGuid>{BE830B7E-98C5-4386-BFBB-612F5B9727EE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Machine.Specifications.Example.WithInheritance</RootNamespace>
-    <AssemblyName>Machine.Specifications.Example.WithInheritance</AssemblyName>
+    <RootNamespace>Machine.Specifications.Example.WithBehavior</RootNamespace>
+    <AssemblyName>Machine.Specifications.Example.WithBehavior</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
