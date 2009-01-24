@@ -32,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <NoWarn>169</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -50,7 +51,7 @@
   <ItemGroup>
     <Compile Include="ExampleSpecsWithInheritance.cs" />
     <Compile Include="ExampleSpecs.cs" />
-    <Compile Include="ExampleSpecsWithMixin.cs" />
+    <Compile Include="ExampleSpecsWithBehavior.cs" />
     <Compile Include="Factories\ContextFactorySpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runner\AppDomainRunnerSpecs.cs" />
