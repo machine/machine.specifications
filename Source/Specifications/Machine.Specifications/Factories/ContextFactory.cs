@@ -123,8 +123,8 @@ namespace Machine.Specifications.Factories
 
     static IEnumerable<FieldInfo> GetSpecificiationFieldInfos(Type type)
     {
-      var fieldInfos = type.GetPrivateOrInheritedFieldsOfType<It>();
-      fieldInfos = fieldInfos.Union(type.GetPrivateOrInheritedFieldsOfType<It_should_behave_like>());
+      var fieldInfos = type.GetPrivateFieldsOfType<It>();
+      fieldInfos = fieldInfos.Union(type.GetPrivateFieldsOfType<It_should_behave_like>());
       return fieldInfos;
     }
 
