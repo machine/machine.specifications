@@ -6,29 +6,27 @@
 
 namespace Machine.Specifications.Example.WithInheritance
 {
-	public class when_a_date_is_parsed_with_the_regular_expression_parser : with_string_parser
-	{
-		Establish context = () => { Parser = new RegexParser(); };
-
+  public class when_a_date_is_parsed_with_the_regular_expression_parser : with_string_parser
+  {
+    Establish context = () => { Parser = new RegexParser(); };
     It_should_behave_like a_date_time_parser = () => new DateTimeParsingBehavior();
-	}
+  }
 
-	public class when_a_date_is_parsed_by_the_infrastructure : with_string_parser
-	{
-		Establish context = () => { Parser = new InfrastructureParser(); };
-
+  public class when_a_date_is_parsed_by_the_infrastructure : with_string_parser
+  {
+    Establish context = () => { Parser = new InfrastructureParser(); };
     It_should_behave_like a_date_time_parser = () => new DateTimeParsingBehavior();
-	}
+  }
 
-	public abstract class with_string_parser
-	{
-	  protected static DateTime ParsedDate;
-		protected static IParser Parser;
+  public abstract class with_string_parser
+  {
+    protected static DateTime ParsedDate;
+    protected static IParser Parser;
 
-		protected Because of = () => { ParsedDate = Parser.Parse("2009/01/21"); };
-	}
+    protected Because of = () => { ParsedDate = Parser.Parse("2009/01/21"); };
+  }
 
-  public class DateTimeParsingBehavior
+  class DateTimeParsingBehavior
   {
     protected static DateTime ParsedDate;
 
