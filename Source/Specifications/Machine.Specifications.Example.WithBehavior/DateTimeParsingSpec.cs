@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 // This is a rather contrived example, but I hope it shows what you can do with it.
 // I like the concept of MbUnit's RowTest and TypeFixture very much, especially when it comes to
