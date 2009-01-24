@@ -1,72 +1,72 @@
 <!-- 
-Based on original work from Alexander Groß
+Based on original work from Alexander GroÃŸ
 http://www.therightstuff.de/2008/09/16/ReSharper-Type-Members-Layout-For-MSpec-02.aspx 
 -->
-<!-- Order Machine.Specifications methods: Members, Establish, Cleanup, Because, It -->
+<!-- Order Machine.Specifications members: protected static members, Establish, Cleanup, Because, It should_*, It_should_behave_like and anything else. -->
 <Pattern>
+  <Match>
+    <And Weight="100">
+      <Kind Is="class"/>
+      <HasAttribute CLRName="Machine.Specifications.SubjectAttribute"
+                    Inherit="true"/>
+    </And>
+  </Match>
+  <Entry>
     <Match>
-        <And Weight="100">
-            <Kind Is="class"/>
-            <HasAttribute CLRName="Machine.Specifications.SubjectAttribute"
-                          Inherit="true"/>
-        </And>
+      <And>
+        <Kind Is="field"/>
+        <Or>
+          <Access Is="protected"/>
+          <Static/>
+        </Or>
+      </And>
     </Match>
-    <Entry>
-        <Match>
-            <And>
-                <Kind Is="field"/>
-                <Or>
-                    <Access Is="protected"/>
-                    <Static/>
-                </Or>
-            </And>
-        </Match>
-    </Entry>
-    <Entry>
-        <Match>
-            <And>
-                <Kind Is="field"/>
-                <Name Is="context_once"
-                      IgnoreCase="true"/>
-            </And>
-        </Match>
-    </Entry>
-    <Entry>
-        <Match>
-            <And>
-                <Kind Is="field"/>
-                <Name Is="context"
-                      IgnoreCase="true"/>
-            </And>
-        </Match>
-    </Entry>
-    <Entry>
-        <Match>
-            <And>
-                <Kind Is="field"/>
-                <Name Is="after_each"
-                      IgnoreCase="true"/>
-            </And>
-        </Match>
-    </Entry>
-    <Entry>
-        <Match>
-            <And>
-                <Kind Is="field"/>
-                <Name Is="after_all"
-                      IgnoreCase="true"/>
-            </And>
-        </Match>
-    </Entry>
-    <Entry>
-        <Match>
-            <And>
-                <Kind Is="field"/>
-                <Name Is="of"
-                      IgnoreCase="true"/>
-            </And>
-        </Match>
-    </Entry>
-    <!--All other members-->
-    <Entry/>
+  </Entry>
+  <Entry>
+    <Match>
+      <And>
+        <Kind Is="field"/>
+        <Name Is="context"
+              IgnoreCase="true"/>
+      </And>
+    </Match>
+  </Entry>
+  <Entry>
+    <Match>
+      <And>
+        <Kind Is="field"/>
+        <Name Is="after"
+              IgnoreCase="true"/>
+      </And>
+    </Match>
+  </Entry>
+  <Entry>
+    <Match>
+      <And>
+        <Kind Is="field"/>
+        <Name Is="after_each"
+              IgnoreCase="true"/>
+      </And>
+    </Match>
+  </Entry>
+  <Entry>
+    <Match>
+      <And>
+        <Kind Is="field"/>
+        <Name Is="of"
+              IgnoreCase="true"/>
+      </And>
+    </Match>
+  </Entry>
+  <Entry>
+    <Match>
+      <And>
+        <Kind Is="field"/>
+        <Name Is="should_.*"
+              IgnoreCase="true"/>
+      </And>
+    </Match>
+  </Entry>
+  <!-- MSpec behaviors and all other members -->
+  <Entry/>
 </Pattern>
