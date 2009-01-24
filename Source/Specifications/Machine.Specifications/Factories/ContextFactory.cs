@@ -37,10 +37,23 @@ namespace Machine.Specifications.Factories
       var fieldInfos = type.GetPrivateFieldsOfType<It>()
         .Union(type.GetPrivateFieldsOfType<It_should_behave_like>());
 
-      return CreateContextFrom(instance, fieldInfos);
+      return CreateRootContextFrom(instance, fieldInfos);
     }
 
-    Context CreateContextFrom(object instance, IEnumerable<FieldInfo> acceptedSpecificationFields)
+    Context CreateRootContextFrom(object instance, IEnumerable<FieldInfo> acceptedSpecificationFields)
+    {
+      return CreateContextFrom(instance, acceptedSpecificationFields, null);
+    }
+
+    Context CreateNestedContextFrom(object instance, Context rootContext)
+    {
+      var type = instance.GetType();
+      IEnumerable<FieldInfo> fieldInfos = GetSpecificiationFieldInfos(type);
+
+      return CreateContextFrom(instance, fieldInfos, rootContext);
+    }
+
+    Context CreateContextFrom(object instance, IEnumerable<FieldInfo> acceptedSpecificationFields, Context rootContext)
     {
       return CreateContextFrom(instance, acceptedSpecificationFields, null);
     }
@@ -48,7 +61,7 @@ namespace Machine.Specifications.Factories
     Context CreateContextFrom(object instance, IEnumerable<FieldInfo> acceptedSpecificationFields, Context rootContext)
     {
       var type = instance.GetType();
-	  var fieldInfos = type.GetPrivateOrInheritedFields();
+      var fieldInfos = type.GetPrivateOrInheritedFields();
       List<FieldInfo> itFieldInfos = new List<FieldInfo>();
       List<FieldInfo> itShouldBehaveLikeFieldInfos = new List<FieldInfo>();
 
@@ -97,7 +110,22 @@ namespace Machine.Specifications.Factories
       CreateSpecifications(itFieldInfos, context);
       CreateSpecificationsFromBehaviors(itShouldBehaveLikeFieldInfos, context);
 
+      foreach (var itShouldBehaveLikeFieldInfo in itShouldBehaveLikeFieldInfos)
+      {
+        It_should_behave_like behavior = (It_should_behave_like) itShouldBehaveLikeFieldInfo.GetValue(context.Instance);
+        Context contextMixin = CreateNestedContextFrom(behavior.Invoke(), rootContext ?? context);
+
+        CreateMixinSpecifications(contextMixin.Specifications, rootContext ?? context, contextMixin);
+      }
+
       return context;
+    }
+
+    static IEnumerable<FieldInfo> GetSpecificiationFieldInfos(Type type)
+    {
+      var fieldInfos = type.GetPrivateOrInheritedFieldsOfType<It>();
+      fieldInfos = fieldInfos.Union(type.GetPrivateOrInheritedFieldsOfType<It_should_behave_like>());
+      return fieldInfos;
     }
 
     static IEnumerable<Tag> ExtractTags(Type type)
@@ -159,7 +187,7 @@ namespace Machine.Specifications.Factories
       var type = instance.GetType();
       while (type != null)
       {
-		var fields = type.GetPrivateFieldsWith(typeof(T));
+        var fields = type.GetPrivateFieldsWith(typeof(T));
 
         if (fields.Count() > 1)
         {
