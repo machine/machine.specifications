@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="ExampleSpecsWithInheritance.cs" />
     <Compile Include="ExampleSpecs.cs" />
+    <Compile Include="ExampleSpecsWithMixin.cs" />
     <Compile Include="Factories\ContextFactorySpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runner\AppDomainRunnerSpecs.cs" />

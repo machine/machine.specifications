@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 using Machine.Specifications.Factories;
 using Machine.Specifications.Model;
@@ -21,22 +20,22 @@ namespace Machine.Specifications.Explorers
 
     public IEnumerable<Context> FindContextsIn(Assembly assembly)
     {
-      return EnumerateContextsIn(assembly).Select(x=>CreateContextFrom(x));
+      return EnumerateContextsIn(assembly).Select(x => CreateContextFrom(x));
     }
 
     public IEnumerable<Context> FindContextsIn(Assembly assembly, string targetNamespace)
     {
       return EnumerateContextsIn(assembly)
-        .Where(x=>x.Namespace == targetNamespace)
-        .Select(x=>CreateContextFrom(x));
+        .Where(x => x.Namespace == targetNamespace)
+        .Select(x => CreateContextFrom(x));
     }
 
     public IEnumerable<IAssemblyContext> FindAssemblyContextsIn(Assembly assembly)
     {
       return assembly.GetExportedTypes()
         .Where(x =>
-               x.GetInterfaces().Contains(typeof (IAssemblyContext)))
-        .Select(x => (IAssemblyContext)Activator.CreateInstance(x));
+               x.GetInterfaces().Contains(typeof(IAssemblyContext)))
+        .Select(x => (IAssemblyContext) Activator.CreateInstance(x));
     }
 
     Context CreateContextFrom(Type type)
@@ -58,7 +57,9 @@ namespace Machine.Specifications.Explorers
 
     static bool HasSpecificationMembers(Type type)
     {
-	  return !type.IsAbstract && type.GetPrivateOrInheritedFieldsWith(typeof(It)).Any();
+      return !type.IsAbstract &&
+             (type.GetPrivateOrInheritedFieldsWith(typeof(It)).Any() ||
+              type.GetPrivateOrInheritedFieldsWith(typeof(It_should_behave_like)).Any());
     }
 
     static IEnumerable<Type> EnumerateContextsIn(Assembly assembly)
