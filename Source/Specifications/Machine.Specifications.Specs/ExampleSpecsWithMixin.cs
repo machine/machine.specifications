@@ -1,88 +1,74 @@
-using System;
-
 namespace Machine.Specifications.Specs
 {
-  public class when_a_date_is_parsed_with_the_regular_expression_parser : with_string_parser
+  public class context_with_behavior
   {
-    Establish context = () => { Parser = new RegexParser(); };
+    public static bool LocalSpecRan;
 
-    It_should_behave_like a_date_time_parser = () => new DateTimeParsingBehavior();
-  }
-
-  public class when_a_date_is_parsed_by_the_infrastructure : with_string_parser
-  {
-    Establish context = () => { Parser = new InfrastructureParser(); };
-
-    It_should_behave_like a_date_time_parser = () => new DateTimeParsingBehavior();
-    It_should_behave_like a_second = () => new SecondaryBehavior();
-  }
-
-  public abstract class with_string_parser
-  {
-    protected static DateTime ParsedDate;
-    protected static IParser Parser;
-
-    protected Because of = () => { ParsedDate = Parser.Parse("2009/01/21"); };
-  }
-
-  public class DateTimeParsingBehavior
-  {
-    protected static DateTime ParsedDate;
-
-    It should_parse_the_expected_date = () => ParsedDate.ShouldEqual(new DateTime(2009, 1, 21));
-
-    It is_not_implemented;
-
-    [Ignore]
-    It is_ignored;
+    It should_succeed = () => LocalSpecRan = true;
+    It_should_behave_like behavior = () => new Behavior();
   }
   
-  public class SecondaryBehavior
+  public class context_with_behavior_where_the_behavior_field_is_ignored
   {
-    protected static DateTime ParsedDate;
+    public static bool LocalSpecRan;
 
-    It should_parse_the_expected_date_second = () => ParsedDate.ShouldEqual(new DateTime(2009, 1, 21));
-    It_should_behave_like a_third = () => new NestedThirdBehavior();
+    It should_succeed = () => LocalSpecRan = true;
+    
+    [Ignore]
+    It_should_behave_like behavior = () => new Behavior();
   }
   
-  public class NestedThirdBehavior
+  public class context_with_behavior_where_the_behavior_is_ignored
   {
-    protected static DateTime ParsedDate;
+    public static bool LocalSpecRan;
 
-    It should_parse_the_expected_date_nested_third = () => ParsedDate.ShouldEqual(new DateTime(2009, 1, 21));
+    It should_succeed = () => LocalSpecRan = true;
+    
+    It_should_behave_like behavior = () => new IgnoredBehavior();
+  }
+  
+  public class context_with_behavior_where_the_behavior_specs_are_ignored
+  {
+    public static bool LocalSpecRan;
 
-    It is_not_implemented_nested_third;
+    It should_succeed = () => LocalSpecRan = true;
 
+    It_should_behave_like behavior = () => new BehaviorWithIgnoredSpec();
+  }
+
+  public class context_with_nested_behaviors
+  {
+    public static bool LocalSpecRan;
+
+    It should_succeed = () => LocalSpecRan = true;
+    It_should_behave_like behavior_with_nested_behavior = () => new BehaviorWithNestedBehavior();
+  }
+
+  internal class Behavior
+  {
+    public static bool BehaviorSpecRan;
+
+    It should_succeed_on_the_behavior = () => BehaviorSpecRan = true;
+  }
+  
+  [Ignore]
+  internal class IgnoredBehavior
+  {
+    public static bool BehaviorSpecRan;
+
+    It should_succeed_on_the_behavior = () => BehaviorSpecRan = true;
+  }
+  
+  internal class BehaviorWithIgnoredSpec
+  {
+    public static bool BehaviorSpecRan;
+    
     [Ignore]
-    It is_ignored_nested_third;
+    It should_succeed_on_the_behavior = () => BehaviorSpecRan = true;
   }
 
-  #region Parsers
-  public interface IParser
+  internal class BehaviorWithNestedBehavior
   {
-    DateTime Parse(string date);
+    It_should_behave_like nested_behavior;
   }
-
-  internal class RegexParser : IParser
-  {
-    #region IParser Members
-    public DateTime Parse(string date)
-    {
-      // Parse with a regular expression. Not that it's recommended, but that's why this example is contrived.
-      return new DateTime(2009, 1, 21);
-    }
-    #endregion
-  }
-
-  internal class InfrastructureParser : IParser
-  {
-    #region IParser Members
-    public DateTime Parse(string date)
-    {
-      // Parse with DateTime.Parse.
-      return new DateTime(2009, 1, 21);
-    }
-    #endregion
-  }
-  #endregion
 }

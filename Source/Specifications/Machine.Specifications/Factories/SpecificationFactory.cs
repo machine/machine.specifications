@@ -16,13 +16,13 @@ namespace Machine.Specifications.Factories
       return new Specification(name, it, isIgnored, specificationField);
     }
 
-    public Specification CreateSpecificationMixin(Context rootContext, Context specificationFieldContext, FieldInfo specificationField)
+    public Specification CreateSpecificationFromBehavior(Behavior behavior, FieldInfo specificationField)
     {
-      bool isIgnored = specificationFieldContext.IsIgnored || specificationField.HasAttribute<IgnoreAttribute>();
-      It it = (It) specificationField.GetValue(specificationFieldContext.Instance);
+      bool isIgnored = behavior.IsIgnored || specificationField.HasAttribute<IgnoreAttribute>();
+      It it = (It) specificationField.GetValue(behavior.Instance);
       string name = specificationField.Name.ReplaceUnderscores().Trim();
 
-      return new SpecificationMixin(name, it, isIgnored, specificationField, rootContext.Instance, specificationFieldContext.Instance);
+      return new BehaviorSpecification(name, it, isIgnored, specificationField, behavior.Context, behavior);
     }
   }
 }

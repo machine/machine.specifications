@@ -9,12 +9,18 @@ namespace Machine.Specifications.Example.WithBehavior
   public class when_a_date_is_parsed_with_the_regular_expression_parser : with_string_parser
   {
     Establish context = () => { Parser = new RegexParser(); };
+    
+    Because of = () => { ParsedDate = Parser.Parse("2009/01/21"); };
+
     It_should_behave_like a_date_time_parser = () => new DateTimeParsingBehavior();
   }
 
   public class when_a_date_is_parsed_by_the_infrastructure : with_string_parser
   {
     Establish context = () => { Parser = new InfrastructureParser(); };
+    
+    Because of = () => { ParsedDate = Parser.Parse("2009/01/21"); };
+    
     It_should_behave_like a_date_time_parser = () => new DateTimeParsingBehavior();
   }
 
@@ -22,8 +28,6 @@ namespace Machine.Specifications.Example.WithBehavior
   {
     protected static DateTime ParsedDate;
     protected static IParser Parser;
-
-    protected Because of = () => { ParsedDate = Parser.Parse("2009/01/21"); };
   }
 
   class DateTimeParsingBehavior

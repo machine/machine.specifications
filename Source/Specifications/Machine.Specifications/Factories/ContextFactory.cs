@@ -10,18 +10,20 @@ namespace Machine.Specifications.Factories
 {
   public class ContextFactory
   {
+    readonly BehaviorFactory _behaviorFactory;
     readonly SpecificationFactory _specificationFactory;
 
     public ContextFactory()
     {
       _specificationFactory = new SpecificationFactory();
+      _behaviorFactory = new BehaviorFactory();
     }
 
     public Context CreateContextFrom(object instance, FieldInfo fieldInfo)
     {
       if (fieldInfo.FieldType == typeof(It))
       {
-        return CreateRootContextFrom(instance, new[] { fieldInfo });
+        return CreateContextFrom(instance, new[] { fieldInfo });
       }
       else
       {
@@ -32,28 +34,21 @@ namespace Machine.Specifications.Factories
     public Context CreateContextFrom(object instance)
     {
       var type = instance.GetType();
-      IEnumerable<FieldInfo> fieldInfos = GetSpecificiationFieldInfos(type);
+      var fieldInfos = type.GetPrivateFieldsOfType<It>()
+        .Union(type.GetPrivateFieldsOfType<It_should_behave_like>());
 
-      return CreateRootContextFrom(instance, fieldInfos);
+      return CreateContextFrom(instance, fieldInfos);
     }
 
-    Context CreateRootContextFrom(object instance, IEnumerable<FieldInfo> acceptedSpecificationFields)
+    Context CreateContextFrom(object instance, IEnumerable<FieldInfo> acceptedSpecificationFields)
     {
       return CreateContextFrom(instance, acceptedSpecificationFields, null);
-    }
-
-    Context CreateNestedContextFrom(object instance, Context rootContext)
-    {
-      var type = instance.GetType();
-      IEnumerable<FieldInfo> fieldInfos = GetSpecificiationFieldInfos(type);
-
-      return CreateContextFrom(instance, fieldInfos, rootContext);
     }
 
     Context CreateContextFrom(object instance, IEnumerable<FieldInfo> acceptedSpecificationFields, Context rootContext)
     {
       var type = instance.GetType();
-      var fieldInfos = type.GetPrivateOrInheritedFields();
+      var fieldInfos = type.GetPrivateFields();
       List<FieldInfo> itFieldInfos = new List<FieldInfo>();
       List<FieldInfo> itShouldBehaveLikeFieldInfos = new List<FieldInfo>();
 
@@ -100,23 +95,9 @@ namespace Machine.Specifications.Factories
       }
 
       CreateSpecifications(itFieldInfos, context);
-
-      foreach (var itShouldBehaveLikeFieldInfo in itShouldBehaveLikeFieldInfos)
-      {
-        It_should_behave_like behavior = (It_should_behave_like) itShouldBehaveLikeFieldInfo.GetValue(context.Instance);
-        Context contextMixin = CreateNestedContextFrom(behavior.Invoke(), rootContext ?? context);
-
-        CreateMixinSpecifications(contextMixin.Specifications, rootContext ?? context, contextMixin);
-      }
+      CreateSpecificationsFromBehaviors(itShouldBehaveLikeFieldInfos, context);
 
       return context;
-    }
-
-    static IEnumerable<FieldInfo> GetSpecificiationFieldInfos(Type type)
-    {
-      var fieldInfos = type.GetPrivateFieldsOfType<It>();
-      fieldInfos = fieldInfos.Union(type.GetPrivateFieldsOfType<It_should_behave_like>());
-      return fieldInfos;
     }
 
     static IEnumerable<Tag> ExtractTags(Type type)
@@ -158,14 +139,17 @@ namespace Machine.Specifications.Factories
       }
     }
 
-    void CreateMixinSpecifications(IEnumerable<Specification> mixinSpecifications, Context context, Context contextMixin)
+    void CreateSpecificationsFromBehaviors(IEnumerable<FieldInfo> itShouldBehaveLikeFieldInfos,
+                                           Context context)
     {
-      foreach (var mixinSpecification in mixinSpecifications)
+      foreach (var itShouldBehaveLikeFieldInfo in itShouldBehaveLikeFieldInfos)
       {
-        Specification specification = _specificationFactory.CreateSpecificationMixin(context,
-                                                                                     contextMixin,
-                                                                                     mixinSpecification.FieldInfo);
-        context.AddSpecification(specification);
+        Behavior behavior = _behaviorFactory.CreateBehaviorFrom(itShouldBehaveLikeFieldInfo, context);
+
+        foreach (var specification in behavior.Specifications)
+        {
+          context.AddSpecification(specification);
+        }
       }
     }
 
