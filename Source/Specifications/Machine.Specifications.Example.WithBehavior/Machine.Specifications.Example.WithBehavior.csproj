@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{BE830B7E-98C5-4386-BFBB-612F5B9727EE}</ProjectGuid>
+    <ProjectGuid>{42E05EB9-FC41-4198-B8D2-BAE2417DC7FF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Machine.Specifications.Example.WithBehavior</RootNamespace>
