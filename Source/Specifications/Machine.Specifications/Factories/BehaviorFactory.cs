@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -18,12 +19,11 @@ namespace Machine.Specifications.Factories
 
     public Behavior CreateBehaviorFrom(FieldInfo behaviorField, Context context)
     {
-      var behaviorFieldValue = (It_should_behave_like) behaviorField.GetValue(context.Instance);
-      object behaviorInstance = behaviorFieldValue.Invoke();
+      object behaviorInstance = Activator.CreateInstance(behaviorField.FieldType.GetGenericArguments()[0]);
 
       var fieldInfos = behaviorInstance.GetType().GetPrivateFields();
 
-      if (fieldInfos.Where(info => info.FieldType == typeof(It_should_behave_like)).Any())
+      if (fieldInfos.Where(info => info.FieldType == typeof(Behaves_like<>)).Any())
       {
         throw new SpecificationUsageException("You cannot nest behaviors.");
       }

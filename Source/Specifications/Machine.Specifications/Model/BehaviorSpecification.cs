@@ -7,11 +7,16 @@ namespace Machine.Specifications.Model
 {
   public class BehaviorSpecification : Specification
   {
-    readonly object _contextInstance;
     readonly object _behaviorInstance;
+    readonly object _contextInstance;
     readonly ConventionMapper _mapper;
 
-    public BehaviorSpecification(string name, It it, bool isIgnored, FieldInfo fieldInfo, Context context, Behavior behavior)
+    public BehaviorSpecification(string name,
+                                 It it,
+                                 bool isIgnored,
+                                 FieldInfo fieldInfo,
+                                 Context context,
+                                 Behavior behavior)
       : base(name, it, isIgnored, fieldInfo)
     {
       _contextInstance = context.Instance;
@@ -27,7 +32,7 @@ namespace Machine.Specifications.Model
     }
 
     #region Nested type: ConventionMapper
-    class ConventionMapper
+    private class ConventionMapper
     {
       internal ConventionMap MapPropertiesOf(object source)
       {

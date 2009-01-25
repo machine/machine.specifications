@@ -59,7 +59,7 @@ namespace Machine.Specifications.Explorers
     {
       return !type.IsAbstract &&
              (type.GetPrivateFieldsWith(typeof(It)).Any() ||
-              type.GetPrivateFieldsWith(typeof(It_should_behave_like)).Any());
+              type.GetPrivateFieldsWith(typeof(Behaves_like<>)).Any());
     }
 
     static IEnumerable<Type> EnumerateContextsIn(Assembly assembly)

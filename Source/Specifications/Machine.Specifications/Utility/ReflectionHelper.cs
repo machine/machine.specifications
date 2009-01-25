@@ -26,12 +26,21 @@ namespace Machine.Specifications.Utility
 
     public static IEnumerable<FieldInfo> GetPrivateFieldsWith(this Type type, Type fieldType)
     {
-      return type.GetPrivateFields().Where(x => x.FieldType == fieldType);
+      return type.GetPrivateFields().Where(x => x.FieldType.IsOfType(fieldType));
     }
 
     public static FieldInfo GetStaticProtectedOrInheritedFieldNamed(this Type type, string fieldName)
     {
       return type.GetStaticProtectedOrInheritedFields().Where(x => x.Name == fieldName).SingleOrDefault();
+    }
+
+    public static bool IsOfType(this Type type, Type fieldType)
+    {
+      if (type.IsGenericType)
+      {
+        return type.GetGenericTypeDefinition() == fieldType;
+      }
+      return type == fieldType;
     }
   }
 }

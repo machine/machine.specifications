@@ -5,7 +5,7 @@ namespace Machine.Specifications.Specs
     public static bool LocalSpecRan;
 
     It should_succeed = () => LocalSpecRan = true;
-    It_should_behave_like behavior = () => new Behavior();
+    Behaves_like<Behavior> behavior;
   }
   
   public class context_with_behavior_where_the_behavior_field_is_ignored
@@ -15,7 +15,7 @@ namespace Machine.Specifications.Specs
     It should_succeed = () => LocalSpecRan = true;
     
     [Ignore]
-    It_should_behave_like behavior = () => new Behavior();
+    Behaves_like<Behavior> behavior;
   }
   
   public class context_with_behavior_where_the_behavior_is_ignored
@@ -24,7 +24,7 @@ namespace Machine.Specifications.Specs
 
     It should_succeed = () => LocalSpecRan = true;
     
-    It_should_behave_like behavior = () => new IgnoredBehavior();
+    Behaves_like<IgnoredBehavior> behavior;
   }
   
   public class context_with_behavior_where_the_behavior_specs_are_ignored
@@ -33,7 +33,7 @@ namespace Machine.Specifications.Specs
 
     It should_succeed = () => LocalSpecRan = true;
 
-    It_should_behave_like behavior = () => new BehaviorWithIgnoredSpec();
+    Behaves_like<BehaviorWithIgnoredSpec> behavior;
   }
 
   public class context_with_nested_behaviors
@@ -41,7 +41,7 @@ namespace Machine.Specifications.Specs
     public static bool LocalSpecRan;
 
     It should_succeed = () => LocalSpecRan = true;
-    It_should_behave_like behavior_with_nested_behavior = () => new BehaviorWithNestedBehavior();
+    Behaves_like<BehaviorWithNestedBehavior> behavior_with_nested_behavior;
   }
 
   internal class Behavior
@@ -69,6 +69,6 @@ namespace Machine.Specifications.Specs
 
   internal class BehaviorWithNestedBehavior
   {
-    It_should_behave_like nested_behavior;
+    Behaves_like<object> nested_behavior;
   }
 }

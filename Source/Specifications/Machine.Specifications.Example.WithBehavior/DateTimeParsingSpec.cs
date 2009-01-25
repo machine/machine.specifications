@@ -12,7 +12,7 @@ namespace Machine.Specifications.Example.WithBehavior
     
     Because of = () => { ParsedDate = Parser.Parse("2009/01/21"); };
 
-    It_should_behave_like a_date_time_parser = () => new DateTimeParsingBehavior();
+    Behaves_like<DateTimeParsingBehavior> a_date_time_parser;
   }
 
   public class when_a_date_is_parsed_by_the_infrastructure : with_string_parser
@@ -21,7 +21,7 @@ namespace Machine.Specifications.Example.WithBehavior
     
     Because of = () => { ParsedDate = Parser.Parse("2009/01/21"); };
     
-    It_should_behave_like a_date_time_parser = () => new DateTimeParsingBehavior();
+    Behaves_like<DateTimeParsingBehavior> a_date_time_parser;
   }
 
   public abstract class with_string_parser

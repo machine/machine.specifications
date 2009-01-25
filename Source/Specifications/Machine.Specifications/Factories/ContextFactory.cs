@@ -35,7 +35,7 @@ namespace Machine.Specifications.Factories
     {
       var type = instance.GetType();
       var fieldInfos = type.GetPrivateFieldsOfType<It>()
-        .Union(type.GetPrivateFieldsOfType<It_should_behave_like>());
+        .Union(type.GetPrivateFieldsWith(typeof(Behaves_like<>)));
 
       return CreateContextFrom(instance, fieldInfos);
     }
@@ -88,7 +88,7 @@ namespace Machine.Specifications.Factories
         }
 
         if (acceptedSpecificationFields.Contains(info) &&
-            info.FieldType == typeof(It_should_behave_like))
+            info.FieldType.IsOfType(typeof(Behaves_like<>)))
         {
           itShouldBehaveLikeFieldInfos.Add(info);
         }
