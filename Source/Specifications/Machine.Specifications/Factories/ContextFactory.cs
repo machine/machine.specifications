@@ -42,11 +42,6 @@ namespace Machine.Specifications.Factories
 
     Context CreateContextFrom(object instance, IEnumerable<FieldInfo> acceptedSpecificationFields)
     {
-      return CreateContextFrom(instance, acceptedSpecificationFields, null);
-    }
-
-    Context CreateContextFrom(object instance, IEnumerable<FieldInfo> acceptedSpecificationFields, Context rootContext)
-    {
       var type = instance.GetType();
       var fieldInfos = type.GetPrivateFields();
       List<FieldInfo> itFieldInfos = new List<FieldInfo>();
