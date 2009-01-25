@@ -6,21 +6,23 @@ using System;
 
 namespace Machine.Specifications.Example.WithBehavior
 {
+  [Subject("Date time parsing")]
   public class when_a_date_is_parsed_with_the_regular_expression_parser : with_string_parser
   {
     Establish context = () => { Parser = new RegexParser(); };
-    
+
     Because of = () => { ParsedDate = Parser.Parse("2009/01/21"); };
 
     Behaves_like<DateTimeParsingBehavior> a_date_time_parser;
   }
 
+  [Subject("Date time parsing")]
   public class when_a_date_is_parsed_by_the_infrastructure : with_string_parser
   {
     Establish context = () => { Parser = new InfrastructureParser(); };
-    
+
     Because of = () => { ParsedDate = Parser.Parse("2009/01/21"); };
-    
+
     Behaves_like<DateTimeParsingBehavior> a_date_time_parser;
   }
 
@@ -30,7 +32,7 @@ namespace Machine.Specifications.Example.WithBehavior
     protected static IParser Parser;
   }
 
-  class DateTimeParsingBehavior
+  internal class DateTimeParsingBehavior
   {
     protected static DateTime ParsedDate;
 

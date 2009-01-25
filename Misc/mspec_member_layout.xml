@@ -2,7 +2,7 @@
 Based on original work from Alexander Groß
 http://www.therightstuff.de/2008/09/16/ReSharper-Type-Members-Layout-For-MSpec-02.aspx 
 -->
-<!-- Order Machine.Specifications members: protected static members, Establish, Cleanup, Because, It should_*, It_should_behave_like and anything else. -->
+<!-- Order Machine.Specifications members: static fields, Establish, Cleanup, Because, It, behaviors, everything else -->
 <Pattern>
   <Match>
     <And Weight="100">
@@ -26,7 +26,7 @@ http://www.therightstuff.de/2008/09/16/ReSharper-Type-Members-Layout-For-MSpec-0
     <Match>
       <And>
         <Kind Is="field"/>
-        <Name Is="context"
+        <Name Is="^context(_once)?$"
               IgnoreCase="true"/>
       </And>
     </Match>
@@ -35,7 +35,7 @@ http://www.therightstuff.de/2008/09/16/ReSharper-Type-Members-Layout-For-MSpec-0
     <Match>
       <And>
         <Kind Is="field"/>
-        <Name Is="after"
+        <Name Is="^after(_all)?$"
               IgnoreCase="true"/>
       </And>
     </Match>
@@ -44,7 +44,7 @@ http://www.therightstuff.de/2008/09/16/ReSharper-Type-Members-Layout-For-MSpec-0
     <Match>
       <And>
         <Kind Is="field"/>
-        <Name Is="after_each"
+        <Name Is="^of$"
               IgnoreCase="true"/>
       </And>
     </Match>
@@ -53,7 +53,7 @@ http://www.therightstuff.de/2008/09/16/ReSharper-Type-Members-Layout-For-MSpec-0
     <Match>
       <And>
         <Kind Is="field"/>
-        <Name Is="of"
+        <Name Is="^should_.*$"
               IgnoreCase="true"/>
       </And>
     </Match>
@@ -62,11 +62,12 @@ http://www.therightstuff.de/2008/09/16/ReSharper-Type-Members-Layout-For-MSpec-0
     <Match>
       <And>
         <Kind Is="field"/>
-        <Name Is="should_.*"
-              IgnoreCase="true"/>
+        <Not>
+          <Static/>
+        </Not>
       </And>
     </Match>
   </Entry>
-  <!-- MSpec behaviors and all other members -->
+  <!-- All other members -->
   <Entry/>
 </Pattern>
