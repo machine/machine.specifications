@@ -12,25 +12,16 @@ namespace Machine.Specifications.Utility
       return type.GetFields(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.NonPublic);
     }
 
-    public static IEnumerable<FieldInfo> GetPrivateOrInheritedFields(this Type type)
-    {
-      return type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
-    }
-
     public static IEnumerable<FieldInfo> GetStaticProtectedOrInheritedFields(this Type type)
     {
-      return type.GetFields(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy)
+      return type
+        .GetFields(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy)
         .Where(x => !x.IsPrivate);
     }
 
     public static IEnumerable<FieldInfo> GetPrivateFieldsOfType<T>(this Type type)
     {
       return type.GetPrivateFields().Where(x => x.FieldType == typeof(T));
-    }
-
-    public static IEnumerable<FieldInfo> GetPrivateOrInheritedFieldsOfType<T>(this Type type)
-    {
-      return type.GetPrivateOrInheritedFields().Where(x => x.FieldType == typeof(T));
     }
 
     public static IEnumerable<FieldInfo> GetPrivateFieldsWith(this Type type, Type fieldType)
