@@ -23,7 +23,8 @@ namespace Machine.Specifications.Factories
 
       var fieldInfos = behaviorInstance.GetType().GetPrivateFields();
 
-      if (fieldInfos.Where(info => info.FieldType == typeof(Behaves_like<>)).Any())
+      if (fieldInfos.Any(info => info.FieldType.IsGenericType &&
+                                 info.FieldType.GetGenericTypeDefinition() == typeof(Behaves_like<>)))
       {
         throw new SpecificationUsageException("You cannot nest behaviors.");
       }

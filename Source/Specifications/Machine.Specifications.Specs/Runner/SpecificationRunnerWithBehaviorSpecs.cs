@@ -67,7 +67,7 @@ namespace Machine.Specifications.Specs.Runner
   }
 
   [Subject("Specification Runner")]
-  public class when_running_a_context_with_specifications_in_nested_behaviors
+  public class when_running_a_context_with_nested_behaviors
     : with_runner
   {
     static Exception Exception;
