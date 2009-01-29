@@ -50,26 +50,6 @@ namespace Machine.Specifications.Specs.Runner
 	  Exception.ShouldBeOfType<TargetInvocationException>();
   }
 
-  public class when_running_specs_in_an_assembly_with_a_reference_that_cannot_be_bound : running_specs
-  {
-    static Exception Exception;
-    const string ReferencedAssembly = "Machine.Specifications.Example.BindingFailure.Ref.dll";
-
-    Establish context = () =>
-    {
-      if (File.Exists(ReferencedAssembly))
-      {
-        File.Delete(ReferencedAssembly);
-      }
-    };
-
-    Because of = () =>
-      Exception = Catch.Exception(() => runner.RunAssembly(typeof(if_a_referenced_assembly_cannot_be_bound).Assembly));
-
-    It should_fail = () =>
-      Exception.ShouldBeOfType<TargetInvocationException>();
-  }
-
   public class when_running_specs_by_namespace : running_specs
   {
     Because of = () =>
