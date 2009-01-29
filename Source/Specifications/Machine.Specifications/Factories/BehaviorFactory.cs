@@ -19,7 +19,7 @@ namespace Machine.Specifications.Factories
 
     public Behavior CreateBehaviorFrom(FieldInfo behaviorField, Context context)
     {
-      object behaviorInstance = Activator.CreateInstance(behaviorField.FieldType.GetGenericArguments()[0]);
+      object behaviorInstance = Activator.CreateInstance(behaviorField.FieldType.GetGenericArguments().First());
 
       var fieldInfos = behaviorInstance.GetType().GetPrivateFields();
 
