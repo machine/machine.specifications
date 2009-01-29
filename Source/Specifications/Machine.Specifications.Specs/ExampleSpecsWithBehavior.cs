@@ -5,7 +5,7 @@ namespace Machine.Specifications.Specs
   {
     public static bool LocalSpecRan;
 
-    It should_succeed = () => LocalSpecRan = true;
+    It should_run = () => LocalSpecRan = true;
     Behaves_like<Behavior> behavior;
   }
 
@@ -14,7 +14,7 @@ namespace Machine.Specifications.Specs
   {
     public static bool LocalSpecRan;
 
-    It should_succeed = () => LocalSpecRan = true;
+    It should_run = () => LocalSpecRan = true;
 
     [Ignore]
     Behaves_like<Behavior> behavior;
@@ -25,7 +25,7 @@ namespace Machine.Specifications.Specs
   {
     public static bool LocalSpecRan;
 
-    It should_succeed = () => LocalSpecRan = true;
+    It should_run = () => LocalSpecRan = true;
     Behaves_like<IgnoredBehavior> behavior;
   }
 
@@ -34,7 +34,7 @@ namespace Machine.Specifications.Specs
   {
     public static bool LocalSpecRan;
 
-    It should_succeed = () => LocalSpecRan = true;
+    It should_run = () => LocalSpecRan = true;
     Behaves_like<BehaviorWithIgnoredSpec> behavior;
   }
 
@@ -43,7 +43,7 @@ namespace Machine.Specifications.Specs
   {
     public static bool LocalSpecRan;
 
-    It should_succeed = () => LocalSpecRan = true;
+    It should_run = () => LocalSpecRan = true;
     Behaves_like<BehaviorWithNestedBehavior> behavior_with_nested_behavior;
   }
 
@@ -51,7 +51,7 @@ namespace Machine.Specifications.Specs
   {
     public static bool BehaviorSpecRan;
 
-    It should_succeed_on_the_behavior = () => BehaviorSpecRan = true;
+    It should_run_if_behavior_is_not_ignored = () => BehaviorSpecRan = true;
   }
 
   [Ignore]
@@ -59,7 +59,7 @@ namespace Machine.Specifications.Specs
   {
     public static bool BehaviorSpecRan;
 
-    It should_succeed_on_the_behavior = () => BehaviorSpecRan = true;
+    It should_not_run = () => BehaviorSpecRan = true;
   }
 
   internal class BehaviorWithIgnoredSpec
@@ -67,11 +67,11 @@ namespace Machine.Specifications.Specs
     public static bool BehaviorSpecRan;
 
     [Ignore]
-    It should_succeed_on_the_behavior = () => BehaviorSpecRan = true;
+    It should_not_run = () => BehaviorSpecRan = true;
   }
 
   internal class BehaviorWithNestedBehavior
   {
-    Behaves_like<object> nested_behavior;
+    Behaves_like<object> diallowed_nested_behavior;
   }
 }
