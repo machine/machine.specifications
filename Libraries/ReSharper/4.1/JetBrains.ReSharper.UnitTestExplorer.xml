@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JetBrains.ReSharper.UnitTestExplorer</name>
+    </assembly>
+    <members>
+        <member name="F:JetBrains.ReSharper.UnitTestExplorer.UnitTestOutputPanel.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.UnitTestExplorer.UnitTestOutputPanel.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.UnitTestExplorer.UnitTestOutputPanel.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.UnitTestExplorer.UnitTestStatusPanel.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.UnitTestExplorer.IUnitTestProvider.ExploreExternal(JetBrains.ReSharper.UnitTestExplorer.UnitTestElementConsumer)">
+            <summary>
+            Explores the "world", i.e. retrieves tests not associated with current solution
+            </summary>
+            <param name="consumer"></param>
+        </member>
+        <member name="M:JetBrains.ReSharper.UnitTestExplorer.IUnitTestProvider.ExploreSolution(JetBrains.ProjectModel.ISolution,JetBrains.ReSharper.UnitTestExplorer.UnitTestElementConsumer)">
+            <summary>
+            Explores given solution, but not containing projects
+            </summary>
+            <param name="solution"></param>
+            <param name="consumer"></param>
+        </member>
+        <member name="M:JetBrains.ReSharper.UnitTestExplorer.IUnitTestProvider.ExploreAssembly(JetBrains.Metadata.Reader.API.IMetadataAssembly,JetBrains.ProjectModel.IProject,JetBrains.ReSharper.UnitTestExplorer.UnitTestElementConsumer)">
+            <summary>
+            Explores given compiled project
+            </summary>
+            <param name="project"></param>
+            <param name="assembly"></param>
+            <param name="consumer"></param>
+        </member>
+        <member name="M:JetBrains.ReSharper.UnitTestExplorer.IUnitTestProvider.ExploreFile(JetBrains.ReSharper.Psi.Tree.IFile,JetBrains.ReSharper.UnitTestExplorer.UnitTestElementLocationConsumer,JetBrains.Application.CheckForInterrupt)">
+            <summary>
+            Explores given PSI file
+            </summary>
+            <param name="psiFile"></param>
+            <param name="consumer"></param>
+            <param name="interrupted"></param>
+        </member>
+        <member name="M:JetBrains.ReSharper.UnitTestExplorer.IUnitTestProvider.IsUnitTestElement(JetBrains.ReSharper.Psi.IDeclaredElement)">
+            <summary>
+            Checks if given declared element is UnitTestElement
+            </summary>
+            <param name="element"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.UnitTestExplorer.IUnitTestProvider.Present(JetBrains.ReSharper.UnitTestExplorer.UnitTestElement,JetBrains.CommonControls.IPresentableItem,JetBrains.TreeModels.TreeModelNode,JetBrains.UI.TreeView.PresentationState)">
+            <summary>
+            Present unit test
+            </summary>
+            <param name="element"></param>
+            <param name="item"></param>
+            <param name="node"></param>
+            <param name="state"></param>
+        </member>
+        <member name="M:JetBrains.ReSharper.UnitTestExplorer.IUnitTestProvider.GetTaskRunnerInfo">
+            <summary>
+            Gets instance of <see cref="T:JetBrains.ReSharper.TaskRunnerFramework.RemoteTaskRunnerInfo"/> 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.UnitTestExplorer.IUnitTestProvider.Serialize(JetBrains.ReSharper.UnitTestExplorer.UnitTestElement)">
+            <summary>
+            Serializes element for persistence
+            </summary>
+            <param name="element"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.UnitTestExplorer.IUnitTestProvider.Deserialize(JetBrains.ProjectModel.ISolution,System.String)">
+            <summary>
+            Deserializes element from persisted string
+            </summary>
+            <param name="solution"></param>
+            <param name="elementString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.UnitTestExplorer.IUnitTestProvider.GetTaskSequence(JetBrains.ReSharper.UnitTestExplorer.UnitTestElement,System.Collections.Generic.IList{JetBrains.ReSharper.UnitTestExplorer.UnitTestElement})">
+            <summary>
+            Gets task information for <see cref="T:JetBrains.ReSharper.TaskRunnerFramework.RemoteTaskRunner"/> from element
+            </summary>
+            <param name="element"></param>
+            <param name="explicitElements"></param>
+            <returns></returns>
+        </member>
+        <member name="P:JetBrains.ReSharper.UnitTestExplorer.IUnitTestProvider.ID">
+            <summary>
+            ID of provider
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.UnitTestExplorer.VSIDETaskRunnerUtil.GetDevenvInstallDir">
+            <summary>
+            Gets the DEVENV installation folder.
+            </summary>
+        </member>
+    </members>
+</doc>

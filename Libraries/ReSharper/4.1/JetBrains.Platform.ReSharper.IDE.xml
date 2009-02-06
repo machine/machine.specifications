@@ -1,0 +1,269 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JetBrains.Platform.ReSharper.IDE</name>
+    </assembly>
+    <members>
+        <member name="M:JetBrains.IDE.ActiveTextControlManager.GetVisibleTextControls">
+            <summary>
+            Returns the set of currently visible editors. The editors are ordered so that the first editor is one that the
+            user most recently worked (or is currently working) in.
+            </summary>
+        </member>
+        <member name="M:JetBrains.IDE.ActiveTextControlManager.GetVisibleDocuments">
+            <summary>
+            Returns the set of currently visible documents.
+            </summary>
+        </member>
+        <member name="M:JetBrains.IDE.ActiveTextControlManager.GetVisibleTextControls(JetBrains.DocumentModel.IDocument)">
+            <summary>
+            Get all text controls which views the given document
+            </summary>
+        </member>
+        <member name="M:JetBrains.IDE.ActiveTextControlManager.IsVisible(JetBrains.TextControl.ITextControl)">
+            <summary>
+            Checks if given text control is currently visible
+            </summary>
+        </member>
+        <member name="M:JetBrains.IDE.ActiveTextControlManager.IsVisible(JetBrains.DocumentModel.IDocument)">
+            <summary>
+            Checks if given document is currently visible
+            </summary>
+        </member>
+        <member name="E:JetBrains.IDE.ActiveTextControlManager.VisibleTextControlsChanged">
+            <summary>
+            Notifies t hat the set of visible editors has changed
+            </summary>
+        </member>
+        <member name="T:JetBrains.IDE.EditorManager">
+            <summary>
+            EditorManager is a solution-level component, 
+            that provides all access to editor control in the center of WindowManager.MainForm
+            </summary>
+        </member>
+        <member name="M:JetBrains.IDE.EditorManager.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="T:JetBrains.IDE.IEditor">
+            <summary>
+            Editor of a ProjectFile
+            </summary>
+        </member>
+        <member name="T:JetBrains.IDE.ITextEditor">
+            <summary>
+            Editor of text files
+            </summary>
+        </member>
+        <member name="T:JetBrains.IDE.IEditorProvider">
+            <summary>
+            Factory editor
+            </summary>
+        </member>
+        <member name="T:JetBrains.IDE.INavigateOccurenceProvider">
+            <summary>
+            Implement this interface to provide navigation thruout the results of something  
+            </summary>
+        </member>
+        <member name="T:JetBrains.IDE.NavigateOccurenceManager">
+            <summary>
+            Utility to implement navigation thru  some results
+            </summary>
+        </member>
+        <member name="T:JetBrains.IDE.TextControlAnchoringRect">
+            <summary>
+            Represents an anchor in the text editor.
+            </summary>
+        </member>
+        <member name="F:JetBrains.IDE.TextControlAnchoringRect.myRange">
+            <summary>
+            The range we track in the document. <c>Null</c> only until it's initialized by the constructor.
+            </summary>
+        </member>
+        <member name="F:JetBrains.IDE.TextControlAnchoringRect.myRangeMarker">
+            <summary>
+            A marker for the <see cref="F:JetBrains.IDE.TextControlAnchoringRect.myRange"/> range.
+            </summary>
+        </member>
+        <member name="F:JetBrains.IDE.TextControlAnchoringRect.mySink">
+            <summary>
+            The event sink that listens to the text control events without holding a strong reference upon the anchor.
+            <c>Null</c> after disposal.
+            </summary>
+        </member>
+        <member name="F:JetBrains.IDE.TextControlAnchoringRect.myTextControl">
+            <summary>
+            The text control to which the anchor is attached.
+            </summary>
+        </member>
+        <member name="M:JetBrains.IDE.TextControlAnchoringRect.#ctor(JetBrains.TextControl.ITextControl,System.Int32)">
+            <summary>
+            Anchors to the given range on the given text control.
+            </summary>
+        </member>
+        <member name="M:JetBrains.IDE.TextControlAnchoringRect.#ctor(JetBrains.TextControl.ITextControl,JetBrains.Util.TextRange)">
+            <summary>
+            Anchors to the given range on the given text control.
+            </summary>
+        </member>
+        <member name="M:JetBrains.IDE.TextControlAnchoringRect.CreateBeginningOfLine(JetBrains.TextControl.ITextControl,System.Int32)">
+            <summary>
+            Creates an anchoring rectangle on the character at the beginning of the line.
+            </summary>
+            <param name="textcontrol">The text control.</param>
+            <param name="offset">An offset in the text control. The beginning of the line containing this offset at the moment of the call will be tracked.</param>
+        </member>
+        <member name="M:JetBrains.IDE.TextControlAnchoringRect.CreateFromCaretStatic(JetBrains.TextControl.ITextControl)">
+            <summary>
+            Creates an anchoring rectangle that anchors to the place where the caret was at the instant of the call.
+            “Static” means the anchor would update to accomodate for changes in the document, but won't track caret movement.
+            </summary>
+        </member>
+        <member name="M:JetBrains.IDE.TextControlAnchoringRect.CreateFromSelectionStatic(JetBrains.TextControl.ITextControl)">
+            <summary>
+            Creates an anchoring rectangle that anchors to the place where the selection margin was at the instant of the call.
+            “Static” means the anchor would update to accomodate for changes in the document, but won't track selection changes.
+            </summary>
+        </member>
+        <member name="M:JetBrains.IDE.TextControlAnchoringRect.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.IDE.TextControlAnchoringRect.UpdateAnchor">
+            <summary>
+            Updates the anchoring rectangle as it gets dirty.
+            </summary>
+        </member>
+        <member name="P:JetBrains.IDE.TextControlAnchoringRect.Range">
+            <summary>
+            Gets or sets the range whose rectangle is tracked.
+            </summary>
+        </member>
+        <member name="P:JetBrains.IDE.TextControlAnchoringRect.TextControl">
+            <summary>
+            Gets the text control to which the range belongs.
+            </summary>
+        </member>
+        <member name="T:JetBrains.IDE.TextControlAnchoringRect.TextControlEventSink">
+            <summary>
+            A class that listens to the <see cref="T:JetBrains.TextControl.ITextControl"/> events without holding the <see cref="T:JetBrains.IDE.TextControlAnchoringRect"/> tight.
+            </summary>
+        </member>
+        <member name="F:JetBrains.IDE.TextControlAnchoringRect.TextControlEventSink.myAnchor">
+            <summary>
+            The anchor object to be notified of the events.
+            <c>Null</c> after the object is disposed of.
+            </summary>
+        </member>
+        <member name="F:JetBrains.IDE.TextControlAnchoringRect.TextControlEventSink.myTextControl">
+            <summary>
+            <see cref="P:JetBrains.IDE.TextControlAnchoringRect.TextControlEventSink.TextControl"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.IDE.TextControlAnchoringRect.TextControlEventSink.#ctor(JetBrains.IDE.TextControlAnchoringRect)">
+            <summary>
+            Creates the event sink.
+            It takes the text control from the anchor and attaches to its events.
+            </summary>
+            <param name="anchor"></param>
+        </member>
+        <member name="M:JetBrains.IDE.TextControlAnchoringRect.TextControlEventSink.AttachEvents">
+            <summary>
+            Attaches to the text control.
+            Called by the ctor.
+            </summary>
+        </member>
+        <member name="M:JetBrains.IDE.TextControlAnchoringRect.TextControlEventSink.DetachEvents">
+            <summary>
+            Detaches from the text control.
+            Called by the <see cref="M:JetBrains.IDE.TextControlAnchoringRect.TextControlEventSink.Dispose"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.IDE.TextControlAnchoringRect.TextControlEventSink.UpdateAnchor">
+            <summary>
+            Causes the owning anchor to update.
+            </summary>
+        </member>
+        <member name="M:JetBrains.IDE.TextControlAnchoringRect.TextControlEventSink.DetachFromOwner">
+            <summary>
+            On disposal, detaches from the owner and cleans it up.
+            </summary>
+        </member>
+        <member name="M:JetBrains.IDE.TextControlAnchoringRect.TextControlEventSink.TrackTextControlWindowPos(System.Windows.Forms.IWin32Window)">
+            <summary>
+            Starts tracking the text control window position, returns a cleanup token.
+            </summary>
+        </member>
+        <member name="M:JetBrains.IDE.TextControlAnchoringRect.TextControlEventSink.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="P:JetBrains.IDE.TextControlAnchoringRect.TextControlEventSink.Anchor">
+            <summary>
+            Gets the anchor object to be notified of the events.
+            <c>Null</c> if not avail.
+            </summary>
+        </member>
+        <member name="P:JetBrains.IDE.TextControlAnchoringRect.TextControlEventSink.TextControl">
+            <summary>
+            Gets the text control whose events we're sinking.
+            <c>Null</c> when the object is disposed of.
+            </summary>
+        </member>
+        <member name="T:JetBrains.IDE.TextControlPopupWindowContext">
+            <summary>
+            Implementaion of <see cref="T:JetBrains.UI.PopupWindowManager.IPopupWindowContext"/> for <see cref="T:JetBrains.TextControl.ITextControl"/>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.IDE.TreeBrowser.TextExportDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:JetBrains.IDE.TreeBrowser.TextExportDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:JetBrains.IDE.TreeBrowser.TextExportDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:JetBrains.IDE.TreeBrowser.PreviewSupport">
+            <summary>
+            Enumerates possible types of preview support in <see cref="T:JetBrains.IDE.TreeBrowser.TreeModelBrowser"/>
+            </summary>
+        </member>
+        <member name="F:JetBrains.IDE.TreeBrowser.PreviewSupport.NotSupported">
+            <summary>
+            Preview is not supported at all
+            </summary>
+        </member>
+        <member name="F:JetBrains.IDE.TreeBrowser.PreviewSupport.Supported">
+            <summary>
+            Preview is supported. Control will be created through a call to <see cref="M:JetBrains.IDE.TreeBrowser.TreeModelBrowserDescriptor.PreviewCreateControl"/> and updated
+            through calls to <see cref="M:JetBrains.IDE.TreeBrowser.TreeModelBrowserDescriptor.PreviewUpdate(System.Windows.Forms.Control,JetBrains.UI.TreeView.TreeModelViewNode,JetBrains.CommonControls.IPresentableItem@)"/>. Preview is invisible by default.
+            </summary>
+        </member>
+        <member name="F:JetBrains.IDE.TreeBrowser.PreviewSupport.SupportedAndVisibleByDefault">
+            <summary>
+            Preview is supported. Control will be created through a call to <see cref="M:JetBrains.IDE.TreeBrowser.TreeModelBrowserDescriptor.PreviewCreateControl"/> and updated
+            through calls to <see cref="M:JetBrains.IDE.TreeBrowser.TreeModelBrowserDescriptor.PreviewUpdate(System.Windows.Forms.Control,JetBrains.UI.TreeView.TreeModelViewNode,JetBrains.CommonControls.IPresentableItem@)"/>. Preview is visible by default.
+            </summary>
+        </member>
+        <member name="F:JetBrains.IDE.TreeBrowser.PreviewSupport.Virtual">
+            <summary>
+            <i>Virtual</i> preview support. No control will be created by <see cref="T:JetBrains.IDE.TreeBrowser.TreeModelBrowser"/>, but calls to <see cref="M:JetBrains.IDE.TreeBrowser.TreeModelBrowserDescriptor.PreviewUpdate(System.Windows.Forms.Control,JetBrains.UI.TreeView.TreeModelViewNode,JetBrains.CommonControls.IPresentableItem@)"/> will be made
+            so the inheritor can dispatch them to a custom preview mechanism.
+            </summary>
+        </member>
+    </members>
+</doc>

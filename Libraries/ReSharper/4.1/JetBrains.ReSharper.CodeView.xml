@@ -1,0 +1,1148 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JetBrains.ReSharper.CodeView</name>
+    </assembly>
+    <members>
+        <member name="P:JetBrains.ReSharper.CodeView.CodeViewManager.AutoExpandResults">
+            <summary>
+            Whether the search results tree and such should be expanded by default.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.GotoByName.DeclaredElementMenuItemFormatter">
+            <summary>
+            Formats a declared element into a menu item descriptor, suitable for the GotoByName-style lists.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.DeclaredElementMenuItemFormatter.Format(JetBrains.ReSharper.Psi.IDeclaredElement)">
+            <summary>
+            Formats a declared element into a menu item descriptor, suitable for the GotoByName-style lists.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController">
+            <summary>
+            Controls a <see cref="T:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel"/>, implements the basic services to support async calculation.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.EtcItemKey">
+            <summary>
+            Key for the “More” item in the menu.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.ItemsGottenDirty">
+            <summary>
+            Fires when the <see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.Items"/> collection is considered dirty and should be recalculated by the implementing model.
+            Listens for changes in all the affecting properties, groups them, and then fires this aggregate signal.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.FuncEtcItemExecute">
+            <summary>
+            If the action is available, then the <see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.EtcItemKey"/> that's added to the end of the list if there're too many items to show is enabled and can be executed. Also, a toolbar button is present to execute this same action.
+            Executes on the primary thread.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.IsComplete">
+            <summary>
+            Gets or sets whether the data for the controller to produce the items from is complete.
+            Affects the <see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.IsReady"/> property that is <c>True</c> only when <see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.IsComplete"/> and no async action is running.
+            You cannot set the <see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.IsReady"/> directly, alter this property value instead.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.IsNotRunningAsyncAction">
+            <summary>
+            Reflects the internal async state.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.#ctor(JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel)">
+            <summary>
+            Creates the controller and attaches to the model.
+            The controller lifetime is also synchronized to the model lifetime. That is, when the model is disposed of, the controller is also disposed of (but not the other way).
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.CreateEtcItem">
+            <summary>
+            The “more…” item at the end of the truncated list.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.BeforeUpdateItems">
+            <summary>
+            When the items get dirty (<see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.ItemsGottenDirty"/>), this function is called on the UI thread right before the <see cref="M:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.UpdateItems(System.String,System.Func{System.Boolean},System.Func{System.Collections.Generic.IEnumerable{JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem},JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.AddItemsBehavior,System.Boolean})"/> thing.
+            The base implementation clears the collection.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.ExecuteItem(JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem)">
+            <summary>
+            Called when an item is to be executed.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.UpdateItems(System.String,System.Func{System.Boolean},System.Func{System.Collections.Generic.IEnumerable{JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem},JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.AddItemsBehavior,System.Boolean})">
+            <summary>
+            When the items get dirty (<see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.ItemsGottenDirty"/>), this function is called on the secondary thread.
+            The function should be checking for <paramref name="funcIsCancelled"/> every so often.
+            </summary>
+            <param name="sFilterString">The filtering string against which the items list should be produced.</param>
+            <param name="funcIsCancelled">Call from time to time, on <c>True</c>, abort immediately.</param>
+            <param name="funcAddItems">A function you can use to add items to the output collection in a thread-safe manner. The function checks for the items limit and returns whether more items can be added.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.Init_AsyncAction">
+            <summary>
+            Starts watching for the model's getting dirty.
+            Contains the code for spawning the async recalculation of the items.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.InternalExecuteItem(JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem)">
+            <summary>
+            Relays the <see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.IncomingExecuteItem"/> to the <see cref="M:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.ExecuteItem(JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem)"/> method, filtering out the <see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.EtcItemKey"/> execution.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.Model">
+            <summary>
+            The data part of the thing.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.AddItemsBehavior">
+            <summary>
+            Defines what the <c>funcAddItems</c> parameter of the <see cref="M:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.UpdateItems(System.String,System.Func{System.Boolean},System.Func{System.Collections.Generic.IEnumerable{JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem},JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.AddItemsBehavior,System.Boolean})"/> function should do.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.AddItemsBehavior.Append">
+            <summary>
+            Appends a new item or items to the existing items list.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.AddItemsBehavior.Replace">
+            <summary>
+            Replaces all the items in the list with the new ones.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.AsyncState.Idle">
+            <summary>
+            There are no async operations running. If needed, one could be started right away, and switch to <see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.AsyncState.Running"/>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.AsyncState.Running">
+            <summary>
+            An async operation is currently running. When it completes, we'd go <see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.AsyncState.Idle"/>.
+            If the model gets dirty before the operation completes, we set the <see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.AsyncState.Cancelling"/> state (so that funcIsCancelled starts returning <c>True</c> for the async operation), and wait for the state to become <see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.AsyncState.Idle"/> before running a new operation.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.AsyncState.Cancelling">
+            <summary>
+            The async operation were running when the model state was invalidated. This state holds until the async operation terminates, after which a new one is spawned automatically.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.AsyncState.Disposed">
+            <summary>
+            When the user dismisses the GotoByName UI, the pending async operation should be cancelled. This is the terminal state.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameMenu">
+            <summary>
+            Implements the presentation of the Goto By Name functionality that works thru a <see cref="T:JetBrains.UI.PopupMenu.JetPopupMenu"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameMenu.GotoByName(JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel)">
+            <summary>
+            Spawns the Goto By Name <see cref="T:JetBrains.UI.PopupMenu.JetPopupMenu"/>-based UI upon the given model.
+            Disposes of the model when done.
+            </summary>
+            <param name="model">Goto-by-name model that provides data for the UI.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameMenu.Init_EditboxColor(JetBrains.DataFlow.IProperty{System.Boolean},JetBrains.DataFlow.IProperty{System.Boolean},JetBrains.DataFlow.IProperty{System.Boolean},JetBrains.UI.PopupMenu.Impl.JetPopupMenuView)">
+            <summary>
+            Pending / Ready / Invalid color for the editbox text.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameMenu.Init_EditboxEnter(JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel,JetBrains.UI.PopupMenu.Impl.JetPopupMenuView)">
+            <summary>
+            Listen for the Enter key in the editbox.
+            In case it's pressed when there's no selection (eg when typed a symbol and still calculating in background), wait async for the items to appear in the list, and then execute the first one.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameMenu.Init_ExtensionControl(JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel,JetBrains.UI.PopupMenu.Impl.JetPopupMenuView)">
+            <summary>
+            Places the extension control on the menu, which is a checkbox with an optional checkmark and dynamic text.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameMenu.Init_Glyph(JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel,JetBrains.UI.PopupMenu.Impl.JetPopupMenuView)">
+            <summary>
+            Sets up the “busy” glyph.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel">
+            <summary>
+            The core part of GotoByName.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.CaptionText">
+            <summary>
+            Menu title text.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.CheckBoxText">
+            <summary>
+            Gets the text on the checkbox (or just the right-hand label, if the <see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.IsCheckBoxCheckerVisible"/> is false).
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.FilterText">
+            <summary>
+            The current filter, against which the model produces the list of filtered menu items, <see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.Items"/>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.IncomingExecuteItem">
+            <summary>
+            This signal is fired on the model by the consumer when a specific menu item should be executed by the model's controller.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.IsCheckBoxChecked">
+            <summary>
+            Gets or sets whether the checkbox is currently checked.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.IsCheckBoxCheckerVisible">
+            <summary>
+            Gets whether the checker on the checkbox should be visible, or not.
+            If <c>False</c>, only checkbox text should be visible.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.IsCheckBoxVisible">
+            <summary>
+            Gets whether the check-box (or just its text, if not <see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.IsCheckBoxCheckerVisible"/>) is visible in the Goto-By-Name UI.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.IsReady">
+            <summary>
+            Whether the model is ready, ie the <see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.Items"/> list is complete against the <see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.FilterText"/>.
+            If <c>False</c>, then the <see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.Items"/> list is still being calculated in the background.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.Items">
+            <summary>
+            The current set of menu items that pass the <see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.FilterText"/>.
+            Must be modified on the UI thread only.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.ToolbarButtons">
+            <summary>
+            Toolbar buttons for the menu's title.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel.InitialSearchText">
+            <summary>
+            Gets or sets the search text that should initially appear in the search edit box.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoCacheElementController`1.ItemsPassFilter">
+            <summary>
+            A filter that specifies which items should be let into the output list.
+            NOTE: in most cases, you should use <see cref="M:JetBrains.ReSharper.CodeView.GotoByName.GotoCacheElementController`1.RestrictItemsPassFilter(System.Func{`0,System.Boolean})"/>, so that to avoid interfering with the internal filtering.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.GotoByName.GotoCacheElementController`1.myCacheToMatcher">
+            <summary>
+            Caches the model created on caches, use the <see cref="M:JetBrains.ReSharper.CodeView.GotoByName.GotoCacheElementController`1.GetCacheElementModel(JetBrains.ReSharper.CodeView.GotoByName.LibrariesFlag)"/> function for getting the lazy-inited items from the cache.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoCacheElementController`1.RestrictItemsPassFilter(System.Func{`0,System.Boolean})">
+            <summary>
+            ANDs the given condition with the existing <see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoCacheElementController`1.ItemsPassFilter"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoCacheElementController`1.FuncPassAllFilter(`0)">
+            <summary>
+            The default dummy pass-all filter for the <see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoCacheElementController`1.ItemsPassFilter"/>.
+            Must be a function for the <see cref="M:System.Object.Equals(System.Object)"/> operation to work appropriately.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoCacheElementController`1.GetCacheElementModel(JetBrains.ReSharper.CodeView.GotoByName.LibrariesFlag)">
+            <summary>
+            Gets an either libs or no-libs model, lazy-initializing it as needed.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoCacheElementController`1.UpdateItems(System.String,System.Func{System.Boolean},System.Func{System.Collections.Generic.IEnumerable{JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem},JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.AddItemsBehavior,System.Boolean})">
+            <summary>
+            When the items get dirty (<see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.ItemsGottenDirty"/>), this function is called on the secondary thread.
+            The function should be checking for <paramref name="funcIsCancelled"/> every so often.
+            </summary>
+            <param name="sFilterString">The filtering string against which the items list should be produced.</param>
+            <param name="funcIsCancelled">Call from time to time, on <c>True</c>, abort immediately.</param>
+            <param name="funcAddItems">A function you can use to add items to the output collection in a thread-safe manner. The function checks for the items limit and returns whether more items can be added.</param>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.GotoByName.GotoCacheElementController`1.LibrariesFlagAutoSwitch">
+            <summary>
+            Gets or sets whether when a solution-only search fails a solution-and-libraries search is performed automatically.
+            <c>True</c> by default.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoCacheElementController`1.ICacheElementMatcher.GetElements(JetBrains.ReSharper.CodeInsight.Services.CamelTyping.PrefixMatcher,System.Func{`0,System.Boolean},System.Int32,System.Func{System.Boolean})">
+            <summary>
+            Gets the cache elements for the given filter.
+            </summary>
+            <param name="matcher">Matcher for the names.</param>
+            <param name="filter">Further filters the list of results.</param>
+            <param name="limit">Maximum number of items to return, or <c>0</c> if unlimited.</param>
+            <param name="funcIsCancelled">A function to check periodically to abort the lengthy process.</param>
+            <returns>The list of collected elements.</returns>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.GotoByName.GotoDeclaredElementController">
+            <summary>
+            Controls the <see cref="T:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel"/> for various <see cref="T:JetBrains.ReSharper.Psi.IDeclaredElement"/>-based items.
+            See the <c>Create…</c> methods for individual model types.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoDeclaredElementController.#ctor(JetBrains.ProjectModel.ISolution,JetBrains.ProjectModel.IProject,JetBrains.ReSharper.CodeView.GotoByName.LibrariesFlag,System.String)">
+            <summary>
+            Inits the instance.
+            </summary>
+            <param name="solution">Base ctor param.</param>
+            <param name="project">Base ctor param.</param>
+            <param name="librariesFlag">Base ctor param.</param>
+            <param name="kind"></param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoDeclaredElementController.CreateGotoNamespaceController(JetBrains.ProjectModel.ISolution,JetBrains.ProjectModel.IProject,JetBrains.ReSharper.CodeView.GotoByName.LibrariesFlag)">
+            <summary>
+            Controller of the <see cref="T:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel"/> for namespaces.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoDeclaredElementController.CreateGotoNamespaceModel(JetBrains.ProjectModel.ISolution,JetBrains.ProjectModel.IProject,JetBrains.ReSharper.CodeView.GotoByName.LibrariesFlag)">
+            <summary>
+            <see cref="T:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel"/> for namespaces.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoDeclaredElementController.CreateGotoTypeController(JetBrains.ProjectModel.ISolution,JetBrains.ReSharper.CodeView.GotoByName.LibrariesFlag)">
+            <summary>
+            Controller of the <see cref="T:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel"/> for types (classes, structs, etc).
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoDeclaredElementController.CreateGotoTypeModel(JetBrains.ProjectModel.ISolution,JetBrains.ReSharper.CodeView.GotoByName.LibrariesFlag)">
+            <summary>
+            <see cref="T:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameModel"/> for types (classes, structs, etc).
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoDeclaredElementController.ShowInFindResults">
+            <summary>
+            Recalculates the complete list of items and shows them in FindResults.
+            // TODO: use ProgressWindow to make it visual and cancellable
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoDeclaredElementController.ExecuteItem(JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem)">
+            <summary>
+            Called when an item is to be executed.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.GotoByName.GotoDeclaredElementController.Matcher">
+            <summary>
+            Fetches the cache elements against a matcher.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoFileController.ExecuteItem(JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem)">
+            <summary>
+            Called when an item is to be executed.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoFileController.UpdateItems(System.String,System.Func{System.Boolean},System.Func{System.Collections.Generic.IEnumerable{JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem},JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.AddItemsBehavior,System.Boolean})">
+            <summary>
+            When the items get dirty (<see cref="F:JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.ItemsGottenDirty"/>), this function is called on the secondary thread.
+            The function should be checking for <paramref name="funcIsCancelled"/> every so often.
+            </summary>
+            <param name="sFilterString">The filtering string against which the items list should be produced.</param>
+            <param name="funcIsCancelled">Call from time to time, on <c>True</c>, abort immediately.</param>
+            <param name="funcAddItems">A function you can use to add items to the output collection in a thread-safe manner. The function checks for the items limit and returns whether more items can be added.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoFileMemberController.ExecuteItem(JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem)">
+            <summary>
+            Called when an item is to be executed.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GotoFileMemberController.UpdateItems(System.String,System.Func{System.Boolean},System.Func{System.Collections.Generic.IEnumerable{JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem},JetBrains.ReSharper.CodeView.GotoByName.GotoByNameController.AddItemsBehavior,System.Boolean})">
+            <summary>
+            When the items get dirty, this function is called on the secondary thread.
+            The function should be checking for <paramref name="funcIsCancelled"/> every so often.
+            </summary>
+            <param name="sFilterString">The filtering string against which the items list should be produced.</param>
+            <param name="funcIsCancelled">Call from time to time, on <c>True</c>, abort immediately.</param>
+            <param name="funcAddItems">A function you can use to add items to the output collection in a thread-safe manner. The function checks for the items limit and returns whether more items can be added.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GoToSymbol.GotoSymbolController.ShowInFindResults">
+            <summary>
+            Executes when the Plus Button is clicked, or when the last menu item is executed.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.GotoByName.GoToSymbol.GotoSymbolController.ExecuteItem(JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem)">
+            <summary>
+            Called when an item is to be executed.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.GotoByName.LibrariesFlag">
+            <summary>
+            Defines whether the libraries should be included or not when searching for items.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.QuickDoc.StandAlone.QuickDocControl">
+            <summary>
+            Displays QuickDoc
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.QuickDoc.StandAlone.QuickDocControl.myBrowser">
+            <summary>
+            The Web browser control than renders the content.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.QuickDoc.StandAlone.QuickDocControl.GetPrefferedWidth">
+            <summary>
+            Performs layout calculations to eleminate scrolling.
+            </summary>
+            <returns>Width of control without line breaks and horizontal scrolling</returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.QuickDoc.StandAlone.QuickDocControl.GetPrefferedHeight(System.Int32)">
+            <summary>
+            Performs layoput calculations to eleminate scrolling
+            </summary>
+            <param name="desiredWidth">Desired control width</param>
+            <returns>Height of control without vertical scrolling</returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.QuickDoc.StandAlone.QuickDocControl.OnKeyDown(System.Windows.Forms.KeyEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.KeyDown"></see> event.
+            </summary>
+            <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"></see> that contains the event data. </param>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.QuickDoc.StandAlone.QuickDocControl.DocumentText">
+            <summary>
+            Text displaying in control. Can be used for hacks
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.QuickDoc.StandAlone.QuickDocController">
+            <summary>
+            Controller for QuickDocControl. Performs navigation, tracks history. It <b>MUST</b> be explicitly disposed. 
+            Control can be disposed instead of controller.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.QuickDoc.StandAlone.QuickDocController.#ctor(JetBrains.ProjectModel.ISolution,JetBrains.ReSharper.Psi.PsiLanguageType)">
+            <summary>
+            Creates controller
+            </summary>
+            <param name="solution">Solution</param>
+            <param name="language">Default language to render</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.QuickDoc.StandAlone.QuickDocController.OpenInEditor">
+            <summary>
+            Opens current item in VS editor
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.QuickDoc.StandAlone.QuickDocController.UpdateContent">
+            <summary>
+            Updates the entry of control
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.QuickDoc.StandAlone.QuickDocController.ContentUpdated">
+            <summary>
+            Raised when control content is updated
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.QuickDoc.StandAlone.QuickDocController.KeyPressed">
+            <summary>
+            Raised when key is pressed. Currenly only Escape passed.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.QuickDoc.StandAlone.QuickDocController.DefaultLanguage">
+            <summary>
+            Default language for view
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView">
+            <summary>
+            Implements the view that displays a QuickDoc extract from the XmlDoc help on the given declared element.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.HeaderHeight">
+            <summary>
+            QuickDock window header height
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.InitialWidth">
+            <summary>
+            The initial width of the control.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.OptionWidthOnScreenFactor">
+            <summary>
+            Fraction of the screen width that can be occupied, at most, by the window when auto-sizing to fit the content horizontally.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.QuickDocWidthSettingsKey">
+            <summary>
+            Settings key for the QuickDoc window custom width.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.BorderSize">
+            <summary>
+            Border size, or padding of the Web browser control within the outer form bounds.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.BrowserMinSize">
+            <summary>
+            Minimum size of the Web browser control, as it wouldn't behave well when size is too small.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.MinLength">
+            <summary>
+            Minimum recommended length of the window against the corresponding dimensions. Restores after new content is loaded into the window; temporarily may be scaled down below this value.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.myQDControl">
+            <summary>
+            The Web browser control than renders the content.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.myWantsResize">
+            <summary>
+            Fires when the control would like to be reasked of its desired size.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.myAutoSizeToFit">
+            <summary>
+            <see cref="P:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.AutoSizeToFit"/>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.myDesiredSize">
+            <summary>
+            The size of the form that's recommended so that the browser content fit into the form.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.mySizeBarHitTestResults">
+            <summary>
+            A lazy-init collection of the hit test results that identify the size bars.
+            Use <see cref="P:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.SizeBarHitTestResults"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.HitTest(System.Drawing.Point)">
+            <summary>
+            Hit-tests the window areas and returns the result. <see cref="F:JetBrains.UI.Interop.HitTestResult.HTTRANSPARENT"/> means the result is unspecified (eg, normal client area or outside the window).
+            </summary>
+            <param name="ptHitClient">The hit point, in client coordinates.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.InitControls">
+            <summary>
+            Inits the instance UI.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.OnClosing(System.ComponentModel.CancelEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Form.Closing"></see> event.
+            </summary>
+            
+            <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"></see> that contains the event data. </param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.OnKeyDown(System.Windows.Forms.KeyEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.KeyDown"></see> event.
+            </summary>
+            
+            <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"></see> that contains the event data. </param>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.QuickDocViewWidth">
+            <summary>
+            Gets or sets the QuickDocView custom width global setting.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.AutoSizeToFit">
+            <summary>
+            Gets or sets whether the control should accomodate its size to fit the content when navigating to another documentation.
+            This mode is turned off for the current instance after the user resizes its manually.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.SizeBarHitTestResults">
+            <summary>
+            Gets the collection of the hit test results that identify the size bars.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.QuickDoc.QuickDocView.WantsResize">
+            <summary>
+            Fires when the control would like to be reasked of its desired size.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.QuickViewCode.CodePanel.#ctor(JetBrains.ProjectModel.ISolution)">
+            <summary>
+            Use this constructor
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.QuickViewCode.CodePanel.Display(System.Collections.Generic.IList{JetBrains.DocumentModel.DocumentRange},JetBrains.Util.DataStructures.OneToListMap{JetBrains.DocumentModel.DocumentRange,JetBrains.TextControl.Markup.IHighlighter},JetBrains.DocumentModel.DocumentRange)">
+            <summary>
+            Displays given set of document ranges.
+            </summary>
+            <param name="ranges">Document ranges to display</param>
+            <param name="highlightingMap">Additional highlighters in document ranges</param>
+            <param name="scrollRange">Optional range with scrolled position. DocumentRange.Invalid if no scrolling needed</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.QuickViewCode.CodePanel.Show(JetBrains.ReSharper.Psi.IDeclaredElement,System.Collections.Generic.IList{JetBrains.DocumentModel.DocumentRange})">
+            <summary>
+            Displays IDeclaredElement except namespaces with all necessary features.
+            </summary>
+            <param name="declaredElement">IDeclaredElement to display.</param>
+            <param name="highlightedRanges">Additional ranges to highlight.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.QuickViewCode.CodePanel.Show(JetBrains.Util.TextRange,JetBrains.ProjectModel.IProjectFile,System.Collections.Generic.IList{JetBrains.DocumentModel.DocumentRange})">
+            <summary>
+            Displays text range in a project file with all necessary features.
+            </summary>
+            <param name="documentTextRange">Text range to display.</param>
+            <param name="projectFile">Project file with given text range</param>
+            <param name="highlightedRanges">Additional ranges that should be displayed</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.QuickViewCode.CodePanel.Show(JetBrains.ProjectModel.IProjectFile,System.Collections.Generic.IList{JetBrains.DocumentModel.DocumentRange})">
+            <summary>
+            Displays file except namespaces with all necessary features.
+            </summary>
+            <param name="projectFile">File to display.</param>
+            <param name="highlightedRanges">Additional ranges that should be displayed</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.QuickViewCode.CodePanel.ShowDefaultMessage">
+            <summary>
+            Displays default message about code panel.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.QuickViewCode.CodePanel.TranslateRange(JetBrains.Util.TextRange)">
+            <summary>
+            TODO: temporary method?
+            </summary>
+            <param name="inputRange"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.QuickViewCode.CodePanel.#ctor">
+            <summary>
+            For design-time only
+            </summary>
+        </member>
+        <member name="E:JetBrains.ReSharper.CodeView.QuickViewCode.CodePanel.CodePanelChanged">
+            <summary>
+            Fired when contents of code panel begin to display new code.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.RecentFiles.RecentFilesManager.ShowRecentFiles">
+            <summary>
+            Displays a popup menu list of the recent files.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.RecentFiles.RecentFilesManager.ShowRecentEdits(JetBrains.ActionManagement.IDataContext)">
+            <summary>
+            Displays a popup menu list of the recent edits.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.RecentFiles.RecentFilesManager.GotoLocation(JetBrains.ReSharper.CodeView.RecentFiles.FileLocationInfo,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
+            <summary>
+            Opens the specified file and navigates to the position in it.
+            </summary>
+            <param name="location">The recent file.</param>
+            <param name="context">Popup window context to notify about the action, may be <c>Null</c> if N/A.</param>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit">
+            <summary>
+            An edit-like control for placing on the dialog boxes that picks a type name from a tree or completion list.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.Settings">
+            <summary>
+            Gets or sets the settings that define the behavior of the picker, like what it picks and which functionality is available.
+            Can be set only once.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.Text">
+            <summary>
+            Gets or sets the text of the editbox the user is typing.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.CompletionListInputString">
+            <summary>
+            An input string that drives the completion list contents.
+            Has a grace period before it's applied to the model.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.IsCompletionListAllowed">
+            <summary>
+            Gets whether the completion list is currently allowed to become visible (should there be any items to show in it).
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.myBindingDeferredCompletionListInputString">
+            <summary>
+            Controlls the deferred application of the <see cref="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.CompletionListInputString"/>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.HideMenuRequested">
+            <summary>
+            Fire the signal to request hiding the menu, which will happen with a little delay.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.myBtnTreeMouseDownAcquired">
+            <summary>
+            We open the tree on mouse-down (in which case the click event should be ignored), but in case the button is triggered by keyboard, the click should be processed.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.myMenuPopupWindow">
+            <summary>
+            Don't use, call <see cref="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.TryGetMenuPopupWindow(JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.CreateFlags)"/> instead.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.myMenuView">
+            <summary>
+            Don't use, take <see cref="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.TryGetMenuView(JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.CreateFlags)"/> instead, for lazy-creation.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.ExecuteMenuItem(JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem)">
+            <summary>
+            If menu is shown, selects the given item and applies its text.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.TryGetMenuPopupWindow(JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.CreateFlags)">
+            <summary>
+            Tries to get or create the popup window of the drop-down menu.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.TryGetMenuView(JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.CreateFlags)">
+            <summary>
+            Tries to get or create the drop-down menu.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.CommitPendingCompletionListText">
+            <summary>
+            Causes the pending editbox changes to apply immediately to the completion list
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.TryCreatePopupMenu">
+            <summary>
+            Implements menu lazy-creation. Does nothing if already  created.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.TryHideMenu">
+            <summary>
+            Forcibly hides the menu and prevents it from autopopupping until the user summons it explicitly (optionally).
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.Dispose(System.Boolean)">
+            <summary>
+            Releases the unmanaged resources used by the <see cref="T:System.Windows.Forms.Control"></see> and its child controls and optionally releases the managed resources.
+            </summary>
+            
+            <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.IsInputKey(System.Windows.Forms.Keys)">
+            <summary>
+            Determines whether the specified key is an input key or a special key that requires preprocessing.
+            </summary>
+            
+            <returns>
+            true if the specified key is an input key; otherwise, false.
+            </returns>
+            
+            <param name="keyData">One of the key's values.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.OnLayout(System.Windows.Forms.LayoutEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.Layout"></see> event.
+            </summary>
+            
+            <param name="levent">A <see cref="T:System.Windows.Forms.LayoutEventArgs"></see> that contains the event data. </param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.OnLostFocus(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.LostFocus"></see> event.
+            </summary>
+            
+            <param name="e">An <see cref="T:System.EventArgs"></see> that contains the event data. </param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.OnPreviewKeyDown(System.Windows.Forms.PreviewKeyDownEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.PreviewKeyDown"></see> event.
+            </summary>
+            
+            <param name="e">A <see cref="T:System.Windows.Forms.PreviewKeyDownEventArgs"></see> that contains the event data.</param>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.IsCompletionListVisible">
+            <summary>
+            Gets whether the drop-down menu is currently visible and active.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.CreateFlags">
+            <summary>
+            Whether to attempt creating the entity when requested, or not.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.CreateFlags.Create">
+            <summary>
+            Attempts creating the requested entity.
+            Might still return <c>Null</c> if failed.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit.CreateFlags.DontCreate">
+            <summary>
+            Would not create the requested entity. A <c>Null</c> is returned if not created yet.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.UI.CompletionPickerPopupDialog">
+            <summary>
+            A self-contained popup type chooser that can be employed in case you'd like to use the <see cref="T:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit"/>, but have no place to host it as a control and want to show it in a popup dialog.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerPopupDialog.Settings">
+            <summary>
+            Gets or sets the settings that define the behavior of the picker, like what it picks and which functionality is available.
+            Can be set only once.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerPopupDialog.TypeChooserText">
+            <summary>
+            Gets or sets the text contents of the type chooser.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerPopupDialog.OnVisibleChanged(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.VisibleChanged"></see> event.
+            </summary>
+            
+            <param name="e">The <see cref="T:System.EventArgs"></see> that contains the event data. </param>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.UI.CompletionPickerPopupDialog.LabelText">
+            <summary>
+            Gets or sets the text displayed on the label.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.UI.CompletionPickerSettings">
+            <summary>
+            Specifies the configuration for the <see cref="T:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit"/> control.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerSettings.CompletionModel">
+            <summary>
+            Gets or sets the flat model that works for completing the text you type into the control.
+            Can be set only once.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerSettings.ExpandPickerItem">
+            <summary>
+            When the tree picker is building its model, supplies the items for the next level.
+            Fill the <see cref="P:JetBrains.DataFlow.InOutEventArgs`2.Out"/> list with the children of <see cref="P:JetBrains.DataFlow.InOutEventArgs`2.In"/>, who must not be <c>Null</c>.
+            When <see cref="P:JetBrains.DataFlow.InOutEventArgs`2.In"/> is <c>Null</c>, root items are requested. 
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerSettings.PickerItemPresenter">
+            <summary>
+            Gets or sets the presenter for the picker (drop-down tree) items.
+            This value can only be set once.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerSettings.TranslateCompletionItem">
+            <summary>
+            When a completion list item is executed, its text is inserted into the edit box.
+            In case the text should be modified before insertion (eg FQN instead of a short name), this event should be sinked.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerSettings.TranslatePickerItem">
+            <summary>
+            When a picker tree item is executed, its text is inserted into the edit box.
+            In case the text should be modified before insertion (eg FQN instead of a short name), this event should be sinked.
+            Setting the <see cref="P:JetBrains.DataFlow.InOutEventArgs`2.Out"/> to <c>Null</c> prevents the item from being picked (eg for group nodes that are only present to hold the child elements).
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerSettings.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.UI.CompletionPickerTreeDropDown">
+            <summary>
+            Implements the popup (dropdown) of the <see cref="T:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit"/> that displays a tree picker.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerTreeDropDown.myWantsResize">
+            <summary>
+            Fires when the control would like to be reasked of its desired size.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerTreeDropDown.IsAvailable(JetBrains.ReSharper.CodeView.UI.CompletionPickerSettings)">
+            <summary>
+            Checks whether the setting define a model for the drop-down tree picker.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerTreeDropDown.ExecuteFocusedNode">
+            <summary>
+            Takes the focused node, tries to execute it by applying the translated text to the <see cref="F:JetBrains.ReSharper.CodeView.UI.CompletionPickerTreeDropDown.SelectedItemText"/> property and closing the view.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerTreeDropDown.OnKeyDown(System.Windows.Forms.KeyEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.KeyDown"></see> event.
+            </summary>
+            
+            <param name="args">A <see cref="T:System.Windows.Forms.KeyEventArgs"></see> that contains the event data. </param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerTreeDropDown.OnLeave(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.Leave"></see> event.
+            </summary>
+            
+            <param name="e">An <see cref="T:System.EventArgs"></see> that contains the event data. </param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerTreeDropDown.OnLostFocus(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.LostFocus"></see> event.
+            </summary>
+            
+            <param name="e">An <see cref="T:System.EventArgs"></see> that contains the event data. </param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerTreeDropDown.GetDesiredSize(JetBrains.UI.IGraphicsContainer,System.Drawing.Size)">
+            <summary>
+            Performs the bottom-up layouting stage, when the control calculates its desired size using the given constraints.
+            Should give generally the same results as <see cref="T:JetBrains.CommonControls.IConstrainableControl"/>, but could employ the <paramref name="gc"/> device context for the sake of optimization.
+            </summary>
+            <param name="gc">The device context to measure against.</param>
+            <param name="limit">The maximum available space (that could affect the shape of the control, or strip down unnecessary calculations over the invisible items).
+            May be a <see cref="T:System.Drawing.Size"/> with width and height equal to <see cref="F:System.Int32.MaxValue"/>, which means that the size is not limited.</param>
+            <returns>The desired size, must be no larger than <paramref name="limit"/>.</returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.CompletionPickerTreeDropDown.SetLayout(JetBrains.UI.LayoutResult)">
+            <summary>
+            Tells the control the details about the new layout applied to it by the controlling entity in conjunction with some <see cref="T:JetBrains.UI.IPopupLayouter"/>.
+            Typically, the control need not apply the given size and location because that should be done by the controlling entity.
+            The control may change its presentation in response to the layouting details, for example, whether it's attached to the top or the bottom of the anchoring rect.
+            </summary>
+            <param name="layout">The layouting details.</param>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.UI.CompletionPickerTreeDropDown.Settings">
+            <summary>
+            Gets the settings that define the tree and some of its interactions.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.UI.CompletionPickerTreeDropDown.ShowWithoutActivation">
+            <summary>
+            Gets a value indicating whether the window will be activated when it is shown.
+            </summary>
+            
+            <returns>
+            True if the window will not be activated when it is shown; otherwise, false. The default is false.
+            </returns>
+            
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.UI.CompletionPickerTreeDropDown.AutoActivate">
+            <summary>
+            Gets or sets whether the control should be activated initially when it's shown.
+            The typical implementation for a form is to return a negative of this value from the <see cref="P:System.Windows.Forms.Form.ShowWithoutActivation"/> override.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.UI.CompletionPickerTreeDropDown.WantsResize">
+            <summary>
+            Fires when the control would like to be reasked of its desired size.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.UI.DeclaredElementChooser">
+            <summary>
+            Base class for <see cref="T:JetBrains.ReSharper.Psi.IDeclaredElement"/>-based choosers.
+            Those are used for setting up the <see cref="T:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit"/>s.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.DeclaredElementChooser.CompletionItemsPassFilter">
+            <summary>
+            Gets or sets the filter that narrows down the completion items (in the completion menu).
+            Can be assigned only once.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.DeclaredElementChooser.PickerItemsPassFilter">
+            <summary>
+            Gets or sets the filter that narrows down the picker items (in the drop-down picker tree).
+            This is usually a superset of the <see cref="F:JetBrains.ReSharper.CodeView.UI.DeclaredElementChooser.CompletionItemsPassFilter"/> items, as it has to include the nodes that contain the useful items. Items under the excluded nodes are excluded automatically.
+            Can be assigned only once.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.DeclaredElementChooser.GetFqName(JetBrains.ReSharper.Psi.IDeclaredElement,JetBrains.ReSharper.Psi.PsiLanguageType)">
+            <summary>
+            Rip FQ Name from a declared element, in the specified language, suitable for use by the picker owner.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.DeclaredElementChooser.AllPassDeclaredElementFilter(JetBrains.ReSharper.Psi.IDeclaredElement)">
+            <summary>
+            An empty filter to assign by default.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.DeclaredElementChooser.CreateCompletionController">
+            <summary>
+            Creates the chooser-specific completion controller.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.DeclaredElementChooser.GetDeclarationsCache">
+            <summary>
+            Gets the declarations cache for the current models (on solution, either libs or no-libs).
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.DeclaredElementChooser.GetNestedItems(JetBrains.ReSharper.Psi.IDeclaredElement)">
+            <summary>
+            Expands the level of the tree picker.
+            </summary>
+            <param name="element"><c>Null</c> for the root.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.DeclaredElementChooser.InitCompletion">
+            <summary>
+            Inits the plain completion support.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.DeclaredElementChooser.InitPicker">
+            <summary>
+            Inits the tree drop-down support.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.UI.DeclaredElementChooser.Language">
+            <summary>
+            The language this instance is working in.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.UI.DeclaredElementChooser.Libraries">
+            <summary>
+            Defines whether the libraries should be included or not when searching for items.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.UI.DeclaredElementChooser.Project">
+            <summary>
+            Gets the project we're browsing (if specified).
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.UI.DeclaredElementChooser.Settings">
+            <summary>
+            Gets the settings applicable to the <see cref="T:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit"/>.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.CodeView.UI.DeclaredElementChooser.Solution">
+            <summary>
+            Gets the solution we're browsing.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.DeclaredElementSelector.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.DeclaredElementSelector.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.DeclaredElementSelector.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.FlagsSelector.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.FlagsSelector.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.FlagsSelector.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.UI.NamespaceChooser">
+            <summary>
+            Customizes the <see cref="T:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit"/> for choosing namespaces.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.NamespaceChooser.CreateSettings(JetBrains.ProjectModel.ISolution,JetBrains.ProjectModel.IProject,JetBrains.ReSharper.CodeView.GotoByName.LibrariesFlag,JetBrains.ReSharper.Psi.PsiLanguageType)">
+            <summary>
+            Creates settings for supplying into the <see cref="T:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.NamespaceChooser.TryGetNamespace(System.String)">
+            <summary>
+            Tries to look up a declared element for its FQ Name in the current <see cref="P:JetBrains.ReSharper.CodeView.UI.DeclaredElementChooser.Language"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.NamespaceChooser.CreateCompletionController">
+            <summary>
+            Creates the chooser-specific completion controller.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.CodeView.UI.AdvancedSearchDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.AdvancedSearchDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.AdvancedSearchDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.UI.TypeChooser">
+            <summary>
+            Customizes the <see cref="T:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit"/> for choosing types.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.TypeChooser.CreateSettings(JetBrains.ProjectModel.ISolution,JetBrains.ReSharper.CodeView.GotoByName.LibrariesFlag,JetBrains.ReSharper.Psi.PsiLanguageType)">
+            <summary>
+            Creates settings for supplying into the <see cref="T:JetBrains.ReSharper.CodeView.UI.CompletionPickerEdit"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.TypeChooser.TryGetTypeElement(System.String)">
+            <summary>
+            Tries to look up a declared element for its FQ Name in the current <see cref="P:JetBrains.ReSharper.CodeView.UI.DeclaredElementChooser.Language"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.UI.TypeChooser.CreateCompletionController">
+            <summary>
+            Creates the chooser-specific completion controller.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.Util.CandidatesUtil.MultiplyDeclaredElementExecutor">
+            <summary>
+            
+            </summary>
+            <param name="context">DataContext initially passed to action</param>
+            <param name="declaredElements">Candidates for navigation</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.FindUsages.SearchActionBase.ExecuteContext(JetBrains.ActionManagement.IDataContext,JetBrains.ReSharper.CodeView.FindUsages.SearchActionBase.SearchRequestExecutor)">
+            <summary>
+            When implemented in derived type, creates search request and calls SearchRequestExecutor
+            </summary>
+            <param name="dataContext">Data context passed to action</param>
+            <param name="executeWithRequest">Delegate to call with SearchRequest</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.Highlighting.HyperlinkManager.DoRebuildHyperlink">
+            <summary>
+            Should always be called under readlock and reetrancy guard
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeView.Hyperlinks.GotoDeclarationHyperlink.GetRangeFromDeclaration">
+             This code is modified copy from GotoDeclarationAction.GetCandidates
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeView.Navigation.GotoTypeDeclarationAction">
+            <summary>
+            Navigates to the declaration of the type of a reference expression
+            </summary>
+        </member>
+    </members>
+</doc>
