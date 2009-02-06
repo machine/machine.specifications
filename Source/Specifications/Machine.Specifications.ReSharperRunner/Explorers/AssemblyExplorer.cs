@@ -39,12 +39,8 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
             var contextElement = _elementFactory.CreateContextElement(type);
             _consumer(contextElement);
 
-            type.GetSpecifications().Each(specification =>
-                                                            _consumer(_elementFactory.CreateSpecificationElement(
-                                                                        contextElement, specification)));
-            type.GetBehaviors().Each(behavior =>
-                                                       _consumer(_elementFactory.CreateBehaviorElement(contextElement,
-                                                                                                       behavior)));
+            type.GetSpecifications().Each(x =>_consumer(_elementFactory.CreateSpecificationElement(contextElement, x)));
+            type.GetBehaviors().Each(x =>_consumer(_elementFactory.CreateBehaviorElement(contextElement, x)));
           });
     }
   }

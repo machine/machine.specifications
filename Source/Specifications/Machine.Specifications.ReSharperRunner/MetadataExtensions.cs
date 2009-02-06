@@ -26,7 +26,7 @@ namespace Machine.Specifications.ReSharperRunner
     {
       return type.GetPrivateFieldsOfType<It>();
     }
-    
+
     public static IEnumerable<IMetadataField> GetBehaviors(this IMetadataTypeInfo type)
     {
       return type.GetPrivateFieldsWith(typeof(Behaves_like<>));
@@ -34,23 +34,19 @@ namespace Machine.Specifications.ReSharperRunner
 
     static IEnumerable<IMetadataField> GetPrivateFields(this IMetadataTypeInfo type)
     {
-      return type.GetFields().Where(field => !field.IsStatic && field.DeclaringType == type);
+      return type.GetFields().Where(field => !field.IsStatic);
     }
 
     static IEnumerable<IMetadataField> GetPrivateFieldsOfType<T>(this IMetadataTypeInfo type)
     {
-      return type.GetPrivateFields().Where(x => x.Type == typeof(T));
+      // HACK: String comparison.
+      return type.GetPrivateFields().Where(x => x.Type.PresentableName == typeof(T).FullName);
     }
 
     static IEnumerable<IMetadataField> GetPrivateFieldsWith(this IMetadataTypeInfo type, Type fieldType)
     {
-      return type.GetPrivateFields().Where(x => x.Type.IsOfType(fieldType));
-    }
-
-    static bool IsOfType(this IMetadataType type, Type fieldType)
-    {
       // HACK: String comparison.
-      return type.PresentableName.StartsWith(fieldType.FullName);
+      return type.GetPrivateFields().Where(x => x.Type.PresentableName.StartsWith(fieldType.FullName));
     }
   }
 }

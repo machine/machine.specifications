@@ -38,7 +38,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public override string GetTitle()
     {
-      return string.Format("{0}, it {1}", _context.GetTitle(), _fieldName.ReplaceUnderscores());
+      return _fieldName.ReplaceUnderscores();
     }
 
     public override bool Matches(string filter, PrefixMatcher matcher)
