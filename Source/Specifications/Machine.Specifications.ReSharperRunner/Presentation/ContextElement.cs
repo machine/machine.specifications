@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.CodeInsight.Services.CamelTyping;
 using JetBrains.ReSharper.Psi;
@@ -15,10 +17,16 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     public ContextElement(IUnitTestProvider provider,
                           IProjectModelElement project,
                           string typeName,
-                          string assemblyLocation)
+                          string assemblyLocation,
+                          ICollection<string> tags)
       : base(provider, null, project, typeName)
     {
       _assemblyLocation = assemblyLocation;
+
+      if (tags != null)
+      {
+        AssignCategories(tags);
+      }
     }
 
     public string AssemblyLocation

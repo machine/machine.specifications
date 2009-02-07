@@ -32,6 +32,31 @@ namespace Machine.Specifications.ReSharperRunner
       return type.GetPrivateFieldsWith(typeof(Behaves_like<>));
     }
 
+    public static ICollection<string> GetTags(this IMetadataTypeInfo type)
+    {
+      return type.GetCustomAttributes(typeof(TagsAttribute).FullName)
+        .Select(x => x.ConstructorArguments)
+        .Flatten(tag => tag.FirstOrDefault() as string,
+                 tag => tag.Skip(1).FirstOrDefault() as IEnumerable<string>)
+        .Distinct()
+        .ToList();
+    }
+
+    static IEnumerable<TResult> Flatten<TSource, TResult>(this IEnumerable<TSource> source,
+                                                          Func<TSource, TResult> singleResultSelector,
+                                                          Func<TSource, IEnumerable<TResult>> collectionResultSelector)
+    {
+      foreach (var s in source)
+      {
+        yield return singleResultSelector(s);
+
+        foreach (var coll in collectionResultSelector(s))
+        {
+          yield return coll;
+        }
+      }
+    }
+
     static IEnumerable<IMetadataField> GetPrivateFields(this IMetadataTypeInfo type)
     {
       return type.GetFields().Where(field => !field.IsStatic);

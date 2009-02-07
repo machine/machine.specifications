@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 
 using JetBrains.ReSharper.Psi;
@@ -41,6 +42,22 @@ namespace Machine.Specifications.ReSharperRunner
 
       // HACK: String comparison.
       return field.IsValid() && field.Type.ToString().StartsWith(typeof(Behaves_like<>).FullName);
+    }
+
+    public static ICollection<string> GetTags(this ITypeElement type)
+    {
+      return type.GetAttributeInstances(new CLRTypeName(typeof(TagsAttribute).FullName), false)
+        .SelectMany(x => x.PositionParameters(), (x, v) => v.ConstantValue.Value.ToString())
+        .Distinct()
+        .ToList();
+    }
+
+    static IEnumerable<AttributeValue> PositionParameters(this IAttributeInstance source)
+    {
+      for (int i = 0; i < source.PositionParameterCount; i++)
+      {
+        yield return source.PositionParameter(i);
+      }
     }
   }
 }

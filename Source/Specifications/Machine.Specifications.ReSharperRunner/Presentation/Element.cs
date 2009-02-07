@@ -38,7 +38,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
       _typeName = typeName;
     }
-
+    
     public override IProject GetProject()
     {
       return _projectEnvoy.GetValidProjectElement() as IProject;

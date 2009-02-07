@@ -29,14 +29,14 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         return _classes[type];
       }
 
-      ContextElement context = new ContextElement(_provider, _project, type.CLRName, _assemblyPath);
+      ContextElement context = new ContextElement(_provider, _project, type.CLRName, _assemblyPath, type.GetTags());
       _classes.Add(type, context);
       return context;
     }
 
     public ContextElement CreateContextElement(IMetadataTypeInfo type)
     {
-      return new ContextElement(_provider, _project, type.FullyQualifiedName, _assemblyPath);
+      return new ContextElement(_provider, _project, type.FullyQualifiedName, _assemblyPath, type.GetTags());
     }
 
     public SpecificationElement CreateSpecificationElement(IDeclaredElement field)
