@@ -10,16 +10,11 @@ namespace Machine.Specifications.ReSharperRunner
   {
     public static bool IsContext(this IMetadataTypeInfo type)
     {
-      if (!type.IsAbstract && type.GenericParameters.Length == 0)
-      {
-        return type.HasSpecifications();
-      }
-      return false;
-    }
-
-    public static bool HasSpecifications(this IMetadataTypeInfo type)
-    {
-      return type.GetSpecifications().Any() || type.GetBehaviors().Any();
+      return !type.IsAbstract &&
+             type.IsPublic &&
+             type.GenericParameters.Length == 0 &&
+             (type.GetSpecifications().Any() ||
+             type.GetBehaviors().Any());
     }
 
     public static IEnumerable<IMetadataField> GetSpecifications(this IMetadataTypeInfo type)
