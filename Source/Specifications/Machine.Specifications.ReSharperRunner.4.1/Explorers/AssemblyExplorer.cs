@@ -1,11 +1,12 @@
+using System;
 using System.Linq;
 
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.UnitTestExplorer;
+using JetBrains.Util;
 
 using Machine.Specifications.ReSharperRunner.Factories;
-using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.ReSharperRunner.Explorers
 {
@@ -32,15 +33,22 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
 
     public void Explore()
     {
+      if (!_assembly.ReferencedAssembliesNames.Exists(x => String.Equals(x.AssemblyName.Name,
+                                                                         typeof(It).Assembly.GetName().Name,
+                                                                         StringComparison.InvariantCultureIgnoreCase)))
+      {
+        return;
+      }
+
       _assembly.GetTypes()
         .Where(type => type.IsContext())
-        .Each(type =>
+        .ForEach(type =>
           {
             var contextElement = _elementFactory.CreateContextElement(type);
             _consumer(contextElement);
 
-            type.GetSpecifications().Each(x =>_consumer(_elementFactory.CreateSpecificationElement(contextElement, x)));
-            type.GetBehaviors().Each(x =>_consumer(_elementFactory.CreateBehaviorElement(contextElement, x)));
+            type.GetSpecifications().ForEach(x => _consumer(_elementFactory.CreateSpecificationElement(contextElement, x)));
+            type.GetBehaviors().ForEach(x => _consumer(_elementFactory.CreateBehaviorElement(contextElement, x)));
           });
     }
   }
