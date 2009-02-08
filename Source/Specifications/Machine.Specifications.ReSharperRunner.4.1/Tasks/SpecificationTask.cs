@@ -64,7 +64,7 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
       SetXmlAttribute(element, "AssemblyLocation", AssemblyLocation);
     }
 
-    #region IEquatable<ContextTask> Members
+    #region IEquatable<SpecificationTask> Members
     public bool Equals(SpecificationTask obj)
     {
       if (obj == null || !base.Equals(obj))
@@ -80,7 +80,7 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
 
     public override bool Equals(object obj)
     {
-      return (this == obj || Equals(obj as ContextTask));
+      return (this == obj || Equals(obj as SpecificationTask));
     }
 
     public override int GetHashCode()

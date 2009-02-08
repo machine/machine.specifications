@@ -6,15 +6,28 @@ using JetBrains.ReSharper.TaskRunnerFramework;
 
 using Machine.Specifications.Runner;
 
-namespace Machine.Specifications.ReSharperRunner.Runners.TaskHandlers
+namespace Machine.Specifications.ReSharperRunner.Runners
 {
-  public class RunListener:ISpecificationRunListener
+  public class ReSharperRunListener : ISpecificationRunListener
   {
-    readonly IRemoteTaskServer _server;
     readonly TaskExecutionNode _node;
+    readonly IRemoteTaskServer _server;
 
-    public RunListener(IRemoteTaskServer server, TaskExecutionNode node)
+    public TaskResult TaskResult
     {
+      get;
+      private set;
+    }
+
+    public ManualResetEvent RunFinished
+    {
+      get;
+      private set;
+    }
+
+    public ReSharperRunListener(IRemoteTaskServer server, TaskExecutionNode node)
+    {
+      RunFinished = new ManualResetEvent(false);
       _server = server;
       _node = node;
     }
@@ -38,6 +51,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners.TaskHandlers
     public void OnRunEnd()
     {
       Debug.WriteLine("Run end");
+      RunFinished.Set();
     }
 
     public void OnContextStart(ContextInfo context)
@@ -58,6 +72,28 @@ namespace Machine.Specifications.ReSharperRunner.Runners.TaskHandlers
     public void OnSpecificationEnd(SpecificationInfo specification, Result result)
     {
       Debug.WriteLine(String.Format("Specification end: {0} Result: {1}", specification.Name, result.Status));
+
+      TaskResult = TaskResult.Success;
+      switch (result.Status)
+      {
+        case Status.Failing:
+          _server.TaskException(_node.RemoteTask, new[] { new TaskException(result.Exception.Exception) });
+          TaskResult = TaskResult.Exception;
+          break;
+        case Status.Passing:
+          TaskResult = TaskResult.Success;
+          break;
+        case Status.NotImplemented:
+          _server.TaskExplain(_node.RemoteTask, "Not implemented");
+          TaskResult = TaskResult.Skipped;
+          break;
+        case Status.Ignored:
+          _server.TaskExplain(_node.RemoteTask, "Ignored");
+          TaskResult = TaskResult.Skipped;
+          break;
+      }
+
+      _server.TaskFinished(_node.RemoteTask, null, TaskResult);
     }
 
     public void OnFatalError(ExceptionResult exception)

@@ -114,7 +114,7 @@
     <Compile Include="PsiExtensions.cs" />
     <Compile Include="Runners\TaskHandlers\ContextHandler.cs" />
     <Compile Include="Runners\TaskHandlers\ITaskHandler.cs" />
-    <Compile Include="Runners\TaskHandlers\RunListener.cs" />
+    <Compile Include="Runners\TaskHandlers\ReSharperRunListener.cs" />
     <Compile Include="Runners\TaskHandlers\SpecificationHandler.cs" />
     <Compile Include="Tasks\ContextTask.cs" />
     <Compile Include="Tasks\SpecificationTask.cs" />

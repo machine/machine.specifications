@@ -6,12 +6,17 @@ using System.Reflection;
 using JetBrains.ReSharper.TaskRunnerFramework;
 
 using Machine.Specifications.ReSharperRunner.Tasks;
+using Machine.Specifications.Runner;
+using Machine.Specifications.Runner.Impl;
 
 namespace Machine.Specifications.ReSharperRunner.Runners.TaskHandlers
 {
   internal class SpecificationHandler : ITaskHandler
   {
-    RunListener _listener;
+    Assembly _contextAssembly;
+    ReSharperRunListener _listener;
+    FieldInfo _field;
+    DefaultRunner _runner;
 
     #region ITaskHandler Members
     public bool Accepts(RemoteTask task)
@@ -25,36 +30,29 @@ namespace Machine.Specifications.ReSharperRunner.Runners.TaskHandlers
       Debug.WriteLine("Start spec " + task.SpecificationFieldName);
       Debug.WriteLine("Parent " + ((ContextTask) node.Parent.RemoteTask).ContextTypeName);
 
+      _contextAssembly = LoadContextAssembly(task, server);
+      if (_contextAssembly == null)
+      {
+        return TaskResult.Exception;
+      }
+      
+      _field = _contextAssembly.GetType(task.ContextTypeName).GetField(task.SpecificationFieldName,
+                                                                     BindingFlags.Instance |
+                                                                     BindingFlags.DeclaredOnly |
+                                                                     BindingFlags.NonPublic);
+
+      _listener = new ReSharperRunListener(server, node);
+      _runner = new DefaultRunner(_listener, RunOptions.Default);
 
       return TaskResult.Success;
-      //      
-      //
-      //      Assembly contextAssembly = LoadContextAssembly(task, server);
-      //      if (contextAssembly == null)
-      //      {
-      //        return TaskResult.Exception;
-      //      }
-      //
-      //      ContextTask contextTask = ((ContextTask)node.Parent.RemoteTask);
-      //      
-      //      FieldInfo field = contextAssembly.GetType(task.ContextTypeName).GetField(task.SpecificationFieldName,
-      //                                                                               BindingFlags.Instance | BindingFlags.DeclaredOnly |
-      //                                                                               BindingFlags.NonPublic);
-      //      contextTask.Runner.RunMember(contextAssembly, field);
     }
 
     public TaskResult Execute(IRemoteTaskServer server, TaskExecutionNode node)
     {
       SpecificationTask task = (SpecificationTask) node.RemoteTask;
       Debug.WriteLine("Execute spec " + task.SpecificationFieldName);
-      
-      Assembly contextAssembly = LoadContextAssembly(task, server);
-      if (contextAssembly == null)
-      {
-        Debug.WriteLine("Error");
-        server.TaskError(node.RemoteTask, "foo");
-        return TaskResult.Error;
-      }
+
+      _runner.RunMember(_contextAssembly, _field);
 
       return TaskResult.Success;
     }
@@ -63,20 +61,15 @@ namespace Machine.Specifications.ReSharperRunner.Runners.TaskHandlers
     {
       SpecificationTask task = (SpecificationTask) node.RemoteTask;
       Debug.WriteLine("Finish spec " + task.SpecificationFieldName);
-      Assembly contextAssembly = LoadContextAssembly(task, server);
-      if (contextAssembly == null)
-      {
-        Debug.WriteLine("Error");
-        server.TaskError(node.RemoteTask, "foo");
-        return TaskResult.Error;
-      }
-      return TaskResult.Success;
+      
+      _listener.RunFinished.WaitOne();
+
+      return _listener.TaskResult;
     }
     #endregion
 
     static Assembly LoadContextAssembly(SpecificationTask task, IRemoteTaskServer server)
     {
-      return null;
       AssemblyName assemblyName;
       if (!File.Exists(task.AssemblyLocation))
       {
