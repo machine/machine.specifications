@@ -104,8 +104,11 @@
     <Compile Include="Explorers\ElementHandlers\ContextElementHandler.cs" />
     <Compile Include="Explorers\ElementHandlers\IElementHandler.cs" />
     <Compile Include="Explorers\ElementHandlers\SpecificationElementHandler.cs" />
+    <Compile Include="Factories\BehaviorFactory.cs" />
+    <Compile Include="Factories\ContextCache.cs" />
+    <Compile Include="Factories\SpecificationFactory.cs" />
     <Compile Include="Presentation\BehaviorElement.cs" />
-    <Compile Include="Factories\ElementFactory.cs" />
+    <Compile Include="Factories\ContextFactory.cs" />
     <Compile Include="Explorers\FileExplorer.cs" />
     <Compile Include="MetadataExtensions.cs" />
     <Compile Include="PsiExtensions.cs" />

@@ -8,11 +8,11 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
 {
   internal class SpecificationElementHandler : IElementHandler
   {
-    readonly ElementFactory _elementFactory;
+    readonly SpecificationFactory _specificationFactory;
 
-    public SpecificationElementHandler(ElementFactory elementFactory)
+    public SpecificationElementHandler(SpecificationFactory specificationFactory)
     {
-      _elementFactory = elementFactory;
+      _specificationFactory = specificationFactory;
     }
 
     #region Implementation of IElementHandler
@@ -30,7 +30,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
     public UnitTestElementDisposition AcceptElement(IElement element, IFile file)
     {
       IDeclaration declaration = (IDeclaration) element;
-      Element unitTestElement = _elementFactory.CreateSpecificationElement(declaration.DeclaredElement);
+      Element unitTestElement = _specificationFactory.CreateSpecificationElement(declaration.DeclaredElement);
 
       return new UnitTestElementDisposition(unitTestElement,
                                             file.ProjectFile,

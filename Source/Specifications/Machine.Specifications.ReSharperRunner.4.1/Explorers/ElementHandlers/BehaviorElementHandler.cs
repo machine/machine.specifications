@@ -8,11 +8,11 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
 {
   internal class BehaviorElementHandler : IElementHandler
   {
-    readonly ElementFactory _elementFactory;
+    readonly BehaviorFactory _behaviorFactory;
 
-    public BehaviorElementHandler(ElementFactory elementFactory)
+    public BehaviorElementHandler(BehaviorFactory behaviorFactory)
     {
-      _elementFactory = elementFactory;
+      _behaviorFactory = behaviorFactory;
     }
 
     #region Implementation of IElementHandler
@@ -30,7 +30,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
     public UnitTestElementDisposition AcceptElement(IElement element, IFile file)
     {
       IDeclaration declaration = (IDeclaration) element;
-      Element unitTestElement = _elementFactory.CreateBehaviorElement(declaration.DeclaredElement);
+      Element unitTestElement = _behaviorFactory.CreateBehaviorElement(declaration.DeclaredElement);
 
       return new UnitTestElementDisposition(unitTestElement,
                                             file.ProjectFile,

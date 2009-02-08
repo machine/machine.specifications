@@ -9,11 +9,11 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
 {
   internal class ContextElementHandler : IElementHandler
   {
-    readonly ElementFactory _elementFactory;
+    readonly ContextFactory _contextFactory;
 
-    public ContextElementHandler(ElementFactory elementFactory)
+    public ContextElementHandler(ContextFactory contextFactory)
     {
-      _elementFactory = elementFactory;
+      _contextFactory = contextFactory;
     }
 
     #region Implementation of IElementHandler
@@ -31,7 +31,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
     public UnitTestElementDisposition AcceptElement(IElement element, IFile file)
     {
       IDeclaration declaration = (IDeclaration) element;
-      Element unitTestElement = _elementFactory.CreateContextElement((ITypeElement) declaration.DeclaredElement);
+      Element unitTestElement = _contextFactory.CreateContextElement((ITypeElement) declaration.DeclaredElement);
 
       return new UnitTestElementDisposition(unitTestElement,
                                             file.ProjectFile,

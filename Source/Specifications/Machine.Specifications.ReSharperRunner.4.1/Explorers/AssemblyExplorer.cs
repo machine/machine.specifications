@@ -14,9 +14,11 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
   {
     readonly IMetadataAssembly _assembly;
     readonly UnitTestElementConsumer _consumer;
-    readonly ElementFactory _elementFactory;
+    readonly ContextFactory _contextFactory;
     readonly IProject _project;
     readonly MSpecUnitTestProvider _provider;
+    readonly SpecificationFactory _specificationFactory;
+    readonly BehaviorFactory _behaviorFactory;
 
     public AssemblyExplorer(MSpecUnitTestProvider provider,
                             IMetadataAssembly assembly,
@@ -28,7 +30,9 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
       _project = project;
       _consumer = consumer;
 
-      _elementFactory = new ElementFactory(_provider, _project, _assembly.Location);
+      _contextFactory = new ContextFactory(_provider, _project, _assembly.Location);
+      _specificationFactory = new SpecificationFactory(_provider, _project);
+      _behaviorFactory = new BehaviorFactory(_provider, _project);
     }
 
     public void Explore()
@@ -44,11 +48,11 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
         .Where(type => type.IsContext())
         .ForEach(type =>
           {
-            var contextElement = _elementFactory.CreateContextElement(type);
+            var contextElement = _contextFactory.CreateContextElement(type);
             _consumer(contextElement);
 
-            type.GetSpecifications().ForEach(x => _consumer(_elementFactory.CreateSpecificationElement(contextElement, x)));
-            type.GetBehaviors().ForEach(x => _consumer(_elementFactory.CreateBehaviorElement(contextElement, x)));
+            type.GetSpecifications().ForEach(x => _consumer(_specificationFactory.CreateSpecificationElement(contextElement, x)));
+            type.GetBehaviors().ForEach(x => _consumer(_behaviorFactory.CreateBehaviorElement(contextElement, x)));
           });
     }
   }

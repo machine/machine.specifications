@@ -43,13 +43,15 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
       IProject project = file.ProjectFile.GetProject();
       string assemblyPath = UnitTestManager.GetOutputAssemblyPath(project).FullPath;
 
-      ElementFactory elementFactory = new ElementFactory(provider, project, assemblyPath);
+      var contextFactory = new ContextFactory(provider, project, assemblyPath);
+      var specificationFactory = new SpecificationFactory(provider, project);
+      var behaviorFactory = new BehaviorFactory(provider, project);
 
       _elementHandlers = new List<IElementHandler>
                          {
-                           new ContextElementHandler(elementFactory),
-                           new SpecificationElementHandler(elementFactory),
-                           new BehaviorElementHandler(elementFactory)
+                           new ContextElementHandler(contextFactory),
+                           new SpecificationElementHandler(specificationFactory),
+                           new BehaviorElementHandler(behaviorFactory)
                          };
     }
 
