@@ -1,31 +1,50 @@
+using System.Collections.Generic;
+using System.Linq;
+
 using JetBrains.ReSharper.TaskRunnerFramework;
 
-using Machine.Specifications.ReSharperRunner.Tasks;
+using Machine.Specifications.ReSharperRunner.Runners.TaskHandlers;
 
 namespace Machine.Specifications.ReSharperRunner.Runners
 {
   internal class TaskRunner : RemoteTaskRunner
   {
+    readonly List<ITaskHandler> _taskHandlers;
+
     public TaskRunner(IRemoteTaskServer server) : base(server)
     {
+      _taskHandlers = new List<ITaskHandler>
+                      {
+                        new ContextHandler(),
+                        new SpecificationHandler()
+                      };
     }
 
     public override void ConfigureAppDomain(TaskAppDomainConfiguration configuration)
     {
     }
 
+    public override TaskResult Start(TaskExecutionNode node)
+    {
+      RemoteTask task = node.RemoteTask;
+
+      ITaskHandler handler = FindHandlerFor(task);
+      if (handler != null)
+      {
+        return handler.Start(Server, node);
+      }
+
+      return TaskResult.Error;
+    }
+
     public override TaskResult Execute(TaskExecutionNode node)
     {
       RemoteTask task = node.RemoteTask;
 
-      if (task is ContextTask)
+      ITaskHandler handler = FindHandlerFor(task);
+      if (handler != null)
       {
-        return ContextRunner.Execute(Server, node, (ContextTask) task);
-      }
-
-      if (task is SpecificationTask)
-      {
-        return SpecificationRunner.Execute(Server, node, (SpecificationTask) task);
+        return handler.Execute(Server, node);
       }
 
       return TaskResult.Error;
@@ -35,34 +54,18 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     {
       RemoteTask task = node.RemoteTask;
 
-      if (task is ContextTask)
+      ITaskHandler handler = FindHandlerFor(task);
+      if (handler != null)
       {
-        return ContextRunner.Finish(Server, node, (ContextTask) task);
-      }
-
-      if (task is SpecificationTask)
-      {
-        return SpecificationRunner.Finish(Server, node, (SpecificationTask) task);
+        return handler.Finish(Server, node);
       }
 
       return TaskResult.Error;
     }
 
-    public override TaskResult Start(TaskExecutionNode node)
+    ITaskHandler FindHandlerFor(RemoteTask task)
     {
-      RemoteTask task = node.RemoteTask;
-
-      if (task is ContextTask)
-      {
-        return ContextRunner.Start(Server, node, (ContextTask) task);
-      }
-
-      if (task is SpecificationTask)
-      {
-        return SpecificationRunner.Start(Server, node, (SpecificationTask) task);
-      }
-
-      return TaskResult.Error;
+      return _taskHandlers.FirstOrDefault(handler => handler.Accepts(task));
     }
   }
 }

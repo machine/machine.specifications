@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 using JetBrains.Application;
 using JetBrains.CommonControls;
@@ -25,6 +26,11 @@ namespace Machine.Specifications.ReSharperRunner
   {
     internal const string ProviderId = "Machine.Specifications";
     static readonly Presenter Presenter = new Presenter();
+
+    public MSpecUnitTestProvider()
+    {
+      Debug.Listeners.Add(new DefaultTraceListener());
+    }
 
     #region Implementation of IUnitTestProvider
     public string ID
@@ -77,8 +83,9 @@ namespace Machine.Specifications.ReSharperRunner
 
     public IList<UnitTestTask> GetTaskSequence(UnitTestElement element, IList<UnitTestElement> explicitElements)
     {
-      SpecificationElement specification = element as SpecificationElement;
+      Debug.WriteLine(element.GetType().FullName + ": " + element.GetTitle());
 
+      SpecificationElement specification = element as SpecificationElement;
       if (specification != null)
       {
         var context = specification.Context;
@@ -95,7 +102,9 @@ namespace Machine.Specifications.ReSharperRunner
                                   new SpecificationTask(ProviderId,
                                                         context.GetTypeClrName(),
                                                         specification.FieldName,
-                                                        explicitElements.Contains(specification)))
+                                                        explicitElements.Contains(specification),
+                                                        specification.Context.AssemblyLocation)
+                   )
                };
       }
 
@@ -137,9 +146,7 @@ namespace Machine.Specifications.ReSharperRunner
 
       SpecificationElement xe = (SpecificationElement) x;
       SpecificationElement ye = (SpecificationElement) y;
-      // TODO: Do we need order?
-      //      return xe.Order.CompareTo(ye.Order);
-      return 0;
+      return xe.GetTitle().CompareTo(ye.GetTitle());
     }
 
     public void Present(UnitTestElement element, IPresentableItem item, TreeModelNode node, PresentationState state)

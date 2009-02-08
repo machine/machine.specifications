@@ -9,8 +9,6 @@ using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.UnitTestExplorer;
 using JetBrains.Util;
 
-using Machine.Specifications.Utility;
-
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
   internal abstract class Element : UnitTestElement
@@ -101,7 +99,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
       // TODO: Use map higher order function.
       var locations = new List<UnitTestElementLocation>();
-      element.GetDeclarations().Each(declaration =>
+      element.GetDeclarations().ForEach(declaration =>
         {
           IFile file = declaration.GetContainingFile();
           if (file != null)

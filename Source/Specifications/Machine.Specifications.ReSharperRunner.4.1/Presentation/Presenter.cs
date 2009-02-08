@@ -26,7 +26,6 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
       SetStateTextColor(item, element);
       SetStateImage(item, state, UnitTestElementImage.TestContainer);
-      AppendOccurencesCount(item, modelNode, "test");
     }
 
     protected virtual void PresentSpecification(SpecificationElement element,

@@ -8,6 +8,7 @@ using Machine.Specifications.ReSharperRunner.Presentation;
 
 namespace Machine.Specifications.ReSharperRunner.Factories
 {
+  // TODO: Split into separate factories.
   internal class ElementFactory
   {
     readonly string _assemblyPath;

@@ -109,8 +109,10 @@
     <Compile Include="Explorers\FileExplorer.cs" />
     <Compile Include="MetadataExtensions.cs" />
     <Compile Include="PsiExtensions.cs" />
-    <Compile Include="Runners\ContextRunner.cs" />
-    <Compile Include="Runners\SpecificationRunner.cs" />
+    <Compile Include="Runners\TaskHandlers\ContextHandler.cs" />
+    <Compile Include="Runners\TaskHandlers\ITaskHandler.cs" />
+    <Compile Include="Runners\TaskHandlers\RunListener.cs" />
+    <Compile Include="Runners\TaskHandlers\SpecificationHandler.cs" />
     <Compile Include="Tasks\ContextTask.cs" />
     <Compile Include="Tasks\SpecificationTask.cs" />
     <Compile Include="Runners\TaskRunner.cs" />
