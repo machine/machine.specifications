@@ -44,12 +44,23 @@ namespace Machine.Specifications.ReSharperRunner
       return field.IsValid() && field.Type.ToString().StartsWith(typeof(Behaves_like<>).FullName);
     }
 
-    public static ICollection<string> GetTags(this ITypeElement type)
+    public static ICollection<string> GetTags(this IAttributesOwner type)
     {
       return type.GetAttributeInstances(new CLRTypeName(typeof(TagsAttribute).FullName), false)
         .SelectMany(x => x.PositionParameters(), (x, v) => v.ConstantValue.Value.ToString())
         .Distinct()
         .ToList();
+    }
+
+    public static bool IsIgnored(this IDeclaredElement type)
+    {
+      IAttributesOwner attributeOwner = type as IAttributesOwner;
+      if (attributeOwner == null)
+      {
+        return false;
+      }
+
+      return attributeOwner.HasAttributeInstance(new CLRTypeName(typeof(IgnoreAttribute).FullName), false);
     }
 
     static IEnumerable<AttributeValue> PositionParameters(this IAttributeInstance source)

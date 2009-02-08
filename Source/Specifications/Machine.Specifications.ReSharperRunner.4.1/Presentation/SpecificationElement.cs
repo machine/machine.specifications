@@ -19,8 +19,9 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                                 ContextElement context,
                                 IProjectModelElement project,
                                 string declaringTypeName,
-                                string fieldName)
-      : base(provider, context, project, declaringTypeName)
+                                string fieldName,
+                                bool isIgnored)
+      : base(provider, context, project, declaringTypeName, isIgnored || context.IsExplicit)
     {
       _context = context;
       _fieldName = fieldName;

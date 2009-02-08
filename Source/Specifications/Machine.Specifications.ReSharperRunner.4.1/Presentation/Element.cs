@@ -18,7 +18,11 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     readonly ProjectModelElementEnvoy _projectEnvoy;
     readonly string _typeName;
 
-    protected Element(IUnitTestProvider provider, UnitTestElement parent, IProjectModelElement project, string typeName)
+    protected Element(IUnitTestProvider provider,
+                      UnitTestElement parent,
+                      IProjectModelElement project,
+                      string typeName,
+                      bool isIgnored)
       : base(provider, parent)
     {
       if (project == null && !Shell.Instance.IsTestShell)
@@ -37,8 +41,13 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       }
 
       _typeName = typeName;
+
+      if (isIgnored)
+      {
+        SetExplicit("Ignored");
+      }
     }
-    
+
     public override IProject GetProject()
     {
       return _projectEnvoy.GetValidProjectElement() as IProject;

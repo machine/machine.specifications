@@ -18,8 +18,9 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                           IProjectModelElement project,
                           string typeName,
                           string assemblyLocation,
-                          ICollection<string> tags)
-      : base(provider, null, project, typeName)
+                          ICollection<string> tags,
+                          bool isIgnored)
+      : base(provider, null, project, typeName, isIgnored)
     {
       _assemblyLocation = assemblyLocation;
 

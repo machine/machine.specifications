@@ -29,14 +29,24 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         return _classes[type];
       }
 
-      ContextElement context = new ContextElement(_provider, _project, type.CLRName, _assemblyPath, type.GetTags());
+      ContextElement context = new ContextElement(_provider,
+                                                  _project,
+                                                  type.CLRName,
+                                                  _assemblyPath,
+                                                  type.GetTags(),
+                                                  type.IsIgnored());
       _classes.Add(type, context);
       return context;
     }
 
     public ContextElement CreateContextElement(IMetadataTypeInfo type)
     {
-      return new ContextElement(_provider, _project, type.FullyQualifiedName, _assemblyPath, type.GetTags());
+      return new ContextElement(_provider,
+                                _project,
+                                type.FullyQualifiedName,
+                                _assemblyPath,
+                                type.GetTags(),
+                                type.IsIgnored());
     }
 
     public SpecificationElement CreateSpecificationElement(IDeclaredElement field)
@@ -47,13 +57,18 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         return null;
       }
 
-      ContextElement contextElement = _classes[clazz];
-      if (contextElement == null)
+      ContextElement context = _classes[clazz];
+      if (context == null)
       {
         return null;
       }
 
-      return new SpecificationElement(_provider, contextElement, _project, clazz.CLRName, field.ShortName);
+      return new SpecificationElement(_provider,
+                                      context,
+                                      _project,
+                                      clazz.CLRName,
+                                      field.ShortName,
+                                      field.IsIgnored());
     }
 
     public SpecificationElement CreateSpecificationElement(ContextElement context, IMetadataField specification)
@@ -62,7 +77,8 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                       context,
                                       _project,
                                       specification.DeclaringType.FullyQualifiedName,
-                                      specification.Name);
+                                      specification.Name,
+                                      specification.IsIgnored());
     }
 
     public BehaviorElement CreateBehaviorElement(IDeclaredElement field)
@@ -73,13 +89,18 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         return null;
       }
 
-      ContextElement contextElement = _classes[clazz];
-      if (contextElement == null)
+      ContextElement context = _classes[clazz];
+      if (context == null)
       {
         return null;
       }
 
-      return new BehaviorElement(_provider, contextElement, _project, clazz.CLRName, field.ShortName);
+      return new BehaviorElement(_provider,
+                                 context,
+                                 _project,
+                                 clazz.CLRName,
+                                 field.ShortName,
+                                 field.IsIgnored());
     }
 
     public BehaviorElement CreateBehaviorElement(ContextElement context, IMetadataField behavior)
@@ -88,7 +109,8 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                  context,
                                  _project,
                                  behavior.DeclaringType.FullyQualifiedName,
-                                 behavior.Name);
+                                 behavior.Name,
+                                 behavior.IsIgnored());
     }
   }
 }
