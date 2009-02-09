@@ -32,6 +32,11 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
       IDeclaration declaration = (IDeclaration) element;
       Element unitTestElement = _specificationFactory.CreateSpecificationElement(declaration.DeclaredElement);
 
+      if (unitTestElement == null)
+      {
+        return null;
+      }
+      
       return new UnitTestElementDisposition(unitTestElement,
                                             file.ProjectFile,
                                             declaration.GetNameRange(),

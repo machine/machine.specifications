@@ -75,7 +75,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
       }
 
       UnitTestElementDisposition elementDisposition = handler.AcceptElement(element, _file);
-      if (elementDisposition != null)
+      if (elementDisposition != null && elementDisposition.UnitTestElement != null)
       {
         _consumer(elementDisposition);
       }

@@ -16,6 +16,7 @@ namespace Machine.Specifications.ReSharperRunner
       }
 
       return !clazz.IsAbstract &&
+        clazz.GetContainingType() == null &&
              clazz.GetAccessRights() == AccessRights.PUBLIC &&
              clazz.GetMembers().Any(x => IsSpecification(x) || IsBehavior(x));
     }
