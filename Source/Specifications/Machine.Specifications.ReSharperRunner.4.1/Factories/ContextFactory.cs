@@ -40,6 +40,11 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
     public ContextElement CreateContextElement(IMetadataTypeInfo type)
     {
+      if (type.IsNested || !type.IsPublic)
+      {
+        return null;
+      }
+
       return new ContextElement(_provider,
                                 _project,
                                 type.FullyQualifiedName,
