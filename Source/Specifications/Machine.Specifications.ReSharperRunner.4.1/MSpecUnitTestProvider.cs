@@ -97,12 +97,14 @@ namespace Machine.Specifications.ReSharperRunner
                                   new ContextTask(ProviderId,
                                                   context.AssemblyLocation,
                                                   context.GetTypeClrName(),
-                                                  explicitElements.Contains(context))),
+                                                  // TODO
+                                                  false)),//explicitElements.Contains(context))),
                  new UnitTestTask(specification,
                                   new SpecificationTask(ProviderId,
                                                         context.GetTypeClrName(),
                                                         specification.FieldName,
-                                                        explicitElements.Contains(specification),
+                                                        // TODO
+                                                        false,//explicitElements.Contains(specification),
                                                         specification.Context.AssemblyLocation)
                    )
                };
