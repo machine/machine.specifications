@@ -67,6 +67,9 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     {
       _server.TaskProgress(_node.RemoteTask, String.Empty);
 
+      _server.TaskOutput(_node.RemoteTask, result.ConsoleOut, TaskOutputType.STDOUT);
+      _server.TaskOutput(_node.RemoteTask, result.ConsoleError, TaskOutputType.STDERR);
+
       TaskResult = TaskResult.Success;
       switch (result.Status)
       {
