@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using JetBrains.Metadata.Reader.API;
+using JetBrains.ReSharper.Psi;
 
 namespace Machine.Specifications.ReSharperRunner
 {
@@ -14,7 +15,7 @@ namespace Machine.Specifications.ReSharperRunner
              type.IsPublic &&
              type.GenericParameters.Length == 0 &&
              (type.GetSpecifications().Any() ||
-             type.GetBehaviors().Any());
+              type.GetBehaviors().Any());
     }
 
     public static IEnumerable<IMetadataField> GetSpecifications(this IMetadataTypeInfo type)
@@ -36,7 +37,7 @@ namespace Machine.Specifications.ReSharperRunner
         .Distinct()
         .ToList();
     }
-    
+
     public static bool IsIgnored(this IMetadataEntity type)
     {
       return type.HasCustomAttribute(typeof(IgnoreAttribute).FullName);
@@ -64,14 +65,15 @@ namespace Machine.Specifications.ReSharperRunner
 
     static IEnumerable<IMetadataField> GetPrivateFieldsOfType<T>(this IMetadataTypeInfo type)
     {
-      // HACK: String comparison.
-      return type.GetPrivateFields().Where(x => x.Type.PresentableName == typeof(T).FullName);
+      return type.GetPrivateFieldsWith(typeof(T));
     }
 
     static IEnumerable<IMetadataField> GetPrivateFieldsWith(this IMetadataTypeInfo type, Type fieldType)
     {
-      // HACK: String comparison.
-      return type.GetPrivateFields().Where(x => x.Type.PresentableName.StartsWith(fieldType.FullName));
+      return type.GetPrivateFields()
+        .Where(x => x.Type is IMetadataClassType)
+        .Where(x => new CLRTypeName(((IMetadataClassType) x.Type).Type.FullyQualifiedName) ==
+                    new CLRTypeName(fieldType.FullName));
     }
   }
 }

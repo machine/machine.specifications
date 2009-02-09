@@ -28,9 +28,14 @@ namespace Machine.Specifications.ReSharperRunner
       {
         return false;
       }
+      
+      var fieldType = field.Type as IDeclaredType;
+      if (fieldType == null)
+      {
+        return false;
+      }
 
-      // HACK: String comparison.
-      return field.IsValid() && field.Type.ToString() == typeof(It).FullName;
+      return field.IsValid() && new CLRTypeName(fieldType.GetCLRName()) == new CLRTypeName(typeof(It).FullName);
     }
 
     public static bool IsBehavior(this IDeclaredElement element)
@@ -41,8 +46,13 @@ namespace Machine.Specifications.ReSharperRunner
         return false;
       }
 
-      // HACK: String comparison.
-      return field.IsValid() && field.Type.ToString().StartsWith(typeof(Behaves_like<>).FullName);
+      var fieldType = field.Type as IDeclaredType;
+      if (fieldType == null)
+      {
+        return false;
+      }
+
+      return field.IsValid() && new CLRTypeName(fieldType.GetCLRName()) == new CLRTypeName(typeof(Behaves_like<>).FullName);
     }
 
     public static ICollection<string> GetTags(this IAttributesOwner type)
