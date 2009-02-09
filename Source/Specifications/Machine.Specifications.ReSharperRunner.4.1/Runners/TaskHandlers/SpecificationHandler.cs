@@ -33,7 +33,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners.TaskHandlers
       _contextAssembly = LoadContextAssembly(task, server);
       if (_contextAssembly == null)
       {
-        return TaskResult.Exception;
+        return TaskResult.Error;
       }
       
       _field = _contextAssembly.GetType(task.ContextTypeName).GetField(task.SpecificationFieldName,
