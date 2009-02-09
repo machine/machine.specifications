@@ -63,5 +63,23 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     {
       return "Context";
     }
+
+    public override bool Equals(object obj)
+    {
+      if (base.Equals(obj))
+      {
+        ContextElement other = (ContextElement) obj;
+        return Equals(AssemblyLocation, other.AssemblyLocation);
+      }
+
+      return false;
+    }
+
+    public override int GetHashCode()
+    {
+      int result = base.GetHashCode();
+      result = 29 * result + AssemblyLocation.GetHashCode();
+      return result;
+    }
   }
 }

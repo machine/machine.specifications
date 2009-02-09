@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
@@ -18,7 +21,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       _project = project;
     }
 
-    public SpecificationElement CreateSpecificationElement(IDeclaredElement field)
+    public FieldElement CreateSpecificationElement(IDeclaredElement field)
     {
       IClass clazz = field.GetContainingType() as IClass;
       if (clazz == null)
@@ -32,22 +35,46 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         return null;
       }
 
-      return new SpecificationElement(_provider,
-                                      context,
-                                      _project,
-                                      clazz.CLRName,
-                                      field.ShortName,
-                                      field.IsIgnored());
+      return new ContextSpecificationElement(_provider,
+                                             context,
+                                             _project,
+                                             clazz.CLRName,
+                                             field.ShortName,
+                                             field.IsIgnored());
     }
 
-    public SpecificationElement CreateSpecificationElement(ContextElement context, IMetadataField specification)
+    public FieldElement CreateSpecificationElement(ContextElement context, IMetadataField specification)
     {
-      return new SpecificationElement(_provider,
-                                      context,
-                                      _project,
-                                      specification.DeclaringType.FullyQualifiedName,
-                                      specification.Name,
-                                      specification.IsIgnored());
+      return new ContextSpecificationElement(_provider,
+                                             context,
+                                             _project,
+                                             specification.DeclaringType.FullyQualifiedName,
+                                             specification.Name,
+                                             specification.IsIgnored());
+    }
+
+    public BehaviorSpecificationElement CreateSpecificationElement(BehaviorElement behavior,
+                                                                   IMetadataField specification)
+    {
+      return new BehaviorSpecificationElement(_provider,
+                                              behavior,
+                                              _project,
+                                              specification.DeclaringType.FullyQualifiedName,
+                                              specification.Name,
+                                              specification.IsIgnored());
+    }
+
+    public IEnumerable<BehaviorSpecificationElement> CreateSpecificationElementsFromBehavior(
+      BehaviorElement behaviorElement,
+      IMetadataField behavior)
+    {
+      var behaviorType = ((IMetadataClassType) behavior.Type).Arguments.First();
+      var behaviorClass = ((IMetadataClassType) behaviorType).Type;
+
+      foreach (var specification in behaviorClass.GetSpecifications())
+      {
+        yield return CreateSpecificationElement(behaviorElement, specification);
+      }
     }
   }
 }

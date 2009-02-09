@@ -15,6 +15,7 @@ using JetBrains.UI.TreeView;
 using JetBrains.Util;
 
 using Machine.Specifications.ReSharperRunner.Explorers;
+using Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers;
 using Machine.Specifications.ReSharperRunner.Presentation;
 using Machine.Specifications.ReSharperRunner.Runners;
 using Machine.Specifications.ReSharperRunner.Tasks;
@@ -85,7 +86,7 @@ namespace Machine.Specifications.ReSharperRunner
     {
       Debug.WriteLine(element.GetType().FullName + ": " + element.GetTitle());
 
-      SpecificationElement specification = element as SpecificationElement;
+      ContextSpecificationElement specification = element as ContextSpecificationElement;
       if (specification != null)
       {
         var context = specification.Context;
@@ -110,7 +111,7 @@ namespace Machine.Specifications.ReSharperRunner
                };
       }
 
-      if (element is ContextElement)
+      if (element is ContextElement || element is BehaviorElement || element is BehaviorSpecificationElement)
       {
         return EmptyArray<UnitTestTask>.Instance;
       }
@@ -131,24 +132,27 @@ namespace Machine.Specifications.ReSharperRunner
         return compare;
       }
 
-      if (x is SpecificationElement && y is ContextElement)
+      if ((x is ContextSpecificationElement || x is BehaviorElement) && y is ContextElement)
       {
         return -1;
       }
 
-      if (x is ContextElement && y is SpecificationElement)
+      if (x is ContextElement && (y is ContextSpecificationElement || y is BehaviorElement))
       {
         return 1;
       }
 
-      if (x is ContextElement && y is ContextElement)
+      if (x is ContextSpecificationElement  && y is BehaviorElement)
       {
-        return 0;
+        return 1;
       }
 
-      SpecificationElement xe = (SpecificationElement) x;
-      SpecificationElement ye = (SpecificationElement) y;
-      return xe.GetTitle().CompareTo(ye.GetTitle());
+      if (x is BehaviorElement && y is ContextSpecificationElement)
+      {
+        return -1;
+      }
+
+      return StringComparer.CurrentCultureIgnoreCase.Compare(x.GetTitle(), y.GetTitle());
     }
 
     public void Present(UnitTestElement element, IPresentableItem item, TreeModelNode node, PresentationState state)

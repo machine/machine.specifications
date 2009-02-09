@@ -46,6 +46,11 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       }
     }
 
+    public virtual string GetTitlePrefix()
+    {
+      return String.Empty;
+    }
+
     public override IProject GetProject()
     {
       return _projectEnvoy.GetValidProjectElement() as IProject;
@@ -117,8 +122,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     {
       if (base.Equals(obj))
       {
-        Element element = (Element) obj;
-        return Equals(element._projectEnvoy, _projectEnvoy) && element._typeName == _typeName;
+        Element other = (Element) obj;
+        return Equals(other._projectEnvoy, _projectEnvoy) && other._typeName == _typeName;
       }
 
       return false;

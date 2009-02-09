@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,44 +16,32 @@ namespace Machine.Specifications.ReSharperRunner
         return false;
       }
 
-      return !clazz.IsAbstract &&
-        clazz.GetContainingType() == null &&
+      return clazz.IsValid() &&
+             !clazz.IsAbstract &&
+             clazz.GetContainingType() == null &&
              clazz.GetAccessRights() == AccessRights.PUBLIC &&
              clazz.GetMembers().Any(x => IsSpecification(x) || IsBehavior(x));
     }
 
     public static bool IsSpecification(this IDeclaredElement element)
     {
-      var field = element as IField;
-      if (field == null)
-      {
-        return false;
-      }
-      
-      var fieldType = field.Type as IDeclaredType;
-      if (fieldType == null)
-      {
-        return false;
-      }
-
-      return field.IsValid() && new CLRTypeName(fieldType.GetCLRName()) == new CLRTypeName(typeof(It).FullName);
+      return element.IsOfType(typeof(It));
     }
 
     public static bool IsBehavior(this IDeclaredElement element)
     {
-      var field = element as IField;
-      if (field == null)
+      return element.IsOfType(typeof(Behaves_like<>));
+    }
+
+    public static bool IsIgnored(this IDeclaredElement element)
+    {
+      IAttributesOwner attributeOwner = element as IAttributesOwner;
+      if (attributeOwner == null)
       {
         return false;
       }
 
-      var fieldType = field.Type as IDeclaredType;
-      if (fieldType == null)
-      {
-        return false;
-      }
-
-      return field.IsValid() && new CLRTypeName(fieldType.GetCLRName()) == new CLRTypeName(typeof(Behaves_like<>).FullName);
+      return attributeOwner.HasAttributeInstance(new CLRTypeName(typeof(IgnoreAttribute).FullName), false);
     }
 
     public static ICollection<string> GetTags(this IAttributesOwner type)
@@ -63,15 +52,23 @@ namespace Machine.Specifications.ReSharperRunner
         .ToList();
     }
 
-    public static bool IsIgnored(this IDeclaredElement type)
+    static bool IsOfType(this IDeclaredElement element, Type type)
     {
-      IAttributesOwner attributeOwner = type as IAttributesOwner;
-      if (attributeOwner == null)
+      var field = element as IField;
+      if (field == null)
       {
         return false;
       }
 
-      return attributeOwner.HasAttributeInstance(new CLRTypeName(typeof(IgnoreAttribute).FullName), false);
+      var fieldType = field.Type as IDeclaredType;
+      if (fieldType == null)
+      {
+        return false;
+      }
+
+      return field.IsValid() &&
+             fieldType.IsResolved &&
+             new CLRTypeName(fieldType.GetCLRName()) == new CLRTypeName(type.FullName);
     }
 
     static IEnumerable<AttributeValue> PositionParameters(this IAttributeInstance source)

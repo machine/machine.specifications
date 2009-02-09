@@ -27,7 +27,7 @@ namespace Machine.Specifications.ReSharperRunner
     {
       return type.GetPrivateFieldsWith(typeof(Behaves_like<>));
     }
-
+    
     public static ICollection<string> GetTags(this IMetadataEntity type)
     {
       return type.GetCustomAttributes(typeof(TagsAttribute).FullName)

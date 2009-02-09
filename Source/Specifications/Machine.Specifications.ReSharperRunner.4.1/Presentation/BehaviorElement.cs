@@ -1,14 +1,14 @@
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.UnitTestExplorer;
 
-using Machine.Specifications.Utility;
-
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
-  internal class BehaviorElement : SpecificationElement
+  internal class BehaviorElement : FieldElement
   {
     public BehaviorElement(IUnitTestProvider provider,
+                           // ReSharper disable SuggestBaseTypeForParameter
                            ContextElement context,
+                           // ReSharper restore SuggestBaseTypeForParameter
                            IProjectModelElement project,
                            string declaringTypeName,
                            string fieldName,
@@ -17,9 +17,9 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     {
     }
 
-    public override string GetTitle()
+    public override string GetTitlePrefix()
     {
-      return string.Format("{0}, behaves like {1}", Context.GetTitle(), FieldName.ReplaceUnderscores());
+      return "behaves like";
     }
 
     public override string GetKind()

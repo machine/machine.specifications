@@ -7,18 +7,19 @@ using JetBrains.ReSharper.UnitTestExplorer;
 using JetBrains.Util;
 
 using Machine.Specifications.ReSharperRunner.Factories;
+using Machine.Specifications.ReSharperRunner.Presentation;
 
 namespace Machine.Specifications.ReSharperRunner.Explorers
 {
   internal class AssemblyExplorer
   {
     readonly IMetadataAssembly _assembly;
+    readonly BehaviorFactory _behaviorFactory;
     readonly UnitTestElementConsumer _consumer;
     readonly ContextFactory _contextFactory;
     readonly IProject _project;
     readonly MSpecUnitTestProvider _provider;
     readonly SpecificationFactory _specificationFactory;
-    readonly BehaviorFactory _behaviorFactory;
 
     public AssemblyExplorer(MSpecUnitTestProvider provider,
                             IMetadataAssembly assembly,
@@ -52,7 +53,14 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
             _consumer(contextElement);
 
             type.GetSpecifications().ForEach(x => _consumer(_specificationFactory.CreateSpecificationElement(contextElement, x)));
-            type.GetBehaviors().ForEach(x => _consumer(_behaviorFactory.CreateBehaviorElement(contextElement, x)));
+            
+            type.GetBehaviors().ForEach(x =>
+              {
+                BehaviorElement behaviorElement = _behaviorFactory.CreateBehaviorElement(contextElement, x);
+
+                _specificationFactory.CreateSpecificationElementsFromBehavior(behaviorElement, x)
+                  .ForEach(y => _consumer(y));
+              });
           });
     }
   }

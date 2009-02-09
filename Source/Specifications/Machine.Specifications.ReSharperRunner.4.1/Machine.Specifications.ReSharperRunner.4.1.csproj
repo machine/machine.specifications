@@ -111,6 +111,8 @@
     <Compile Include="Factories\ContextFactory.cs" />
     <Compile Include="Explorers\FileExplorer.cs" />
     <Compile Include="MetadataExtensions.cs" />
+    <Compile Include="Presentation\BehaviorSpecificationElement.cs" />
+    <Compile Include="Presentation\ContextSpecificationElement.cs" />
     <Compile Include="PsiExtensions.cs" />
     <Compile Include="Runners\TaskHandlers\ContextHandler.cs" />
     <Compile Include="Runners\TaskHandlers\ITaskHandler.cs" />
@@ -124,7 +126,7 @@
     <Compile Include="Presentation\Element.cs" />
     <Compile Include="Presentation\Presenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Presentation\SpecificationElement.cs" />
+    <Compile Include="Presentation\FieldElement.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj">

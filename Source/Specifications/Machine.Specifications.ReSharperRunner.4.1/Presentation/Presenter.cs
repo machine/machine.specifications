@@ -13,8 +13,9 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     public Presenter()
     {
       Present<ContextElement>(PresentContext);
-      Present<SpecificationElement>(PresentSpecification);
+      Present<FieldElement>(PresentSpecification);
       Present<BehaviorElement>(PresentBehavior);
+      Present<BehaviorSpecificationElement>(PresentBehaviorSpecification);
     }
 
     protected virtual void PresentContext(ContextElement element,
@@ -22,21 +23,15 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                                           TreeModelNode modelNode,
                                           PresentationState state)
     {
-      item.RichText = element.GetTitle();
-
-      SetStateTextColor(item, element);
-      SetStateImage(item, state, UnitTestElementImage.TestContainer);
+      PresentItem(item, element, state, UnitTestElementImage.TestContainer);
     }
 
-    protected virtual void PresentSpecification(SpecificationElement element,
+    protected virtual void PresentSpecification(FieldElement element,
                                                 IPresentableItem item,
                                                 TreeModelNode modelNode,
                                                 PresentationState state)
     {
-      item.RichText = element.GetTitle();
-
-      SetStateTextColor(item, element);
-      SetStateImage(item, state, UnitTestElementImage.Test);
+      PresentItem(item, element, state, UnitTestElementImage.Test);
     }
 
     protected virtual void PresentBehavior(BehaviorElement element,
@@ -44,17 +39,36 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                                            TreeModelNode modelNode,
                                            PresentationState state)
     {
+      PresentItem(item, element, state, UnitTestElementImage.TestContainer);
     }
 
-    static void SetStateTextColor(IPresentableItem item, UnitTestElement element)
+    protected virtual void PresentBehaviorSpecification(BehaviorSpecificationElement element,
+                                                        IPresentableItem item,
+                                                        TreeModelNode modelNode,
+                                                        PresentationState state)
+    {
+      PresentItem(item, element, state, UnitTestElementImage.Test);
+    }
+
+    static void PresentItem(IPresentableItem item, Element element, PresentationState state, UnitTestElementImage type)
+    {
+      item.RichText = element.GetTitle();
+
+      SetTextColor(item, element);
+      SetImage(item, state, type);
+    }
+
+    static void SetTextColor(IPresentableItem item, Element element)
     {
       if (element.IsExplicit)
       {
         item.RichText.SetForeColor(SystemColors.GrayText);
       }
+
+      item.RichText.SetForeColor(SystemColors.GrayText, 0, element.GetTitlePrefix().Length);
     }
 
-    static void SetStateImage(IPresentableItem item, PresentationState state, UnitTestElementImage imageType)
+    static void SetImage(IPresentableItem item, PresentationState state, UnitTestElementImage imageType)
     {
       Image stateImage = UnitTestManager.GetStateImage(state);
       Image typeImage = UnitTestManager.GetStandardImage(imageType);
@@ -84,7 +98,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     protected override object Unwrap(object value)
     {
-      var specification = value as SpecificationElement;
+      var specification = value as FieldElement;
       if (specification != null)
       {
         value = specification.GetDeclaredElement();
