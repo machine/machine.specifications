@@ -14,21 +14,20 @@ namespace Machine.Specifications.ReSharperRunner.Runners.TaskHandlers
   internal class SpecificationRunner : ITaskRunner
   {
     Assembly _contextAssembly;
-    ReSharperRunListener _listener;
+    PerContextRunListener _listener;
     FieldInfo _field;
     DefaultRunner _runner;
 
     #region ITaskRunner Members
     public bool Accepts(RemoteTask task)
     {
-      return task is SpecificationTask;
+      return task is ContextSpecificationTask;
     }
 
     public TaskResult Start(IRemoteTaskServer server, TaskExecutionNode node)
     {
-      SpecificationTask task = (SpecificationTask) node.RemoteTask;
+      ContextSpecificationTask task = (ContextSpecificationTask) node.RemoteTask;
       Debug.WriteLine("Start spec " + task.SpecificationFieldName);
-      Debug.WriteLine("Parent " + ((ContextTask) node.Parent.RemoteTask).ContextTypeName);
 
       _contextAssembly = LoadContextAssembly(task, server);
       if (_contextAssembly == null)
@@ -41,7 +40,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners.TaskHandlers
                                                                      BindingFlags.DeclaredOnly |
                                                                      BindingFlags.NonPublic);
 
-      _listener = new ReSharperRunListener(server, node);
+      _listener = new PerContextRunListener(server, node.RemoteTask);
       _runner = new DefaultRunner(_listener, RunOptions.Default);
 
       return TaskResult.Success;
@@ -49,7 +48,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners.TaskHandlers
 
     public TaskResult Execute(IRemoteTaskServer server, TaskExecutionNode node)
     {
-      SpecificationTask task = (SpecificationTask) node.RemoteTask;
+      ContextSpecificationTask task = (ContextSpecificationTask) node.RemoteTask;
       Debug.WriteLine("Execute spec " + task.SpecificationFieldName);
 
       _runner.RunMember(_contextAssembly, _field);
@@ -59,16 +58,14 @@ namespace Machine.Specifications.ReSharperRunner.Runners.TaskHandlers
 
     public TaskResult Finish(IRemoteTaskServer server, TaskExecutionNode node)
     {
-      SpecificationTask task = (SpecificationTask) node.RemoteTask;
+      ContextSpecificationTask task = (ContextSpecificationTask) node.RemoteTask;
       Debug.WriteLine("Finish spec " + task.SpecificationFieldName);
       
-      _listener.RunFinished.WaitOne();
-
       return _listener.TaskResult;
     }
     #endregion
 
-    static Assembly LoadContextAssembly(SpecificationTask task, IRemoteTaskServer server)
+    static Assembly LoadContextAssembly(Task task, IRemoteTaskServer server)
     {
       AssemblyName assemblyName;
       if (!File.Exists(task.AssemblyLocation))

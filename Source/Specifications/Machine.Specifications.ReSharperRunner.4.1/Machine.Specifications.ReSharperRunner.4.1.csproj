@@ -114,19 +114,24 @@
     <Compile Include="Presentation\BehaviorSpecificationElement.cs" />
     <Compile Include="Presentation\ContextSpecificationElement.cs" />
     <Compile Include="PsiExtensions.cs" />
+    <Compile Include="Runners\RecursiveMSpecTaskRunner.cs" />
+    <Compile Include="Runners\ExecutableSpecificationInfo.cs" />
     <Compile Include="Runners\TaskHandlers\ContextRunner.cs" />
     <Compile Include="Runners\TaskHandlers\ITaskRunner.cs" />
-    <Compile Include="Runners\ReSharperRunListener.cs" />
+    <Compile Include="Runners\PerContextRunListener.cs" />
     <Compile Include="Runners\TaskHandlers\SpecificationRunner.cs" />
+    <Compile Include="RandomExtensions.cs" />
+    <Compile Include="Tasks\BehaviorSpecificationTask.cs" />
+    <Compile Include="Tasks\BehaviorTask.cs" />
     <Compile Include="Tasks\ContextTask.cs" />
-    <Compile Include="Tasks\SpecificationTask.cs" />
-    <Compile Include="Runners\TaskRunner.cs" />
+    <Compile Include="Tasks\ContextSpecificationTask.cs" />
     <Compile Include="MSpecUnitTestProvider.cs" />
     <Compile Include="Presentation\ContextElement.cs" />
     <Compile Include="Presentation\Element.cs" />
     <Compile Include="Presentation\Presenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Presentation\FieldElement.cs" />
+    <Compile Include="Tasks\Task.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj">

@@ -14,12 +14,12 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
   internal abstract class Element : UnitTestElement
   {
     readonly ProjectModelElementEnvoy _projectEnvoy;
-    readonly string _typeName;
+    readonly string _declaringTypeName;
 
     protected Element(IUnitTestProvider provider,
                       UnitTestElement parent,
                       IProjectModelElement project,
-                      string typeName,
+                      string declaringTypeName,
                       bool isIgnored)
       : base(provider, parent)
     {
@@ -28,9 +28,9 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
         throw new ArgumentNullException("project");
       }
 
-      if (typeName == null)
+      if (declaringTypeName == null)
       {
-        throw new ArgumentNullException("typeName");
+        throw new ArgumentNullException("declaringTypeName");
       }
 
       if (project != null)
@@ -38,7 +38,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
         _projectEnvoy = new ProjectModelElementEnvoy(project);
       }
 
-      _typeName = typeName;
+      _declaringTypeName = declaringTypeName;
 
       if (isIgnored)
       {
@@ -69,18 +69,18 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       {
         DeclarationsCacheScope scope = DeclarationsCacheScope.ProjectScope(project, true);
         IDeclarationsCache declarationsCache = manager.GetDeclarationsCache(scope, true);
-        return declarationsCache.GetTypeElementByCLRName(_typeName);
+        return declarationsCache.GetTypeElementByCLRName(_declaringTypeName);
       }
     }
 
     public override string GetTypeClrName()
     {
-      return _typeName;
+      return _declaringTypeName;
     }
 
     public override UnitTestNamespace GetNamespace()
     {
-      return new UnitTestNamespace(new CLRTypeName(_typeName).NamespaceName);
+      return new UnitTestNamespace(new CLRTypeName(_declaringTypeName).NamespaceName);
     }
 
     public override IList<IProjectFile> GetProjectFiles()
@@ -123,7 +123,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       if (base.Equals(obj))
       {
         Element other = (Element) obj;
-        return Equals(other._projectEnvoy, _projectEnvoy) && other._typeName == _typeName;
+        return Equals(other._projectEnvoy, _projectEnvoy) && other._declaringTypeName == _declaringTypeName;
       }
 
       return false;
@@ -133,7 +133,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     {
       int result = base.GetHashCode();
       result = 29 * result + _projectEnvoy.GetHashCode();
-      result = 29 * result + _typeName.GetHashCode();
+      result = 29 * result + _declaringTypeName.GetHashCode();
       return result;
     }
   }

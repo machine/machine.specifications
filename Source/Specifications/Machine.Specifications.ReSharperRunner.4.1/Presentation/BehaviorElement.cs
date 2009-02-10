@@ -17,6 +17,11 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     {
     }
 
+    public ContextElement Context
+    {
+      get { return (ContextElement) Parent; }
+    }
+
     public override string GetTitlePrefix()
     {
       return "behaves like";

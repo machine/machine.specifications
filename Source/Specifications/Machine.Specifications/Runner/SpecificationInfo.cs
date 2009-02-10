@@ -9,10 +9,12 @@ namespace Machine.Specifications.Runner
   public class SpecificationInfo
   {
     public string Name { get; set; }
+    public string ContainingType { get; set; }
 
-    public SpecificationInfo(string name)
+    public SpecificationInfo(string name, string containingType)
     {
       Name = name;
+      ContainingType = containingType;
     }
   }
 }

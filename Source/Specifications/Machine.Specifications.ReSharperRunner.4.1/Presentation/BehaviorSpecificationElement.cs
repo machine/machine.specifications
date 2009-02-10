@@ -12,7 +12,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                                         IProjectModelElement project,
                                         string declaringTypeName,
                                         string fieldName,
-                                        bool isIgnored)
+                                        bool isIgnored
+      )
       : base(provider, behavior, project, declaringTypeName, fieldName, isIgnored || behavior.IsExplicit)
     {
     }

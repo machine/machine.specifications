@@ -15,7 +15,6 @@ using JetBrains.UI.TreeView;
 using JetBrains.Util;
 
 using Machine.Specifications.ReSharperRunner.Explorers;
-using Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers;
 using Machine.Specifications.ReSharperRunner.Presentation;
 using Machine.Specifications.ReSharperRunner.Runners;
 using Machine.Specifications.ReSharperRunner.Tasks;
@@ -79,17 +78,17 @@ namespace Machine.Specifications.ReSharperRunner
 
     public RemoteTaskRunnerInfo GetTaskRunnerInfo()
     {
-      return new RemoteTaskRunnerInfo(typeof(TaskRunner));
+      return new RemoteTaskRunnerInfo(typeof(RecursiveMSpecTaskRunner));
     }
 
     public IList<UnitTestTask> GetTaskSequence(UnitTestElement element, IList<UnitTestElement> explicitElements)
     {
       Debug.WriteLine(element.GetType().FullName + ": " + element.GetTitle());
 
-      ContextSpecificationElement specification = element as ContextSpecificationElement;
-      if (specification != null)
+      ContextSpecificationElement contextSpecification = element as ContextSpecificationElement;
+      if (contextSpecification != null)
       {
-        var context = specification.Context;
+        var context = contextSpecification.Context;
         return new List<UnitTestTask>
                {
                  new UnitTestTask(null,
@@ -98,20 +97,77 @@ namespace Machine.Specifications.ReSharperRunner
                                   new ContextTask(ProviderId,
                                                   context.AssemblyLocation,
                                                   context.GetTypeClrName(),
-                                                  // TODO
-                                                  false)),//explicitElements.Contains(context))),
-                 new UnitTestTask(specification,
-                                  new SpecificationTask(ProviderId,
+                                                  // TODO: explicitElements.Contains(context)
+                                                  false)),
+                 new UnitTestTask(contextSpecification,
+                                  new ContextSpecificationTask(ProviderId,
+                                                        context.AssemblyLocation,
                                                         context.GetTypeClrName(),
-                                                        specification.FieldName,
-                                                        // TODO
-                                                        false,//explicitElements.Contains(specification),
-                                                        specification.Context.AssemblyLocation)
+                                                        contextSpecification.FieldName,
+                                                        // TODO: explicitElements.Contains(specification)
+                                                        false)
                    )
                };
       }
 
-      if (element is ContextElement || element is BehaviorElement || element is BehaviorSpecificationElement)
+      BehaviorElement behavior = element as BehaviorElement;
+      if (behavior != null)
+      {
+        var context = behavior.Context;
+        return new List<UnitTestTask>
+               {
+                 new UnitTestTask(null,
+                                  new AssemblyLoadTask(context.AssemblyLocation)),
+                 new UnitTestTask(context,
+                                  new ContextTask(ProviderId,
+                                                  context.AssemblyLocation,
+                                                  context.GetTypeClrName(),
+                                                  // TODO: explicitElements.Contains(context)
+                                                  false)),
+                 new UnitTestTask(behavior,
+                                  new BehaviorTask(ProviderId,
+                                                   context.AssemblyLocation,
+                                                   context.GetTypeClrName(),
+                                                   behavior.FieldName,
+                                                   // TODO: explicitElements.Contains(behavior)
+                                                   false))
+               };
+      }
+
+      BehaviorSpecificationElement behaviorSpecification = element as BehaviorSpecificationElement;
+      if (behaviorSpecification != null)
+      {
+        var context = behaviorSpecification.Behavior.Context;
+        return new List<UnitTestTask>
+               {
+                 new UnitTestTask(null,
+                                  new AssemblyLoadTask(context.AssemblyLocation)),
+                 new UnitTestTask(context,
+                                  new ContextTask(ProviderId,
+                                                  context.AssemblyLocation,
+                                                  context.GetTypeClrName(),
+                                                  // TODO: explicitElements.Contains(context)
+                                                  false)),
+                 new UnitTestTask(behavior,
+                                  new BehaviorTask(ProviderId,
+                                                   context.AssemblyLocation,
+                                                   context.GetTypeClrName(),
+                                                   behaviorSpecification.Behavior.FieldName,
+                                                   // TODO: explicitElements.Contains(behavior)
+                                                   false)),
+                 new UnitTestTask(behaviorSpecification,
+                                  new BehaviorSpecificationTask(ProviderId,
+                                                        context.AssemblyLocation,
+                                                        context.GetTypeClrName(),
+                                                        behaviorSpecification.FieldName,
+                                                        behaviorSpecification.GetTypeClrName(),
+                                                        // TODO: explicitElements.Contains(specification)
+                                                        false)
+                   )
+               };
+      }
+
+      if (element is ContextElement)
       {
         return EmptyArray<UnitTestTask>.Instance;
       }
@@ -142,7 +198,7 @@ namespace Machine.Specifications.ReSharperRunner
         return 1;
       }
 
-      if (x is ContextSpecificationElement  && y is BehaviorElement)
+      if (x is ContextSpecificationElement && y is BehaviorElement)
       {
         return 1;
       }
