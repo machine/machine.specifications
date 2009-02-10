@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
@@ -21,7 +20,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       _project = project;
     }
 
-    public FieldElement CreateSpecificationElement(IDeclaredElement field)
+    public ContextSpecificationElement CreateContextSpecification(IDeclaredElement field)
     {
       IClass clazz = field.GetContainingType() as IClass;
       if (clazz == null)
@@ -43,7 +42,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                              field.IsIgnored());
     }
 
-    public FieldElement CreateSpecificationElement(ContextElement context, IMetadataField specification)
+    public ContextSpecificationElement CreateContextSpecification(ContextElement context, IMetadataField specification)
     {
       return new ContextSpecificationElement(_provider,
                                              context,
@@ -53,27 +52,26 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                              specification.IsIgnored());
     }
 
-    public BehaviorSpecificationElement CreateSpecificationElement(BehaviorElement behavior,
-                                                                   IMetadataField specification)
+    BehaviorSpecificationElement CreateBehaviorSpecification(BehaviorElement behavior,
+                                                             IMetadataField behaviorSpecification)
     {
       return new BehaviorSpecificationElement(_provider,
                                               behavior,
                                               _project,
-                                              specification.DeclaringType.FullyQualifiedName,
-                                              specification.Name,
-                                              specification.IsIgnored());
+                                              behaviorSpecification.DeclaringType.FullyQualifiedName,
+                                              behaviorSpecification.Name,
+                                              behaviorSpecification.IsIgnored());
     }
 
-    public IEnumerable<BehaviorSpecificationElement> CreateSpecificationElementsFromBehavior(
+    public IEnumerable<BehaviorSpecificationElement> CreateBehaviorSpecificationsFromBehavior(
       BehaviorElement behaviorElement,
-      IMetadataField behavior)
+      IMetadataField behaviorField)
     {
-      var behaviorType = ((IMetadataClassType) behavior.Type).Arguments.First();
-      var behaviorClass = ((IMetadataClassType) behaviorType).Type;
+      IMetadataTypeInfo typeContainingBehaviorSpecifications = behaviorField.GetFirstGenericArgument();
 
-      foreach (var specification in behaviorClass.GetSpecifications())
+      foreach (var specification in typeContainingBehaviorSpecifications.GetSpecifications())
       {
-        yield return CreateSpecificationElement(behaviorElement, specification);
+        yield return CreateBehaviorSpecification(behaviorElement, specification);
       }
     }
   }

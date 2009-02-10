@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.UnitTestExplorer;
@@ -28,20 +30,20 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
       return declaration.DeclaredElement.IsContext();
     }
 
-    public UnitTestElementDisposition AcceptElement(IElement element, IFile file)
+    public IEnumerable<UnitTestElementDisposition> AcceptElement(IElement element, IFile file)
     {
       IDeclaration declaration = (IDeclaration) element;
-      Element unitTestElement = _contextFactory.CreateContextElement((ITypeElement) declaration.DeclaredElement);
+      Element unitTestElement = _contextFactory.CreateContext((ITypeElement) declaration.DeclaredElement);
 
       if (unitTestElement == null)
       {
-        return null;
+        yield break;
       }
 
-      return new UnitTestElementDisposition(unitTestElement,
-                                            file.ProjectFile,
-                                            declaration.GetNameRange(),
-                                            declaration.GetDocumentRange().TextRange);
+      yield return new UnitTestElementDisposition(unitTestElement,
+                                                  file.ProjectFile,
+                                                  declaration.GetNameRange(),
+                                                  declaration.GetDocumentRange().TextRange);
     }
     #endregion
   }

@@ -50,7 +50,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
       _elementHandlers = new List<IElementHandler>
                          {
                            new ContextElementHandler(contextFactory),
-                           new SpecificationElementHandler(specificationFactory),
+                           new ContextSpecificationElementHandler(specificationFactory),
                            new BehaviorElementHandler(behaviorFactory)
                          };
     }
@@ -74,10 +74,12 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
         return;
       }
 
-      UnitTestElementDisposition elementDisposition = handler.AcceptElement(element, _file);
-      if (elementDisposition != null && elementDisposition.UnitTestElement != null)
+      foreach (var elementDisposition in handler.AcceptElement(element, _file))
       {
-        _consumer(elementDisposition);
+        if (elementDisposition != null && elementDisposition.UnitTestElement != null)
+        {
+          _consumer(elementDisposition);
+        }
       }
     }
 

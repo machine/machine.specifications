@@ -49,16 +49,16 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
         .Where(type => type.IsContext())
         .ForEach(type =>
           {
-            var contextElement = _contextFactory.CreateContextElement(type);
+            var contextElement = _contextFactory.CreateContext(type);
             _consumer(contextElement);
 
-            type.GetSpecifications().ForEach(x => _consumer(_specificationFactory.CreateSpecificationElement(contextElement, x)));
+            type.GetSpecifications().ForEach(x => _consumer(_specificationFactory.CreateContextSpecification(contextElement, x)));
             
             type.GetBehaviors().ForEach(x =>
               {
-                BehaviorElement behaviorElement = _behaviorFactory.CreateBehaviorElement(contextElement, x);
+                BehaviorElement behaviorElement = _behaviorFactory.CreateBehavior(contextElement, x);
 
-                _specificationFactory.CreateSpecificationElementsFromBehavior(behaviorElement, x)
+                _specificationFactory.CreateBehaviorSpecificationsFromBehavior(behaviorElement, x)
                   .ForEach(y => _consumer(y));
               });
           });

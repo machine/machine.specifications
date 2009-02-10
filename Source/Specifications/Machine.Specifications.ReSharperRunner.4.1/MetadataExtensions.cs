@@ -27,7 +27,7 @@ namespace Machine.Specifications.ReSharperRunner
     {
       return type.GetPrivateFieldsWith(typeof(Behaves_like<>));
     }
-    
+
     public static ICollection<string> GetTags(this IMetadataEntity type)
     {
       return type.GetCustomAttributes(typeof(TagsAttribute).FullName)
@@ -36,6 +36,12 @@ namespace Machine.Specifications.ReSharperRunner
                  tag => tag.Skip(1).FirstOrDefault() as IEnumerable<string>)
         .Distinct()
         .ToList();
+    }
+
+    public static IMetadataTypeInfo GetFirstGenericArgument(this IMetadataField genericField)
+    {
+      var genericArgument = ((IMetadataClassType) genericField.Type).Arguments.First();
+      return ((IMetadataClassType) genericArgument).Type;
     }
 
     public static bool IsIgnored(this IMetadataEntity type)

@@ -9,14 +9,14 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 {
   internal class TaskRunner : RemoteTaskRunner
   {
-    readonly List<ITaskHandler> _taskHandlers;
+    readonly List<ITaskRunner> _taskHandlers;
 
     public TaskRunner(IRemoteTaskServer server) : base(server)
     {
-      _taskHandlers = new List<ITaskHandler>
+      _taskHandlers = new List<ITaskRunner>
                       {
-                        new ContextHandler(),
-                        new SpecificationHandler()
+                        new ContextRunner(),
+                        new SpecificationRunner()
                       };
     }
 
@@ -28,10 +28,10 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     {
       RemoteTask task = node.RemoteTask;
 
-      ITaskHandler handler = FindHandlerFor(task);
-      if (handler != null)
+      ITaskRunner runner = FindHandlerFor(task);
+      if (runner != null)
       {
-        return handler.Start(Server, node);
+        return runner.Start(Server, node);
       }
 
       return TaskResult.Error;
@@ -41,10 +41,10 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     {
       RemoteTask task = node.RemoteTask;
 
-      ITaskHandler handler = FindHandlerFor(task);
-      if (handler != null)
+      ITaskRunner runner = FindHandlerFor(task);
+      if (runner != null)
       {
-        return handler.Execute(Server, node);
+        return runner.Execute(Server, node);
       }
 
       return TaskResult.Error;
@@ -54,16 +54,16 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     {
       RemoteTask task = node.RemoteTask;
 
-      ITaskHandler handler = FindHandlerFor(task);
-      if (handler != null)
+      ITaskRunner runner = FindHandlerFor(task);
+      if (runner != null)
       {
-        return handler.Finish(Server, node);
+        return runner.Finish(Server, node);
       }
 
       return TaskResult.Error;
     }
 
-    ITaskHandler FindHandlerFor(RemoteTask task)
+    ITaskRunner FindHandlerFor(RemoteTask task)
     {
       return _taskHandlers.FirstOrDefault(handler => handler.Accepts(task));
     }

@@ -103,7 +103,7 @@
     <Compile Include="Explorers\ElementHandlers\BehaviorElementHandler.cs" />
     <Compile Include="Explorers\ElementHandlers\ContextElementHandler.cs" />
     <Compile Include="Explorers\ElementHandlers\IElementHandler.cs" />
-    <Compile Include="Explorers\ElementHandlers\SpecificationElementHandler.cs" />
+    <Compile Include="Explorers\ElementHandlers\ContextSpecificationElementHandler.cs" />
     <Compile Include="Factories\BehaviorFactory.cs" />
     <Compile Include="Factories\ContextCache.cs" />
     <Compile Include="Factories\SpecificationFactory.cs" />
@@ -114,10 +114,10 @@
     <Compile Include="Presentation\BehaviorSpecificationElement.cs" />
     <Compile Include="Presentation\ContextSpecificationElement.cs" />
     <Compile Include="PsiExtensions.cs" />
-    <Compile Include="Runners\TaskHandlers\ContextHandler.cs" />
-    <Compile Include="Runners\TaskHandlers\ITaskHandler.cs" />
+    <Compile Include="Runners\TaskHandlers\ContextRunner.cs" />
+    <Compile Include="Runners\TaskHandlers\ITaskRunner.cs" />
     <Compile Include="Runners\ReSharperRunListener.cs" />
-    <Compile Include="Runners\TaskHandlers\SpecificationHandler.cs" />
+    <Compile Include="Runners\TaskHandlers\SpecificationRunner.cs" />
     <Compile Include="Tasks\ContextTask.cs" />
     <Compile Include="Tasks\SpecificationTask.cs" />
     <Compile Include="Runners\TaskRunner.cs" />

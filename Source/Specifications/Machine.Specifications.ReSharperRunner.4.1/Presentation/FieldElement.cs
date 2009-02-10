@@ -45,7 +45,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       {
         return true;
       }
-      return matcher.IsMatch(_fieldName);
+      return matcher.IsMatch(FieldName);
     }
 
     public override IDeclaredElement GetDeclaredElement()

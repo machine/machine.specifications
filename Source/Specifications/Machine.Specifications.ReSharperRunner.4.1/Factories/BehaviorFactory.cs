@@ -20,7 +20,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       _project = project;
     }
 
-    public BehaviorElement CreateBehaviorElement(IDeclaredElement field)
+    public BehaviorElement CreateBehavior(IDeclaredElement field)
     {
       IClass clazz = field.GetContainingType() as IClass;
       if (clazz == null)
@@ -42,7 +42,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                  field.IsIgnored());
     }
 
-    public BehaviorElement CreateBehaviorElement(ContextElement context, IMetadataField behavior)
+    public BehaviorElement CreateBehavior(ContextElement context, IMetadataField behavior)
     {
       var behaviorType = ((IMetadataClassType) behavior.Type).Arguments.First();
       var behaviorClass = ((IMetadataClassType) behaviorType).Type;

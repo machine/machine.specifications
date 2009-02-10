@@ -6,9 +6,9 @@ using Machine.Specifications.ReSharperRunner.Tasks;
 
 namespace Machine.Specifications.ReSharperRunner.Runners.TaskHandlers
 {
-  internal class ContextHandler : ITaskHandler
+  internal class ContextRunner : ITaskRunner
   {
-    #region Implementation of ITaskHandler<ContextTask>
+    #region Implementation of ITaskRunner<ContextTask>
     public bool Accepts(RemoteTask task)
     {
       return task is ContextTask;

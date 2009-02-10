@@ -6,9 +6,9 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
   internal class BehaviorSpecificationElement : FieldElement
   {
     public BehaviorSpecificationElement(IUnitTestProvider provider,
-// ReSharper disable SuggestBaseTypeForParameter
+                                        // ReSharper disable SuggestBaseTypeForParameter
                                         BehaviorElement behavior,
-// ReSharper restore SuggestBaseTypeForParameter
+                                        // ReSharper restore SuggestBaseTypeForParameter
                                         IProjectModelElement project,
                                         string declaringTypeName,
                                         string fieldName,

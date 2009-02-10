@@ -11,14 +11,14 @@ using Machine.Specifications.Runner.Impl;
 
 namespace Machine.Specifications.ReSharperRunner.Runners.TaskHandlers
 {
-  internal class SpecificationHandler : ITaskHandler
+  internal class SpecificationRunner : ITaskRunner
   {
     Assembly _contextAssembly;
     ReSharperRunListener _listener;
     FieldInfo _field;
     DefaultRunner _runner;
 
-    #region ITaskHandler Members
+    #region ITaskRunner Members
     public bool Accepts(RemoteTask task)
     {
       return task is SpecificationTask;

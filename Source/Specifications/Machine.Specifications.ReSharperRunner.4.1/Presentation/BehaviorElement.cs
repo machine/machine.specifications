@@ -26,5 +26,12 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     {
       return "Behavior";
     }
+
+    public override string GetHighlighterAttributeId()
+    {
+      // HACK: This relies on an implementation detail, but allows us to show the "container" icon, although this
+      // element technically has no children when the FileExplorer has explored the assembly.
+      return "ReSharper Unit Test Element Container";
+    }
   }
 }

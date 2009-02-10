@@ -6,9 +6,9 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
   internal class ContextSpecificationElement : FieldElement
   {
     public ContextSpecificationElement(IUnitTestProvider provider,
-// ReSharper disable SuggestBaseTypeForParameter
+                                       // ReSharper disable SuggestBaseTypeForParameter
                                        ContextElement context,
-// ReSharper restore SuggestBaseTypeForParameter
+                                       // ReSharper restore SuggestBaseTypeForParameter
                                        IProjectModelElement project,
                                        string declaringTypeName,
                                        string fieldName,

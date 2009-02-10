@@ -21,7 +21,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       _assemblyPath = assemblyPath;
     }
 
-    public ContextElement CreateContextElement(ITypeElement type)
+    public ContextElement CreateContext(ITypeElement type)
     {
       if (ContextCache.Classes.ContainsKey(type))
       {
@@ -38,7 +38,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       return context;
     }
 
-    public ContextElement CreateContextElement(IMetadataTypeInfo type)
+    public ContextElement CreateContext(IMetadataTypeInfo type)
     {
       if (type.IsNested || !type.IsPublic)
       {

@@ -2,7 +2,7 @@ using JetBrains.ReSharper.TaskRunnerFramework;
 
 namespace Machine.Specifications.ReSharperRunner.Runners.TaskHandlers
 {
-  internal interface ITaskHandler
+  internal interface ITaskRunner
   {
     bool Accepts(RemoteTask task);
     TaskResult Start(IRemoteTaskServer server, TaskExecutionNode node);
