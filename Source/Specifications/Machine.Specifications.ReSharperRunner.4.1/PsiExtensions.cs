@@ -20,17 +20,41 @@ namespace Machine.Specifications.ReSharperRunner
              !clazz.IsAbstract &&
              clazz.GetContainingType() == null &&
              clazz.GetAccessRights() == AccessRights.PUBLIC &&
-             clazz.GetMembers().Any(x => IsSpecification(x) || IsBehavior(x));
+             clazz.Fields.Any(x => IsSpecification(x) || IsBehavior(x));
     }
 
     public static bool IsSpecification(this IDeclaredElement element)
     {
-      return element.IsOfType(typeof(It));
+      return element.IsValidFieldOfType(typeof(It));
     }
 
     public static bool IsBehavior(this IDeclaredElement element)
     {
-      return element.IsOfType(typeof(Behaves_like<>));
+      return element.IsValidFieldOfType(typeof(Behaves_like<>));
+    }
+
+    public static IClass GetFirstGenericArgument(this IDeclaredElement element)
+    {
+      IDeclaredType fieldType = element.GetValidatedFieldType();
+      if (fieldType == null)
+      {
+        return null;
+      }
+      
+      var firstArgument = fieldType.GetSubstitution().Domain.First();
+      var referencedType = fieldType.GetSubstitution().Apply(firstArgument).GetScalarType();
+      
+      if (referencedType != null)
+      {
+        return referencedType.GetTypeElement() as IClass;
+      }
+
+      return null;
+    }
+
+    public static IEnumerable<IField> GetBehaviorSpecifications(this IClass clazz)
+    {
+      return clazz.Fields.Where(IsSpecification);
     }
 
     public static bool IsIgnored(this IDeclaredElement element)
@@ -52,23 +76,38 @@ namespace Machine.Specifications.ReSharperRunner
         .ToList();
     }
 
-    static bool IsOfType(this IDeclaredElement element, Type type)
+    static bool IsValidFieldOfType(this IDeclaredElement element, Type type)
     {
-      var field = element as IField;
-      if (field == null)
-      {
-        return false;
-      }
-
-      var fieldType = field.Type as IDeclaredType;
+      IDeclaredType fieldType = element.GetValidatedFieldType();
       if (fieldType == null)
       {
         return false;
       }
 
-      return field.IsValid() &&
-             fieldType.IsResolved &&
-             new CLRTypeName(fieldType.GetCLRName()) == new CLRTypeName(type.FullName);
+      return new CLRTypeName(fieldType.GetCLRName()) == new CLRTypeName(type.FullName);
+    }
+
+    static IDeclaredType GetValidatedFieldType(this IDeclaredElement element)
+    {
+      IField field = element as IField;
+      if (field == null)
+      {
+        return null;
+      }
+
+      IDeclaredType fieldType = field.Type as IDeclaredType;
+      if (fieldType == null)
+      {
+        return null;
+      }
+
+      if(!field.IsValid() ||
+             !fieldType.IsResolved)
+      {
+        return null;
+      }
+
+      return fieldType;
     }
 
     static IEnumerable<AttributeValue> PositionParameters(this IAttributeInstance source)
