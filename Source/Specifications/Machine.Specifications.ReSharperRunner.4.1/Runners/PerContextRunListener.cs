@@ -49,6 +49,10 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     public void OnSpecificationStart(SpecificationInfo specification)
     {
       RemoteTask task = FindTaskFor(specification);
+      if (task == null)
+      {
+        return;
+      }
 
       _server.TaskStarting(task);
       _server.TaskProgress(task, "Running specification");
@@ -57,7 +61,11 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     public void OnSpecificationEnd(SpecificationInfo specification, Result result)
     {
       RemoteTask task = FindTaskFor(specification);
-      
+      if (task == null)
+      {
+        return;
+      }
+
       _server.TaskProgress(task, null);
 
       _server.TaskOutput(task, result.ConsoleOut, TaskOutputType.STDOUT);
@@ -114,9 +122,14 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
     RemoteTask FindTaskFor(SpecificationInfo specification)
     {
-      return _specifications
-        .First(x => x.ContainingType == specification.ContainingType && x.Name == specification.Name)
-        .RemoteTask;
+      var knownSpecification = _specifications.FirstOrDefault(x => x.ContainingType == specification.ContainingType &&
+                                                                   x.Name == specification.Name);
+
+      if (knownSpecification == null)
+      {
+        return null;
+      }
+      return knownSpecification.RemoteTask;
     }
   }
 }
