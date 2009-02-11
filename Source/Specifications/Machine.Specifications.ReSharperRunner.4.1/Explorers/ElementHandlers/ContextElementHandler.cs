@@ -5,7 +5,6 @@ using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.UnitTestExplorer;
 
 using Machine.Specifications.ReSharperRunner.Factories;
-using Machine.Specifications.ReSharperRunner.Presentation;
 
 namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
 {
@@ -33,14 +32,14 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
     public IEnumerable<UnitTestElementDisposition> AcceptElement(IElement element, IFile file)
     {
       IDeclaration declaration = (IDeclaration) element;
-      Element unitTestElement = _contextFactory.CreateContext((ITypeElement) declaration.DeclaredElement);
+      var contextElement = _contextFactory.CreateContext((ITypeElement) declaration.DeclaredElement);
 
-      if (unitTestElement == null)
+      if (contextElement == null)
       {
         yield break;
       }
 
-      yield return new UnitTestElementDisposition(unitTestElement,
+      yield return new UnitTestElementDisposition(contextElement,
                                                   file.ProjectFile,
                                                   declaration.GetNameRange(),
                                                   declaration.GetDocumentRange().TextRange);

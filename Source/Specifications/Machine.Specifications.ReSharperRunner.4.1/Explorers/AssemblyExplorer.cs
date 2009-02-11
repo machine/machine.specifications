@@ -19,7 +19,8 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
     readonly ContextFactory _contextFactory;
     readonly IProject _project;
     readonly MSpecUnitTestProvider _provider;
-    readonly SpecificationFactory _specificationFactory;
+    readonly ContextSpecificationFactory _contextSpecificationFactory;
+    readonly BehaviorSpecificationFactory _behaviorSpecificationFactory;
 
     public AssemblyExplorer(MSpecUnitTestProvider provider,
                             IMetadataAssembly assembly,
@@ -32,8 +33,9 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
       _consumer = consumer;
 
       _contextFactory = new ContextFactory(_provider, _project, _assembly.Location);
-      _specificationFactory = new SpecificationFactory(_provider, _project);
+      _contextSpecificationFactory = new ContextSpecificationFactory(_provider, _project);
       _behaviorFactory = new BehaviorFactory(_provider, _project);
+      _behaviorSpecificationFactory = new BehaviorSpecificationFactory(_provider, _project);
     }
 
     public void Explore()
@@ -52,14 +54,14 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
             var contextElement = _contextFactory.CreateContext(type);
             _consumer(contextElement);
 
-            type.GetSpecifications().ForEach(x => _consumer(_specificationFactory.CreateContextSpecification(contextElement, x)));
+            type.GetSpecifications().ForEach(x => _consumer(_contextSpecificationFactory.CreateContextSpecification(contextElement, x)));
             
             type.GetBehaviors().ForEach(x =>
               {
                 BehaviorElement behaviorElement = _behaviorFactory.CreateBehavior(contextElement, x);
                 _consumer(behaviorElement);
 
-                _specificationFactory.CreateBehaviorSpecificationsFromBehavior(behaviorElement, x)
+                _behaviorSpecificationFactory.CreateBehaviorSpecificationsFromBehavior(behaviorElement, x)
                   .ForEach(y => _consumer(y));
               });
           });

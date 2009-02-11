@@ -105,8 +105,9 @@
     <Compile Include="Explorers\ElementHandlers\IElementHandler.cs" />
     <Compile Include="Explorers\ElementHandlers\ContextSpecificationElementHandler.cs" />
     <Compile Include="Factories\BehaviorFactory.cs" />
+    <Compile Include="Factories\BehaviorSpecificationFactory.cs" />
     <Compile Include="Factories\ContextCache.cs" />
-    <Compile Include="Factories\SpecificationFactory.cs" />
+    <Compile Include="Factories\ContextSpecificationFactory.cs" />
     <Compile Include="Presentation\BehaviorElement.cs" />
     <Compile Include="Factories\ContextFactory.cs" />
     <Compile Include="Explorers\FileExplorer.cs" />

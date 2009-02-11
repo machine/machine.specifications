@@ -44,15 +44,14 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
     public BehaviorElement CreateBehavior(ContextElement context, IMetadataField behavior)
     {
-      var behaviorType = ((IMetadataClassType) behavior.Type).Arguments.First();
-      var behaviorClass = ((IMetadataClassType) behaviorType).Type;
+      IMetadataTypeInfo typeContainingBehaviorSpecifications = behavior.GetFirstGenericArgument();
 
       return new BehaviorElement(_provider,
                                  context,
                                  _project,
                                  behavior.DeclaringType.FullyQualifiedName,
                                  behavior.Name,
-                                 behavior.IsIgnored() || behaviorClass.IsIgnored());
+                                 behavior.IsIgnored() || typeContainingBehaviorSpecifications.IsIgnored());
     }
   }
 }

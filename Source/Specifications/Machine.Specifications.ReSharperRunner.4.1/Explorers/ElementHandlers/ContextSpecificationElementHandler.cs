@@ -4,17 +4,16 @@ using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.UnitTestExplorer;
 
 using Machine.Specifications.ReSharperRunner.Factories;
-using Machine.Specifications.ReSharperRunner.Presentation;
 
 namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
 {
   internal class ContextSpecificationElementHandler : IElementHandler
   {
-    readonly SpecificationFactory _specificationFactory;
+    readonly ContextSpecificationFactory _contextSpecificationFactory;
 
-    public ContextSpecificationElementHandler(SpecificationFactory specificationFactory)
+    public ContextSpecificationElementHandler(ContextSpecificationFactory contextSpecificationFactory)
     {
-      _specificationFactory = specificationFactory;
+      _contextSpecificationFactory = contextSpecificationFactory;
     }
 
     #region Implementation of IElementHandler
@@ -32,14 +31,14 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
     public IEnumerable<UnitTestElementDisposition> AcceptElement(IElement element, IFile file)
     {
       IDeclaration declaration = (IDeclaration) element;
-      Element unitTestElement = _specificationFactory.CreateContextSpecification(declaration.DeclaredElement);
+      var contextSpecificationElement = _contextSpecificationFactory.CreateContextSpecification(declaration.DeclaredElement);
 
-      if (unitTestElement == null)
+      if (contextSpecificationElement == null)
       {
         yield break;
       }
 
-      yield return new UnitTestElementDisposition(unitTestElement,
+      yield return new UnitTestElementDisposition(contextSpecificationElement,
                                                   file.ProjectFile,
                                                   declaration.GetNameRange(),
                                                   declaration.GetDocumentRange().TextRange);
