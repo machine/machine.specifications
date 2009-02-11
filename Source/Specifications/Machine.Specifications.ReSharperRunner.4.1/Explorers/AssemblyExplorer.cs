@@ -57,6 +57,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
             type.GetBehaviors().ForEach(x =>
               {
                 BehaviorElement behaviorElement = _behaviorFactory.CreateBehavior(contextElement, x);
+                _consumer(behaviorElement);
 
                 _specificationFactory.CreateBehaviorSpecificationsFromBehavior(behaviorElement, x)
                   .ForEach(y => _consumer(y));
