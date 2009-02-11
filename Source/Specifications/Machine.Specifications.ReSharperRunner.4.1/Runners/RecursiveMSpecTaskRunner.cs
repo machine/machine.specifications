@@ -27,15 +27,25 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     {
       ContextTask task = (ContextTask) node.RemoteTask;
 
-      _contextAssembly = LoadContextAssembly(task, Server);
+      _contextAssembly = LoadContextAssembly(task);
       if (_contextAssembly == null)
       {
         return TaskResult.Error;
       }
 
+      _contextClass = _contextAssembly.GetType(task.ContextTypeName);
+      if (_contextClass == null)
+      {
+        Server.TaskExplain(node.RemoteTask,
+                           String.Format("Could not load type '{0}' from assembly {1}.",
+                                         task.ContextTypeName,
+                                         task.AssemblyLocation));
+        Server.TaskError(node.RemoteTask, "Could not load context");
+        return TaskResult.Error;
+      }
+
       _listener = new PerContextRunListener(Server, node.RemoteTask);
       _runner = new DefaultRunner(_listener, RunOptions.Default);
-      _contextClass = _contextAssembly.GetType(task.ContextTypeName);
 
       return TaskResult.Success;
     }
@@ -69,13 +79,14 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     }
     #endregion
 
-    static Assembly LoadContextAssembly(Task task, IRemoteTaskServer server)
+    Assembly LoadContextAssembly(Task task)
     {
       AssemblyName assemblyName;
       if (!File.Exists(task.AssemblyLocation))
       {
-        server.TaskError(task,
-                         string.Format("Cannot load assembly from {0}: File does not exist", task.AssemblyLocation));
+        Server.TaskExplain(task,
+                           String.Format("Could not load assembly from {0}: File does not exist", task.AssemblyLocation));
+        Server.TaskError(task, "Could not load context assembly");
         return null;
       }
 
@@ -85,13 +96,17 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       }
       catch (FileLoadException ex)
       {
-        server.TaskError(task, string.Format("Cannot load assembly from {0}: {1}", task.AssemblyLocation, ex.Message));
+        Server.TaskExplain(task,
+                           String.Format("Could not load assembly from {0}: {1}", task.AssemblyLocation, ex.Message));
+        Server.TaskError(task, "Could not load context assembly");
         return null;
       }
 
       if (assemblyName == null)
       {
-        server.TaskError(task, string.Format("Cannot load assembly from {0}: Not an assembly", task.AssemblyLocation));
+        Server.TaskExplain(task,
+                           String.Format("Could not load assembly from {0}: Not an assembly", task.AssemblyLocation));
+        Server.TaskError(task, "Could not load context assembly");
         return null;
       }
 
@@ -101,7 +116,9 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       }
       catch (Exception ex)
       {
-        server.TaskError(task, string.Format("Cannot load assembly from {0}: {1}", task.AssemblyLocation, ex.Message));
+        Server.TaskExplain(task,
+                           String.Format("Could not load assembly from {0}: {1}", task.AssemblyLocation, ex.Message));
+        Server.TaskError(task, "Could not load context assembly");
         return null;
       }
     }
