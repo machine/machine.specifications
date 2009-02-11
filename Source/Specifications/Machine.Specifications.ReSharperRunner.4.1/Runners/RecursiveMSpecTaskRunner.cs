@@ -57,7 +57,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     #region Overrides of RecursiveRemoteTaskRunner
     public override void ExecuteRecursive(TaskExecutionNode node)
     {
-      node.Flatten(x => x.Children).ForEach(TryRegisterSpecifications);
+      node.Children.Flatten(x => x.Children).ForEach(TryRegisterSpecifications);
     }
 
     void TryRegisterSpecifications(TaskExecutionNode node)
