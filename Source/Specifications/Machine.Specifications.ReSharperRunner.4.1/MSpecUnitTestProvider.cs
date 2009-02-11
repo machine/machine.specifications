@@ -83,8 +83,6 @@ namespace Machine.Specifications.ReSharperRunner
 
     public IList<UnitTestTask> GetTaskSequence(UnitTestElement element, IList<UnitTestElement> explicitElements)
     {
-      Debug.WriteLine(element.GetType().FullName + ": " + element.GetTitle());
-
       ContextSpecificationElement contextSpecification = element as ContextSpecificationElement;
       if (contextSpecification != null)
       {

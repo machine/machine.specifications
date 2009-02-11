@@ -102,7 +102,6 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
         return UnitTestElementDisposition.ourInvalidDisposition;
       }
 
-      // TODO: Use map higher order function.
       var locations = new List<UnitTestElementLocation>();
       element.GetDeclarations().ForEach(declaration =>
         {
