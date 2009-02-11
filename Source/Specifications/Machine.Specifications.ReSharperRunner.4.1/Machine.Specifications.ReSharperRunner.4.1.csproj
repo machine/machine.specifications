@@ -116,10 +116,7 @@
     <Compile Include="PsiExtensions.cs" />
     <Compile Include="Runners\RecursiveMSpecTaskRunner.cs" />
     <Compile Include="Runners\ExecutableSpecificationInfo.cs" />
-    <Compile Include="Runners\TaskHandlers\ContextRunner.cs" />
-    <Compile Include="Runners\TaskHandlers\ITaskRunner.cs" />
     <Compile Include="Runners\PerContextRunListener.cs" />
-    <Compile Include="Runners\TaskHandlers\SpecificationRunner.cs" />
     <Compile Include="RandomExtensions.cs" />
     <Compile Include="Tasks\BehaviorSpecificationTask.cs" />
     <Compile Include="Tasks\BehaviorTask.cs" />

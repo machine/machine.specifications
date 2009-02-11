@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
@@ -26,8 +25,6 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     #region Overrides of RemoteTaskRunner
     public override TaskResult Start(TaskExecutionNode node)
     {
-      Debug.WriteLine("Start: " + node.RemoteTask.GetType().FullName);
-
       ContextTask task = (ContextTask) node.RemoteTask;
 
       _contextAssembly = LoadContextAssembly(task, Server);
@@ -77,7 +74,8 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       AssemblyName assemblyName;
       if (!File.Exists(task.AssemblyLocation))
       {
-        server.TaskError(task, string.Format("Cannot load assembly from {0}: File does not exist", task.AssemblyLocation));
+        server.TaskError(task,
+                         string.Format("Cannot load assembly from {0}: File does not exist", task.AssemblyLocation));
         return null;
       }
 
