@@ -13,7 +13,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
       if (RemoteTask is ContextSpecificationTask)
       {
-        ContextSpecificationTask task = (ContextSpecificationTask) RemoteTask;
+        ContextSpecificationTask task = (ContextSpecificationTask)RemoteTask;
 
         ContainingType = task.ContextTypeName;
         Name = task.SpecificationFieldName.ReplaceUnderscores();
@@ -21,7 +21,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
       if (RemoteTask is BehaviorSpecificationTask)
       {
-        BehaviorSpecificationTask task = (BehaviorSpecificationTask) RemoteTask;
+        BehaviorSpecificationTask task = (BehaviorSpecificationTask)RemoteTask;
 
         ContainingType = task.BehaviorTypeName;
         Name = task.SpecificationFieldName.ReplaceUnderscores();

@@ -35,7 +35,6 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
     public override int GetHashCode()
     {
       return base.GetHashCode();
-        
     }
   }
 }

@@ -14,10 +14,10 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
     }
 
     public ContextSpecificationTask(string providerId,
-                             string assemblyLocation,
-                             string contextTypeName,
-                             string specificationFieldName,
-                             bool runExplicitly)
+                                    string assemblyLocation,
+                                    string contextTypeName,
+                                    string specificationFieldName,
+                                    bool runExplicitly)
       : base(providerId, assemblyLocation, contextTypeName, runExplicitly)
     {
       _specificationFieldName = specificationFieldName;

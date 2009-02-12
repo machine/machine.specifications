@@ -30,8 +30,9 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
 
     public IEnumerable<UnitTestElementDisposition> AcceptElement(IElement element, IFile file)
     {
-      IDeclaration declaration = (IDeclaration) element;
-      var contextSpecificationElement = _contextSpecificationFactory.CreateContextSpecification(declaration.DeclaredElement);
+      IDeclaration declaration = (IDeclaration)element;
+      var contextSpecificationElement =
+        _contextSpecificationFactory.CreateContextSpecification(declaration.DeclaredElement);
 
       if (contextSpecificationElement == null)
       {

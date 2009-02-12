@@ -40,8 +40,8 @@ namespace Machine.Specifications.ReSharperRunner
 
     public static IMetadataTypeInfo GetFirstGenericArgument(this IMetadataField genericField)
     {
-      var genericArgument = ((IMetadataClassType) genericField.Type).Arguments.First();
-      return ((IMetadataClassType) genericArgument).Type;
+      var genericArgument = ((IMetadataClassType)genericField.Type).Arguments.First();
+      return ((IMetadataClassType)genericArgument).Type;
     }
 
     public static bool IsIgnored(this IMetadataEntity type)
@@ -78,7 +78,7 @@ namespace Machine.Specifications.ReSharperRunner
     {
       return type.GetPrivateFields()
         .Where(x => x.Type is IMetadataClassType)
-        .Where(x => new CLRTypeName(((IMetadataClassType) x.Type).Type.FullyQualifiedName) ==
+        .Where(x => new CLRTypeName(((IMetadataClassType)x.Type).Type.FullyQualifiedName) ==
                     new CLRTypeName(fieldType.FullName));
     }
   }

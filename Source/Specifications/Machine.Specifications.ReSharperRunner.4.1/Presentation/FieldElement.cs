@@ -65,7 +65,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     {
       if (base.Equals(obj))
       {
-        FieldElement other = (FieldElement) obj;
+        FieldElement other = (FieldElement)obj;
         return Equals(Parent, other.Parent) && FieldName == other.FieldName;
       }
 

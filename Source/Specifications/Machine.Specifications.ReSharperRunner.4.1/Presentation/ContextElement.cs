@@ -68,7 +68,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     {
       if (base.Equals(obj))
       {
-        ContextElement other = (ContextElement) obj;
+        ContextElement other = (ContextElement)obj;
         return Equals(AssemblyLocation, other.AssemblyLocation);
       }
 

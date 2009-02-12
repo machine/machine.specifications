@@ -40,10 +40,10 @@ namespace Machine.Specifications.ReSharperRunner
       {
         return null;
       }
-      
+
       var firstArgument = fieldType.GetSubstitution().Domain.First();
       var referencedType = fieldType.GetSubstitution().Apply(firstArgument).GetScalarType();
-      
+
       if (referencedType != null)
       {
         return referencedType.GetTypeElement() as IClass;
@@ -101,8 +101,8 @@ namespace Machine.Specifications.ReSharperRunner
         return null;
       }
 
-      if(!field.IsValid() ||
-             !fieldType.IsResolved)
+      if (!field.IsValid() ||
+          !fieldType.IsResolved)
       {
         return null;
       }

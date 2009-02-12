@@ -15,12 +15,12 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
   {
     readonly IMetadataAssembly _assembly;
     readonly BehaviorFactory _behaviorFactory;
+    readonly BehaviorSpecificationFactory _behaviorSpecificationFactory;
     readonly UnitTestElementConsumer _consumer;
     readonly ContextFactory _contextFactory;
+    readonly ContextSpecificationFactory _contextSpecificationFactory;
     readonly IProject _project;
     readonly MSpecUnitTestProvider _provider;
-    readonly ContextSpecificationFactory _contextSpecificationFactory;
-    readonly BehaviorSpecificationFactory _behaviorSpecificationFactory;
 
     public AssemblyExplorer(MSpecUnitTestProvider provider,
                             IMetadataAssembly assembly,
@@ -55,14 +55,13 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
             _consumer(contextElement);
 
             type.GetSpecifications().ForEach(x => _consumer(_contextSpecificationFactory.CreateContextSpecification(contextElement, x)));
-            
+
             type.GetBehaviors().ForEach(x =>
               {
                 BehaviorElement behaviorElement = _behaviorFactory.CreateBehavior(contextElement, x);
                 _consumer(behaviorElement);
 
-                _behaviorSpecificationFactory.CreateBehaviorSpecificationsFromBehavior(behaviorElement, x)
-                  .ForEach(y => _consumer(y));
+                _behaviorSpecificationFactory.CreateBehaviorSpecificationsFromBehavior(behaviorElement, x).ForEach(y => _consumer(y));
               });
           });
     }

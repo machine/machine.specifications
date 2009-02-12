@@ -25,7 +25,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     #region Overrides of RemoteTaskRunner
     public override TaskResult Start(TaskExecutionNode node)
     {
-      ContextTask task = (ContextTask) node.RemoteTask;
+      ContextTask task = (ContextTask)node.RemoteTask;
 
       _contextAssembly = LoadContextAssembly(task);
       if (_contextAssembly == null)

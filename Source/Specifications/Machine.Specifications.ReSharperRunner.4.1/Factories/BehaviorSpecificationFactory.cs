@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
@@ -49,7 +48,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                                                                 behaviorSpecification)
     {
       IClass typeContainingBehaviorSpecifications = behaviorSpecification.GetFirstGenericArgument();
-      
+
       foreach (IField specification in typeContainingBehaviorSpecifications.GetBehaviorSpecifications())
       {
         yield return CreateBehaviorSpecification(behavior, specification);

@@ -33,7 +33,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
 
     public IEnumerable<UnitTestElementDisposition> AcceptElement(IElement element, IFile file)
     {
-      IDeclaration declaration = (IDeclaration) element;
+      IDeclaration declaration = (IDeclaration)element;
       var behaviorElement = _behaviorFactory.CreateBehavior(declaration.DeclaredElement);
 
       if (behaviorElement == null)

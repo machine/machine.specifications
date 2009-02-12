@@ -19,7 +19,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public ContextElement Context
     {
-      get { return (ContextElement) Parent; }
+      get { return (ContextElement)Parent; }
     }
 
     public override string GetKind()

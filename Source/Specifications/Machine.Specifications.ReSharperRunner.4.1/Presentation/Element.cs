@@ -13,8 +13,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 {
   internal abstract class Element : UnitTestElement
   {
-    readonly ProjectModelElementEnvoy _projectEnvoy;
     readonly string _declaringTypeName;
+    readonly ProjectModelElementEnvoy _projectEnvoy;
 
     protected Element(IUnitTestProvider provider,
                       UnitTestElement parent,
@@ -121,7 +121,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     {
       if (base.Equals(obj))
       {
-        Element other = (Element) obj;
+        Element other = (Element)obj;
         return Equals(other._projectEnvoy, _projectEnvoy) && other._declaringTypeName == _declaringTypeName;
       }
 

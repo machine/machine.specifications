@@ -20,7 +20,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public BehaviorElement Behavior
     {
-      get { return (BehaviorElement) Parent; }
+      get { return (BehaviorElement)Parent; }
     }
 
     public override string GetKind()

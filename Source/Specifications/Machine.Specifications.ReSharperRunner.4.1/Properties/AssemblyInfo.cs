@@ -22,7 +22,6 @@ using JetBrains.UI.Shell.PluginSupport;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
 [assembly: Guid("3997b44e-394f-4368-b390-7ac0e5505981")]
-
 [assembly: PluginTitle("Machine.Specifications Runner for ReSharper 4.1")]
 [assembly: PluginDescription("Allows ReSharper 4.1 to run Machine.Specifications as unit tests")]
 [assembly: PluginVendor("Machine")]
