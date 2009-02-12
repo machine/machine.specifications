@@ -15,9 +15,9 @@ using JetBrains.UI.TreeView;
 using JetBrains.Util;
 
 using Machine.Specifications.ReSharperRunner.Explorers;
+using Machine.Specifications.ReSharperRunner.Factories;
 using Machine.Specifications.ReSharperRunner.Presentation;
 using Machine.Specifications.ReSharperRunner.Runners;
-using Machine.Specifications.ReSharperRunner.Tasks;
 
 namespace Machine.Specifications.ReSharperRunner
 {
@@ -26,6 +26,7 @@ namespace Machine.Specifications.ReSharperRunner
   {
     internal const string ProviderId = "Machine.Specifications";
     static readonly Presenter Presenter = new Presenter();
+    readonly UnitTestTaskFactory _taskFactory = new UnitTestTaskFactory(ProviderId);
 
     public MSpecUnitTestProvider()
     {
@@ -83,85 +84,50 @@ namespace Machine.Specifications.ReSharperRunner
 
     public IList<UnitTestTask> GetTaskSequence(UnitTestElement element, IList<UnitTestElement> explicitElements)
     {
-      ContextSpecificationElement contextSpecification = element as ContextSpecificationElement;
-      if (contextSpecification != null)
+      if (element is ContextSpecificationElement)
       {
+        var contextSpecification = element as ContextSpecificationElement;
         var context = contextSpecification.Context;
+
         return new List<UnitTestTask>
                {
-                 new UnitTestTask(null,
-                                  new AssemblyLoadTask(context.AssemblyLocation)),
-                 new UnitTestTask(context,
-                                  new ContextTask(ProviderId,
-                                                  context.AssemblyLocation,
-                                                  context.GetTypeClrName(),
-                                                  // TODO: explicitElements.Contains(context)
-                                                  false)),
-                 new UnitTestTask(contextSpecification,
-                                  new ContextSpecificationTask(ProviderId,
-                                                        context.AssemblyLocation,
-                                                        context.GetTypeClrName(),
-                                                        contextSpecification.FieldName,
-                                                        // TODO: explicitElements.Contains(specification)
-                                                        false)
-                   )
+                 _taskFactory.CreateAssemblyLoadTask(context),
+                 _taskFactory.CreateContextTask(context, explicitElements.Contains(context)),
+                 _taskFactory.CreateContextSpecificationTask(context,
+                                                             contextSpecification,
+                                                             explicitElements.Contains(contextSpecification))
                };
       }
 
-      BehaviorElement behavior = element as BehaviorElement;
-      if (behavior != null)
+      if (element is BehaviorElement)
       {
+        var behavior = element as BehaviorElement;
         var context = behavior.Context;
+
         return new List<UnitTestTask>
                {
-                 new UnitTestTask(null,
-                                  new AssemblyLoadTask(context.AssemblyLocation)),
-                 new UnitTestTask(context,
-                                  new ContextTask(ProviderId,
-                                                  context.AssemblyLocation,
-                                                  context.GetTypeClrName(),
-                                                  // TODO: explicitElements.Contains(context)
-                                                  false)),
-                 new UnitTestTask(behavior,
-                                  new BehaviorTask(ProviderId,
-                                                   context.AssemblyLocation,
-                                                   context.GetTypeClrName(),
-                                                   behavior.FieldName,
-                                                   // TODO: explicitElements.Contains(behavior)
-                                                   false))
+                 _taskFactory.CreateAssemblyLoadTask(context),
+                 _taskFactory.CreateContextTask(context, explicitElements.Contains(context)),
+                 _taskFactory.CreateBehaviorTask(context, behavior, explicitElements.Contains(behavior))
                };
       }
 
-      BehaviorSpecificationElement behaviorSpecification = element as BehaviorSpecificationElement;
-      if (behaviorSpecification != null)
+      if (element is BehaviorSpecificationElement)
       {
-        var context = behaviorSpecification.Behavior.Context;
+        var behaviorSpecification = element as BehaviorSpecificationElement;
+        var behavior = behaviorSpecification.Behavior;
+        var context = behavior.Context;
+
         return new List<UnitTestTask>
                {
-                 new UnitTestTask(null,
-                                  new AssemblyLoadTask(context.AssemblyLocation)),
-                 new UnitTestTask(context,
-                                  new ContextTask(ProviderId,
-                                                  context.AssemblyLocation,
-                                                  context.GetTypeClrName(),
-                                                  // TODO: explicitElements.Contains(context)
-                                                  false)),
-                 new UnitTestTask(behavior,
-                                  new BehaviorTask(ProviderId,
-                                                   context.AssemblyLocation,
-                                                   context.GetTypeClrName(),
-                                                   behaviorSpecification.Behavior.FieldName,
-                                                   // TODO: explicitElements.Contains(behavior)
-                                                   false)),
-                 new UnitTestTask(behaviorSpecification,
-                                  new BehaviorSpecificationTask(ProviderId,
-                                                        context.AssemblyLocation,
-                                                        context.GetTypeClrName(),
-                                                        behaviorSpecification.FieldName,
-                                                        behaviorSpecification.GetTypeClrName(),
-                                                        // TODO: explicitElements.Contains(specification)
-                                                        false)
-                   )
+                 _taskFactory.CreateAssemblyLoadTask(context),
+                 _taskFactory.CreateContextTask(context, explicitElements.Contains(context)),
+                 _taskFactory.CreateBehaviorTask(context,
+                                                 behavior,
+                                                 explicitElements.Contains(behavior)),
+                 _taskFactory.CreateBehaviorSpecificationTask(context,
+                                                              behaviorSpecification,
+                                                              explicitElements.Contains(behaviorSpecification))
                };
       }
 
