@@ -14,6 +14,7 @@ namespace Machine.Specifications.ReSharperRunner
       return !type.IsAbstract &&
              type.IsPublic &&
              type.GenericParameters.Length == 0 &&
+             !type.HasCustomAttribute(typeof(BehaviorsAttribute).FullName) &&
              (type.GetSpecifications().Any() ||
               type.GetBehaviors().Any());
     }
@@ -25,7 +26,14 @@ namespace Machine.Specifications.ReSharperRunner
 
     public static IEnumerable<IMetadataField> GetBehaviors(this IMetadataTypeInfo type)
     {
-      return type.GetPrivateFieldsWith(typeof(Behaves_like<>));
+      IEnumerable<IMetadataField> behaviorFields = type.GetPrivateFieldsWith(typeof(Behaves_like<>));
+      foreach (IMetadataField field in behaviorFields)
+      {
+        if (field.GetFirstGenericArgument().HasCustomAttribute(typeof(BehaviorsAttribute).FullName))
+        {
+          yield return field;
+        }
+      }
     }
 
     public static ICollection<string> GetTags(this IMetadataEntity type)

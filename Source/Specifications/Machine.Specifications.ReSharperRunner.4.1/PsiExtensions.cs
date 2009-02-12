@@ -18,6 +18,7 @@ namespace Machine.Specifications.ReSharperRunner
 
       return clazz.IsValid() &&
              !clazz.IsAbstract &&
+             !clazz.HasAttributeInstance(new CLRTypeName(typeof(BehaviorsAttribute).FullName), false) &&
              clazz.GetContainingType() == null &&
              clazz.GetAccessRights() == AccessRights.PUBLIC &&
              clazz.Fields.Any(x => IsSpecification(x) || IsBehavior(x));
@@ -30,7 +31,10 @@ namespace Machine.Specifications.ReSharperRunner
 
     public static bool IsBehavior(this IDeclaredElement element)
     {
-      return element.IsValidFieldOfType(typeof(Behaves_like<>));
+      return element.IsValidFieldOfType(typeof(Behaves_like<>)) &&
+             element.GetFirstGenericArgument() != null &&
+             element.GetFirstGenericArgument().HasAttributeInstance(
+               new CLRTypeName(typeof(BehaviorsAttribute).FullName),false);
     }
 
     public static IClass GetFirstGenericArgument(this IDeclaredElement element)
