@@ -46,23 +46,35 @@ namespace Machine.Specifications.Specs
     It should_run = () => LocalSpecRan = true;
     Behaves_like<BehaviorWithNestedBehavior> behavior_with_nested_behavior;
   }
+  
+  [Subject(tag.example)]
+  public class context_with_behavior_without_behavior_attribute
+  {
+    public static bool LocalSpecRan;
 
-  internal class Behavior
+    It should_run = () => LocalSpecRan = true;
+    Behaves_like<BehaviorWithoutBehaviorAttribute> behavior_without_behavior_attribute;
+  }
+  
+  [Behavior]
+  public class Behavior
   {
     public static bool BehaviorSpecRan;
 
     It should_run_if_behavior_is_not_ignored = () => BehaviorSpecRan = true;
   }
-
+  
   [Ignore]
-  internal class IgnoredBehavior
+  [Behavior]
+  public class IgnoredBehavior
   {
     public static bool BehaviorSpecRan;
 
     It should_not_run = () => BehaviorSpecRan = true;
   }
 
-  internal class BehaviorWithIgnoredSpec
+  [Behavior]
+  public class BehaviorWithIgnoredSpec
   {
     public static bool BehaviorSpecRan;
 
@@ -70,8 +82,16 @@ namespace Machine.Specifications.Specs
     It should_not_run = () => BehaviorSpecRan = true;
   }
 
-  internal class BehaviorWithNestedBehavior
+  [Behavior]
+  public class BehaviorWithNestedBehavior
   {
     Behaves_like<object> diallowed_nested_behavior;
+  }
+  
+  public class BehaviorWithoutBehaviorAttribute
+  {
+    public static bool BehaviorSpecRan;
+
+    It should_not_run = () => BehaviorSpecRan = true;
   }
 }
