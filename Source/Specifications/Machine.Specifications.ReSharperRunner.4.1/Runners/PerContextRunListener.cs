@@ -71,49 +71,40 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       _server.TaskOutput(task, result.ConsoleOut, TaskOutputType.STDOUT);
       _server.TaskOutput(task, result.ConsoleError, TaskOutputType.STDERR);
 
-      TaskResult = TaskResult.Success;
+      TaskResult taskResult = TaskResult.Success;
       switch (result.Status)
       {
         case Status.Failing:
           _server.TaskExplain(task, result.Exception.Message);
           _server.TaskException(task, new[] { new TaskException(result.Exception.Exception) });
-          TaskResult = TaskResult.Exception;
+          taskResult = TaskResult.Exception;
           break;
 
         case Status.Passing:
-          TaskResult = TaskResult.Success;
+          taskResult = TaskResult.Success;
           break;
 
         case Status.NotImplemented:
           _server.TaskExplain(task, "Not implemented");
-          TaskResult = TaskResult.Skipped;
+          taskResult = TaskResult.Skipped;
           break;
 
         case Status.Ignored:
           _server.TaskExplain(task, "Ignored");
-          TaskResult = TaskResult.Skipped;
+          taskResult = TaskResult.Skipped;
           break;
       }
 
-      _server.TaskFinished(task, null, TaskResult);
+      _server.TaskFinished(task, null, taskResult);
     }
 
     public void OnFatalError(ExceptionResult exception)
     {
-      TaskResult = TaskResult.Exception;
-
       _server.TaskExplain(_contextTask, "Fatal error: " + exception.Exception.Message);
       _server.TaskException(_contextTask, new[] { new TaskException(exception.Exception) });
-      _server.TaskFinished(_contextTask, null, TaskResult);
+      _server.TaskFinished(_contextTask, null, TaskResult.Exception);
     }
     #endregion
-
-    // TODO: Delete
-    public TaskResult TaskResult
-    {
-      get;
-      private set;
-    }
 
     internal void RegisterSpecification(ExecutableSpecificationInfo info)
     {
