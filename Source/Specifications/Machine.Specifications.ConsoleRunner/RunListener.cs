@@ -10,6 +10,7 @@ namespace Machine.Specifications.ConsoleRunner
   public class RunListener : ISpecificationRunListener
   {
     readonly IConsole _console;
+    readonly bool _silent;
     string _currentAssemblyName;
     int _contextCount;
     int _specificationCount;
@@ -23,17 +24,18 @@ namespace Machine.Specifications.ConsoleRunner
       get; private set;
     }
 
-    public RunListener(IConsole console)
+    public RunListener(IConsole console, bool silent)
     {
       _console = console;
+      _silent = silent;
     }
 
     public void OnAssemblyStart(AssemblyInfo assembly)
     {
       _currentAssemblyName = assembly.Name;
-      _console.WriteLine("");
-      _console.WriteLine("Specs in " + _currentAssemblyName + ":");
-      _console.WriteLine("");
+      WriteLineVerbose("");
+      WriteLineVerbose("Specs in " + _currentAssemblyName + ":");
+      WriteLineVerbose("");
     }
 
     public void OnAssemblyEnd(AssemblyInfo assembly)
@@ -71,18 +73,18 @@ namespace Machine.Specifications.ConsoleRunner
 
     public void OnContextStart(ContextInfo context)
     {
-      _console.WriteLine(context.FullName);
+      WriteVerbose(context.FullName);
     }
 
     public void OnContextEnd(ContextInfo context)
     {
-      _console.WriteLine("");
+      WriteVerbose("");
       _contextCount += 1;
     }
 
     public void OnSpecificationStart(SpecificationInfo specification)
     {
-      _console.Write("» " + specification.Name);
+      WriteVerbose("» " + specification.Name);
     }
 
     public void OnSpecificationEnd(SpecificationInfo specification, Result result)
@@ -92,21 +94,21 @@ namespace Machine.Specifications.ConsoleRunner
       {
         case Status.Passing:
           _passedSpecificationCount += 1;
-          _console.WriteLine("");
+          WriteLineVerbose("");
           break;
         case Status.NotImplemented:
           _unimplementedSpecificationCount += 1;
-          _console.WriteLine(" (NOT IMPLEMENTED)");
+          WriteLineVerbose(" (NOT IMPLEMENTED)");
           break;
         case Status.Ignored:
           _ignoredSpecificationCount += 1;
-          _console.WriteLine(" (IGNORED)");
+          WriteLineVerbose(" (IGNORED)");
           break;
         default:
           _failedSpecificationCount += 1;
           FailureOccured = true;
-          _console.WriteLine(" (FAIL)");
-          _console.WriteLine(result.Exception.ToString());
+          WriteLineVerbose(" (FAIL)");
+          WriteLineVerbose(result.Exception.ToString());
           break;
       }
     }
@@ -116,6 +118,16 @@ namespace Machine.Specifications.ConsoleRunner
       FailureOccured = true;
       _console.WriteLine("Fatal Error");
       _console.WriteLine(exception.ToString());
+    }
+
+    void WriteVerbose(string str)
+    {
+      if (!_silent) _console.Write(str);
+    }
+
+    void WriteLineVerbose(string str)
+    {
+      if (!_silent) _console.WriteLine(str);
     }
   }
 }

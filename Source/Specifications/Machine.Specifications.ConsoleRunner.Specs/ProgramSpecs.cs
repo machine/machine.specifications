@@ -84,6 +84,23 @@ namespace Machine.Specifications.ConsoleRunner.Specs
   }
 
   [Subject("Console runner")]
+  public class when_a_specification_fails_and_silent_is_set : with_runner
+  {
+    public static ExitCode exitCode;
+    const string assemblyWithFailingSpecification = "Machine.Specifications.FailingExample";
+    const string failingSpecificationName = "should fail";
+
+    Because of = ()=>
+      exitCode = program.Run(new string[] {assemblyWithFailingSpecification + ".dll", "-s"});
+
+    It should_write_the_count_of_failed_specifications = ()=>
+      console.ShouldContainLineWith("1 failed");
+
+    It should_return_the_Failure_exit_code = ()=>
+      exitCode.ShouldEqual(ExitCode.Failure);
+  }
+
+  [Subject("Console runner")]
   public class when_specifying_an_include_filter : with_runner
   {
     Because of = ()=>

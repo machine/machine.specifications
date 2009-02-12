@@ -32,29 +32,37 @@ namespace Machine.Specifications.ConsoleRunner
     public ExitCode Run(string[] arguments)
     {
       ExceptionReporter reporter = new ExceptionReporter(_console);
-      var runListener = new RunListener(_console);
       
+      Options options = new Options();
+      if (!options.ParseArguments(arguments))
+      {
+        _console.WriteLine(Resources.UsageStatement);
+        return ExitCode.Failure;
+      }
+
       List<ISpecificationRunListener> listeners = new List<ISpecificationRunListener>();
+
+      var runListener = new RunListener(_console, options.Silent);
       
       try
       {
 
-        Options options = new Options();
-        if (!options.ParseArguments(arguments))
+        if (!String.IsNullOrEmpty(options.HtmlPath))
         {
-          _console.WriteLine(Resources.UsageStatement);
-          return ExitCode.Failure;
+          if (IsHtmlPathValid(options.HtmlPath))
+          {
+            listeners.Add(GetHtmlReportListener(options));
+          }
+          else
+          {
+            _console.WriteLine("Invalid html path:" + options.HtmlPath);
+            _console.WriteLine(Resources.UsageStatement);
+            return ExitCode.Failure;
+          }
+          
         }
 
-        if (!IsHtmlPathUnspecifiedOrSpecifiedAndValid(options, listeners))
-        {
-          _console.WriteLine("Invalid html path:" + options.HtmlPath);
-          _console.WriteLine(Resources.UsageStatement);
-          return ExitCode.Failure;
-        }
-
-        if (!options.Silent)
-          listeners.Add(runListener);
+        listeners.Add(runListener);
         
         if (options.AssemblyFiles.Count == 0)
         {
@@ -93,15 +101,14 @@ namespace Machine.Specifications.ConsoleRunner
       return ExitCode.Success;
     }
 
-    public bool IsHtmlPathUnspecifiedOrSpecifiedAndValid(Options options, List<ISpecificationRunListener> listeners)
+    static bool IsHtmlPathValid(string path)
     {
-      if (!options.HtmlPath.Equals(string.Empty))
-      {
-        var reportingListener = new GenerateHtmlReportRunListener(options.HtmlPath, options.ShowTimeInformation);
-        listeners.Add(reportingListener);
-        return true;
-      }
-      return true;
+      return Directory.Exists(Path.GetDirectoryName(path));
+    }
+
+    public ISpecificationRunListener GetHtmlReportListener(Options options)
+    {
+      return new GenerateHtmlReportRunListener(options.HtmlPath, options.ShowTimeInformation);
     }
   }
 }
