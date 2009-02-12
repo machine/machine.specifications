@@ -136,7 +136,7 @@ namespace Machine.Specifications.ReSharperRunner
         return EmptyArray<UnitTestTask>.Instance;
       }
 
-      throw new ArgumentException(String.Format("Element is not a Machine.Specification element: '{0}'", element));
+      throw new ArgumentException(String.Format("Element is not a Machine.Specifications element: '{0}'", element));
     }
 
     public int CompareUnitTestElements(UnitTestElement x, UnitTestElement y)
