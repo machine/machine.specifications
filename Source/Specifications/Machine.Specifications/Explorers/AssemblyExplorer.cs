@@ -52,7 +52,7 @@ namespace Machine.Specifications.Explorers
 
     static bool IsContext(Type type)
     {
-      return HasSpecificationMembers(type);
+      return HasSpecificationMembers(type) && !type.HasAttribute<BehaviorsAttribute>();
     }
 
     static bool HasSpecificationMembers(Type type)

@@ -225,7 +225,23 @@ namespace Machine.Specifications.Specs.Runner
     It should_include_the_inner_exception_in_the_result =()=>
       testListener.LastResult.Exception.ToString().ShouldContain("INNER123");
   }
- 
+
+  [Subject("Specification Runner")]
+  public class when_running_a_behavior
+    : with_runner
+  {
+    Establish context = () =>
+    {
+      Behaviors.BehaviorSpecRan = false;
+    };
+
+    Because of = () =>
+      Run<Behaviors>();
+
+    It should_not_run_the_behavior_specs = () =>
+      Behaviors.BehaviorSpecRan.ShouldBeFalse();
+  }
+
   public class with_runner
   {
     static DefaultRunner runner;
