@@ -32,6 +32,11 @@ namespace Machine.Specifications.Factories
       {
         throw new SpecificationUsageException("You cannot have Establishs on Behaviors.");
       }
+      
+      if (behaviorType.GetPrivateFieldsOfType<Because>().Any())
+      {
+        throw new SpecificationUsageException("You cannot have Becauses on Behaviors.");
+      }
 
       if (behaviorType.GetPrivateFieldsWith(typeof(Behaves_like<>)).Any())
       {

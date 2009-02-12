@@ -65,6 +65,15 @@ namespace Machine.Specifications.Specs
     Behaves_like<BehaviorWithEstablish> behavior_with_establish;
   }
   
+  [Subject(tag.example)]
+  public class context_with_behavior_with_because
+  {
+    public static bool LocalSpecRan;
+
+    It should_run = () => LocalSpecRan = true;
+    Behaves_like<BehaviorWithBecause> behavior_with_because;
+  }
+  
   [Behavior]
   public class Behavior
   {
@@ -108,5 +117,11 @@ namespace Machine.Specifications.Specs
   public class BehaviorWithEstablish
   {
     Establish context;
+  }
+  
+  [Behavior]
+  public class BehaviorWithBecause
+  {
+    Because of;
   }
 }
