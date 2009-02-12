@@ -1,41 +1,41 @@
 namespace Machine.Specifications.Specs
 {
   [Subject(tag.example)]
-  public class context_with_behavior
+  public class context_with_behaviors
   {
     public static bool LocalSpecRan;
 
     It should_run = () => LocalSpecRan = true;
-    Behaves_like<Behavior> behavior;
+    Behaves_like<Behaviors> behavior;
   }
 
   [Subject(tag.example)]
-  public class context_with_behavior_where_the_behavior_field_is_ignored
+  public class context_with_behaviors_where_the_behavior_field_is_ignored
   {
     public static bool LocalSpecRan;
 
     It should_run = () => LocalSpecRan = true;
 
     [Ignore]
-    Behaves_like<Behavior> behavior;
+    Behaves_like<Behaviors> behavior;
   }
 
   [Subject(tag.example)]
-  public class context_with_behavior_where_the_behavior_is_ignored
+  public class context_with_behaviors_where_the_behavior_is_ignored
   {
     public static bool LocalSpecRan;
 
     It should_run = () => LocalSpecRan = true;
-    Behaves_like<IgnoredBehavior> behavior;
+    Behaves_like<IgnoredBehaviors> behavior;
   }
 
   [Subject(tag.example)]
-  public class context_with_behavior_where_the_behavior_specs_are_ignored
+  public class context_with_behaviors_where_the_behavior_specs_are_ignored
   {
     public static bool LocalSpecRan;
 
     It should_run = () => LocalSpecRan = true;
-    Behaves_like<BehaviorWithIgnoredSpec> behavior;
+    Behaves_like<BehaviorsWithIgnoredSpec> behavior;
   }
 
   [Subject(tag.example)]
@@ -44,38 +44,38 @@ namespace Machine.Specifications.Specs
     public static bool LocalSpecRan;
 
     It should_run = () => LocalSpecRan = true;
-    Behaves_like<BehaviorWithNestedBehavior> behavior_with_nested_behavior;
+    Behaves_like<BehaviorsWithNestedBehavior> behavior_with_nested_behavior;
   }
   
   [Subject(tag.example)]
-  public class context_with_behavior_without_behavior_attribute
+  public class context_with_behaviors_without_behaviors_attribute
   {
     public static bool LocalSpecRan;
 
     It should_run = () => LocalSpecRan = true;
-    Behaves_like<BehaviorWithoutBehaviorAttribute> behavior_without_behavior_attribute;
+    Behaves_like<BehaviorsWithoutBehaviorsAttribute> behavior_without_behavior_attribute;
   }
   
   [Subject(tag.example)]
-  public class context_with_behavior_with_establish
+  public class context_with_behaviors_with_establish
   {
     public static bool LocalSpecRan;
 
     It should_run = () => LocalSpecRan = true;
-    Behaves_like<BehaviorWithEstablish> behavior_with_establish;
+    Behaves_like<BehaviorsWithEstablish> behavior_with_establish;
   }
   
   [Subject(tag.example)]
-  public class context_with_behavior_with_because
+  public class context_with_behaviors_with_because
   {
     public static bool LocalSpecRan;
 
     It should_run = () => LocalSpecRan = true;
-    Behaves_like<BehaviorWithBecause> behavior_with_because;
+    Behaves_like<BehaviorsWithBecause> behavior_with_because;
   }
   
-  [Behavior]
-  public class Behavior
+  [Behaviors]
+  public class Behaviors
   {
     public static bool BehaviorSpecRan;
 
@@ -83,16 +83,16 @@ namespace Machine.Specifications.Specs
   }
   
   [Ignore]
-  [Behavior]
-  public class IgnoredBehavior
+  [Behaviors]
+  public class IgnoredBehaviors
   {
     public static bool BehaviorSpecRan;
 
     It should_not_run = () => BehaviorSpecRan = true;
   }
 
-  [Behavior]
-  public class BehaviorWithIgnoredSpec
+  [Behaviors]
+  public class BehaviorsWithIgnoredSpec
   {
     public static bool BehaviorSpecRan;
 
@@ -100,27 +100,27 @@ namespace Machine.Specifications.Specs
     It should_not_run = () => BehaviorSpecRan = true;
   }
 
-  [Behavior]
-  public class BehaviorWithNestedBehavior
+  [Behaviors]
+  public class BehaviorsWithNestedBehavior
   {
     Behaves_like<object> diallowed_nested_behavior;
   }
   
-  public class BehaviorWithoutBehaviorAttribute
+  public class BehaviorsWithoutBehaviorsAttribute
   {
     public static bool BehaviorSpecRan;
 
     It should_not_run = () => BehaviorSpecRan = true;
   }
 
-  [Behavior]
-  public class BehaviorWithEstablish
+  [Behaviors]
+  public class BehaviorsWithEstablish
   {
     Establish context;
   }
   
-  [Behavior]
-  public class BehaviorWithBecause
+  [Behaviors]
+  public class BehaviorsWithBecause
   {
     Because of;
   }

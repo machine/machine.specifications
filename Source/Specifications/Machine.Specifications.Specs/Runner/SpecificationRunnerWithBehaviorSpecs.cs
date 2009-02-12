@@ -8,14 +8,14 @@ namespace Machine.Specifications.Specs.Runner
   {
     Establish context = () =>
       {
-        context_with_behavior.LocalSpecRan = false;
-        Behavior.BehaviorSpecRan = false;
+        context_with_behaviors.LocalSpecRan = false;
+        Behaviors.BehaviorSpecRan = false;
       };
 
-    Because of = Run<context_with_behavior>;
+    Because of = Run<context_with_behaviors>;
 
-    It should_run_the_context_spec = () => context_with_behavior.LocalSpecRan.ShouldBeTrue();
-    It should_run_the_behavior_spec = () => Behavior.BehaviorSpecRan.ShouldBeTrue();
+    It should_run_the_context_spec = () => context_with_behaviors.LocalSpecRan.ShouldBeTrue();
+    It should_run_the_behavior_spec = () => Behaviors.BehaviorSpecRan.ShouldBeTrue();
   }
   
   [Subject("Specification Runner")]
@@ -24,14 +24,14 @@ namespace Machine.Specifications.Specs.Runner
   {
     Establish context = () =>
       {
-        context_with_behavior_where_the_behavior_field_is_ignored.LocalSpecRan = false;
-        Behavior.BehaviorSpecRan = false;
+        context_with_behaviors_where_the_behavior_field_is_ignored.LocalSpecRan = false;
+        Behaviors.BehaviorSpecRan = false;
       };
 
-    Because of = Run<context_with_behavior_where_the_behavior_field_is_ignored>;
+    Because of = Run<context_with_behaviors_where_the_behavior_field_is_ignored>;
 
-    It should_run_the_context_spec = () => context_with_behavior_where_the_behavior_field_is_ignored.LocalSpecRan.ShouldBeTrue();
-    It should_not_run_the_behavior_spec = () => Behavior.BehaviorSpecRan.ShouldBeFalse();
+    It should_run_the_context_spec = () => context_with_behaviors_where_the_behavior_field_is_ignored.LocalSpecRan.ShouldBeTrue();
+    It should_not_run_the_behavior_spec = () => Behaviors.BehaviorSpecRan.ShouldBeFalse();
   }
   
   [Subject("Specification Runner")]
@@ -40,14 +40,14 @@ namespace Machine.Specifications.Specs.Runner
   {
     Establish context = () =>
       {
-        context_with_behavior_where_the_behavior_is_ignored.LocalSpecRan = false;
-        IgnoredBehavior.BehaviorSpecRan = false;
+        context_with_behaviors_where_the_behavior_is_ignored.LocalSpecRan = false;
+        IgnoredBehaviors.BehaviorSpecRan = false;
       };
 
-    Because of = Run<context_with_behavior_where_the_behavior_is_ignored>;
+    Because of = Run<context_with_behaviors_where_the_behavior_is_ignored>;
 
-    It should_run_the_context_spec = () => context_with_behavior_where_the_behavior_is_ignored.LocalSpecRan.ShouldBeTrue();
-    It should_not_run_the_behavior_spec = () => IgnoredBehavior.BehaviorSpecRan.ShouldBeFalse();
+    It should_run_the_context_spec = () => context_with_behaviors_where_the_behavior_is_ignored.LocalSpecRan.ShouldBeTrue();
+    It should_not_run_the_behavior_spec = () => IgnoredBehaviors.BehaviorSpecRan.ShouldBeFalse();
   }
   
   [Subject("Specification Runner")]
@@ -56,14 +56,14 @@ namespace Machine.Specifications.Specs.Runner
   {
     Establish context = () =>
       {
-        context_with_behavior_where_the_behavior_specs_are_ignored.LocalSpecRan = false;
-        BehaviorWithIgnoredSpec.BehaviorSpecRan = false;
+        context_with_behaviors_where_the_behavior_specs_are_ignored.LocalSpecRan = false;
+        BehaviorsWithIgnoredSpec.BehaviorSpecRan = false;
       };
 
-    Because of = Run<context_with_behavior_where_the_behavior_specs_are_ignored>;
+    Because of = Run<context_with_behaviors_where_the_behavior_specs_are_ignored>;
 
-    It should_run_the_context_spec = () => context_with_behavior_where_the_behavior_specs_are_ignored.LocalSpecRan.ShouldBeTrue();
-    It should_not_run_the_behavior_spec = () => BehaviorWithIgnoredSpec.BehaviorSpecRan.ShouldBeFalse();
+    It should_run_the_context_spec = () => context_with_behaviors_where_the_behavior_specs_are_ignored.LocalSpecRan.ShouldBeTrue();
+    It should_not_run_the_behavior_spec = () => BehaviorsWithIgnoredSpec.BehaviorSpecRan.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
@@ -83,7 +83,7 @@ namespace Machine.Specifications.Specs.Runner
   {
     static Exception Exception;
 
-    Because of = () => { Exception = Catch.Exception(Run<context_with_behavior_without_behavior_attribute>); };
+    Because of = () => { Exception = Catch.Exception(Run<context_with_behaviors_without_behaviors_attribute>); };
 
     It should_fail = () => Exception.ShouldBeOfType<SpecificationUsageException>();
   }
@@ -94,7 +94,7 @@ namespace Machine.Specifications.Specs.Runner
   {
     static Exception Exception;
 
-    Because of = () => { Exception = Catch.Exception(Run<context_with_behavior_with_establish>); };
+    Because of = () => { Exception = Catch.Exception(Run<context_with_behaviors_with_establish>); };
 
     It should_fail = () => Exception.ShouldBeOfType<SpecificationUsageException>();
   }
@@ -105,7 +105,7 @@ namespace Machine.Specifications.Specs.Runner
   {
     static Exception Exception;
 
-    Because of = () => { Exception = Catch.Exception(Run<context_with_behavior_with_because>); };
+    Because of = () => { Exception = Catch.Exception(Run<context_with_behaviors_with_because>); };
 
     It should_fail = () => Exception.ShouldBeOfType<SpecificationUsageException>();
   }

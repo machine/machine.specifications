@@ -21,9 +21,9 @@ namespace Machine.Specifications.Factories
     {
       Type behaviorType = behaviorField.FieldType.GetGenericArguments().First();
 
-      if(!behaviorType.HasAttribute<BehaviorAttribute>())
+      if(!behaviorType.HasAttribute<BehaviorsAttribute>())
       {
-        throw new SpecificationUsageException("Behaviors require the BehaviorAttribute on the Behavior class.");
+        throw new SpecificationUsageException("Behaviors require the BehaviorsAttribute on the Behaviors class.");
       }
 
       object behaviorInstance = Activator.CreateInstance(behaviorType);
