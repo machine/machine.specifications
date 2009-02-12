@@ -32,7 +32,8 @@ namespace Machine.Specifications.Example.WithBehavior
     protected static IParser Parser;
   }
 
-  internal class DateTimeParsingBehavior
+  [Behaviors]
+  public class DateTimeParsingBehavior
   {
     protected static DateTime ParsedDate;
 
