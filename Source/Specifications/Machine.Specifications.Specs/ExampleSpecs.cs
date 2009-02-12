@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Machine.Specifications.Specs
@@ -147,6 +148,23 @@ namespace Machine.Specifications.Specs
     {
       Console.Out.WriteLine("Console.Out message in spec");
       Console.Error.WriteLine("Console.Error message in spec");
+    };
+  }
+
+  [Tags(tag.example)]
+  public class context_with_inner_exception
+  {
+    It should_throw = () =>
+    {
+      try
+      {
+        throw new Exception("INNER123");
+
+      }
+      catch (Exception err)
+      {
+        throw new TargetInvocationException(err);
+      }
     };
   }
 

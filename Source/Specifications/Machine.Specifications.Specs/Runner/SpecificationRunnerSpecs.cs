@@ -215,6 +215,17 @@ namespace Machine.Specifications.Specs.Runner
         "Console.Error message in cleanup\r\n");
   }
 
+  [Subject("Specification Runner")]
+  public class when_running_a_specification_that_throws_an_exception_with_an_inner_exception
+    : with_runner
+  {
+    Because of =()=>
+      Run<context_with_inner_exception>();
+
+    It should_include_the_inner_exception_in_the_result =()=>
+      testListener.LastResult.Exception.ToString().ShouldContain("INNER123");
+  }
+ 
   public class with_runner
   {
     static DefaultRunner runner;

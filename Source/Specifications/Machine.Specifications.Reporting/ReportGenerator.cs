@@ -10,11 +10,11 @@ namespace Machine.Specifications.Reporting
 {
 	public class ReportGenerator
 	{
-	  private static string _path;
-	  private static Dictionary<string, List<ContextInfo>> _contextsByAssembly;
-    private static Dictionary<ContextInfo, List<SpecificationInfo>> _specificationsByContext;
-    private static Dictionary<SpecificationInfo, Result> _resultsBySpecification;
-	  private static bool _showTimeInfo;
+	  private string _path;
+	  private Dictionary<string, List<ContextInfo>> _contextsByAssembly;
+    private Dictionary<ContextInfo, List<SpecificationInfo>> _specificationsByContext;
+    private Dictionary<SpecificationInfo, Result> _resultsBySpecification;
+	  private bool _showTimeInfo;
 	  private const string noContextKey = "none";
 
 	  public ReportGenerator()
@@ -36,29 +36,24 @@ namespace Machine.Specifications.Reporting
 	    _showTimeInfo = showTimeInfo;
 	  }
 
-
     public virtual void WriteReports()
 		{
-
       if (IsProvidedPathAValidDirectoryPath(_path))
       {
-        GenerateAndWriteReportsWhenProvidedAValidDirectoryPath();
+        WriteReportsToDirectory();
       }
       else if (IsProvidedPathAValidFilePath(_path))
       {
-        GenerateAndWriteReportsWhenProvidedAValidFilePath();
+        WriteReportsToFile();
       }
 		}
 
-	  void GenerateAndWriteReportsWhenProvidedAValidFilePath()
+	  void WriteReportsToFile()
 	  {
 	    string reportFilePath = _path;
 	    string generatedReport = GetTemplateHeader();
 
-	    _contextsByAssembly.Keys.ToList().ForEach(assembly =>
-	    {
-        generatedReport += Render(assembly, _contextsByAssembly[assembly]) + "<br><br>";
-	    });
+	    generatedReport += Render(_contextsByAssembly);
 
 	    generatedReport += GetTemplateFooter();
 
@@ -73,7 +68,7 @@ namespace Machine.Specifications.Reporting
       tw.Close();
 	  }
 
-	  void GenerateAndWriteReportsWhenProvidedAValidDirectoryPath()
+	  void WriteReportsToDirectory()
 	  {
 
 
@@ -81,7 +76,10 @@ namespace Machine.Specifications.Reporting
 	    _contextsByAssembly.Keys.ToList().ForEach(assembly =>
 	    {
         string generatedReport = GetTemplateHeader();
-	      generatedReport += Render(assembly, _contextsByAssembly[assembly]);
+	      var oneAssemblyMap = new Dictionary<string, List<ContextInfo>>();
+	      oneAssemblyMap[assembly] = _contextsByAssembly[assembly];
+
+	      generatedReport += Render(oneAssemblyMap);
 	      generatedReport += GetTemplateFooter();
 
 	      string reportFilePath = GetReportFilePath(assembly);
@@ -153,18 +151,29 @@ namespace Machine.Specifications.Reporting
       return false;
     }
 
-	  public static string Render(string assemblyName, List<ContextInfo> contextsInAssembly)
+	  public string Render(Dictionary<string, List<ContextInfo>> contextsByAssembly)
 		{
 			StringBuilder reportBuilder = new StringBuilder();
 
-	    var contextsOrganizedByConcern = 
-        OrganizeContextsByConcern(contextsInAssembly);
+	    var contextsByConcern = new Dictionary<string, Dictionary<string, List<ContextInfo>>>();
 
+	    contextsByAssembly.Keys.ToList().ForEach(assembly =>
+	    {
+  	    contextsByConcern[assembly] = 
+          OrganizeContextsByConcern(contextsByAssembly[assembly]);
 
-      RenderTitle(assemblyName, contextsOrganizedByConcern, reportBuilder);
+	      RenderTitle(assembly, contextsByConcern[assembly], reportBuilder);
+	    });
+			RenderHR(reportBuilder);
 			RenderHR(reportBuilder);
 
-			RenderConcerns(contextsOrganizedByConcern, reportBuilder);
+	    contextsByAssembly.Keys.ToList().ForEach(assembly =>
+	    {
+			  RenderConcerns(contextsByConcern[assembly], reportBuilder);
+	      reportBuilder.AppendLine("<br><br>");
+	    });
+
+			RenderHR(reportBuilder);
 
 			string reportBody = reportBuilder.ToString();
 
@@ -198,7 +207,7 @@ namespace Machine.Specifications.Reporting
 	    organized[context.Concern].Add(context);
 	  }
 
-	  private static void RenderTitle(string assemblyName, Dictionary<string,List<ContextInfo>> contextsByConcern, StringBuilder reportBuilder)
+	  private void RenderTitle(string assemblyName, Dictionary<string,List<ContextInfo>> contextsByConcern, StringBuilder reportBuilder)
 		{
 	    string concernsCaption = ConcernsCaption(contextsByConcern);
 			string contextsCaption = ContextsCaption(contextsByConcern);
@@ -221,7 +230,8 @@ namespace Machine.Specifications.Reporting
 	    retVal = @"<i>Generated on " + now.ToLongDateString() + " at " + now.ToLongTimeString() + "</i>";
 	    return retVal;
 	  }
-	  static int CountOfSpecsWithDesiredResultIn(Dictionary<string, List<ContextInfo>> contextsByConcern, Status status)
+
+	  int CountOfSpecsWithDesiredResultIn(Dictionary<string, List<ContextInfo>> contextsByConcern, Status status)
 	  {
 	    var niResults = 0;
       contextsByConcern.Keys.ToList().ForEach(concern =>
@@ -229,7 +239,7 @@ namespace Machine.Specifications.Reporting
 	    return niResults;
 	  }
 
-    private static int CountOfSpecsWithDesiredResultIn(List<ContextInfo> contexts, Status status)
+    private int CountOfSpecsWithDesiredResultIn(List<ContextInfo> contexts, Status status)
     {
       var niResults = 0;
       contexts.ForEach(context =>
@@ -237,7 +247,7 @@ namespace Machine.Specifications.Reporting
       return niResults;
     }
 
-    private static int CountOfSpecsWithDesiredResultIn(ContextInfo context, Status status)
+    private int CountOfSpecsWithDesiredResultIn(ContextInfo context, Status status)
     {
       var niResults = 0;
       niResults += iterateOverSpecsAndReturnThoseThatMatchResults(context, status).Count;
@@ -249,7 +259,7 @@ namespace Machine.Specifications.Reporting
       return count > 0 ? String.Format(", <span class=\""+formatClass+"\">{0} {1}</span>", count, Pluralize(itemToPluralize, count)) : string.Empty;
     }
 
-	  private static List<Result> iterateOverSpecsAndReturnThoseThatMatchResults(ContextInfo context, Status status)
+	  private List<Result> iterateOverSpecsAndReturnThoseThatMatchResults(ContextInfo context, Status status)
     {
       var niResults = new List<Result>();
       _specificationsByContext[context].ForEach(spec =>
@@ -260,7 +270,7 @@ namespace Machine.Specifications.Reporting
       return niResults;
     }
 
-	  private static void RenderConcerns(Dictionary<string, List<ContextInfo>> contextsByConcern, StringBuilder reportBuilder)
+	  private void RenderConcerns(Dictionary<string, List<ContextInfo>> contextsByConcern, StringBuilder reportBuilder)
 		{
 			foreach (string concern in contextsByConcern.Keys)
 			{
@@ -268,13 +278,13 @@ namespace Machine.Specifications.Reporting
 			}
 		}
 
-		private static void RenderConcern(string concernName, List<ContextInfo> contextsInConcern, StringBuilder reportBuilder)
+		private void RenderConcern(string concernName, List<ContextInfo> contextsInConcern, StringBuilder reportBuilder)
 		{
       string concernText = RenderConcern(concernName, contextsInConcern);
 			reportBuilder.Append(concernText);
 		}
 
-    public static string RenderConcern(string concernName, List<ContextInfo> contextsInConcern)
+    public string RenderConcern(string concernName, List<ContextInfo> contextsInConcern)
 		{
 			StringBuilder reportBuilder = new StringBuilder();
 
@@ -289,7 +299,7 @@ namespace Machine.Specifications.Reporting
 			return reportBuilder.ToString();
 		}
 
-		public static string RenderConcernHeader(string concernName, List<ContextInfo> contexts)
+		public string RenderConcernHeader(string concernName, List<ContextInfo> contexts)
 		{
 			string contextsCaption = ContextsCaption(contexts);
 			string specificationsCaption = SpecificationsCaption(contexts);
@@ -300,13 +310,13 @@ namespace Machine.Specifications.Reporting
       return String.Format("<h2 class=\"concern\">{0} specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class=\"count\">{1}, {2}{3}{4}</span></h3>", concernName, contextsCaption, specificationsCaption, specFailuresCaption,specNotImplCaption);
 		}
 
-		private static void RenderContexts(List<ContextInfo> contexts, StringBuilder reportBuilder)
+		private void RenderContexts(List<ContextInfo> contexts, StringBuilder reportBuilder)
 		{
       contexts.ForEach(context =>
         reportBuilder.Append(RenderContext(context)));
 		}
 
-		public static string RenderContext(ContextInfo context)
+		public string RenderContext(ContextInfo context)
 		{
 			StringBuilder reportBuilder = new StringBuilder();
 
@@ -330,7 +340,7 @@ namespace Machine.Specifications.Reporting
 			return reportBuilder.ToString();
 		}
 
-		public static string RenderContextHeader(ContextInfo context)
+		public string RenderContextHeader(ContextInfo context)
 		{
 	    string specFailuresCaption = FormatCountString(CountOfSpecsWithDesiredResultIn(context, Status.Failing),"failure", "failure");
 	    string specNotImplCaption = FormatCountString(CountOfSpecsWithDesiredResultIn(context, Status.NotImplemented),"not implemented spec", "notimplemented");
@@ -339,7 +349,7 @@ namespace Machine.Specifications.Reporting
 			return String.Format("<h3 class=\"context\">{0}&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class=\"count\">{1}{2}{3}</span></h4>", context.Name, specificationsCaption, specFailuresCaption, specNotImplCaption);
 		}
 
-		public static string RenderSpecificationList(List<SpecificationInfo> specifications)
+		public string RenderSpecificationList(List<SpecificationInfo> specifications)
 		{
 			StringBuilder specificationListBuilder = new StringBuilder();
 
@@ -354,8 +364,8 @@ namespace Machine.Specifications.Reporting
             break;
           case Status.Failing:
             specificationListItem = String.Format("\t<li>{0}", specification.Name + " <div class=\"failure\">&lt;--FAILED</div><br/>");
-            specificationListItem += "<p class=\"exception_type\">" + result.Exception.GetType().ToString();
-            specificationListItem += "<pre class=\"exception_message\">" + "Message:" + Environment.NewLine + result.Exception.Message + Environment.NewLine + "Stack Trace:" + Environment.NewLine + result.Exception.StackTrace + "</pre></p>";
+            specificationListItem += "<p class=\"exception_type\">" + result.Exception.GetType();
+            specificationListItem += "<pre class=\"exception_message\">" + result.Exception + "</pre></p>";
             break;
           case Status.NotImplemented:
             specificationListItem = String.Format("\t<li>{0}", specification.Name + " <div class=\"notimplemented\">&lt;--NOT IMPLEMENTED</div><br/>");
@@ -491,7 +501,7 @@ namespace Machine.Specifications.Reporting
 			return specificationCaption;
 		}
 
-    private static string SpecificationsCaption(Dictionary<string,List<ContextInfo>> contextsByConcern)
+    private string SpecificationsCaption(Dictionary<string,List<ContextInfo>> contextsByConcern)
     {
       int specificationCount = 0;
 
@@ -506,7 +516,7 @@ namespace Machine.Specifications.Reporting
       return SpecificationsCaption(specificationCount);
     }
 
-		private static string SpecificationsCaption(List<ContextInfo> contexts)
+		private string SpecificationsCaption(List<ContextInfo> contexts)
 		{
 		  int specificationCount = 0;
 			contexts.ForEach(context =>
@@ -516,7 +526,7 @@ namespace Machine.Specifications.Reporting
       return SpecificationsCaption(specificationCount);
 		}
 
-    private static string SpecificationsCaption(ContextInfo context)
+    private string SpecificationsCaption(ContextInfo context)
     {
       return SpecificationsCaption(_specificationsByContext[context].Count);
     }
