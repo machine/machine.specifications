@@ -21,17 +21,14 @@ namespace Machine.Specifications.Factories
     {
       Type behaviorType = behaviorField.FieldType.GetGenericArguments().First();
 
-      if(behaviorType.GetCustomAttributes(typeof(BehaviorAttribute), true).Length != 1)
+      if(!behaviorType.HasAttribute<BehaviorAttribute>())
       {
         throw new SpecificationUsageException("Behaviors require the BehaviorAttribute on the Behavior class.");
       }
 
       object behaviorInstance = Activator.CreateInstance(behaviorType);
 
-      var fieldInfos = behaviorInstance.GetType().GetPrivateFields();
-
-      if (fieldInfos.Any(info => info.FieldType.IsGenericType &&
-                                 info.FieldType.GetGenericTypeDefinition() == typeof(Behaves_like<>)))
+      if (behaviorType.GetPrivateFieldsWith(typeof(Behaves_like<>)).Any())
       {
         throw new SpecificationUsageException("You cannot nest Behaviors.");
       }
@@ -40,15 +37,7 @@ namespace Machine.Specifications.Factories
                       behaviorInstance.GetType().HasAttribute<IgnoreAttribute>();
       var behavior = new Behavior(behaviorInstance, context, isIgnored);
 
-      List<FieldInfo> itFieldInfos = new List<FieldInfo>();
-      foreach (FieldInfo info in fieldInfos)
-      {
-        if (info.FieldType == typeof(It))
-        {
-          itFieldInfos.Add(info);
-        }
-      }
-
+      IEnumerable<FieldInfo> itFieldInfos = behaviorType.GetPrivateFieldsOfType<It>();
       CreateBehaviorSpecifications(itFieldInfos, behavior);
 
       return behavior;
