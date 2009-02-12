@@ -23,24 +23,24 @@ namespace Machine.Specifications.Factories
 
       if(!behaviorType.HasAttribute<BehaviorsAttribute>())
       {
-        throw new SpecificationUsageException("Behaviors require the BehaviorsAttribute on the Behaviors class.");
+        throw new SpecificationUsageException("Behaviors require the BehaviorsAttribute on the type containing the Specifications. Attribute is missing from " + behaviorType.FullName);
       }
 
       object behaviorInstance = Activator.CreateInstance(behaviorType);
 
       if (behaviorType.GetPrivateFieldsOfType<Establish>().Any())
       {
-        throw new SpecificationUsageException("You cannot have Establishs on Behaviors.");
+        throw new SpecificationUsageException("You cannot have Establishs on Behaviors. Establish found in " + behaviorType.FullName);
       }
       
       if (behaviorType.GetPrivateFieldsOfType<Because>().Any())
       {
-        throw new SpecificationUsageException("You cannot have Becauses on Behaviors.");
+        throw new SpecificationUsageException("You cannot have Becauses on Behaviors. Because found in " + behaviorType.FullName);
       }
 
       if (behaviorType.GetPrivateFieldsWith(typeof(Behaves_like<>)).Any())
       {
-        throw new SpecificationUsageException("You cannot nest Behaviors.");
+        throw new SpecificationUsageException("You cannot nest Behaviors. Nested Behaviors found in " + behaviorType.FullName);
       }
 
       var isIgnored = behaviorField.HasAttribute<IgnoreAttribute>() ||
