@@ -87,4 +87,15 @@ namespace Machine.Specifications.Specs.Runner
 
     It should_fail = () => Exception.ShouldBeOfType<SpecificationUsageException>();
   }
+  
+  [Subject("Specification Runner")]
+  public class when_running_a_context_with_behaviors_with_establish
+    : with_runner
+  {
+    static Exception Exception;
+
+    Because of = () => { Exception = Catch.Exception(Run<context_with_behavior_with_establish>); };
+
+    It should_fail = () => Exception.ShouldBeOfType<SpecificationUsageException>();
+  }
 }

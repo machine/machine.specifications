@@ -28,6 +28,11 @@ namespace Machine.Specifications.Factories
 
       object behaviorInstance = Activator.CreateInstance(behaviorType);
 
+      if (behaviorType.GetPrivateFieldsOfType<Establish>().Any())
+      {
+        throw new SpecificationUsageException("You cannot have Establishs on Behaviors.");
+      }
+
       if (behaviorType.GetPrivateFieldsWith(typeof(Behaves_like<>)).Any())
       {
         throw new SpecificationUsageException("You cannot nest Behaviors.");

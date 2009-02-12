@@ -56,6 +56,15 @@ namespace Machine.Specifications.Specs
     Behaves_like<BehaviorWithoutBehaviorAttribute> behavior_without_behavior_attribute;
   }
   
+  [Subject(tag.example)]
+  public class context_with_behavior_with_establish
+  {
+    public static bool LocalSpecRan;
+
+    It should_run = () => LocalSpecRan = true;
+    Behaves_like<BehaviorWithEstablish> behavior_with_establish;
+  }
+  
   [Behavior]
   public class Behavior
   {
@@ -93,5 +102,11 @@ namespace Machine.Specifications.Specs
     public static bool BehaviorSpecRan;
 
     It should_not_run = () => BehaviorSpecRan = true;
+  }
+
+  [Behavior]
+  public class BehaviorWithEstablish
+  {
+    Establish context;
   }
 }
