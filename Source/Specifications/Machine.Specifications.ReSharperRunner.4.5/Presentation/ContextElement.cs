@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 
+using JetBrains.Application;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Filtering;
 using JetBrains.ReSharper.Psi;
@@ -53,9 +54,12 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
         return null;
       }
 
-      IDeclarationsScope scope = DeclarationsScopeFactory.SolutionScope(solution, true);
-      IDeclarationsCache cache = PsiManager.GetInstance(solution).GetDeclarationsCache(scope, true);
-      return cache.GetTypeElementByCLRName(GetTypeClrName());
+      using (ReadLockCookie.Create())
+      {
+        IDeclarationsScope scope = DeclarationsScopeFactory.SolutionScope(solution, false);
+        IDeclarationsCache cache = PsiManager.GetInstance(solution).GetDeclarationsCache(scope, true);
+        return cache.GetTypeElementByCLRName(GetTypeClrName());
+      }
     }
 
     public override string GetKind()

@@ -66,7 +66,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
       using (ReadLockCookie.Create())
       {
-        IDeclarationsScope scope = DeclarationsScopeFactory.SolutionScope(solution, true);
+        IDeclarationsScope scope = DeclarationsScopeFactory.SolutionScope(solution, false);
         IDeclarationsCache cache = PsiManager.GetInstance(solution).GetDeclarationsCache(scope, true);
         return cache.GetTypeElementByCLRName(_declaringTypeName);
       }

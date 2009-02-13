@@ -58,18 +58,17 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     protected ITypeElement GetDeclaredType()
     {
-      IProject project = GetProject();
-      if (project == null)
+      ISolution solution = GetSolution();
+      if (solution == null)
       {
         return null;
       }
 
-      PsiManager manager = PsiManager.GetInstance(project.GetSolution());
       using (ReadLockCookie.Create())
       {
-        DeclarationsCacheScope scope = DeclarationsCacheScope.ProjectScope(project, true);
-        IDeclarationsCache declarationsCache = manager.GetDeclarationsCache(scope, true);
-        return declarationsCache.GetTypeElementByCLRName(_declaringTypeName);
+        DeclarationsCacheScope scope = DeclarationsCacheScope.SolutionScope(solution, false);
+        IDeclarationsCache cache = PsiManager.GetInstance(solution).GetDeclarationsCache(scope, true);
+        return cache.GetTypeElementByCLRName(_declaringTypeName);
       }
     }
 
