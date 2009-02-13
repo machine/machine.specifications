@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JetBrains.ReSharper.CodeInsight.Services</name>
+    </assembly>
+    <members>
+        <member name="M:JetBrains.ReSharper.CodeInsight.Services.Util.ActionUtil.CommitAndWaitForCaches(JetBrains.ReSharper.Psi.PsiManager,JetBrains.ActionManagement.IActionHandler)">
+            <summary>
+            When a PSI-consuming action is about to be executed, commits the documents and waits for the caches to become idle, displaying the cancelable modal UI progress.
+            </summary>
+            <param name="manager">PSI manager to wait for, identifies the solution.</param>
+            <param name="actionhandler">Action handler from which the action name is retrieved, to display in the progress UI.</param>
+            <returns>Whether the caches are, finally, idle (the wait might be cancelled).</returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeInsight.Services.Util.ActionUtil.ExecuteWithCachesReady(JetBrains.ReSharper.Psi.PsiManager,System.String,System.Action)">
+            <summary>
+            When a PSI-consuming action is about to be executed, commits the documents and waits for the caches to become idle, displaying the cancelable modal UI progress.
+            </summary>
+            <param name="manager">PSI manager to wait for, identifies the solution.</param>
+            <param name="action">Activity to execute if the caches are ready OK.</param>
+            <param name="title">Progress title.</param>
+            <returns>Whether the caches are, finally, idle (the wait might be cancelled).</returns>
+        </member>
+        <member name="T:JetBrains.ReSharper.CodeInsight.Services.src.Util.CodeInsightPropertyValidator">
+            <summary>
+            Performs validation of <see cref="T:JetBrains.DataFlow.IProperty`1"/> in the aspect of valid language names, and such.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeInsight.Services.src.Util.CodeInsightPropertyValidator.CreateNewNameValidator(JetBrains.DataFlow.IProperty{System.String},JetBrains.ReSharper.Psi.IElementPointer{JetBrains.ReSharper.Psi.IDeclaredElement},System.String)">
+            <summary>
+            Checks whether the string property value is a valid new name for an identifier.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeInsight.Services.src.Util.CodeInsightPropertyValidator.CreateNewNameValidator(JetBrains.DataFlow.IProperty{System.String},JetBrains.ReSharper.Psi.IDeclaredElement,System.String)">
+            <summary>
+            Checks whether the string property value is a valid new name for an identifier.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.CodeInsight.Services.src.Util.CodeInsightPropertyValidator.CreateNewNameValidator(JetBrains.DataFlow.IProperty{System.String},JetBrains.ReSharper.Psi.PsiLanguageType,System.String)">
+            <summary>
+            Checks whether the string property value is a valid new name for an identifier.
+            </summary>
+        </member>
+    </members>
+</doc>

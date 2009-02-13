@@ -1,0 +1,2733 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JetBrains.ReSharper.Feature.Services</name>
+    </assembly>
+    <members>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Bulbs.IBulbAction.IsAvailable(JetBrains.Util.IUserDataHolder)">
+            <summary>
+            Check if this action is available at the constructed context.
+            Actions could store precalculated info in <paramref name="cache"/> to share it between different actions
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Bulbs.IPopupQuickFix">
+            <summary>
+            QuickFix that appears in popup window. It NEVER appears in bulb menu.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Bulbs.IPopupMenuBulbAction">
+            <summary>
+            BulbAction that can appears as submenu
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Daemon.ContextActionTable.BuildCacheData(JetBrains.ProjectModel.ISolution,JetBrains.TextControl.ITextControl)">
+            <summary>
+            Cache some data using <see cref="T:JetBrains.ReSharper.Daemon.IContextActionDataBuilder"/> in UI thread
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Daemon.IContextActionDataBuilder">
+            <summary>
+            Since context actions calculates at working thread, some data must be pre-calculated in UI thread (e.g. using VS API).
+            Using class marked with <see cref="T:JetBrains.ReSharper.Daemon.ContextActionDataBuilderAttribute"/> 
+            and implementing <see cref="T:JetBrains.ReSharper.Daemon.IContextActionDataBuilder"/> interface.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Daemon.IContextActionDataBuilder.Build(JetBrains.ProjectModel.ISolution,JetBrains.TextControl.ITextControl)">
+            <summary>
+            Calculates and returns IContextActionDataProvider
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Daemon.IContextActionInfo">
+            <summary>
+            Info about loaded context action
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.IContextActionInfo.Type">
+            <summary>
+            Class type which implements this action
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.IContextActionInfo.ParameterType">
+            <summary>
+            Type of CA contructor parameter
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Daemon.IDisableHighlightingActionProvider">
+            <summary>
+            Class should be marked by <see cref="T:JetBrains.ReSharper.Daemon.DisableHighlightingActionProviderAttribute"/> attribute and should implement
+            <see cref="T:JetBrains.ReSharper.Daemon.IDisableHighlightingActionProvider"/> interface to be able to provide custom actions to disable any specific 
+            highlighting
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Daemon.DisableHighlightingActionProviderAttribute">
+            <summary>
+            Class should be marked by <see cref="T:JetBrains.ReSharper.Daemon.DisableHighlightingActionProviderAttribute"/> attribute and should implement
+            <see cref="T:JetBrains.ReSharper.Daemon.IDisableHighlightingActionProvider"/> interface to be able to provide custom actions to disable any specific 
+            highlighting
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Daemon.QuickFixTable.DisableWarningActions(JetBrains.ReSharper.Daemon.IHighlighting,JetBrains.DocumentModel.DocumentRange)">
+            <summary>
+            Get actions which could disable given specific highlighting
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.CodeCleanup.CodeCleanup.myRecentlyLoadedProfiles">
+            <summary>
+            Need to memorize recently loaded profile XML, since not all modules couls be presebt while loading XML
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.CodeCleanup.CodeCleanupModuleAttribute.ModulesBefore">
+            <summary>
+            Modules which should precede this
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.CodeCleanup.CodeCleanupModuleAttribute.ModulesAfter">
+            <summary>
+            Modules which shoud follow this
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.CodeCleanup.ICodeCleanupModule.SetDefaultSetting(JetBrains.ReSharper.Feature.Services.CodeCleanup.CodeCleanupProfile,JetBrains.ReSharper.Feature.Services.CodeCleanup.CodeCleanup.DefaultProfileType)">
+            <summary>
+            Get default setting for given profile type
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.CodeCleanup.ICodeCleanupModule.IsAvailable(JetBrains.ProjectModel.IProjectFile)">
+            <summary>
+            Check if this module can handle given project file
+            </summary>
+            <param name="projectFile"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.CodeCleanup.ICodeCleanupModule.Process(JetBrains.ProjectModel.IProjectFile,JetBrains.ReSharper.Psi.IPsiRangeMarker,JetBrains.ReSharper.Feature.Services.CodeCleanup.CodeCleanupProfile,System.Boolean@,JetBrains.Application.Progress.IProgressIndicator)">
+            <summary>
+            Process clean-up on file. if <paramref name="range"/> is <see cref="F:JetBrains.DocumentModel.DocumentRange.InvalidRange"/>, then process the whole file
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.CodeCleanup.ICodeCleanupModule.LanguageType">
+            <summary>
+            Get the language this module can operate
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.CodeCleanup.ICodeCleanupModule.Descriptors">
+            <summary>
+            Get the collection of option descriptors
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.CodeCleanup.ICodeCleanupModule.IsAvailableOnSelection">
+            <summary>
+            Check if this module is available on selection, or on the whole file
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.CodeCompletion.CodeCompletionSettings">
+            <summary>
+            Maintains code completion options
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.CodeCompletion.CodeCompletionSettings.HighlightImmediateMembers">
+            <summary>
+            Note: this property is no more configurable thru the UI.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.CodeCompletion.CodeCompletionType">
+            <summary>
+            Defines possible code completion types
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.CodeCompletion.CodeCompletionUtil.IterateStaticMembers(JetBrains.ReSharper.Psi.ITypeElement,JetBrains.ReSharper.Psi.Resolve.ISubstitution,JetBrains.ReSharper.Psi.Tree.IElement,System.Collections.Generic.IEnumerable{JetBrains.ReSharper.Psi.ExpectedTypes.ExpectedType})">
+            <summary>
+            Enumerate static members in given type element, which type is given, and which are visible from given source point
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.CodeCompletion.CompletionStatisticsManager">
+            <summary>
+            Tracks statistics of choosing members in completion.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.CodeCompletion.CompletionStatisticsManager.PriorityStringList">
+            <summary>
+            Represents the list with priorities. It is sorted by priorities.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.CodeCompletion.CompletionStatisticsManager.PriorityStringList.myPriorities">
+            <summary>
+            Maps items to their priorities
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.CodeCompletion.CompletionStatisticsManager.PriorityStringList.IncreasePriority(System.String)">
+            <summary>
+            Increases priority of the specified item by 1
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.CodeCompletion.ICodeCompletionHost.InvokeHostCodeCompletion">
+            <summary>
+            Invokes host completion in active text control
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.CodeCompletion.SmartCompletionPolicy">
+            <summary>
+            Completion policy for smart completion. Takes into account name corellation, etc.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.CodeCompletion.StatisticalCompletionPolicy">
+            <summary>
+            Completion suggestion policy based on statistics
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Comment.IBlockCommentActionProvider.GetBlockComment(JetBrains.ReSharper.Psi.Parsing.CachingLexer)">
+            <summary>
+            Identifies block comment range, even if it is not a single token.
+            Lexer pos will be saved and resored by the caller
+            </summary>
+            <param name="lexer"></param>
+            <returns>Invalid range if lexer is not positioned in block comment</returns>
+        </member>
+        <member name="F:JetBrains.ReSharper.Daemon.DaemonState.HIDDEN">
+            <summary>
+            Daemon doesn't need error stripe for given document
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Daemon.DaemonState.UNSUPPORTED">
+            <summary>
+            Daemon needs error stripe, but doesn't support error state
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Daemon.DaemonState.DISABLED">
+            <summary>
+            Daemon is switched off fo given document
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Daemon.DaemonState.INVALIDATED">
+            <summary>
+            Daemon state is not valid for this document (i.e. something changed since last analysis)
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Daemon.DaemonState.IN_PROGRESS">
+            <summary>
+            Daemon analysis is currently running
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Daemon.DaemonState.UP_TO_DATE">
+            <summary>
+            Daemon state is up-to-date for given document
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Daemon.Daemon">
+            <summary>
+            Class managing background code analysis
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Daemon.Daemon.State(JetBrains.DocumentModel.IDocument)">
+            <summary>
+            Get the daemon state for the given document
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Daemon.Daemon.ForceReHighlight(JetBrains.DocumentModel.IDocument)">
+            <summary>
+            Force async rehighligting process for given document
+            </summary>
+            <returns><c>false</c> if daemon wasn't started</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:JetBrains.ReSharper.Daemon.Daemon.Suspended" -->
+        <member name="E:JetBrains.ReSharper.Daemon.Daemon.DaemonStateChanged">
+            <summary>
+            Raised when DaemonState of any document is changed
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Daemon.DaemonTooltipProviderAttribute">
+            <summary>
+            Custom tooltip provider for the error.
+            Tooltip provider should be solution-level component and implement <see cref="T:JetBrains.TextControl.Markup.IHighlighterTooltip"/> interface
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Daemon.IconGutterMark">
+            <summary>
+            Summary description for ImplementsAndOverridesMarkerPainter.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Daemon.GutterMarkMenuLayouter">
+            <summary>
+            A factory for the gutter mark menu layouters.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Daemon.GutterMarkMenuLayouter.Create">
+            <summary>
+            Creates a layouter for the gutter mark menu.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Daemon.IInheritanceMarkOnGutter.OnClick(System.Drawing.Image)">
+            <summary>
+            Triggers when the gutter icon gets clicked.
+            Passes the icon that should be painted in the popup menu caption in case there's more than one alternative.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.HighlightingSettingsManager.Settings">
+            <summary>
+            TODO: make it solution-level, not shell-level
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.IDaemonProcess.CustomData">
+            <summary>
+            This property is used to pass custom specific data to daemon stages (such as exclude some analysis in test cases)
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Daemon.ErrorStripeRequest">
+            <summary>
+            Defines the requirements for each stage
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Daemon.ErrorStripeRequest.NONE">
+            <summary>
+            The stage doesn't require arror stripe at all
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Daemon.ErrorStripeRequest.STRIPE">
+            <summary>
+            Stage requires error stripe, but can't produce warnings/errors
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Daemon.ErrorStripeRequest.STRIPE_AND_ERRORS">
+            <summary>
+            The stage requires error stripe and can produce warnings/errors
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Daemon.IDaemonStage">
+            <summary>
+            Represents a "stage" in code analysis process.
+            Each stage should have a key that allows stages to refer to each other.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Daemon.IDaemonStage.CreateProcess(JetBrains.ReSharper.Daemon.IDaemonProcess)">
+            <summary>
+            Creates a code analysis process corresponding to this stage for analysing a file.
+            </summary>
+            <returns>Code analysis process to be executed or <c>null</c> if this stage is not available for this file.</returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.Daemon.IDaemonStage.NeedsErrorStripe(JetBrains.ProjectModel.IProjectFile)">
+            <summary>
+            Check the error stripe indicator necessity for this stage after processing given <paramref name="projectFile"/>
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Daemon.DaemonStageAttribute">
+            <summary>
+            Marks the class as a daemon stage for automatic registration
+            The marked clas should have default constructor and should implement 
+            <see cref="T:JetBrains.ReSharper.Daemon.IDaemonStage"/> interface
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.DaemonStageAttribute.InternalMode">
+            <summary>
+            If set to <c>true</c>, then daemon stage will be run only in internal mode
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.DaemonStageAttribute.GlobalAnalysisStage">
+            <summary>
+            If set to <c>true</c>, then daemon stage will be run after analysing the whole solution
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.DaemonStageAttribute.StagesBefore">
+            <summary>
+            Stages which should precede this
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.DaemonStageAttribute.StagesAfter">
+            <summary>
+            Stages which shoud follow this
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.DaemonStageAttribute.RunForInvisibleDocument">
+            <summary>
+            Determines if this stage should be run for solution-wide error analysis
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Daemon.HighlightingInfo">
+            <summary>
+            Highlighting information which should be returned form stage <see cref="T:JetBrains.ReSharper.Daemon.IDaemonStageProcess"/>
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Daemon.DaemonStageResult.#ctor(System.Collections.Generic.ICollection{JetBrains.ReSharper.Daemon.HighlightingInfo})">
+            <summary>
+            Set highlightings for the whole documents
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Daemon.DaemonStageResult.#ctor(System.Collections.Generic.ICollection{JetBrains.ReSharper.Daemon.HighlightingInfo},JetBrains.Util.TextRange)">
+            <summary>
+            Set highlightings for the specific text range
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.DaemonStageResult.Highlightings">
+            <summary>
+            Array of result highlightings to be added to the editor
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.DaemonStageResult.FullyRehighlighted">
+            <summary>
+            Indicates that the whole file was rehighlighted. 
+            If file was incrementally rehighlighted, then the range should be returned in <see cref="P:JetBrains.ReSharper.Daemon.DaemonStageResult.RehighlightedRange"/>
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.DaemonStageResult.RehighlightedRange">
+            <summary>
+            Range in the document for which the highlighting was recalculated. 
+            All old highlightingsthat are inside this range will be removed 
+            from the editor and replaced with the returned ones.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.DaemonStageResult.Layer">
+            <summary>
+            Highlighting key modifier, so one stage could produce highlgihtings for different layers. Usually shouldn't be used
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Daemon.IDaemonStageProcess">
+            <summary>
+            Represents a code analysis process corresponding to one stage when analysing one file
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Daemon.IDaemonStageProcess.Execute(System.Action{JetBrains.ReSharper.Daemon.DaemonStageResult})">
+            <summary>
+            Executes the process.
+            The process should check for <see cref="P:JetBrains.ReSharper.Daemon.IDaemonProcess.InterruptFlag"/> periodically (with intervals less than 100 ms)
+            and throw <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> if it is true. 
+            Failing to do so may cause the program to prevent user from typing while analysing the code.
+            Stage results should be passed to <param name="commiter"/>. If DaemonStageResult is <c>null</c>, it means that no highlightings available
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Daemon.OverlapResolveKind">
+            <summary>
+            Controls how individual highlightings will be shown if overlaps
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Daemon.Severity">
+            <summary>
+            the role of each highlighting
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.HighlgihtingAttributeBase.Severity">
+            <summary>
+            Get the severity of this highlighting
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.HighlgihtingAttributeBase.AttributeId">
+            <summary>
+            Attribute of this highlighting in the markup model
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.HighlgihtingAttributeBase.ColorOnStripe">
+            <summary>
+            Color on gutter for this highlighting.  Will be called only if Severity == INFO
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.HighlgihtingAttributeBase.OverlapResolve">
+            <summary>
+            Get the ovelap resolving policy for this highlighting
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.HighlgihtingAttributeBase.OverloadResolvePriority">
+            <summary>
+            Get the ovelap resolving priority for this highlighting (To resolve 2 highlightings with the same range and resolve policy)
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.HighlgihtingAttributeBase.ShowToolTipInStatusBar">
+            <summary>
+            Identifies if the tooltip message should be shown in the status bar when the cursor is over the highlighting
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Daemon.IHighlighting">
+            <summary>
+            Base interface for all error highlightings
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Daemon.IHighlighting.IsValid">
+            <summary>
+            Returns true if data (PSI, text ranges) associated with highlighting is valid
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.IHighlighting.ToolTip">
+            <summary>
+            Message for this highlighting to show in tooltip and in status bar (if <see cref="P:JetBrains.ReSharper.Daemon.HighlgihtingAttributeBase.ShowToolTipInStatusBar"/> is <c>true</c>)
+            To override the default mechanism of tooltip, mark the implementation class with 
+            <see cref="T:JetBrains.ReSharper.Daemon.DaemonTooltipProviderAttribute"/> attribute, and then this property will not be called
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.IHighlighting.ErrorStripeToolTip">
+            <summary>
+            Message for this highlighting to show in tooltip and in status bar (if <see cref="P:JetBrains.ReSharper.Daemon.HighlgihtingAttributeBase.ShowToolTipInStatusBar"/> is <c>true</c>)
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.IHighlighting.NavigationOffsetPatch">
+            <summary>
+            Specifies the offset from the Range.StartOffset to set the cursor to when navigating 
+            to this highlighting. Usually returns <c>0</c>
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Daemon.ICustomAttributeHighlighting">
+            <summary>
+            Identifies that highlighting attribute ID is computed at runtime
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Daemon.ICustomAttributeHighlighting.AttributeId">
+            <summary>
+            Attribute of this highlighting in the markup model
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Daemon.PublicIdAttribute">
+            <summary>
+            Highlighting should be marked by this attribute if it corresponds to compiler warning ID
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorContext">
+            <summary>
+            Context in which generation occures
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorContext.Kind">
+            <summary>
+            Gets context kind, like constructor, property, delegating members, etc
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorContext.Language">
+            <summary>
+            Language in which generation should occur
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorContext.Root">
+            <summary>
+            Root of the operation, usually ITypeDeclaration
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorContext.Anchor">
+            <summary>
+            Anchor of the operation, place where to put elements
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorContext.ProvidedElements">
+            <summary>
+            Elements provided as possible sources for generation (shown on first page)
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorContext.InputElements">
+            <summary>
+            Elements selected by user as source of generation
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorContext.OutputElements">
+            <summary>
+            Elements built by builder
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorContext.GlobalOptions">
+            <summary>
+            Options configured on Element Selection page, which will be applied to every suitable element. This options are persisted.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorContext.InputElementOptions">
+            <summary>
+            Options configured on Advanced page per input element. This options are not persisted.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorContext.OutputElementOptions">
+            <summary>
+            Options configured on Advanced page per output element. This options are not persisted.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorContext.Project">
+            <summary>
+            Project in which generation occures
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorContext.PsiModule">
+            <summary>
+            Psi Module
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorOption.GetPossibleValues">
+            <summary>
+            Gets possible values for given output element in the given context
+            </summary>
+            <returns>List of possible values for combobox</returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorOption.IsValidValue(System.String)">
+            <summary>
+            Gets possible values for given output element in the given context
+            </summary>
+            <returns>List of possible values for combobox</returns>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorOption.ID">
+            <summary>
+            Option identity
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorOption.Title">
+            <summary>
+            Title text
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorOption.Kind">
+            <summary>
+            UI presention kind
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorOption.Persist">
+            <summary>
+            Indicates if value should be saved across generate sessions
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorOption.Value">
+            <summary>
+            Value for this option
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorOption.OverridesGlobalOption">
+            <summary>
+            Global option value does not propagate to this option
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorOption.HasDependentOptions">
+            <summary>
+            If this property is true, options are refreshed on change
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorWorkflow.GenerateAndFinish(System.String)">
+            <summary>
+            Generates code and commits transaction (for non-advanced scenario)
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorWorkflow.Finish(System.String)">
+            <summary>
+            Commits transaction
+            </summary>
+            <param name="commandName">Name of command for Undo</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorWorkflow.Generate">
+            <summary>
+            Starts transaction, generates code, build Options.Output
+            </summary>
+            <returns>object to Dispose to rollback transaction, e.g. on Cancel</returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.GeneratorWorkflowBase.GenerateAndFinish(System.String)">
+            <summary>
+            Generates code and commits transaction (for non-advanced scenario)
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.GeneratorWorkflowBase.Finish(System.String)">
+            <summary>
+            Commits transaction
+            </summary>
+            <param name="commandName">Name of command for Undo</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.GeneratorWorkflowBase.Generate">
+            <summary>
+            Starts transaction, generates code, build Options.Output
+            </summary>
+            <returns>object to Dispose to rollback transaction, e.g. on Cancel</returns>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorBuilder">
+            <summary>
+            Modifies context  
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorOptionsProvider">
+            <summary>
+            Provides options for user
+            </summary>
+            <remarks>
+            Global options are displayed on first page and applies to every element (or is default value)
+            Element options are specific settings for each elements, available on Advanced page
+            </remarks>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorBuilder.IsAvaliable(JetBrains.ReSharper.Feature.Services.Generate.IGeneratorContext)">
+            <summary>
+            Checks if this builder will produce any output in the specified context
+            </summary>
+            <param name="context">Context</param>
+            <returns>true if builder can work with context, false otherwise</returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorBuilder.Process(JetBrains.ReSharper.Feature.Services.Generate.IGeneratorContext)">
+            <summary>
+            Runs on context and modifies PSI
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorBuilder.HasProcessableElements(JetBrains.ReSharper.Feature.Services.Generate.IGeneratorContext,System.Collections.Generic.IEnumerable{JetBrains.ReSharper.Feature.Services.Generate.IGeneratorElement})">
+            <summary>
+            Tells if builder will produce any output elements
+            </summary>
+            <param name="context"></param>
+            <param name="elements"></param>
+            <returns>true if elements will be produced, false otherwise</returns>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorElementProvider">
+            <summary>
+            Provides elements 
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorElementProvider.Populate(JetBrains.ReSharper.Feature.Services.Generate.IGeneratorContext)">
+            <summary>
+            Collects elements for builder
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.IMemberBodyUtil.SetDelegatingCall(JetBrains.ReSharper.Psi.Tree.ITypeMemberDeclaration,JetBrains.ReSharper.Psi.IDeclaredElement,JetBrains.ReSharper.Psi.IOverridableMember)">
+            <summary>
+            Sets declaration body to delegating call
+            </summary>
+            <param name="declaration">Declaration to set body for</param>
+            <param name="qualifier">If is null, then use "this."</param>
+            <param name="delegateTo">Method, event, property to delegate to</param>
+            <returns>Body TextRange</returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Hyperlink.HyperlinkManager.DoRebuildHyperlink">
+            <summary>
+            Should always be called under readlock and reetrancy guard
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.ILookupItem">
+            <summary>
+            Represents a lookup item
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.ILookupItem.AcceptIfAlone(JetBrains.ReSharper.Feature.Services.Lookup.LookupContext)">
+            <summary>
+            Gets flag indicating whether this item should be automatically completed if it is the only in a list
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.ILookupItem.MatchPrefix(System.String,System.Boolean)">
+            <summary>
+            Returns value indicating whether the item matches a given prefix
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.ILookupItem.Accept(JetBrains.TextControl.ITextControl,JetBrains.Util.TextRange,JetBrains.ReSharper.Feature.Services.Lookup.LookupItemInsertType,JetBrains.ReSharper.Feature.Services.Lookup.Suffix,JetBrains.ProjectModel.ISolution,System.Boolean)">
+            <summary>
+            Accepts the item at the specified range.
+            nameRange is a part of a corresponding document range, not a tree!
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.ILookupItem.GetVisualReplaceRange(JetBrains.TextControl.ITextControl,JetBrains.Util.TextRange)">
+            <summary>
+            Gets visual replace range
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.ILookupItem.Shrink">
+            <summary>
+            Shrinks lookup item presentation
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.ILookupItem.Unshrink">
+            <summary>
+            Restores unshrinked lookup item presentation
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.ILookupItem.Image">
+            <summary>
+            Gets lookup item image
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.ILookupItem.DisplayName">
+            <summary>
+            Gets lookup item display name
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.ILookupItem.DisplayTypeName">
+            <summary>
+            Gets type display name 
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.ILookupItem.CanShrink">
+            <summary>
+            Determines whether the item can decrease its width
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.ILookupItem.OrderingString">
+            <summary>
+            Gets string used to arrange items in lookup list. If it is null, <see cref="P:JetBrains.ReSharper.Feature.Services.Lookup.ILookupItem.DisplayName"/> is used.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.MutliDocumentNameExpression">
+            <summary>
+            Name expression. Updates not only declaration name but source reference.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotExpression">
+            <summary>
+            A variable evaluation expression
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotExpression.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext)">
+            <summary>
+            Evaluates quick result for expression
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotExpression.HandleExpansion(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext)">
+            <summary>
+            Execute custom action on expanding this expression
+            </summary>
+            <returns><c>true</c> if all neccessary actions have been taken or <c>false</c> to proceed with normal <see cref="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotExpression.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext)"/> procedure</returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotExpression.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext)">
+            <summary>
+            Evaluates list of lookup items
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotExpression.Serialize">
+            <summary>
+            Serializes the expression
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.IMacro">
+            <summary>
+            Represents macro function that can be used by Live Template's.
+            Implementation of this interface should be marked with <see cref="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.MacroAttribute"/> attribute
+            to be automatically recognized by ReSharper.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.IMacro.GetPlaceholder">
+            <summary>
+            <para>
+            Placeholder value is inserted into the text on the very initial step of template expansion
+            and is needed for proper template text reformatting when real values cannot be calculated yet.
+            </para>
+            <para>
+            More precisely, the following steps are performed:
+            <list type="bullet">
+              <item>placeholder values for all template fields are inserted into the text</item>
+              <item>the resulting text is reformatted</item>
+              <item><see cref="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.IMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})"/> is used to evaluate and insert values for all fields.</item>
+            </list>
+            </para>
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.IMacro.HandleExpansion(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Execute custom action on expanding this macro
+            </summary>
+            <returns><c>true</c> if all neccessary actions have been taken or <c>false</c> to proceed with normal <see cref="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.IMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})"/> procedure</returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.IMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates list of lookup items to show
+            </summary>
+            <returns>
+            List of lookup items to show in order of preference. That is, 
+            </returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.IMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates "quick result" for this macro.
+            Unlike the result returned by <see cref="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.IMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})"/> method, 
+            quick result is re-evaluated on each typing and so its implementation should be very quick.
+            If the macro cannot provide any result that can be evaluated very quickly, it should return null.
+            </summary>
+            <param name="arguments">Values </param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.IMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Intentions.Impl.LanguageSpecific.IntentionLanguageSpecific.ToExtensionMethod(JetBrains.ReSharper.Psi.Tree.ITypeMemberDeclaration)">
+            <summary>
+            Makes method extension method.
+            For C#: add this to first parameters
+            For VB: add ExtensionAttribute to method declaration
+            
+            No any checks (ex. class and method are static) are performed
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Intentions.Impl.LanguageSpecific.IntentionLanguageSpecific.IsVoidMethodDeclarationHasTypeUsage">
+            <summary>
+            Returns true for VB and false for C#
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.LiveTemplates.TemplateField">
+            <summary>
+            Live template variable
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.TemplateField.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+            </summary>
+            
+            <returns>
+            A <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Intentions.DataProviders.ICreationTarget.GetTargetDeclaration">
+            <summary>
+            Returns target declaration. 
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Intentions.DataProviders.ICreationTarget.GetTargetDeclarationFile">
+            <summary>
+            Returns target declaration file
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Context.ITemplateContextAcceptor.Accepts(JetBrains.ReSharper.Feature.Services.LiveTemplates.Context.ITemplateContext)">
+            <summary>
+            Calculates if given template is acceptable in the context
+            </summary>
+            <param name="templateContext"></param>
+            <returns></returns>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Context.ITemplateContext">
+            <summary>
+            Context where a template can be executed
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Context.ITemplateContext.CreateAcceptor(JetBrains.ReSharper.Feature.Services.LiveTemplates.Context.TemplateAcceptanceContext)">
+            <summary>
+            Creates acceptor for the specified text control
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Context.ITemplateContext.WriteToXml(System.Xml.XmlElement)">
+            <summary>
+            Writes context to XML tag
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Context.ITemplateContext.Intersects(JetBrains.ReSharper.Feature.Services.LiveTemplates.Context.ITemplateContext)">
+            <summary>
+            Checks if the template context intersects with another context
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Context.ITemplateContext.Description">
+            <summary>
+            Gets textual context description
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Context.ITemplateContext.ContextID">
+            <summary>
+            Gets context identifier
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Context.ITemplateContextUI.Title">
+            <summary>
+            Gets UI title
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Context.ITemplateContextUI.ContextOptionsUI">
+            <summary>
+            Gets control presenting context options UI
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Context.ITemplateContextUI.TemplateContext">
+            <summary>
+            Gets template context matching current settings in the UI
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Context.ITemplateContextUI.Valid">
+            <summary>
+            Gets flag indicating whether the UI is valid
+            </summary>
+        </member>
+        <member name="E:JetBrains.ReSharper.Feature.Services.LiveTemplates.Context.ITemplateContextUI.ValidChanged">
+            <summary>
+            Event which is raised when the <see cref="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Context.ITemplateContextUI.Valid"/> property changes
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Context.TemplateAcceptanceContext">
+            <summary>
+            Represents neccessary context for accepting different kind of templates
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.FileTemplates.EnterNameForm">
+            <summary>
+            Summary description for EnterNameForm.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.FileTemplates.EnterNameForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.FileTemplates.FileTemplatesContextForm">
+            <summary>
+            Summary description for FileTemplatesContextForm.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.FileTemplates.FileTemplatesContextForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateFamily.CreateTemplate">
+            <summary>
+            Creates new template of the family
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateFamily.GetConflicts(JetBrains.ReSharper.LiveTemplates.Templates.Template)">
+            <summary>
+            Enumerates conflicts for the specified templates
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateFamily.CreateEditorUI(JetBrains.ReSharper.LiveTemplates.Templates.Template,JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateStorage)">
+            <summary>
+            Creates UI used in template editor
+            </summary>
+            <param name="template"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateFamily.UidUsed(System.Guid)">
+            <summary>
+            Checks if the specified uid is already used for a template of the family
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateFamily.StartBatch">
+            <summary>
+            Starts batch operation
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateFamily.EndBatch">
+            <summary>
+            Ends batch operation
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateFamily.Title">
+            <summary>
+            Gets family title
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateFamily.TemplateImage">
+            <summary>
+            Gets image for presenting templates of the family in UI
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateFamily.PredefinedStorage">
+            <summary>
+            Gets storage of predefined templates
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateFamily.UserStorage">
+            <summary>
+            Gets storage of user templates
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateFamily.TemplateStorages">
+            <summary>
+            Gets all registered template storages
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateFamily.IsBatchRunning">
+            <summary>
+            Gets property indicating whether a batch operation is running
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.LiveTemplates.FileTemplates.FileTemplatesFamilyEditorUI.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.FileTemplates.FileTemplatesFamilyEditorUI.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.FileTemplates.FileTemplatesFamilyEditorUI.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.FileTemplates.FileTemplatesManager">
+            <summary>
+            Manages surround actions
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.Hotspot">
+            <summary>
+            Represents a hot spot in live template expansion
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.HotspotSession">
+            <summary>
+            Implementation for the ITemplateResult interface
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.HotspotSession.GetVariableResult(System.String)">
+            <summary>
+            Gets variable result by its name
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.HotspotSession.GoToPreviousHotspot">
+            <summary>
+            Moves focus to the previous hotspot
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.HotspotSession.IsFinished">
+            <summary>
+            Returns value indicating whether the template result is finished 
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.HotspotSession.CurrentLookupItems">
+            <summary>
+            Gets list of the currently available lookup items
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.HotspotContext">
+            <summary>
+            Implements the IExpressionContext interface
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext">
+            <summary>
+            Expression evaluation context
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.HotspotContext.HotspotSession">
+            <summary>
+            Gets the template result
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.HotspotSessionContext">
+            <summary>
+            Implementation of ITemplateContext
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotSessionContext">
+            <summary>
+            Context where a template can be executed
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotSessionContext.Solution">
+            <summary>
+            Gets the project a template is executed in
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotSessionContext.TextControl">
+            <summary>
+            Gets the editor a template is executed in
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotSessionContext.StartOffset">
+            <summary>
+            Gets the position in editor a template is executed at
+            </summary>              
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.HotspotSessionController">
+            <summary>
+            Template result context based on template field infos
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.HotspotSessionController.Finalize(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotSessionContext,JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.TerminationType)">
+            <summary>
+            Finalizes the template
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.HotspotSessionExecutor">
+            <summary>
+            Controller for the insert live template action
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.HotspotSessionUI">
+            <summary>
+            Represents a live template session
+            </summary>  
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotService">
+            <summary>
+            Language-specific hotspot service
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.LiveTemplateHotspotSessionController">
+            <summary>
+            Template result context based on template
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.LiveTemplateHotspotSessionController.Finalize(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotSessionContext,JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.TerminationType)">
+            <summary>
+            Finalizes the template
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.LiveTemplateHotspotSessionController.Init(JetBrains.TextControl.ITextControl,System.Int32@,JetBrains.ProjectModel.ISolution)">
+            <summary>
+            Initializes within a context
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.NameSuggestionsExpression.Serialize">
+            <summary>
+            Serializes the expression
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.LiveTemplates.LiveTemplates.LiveTemplatesFamilyEditorUI.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.LiveTemplates.LiveTemplatesFamilyEditorUI.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.LiveTemplates.LiveTemplatesFamilyEditorUI.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.LiveTemplates.LiveTemplatesManager.CreateHotspotSessionFromTemplate(JetBrains.ReSharper.LiveTemplates.Templates.Template,JetBrains.ProjectModel.ISolution,JetBrains.TextControl.ITextControl)">
+            <summary>
+            Executes template with inserting text
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.IMacroParameterValue">
+            <summary>
+            A parameter of live template macro
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.IMacroParameterValue.GetText(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext)">
+            <summary>
+            Gets parameter text
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.ArrayVariableMacro">
+            <summary>
+            Suggests array variable
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.ArrayVariableMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.LiveTemplates.CSharp.Macros.BindToTypeMacro">
+            <summary>
+            Inserts reference bound to type with given CLR name
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.TypeLookupItem">
+            <summary>
+            Lookup item for type
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.TextLookupItemBase">
+            <summary>
+            Class for implementing advanced lookup items
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.TextLookupItemBase.Shrink">
+            <summary>
+            Shrinks the name of the item
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.TextLookupItemBase.Unshrink">
+            <summary>
+            Cancels shrink of the name
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.TextLookupItemBase.Accept(JetBrains.TextControl.ITextControl,JetBrains.Util.TextRange,JetBrains.ReSharper.Feature.Services.Lookup.LookupItemInsertType,JetBrains.ReSharper.Feature.Services.Lookup.Suffix,JetBrains.ProjectModel.ISolution,System.Boolean)">
+            <summary>
+            Completes the item at the specified range.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.TextLookupItemBase.DisplayName">
+            <summary>
+            Display name of the item
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.TextLookupItemBase.Image">
+            <summary>
+            Gets item image
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.TextLookupItemBase.DisplayTypeName">
+            <summary>
+            Name of the type
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.CapitalizeMacro">
+            <summary>
+            A macro which capitalizes its input
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.CapitalizeMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.LiveTemplates.ConstantMacroParameter">
+            <summary>
+            A string constant expression
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.ConstantMacroParameter.GetText(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext)">
+            <summary>
+            Gets parameter text
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.ContainingTypeMemberNameMacro">
+            <summary>
+            Returns the containing type name
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.ContainingTypeMemberNameMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.ContainingTypeNameMacro">
+            <summary>
+            Returns the containing type name
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.ContainingTypeNameMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.CurrentDateMacro.GetPlaceholder">
+            <summary>
+            Gets default value to insert in text where the macro will be evaluated
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.CurrentDateMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates quick macro result
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.CurrentDateMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates list of lookup items
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.CurrentDateMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.CurrentDateTimeMacro.GetPlaceholder">
+            <summary>
+            Gets default value to insert in text where the macro will be evaluated
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.CurrentDateTimeMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates quick macro result
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.CurrentDateTimeMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates list of lookup items
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.CurrentDateTimeMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.CurrentNamespaceMacro.GetPlaceholder">
+            <summary>
+            Gets default value to insert in text where the macro will be evaluated
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.CurrentNamespaceMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates quick macro result
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.CurrentNamespaceMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates list of lookup items
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.CurrentNamespaceMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.DecapitalizeMacro">
+            <summary>
+            A macro which capitalizes its input
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.DecapitalizeMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.DefaultNamespaceMacro.GetPlaceholder">
+            <summary>
+            Gets default value to insert in text where the macro will be evaluated
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.DefaultNamespaceMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates quick macro result
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.DefaultNamespaceMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates list of lookup items
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.DefaultNamespaceMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FileDefaultNamespaceMacro.GetPlaceholder">
+            <summary>
+            Gets default value to insert in text where the macro will be evaluated
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FileDefaultNamespaceMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates quick macro result
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FileDefaultNamespaceMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates list of lookup items
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.FileDefaultNamespaceMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FileNameMacro.GetPlaceholder">
+            <summary>
+            Gets default value to insert in text where the macro will be evaluated
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FileNameMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates quick macro result
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FileNameMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates list of lookup items
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.FileNameMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FileNameWithoutExtensionMacro.GetPlaceholder">
+            <summary>
+            Gets default value to insert in text where the macro will be evaluated
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FileNameWithoutExtensionMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates quick macro result
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FileNameWithoutExtensionMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates list of lookup items
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.FileNameWithoutExtensionMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FullUserNameMacro.GetPlaceholder">
+            <summary>
+            Gets default value to insert in text where the macro will be evaluated
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FullUserNameMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates quick macro result
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FullUserNameMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates list of lookup items
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.FullUserNameMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.GuessElementTypeMacro">
+            <summary>
+            Guesses element type for a containter
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.TypeSuggestionMacroBase.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.GuessElementTypeMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.GuessKeyTypeMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.GuessValueTypeMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.LineNumberMacro">
+            <summary>
+            A macro which evaluates number of the current line
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.LineNumberMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates quick macro result
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.LineNumberMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.OutputNameMacro.GetPlaceholder">
+            <summary>
+            Gets default value to insert in text where the macro will be evaluated
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.OutputNameMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates quick macro result
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.OutputNameMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates list of lookup items
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.OutputNameMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.ParameterOfTypeMacro">
+            <summary>
+            Suggests IEnumerable variable
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.ParameterOfTypeMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.ProjectNameMacro.GetPlaceholder">
+            <summary>
+            Gets default value to insert in text where the macro will be evaluated
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.ProjectNameMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates quick macro result
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.ProjectNameMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates list of lookup items
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.ProjectNameMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.SolutionNameMacro.GetPlaceholder">
+            <summary>
+            Gets default value to insert in text where the macro will be evaluated
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.SolutionNameMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates quick macro result
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.SolutionNameMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates list of lookup items
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.SolutionNameMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.SuggestEnumerableVariableMacro">
+            <summary>
+            Suggests IEnumerable variable
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.SuggestEnumerableVariableMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.SuggestIndexVariableNameMacro">
+            <summary>
+            Suggests index variable
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.SuggestVariableNameMacroBase.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.SuggestVariableNameMacro">
+            <summary>
+            Suggests variable name
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.SuggestVariableOfTypeMacro">
+            <summary>
+            Suggests IEnumerable variable
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.SuggestVariableOfTypeMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.UserNameMacro.GetPlaceholder">
+            <summary>
+            Gets default value to insert in text where the macro will be evaluated
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.UserNameMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates quick macro result
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.UserNameMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Evaluates list of lookup items
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.UserNameMacro.Parameters">
+            <summary>
+            Gets array of parameter descriptions
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.MacroAttribute">
+            <summary>
+            Special attribute that should be applied to classes implementing <see cref="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.IMacro"/> interface to 
+            be automatically registered.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.MacroAttribute.Name">
+            <summary>
+            Gets macro name (as written in expressions)
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.MacroAttribute.ShortDescription">
+            <summary>
+            Gets macro description (shown in the UI)
+            </summary>    
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.MacroAttribute.LongDescription">
+            <summary>
+            Gets long macro description
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.MacroAttribute.ParameterTypes">
+            <summary>
+            Gets or sets parameter types accepted by the macro
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.MacroCallExpression">
+            <summary>
+            Expression for calling a macro
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.MacroCallExpression.Serialize">
+            <summary>
+            Serializes the expression
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.MacroManager">
+            <summary>
+            Manages live templates macros
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.MacroParser">
+            <summary>
+            Parses live template macros 
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.VariableMacroParameter">
+            <summary>
+            Expression which is evaluated to a variable value
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.VariableMacroParameter.GetText(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext)">
+            <summary>
+            Gets parameter text
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.QuickLists.QuickList">
+            <summary>
+            Quick list implementation
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateStorage">
+            <summary>
+            Represents a template storage
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateStorage.ReplaceTemplate(JetBrains.ReSharper.LiveTemplates.Templates.Template,JetBrains.ReSharper.LiveTemplates.Templates.Template)">
+            <summary>
+            Replaces one template with another
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateStorage.Type">
+            <summary>
+            Gets storage type
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateStorage.Name">
+            <summary>
+            Gets storage name
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateStorage.ReadOnly">
+            <summary>
+            Gets flag indicating whether the storage is readonly
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateStorage.Family">
+            <summary>
+            Gets templates family
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateStorage.Templates">
+            <summary>
+            Gets templates located in this folder
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.StorageType">
+            <summary>
+            Defines possible storage types
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.IPredefinedStorage.Restore(JetBrains.ReSharper.LiveTemplates.Templates.Template)">
+            <summary>
+            Restores template to original predefined version
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.UserStorage">
+            <summary>
+            Storage for user-level templates
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Support.IFileTemplatesSupport.Accepts(JetBrains.ProjectModel.IProject)">
+            <summary>
+            Checks if a project is supported
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Support.IFileTemplatesSupport.IntersectsWith(JetBrains.ReSharper.Feature.Services.LiveTemplates.Support.IFileTemplatesSupport)">
+            <summary>
+            Checks if it intersects with another file templates context
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Support.IFileTemplatesSupport.Name">
+            <summary>
+            Gets name
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Support.IFileTemplatesSupport.ShortPresentableName">
+            <summary>
+            Gets short presentable name
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Support.IFileTemplatesSupport.Description">
+            <summary>
+            Gets description for project type
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Support.IFileTemplatesSupport.DefaultFileName">
+            <summary>
+            Gets default extension
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Support.IFileTemplatesSupport.LiveTemplatesSupport">
+            <summary>
+            Gets corresponding live templates support
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Support.IFileTemplatesSupport.QuickListSupport">
+            <summary>
+            Gets quick list support
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Support.ILiveTemplatesSupport.GetFactories">
+            <summary>
+            Gets field factories specific for the language
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Support.ILiveTemplatesSupport.GetHighlightingAttributeId(JetBrains.ReSharper.Psi.Parsing.TokenNodeType)">
+            <summary>
+            Gets color to highlight tokens of specified type with. Return <see cref="F:System.Drawing.Color.Empty"/> for tokens which shouldn't be highlighted
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Support.ILiveTemplatesSupport.Title">
+            <summary>
+            Gets title of the live templates context
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Support.ILiveTemplatesSupport.ContextFactory">
+            <summary>
+            Gets context factory for the language
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Support.ILiveTemplatesSupport.SurroundTemplatesQuickListSupport">
+            <summary>
+            Gets quick list support for surround templates
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Support.LiveTemplatesSupportManager">
+            <summary>
+            Manages templates
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Support.LiveTemplatesSupportManager.LiveTemplatesSupports">
+            <summary>
+            Gets array of currently available context factories
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.SurroundTemplates.SurroundManager">
+            <summary>
+            Manages surround actions
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.LiveTemplates.SurroundTemplates.SurroundTemplatesFamilyEditorUI.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.SurroundTemplates.SurroundTemplatesFamilyEditorUI.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.SurroundTemplates.SurroundTemplatesFamilyEditorUI.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.LiveTemplates.Templates.Template">
+            <summary>
+            Implementation for the Template interface
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Templates.Template.Context">
+            <summary>
+            Defines template context
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.LiveTemplates.Templates.Template.Text">
+            <summary>
+            Gets the template text
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.LiveTemplates.TemplateKind">
+            <summary>
+            Enumerates possible kinds of templates
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.LiveTemplates.Templates.TemplateTokenType">
+            <summary>
+            Describes tokens which are specific for templates
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.LiveTemplates.TemplateUtil">
+            <summary>
+            Contains utility methods for template execution
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.UI.ContextForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.UI.ContextForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.LiveTemplates.UI.TemplateEditor.TemplateContextControl.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.UI.TemplateEditor.TemplateContextControl.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.LiveTemplates.UI.TemplateEditor.TemplateContextControl.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.BindPolicy">
+            <summary>
+            Determines how to bind a lookup item
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.BindPolicy.OnlyIfTypeElement">
+            <summary>
+            Only if the item represents a type
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.BindPolicy.Always">
+            <summary>
+            Bind any item
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.BindPolicy.ContainingType">
+            <summary>
+            Bind only item prefix
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.LookupItemPainter">
+            <summary>
+            Paints code completion items
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.IListItemPainter`1">
+            <summary>
+            Interface for painters used in conjunction with ListForm
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.LookupItemPainter.myItems">
+            <summary>
+            List of items
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.LookupItemPainter.myListBoxControl">
+            <summary>
+            The list box to use
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.LookupItemPainter.myLeftAlign">
+            <summary>
+            The flag indicating whether to align types to the left
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.LookupItemPainter.myMaxNameWidth">
+            <summary>
+            Maximum left size width
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.LookupItemPainter.myRenderParams">
+            <summary>
+            The lookup item text rendering aspect.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupItemPainter.ShrinkLookupListItemNameToWidth(JetBrains.ReSharper.Feature.Services.Lookup.LookupListItem,System.Int32,System.Drawing.Graphics)">
+            <summary>
+            Shrinks name text to the given width.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.LookupItemPainter.LeftAlign">
+            <summary>
+            Gets or sets the left align flag
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.LookupItemPainter.RenderParams">
+            <summary>
+            Gets the rendering aspect for the lookup list items.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.ContextTracker">
+            <summary>
+            Tracks keyboard commands and maintains prefix
+            </summary>
+        </member>
+        <member name="E:JetBrains.ReSharper.Feature.Services.Lookup.ContextTracker.ContextChanged">
+            <summary>
+            Event is raised when the tracker changes
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.DeclaredElementLookupItem">
+            <summary>
+            Declared element code completion context item
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.IParameterInfoProvidingLookupItem">
+            <summary>
+            Interface for providing parameter info contexts from lookup lists or other places
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.FormOwnedByMainWindow">
+            <summary>
+            This class represents a form that should be owned by a main IDE window. It should be used as a base
+            class for various dialogs etc
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.IListItemDescriptor">
+            <summary>
+            Interface for creating custom list items
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.IListItemDescriptor.RichText">
+            <summary>
+            The presentation rich text
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.IListItemDescriptor.Tag">
+            <summary>
+            The custom tag
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.IListItemDescriptor.Image">
+            <summary>
+            The image
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.ILookup">
+            <summary>
+            Interface for creating lookup windows
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.ILookup.Solution">
+            <summary>
+            Solution the window is executed within
+            </summary>
+        </member>
+        <member name="E:JetBrains.ReSharper.Feature.Services.Lookup.ILookup.BeforeShownItemsUpdated">
+            <summary>
+            Event is raised before items list is shown
+            </summary>
+        </member>
+        <member name="E:JetBrains.ReSharper.Feature.Services.Lookup.ILookup.CurrentItemChanged">
+            <summary>
+            Event which is raised when the current item changes
+            </summary>
+        </member>
+        <member name="E:JetBrains.ReSharper.Feature.Services.Lookup.ILookup.ItemCompleted">
+            <summary>
+            Raised when an item is completed
+            </summary>
+        </member>
+        <member name="E:JetBrains.ReSharper.Feature.Services.Lookup.ILookup.Closed">
+            <summary>
+            Raised when the window is closed
+            </summary>
+        </member>
+        <member name="E:JetBrains.ReSharper.Feature.Services.Lookup.ILookup.Typing">
+            <summary>
+            Raised when typing happens
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.ILookupWindow.CurrentItemBounds">
+            <summary>
+            Gets bounds of the current item, in client coordinates.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.ILookupWindow.Bounds">
+            <summary>
+            Gets bounds of the window
+            </summary>
+        </member>
+        <member name="E:JetBrains.ReSharper.Feature.Services.Lookup.ILookupWindow.ShowBefore">
+            <summary>
+            Event which is raised immediately before the lookup window is shown
+            </summary>
+        </member>
+        <member name="E:JetBrains.ReSharper.Feature.Services.Lookup.ILookupWindow.ShowAfter">
+            <summary>
+            Event which is raised immediately after the lookup window is shown
+            </summary>
+        </member>
+        <member name="E:JetBrains.ReSharper.Feature.Services.Lookup.ILookupWindow.WindowClose">
+            <summary>
+            Event which is raised before the lookup window closes
+            </summary>
+        </member>
+        <member name="E:JetBrains.ReSharper.Feature.Services.Lookup.ILookupWindow.WindowHidden">
+            <summary>
+            Event which is raised before the lookup window is hidden
+            </summary>
+        </member>
+        <member name="E:JetBrains.ReSharper.Feature.Services.Lookup.ILookupWindow.Scrolled">
+            <summary>
+            Event which is raised when lookup window is scrolled
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.TextLookupItem">
+            <summary>
+            Code completion result item which simply completes some text
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.ListForm`1">
+            <summary>
+            List form implementation.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.Lookup">
+            <summary>
+            Form which is used to display list of lookup items
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.Lookup.myOptions">
+            <summary>
+            Structure containing various options for look and feel of lookup window
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.Lookup.myTextControl">
+            <summary>
+            The host text control
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.Lookup.mySolution">
+            <summary>
+            Solution the window is executed within
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.Lookup.myIsClosed">
+            <summary>
+            Flag indicating whether the form is closing
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.Lookup.myHighlightingTracker">
+            <summary>
+            Highlighting tracker. Tracks ranges highlighting.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.Lookup.myDataHolder">
+            <summary>
+            Holder to delegate user data holding actions to
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.Lookup.myLookupItems">
+            <summary>
+            The complete list of lookup items
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.Lookup.myCurrentItems">
+            <summary>
+            The list of current (filtered) lookup items
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.Lookup.myContextTracker">
+            <summary>
+            The prefix tracker. Notifies on prefix changes.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.Lookup.mySelectionEvaluator">
+            <summary>
+            The used preference manager
+            </summary>
+        </member>
+        <member name="E:JetBrains.ReSharper.Feature.Services.Lookup.Lookup.ItemCompleted">
+            <summary>
+            Raised when an item is completed
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.Lookup.Solution">
+            <summary>
+            Solution the window is executed within
+            </summary>
+        </member>
+        <member name="E:JetBrains.ReSharper.Feature.Services.Lookup.Lookup.CurrentItemChanged">
+            <summary>
+            Event which is raised when the current item changes
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters">
+            <summary>
+            A class that implements the coupled layouters for the lookup window and parameter info tooltip.
+            Create a new layouter through the <see cref="P:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.TextControls"/> property.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.myInstances">
+            <summary>
+            The currently active instances for different text controls.
+            It's unclear whether there may be more than one at a time, but the decision was to generally allow for it ;-)
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.OptionParameterInfoBelow">
+            <summary>
+            Whether the default parameter info disposition is above or below the line.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.OptionStrict">
+            <summary>
+            Whether to throw on non-fatal logical errors.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.myAnchors">
+            <summary>
+            Anchoring rectangles for the coupled layouters.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.myDispositions">
+            <summary>
+            Stores the sticky dispositions for layouting each of the entities.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.myIsDisposed">
+            <summary>
+            Disposed?
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.myLayouters">
+            <summary>
+            The coupled layouters controlled by this instance.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.myTextControl">
+            <summary>
+            <see cref="P:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.TextControl"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.#ctor(JetBrains.TextControl.ITextControl)">
+            <summary>
+            Creates an instance, registers it in the list.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.CreateLookupLayouter(JetBrains.UI.IAnchoringRect)">
+            <summary>
+            Creates a layouter for the lookup window.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.CreateLookupTooltipLayouter(JetBrains.UI.IAnchoringRect)">
+            <summary>
+            Creates a layouter for the lookup-list-based parameter info window.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.CreateParameterInfoLayouter(JetBrains.UI.IAnchoringRect)">
+            <summary>
+            Creates a layouter for the text-editor-based parameter info window.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.GetAvailDispositions(JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.Ids)">
+            <summary>
+            Gets the dispositions that can be used for running each of the layouters.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.GetInstance(JetBrains.TextControl.ITextControl)">
+            <summary>
+            Either gets an existing instance, or creates a new one.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.CreateLayouter(JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.Ids,JetBrains.UI.IAnchoringRect,System.Boolean)">
+            <summary>
+            Creates any of the layouters.
+            </summary>
+            <param name="id">Which layouter to create.</param>
+            <param name="anchor">Anchor for the layouter.</param>
+            <param name="bAllowNonStrictRecursion">With Option Strict OFF, sometimes the disposal of an already-used layouter causes the whole instance to dispose. In this case, make a recursive call over a new instance. This param prevents from infinite recursion.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.DirtyHackLookupAndParameterInfoDispositions">
+            <summary>
+            Dirty Hack for the Parameter Info and Lookup tooltips.
+            Initially, ParamInfo is displayed below the line, which occupies the space of the lookup window. As lookup shows, move param-info up.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.Dispose">
+            <summary>
+            Disposes of all the resources.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.DisposeOfLayouter(JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.Ids)">
+            <summary>
+            The layouter has been disposed. Disconnect it from the instance.
+            </summary>
+            <param name="id">Layouter ID.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.OnAnchorChanged(System.Object,System.EventArgs)">
+            <summary>
+            One of the anchors has changed.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.OnLayouterBeforeDispose(System.Object,System.EventArgs)">
+            <summary>
+            The layouter is about to dispose, unregister its data and possibly dispose of self.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.OnLayouterGottenDirty(System.Object,System.EventArgs)">
+            <summary>
+            One of the layouters requests to recalc the common layout.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.TryDispose">
+            <summary>
+            Checks whether there are no more layouters and the object can be disposed.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.UpdateLayout">
+            <summary>
+            Recalculates the layout.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.TextControls">
+            <summary>
+            Gets the collection of text controls, from which you should select the one you want the layouters for.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.TextControl">
+            <summary>
+            Gets the text controls instance for which the layouters can be created.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.CoupledLayouter">
+            <summary>
+            A lightweight layouter interface implementor that delegates processing to the owning object.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.CoupledLayouter.#ctor(JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.Ids,System.String)">
+            <summary>
+            Creates the instance, passes a couple purely diagnostyx fields.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.CoupledLayouter.FireBeforeDispose">
+            <summary>
+            Fires the <see cref="E:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.CoupledLayouter.BeforeDispose"/> event.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.CoupledLayouter.FireGottenDirty">
+            <summary>
+            Fires the <see cref="E:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.CoupledLayouter.GottenDirty"/> event.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.CoupledLayouter.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+            </summary>
+            
+            <returns>
+            A <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.CoupledLayouter.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="E:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.CoupledLayouter.GottenDirty">
+            <summary>
+            The instance has gotten dirty and the external layout manager must supply it with a new layout.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.CoupledLayouter.Layout">
+            <summary>
+            Gets the result of laying out the entity.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.CoupledLayouter.Size">
+            <summary>
+            Gets or sets the size of the entity to be laid out.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.Ids">
+            <summary>
+            IDs for the layouters and anchors.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.LayoutersForTextControls">
+            <summary>
+            Implements the <see cref="P:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.TextControls"/> property.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.LookupAndParameterInfoLayouters.LayoutersForTextControls.Item(JetBrains.TextControl.ITextControl)">
+            <summary>
+            Gets an object that will create the layouters for the given text control.
+            Note: do not store the instance you get, because it may expire. You should get a new instance thru this indexer each time you need it.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.LookupHighlightingTracker">
+            <summary>
+            Tracks replacement highlighting
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.LookupItemAnchoringRect">
+            <summary>
+            Tracks dynamically the currently selected item bounds within the given lookup window, in client coordinates.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupItemAnchoringRect.#ctor(JetBrains.ReSharper.Feature.Services.Lookup.ILookup)">
+            <summary>
+            Creates the instance.
+            </summary>
+            <param name="lookup">Lookup window whose selection to track.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupItemAnchoringRect.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupItemAnchoringRect.UpdateAnchor">
+            <summary>
+            Updates the anchoring rectangle as it gets dirty.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.LookupItemAnchoringRect.Lookup">
+            <summary>
+            The owning lookup window.
+            May be <c>Null</c> if already disposed.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.LookupListItem.myNameText">
+            <summary>
+            The rich presentation of name
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.LookupListItem.myTypeText">
+            <summary>
+            Rich presentation of the type
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.LookupListItem.myItem">
+            <summary>
+            The associated context item
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.LookupListItem.myImage">
+            <summary>
+            The image
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupListItem.CancelShrink">
+            <summary>
+            Cancels all shrinks
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupListItem.Shrink">
+            <summary>
+            Shrinks the name a bit.
+            </summary>
+            <returns>Whether there was any shrinking. The <see cref="P:JetBrains.ReSharper.Feature.Services.Lookup.LookupListItem.RichText"/> width must decrease if <c>True</c>.</returns>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.LookupOptions.DefaultLookupFont">
+            <summary>
+            Gets the editor font
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.LookupParameterInfoHandler">
+            <summary>
+            Parameter info handler for lookup lists
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.ParameterInfo.IParameterInfoProvider">
+            <summary>
+            Interface for creating parameter info handlers for different contexts
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.ParameterInfo.IParameterInfoProvider.CreateLayouter">
+            <summary>
+            Gets position provider for the handler
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.ParameterInfo.IParameterInfoProvider.CreatePopupWindowContext">
+            <summary>
+            Creates a popup window context.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.ParameterInfo.IParameterInfoProvider.Context">
+            <summary>
+            Gets the current context provided by the handler.
+            </summary>
+            <value>
+            The current context or <c>null</c> if the context is not available and session 
+            is finished.
+            </value>
+        </member>
+        <member name="E:JetBrains.ReSharper.Feature.Services.ParameterInfo.IParameterInfoProvider.ContextChanged">
+            <summary>
+            Event which is raised when context changes
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.ParameterInfo.IParameterInfoProvider.HideFlags">
+            <summary>
+            Gets flags indicating when to close the window
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.LookupPopupWindowContext">
+            <summary>
+            View for lookup window
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.LookupUtil">
+            <summary>
+            Contains utility methods for lookup management
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.LookupUtil.GetFilteredItems(System.Collections.Generic.IList{JetBrains.ReSharper.Feature.Services.Lookup.ILookupItem},System.String,System.Boolean,System.Collections.Generic.IList{JetBrains.ReSharper.Feature.Services.Lookup.ILookupItem})">
+            <summary>
+            Gets filtered items
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.LookupWindow">
+            <summary>
+            UI-related part of lookup form
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.LookupWindow.MagicalOffsetConstant">
+            <summary>
+            A magical offset to be added to the lookup form. Presumably, accomodates for some gaps, intercolumn spacing, in-item padding and so on.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.LookupWindow.myLookupListItemsCache">
+            <summary>
+            Caches lookup list items created for lookup items. This allows caching size for them in list item painter.
+            </summary>
+        </member>
+        <member name="E:JetBrains.ReSharper.Feature.Services.Lookup.LookupWindow.Scrolled">
+            <summary>
+            Event which is raised when lookup window is scrolled
+            </summary> 
+        </member>
+        <member name="E:JetBrains.ReSharper.Feature.Services.Lookup.LookupWindow.BeforeShownItemsUpdated">
+            <summary>
+            Event is raised before items list is shown
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.LookupWindow.CurrentItemBounds">
+            <summary>
+            Gets bounds of the current item
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.LookupWindow.AutoActivate">
+            <summary>
+            Gets or sets whether the control should be activated initially when it's shown.
+            The typical implementation for a form is to return a negative of this value from the <see cref="P:System.Windows.Forms.Form.ShowWithoutActivation"/> override.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.LookupWindow.ShowWithoutActivation">
+            <summary>
+            Gets a value indicating whether the window will be activated when it is shown.
+            </summary>
+            
+            <returns>
+            True if the window will not be activated when it is shown; otherwise, false. The default is false.
+            </returns>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.LookupWindowManager.IsExternalDocumentChangeAllowed">
+            <summary>
+            If this flag is set, any document change doesn't cancel code completion
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.LookupWindowManagerImpl">
+            <summary>
+            Manages currently shown lookup window
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.MethodsLookupItem">
+            <summary>
+            Code completion item which consists of several methods
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.Suffix.Playback(JetBrains.TextControl.ITextControl)">
+            <summary>
+            Emulates typing of the suffix in given text control
+            </summary>
+            <param name="textControl"></param>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.TestLookupWindowManager.TestLookupWindow.Handle">
+            <summary>
+            Gets the handle to the window represented by the implementer.
+            </summary>
+            
+            <returns>
+            A handle to the window represented by the implementer.
+            </returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.TypeNameCodeCompletionLookupItem">
+            <summary>
+            Code completion result item for type name completion
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.VariableComparer">
+            <summary>
+            Comparer which prefers local variables to fields and properties. 
+            Note that for preference policy the "0" return value doesn't
+            mean that items are equal - it means that the comparer can say nothing about the items.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.MatchingBrace.ISimpleMatchingBraceProvider">
+            <summary>
+            Provides token-level information about matching braces
+            </summary>
+            <remarks>
+            <see cref="T:System.Collections.Generic.IComparer`1"/> must be implemented according to the following rules:
+            <list type="disc">
+              <item>It is defined on brace pairs, result for open and close brace of the same pair is the same</item>
+              <item>If one brace pair is "greater" than another that means that balance of "lesser" brace pair outside of "greater" brace pair doesn't count inside the "greater" brace pair</item>
+            </list>
+            </remarks>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.MatchingBrace.MatchingBraceUtil.BracketMatchStack">
+            <summary>
+            Stack of different bracket types for finding matched one.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Filtering.FilteringPrefixMatcher">
+            <summary>
+            A preofix matcher that features an additional freehand filter not based on the regex.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Filtering.FilteringPrefixMatcher.Matcher">
+            <summary>
+            Gets the underlying matcher.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.ParameterInfo.IParameterInfoContext.Argument">
+            <summary>
+            Argument under cursor
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.ParameterInfo.IParameterInfoContext.NamedArguments">
+            <summary>
+            Each array element contains argument name (if argument is named) or null or empty otherwise.
+            Length of the array equals to number of arguments or 0.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.ParameterInfo.IParameterInfoContext.DefaultCandidate">
+            <summary>
+            Candidate, that is resolved, -1 otherwise
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.ParameterInfo.IParameterInfoContext.Candidates">
+            <summary>
+            Candidates available
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.ParameterInfo.IParameterInfoContext.Range">
+            <summary>
+            Invocation range. EndOffset == -1 if no right bound specified
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.ParameterInfo.ParameterInfoContextBase.FilterOut(System.Int32)">
+            <summary>
+            Filters out an invocation
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.ParameterInfo.ParameterInfoContextBase.Argument">
+            <summary>
+            Gets number of parameter we're standing at
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.ParameterInfo.ParameterInfoContextBase.Range">
+            <summary>
+            Gets the left parenthesis offset
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.ParameterInfo.ParameterInfoPopupController">
+            <summary>
+            Interface for component which controls automatic parameter info popup
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.ParameterInfo.ParameterInfoPopupController.PopupParameterInfo(JetBrains.ProjectModel.ISolution,JetBrains.TextControl.ITextControl,System.Int32,JetBrains.ReSharper.Psi.IDeclaredElement)">
+            <summary>
+            Shows parameter info in the specified text control with specified expected left parenthesis offset and highlights
+            the specified signature
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.ParameterInfo.ParameterInfoSettings">
+            <summary>
+            Interface for component which controls automatic parameter info popup
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.ParameterInfo.ParameterInfoSettings.ShowOneCandidate">
+            <summary>
+            Gets or sets flag indicating whether show one candidatein the popup or all.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.ParameterInfo.ParameterInfoSettings.DelegatesAsLambdas">
+            <summary>
+            Gets or sets flag indicating whether show one candidatein the popup or all.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.ParameterInfo.ParameterInfoSettings.UseArrowsForSignatureNavigation">
+            <summary>
+            Gets or sets flag indicating whether use arrows instead of Control+P in parameter info popup.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.ParameterInfo.ParameterInfoSettings.AutopopupOn">
+            <summary>
+            Gets or sets flag indicating whether automatic parameter info popup is enabled.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.ParameterInfo.ParameterInfoSettings.AutopopupDelay">
+            <summary>
+            Gets or sets delay to automatically show parameter info popup in.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.ParameterInfo.TypeArgumentCandidate.GetHashCode">
+            <summary>
+            Serves as a hash function for a particular type. 
+            </summary>
+            
+            <returns>
+            A hash code for the current <see cref="T:System.Object"></see>.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Search.ScopeSelector.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Search.ScopeSelector.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Search.ScopeSelector.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.QuickDoc.Render.IXmlDocHeaderPresenter.Present(JetBrains.ReSharper.Psi.IDeclaredElement,JetBrains.ReSharper.Psi.IPsiModule)">
+            <summary>
+            Presents the declared element as a header for HTML quick doc
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.SelectEmbracingConstruct.DotSelection.GetParentInternal(JetBrains.ReSharper.Psi.Tree.ITokenNode)">
+            <summary>
+            Implements special processing of some tokens
+            </summary>
+            <param name="tokenNode"></param>
+            <returns>null, if no special processing required</returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.TypingAssist.BracketMatcher.FindMatchingBracket(JetBrains.ReSharper.Psi.Parsing.CachingLexer,System.Int32@)">
+            <summary>
+            Try to find the corresponding matching bracket for the given
+            </summary>
+            <param name="cachingLexer">Caching lexer positioned at the source bracket</param>
+            <param name="pos">position of paired bracket (or -1 if none)</param>
+            <returns>true if matching bracket was found. If returns false, the pos may contain position of incorrect bracket</returns>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Util.CandidatesUtil.MultiplyDeclaredElementExecutor">
+            <summary>
+            
+            </summary>
+            <param name="context">DataContext initially passed to action</param>
+            <param name="declaredElements">Candidates for navigation</param>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Util.CodeInsightUtil">
+            <summary>
+            Contains utility methods for code insight features
+            </summary>
+        </member>
+    </members>
+</doc>
