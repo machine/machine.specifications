@@ -175,6 +175,9 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\Task.cs">
       <Link>Tasks\Task.cs</Link>
     </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\UnitTestElementComparer.cs">
+      <Link>UnitTestElementComparer.cs</Link>
+    </Compile>
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>

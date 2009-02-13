@@ -27,6 +27,7 @@ namespace Machine.Specifications.ReSharperRunner
     internal const string ProviderId = "Machine.Specifications";
     static readonly Presenter Presenter = new Presenter();
     readonly UnitTestTaskFactory _taskFactory = new UnitTestTaskFactory(ProviderId);
+    readonly UnitTestElementComparer _unitTestElementComparer = new UnitTestElementComparer();
 
     public MSpecUnitTestProvider()
     {
@@ -141,38 +142,7 @@ namespace Machine.Specifications.ReSharperRunner
 
     public int CompareUnitTestElements(UnitTestElement x, UnitTestElement y)
     {
-      if (Equals(x, y))
-      {
-        return 0;
-      }
-
-      int compare = StringComparer.CurrentCultureIgnoreCase.Compare(x.GetTypeClrName(), y.GetTypeClrName());
-      if (compare != 0)
-      {
-        return compare;
-      }
-
-      if ((x is ContextSpecificationElement || x is BehaviorElement) && y is ContextElement)
-      {
-        return -1;
-      }
-
-      if (x is ContextElement && (y is ContextSpecificationElement || y is BehaviorElement))
-      {
-        return 1;
-      }
-
-      if (x is ContextSpecificationElement && y is BehaviorElement)
-      {
-        return 1;
-      }
-
-      if (x is BehaviorElement && y is ContextSpecificationElement)
-      {
-        return -1;
-      }
-
-      return StringComparer.CurrentCultureIgnoreCase.Compare(x.GetTitle(), y.GetTitle());
+      return _unitTestElementComparer.Compare(x, y);
     }
 
     public void Present(UnitTestElement element, IPresentableItem item, TreeModelNode node, PresentationState state)
