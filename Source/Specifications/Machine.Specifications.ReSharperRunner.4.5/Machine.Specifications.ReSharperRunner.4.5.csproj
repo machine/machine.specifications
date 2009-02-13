@@ -100,41 +100,91 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\AssemblyExplorer.cs">
+      <Link>Explorers\AssemblyExplorer.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\ElementHandlers\ContextElementHandler.cs">
+      <Link>Explorers\ElementHandlers\ContextElementHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\ElementHandlers\ContextSpecificationElementHandler.cs">
+      <Link>Explorers\ElementHandlers\ContextSpecificationElementHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\ElementHandlers\IElementHandler.cs">
+      <Link>Explorers\ElementHandlers\IElementHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\FileExplorer.cs">
+      <Link>Explorers\FileExplorer.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\BehaviorFactory.cs">
+      <Link>Factories\BehaviorFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\BehaviorSpecificationFactory.cs">
+      <Link>Factories\BehaviorSpecificationFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\ContextCache.cs">
+      <Link>Factories\ContextCache.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\ContextFactory.cs">
+      <Link>Factories\ContextFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\ContextSpecificationFactory.cs">
+      <Link>Factories\ContextSpecificationFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\UnitTestTaskFactory.cs">
+      <Link>Factories\UnitTestTaskFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\MetadataExtensions.cs">
+      <Link>MetadataExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Presentation\BehaviorElement.cs">
+      <Link>Presentation\BehaviorElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Presentation\BehaviorSpecificationElement.cs">
+      <Link>Presentation\BehaviorSpecificationElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Presentation\ContextSpecificationElement.cs">
+      <Link>Presentation\ContextSpecificationElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\PsiExtensions.cs">
+      <Link>PsiExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\RandomExtensions.cs">
+      <Link>RandomExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\ExecutableSpecificationInfo.cs">
+      <Link>Runners\ExecutableSpecificationInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\PerContextRunListener.cs">
+      <Link>Runners\PerContextRunListener.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\RecursiveMSpecTaskRunner.cs">
+      <Link>Runners\RecursiveMSpecTaskRunner.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\BehaviorSpecificationTask.cs">
+      <Link>Tasks\BehaviorSpecificationTask.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\BehaviorTask.cs">
+      <Link>Tasks\BehaviorTask.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\ContextSpecificationTask.cs">
+      <Link>Tasks\ContextSpecificationTask.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\ContextTask.cs">
+      <Link>Tasks\ContextTask.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\Task.cs">
+      <Link>Tasks\Task.cs</Link>
+    </Compile>
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Explorers\AssemblyExplorer.cs" />
     <Compile Include="Explorers\ElementHandlers\BehaviorElementHandler.cs" />
-    <Compile Include="Explorers\ElementHandlers\ContextElementHandler.cs" />
-    <Compile Include="Explorers\ElementHandlers\ContextSpecificationElementHandler.cs" />
-    <Compile Include="Explorers\ElementHandlers\IElementHandler.cs" />
-    <Compile Include="Explorers\FileExplorer.cs" />
-    <Compile Include="Factories\BehaviorFactory.cs" />
-    <Compile Include="Factories\BehaviorSpecificationFactory.cs" />
-    <Compile Include="Factories\ContextCache.cs" />
-    <Compile Include="Factories\ContextFactory.cs" />
-    <Compile Include="Factories\ContextSpecificationFactory.cs" />
-    <Compile Include="Factories\UnitTestTaskFactory.cs" />
-    <Compile Include="MetadataExtensions.cs" />
     <Compile Include="MSpecUnitTestProvider.cs" />
-    <Compile Include="Presentation\BehaviorElement.cs" />
-    <Compile Include="Presentation\BehaviorSpecificationElement.cs" />
     <Compile Include="Presentation\ContextElement.cs" />
-    <Compile Include="Presentation\ContextSpecificationElement.cs" />
     <Compile Include="Presentation\Element.cs" />
     <Compile Include="Presentation\FieldElement.cs" />
     <Compile Include="Presentation\Presenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PsiExtensions.cs" />
-    <Compile Include="RandomExtensions.cs" />
-    <Compile Include="Runners\ExecutableSpecificationInfo.cs" />
-    <Compile Include="Runners\PerContextRunListener.cs" />
-    <Compile Include="Runners\RecursiveMSpecTaskRunner.cs" />
-    <Compile Include="Tasks\BehaviorSpecificationTask.cs" />
-    <Compile Include="Tasks\BehaviorTask.cs" />
-    <Compile Include="Tasks\ContextSpecificationTask.cs" />
-    <Compile Include="Tasks\ContextTask.cs" />
-    <Compile Include="Tasks\Task.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj">
