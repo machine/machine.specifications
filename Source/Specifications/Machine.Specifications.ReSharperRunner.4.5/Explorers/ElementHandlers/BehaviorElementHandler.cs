@@ -56,8 +56,8 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
                                                     file.ProjectFile,
                                                     // Make this element invisible in the gutter as it would overlap
                                                     // the parent BehaviorElement.
-                                                    // TODO
-                                                    declaration.GetNameRange(),//.SetEndTo(0),
+                                                    // TODO: Setting an invalid range does not work any more.
+                                                    declaration.GetNameRange(),
                                                     declaration.GetDocumentRange().TextRange);
       }
     }
