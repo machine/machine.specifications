@@ -103,6 +103,9 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\AssemblyExplorer.cs">
       <Link>Explorers\AssemblyExplorer.cs</Link>
     </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\ElementHandlers\BehaviorElementHandler.cs">
+      <Link>Explorers\ElementHandlers\BehaviorElementHandler.cs</Link>
+    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\ElementHandlers\ContextElementHandler.cs">
       <Link>Explorers\ElementHandlers\ContextElementHandler.cs</Link>
     </Compile>
@@ -181,7 +184,6 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Explorers\ElementHandlers\BehaviorElementHandler.cs" />
     <Compile Include="MSpecUnitTestProvider.cs" />
     <Compile Include="Presentation\ContextElement.cs" />
     <Compile Include="Presentation\Element.cs" />

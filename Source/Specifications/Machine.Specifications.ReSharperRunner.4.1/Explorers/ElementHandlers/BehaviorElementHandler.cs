@@ -52,12 +52,8 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
 
       foreach (var behaviorSpecificationElement in behaviorSpecifications)
       {
-        yield return new UnitTestElementDisposition(behaviorSpecificationElement,
-                                                    file.ProjectFile,
-                                                    // Make this element invisible in the gutter as it would overlap
-                                                    // the parent BehaviorElement.
-                                                    declaration.GetNameRange().SetEndTo(0),
-                                                    declaration.GetDocumentRange().TextRange);
+        yield return new UnitTestElementDisposition(new UnitTestElementLocation[0],
+                                                    behaviorSpecificationElement);
       }
     }
     #endregion
