@@ -74,10 +74,12 @@
     <Reference Include="JetBrains.ReSharper.Feature.Services, Version=4.5.1170.53, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\ReSharper\4.5\JetBrains.ReSharper.Feature.Services.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Features.Common, Version=4.5.1170.53, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\ReSharper\4.5\JetBrains.ReSharper.Features.Common.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi, Version=4.5.1170.53, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
