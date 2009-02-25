@@ -53,6 +53,8 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="GenerateHtmlReportRunListener.cs" />
+    <Compile Include="Integration\TeamCityReporter.cs" />
+    <Compile Include="Integration\TeamCityServiceMessageWriter.cs" />
     <Compile Include="Model\Assembly.cs" />
     <Compile Include="Model\Concern.cs" />
     <Compile Include="Model\Context.cs" />

@@ -4,3 +4,5 @@ figure out how to handle exceptions thrown during befoerall and aftereach
 clean up stack traces
 remove dependency on nunit
 incorporate browser links
+
+add service message to auto upload specifications html report as an artifact

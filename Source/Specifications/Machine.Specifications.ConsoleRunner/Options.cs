@@ -27,6 +27,11 @@ namespace Machine.Specifications.ConsoleRunner
       HelpText = "Adds time-related information in HTML output")] 
     public bool ShowTimeInformation = false;
 
+    [Option(null, 
+      "teamcity", 
+      HelpText = "Replaces the standard build reporting with TeamCity test reporting.")]
+    public bool TeamCityIntegration = false;
+
     [OptionList("i",
       "include",
       HelpText = "Executes all specifications in contexts with these comma delimited tags. Ex. -i \"foo,bar,foo_bar\"",
@@ -55,6 +60,7 @@ namespace Machine.Specifications.ConsoleRunner
       sb.AppendLine("  -x, --exclude     Exclude specifications in contexts with these comma delimited tags. Ex. -x \"foo,bar,foo_bar\"");
       sb.AppendLine("  -t, --timeinfo    Shows time-related information in HTML output");
       sb.AppendLine("  -s, --silent      Suppress console output");
+      sb.AppendLine("  --teamcity        Reporting for TeamCity CI integration.");
       sb.AppendLine("  --html <PATH>     Outputs an HTML file(s) to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)");
       sb.AppendLine("  -h, --help        Shows this help message");
 

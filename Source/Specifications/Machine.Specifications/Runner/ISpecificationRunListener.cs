@@ -14,4 +14,9 @@ namespace Machine.Specifications.Runner
     void OnSpecificationEnd(SpecificationInfo specification, Result result);
     void OnFatalError(ExceptionResult exception);
   }
+
+  public interface ISpecificationResultProvider
+  {
+    bool FailureOccured { get; }
+  }
 }

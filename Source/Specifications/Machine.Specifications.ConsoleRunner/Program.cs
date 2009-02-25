@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using Machine.Specifications.ConsoleRunner.Properties;
 using Machine.Specifications.Reporting;
+using Machine.Specifications.Reporting.Integration;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
 
@@ -42,7 +43,15 @@ namespace Machine.Specifications.ConsoleRunner
 
       List<ISpecificationRunListener> listeners = new List<ISpecificationRunListener>();
 
-      var runListener = new RunListener(_console, options.Silent);
+      ISpecificationRunListener mainListener;
+      if (options.TeamCityIntegration)
+      {
+        mainListener = new TeamCityReporter(_console.WriteLine);
+      }
+      else
+      {
+        mainListener = new RunListener(_console, options.Silent);
+      }
       
       try
       {
@@ -62,7 +71,7 @@ namespace Machine.Specifications.ConsoleRunner
           
         }
 
-        listeners.Add(runListener);
+        listeners.Add(mainListener);
         
         if (options.AssemblyFiles.Count == 0)
         {
@@ -93,11 +102,14 @@ namespace Machine.Specifications.ConsoleRunner
         return ExitCode.Error;
       }
 
-      if (runListener.FailureOccured)
+      if (mainListener is ISpecificationResultProvider)
       {
-        return ExitCode.Failure;
+        var errorProvider = (ISpecificationResultProvider) mainListener;
+        if (errorProvider.FailureOccured)
+        {
+          return ExitCode.Failure;
+        }
       }
-
       return ExitCode.Success;
     }
 

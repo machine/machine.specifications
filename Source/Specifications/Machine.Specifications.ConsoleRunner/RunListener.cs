@@ -7,7 +7,7 @@ using Machine.Specifications.Runner;
 
 namespace Machine.Specifications.ConsoleRunner
 {
-  public class RunListener : ISpecificationRunListener
+  public class RunListener : ISpecificationRunListener, ISpecificationResultProvider
   {
     readonly IConsole _console;
     readonly bool _silent;

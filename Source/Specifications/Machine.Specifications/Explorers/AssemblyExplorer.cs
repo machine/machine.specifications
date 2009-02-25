@@ -63,7 +63,8 @@ namespace Machine.Specifications.Explorers
 
     static IEnumerable<Type> EnumerateContextsIn(Assembly assembly)
     {
-      return assembly.GetExportedTypes().Where(IsContext);
+      return assembly.GetExportedTypes().Where(IsContext)
+        .OrderBy(t => t.Namespace);
     }
 
     public Context FindContexts(Type type)
