@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F06E1AB8-7F34-4C32-BC4D-558CAA94DB7C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Machine.Specifications.ReSharperRunner</RootNamespace>
+    <AssemblyName>Machine.Specifications.ReSharperRunner.4.5</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Build\Debug\Specifications\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Build\Release\Specifications\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="JetBrains.Platform.ReSharper.DocumentManager, Version=4.5.1170.53, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\ReSharper\4.5\JetBrains.Platform.ReSharper.DocumentManager.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.IDE, Version=4.5.1170.53, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\ReSharper\4.5\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.Metadata, Version=4.5.1170.53, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\ReSharper\4.5\JetBrains.Platform.ReSharper.Metadata.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.ProjectModel, Version=4.5.1170.53, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\ReSharper\4.5\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.Shell, Version=4.5.1170.53, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\ReSharper\4.5\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.UI, Version=4.5.1170.53, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\ReSharper\4.5\JetBrains.Platform.ReSharper.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.Util, Version=4.5.1170.53, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\ReSharper\4.5\JetBrains.Platform.ReSharper.Util.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.CodeInsight.Services, Version=4.5.1170.53, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\ReSharper\4.5\JetBrains.ReSharper.CodeInsight.Services.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Feature.Services, Version=4.5.1170.53, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\ReSharper\4.5\JetBrains.ReSharper.Feature.Services.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Features.Common, Version=4.5.1170.53, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\ReSharper\4.5\JetBrains.ReSharper.Features.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Psi, Version=4.5.1170.53, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\ReSharper\4.5\JetBrains.ReSharper.Psi.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.TaskRunnerFramework, Version=4.5.1170.53, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\ReSharper\4.5\JetBrains.ReSharper.TaskRunnerFramework.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.UnitTestExplorer, Version=4.5.1170.53, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\ReSharper\4.5\JetBrains.ReSharper.UnitTestExplorer.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\AssemblyExplorer.cs">
+      <Link>Explorers\AssemblyExplorer.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\ElementHandlers\BehaviorElementHandler.cs">
+      <Link>Explorers\ElementHandlers\BehaviorElementHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\ElementHandlers\ContextElementHandler.cs">
+      <Link>Explorers\ElementHandlers\ContextElementHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\ElementHandlers\ContextSpecificationElementHandler.cs">
+      <Link>Explorers\ElementHandlers\ContextSpecificationElementHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\ElementHandlers\IElementHandler.cs">
+      <Link>Explorers\ElementHandlers\IElementHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\FileExplorer.cs">
+      <Link>Explorers\FileExplorer.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\BehaviorFactory.cs">
+      <Link>Factories\BehaviorFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\BehaviorSpecificationFactory.cs">
+      <Link>Factories\BehaviorSpecificationFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\ContextCache.cs">
+      <Link>Factories\ContextCache.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\ContextFactory.cs">
+      <Link>Factories\ContextFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\ContextSpecificationFactory.cs">
+      <Link>Factories\ContextSpecificationFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\UnitTestTaskFactory.cs">
+      <Link>Factories\UnitTestTaskFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\MetadataExtensions.cs">
+      <Link>MetadataExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Presentation\BehaviorElement.cs">
+      <Link>Presentation\BehaviorElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Presentation\BehaviorSpecificationElement.cs">
+      <Link>Presentation\BehaviorSpecificationElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Presentation\ContextSpecificationElement.cs">
+      <Link>Presentation\ContextSpecificationElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\PsiExtensions.cs">
+      <Link>PsiExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\RandomExtensions.cs">
+      <Link>RandomExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\ExecutableSpecificationInfo.cs">
+      <Link>Runners\ExecutableSpecificationInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\PerContextRunListener.cs">
+      <Link>Runners\PerContextRunListener.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\RecursiveMSpecTaskRunner.cs">
+      <Link>Runners\RecursiveMSpecTaskRunner.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\BehaviorSpecificationTask.cs">
+      <Link>Tasks\BehaviorSpecificationTask.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\BehaviorTask.cs">
+      <Link>Tasks\BehaviorTask.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\ContextSpecificationTask.cs">
+      <Link>Tasks\ContextSpecificationTask.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\ContextTask.cs">
+      <Link>Tasks\ContextTask.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\Task.cs">
+      <Link>Tasks\Task.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\UnitTestElementComparer.cs">
+      <Link>UnitTestElementComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="MSpecUnitTestProvider.cs" />
+    <Compile Include="Presentation\ContextElement.cs" />
+    <Compile Include="Presentation\Element.cs" />
+    <Compile Include="Presentation\FieldElement.cs" />
+    <Compile Include="Presentation\Presenter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj">
+      <Project>{CCD02629-1262-4F78-9E9F-AC97B942D0E7}</Project>
+      <Name>Machine.Specifications</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CCD02629-1262-4F78-9E9F-AC97B942D0E7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Machine.Specifications</RootNamespace>
+    <AssemblyName>Machine.Specifications</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Build\Debug\Specifications\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Build\Release\Specifications\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="BehaviorsAttribute.cs" />
+    <Compile Include="Catch.cs" />
+    <Compile Include="Factories\BehaviorFactory.cs" />
+    <Compile Include="Factories\ITagExtractor.cs" />
+    <Compile Include="Model\Behavior.cs" />
+    <Compile Include="Model\BehaviorSpecification.cs" />
+    <Compile Include="Runner\Impl\AssemblyRunner.cs" />
+    <Compile Include="Runner\Impl\ContextRunnerFactory.cs" />
+    <Compile Include="Runner\Impl\RunListenerBase.cs" />
+    <Compile Include="Runner\Impl\ContextRunner.cs" />
+    <Compile Include="Runner\Impl\SpecificationRunner.cs" />
+    <Compile Include="Utility\ConsoleStreams.cs" />
+    <Compile Include="Model\Tag.cs" />
+    <Compile Include="Runner\RunOptions.cs" />
+    <Compile Include="SetupForEachSpecification.cs" />
+    <Compile Include="SubjectAttribute.cs" />
+    <Compile Include="Explorers\AssemblyExplorer.cs" />
+    <Compile Include="Factories\SpecificationFactory.cs" />
+    <Compile Include="Factories\ContextFactory.cs" />
+    <Compile Include="IAssemblyContext.cs" />
+    <Compile Include="IgnoreAttribute.cs" />
+    <Compile Include="Model\Subject.cs" />
+    <Compile Include="Model\Specification.cs" />
+    <Compile Include="Result.cs" />
+    <Compile Include="Model\Context.cs" />
+    <Compile Include="Model\VerificationContext.cs" />
+    <Compile Include="Runner\Impl\AggregateRunListener.cs" />
+    <Compile Include="Runner\Impl\AppDomainRunner.cs" />
+    <Compile Include="Runner\AssemblyInfo.cs" />
+    <Compile Include="Runner\ContextInfo.cs" />
+    <Compile Include="Runner\Impl\InfoExtensions.cs" />
+    <Compile Include="Runner\ISpecificationRunListener.cs" />
+    <Compile Include="Runner\ISpecificationRunner.cs" />
+    <Compile Include="Runner\Impl\RemoteRunListener.cs" />
+    <Compile Include="Runner\SpecificationInfo.cs" />
+    <Compile Include="Runner\Impl\DefaultRunner.cs" />
+    <Compile Include="TagsAttribute.cs" />
+    <Compile Include="Utility\ConsoleRedirection.cs" />
+    <Compile Include="Utility\Naming.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Framework.cs" />
+    <Compile Include="Utility\RandomExtensionMethods.cs" />
+    <Compile Include="Utility\ReflectionHelper.cs" />
+    <Compile Include="SpecificationExceptions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TODO.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
