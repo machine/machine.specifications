@@ -20,7 +20,6 @@ namespace Machine.Specifications
     public string TypeName { get; private set; }
     public string Message { get; private set; }
     public string StackTrace { get; private set; }
-    public Exception Exception { get; private set; }
 
     public ExceptionResult(Exception exception)
     {
@@ -29,7 +28,6 @@ namespace Machine.Specifications
       Message = exception.Message;
       _toString = exception.ToString();
       StackTrace = exception.StackTrace;
-      Exception = exception;
     }
 
     public override string ToString()

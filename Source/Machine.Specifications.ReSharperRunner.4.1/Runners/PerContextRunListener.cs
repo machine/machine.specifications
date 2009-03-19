@@ -1,6 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Runtime.Serialization;
 using JetBrains.ReSharper.TaskRunnerFramework;
 
 using Machine.Specifications.Runner;
@@ -76,7 +77,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       {
         case Status.Failing:
           _server.TaskExplain(task, result.Exception.Message);
-          _server.TaskException(task, new[] { new TaskException(result.Exception.Exception) });
+          _server.TaskException(task, new[] { new TaskException(result.Exception.ToFakeException()) });
           taskResult = TaskResult.Exception;
           break;
 
@@ -100,8 +101,8 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
     public void OnFatalError(ExceptionResult exception)
     {
-      _server.TaskExplain(_contextTask, "Fatal error: " + exception.Exception.Message);
-      _server.TaskException(_contextTask, new[] { new TaskException(exception.Exception) });
+      _server.TaskExplain(_contextTask, "Fatal error: " + exception.Message);
+      _server.TaskException(_contextTask, new[] { new TaskException(exception.ToFakeException()) });
       _server.TaskFinished(_contextTask, null, TaskResult.Exception);
     }
     #endregion
@@ -121,6 +122,67 @@ namespace Machine.Specifications.ReSharperRunner.Runners
         return null;
       }
       return knownSpecification.RemoteTask;
+    }
+  }
+
+  public static class ExceptionExtensions
+  {
+    public static Exception ToFakeException(this ExceptionResult exceptionResult)
+    {
+      return new FakeException(exceptionResult);
+    }
+  }
+
+  [Serializable]
+  public class FakeException : Exception
+  {
+    readonly ExceptionResult _exceptionResult;
+    //
+    // For guidelines regarding the creation of new exception types, see
+    //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/cpconerrorraisinghandlingguidelines.asp
+    // and
+    //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
+    //
+
+    public FakeException(ExceptionResult exceptionResult) : base(exceptionResult.Message)
+    {
+      _exceptionResult = exceptionResult;
+    }
+
+    public FakeException(string message) : base(message)
+    {
+    }
+
+    public FakeException(string message, Exception inner) : base(message, inner)
+    {
+
+    }
+
+    public override string StackTrace
+    {
+      get
+      {
+        return _exceptionResult.StackTrace;
+      }
+    }
+
+    public override string Message
+    {
+      get
+      {
+        return _exceptionResult.Message;
+      }
+    }
+
+    public override string ToString()
+    {
+      return _exceptionResult.ToString();
+    }
+
+    protected FakeException(
+      SerializationInfo info,
+      StreamingContext context) : base(info, context)
+    {
     }
   }
 }
