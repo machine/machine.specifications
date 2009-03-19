@@ -116,8 +116,15 @@ namespace Machine.Specifications.Runner.Impl
     {
       public AssemblyRunner(ISpecificationRunListener listener, Assembly assembly, RunOptions options)
       {
-        var runner = new DefaultRunner(listener, options);
-        runner.RunAssembly(assembly);
+        try
+        {
+          var runner = new DefaultRunner(listener, options);
+          runner.RunAssembly(assembly);
+        }
+        catch (Exception err)
+        {
+          listener.OnFatalError(new ExceptionResult(err));
+        }
       }
 
       public override object InitializeLifetimeService()
@@ -130,8 +137,15 @@ namespace Machine.Specifications.Runner.Impl
     {
       public NamespaceRunner(ISpecificationRunListener listener, Assembly assembly, RunOptions options, string targetNamespace)
       {
-        var runner = new DefaultRunner(listener, options);
-        runner.RunNamespace(assembly, targetNamespace);
+        try
+        {
+          var runner = new DefaultRunner(listener, options);
+          runner.RunNamespace(assembly, targetNamespace);
+        }
+        catch (Exception err)
+        {
+          listener.OnFatalError(new ExceptionResult(err));
+        }
       }
 
       public override object InitializeLifetimeService()
@@ -144,8 +158,15 @@ namespace Machine.Specifications.Runner.Impl
     {
       public MemberRunner(ISpecificationRunListener listener, Assembly assembly, RunOptions options, MemberInfo memberInfo)
       {
-        var runner = new DefaultRunner(listener, options);
-        runner.RunMember(assembly, memberInfo);
+        try
+        {
+          var runner = new DefaultRunner(listener, options);
+          runner.RunMember(assembly, memberInfo);
+        }
+        catch (Exception err)
+        {
+          listener.OnFatalError(new ExceptionResult(err));
+        }
       }
 
       public override object InitializeLifetimeService()
