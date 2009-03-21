@@ -15,7 +15,11 @@ class String
   end
 end
 
+version = 'v3.5'
+compileTarget = 'debug'
 project = "Machine.Specifications"
+frameworkDir = File.join(ENV['windir'].dup, 'Microsoft.NET', 'Framework', version)
+msbuild = File.join(frameworkDir, 'msbuild.exe')
 
 task :setup => [ "setup:all" ]
 
@@ -34,7 +38,7 @@ task :default => [ "build", "specs:run" ]
 
 desc "Build"
 task :build => [ ".setup-done" ] do
-  sh "msbuild Source/#{project}.sln"
+  sh "#{msbuild} Source/#{project}.sln"
 end
 
 namespace :specs do
@@ -59,10 +63,10 @@ end
 
 desc "Rebuild"
 task :rebuild => [ ".setup-done" ] do
-  sh "MsBuild Source/#{project}.sln /t:Rebuild"
+  sh "#{msbuild} Source/#{project}.sln /t:Rebuild"
 end
 
 desc "Clean"
 task :clean do
-  sh "MsBuild Source/#{project}.sln /t:Clean"
+  sh "#{msbuild} Source/#{project}.sln /t:Clean"
 end
