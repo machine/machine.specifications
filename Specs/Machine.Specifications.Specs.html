@@ -1,0 +1,268 @@
+<html>
+	<head>
+		<title>Machine.Specifications Report</title>
+		<style type="text/css">
+			body {
+				font-family: Arial,Helvetica,sans-serif;
+				font-size: .9em;
+			}
+
+			.count {
+				color: LightGrey;
+			}
+
+			.behaves_like {
+				color: DarkGrey;
+				font-weight: bold;
+				margin-left: 20px;
+				margin-top: -10px;
+			}
+      
+      .failure {
+        color: red;
+        font-weight: bold;
+        display: inline;
+      }
+
+      .notimplemented {
+        color: orange;
+        font-weight: bold;
+        display: inline;
+      }
+
+      p.exception_type {
+        color: black;
+        font-weight: bold;
+        display: inline;
+      }
+
+      pre.exception_message {
+        border-style: dashed;
+        border-color: #FF828D;
+        border-width: thin;
+        background-color: #FFD2CF;
+        white-space: pre-wrap; /* CSS2.1 compliant */
+        white-space: -moz-pre-wrap; /* Mozilla-based browsers */
+        white-space: o-pre-wrap; /* Opera 7+ */
+        padding: 1em;
+      }
+      
+			hr {
+				color: LightGrey;
+				border: 1px solid LightGrey;
+				height: 1px;
+			}
+      
+      
+		</style>
+	</head>
+	<body>
+		<h1>Machine.Specifications.Specs&nbsp;&nbsp;&nbsp;&nbsp;</h1><span class="count"><h2>3 concerns, 32 contexts, 57 specifications </h2><br></span><h1>Machine.Specifications.Reporting.Specs&nbsp;&nbsp;&nbsp;&nbsp;</h1><span class="count"><h2>1 concern, 1 context, 1 specification </h2><br></span><h1>Machine.Specifications.ConsoleRunner.Specs&nbsp;&nbsp;&nbsp;&nbsp;</h1><span class="count"><h2>1 concern, 6 contexts, 15 specifications </h2><br></span><hr>
+<hr>
+<h2 class="concern">ContextFactory specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">3 contexts, 4 specifications</span></h3>
+
+<h3 class="context">when creating a context with a concern&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should capture the concerns type</li>
+	<li>should capture the concerns description</li>
+</ul>
+
+
+<h3 class="context">when creating a context with tags&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should capture the tags</li>
+</ul>
+
+
+<h3 class="context">when creating a context with duplicate tags&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should capture the tags once</li>
+</ul>
+
+<hr>
+<h2 class="concern">Specification Runner specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">24 contexts, 48 specifications</span></h3>
+
+<h3 class="context">when running a context with inherited specifications&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">4 specifications</span></h4><ul>	<li>should establish the context once</li>
+	<li>should invoke the because clause once</li>
+	<li>should invoke the because clause from the base class once</li>
+	<li>should detect two specs</li>
+</ul>
+
+
+<h3 class="context">when running a context with inherited specifications and setup once per attribute&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">4 specifications</span></h4><ul>	<li>should establish the context twice</li>
+	<li>should invoke the because clause twice</li>
+	<li>should invoke the because clause from the base class twice</li>
+	<li>should detect two specs</li>
+</ul>
+
+
+<h3 class="context">when running a context with specifications in a behavior&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should run the context spec</li>
+	<li>should run the behavior spec</li>
+</ul>
+
+
+<h3 class="context">when running a context with specifications in a behavior where the behavior field is ignored&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should run the context spec</li>
+	<li>should not run the behavior spec</li>
+</ul>
+
+
+<h3 class="context">when running a context with specifications in a behavior where the behavior is ignored&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should run the context spec</li>
+	<li>should not run the behavior spec</li>
+</ul>
+
+
+<h3 class="context">when running a context with specifications in a behavior where the behavior specs are ignored&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should run the context spec</li>
+	<li>should not run the behavior spec</li>
+</ul>
+
+
+<h3 class="context">when running a context with nested behaviors&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should fail</li>
+	<li>should print the type containing the nested behaviors</li>
+</ul>
+
+
+<h3 class="context">when running a context with behaviors that do not have the behaviors attribute&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should fail</li>
+	<li>should print the type missing the attribute</li>
+</ul>
+
+
+<h3 class="context">when running a context with behaviors with establish&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should fail</li>
+	<li>should print the behaviors with the establish</li>
+</ul>
+
+
+<h3 class="context">when running a context with behaviors with because&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should fail</li>
+	<li>should print the behaviors with the because</li>
+</ul>
+
+
+<h3 class="context">when running a context with no specifications&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should not establish the context</li>
+	<li>should not cleanup</li>
+</ul>
+
+
+<h3 class="context">when running a context with an ignored specifications&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">3 specifications</span></h4><ul>	<li>should not run the spec</li>
+	<li>should not establish the context</li>
+	<li>should not cleanup</li>
+</ul>
+
+
+<h3 class="context">when running an ignored context&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">3 specifications</span></h4><ul>	<li>should not run the spec</li>
+	<li>should not establish the context</li>
+	<li>should not cleanup</li>
+</ul>
+
+
+<h3 class="context">when running a context with multiple specifications&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should establish the context once</li>
+	<li>should invoke the because clause once</li>
+</ul>
+
+
+<h3 class="context">when running a context with multiple specifications and setup once per attribute&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should establish the context once</li>
+	<li>should invoke the because clause once</li>
+</ul>
+
+
+<h3 class="context">when running a context with multiple establish clauses&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should fail</li>
+</ul>
+
+
+<h3 class="context">when running a context with failing establish clauses&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should fail</li>
+</ul>
+
+
+<h3 class="context">when running a context with failing because clauses&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should fail</li>
+</ul>
+
+
+<h3 class="context">when running a context with failing specs&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should fail</li>
+</ul>
+
+
+<h3 class="context">when running an assembly with no included contexts&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should not run assembly start</li>
+	<li>should not run assembly complete</li>
+</ul>
+
+
+<h3 class="context">when running a specification with console output&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul></li>
+</li>
+</ul>
+
+
+<h3 class="context">when running a specification with console output and foreach&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul></li>
+</li>
+</ul>
+
+
+<h3 class="context">when running a specification that throws an exception with an inner exception&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should include the inner exception in the result</li>
+</ul>
+
+
+<h3 class="context">when running a behavior&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should not run the behavior specs</li>
+</ul>
+
+<hr>
+<h2 class="concern"> specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">5 contexts, 5 specifications</span></h3>
+
+<h3 class="context">when running specs by assembly&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should run them all</li>
+</ul>
+
+
+<h3 class="context">when running specs in an assembly with a reference that cannot be bound&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should fail</li>
+</ul>
+
+
+<h3 class="context">when running specs in which the cleanup throws a non serializable exception&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul></li>
+</ul>
+
+
+<h3 class="context">when running specs by namespace&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should run them all</li>
+</ul>
+
+
+<h3 class="context">when running specs by member&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should run</li>
+</ul>
+
+<hr>
+<br><br>
+<h2 class="concern">SpecificationTreeListener specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">1 context, 1 specification</span></h3>
+
+<h3 class="context">when getting a tree from a spec run&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should set the total specifications </li>
+</ul>
+
+<hr>
+<br><br>
+<h2 class="concern">Console runner specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">6 contexts, 15 specifications</span></h3>
+
+<h3 class="context">when arguments are not provided&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should print usage statement</li>
+</ul>
+
+
+<h3 class="context">when running a specification assembly&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">5 specifications</span></h4><ul>	<li>should write the assembly name</li>
+	<li>should write the specifications</li>
+	<li>should write the contexts</li>
+	<li>should write the count of contexts</li>
+	<li>should write the count of specifications</li>
+</ul>
+
+
+<h3 class="context">when specifying a missing assembly on the command line&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should output an error message with the name of the missing assembly</li>
+	<li>should return the Error exit code</li>
+</ul>
+
+
+<h3 class="context">when a specification fails&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">3 specifications</span></h4><ul>	<li>should write the failure</li>
+	<li>should write the count of failed specifications</li>
+	<li>should return the Failure exit code</li>
+</ul>
+
+
+<h3 class="context">when a specification fails and silent is set&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should write the count of failed specifications</li>
+	<li>should return the Failure exit code</li>
+</ul>
+
+
+<h3 class="context">when specifying an include filter&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should execute specs with the included tag</li>
+	<li>should not execute specs that are not included</li>
+</ul>
+
+<hr>
+<br><br>
+<hr>
+
+</body>
+</html>
