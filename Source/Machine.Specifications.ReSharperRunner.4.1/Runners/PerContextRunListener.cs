@@ -78,7 +78,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       {
         case Status.Failing:
           _server.TaskExplain(task, result.Exception.Message);
-          _server.TaskException(task, new[] { new TaskException(result.Exception.ToFakeException()) });
+          _server.TaskException(task, new[] { new TaskException(result.Exception.ToSpecException()) });
           message = result.Exception.Message;
           taskResult = TaskResult.Exception;
           break;
@@ -105,7 +105,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     public void OnFatalError(ExceptionResult exception)
     {
       _server.TaskExplain(_contextTask, "Fatal error: " + exception.Message);
-      _server.TaskException(_contextTask, new[] { new TaskException(exception.ToFakeException()) });
+      _server.TaskException(_contextTask, new[] { new TaskException(exception.ToSpecException()) });
       _server.TaskFinished(_contextTask, null, TaskResult.Exception);
     }
     #endregion
@@ -130,14 +130,14 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
   public static class ExceptionExtensions
   {
-    public static Exception ToFakeException(this ExceptionResult exceptionResult)
+    public static Exception ToSpecException(this ExceptionResult exceptionResult)
     {
-      return new FakeException(exceptionResult);
+      return new SpecException(exceptionResult);
     }
   }
 
   [Serializable]
-  public class FakeException : Exception
+  public class SpecException : Exception
   {
     readonly ExceptionResult _exceptionResult;
     //
@@ -147,16 +147,16 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
     //
 
-    public FakeException(ExceptionResult exceptionResult) : base(exceptionResult.Message)
+    public SpecException(ExceptionResult exceptionResult) : base(exceptionResult.Message)
     {
       _exceptionResult = exceptionResult;
     }
 
-    public FakeException(string message) : base(message)
+    public SpecException(string message) : base(message)
     {
     }
 
-    public FakeException(string message, Exception inner) : base(message, inner)
+    public SpecException(string message, Exception inner) : base(message, inner)
     {
 
     }
@@ -182,7 +182,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       return _exceptionResult.ToString();
     }
 
-    protected FakeException(
+    protected SpecException(
       SerializationInfo info,
       StreamingContext context) : base(info, context)
     {
