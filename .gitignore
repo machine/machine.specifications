@@ -10,3 +10,5 @@ _ReSharper.*
 *.swp
 /Build
 NDependOut
+
+.setup-done
