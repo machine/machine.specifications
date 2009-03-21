@@ -1,6 +1,6 @@
 namespace Machine.Specifications.Specs
 {
-  [Subject(tag.example)]
+  [Tags(tag.example)]
   public class context_with_behaviors
   {
     public static bool LocalSpecRan;
@@ -9,7 +9,7 @@ namespace Machine.Specifications.Specs
     Behaves_like<Behaviors> behavior;
   }
 
-  [Subject(tag.example)]
+  [Tags(tag.example)]
   public class context_with_behaviors_where_the_behavior_field_is_ignored
   {
     public static bool LocalSpecRan;
@@ -20,7 +20,7 @@ namespace Machine.Specifications.Specs
     Behaves_like<Behaviors> behavior;
   }
 
-  [Subject(tag.example)]
+  [Tags(tag.example)]
   public class context_with_behaviors_where_the_behavior_is_ignored
   {
     public static bool LocalSpecRan;
@@ -29,7 +29,7 @@ namespace Machine.Specifications.Specs
     Behaves_like<IgnoredBehaviors> behavior;
   }
 
-  [Subject(tag.example)]
+  [Tags(tag.example)]
   public class context_with_behaviors_where_the_behavior_specs_are_ignored
   {
     public static bool LocalSpecRan;
@@ -38,7 +38,7 @@ namespace Machine.Specifications.Specs
     Behaves_like<BehaviorsWithIgnoredSpec> behavior;
   }
 
-  [Subject(tag.example)]
+  [Tags(tag.example)]
   public class context_with_nested_behaviors
   {
     public static bool LocalSpecRan;
@@ -47,7 +47,7 @@ namespace Machine.Specifications.Specs
     Behaves_like<BehaviorsWithNestedBehavior> behavior_with_nested_behavior;
   }
   
-  [Subject(tag.example)]
+  [Tags(tag.example)]
   public class context_with_behaviors_without_behaviors_attribute
   {
     public static bool LocalSpecRan;
@@ -56,7 +56,7 @@ namespace Machine.Specifications.Specs
     Behaves_like<BehaviorsWithoutBehaviorsAttribute> behavior_without_behavior_attribute;
   }
   
-  [Subject(tag.example)]
+  [Tags(tag.example)]
   public class context_with_behaviors_with_establish
   {
     public static bool LocalSpecRan;
@@ -65,7 +65,7 @@ namespace Machine.Specifications.Specs
     Behaves_like<BehaviorsWithEstablish> behavior_with_establish;
   }
   
-  [Subject(tag.example)]
+  [Tags(tag.example)]
   public class context_with_behaviors_with_because
   {
     public static bool LocalSpecRan;

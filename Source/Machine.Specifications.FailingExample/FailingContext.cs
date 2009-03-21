@@ -13,4 +13,14 @@ namespace Machine.Specifications.FailingExample
       throw new Exception("hi scott, love you, miss you.");
     };
   }
+  
+  [Tags("example")]
+  public class context_with_multiple_establish_clauses
+  {
+    Establish foo = () => { };
+    Establish bar = () => { };
+
+    It should = () => { };
+  }
+  
 }

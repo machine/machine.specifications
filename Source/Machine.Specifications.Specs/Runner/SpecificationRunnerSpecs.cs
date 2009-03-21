@@ -1,5 +1,6 @@
 ﻿using System;
 using Machine.Specifications.Example;
+using Machine.Specifications.FailingExample;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
 

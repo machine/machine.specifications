@@ -3,7 +3,6 @@ using System.IO;
 using System.Reflection;
 
 using Machine.Specifications.Example;
-using Machine.Specifications.Example.BindingFailure;
 using Machine.Specifications.Example.CleanupFailure;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
@@ -34,7 +33,7 @@ namespace Machine.Specifications.Specs.Runner
   public class when_running_specs_in_an_assembly_with_a_reference_that_cannot_be_bound : running_specs
   {
     static Exception Exception;
-    const string ReferencedAssembly = "Machine.Specifications.Example.BindingFailure.Ref.dll";
+    readonly static string ReferencedAssembly = GetPath("Machine.Specifications.Example.BindingFailure.Ref.dll");
 
     Establish context = () =>
     {
@@ -45,11 +44,17 @@ namespace Machine.Specifications.Specs.Runner
     };
 
     Because of = () =>
-      runner.RunAssembly(typeof(if_a_referenced_assembly_cannot_be_bound).Assembly);
+      runner.RunAssembly(Assembly.LoadFrom(GetPath("Machine.Specifications.Example.BindingFailure.dll")));
 
     It should_fail = () =>
       listener.LastFatalError.ShouldNotBeNull();
     //Exception.ShouldBeOfType<TargetInvocationException>();
+
+    protected static string GetPath(string path)
+    {
+      return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), path);
+    }
+
   }
 
   [Ignore]

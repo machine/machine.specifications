@@ -6,6 +6,13 @@ using System.Text;
 
 namespace Machine.Specifications.Specs
 {
+  public static class tag
+  {
+    public const string example = "example";
+    public const string some_other_tag = "some other tag";
+    public const string one_more_tag = "one more tag";
+  }
+
   [SetupForEachSpecification, Tags(tag.example)]
   public class context_with_multiple_specifications_and_setup_for_each
   {
@@ -88,15 +95,6 @@ namespace Machine.Specifications.Specs
   {
   }
 
-  [Tags(tag.example)]
-  public class context_with_multiple_establish_clauses
-  {
-    Establish foo = () => { };
-    Establish bar = () => { };
-
-    It should = () => { };
-  }
-  
   [Tags(tag.example)]
   public class context_with_failing_specs
   {

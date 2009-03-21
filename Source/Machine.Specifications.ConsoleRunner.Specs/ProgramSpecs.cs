@@ -1,3 +1,5 @@
+using System.IO;
+using System.Reflection;
 using Machine.Specifications.ConsoleRunner.Properties;
 
 namespace Machine.Specifications.ConsoleRunner.Specs
@@ -22,7 +24,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     : with_runner 
   {
     Because of = ()=>
-      program.Run(new [] {"Machine.Specifications.Example.dll"});
+      program.Run(new [] {GetPath("Machine.Specifications.Example.dll")});
 
     It should_write_the_assembly_name = ()=>
       console.ShouldContainLineWith("Machine.Specifications.Example");
@@ -71,7 +73,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     const string failingSpecificationName = "should fail";
 
     Because of = ()=>
-      exitCode = program.Run(new string[] {assemblyWithFailingSpecification + ".dll"});
+      exitCode = program.Run(new string[] {GetPath(assemblyWithFailingSpecification + ".dll")});
 
     It should_write_the_failure = ()=>
       console.ShouldContainLineWith("Exception");
@@ -91,7 +93,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     const string failingSpecificationName = "should fail";
 
     Because of = ()=>
-      exitCode = program.Run(new string[] {assemblyWithFailingSpecification + ".dll", "-s"});
+      exitCode = program.Run(new string[] { GetPath(assemblyWithFailingSpecification + ".dll"), "-s"});
 
     It should_write_the_count_of_failed_specifications = ()=>
       console.ShouldContainLineWith("1 failed");
@@ -104,7 +106,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
   public class when_specifying_an_include_filter : with_runner
   {
     Because of = ()=>
-      program.Run(new [] {"Machine.Specifications.Example.dll", "--include", "failure"});
+      program.Run(new [] { GetPath("Machine.Specifications.Example.dll"), "--include", "failure"});
 
     It should_execute_specs_with_the_included_tag = () =>
       console.ShouldContainLineWith(
@@ -124,5 +126,10 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       console = new FakeConsole();
       program = new Program(console);
     };
+
+    protected static string GetPath(string path)
+    {
+      return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), path);
+    }
   }
 }

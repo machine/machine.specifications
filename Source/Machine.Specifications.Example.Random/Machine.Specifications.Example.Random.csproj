@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F25C7917-4ED6-4261-B262-43C56D0CD37F}</ProjectGuid>
+    <ProjectGuid>{1295C389-FCE4-4425-93E4-E4AE239B3E35}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Machine.Specifications.ConsoleRunner.Specs</RootNamespace>
-    <AssemblyName>Machine.Specifications.ConsoleRunner.Specs</AssemblyName>
+    <RootNamespace>Machine.Specifications.Example.Random</RootNamespace>
+    <AssemblyName>Machine.Specifications.Example.Random</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -17,30 +17,20 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Build\Debug\Tests\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <NoWarn>169</NoWarn>
-    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Build\Release\Tests\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.DynamicProxy2, Version=2.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\Testing\Castle.DynamicProxy2.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.Mocks, Version=3.4.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\Testing\Rhino.Mocks.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -55,30 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="FakeConsole.cs" />
+    <Compile Include="ExampleSpecs.cs" />
+    <Compile Include="ExampleSpecsWithBehavior.cs" />
+    <Compile Include="ExampleSpecsWithInheritance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProgramSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunner.csproj">
-      <Project>{CFF4B323-24C1-4B19-98CA-7DF92755458E}</Project>
-      <Name>Machine.Specifications.ConsoleRunner</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Machine.Specifications.Example\Machine.Specifications.Example.csproj">
-      <Project>{2C28C643-31A2-44CA-B762-953A963F6F61}</Project>
-      <Name>Machine.Specifications.Example</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Machine.Specifications.FailingExample\Machine.Specifications.FailingExample.csproj">
-      <Project>{89ECD0D1-6CC4-4319-B1B2-389E0B48F40D}</Project>
-      <Name>Machine.Specifications.FailingExample</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Machine.Specifications.NUnit\Machine.Specifications.NUnit.csproj">
-      <Project>{E96E4ECF-E3EF-4E1F-9FFE-0998FE4C5D84}</Project>
-      <Name>Machine.Specifications.NUnit</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj">
       <Project>{CCD02629-1262-4F78-9E9F-AC97B942D0E7}</Project>
       <Name>Machine.Specifications</Name>
