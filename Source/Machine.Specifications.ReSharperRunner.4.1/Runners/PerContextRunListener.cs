@@ -173,7 +173,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     {
       get
       {
-        return _exceptionResult.Message;
+        return Environment.NewLine + _exceptionResult.FullTypeName + ": " + _exceptionResult.Message;
       }
     }
 
