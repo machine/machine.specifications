@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Tree;
 
 namespace Machine.Specifications.ReSharperRunner
 {
@@ -69,7 +70,14 @@ namespace Machine.Specifications.ReSharperRunner
         return false;
       }
 
-      return attributeOwner.HasAttributeInstance(new CLRTypeName(typeof(IgnoreAttribute).FullName), false);
+      IInitializerOwnerDeclaration initializer = element as IInitializerOwnerDeclaration;
+      bool hasInitializer = true;
+      if (initializer != null)
+      {
+        hasInitializer = initializer.Initializer != null;
+      }
+
+      return !hasInitializer || attributeOwner.HasAttributeInstance(new CLRTypeName(typeof(IgnoreAttribute).FullName), false);
     }
 
     public static ICollection<string> GetTags(this IAttributesOwner type)
