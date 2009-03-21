@@ -73,7 +73,7 @@ namespace Machine.Specifications.ConsoleRunner
 
     public void OnContextStart(ContextInfo context)
     {
-      WriteVerbose(context.FullName);
+      WriteLineVerbose(context.FullName);
     }
 
     public void OnContextEnd(ContextInfo context)
