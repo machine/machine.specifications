@@ -73,11 +73,13 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       _server.TaskOutput(task, result.ConsoleError, TaskOutputType.STDERR);
 
       TaskResult taskResult = TaskResult.Success;
+      string message = null;
       switch (result.Status)
       {
         case Status.Failing:
           _server.TaskExplain(task, result.Exception.Message);
           _server.TaskException(task, new[] { new TaskException(result.Exception.ToFakeException()) });
+          message = result.Exception.Message;
           taskResult = TaskResult.Exception;
           break;
 
@@ -87,6 +89,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
         case Status.NotImplemented:
           _server.TaskExplain(task, "Not implemented");
+          message = "Not implemented";
           taskResult = TaskResult.Skipped;
           break;
 
@@ -96,7 +99,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
           break;
       }
 
-      _server.TaskFinished(task, null, taskResult);
+	  _server.TaskFinished(task, message, taskResult);
     }
 
     public void OnFatalError(ExceptionResult exception)
