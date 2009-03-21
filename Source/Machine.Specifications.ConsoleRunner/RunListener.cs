@@ -78,7 +78,7 @@ namespace Machine.Specifications.ConsoleRunner
 
     public void OnContextEnd(ContextInfo context)
     {
-      WriteVerbose("");
+      WriteLineVerbose("");
       _contextCount += 1;
     }
 
