@@ -21,7 +21,7 @@ namespace Machine.Specifications.Reporting.Integration
 
     protected string GetSpecificationName(SpecificationInfo specification)
     {
-      return _currentContext + " » " + specification.Name;
+      return _currentContext + " > " + specification.Name;
     }
 
     public void OnAssemblyStart(AssemblyInfo assembly)
@@ -79,7 +79,6 @@ namespace Machine.Specifications.Reporting.Integration
       switch (result.Status)
       {
         case Status.Passing:
-          _writer.WriteTestFinished(GetSpecificationName(specification), TimeSpan.Zero);
           break;
         case Status.NotImplemented:
           _writer.WriteTestIgnored(GetSpecificationName(specification), "(Not Implemented)");
@@ -91,7 +90,7 @@ namespace Machine.Specifications.Reporting.Integration
           if (result.Exception != null)
           {
             _writer.WriteTestFailed(GetSpecificationName(specification), 
-              result.Exception.Message, result.Exception.StackTrace);
+             result.Exception.Message, result.Exception.StackTrace);
           }
           else
           {
@@ -100,6 +99,7 @@ namespace Machine.Specifications.Reporting.Integration
           _failureOccured = true;
           break;
       }
+      _writer.WriteTestFinished(GetSpecificationName(specification), TimeSpan.Zero);
     }
 
     public void OnFatalError(ExceptionResult exception)
