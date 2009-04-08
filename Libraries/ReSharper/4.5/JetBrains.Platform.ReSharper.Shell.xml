@@ -708,6 +708,11 @@
             Registers change provider in the dispatching scheme
             </summary>
         </member>
+        <member name="M:JetBrains.Application.ChangeManager.PushRegisterChangeProvider(JetBrains.Application.IChangeProvider)">
+            <summary>
+            Registers/unregisters change provider in the dispatching scheme.
+            </summary>
+        </member>
         <member name="M:JetBrains.Application.ChangeManager.UnregisterChangeProvider(JetBrains.Application.IChangeProvider)">
             <summary>
             Unregisters change provider from the dispatching scheme
@@ -1055,6 +1060,11 @@
             Contains global settings of objects that do not have components to store settings in
             </summary>
         </member>
+        <member name="M:JetBrains.Application.Changes.ChangeManagerImpl.PushRegisterChangeProvider(JetBrains.Application.IChangeProvider)">
+            <summary>
+            Registers/unregisters change provider in the dispatching scheme.
+            </summary>
+        </member>
         <member name="T:JetBrains.Application.Install.IInstallAttributes">
             <summary>
             A class marked with <see cref="T:JetBrains.Application.Install.InstallAttributesAttribute"/> must implement this interface in order to be called for processing each of the assembly attributes it handles.
@@ -1289,27 +1299,6 @@
         <member name="F:JetBrains.Application.Install.RegistrationStage.Unregister">
             <summary>
             The assembly is being unregistered.
-            </summary>
-        </member>
-        <member name="T:JetBrains.Application.ObsoleteInvocator">
-            <summary>
-            A class for performing actions on the main UI thread
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.ObsoleteInvocator.Initialize">
-            <summary>
-            This method should be called on the main thread
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.ObsoleteInvocator.QueueAction(System.Action)">
-            <summary>
-            Queues an action for invocation in the UI thread in the current modality state.
-            This means that if a new modal window will open, the action won't execute until it closes, but if some windows are closed, or in the current state, it will.
-            </summary>
-        </member>
-        <member name="T:JetBrains.Application.ObsoleteInvocator.MessageForm">
-            <summary>
-            A message-only form that is not visible on the screen.
             </summary>
         </member>
         <member name="T:JetBrains.Application.KnownSettings`1">
@@ -1711,11 +1700,6 @@
             Returns all of the component implementations, arranged in a stable order.
             </summary>
         </member>
-        <member name="M:JetBrains.ComponentModel.IComponentContainer.GetComponents(System.Type)">
-            <summary>
-            Returns all of the component implementations that are assignable to the <paramref name="implementedInterfaceType"/> type, arranged in a stable order.
-            </summary>
-        </member>
         <member name="M:JetBrains.ComponentModel.IComponentContainer.HasComponent``1">
             <summary>
             Gets whether a component whose interface type is <typeparamref name="TInterface"/> is available.
@@ -1750,11 +1734,6 @@
             The sink sees some items going away from the collection view.
             </summary>
         </member>
-        <member name="F:JetBrains.ComponentModel.ComponentContainer.ConfigurationElementName">
-            <summary>
-            Name of the <c>Configuration</c> element in the XML config files.
-            </summary>
-        </member>
         <member name="F:JetBrains.ComponentModel.ComponentContainer.myAllComponentsInitialized">
             <summary>
             Used to shortcut <see cref="M:JetBrains.ComponentModel.ComponentContainer.InitializeComponentIfNeeded(JetBrains.ComponentModel.IComponent)"/>.
@@ -1784,7 +1763,38 @@
             Marks the container's thread affinity.
             </summary>
         </member>
+        <member name="F:JetBrains.ComponentModel.ComponentContainer.myHashComponentsBeingInitialized">
+            <summary>
+            The components are being initialized (we're currently on the stack of their initialization).
+            Components might get other components from their init and exec arbitrary code, we prevent reentrancy into the component init.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ComponentModel.ComponentContainer.myHashComponentsInitialized">
+            <summary>
+            The components that have already been initialized.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ComponentModel.ComponentContainer.myHashInterfaceTypesEverKnown">
+            <summary>
+            The interface types of components that ever were present in this container, to tell apart the errors when requesting a nonexistent component that has gone away already or has never been here.
+            </summary>
+        </member>
         <!-- Badly formed XML comment ignored for member "F:JetBrains.ComponentModel.ComponentContainer.myIsCreatingComponentInstances" -->
+        <member name="F:JetBrains.ComponentModel.ComponentContainer.myMapImplTypeToComponent">
+            <summary>
+            Looks up component instances by the type of their implementation.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ComponentModel.ComponentContainer.myMapIntfTypeToComponent">
+            <summary>
+            Looks up component instances by the type of their interface.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ComponentModel.ComponentContainer.ConfigurationElementName">
+            <summary>
+            Name of the <c>Configuration</c> element in the XML config files.
+            </summary>
+        </member>
         <member name="M:JetBrains.ComponentModel.ComponentContainer.AssertValidComponent(JetBrains.ComponentModel.IComponent)">
             <summary>
             <para>Allows to validate components in the container.</para>
@@ -1853,11 +1863,6 @@
         <member name="M:JetBrains.ComponentModel.ComponentContainer.GetComponents">
             <summary>
             Returns all of the component implementations, arranged in a stable order.
-            </summary>
-        </member>
-        <member name="M:JetBrains.ComponentModel.ComponentContainer.GetComponents(System.Type)">
-            <summary>
-            Returns all of the component implementations that are assignable to the <paramref name="implementedInterfaceType"/> type, arranged in a stable order.
             </summary>
         </member>
         <member name="M:JetBrains.ComponentModel.ComponentContainer.TryGetComponent(System.Type)">
@@ -2031,16 +2036,6 @@
             Missing timestamp means the data is coming fresh from the component.
             </remarks>
         </member>
-        <member name="F:JetBrains.ComponentModel.XmlExternalizableComponentContainer.RetentionPolicySession.RetentionPeriod">
-            <summary>
-            See <see cref="M:JetBrains.ComponentModel.XmlExternalizableComponentContainer.RetentionPolicySession.ShouldKeep(System.Xml.XmlElement)"/>.
-            </summary>
-        </member>
-        <member name="F:JetBrains.ComponentModel.XmlExternalizableComponentContainer.RetentionPolicySession.TimestampAttributeName">
-            <summary>
-            See <see cref="M:JetBrains.ComponentModel.XmlExternalizableComponentContainer.RetentionPolicySession.ShouldKeep(System.Xml.XmlElement)"/>.
-            </summary>
-        </member>
         <member name="F:JetBrains.ComponentModel.XmlExternalizableComponentContainer.RetentionPolicySession._convDateTime">
             <summary>
             Cache.
@@ -2054,6 +2049,16 @@
         <member name="F:JetBrains.ComponentModel.XmlExternalizableComponentContainer.RetentionPolicySession._sNow">
             <summary>
             Cache.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ComponentModel.XmlExternalizableComponentContainer.RetentionPolicySession.RetentionPeriod">
+            <summary>
+            See <see cref="M:JetBrains.ComponentModel.XmlExternalizableComponentContainer.RetentionPolicySession.ShouldKeep(System.Xml.XmlElement)"/>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ComponentModel.XmlExternalizableComponentContainer.RetentionPolicySession.TimestampAttributeName">
+            <summary>
+            See <see cref="M:JetBrains.ComponentModel.XmlExternalizableComponentContainer.RetentionPolicySession.ShouldKeep(System.Xml.XmlElement)"/>.
             </summary>
         </member>
         <member name="M:JetBrains.ComponentModel.XmlExternalizableComponentContainer.RetentionPolicySession.ShouldKeep(System.Xml.XmlElement)">
@@ -2835,43 +2840,40 @@
         <member name="F:JetBrains.Build.GuidCache.GuidIdXml.MsiComponent_RegistryData_Hkcr">
             <remarks/>
         </member>
-        <member name="M:JetBrains.ActivityTracking.ActivityTracker.Init">
+        <member name="M:JetBrains.ActivityTracking.Impl.ActivityTracker.JetBrains#ComponentModel#IComponent#Init">
             <summary>
-            
-            
+            <para>Initializes the component. Called by the component container after the component is created.</para>
+            <para><see cref="M:System.IDisposable.Dispose"/> is the pairing method that's guaranteed to be called by the component container to tear down your component.</para>
+            <para>You must not access other components before your <see cref="M:JetBrains.ActivityTracking.Impl.ActivityTracker.Init"/> method is called.</para>
+            <para>All of the components that you access from <see cref="M:JetBrains.ActivityTracking.Impl.ActivityTracker.Init"/> are guaranteed to exist when your <see cref="M:System.IDisposable.Dispose"/> is called. Any other component might be missing by that time, and trying to get it will throw an exception.</para>
             </summary>
         </member>
-        <member name="M:JetBrains.ActivityTracking.ActivityTracker.Dispose">
+        <member name="M:JetBrains.ActivityTracking.XmlSettingsToMetadataParametersUtil.AddNamedMetadataParameters(JetBrains.ActivityTracking.IActivityTracker,JetBrains.ComponentModel.IXmlExternalizableComponent)">
             <summary>
-            
+            Takes the settings written by the XML Externalizable and saves them as metadata parameters.
             </summary>
         </member>
-        <member name="P:JetBrains.ActivityTracking.ActivityTracker.Instance">
-            <summary>
-            /dsfddsfds
-            </summary>
-        </member>
-        <member name="F:JetBrains.ComponentModel.ComponentContainerState.INITIAL">
+        <member name="F:JetBrains.ComponentModel.ComponentContainerState.Initial">
             <summary>
             The container has just been created and is not ready for creating the components yet. Call <see cref="M:JetBrains.ComponentModel.ComponentContainer.InitializeComponents(JetBrains.ComponentModel.ComponentDeclarationsCache)"/> to proceed.
             </summary>
         </member>
-        <member name="F:JetBrains.ComponentModel.ComponentContainerState.INITIALIZING">
+        <member name="F:JetBrains.ComponentModel.ComponentContainerState.Initializing">
             <summary>
-            <see cref="M:JetBrains.ComponentModel.ComponentContainer.InitializeComponents(JetBrains.ComponentModel.ComponentDeclarationsCache)"/> has been called on the container, now the components can be created. This state changes to <see cref="F:JetBrains.ComponentModel.ComponentContainerState.INITIALIZED"/> after the first pack of components is created. Currently, that means all of the product components and maybe some of the plugins, if their assemblies are loaded already.
+            <see cref="M:JetBrains.ComponentModel.ComponentContainer.InitializeComponents(JetBrains.ComponentModel.ComponentDeclarationsCache)"/> has been called on the container, now the components can be created. This state changes to <see cref="F:JetBrains.ComponentModel.ComponentContainerState.Initialized"/> after the first pack of components is created. Currently, that means all of the product components and maybe some of the plugins, if their assemblies are loaded already.
             </summary>
         </member>
-        <member name="F:JetBrains.ComponentModel.ComponentContainerState.INITIALIZED">
+        <member name="F:JetBrains.ComponentModel.ComponentContainerState.Initialized">
             <summary>
             The container is running. The first pack of components has been created.
             </summary>
         </member>
-        <member name="F:JetBrains.ComponentModel.ComponentContainerState.DISPOSING">
+        <member name="F:JetBrains.ComponentModel.ComponentContainerState.Disposing">
             <summary>
             <see cref="M:System.IDisposable.Dispose"/> has been called on the container, and it's currently in the process of tearing down the components.
             </summary>
         </member>
-        <member name="F:JetBrains.ComponentModel.ComponentContainerState.DISPOSED">
+        <member name="F:JetBrains.ComponentModel.ComponentContainerState.Disposed">
             <summary>
             The container has destroyed all of the components and is functional no more.
             </summary>
@@ -3447,6 +3449,11 @@
         <member name="P:JetBrains.Application.InterruptableReadActivityThe.Name">
             <summary>
             Gets or sets the name for the operation, and for the worker thread of the operation.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ProjectModel.Platforms.Impl.PlatformManagerImpl.LookForWindowsSdk">
+            <summary>
+            Tries to find Windows SDK v6 or higher and returns the path to its Bin folder, or <c>Null</c> if not found.
             </summary>
         </member>
         <member name="T:JetBrains.Application.Progress.IProgressIndicatorModel">
@@ -4148,6 +4155,13 @@
         <member name="M:JetBrains.Application.Test.TestReentrancyGuard.T040_PumpQueue">
             <summary>
             Queues actions and executes them on-demand.
+            </summary>
+        </member>
+        <member name="T:TeshShellAssemblyScope">
+            <summary>
+            Must be in the global namespace.
+            This class tears down the Test Shell at the end of the assembly tests execution.
+            Plant a class in each assembly with tests, inherited from this one.
             </summary>
         </member>
     </members>

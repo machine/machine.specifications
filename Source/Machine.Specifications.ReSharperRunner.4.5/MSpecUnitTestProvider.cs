@@ -161,6 +161,11 @@ namespace Machine.Specifications.ReSharperRunner
       return _unitTestElementComparer.Compare(x, y);
     }
 
+    public bool IsUnitTestStuff(IDeclaredElement element)
+    {
+      return IsUnitTestElement(element);
+    }
+
     public void Present(UnitTestElement element, IPresentableItem item, TreeModelNode node, PresentationState state)
     {
       Presenter.UpdateItem(element, node, item, state);

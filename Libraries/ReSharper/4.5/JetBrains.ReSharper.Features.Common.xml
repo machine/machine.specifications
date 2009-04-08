@@ -385,12 +385,12 @@
             <param name="librariesFlag">Base ctor param.</param>
             <param name="kind"></param>
         </member>
-        <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoDeclaredElementController.CreateGotoNamespaceController(JetBrains.ProjectModel.ISolution,JetBrains.ProjectModel.IProject,JetBrains.ReSharper.Features.Common.GoToByName.LibrariesFlag)">
+        <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoDeclaredElementController.CreateGotoNamespaceController(JetBrains.ProjectModel.ISolution,JetBrains.ReSharper.Features.Common.GoToByName.LibrariesFlag)">
             <summary>
             Controller of the <see cref="T:JetBrains.ReSharper.Features.Common.GoToByName.GotoByNameModel"/> for namespaces.
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoDeclaredElementController.CreateGotoNamespaceModel(JetBrains.ProjectModel.ISolution,JetBrains.ProjectModel.IProject,JetBrains.ReSharper.Features.Common.GoToByName.LibrariesFlag)">
+        <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoDeclaredElementController.CreateGotoNamespaceModel(JetBrains.ProjectModel.ISolution,JetBrains.ReSharper.Features.Common.GoToByName.LibrariesFlag)">
             <summary>
             <see cref="T:JetBrains.ReSharper.Features.Common.GoToByName.GotoByNameModel"/> for namespaces.
             </summary>
@@ -1041,9 +1041,16 @@
             Gets the declarations cache for the current models (on solution, either libs or no-libs).
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Features.Common.UI.DeclaredElementChooser.GetNestedItems(JetBrains.ReSharper.Psi.IDeclaredElement)">
+        <member name="M:JetBrains.ReSharper.Features.Common.UI.DeclaredElementChooser.GetNestedItems(JetBrains.ReSharper.Psi.IDeclaredElement,JetBrains.ReSharper.Psi.Caches.IDeclarationsCache)">
             <summary>
             Expands the level of the tree picker.
+            </summary>
+            <param name="element"><c>Null</c> for the root.</param>
+            <param name="cache">Declarations cache</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.Features.Common.UI.DeclaredElementChooser.GetItems(JetBrains.ReSharper.Psi.IDeclaredElement)">
+            <summary>
+            Retrieves nested items visible to solution for specified element
             </summary>
             <param name="element"><c>Null</c> for the root.</param>
         </member>

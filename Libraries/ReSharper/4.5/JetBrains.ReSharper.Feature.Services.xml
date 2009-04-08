@@ -296,7 +296,7 @@
             Each stage should have a key that allows stages to refer to each other.
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Daemon.IDaemonStage.CreateProcess(JetBrains.ReSharper.Daemon.IDaemonProcess)">
+        <member name="M:JetBrains.ReSharper.Daemon.IDaemonStage.CreateProcess(JetBrains.ReSharper.Daemon.IDaemonProcess,JetBrains.ReSharper.Daemon.DaemonProcessKind)">
             <summary>
             Creates a code analysis process corresponding to this stage for analysing a file.
             </summary>
@@ -332,11 +332,6 @@
         <member name="P:JetBrains.ReSharper.Daemon.DaemonStageAttribute.StagesAfter">
             <summary>
             Stages which shoud follow this
-            </summary>
-        </member>
-        <member name="P:JetBrains.ReSharper.Daemon.DaemonStageAttribute.RunForInvisibleDocument">
-            <summary>
-            Determines if this stage should be run for solution-wide error analysis
             </summary>
         </member>
         <member name="T:JetBrains.ReSharper.Daemon.HighlightingInfo">
@@ -853,6 +848,23 @@
             A <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
             </returns>
             <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Util.ActionUtil.CommitAndWaitForCaches(JetBrains.ReSharper.Psi.PsiManager,JetBrains.ActionManagement.IActionHandler)">
+            <summary>
+            When a PSI-consuming action is about to be executed, commits the documents and waits for the caches to become idle, displaying the cancelable modal UI progress.
+            </summary>
+            <param name="manager">PSI manager to wait for, identifies the solution.</param>
+            <param name="actionhandler">Action handler from which the action name is retrieved, to display in the progress UI.</param>
+            <returns>Whether the caches are, finally, idle (the wait might be cancelled).</returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Util.ActionUtil.ExecuteWithCachesReady(JetBrains.ReSharper.Psi.PsiManager,System.String,System.Action)">
+            <summary>
+            When a PSI-consuming action is about to be executed, commits the documents and waits for the caches to become idle, displaying the cancelable modal UI progress.
+            </summary>
+            <param name="manager">PSI manager to wait for, identifies the solution.</param>
+            <param name="action">Activity to execute if the caches are ready OK.</param>
+            <param name="title">Progress title.</param>
+            <returns>Whether the caches are, finally, idle (the wait might be cancelled).</returns>
         </member>
         <member name="M:JetBrains.ReSharper.Feature.Services.Intentions.DataProviders.ICreationTarget.GetTargetDeclaration">
             <summary>
@@ -2111,9 +2123,14 @@
             Holder to delegate user data holding actions to
             </summary>
         </member>
-        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.Lookup.myLookupItems">
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.Lookup.mySortedItems">
             <summary>
-            The complete list of lookup items
+            The complete list of lookup items sorted by name
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.Lookup.myOriginalItems">
+            <summary>
+            The complete list of lookup items sorted originally (by preference)
             </summary>
         </member>
         <member name="F:JetBrains.ReSharper.Feature.Services.Lookup.Lookup.myCurrentItems">
@@ -2493,11 +2510,6 @@
             Event which is raised when lookup window is scrolled
             </summary> 
         </member>
-        <member name="E:JetBrains.ReSharper.Feature.Services.Lookup.LookupWindow.BeforeShownItemsUpdated">
-            <summary>
-            Event is raised before items list is shown
-            </summary>
-        </member>
         <member name="P:JetBrains.ReSharper.Feature.Services.Lookup.LookupWindow.CurrentItemBounds">
             <summary>
             Gets bounds of the current item
@@ -2727,6 +2739,26 @@
         <member name="T:JetBrains.ReSharper.Feature.Services.Util.CodeInsightUtil">
             <summary>
             Contains utility methods for code insight features
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Validators.PropertyValidatorFactory">
+            <summary>
+            Performs validation of <see cref="T:JetBrains.DataFlow.IProperty`1"/> in the aspect of valid language names, and such.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Validators.PropertyValidatorFactory.CreateNewNameValidator(JetBrains.DataFlow.IProperty{System.String},JetBrains.ReSharper.Psi.IElementPointer{JetBrains.ReSharper.Psi.IDeclaredElement},System.String)">
+            <summary>
+            Checks whether the string property value is a valid new name for an identifier.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Validators.PropertyValidatorFactory.CreateNewNameValidator(JetBrains.DataFlow.IProperty{System.String},JetBrains.ReSharper.Psi.IDeclaredElement,System.String)">
+            <summary>
+            Checks whether the string property value is a valid new name for an identifier.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Validators.PropertyValidatorFactory.CreateNewNameValidator(JetBrains.DataFlow.IProperty{System.String},JetBrains.ReSharper.Psi.PsiLanguageType,System.String)">
+            <summary>
+            Checks whether the string property value is a valid new name for an identifier.
             </summary>
         </member>
     </members>

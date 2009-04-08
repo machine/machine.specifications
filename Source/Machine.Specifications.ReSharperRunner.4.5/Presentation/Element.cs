@@ -98,7 +98,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       IDeclaredElement element = GetDeclaredElement();
       if (element == null || !element.IsValid())
       {
-        return UnitTestElementDisposition.ourInvalidDisposition;
+        return UnitTestElementDisposition.InvalidDisposition;
       }
 
       var locations = new List<UnitTestElementLocation>();

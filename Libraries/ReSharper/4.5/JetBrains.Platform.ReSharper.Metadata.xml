@@ -239,6 +239,11 @@
             Gets unique MVID
             </summary>
         </member>
+        <member name="P:JetBrains.Metadata.Access.ExportedTypeProperty.Token">
+            <summary>
+            Exported type token
+            </summary>
+        </member>
         <member name="P:JetBrains.Metadata.Access.ExportedTypeProperty.ClrName">
             <summary>
             The name of the exported type
@@ -1627,6 +1632,11 @@
             Gets type from its qualified name
             </summary>
         </member>
+        <member name="M:JetBrains.Metadata.Reader.API.IMetadataAssembly.GetMethodFromToken(JetBrains.Metadata.Access.MetadataToken)">
+            <summary>
+            Gets the method information on the token which must be a valid IsMethodDef or IsMethodRef token.
+            </summary>
+        </member>
         <member name="M:JetBrains.Metadata.Reader.API.IMetadataAssembly.GetTypes">
             <summary>
             Gets array of types defined in the assembly
@@ -1996,6 +2006,11 @@
         <member name="P:JetBrains.Metadata.Reader.API.IMetadataMethod.IsVarArg">
             <summary>
             Gets flag indicating whether the method is vararg
+            </summary>
+        </member>
+        <member name="P:JetBrains.Metadata.Reader.API.IMetadataMethod.IsUnmanaged">
+            <summary>
+            Gets flag indicating whether the method is unmanaged
             </summary>
         </member>
         <member name="T:JetBrains.Metadata.Reader.API.IMetadataParameter">

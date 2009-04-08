@@ -18,9 +18,12 @@
             Get references which should be visited by resolver, and which are syntax-dependednt (not semantic)
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.Tree.IElement.GetSecondClassReferences">
+        <member name="M:JetBrains.ReSharper.Psi.Tree.IElement.GetSecondClassReferences(System.Collections.Generic.ICollection{System.String})">
             <summary>
-            References which depends on first class references
+            References which depends on first class references. 
+            If <paramref name="names"/> is null, all second-class references should be enumerated.
+            If not null, then there might be an optimization to return only the references
+            which might have given name
             </summary>
         </member>
         <member name="M:JetBrains.ReSharper.Psi.Tree.IElement.GetContainingElement``1(System.Boolean)">
@@ -172,6 +175,30 @@
             Get the PSI module for given project file
             </summary>
         </member>
+        <member name="T:JetBrains.ReSharper.Psi.Impl.IResolveIsolationScope">
+            <summary>
+            Any PSI change inside this scope:
+            <list type="number">
+            <item>Affects resolve validity of inner references only</item>
+            <item>Does not change 'global' model</item>
+            </list>
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Psi.Impl.IResolveIsolationScope.ModificationStamp">
+            <summary>
+            Returns <c>null</c> if this element actually is not scope.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.Impl.OutputAssembliesCache.RemoveProjectOutputAssembly(JetBrains.ProjectModel.IProject)">
+            <returns>Old output assembly</returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.Impl.OutputAssembliesCache.GetAssemblyByProject(JetBrains.ProjectModel.IProject)">
+            <returns>Assembly if it is specified for project and there's no other project with the same 
+            output assembly</returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.Impl.OutputAssembliesCache.GetProjectByAssembly(JetBrains.ProjectModel.IAssembly)">
+            <returns>Project if it is the only project with output assembly equal to the assembly in question</returns>
+        </member>
         <member name="M:JetBrains.ReSharper.Psi.Impl.IMiscFilesProjectPsiModuleProvider.GetModules">
             <summary>
             Get provided modules
@@ -280,6 +307,22 @@
         <member name="P:JetBrains.ReSharper.Psi.IType.Module">
             <summary>
             Get the module where this type was built
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Psi.Naming.INameCanoniser">
+            <summary>
+            Interface for components performing language-specific canonisation of symbol names. 
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.Naming.INameCanoniser.GetCanonicalShortName(System.String)">
+            <summary>
+            Canonises language-specific short name by returning the CLR-compilant equivalent
+            </summary>
+            <param name="name">Language-specific name (possibly escaped)</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.Naming.INameCanoniser.GetCanonicalQualifiedName(System.String)">
+            <summary>
+            Converts language-specific qualified name into CLR-compliant equivalent
             </summary>
         </member>
         <member name="M:JetBrains.ReSharper.Psi.Resolve.IAccessContext.GetStaticness">
@@ -1386,15 +1429,9 @@
             Thread affinity.
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.Impl.Caches2.CacheWorkItemSubprogress.Disable(System.String)">
-            <summary>
-            Disables the progress when each job ends.
-            </summary>
-            <param name="sJobIdentity">The job identity, so that to include its name in error messages.</param>
-        </member>
         <member name="M:JetBrains.ReSharper.Psi.Impl.Caches2.CacheWorkItemSubprogress.Enable(System.Double,System.Double,System.String)">
             <summary>
-            Enables the progress while a job is running, mapping it to the range occupied by the job.
+            Enables the progress while a job is running, mapping it to the range occupied by the job; disables on disposal.
             </summary>
             <param name="rangestart">Subprogress range.</param>
             <param name="rangelength">Subprogress range.</param>
@@ -1837,22 +1874,6 @@
             IsDefault means that, the extensions identify the whole group of similar files (i.e. xml)
             </summary>
         </member>
-        <member name="T:JetBrains.ReSharper.Psi.Naming.INameCanoniser">
-            <summary>
-            Interface for components performing language-specific canonisation of symbol names. 
-            </summary>
-        </member>
-        <member name="M:JetBrains.ReSharper.Psi.Naming.INameCanoniser.GetCanonicalShortName(System.String)">
-            <summary>
-            Canonises language-specific short name by returning the CLR-compilant equivalent
-            </summary>
-            <param name="name">Language-specific name (possibly escaped)</param>
-        </member>
-        <member name="M:JetBrains.ReSharper.Psi.Naming.INameCanoniser.GetCanonicalQualifiedName(System.String)">
-            <summary>
-            Converts language-specific qualified name into CLR-compliant equivalent
-            </summary>
-        </member>
         <member name="T:JetBrains.ReSharper.Psi.PsiIconExtension">
             <summary>
             Enumerates possible node types
@@ -2233,6 +2254,10 @@
             <param name="type"></param>
             <returns></returns>
         </member>
+        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.DeclaredElements.TypeElementImplUtil.FindInheritancePathRecursive(System.Collections.Generic.HashSet{JetBrains.ReSharper.Psi.ITypeElement},System.Collections.Generic.HashSet{JetBrains.ReSharper.Psi.IDeclaredType},JetBrains.ReSharper.Psi.IDeclaredType,JetBrains.ReSharper.Psi.ITypeElement,System.Collections.Generic.List{JetBrains.ReSharper.Psi.Resolve.ISubstitution})">
+            Find the type chain from type to subtype
+            Returns null if no path is found
+        </member>
         <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.DeclaredElements.TypeElementImplUtil.FindInheritancePathRecursive(System.Collections.Generic.HashSet{JetBrains.ReSharper.Psi.ITypeElement},JetBrains.ReSharper.Psi.ITypeElement,JetBrains.ReSharper.Psi.ITypeElement,JetBrains.ReSharper.Psi.Resolve.ISubstitution,System.Collections.Generic.List{JetBrains.ReSharper.Psi.Resolve.ISubstitution})">
             Find the type chain from type to subtype
             Returns null if no path is found
@@ -2262,18 +2287,6 @@
             <param name="language">Language of the generated file</param>
             <returns>Created document. Not null.</returns>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.IGeneratedDocumentService.IsDirty(JetBrains.ProjectModel.IProjectFile)">
-            <summary>
-            Checks, whether the file was modifies
-            </summary>
-            <param name="file"></param>
-            <returns>True, if the provider handles the document and it was modified since last commit.</returns>
-        </member>
-        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.IGeneratedDocumentService.GetDirtyProjectItems">
-            <summary>
-            This is a diagnostics method
-            </summary>
-        </member>
         <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.IGeneratedDocumentService.OnGeneratedDocumentCopyChanged(JetBrains.ProjectModel.IProjectFile,JetBrains.Util.TextRange,System.String,System.String)">
             <summary>
             Called from transaction manager when temporary copy generated document is chaged
@@ -2288,7 +2301,7 @@
             Custom naviagtion range, for instance for page declarations in ASP
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.IGeneratedDocumentService.StartCommitDocuments">
+        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.IGeneratedDocumentService.StartCommitDocuments(System.Collections.Generic.IEnumerable{JetBrains.ProjectModel.IProjectFile})">
             <summary>
             Detects changes and applies changes in main thread
             </summary>
@@ -2307,14 +2320,9 @@
             </summary>
             <param name="workerResult">Return value of WorkCommitDocuments</param>
         </member>
-        <member name="P:JetBrains.ReSharper.Psi.ExtensionsAPI.IGeneratedDocumentService.AllDocumentsAreComitted">
-            <summary>
-            Returns true if no dirty items
-            </summary>
-        </member>
         <member name="P:JetBrains.ReSharper.Psi.ExtensionsAPI.IGeneratedDocumentService.CustomHandler">
             <summary>
-            Custom handler for write interface for C#
+            Custom handler for write interface
             </summary>
         </member>
         <member name="M:JetBrains.ReSharper.Psi.Resolve.ISymbolTable.Names(System.String,JetBrains.Application.CheckForInterrupt)">
@@ -2615,6 +2623,17 @@
             when one cannot afford to commit PSI too often
             </summary>
         </member>
+        <member name="P:JetBrains.ReSharper.Psi.PsiManager.PsiTimestamp">
+            <summary>
+            Timestamp for global PSI state
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Psi.PsiManager.PsiCacheTimestamp">
+            <summary>
+            Timestamp for PSI-based caches. The difference from <see cref="P:JetBrains.ReSharper.Psi.PsiManager.PsiTimestamp"/> is that sometimes caches 
+            should be completely invalidated without altering global PSI timestamp
+            </summary>
+        </member>
         <member name="F:JetBrains.ReSharper.Psi.Impl.PsiManagerImpl.PsiManagerImpl.myDirtyProjectItems">
             <summary>
             Project items for which PSI is outdated
@@ -2838,6 +2857,11 @@
             Obtain the range in the <see cref="P:JetBrains.ReSharper.Psi.Parsing.TokenBuffer.Buffer"/> on which the token are cached
             </summary>
         </member>
+        <member name="T:JetBrains.ReSharper.Psi.Parsing.IXmlTokenBuilder">
+            <summary>
+            Implement this language-specific interface if you need specific behaviour
+            </summary>
+        </member>
         <member name="M:JetBrains.ReSharper.Psi.PredefinedType.IsPredefinedNumeric(JetBrains.ReSharper.Psi.IType)">
             <summary>
             Checks if given type equals to predefined sbyte, byte, short, ushort, int, uint, long, ulong, decimal, double, float, char
@@ -3042,11 +3066,6 @@
         <member name="F:JetBrains.ReSharper.Psi.InvocableSignature.ParameterKindCompareType.VB_LIKE">
             <summary>
             Visual-Basic parameter kind comparing, where 'out' and 'ref' kinds are the same
-            </summary>
-        </member>
-        <member name="M:JetBrains.ReSharper.Psi.LanguageService.ShouldInvalidatePsiCache(JetBrains.ReSharper.Psi.Tree.IElement,JetBrains.ReSharper.Psi.PsiChangedElementType)">
-            <summary>
-            Check if the PSI caches should be invalidated on this change
             </summary>
         </member>
         <member name="M:JetBrains.ReSharper.Psi.LanguageService.GetDeclaredElementImage(JetBrains.ReSharper.Psi.IDeclaredElement)">

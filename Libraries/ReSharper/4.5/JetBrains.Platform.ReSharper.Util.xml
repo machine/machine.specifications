@@ -439,18 +439,31 @@
             <para>In the callback handler, use <see cref="M:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.ExecuteOrQueueOrMerge(System.String,System.Action)"/>. If <see cref="P:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.IsExpectingUnguardedCallback"/>, it will be merged into the current guarded context (this is considered a reentrant-safe activity). Otherwise, <see cref="M:JetBrains.Threading.ReentrancyGuard.ExecuteOrQueue(System.String,System.Action)"/> will be used.</para>
             </summary>
         </member>
-        <member name="M:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.#ctor(JetBrains.Threading.ReentrancyGuard,System.Boolean)">
+        <member name="M:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.#ctor(JetBrains.Threading.ReentrancyGuard,JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.BehaviorFlags)">
             <summary>
             Init.
             </summary>
             <param name="guard">Identifies the thread.</param>
-            <param name="bAllowNestedExpectations">Whether <see cref="M:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.ExpectUnguardedCallback(System.Action)"/> could be called from within another <see cref="M:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.ExpectUnguardedCallback(System.Action)"/> call.</param>
+            <param name="flags">Behavior flags &amp; options.</param>
+        </member>
+        <member name="M:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.ExecuteOrQueue(JetBrains.Threading.ReentrancyGuard,JetBrains.DataFlow.Disposables,System.String,System.Action)">
+            <summary>
+            <para>Executes an action on the guarded thread in a reentrant-safe manner.</para>
+            <para>If called on a foreign thread, executes the action asynchronously, like <see cref="M:JetBrains.Threading.ReentrancyGuard.Queue(System.String,System.Action)"/>.</para>
+            <para>If called on the guarded thread, checks for reentrancy. If there are no guarded executions on the stack yet, executes the action immediately and synchronously. Otherwise, postpones the action for asynchronous execution, like <see cref="M:JetBrains.Threading.ReentrancyGuard.Queue(System.String,System.Action)"/> does.</para>
+            </summary>
+            <param name="reega">The guarded context owner.</param>
+            <param name="disposables">When this container is disposed of, the pending action is canceled (if resolved to <see cref="M:JetBrains.Threading.ReentrancyGuard.Queue(System.String,System.Action)"/> and were postponed).</param>
+            <param name="name">Identifies the action in the queue.</param>
+            <param name="F">The action to execute. Exceptions will be trapped.</param>
+            <returns><c>True</c> if executed immediately, <c>False</c> if queued (<see cref="M:JetBrains.Threading.ReentrancyGuard.TryExecute(System.String,System.Action)"/>-compatible behavior).</returns>
         </member>
         <member name="M:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.ExecuteOrQueueOrMerge(System.String,System.Action)">
             <summary>
-            <para>Executes the <paramref name="action"/> in the guarded context.</para>
+            <para>Executes the <paramref name="F"/> in the guarded context.</para>
             <para>If <see cref="P:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.IsExpectingUnguardedCallback"/> (ie running inside <see cref="M:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.ExpectUnguardedCallback(System.Action)"/>), merges the call into the current guarded context. Otherwise, does the regular <see cref="M:JetBrains.Threading.ReentrancyGuard.ExecuteOrQueue(System.String,System.Action)"/>.</para>
             <para>Executes sync or async. Must be run on the <see cref="F:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.ReentrancyGuard"/> thread.</para>
+            <para>Catches all exceptions.</para>
             </summary>
         </member>
         <member name="M:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.ExpectUnguardedCallback(System.Action)">
@@ -458,9 +471,43 @@
             <para>Says that we're expecting callbacks from the unguarded context, and they should be allowed into the current context if they use <see cref="M:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.ExecuteOrQueueOrMerge(System.String,System.Action)"/>.</para>
             </summary>
         </member>
+        <member name="M:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.System#IDisposable#Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
         <member name="P:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.IsExpectingUnguardedCallback">
             <summary>
             Whether we're inside <see cref="M:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.ExpectUnguardedCallback(System.Action)"/>.
+            </summary>
+        </member>
+        <member name="T:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.BehaviorFlags">
+            <summary>
+            <see cref="T:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger"/> behavior aspects.
+            </summary>
+        </member>
+        <member name="F:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.BehaviorFlags.ExecutePendingLeftovers">
+            <summary>
+            <para>Use the default <see cref="F:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.ReentrancyGuard"/> behavior: if the callbacks were queued for execution with <see cref="!:ReentrancyGuard.Queue"/>, they're not reclaimed after the owning object is disposed of, and will still have a chance to execute.</para>
+            <para>This is the default.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.BehaviorFlags.DropPendingLeftovers">
+            <summary>
+            <para>If there're any pending callbacks queued for execution with <see cref="!:ReentrancyGuard.Queue"/> at the moment the owning object is disposed of, they're dropped.</para>
+            <para>No code submitted through this object will execute after it is disposed of.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.BehaviorFlags.ProhibitNestedExpectations">
+            <summary>
+            <para>When running inside <see cref="M:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.ExpectUnguardedCallback(System.Action)"/>, nested calls to <see cref="M:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.ExpectUnguardedCallback(System.Action)"/> are prohibited. An attempt to place such a call will result in an exception.</para>
+            <para>This is the default.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.BehaviorFlags.AllowNestedExpectations">
+            <summary>
+            <para>When running inside <see cref="M:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.ExpectUnguardedCallback(System.Action)"/>, nested calls to <see cref="M:JetBrains.VSIntegration.ProjectModel.UnguardedCallbackMerger.ExpectUnguardedCallback(System.Action)"/> are allowed.</para>
             </summary>
         </member>
         <member name="T:JetBrains.DataFlow.DataFlowEx">
@@ -515,6 +562,20 @@
             <summary>
             Gets a property that tells whether the collection is currently empty.
             </summary>
+        </member>
+        <member name="M:JetBrains.DataFlow.ICollectionEventsEx.LogChanges``1(JetBrains.DataFlow.ICollectionEvents{``0},System.String)">
+            <summary>
+            Logs the collection modifications.
+            </summary>
+            <param name="collection">The collection.</param>
+            <param name="prefix">The optional prefix to be prepended in square brackets to each log message.</param>
+        </member>
+        <member name="M:JetBrains.DataFlow.ICollectionEventsEx.LogChanges``1(JetBrains.DataFlow.ICollectionEvents{``0},System.Object)">
+            <summary>
+            Logs the collection modifications.
+            </summary>
+            <param name="collection">The collection.</param>
+            <param name="logprefix">The object whose local name will be used as a logging prefix, ie prepended in square brackets to each log message, or a <see cref="T:System.Type"/> whose short name will be used.</param>
         </member>
         <member name="M:JetBrains.DataFlow.ICollectionEventsEx.PushForEachItem``1(JetBrains.DataFlow.ICollectionEvents{``0},System.Func{``0,System.IDisposable})">
             <summary>
@@ -581,6 +642,12 @@
             The target update occurs no more often than allowed by the signals.
             </summary>
         </member>
+        <member name="M:JetBrains.DataFlow.IPropertyEx.FlowIntoReadonly``2(JetBrains.DataFlow.IProperty{``0},JetBrains.DataFlow.IProperty{``1},System.Func{``0,``1},System.Object)">
+            <summary>
+            Establishes a data flow between two properties of different types, thru a converter.
+            Returns a cookie for terminating the flow.
+            </summary>
+        </member>
         <member name="M:JetBrains.DataFlow.IPropertyEx.FlowIntoReadonly``1(JetBrains.DataFlow.IProperty{``0},JetBrains.DataFlow.IProperty{``0},System.Object)">
             <summary>
             Establishes a data flow between two properties.
@@ -627,7 +694,7 @@
             Its return value is disposed of when the property looses the value for each it were executed.
             </summary>
         </member>
-        <member name="M:JetBrains.DataFlow.IPropertyEx.PushForEachValue``1(JetBrains.DataFlow.IProperty{``0},System.Func{``0,System.IDisposable},System.Func{``0,System.Boolean})">
+        <member name="M:JetBrains.DataFlow.IPropertyEx.PushForEachValue``1(JetBrains.DataFlow.IProperty{``0},System.Func{``0,System.Boolean},System.Func{``0,System.IDisposable})">
             <summary>
             Executes a pair of actions for each new value of the <paramref name="property"/>.
             If the <paramref name="funcCondition"/> is <c>True</c> for the current value, then the <paramref name="handler"/> is executed.
@@ -945,6 +1012,11 @@
             <para>Disposes of the old contained value, and places a new one instead.
             Guarantees that the old value is disposed of BEFORE the new value is evaluated by <paramref name="funcNew"/>.</para>
             <para>If you'd like to make sure the old value is disposed of BEFORE you evaluate the new one, either use <see cref="M:JetBrains.DataFlow.SingleDisposable.Put(System.Func{System.IDisposable})"/> or pipe a <see cref="M:JetBrains.DataFlow.SingleDisposable.Clear"/> call before the <see cref="M:JetBrains.DataFlow.SingleDisposable.Put(System.IDisposable)"/> call. This might be necessary for sequencing the disposables brackets, to close the previous bracked before opening the new one.</para>
+            </summary>
+        </member>
+        <member name="M:JetBrains.DataFlow.SingleDisposable.PutBracket(System.Action,System.Action)">
+            <summary>
+            Disposes of the old contained value first. Then executes the <paramref name="FEnter"/> action and schedulles <paramref name="FLeave"/> for execution when the contained value is disposed of.
             </summary>
         </member>
         <member name="M:JetBrains.DataFlow.SingleDisposable.Dispose">
@@ -1510,6 +1582,21 @@
             <param name="FTransform">This function sits in the middle of the pipe.</param>
             <param name="FOutput">This function is given the stream it should read from.</param>
         </member>
+        <member name="F:JetBrains.Util.IsDisposedState.Live">
+            <summary>
+            The object is live and running.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Util.IsDisposedState.Disposing">
+            <summary>
+            The object is still valid, but has entered the disposal routine. Used to prevent the <see cref="M:System.IDisposable.Dispose"/> from reentrancy.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Util.IsDisposedState.Disposed">
+            <summary>
+            The object has been disposed of.
+            </summary>
+        </member>
         <member name="T:JetBrains.EqualityComparer`1">
             <summary>
             Universal equality comparer.
@@ -1639,6 +1726,55 @@
         <member name="M:JetBrains.UI.Interop.HookEventArgs.GetMsLlHookStruct">
             <summary>
             Gets the hook data as a <see cref="T:JetBrains.Interop.WinApi.MSLLHOOKSTRUCT"/>. Valid for some messages only. Valid within the hook callback only. LIVE, do not modify unless that's intentional.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Util.LoggerException">
+            <summary>
+            A version of the Internal Error Exception that was created within the logger.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.LoggerException.ToString">
+            <summary>
+            Creates and returns a string representation of the current exception.
+            </summary>
+            <returns>
+            A string representation of the current exception.
+            </returns>
+            <filterpriority>1</filterpriority><PermissionSet><IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" PathDiscovery="*AllFiles*"/></PermissionSet>
+        </member>
+        <member name="M:JetBrains.StringEx.ToEnum``1(System.String)">
+            <summary>
+            Parse string to enum without any checking
+            </summary>
+        </member>
+        <member name="M:JetBrains.StringEx.ToEnum``1(System.String,``0)">
+            <summary>
+            Parse string to enum with returning specified default value if parameter is null
+            </summary>
+        </member>
+        <member name="M:JetBrains.StringEx.ToEnumSafe``1(System.String)">
+            <summary>
+            Parse string to enum with returning default value if parameter is null or invalid
+            </summary>
+        </member>
+        <member name="M:JetBrains.StringEx.ToEnumSafe``1(System.String,``0)">
+            <summary>
+            Parse string to enum with returning specified default value if parameter is null or invalid
+            </summary>
+        </member>
+        <member name="M:JetBrains.StringEx.ToEnumNullable``1(System.String)">
+            <summary>
+            Parse string to nullable enum with returning null if parameter is null
+            </summary>
+        </member>
+        <member name="M:JetBrains.StringEx.ToEnumNullableSafe``1(System.String)">
+            <summary>
+            Parse string to nullable enum with returning null if parameter is null or invalid
+            </summary>
+        </member>
+        <member name="M:JetBrains.StringEx.ToEnumNullableSafe``1(System.String,System.Nullable{``0})">
+            <summary>
+            Parse string to nullable enum with returning specified default value if parameter is null or invalid
             </summary>
         </member>
         <member name="T:JetBrains.Util.CollectionAdapter`1">
@@ -1824,26 +1960,31 @@
             To avoid the overhead, events with intervals exceeding this value are not supported.
             </summary>
         </member>
-        <member name="F:JetBrains.Threading.GroupingEvent.Disposables">
+        <member name="F:JetBrains.Threading.GroupingEvent.myDisposables">
             <summary>
             Provides an assertion in case the consumer forgets to dispose of the event.
             </summary>
         </member>
-        <member name="F:JetBrains.Threading.GroupingEvent.Incoming">
+        <member name="F:JetBrains.Threading.GroupingEvent.myIncoming">
             <summary>
             <para>Fires the incoming event. May be called on any thread.</para>
             <para>Causes the action to execute on the primary thread under the reentrancy guard after the <see cref="P:JetBrains.Threading.GroupingEvent.Interval"/> elapses. Calling this function again within the <see cref="P:JetBrains.Threading.GroupingEvent.Interval"/> prolongates the wait by the <see cref="P:JetBrains.Threading.GroupingEvent.Interval"/>.</para>
             </summary>
         </member>
-        <member name="F:JetBrains.Threading.GroupingEvent.IncomingDontProlongate">
+        <member name="F:JetBrains.Threading.GroupingEvent.myIncomingDontProlongate">
             <summary>
             <para>Fires the incoming event. May be called on any thread.</para>
             <para>Causes the action to execute on the primary thread under the reentrancy guard after the <see cref="P:JetBrains.Threading.GroupingEvent.Interval"/> elapses. Calling this function again within the <see cref="P:JetBrains.Threading.GroupingEvent.Interval"/> does not change the initial deadline, unlike <see cref="M:JetBrains.Threading.GroupingEvent.FireIncoming"/>.</para>
             </summary>
         </member>
-        <member name="F:JetBrains.Threading.GroupingEvent.Outgoing">
+        <member name="F:JetBrains.Threading.GroupingEvent.myOutgoing">
             <summary>
             The outgoing event. Executed on the primary thread (if <see cref="F:JetBrains.Threading.GroupingEventHost.IsGuarded"/>, then under a <see cref="T:JetBrains.Threading.ReentrancyGuard"/>).
+            </summary>
+        </member>
+        <member name="F:JetBrains.Threading.GroupingEvent.myOutgoingAction">
+            <summary>
+            Single outgoing action which is called insteaf of firing the <see cref="P:JetBrains.Threading.GroupingEvent.Outgoing"/> signal. It should be used instead of the signal in cases when performance is critical. 
             </summary>
         </member>
         <member name="F:JetBrains.Threading.GroupingEvent.myDeadline">
@@ -1854,11 +1995,11 @@
         </member>
         <member name="F:JetBrains.Threading.GroupingEvent.myIsExecuting">
             <summary>
-            True while we're inside the user <see cref="F:JetBrains.Threading.GroupingEvent.Outgoing"/> handler execution, to avoid reentrancy.
+            True while we're inside the user <see cref="P:JetBrains.Threading.GroupingEvent.Outgoing"/> handler execution, to avoid reentrancy.
             Primary-thread only.
             </summary>
         </member>
-        <member name="M:JetBrains.Threading.GroupingEvent.#ctor(JetBrains.Threading.GroupingEventHost,System.String,System.TimeSpan)">
+        <member name="M:JetBrains.Threading.GroupingEvent.#ctor(JetBrains.Threading.GroupingEventHost,System.String,System.TimeSpan,System.Action)">
             <summary>
             Creates a new grouping event. Must be executed on the primary thread.
             </summary>
@@ -1898,7 +2039,7 @@
             Gets whether the event has expired waiting for the outgoing firing.
             This means there were no outgoing firings after the incoming firing, and at least an <see cref="P:JetBrains.Threading.GroupingEvent.Interval"/> has elapsed since the last incoming firing.
             </summary>
-            <param name="datetimeNow">Caches the <see cref="P:System.DateTime.Now"/> value, to avoid re-quering it in the loops. A 64bit integer in the <see cref="T:System.DateTime"/> format.</param>
+            <param name="datetimeNow">Caches the <see cref="P:System.DateTime.UtcNow"/> value, to avoid re-quering it in the loops. A 64bit integer in the <see cref="T:System.DateTime"/> format.</param>
         </member>
         <member name="M:JetBrains.Threading.GroupingEvent.ToString">
             <summary>
@@ -2007,6 +2148,15 @@
             </summary>
             <param name="name">A name to identify the event.</param>
             <param name="interval">The grouping interval. The incoming events are grouped until there's a pause of the <paramref name="interval"/> length, and after that the outgoing event is fired. The interval must be not above <see cref="F:JetBrains.Threading.GroupingEvent.MaxInterval"/>.</param>
+            <returns>The event on which the incoming events can be fired. Must be disposed of.</returns>
+        </member>
+        <member name="M:JetBrains.Threading.GroupingEventHost.CreateEvent(System.String,System.TimeSpan,System.Action)">
+            <summary>
+            Creates and registers a new grouping event.
+            </summary>
+            <param name="name">A name to identify the event.</param>
+            <param name="interval">The grouping interval. The incoming events are grouped until there's a pause of the <paramref name="interval"/> length, and after that the outgoing event is fired. The interval must be not above <see cref="F:JetBrains.Threading.GroupingEvent.MaxInterval"/>.</param>
+            <param name="outgoingAction">The action to call when the grouping event is fired. If it is not <c>null</c>, you can't use the <see cref="P:JetBrains.Threading.GroupingEvent.Outgoing"/> signal.</param>
             <returns>The event on which the incoming events can be fired. Must be disposed of.</returns>
         </member>
         <member name="M:JetBrains.Threading.GroupingEventHost.AddEvent(JetBrains.Threading.GroupingEvent)">
@@ -3298,6 +3448,13 @@
             </summary>
             <filterpriority>2</filterpriority>
         </member>
+        <member name="P:JetBrains.DataFlow.CollectionBridge`2.AllowForeignTargetRemovals">
+            <summary>
+            <para>Whether the bridged items could be removed from the target collection by a foreign actor, and the bridge should ignore such occurences.</para>
+            <para>When <c>True</c>, <see cref="F:JetBrains.DataFlow.AddRemove.Remove"/> does nothing when the target item is already not there. This is the default.</para>
+            <para>When <c>False</c>, <see cref="F:JetBrains.DataFlow.AddRemove.Remove"/> throws when about to remove a nonexistent item.</para>
+            </summary>
+        </member>
         <member name="P:JetBrains.DataFlow.CollectionBridge`2.MappingInfo">
             <summary>
             Gets which mapping information is maintained by the bridge — source-to-target only, or both ways.
@@ -3334,6 +3491,11 @@
             </summary>
         </member>
         <member name="M:JetBrains.DataFlow.CollectionBridge.BridgeInto``2(JetBrains.DataFlow.ICollectionEvents{``0},JetBrains.DataFlow.ICollectionEvents{``1},System.Func{``0,``1})">
+            <summary>
+            Mirrors one collection into another thru a converter.
+            </summary>
+        </member>
+        <member name="M:JetBrains.DataFlow.CollectionBridge.BridgeInto``2(JetBrains.DataFlow.ICollectionEvents{``0},JetBrains.DataFlow.ICollectionEvents{``1},System.Func{``0,``1},System.Object)">
             <summary>
             Mirrors one collection into another thru a converter.
             </summary>
@@ -3957,11 +4119,6 @@
             On <see cref="M:System.IDisposable.Dispose"/>, disposes of each of the collection objects (isolating exceptions), in the reverse order, and clears the collection. Can be reused.
             </summary>
         </member>
-        <member name="F:JetBrains.DataFlow.Disposables.Empty">
-            <summary>
-            A disposable class that does nothing on <see cref="M:System.IDisposable.Dispose"/>.
-            </summary>
-        </member>
         <member name="F:JetBrains.DataFlow.Disposables.myCreationStackTrace">
             <summary>
             Optionally, captures the originating stack trace for the debugging needs.
@@ -4012,6 +4169,11 @@
             <param name="id">An arbitrary string tag that helps to identify the origin of a particular disposables container that never gotten disposed of.</param>
             <param name="finalize">Whether the disposal is mandatory for the container. If yes, a finalizer is created that will report an exception. If no, the object does not add a strain to the finalization queue and does not do any implicit dispose on finalization.</param>
             <param name="items">Initial items for the collection. May be <c>Null</c>.</param>
+        </member>
+        <member name="F:JetBrains.DataFlow.Disposables.Empty">
+            <summary>
+            A disposable class that does nothing on <see cref="M:System.IDisposable.Dispose"/>.
+            </summary>
         </member>
         <member name="M:JetBrains.DataFlow.Disposables.Transact(System.Action{JetBrains.DataFlow.Disposables})">
             <summary>
@@ -5388,7 +5550,7 @@
             Creates a two-way binding.
             </summary>
         </member>
-        <member name="M:JetBrains.DataFlow.PropertyBinding.Create``3(JetBrains.DataFlow.IProperty{``0},JetBrains.DataFlow.IProperty{``1},JetBrains.DataFlow.IProperty{``2},System.Func{``0,``1,``2})">
+        <member name="M:JetBrains.DataFlow.PropertyBinding.Create``3(JetBrains.DataFlow.IProperty{``0},JetBrains.DataFlow.IProperty{``1},JetBrains.DataFlow.IProperty{``2},System.Func{``0,``1,``2},System.Object)">
             <summary>
             Creates a simple many-to-one binding.
             </summary>
@@ -8993,6 +9155,11 @@
             Executes <paramref name="F"/> on the <paramref name="item"/>, if the <paramref name="item"/> is not <c>Null</c>.
             </summary>
         </member>
+        <member name="M:JetBrains.Util.Special.GeneralUtil.QuoteIfNeeded(System.Object)">
+            <summary>
+            If the string contains spaces, surrounds it with quotes.
+            </summary>
+        </member>
         <member name="T:JetBrains.Util.WeakHolder`1">
             <summary>
             Represents a typed weak reference which can be compared by target
@@ -9188,6 +9355,11 @@
             Executes the <paramref name="action"/>. Catches all of the exceptions, reports them, and ensures guaranteed return (unless <see cref="P:JetBrains.Util.Logger.AllowExceptions"/>).
             </summary>
         </member>
+        <member name="M:JetBrains.Util.Logger.Catch(System.String,System.Action)">
+            <summary>
+            Executes the <paramref name="action"/>. Catches all of the exceptions, reports them, and ensures guaranteed return (unless <see cref="P:JetBrains.Util.Logger.AllowExceptions"/>).
+            </summary>
+        </member>
         <member name="M:JetBrains.Util.Logger.CatchSilent(System.Action)">
             <summary>
             Executes the <paramref name="action"/>. Catches all of the exceptions, suppresses them (logs silently), and ensures guaranteed return.
@@ -9312,11 +9484,6 @@
             Needed for running tests.
             </summary>
         </member>
-        <member name="T:JetBrains.Util.LoggerException">
-            <summary>
-            A version of the Internal Error Exception that was created within the logger.
-            </summary>
-        </member>
         <member name="T:JetBrains.Util.TextWriterLogEventListener">
             <summary>
             Listens to the Logger events and writes them down into a <see cref="T:System.IO.TextWriter"/>.
@@ -9355,6 +9522,11 @@
             Must synced with <see cref="F:JetBrains.Threading.JetDispatcher.myLock"/>.
             </summary>
         </member>
+        <member name="F:JetBrains.Threading.JetDispatcher.myControlInstanceForStaticMethods">
+            <summary>
+            There're static methods that require a control this.
+            </summary>
+        </member>
         <member name="F:JetBrains.Threading.JetDispatcher.myLock">
             <summary>
             Syncs access to fields.
@@ -9369,11 +9541,6 @@
         <member name="F:JetBrains.Threading.JetDispatcher.myDontRun">
             <summary>
             Means the <see cref="M:JetBrains.Threading.JetDispatcher.Run"/> method should abort.
-            </summary>
-        </member>
-        <member name="F:JetBrains.Threading.JetDispatcher.myMessageWindow">
-            <summary>
-            A window that implements the marshalling.
             </summary>
         </member>
         <member name="M:JetBrains.Threading.JetDispatcher.#ctor">
@@ -9519,17 +9686,29 @@
             Implements a method that runs on another thread.
             </summary>
         </member>
+        <member name="M:JetBrains.Threading.JetDispatcher.Closure.Execute(System.Object)">
+            <summary>
+            Executes the marshalled action.
+            </summary>
+            <param name="dummy">The dummy param to match the delegate signature.</param>
+        </member>
         <member name="T:JetBrains.Threading.JetDispatcherActionException">
             <summary>
             An exception that reports a failure in the inner (deferred) task.
             </summary>
         </member>
-        <member name="M:JetBrains.Threading.JetDispatcherActionException.#ctor(System.String,System.Exception)">
+        <member name="M:JetBrains.Threading.JetDispatcherActionException.#ctor(JetBrains.Threading.JetDispatcher,System.String,System.Exception)">
             <summary>
             Ctor.
             </summary>
+            <param name="dispatcher">The dispatcher that tried to execute the faulty action.</param>
             <param name="name">Dispatcher action name, included in the exception message.</param>
             <param name="ex">Original exception message, included in the exception message, passed to the base.</param>
+        </member>
+        <member name="P:JetBrains.Threading.JetDispatcherActionException.Dispatcher">
+            <summary>
+            Gets the dispatcher that tried to execute the faulty action.
+            </summary>
         </member>
         <member name="P:JetBrains.Threading.JetDispatcherActionException.Name">
             <summary>
@@ -13551,6 +13730,9 @@
         <member name="T:JetBrains.Util.Key`1">
             <summary>
             Strongly types key. <see cref="T:JetBrains.Util.Key"/>
+            This class does not override <see cref="M:System.Object.Equals(System.Object)"/> 
+            and <see cref="M:System.Object.GetHashCode"/> and therefore all instances of 
+            this class are considered to be different.
             <seealso cref="T:JetBrains.Util.IUserDataHolder"/>
             </summary>
         </member>
@@ -13730,6 +13912,16 @@
         <member name="M:JetBrains.Util.StringUtil.DropMiddleIfLong(System.String,System.Int32)">
             <summary>
             Makes sure the return text is no longer than <paramref name="nMaxLen"/>. Drops some text from the middle, if needed, keeping the beginning and the end.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.StringUtil.ToHexString(System.IntPtr)">
+            <summary>
+            Renders the pointer-sized integer as the appropriate number of hex chars, with leading zeros.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.StringUtil.ToHexString(System.UIntPtr)">
+            <summary>
+            Renders the pointer-sized integer as the appropriate number of hex chars, with leading zeros.
             </summary>
         </member>
         <member name="T:JetBrains.Util.TextStreamReader">
@@ -13936,6 +14128,21 @@
         <member name="M:JetBrains.Util.XmlUtil.Attr``1(``0,System.String,System.Object)">
             <summary>
             A fluent version of <see cref="M:System.Xml.XmlWriter.WriteAttributeString(System.String,System.String)"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.XmlUtil.CreateAttributeWithValueFluent(System.Xml.XmlElement,System.String,System.String)">
+            <summary>
+            A fluent version of <see cref="M:JetBrains.Util.XmlUtil.CreateAttributeWithValue(System.Xml.XmlElement,System.String,System.String)"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.XmlUtil.CreateAttributeWithNonEmptyValueFluent(System.Xml.XmlElement,System.String,System.String)">
+            <summary>
+            A fluent version of <see cref="M:JetBrains.Util.XmlUtil.CreateAttributeWithNonEmptyValue(System.Xml.XmlElement,System.String,System.String)"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.XmlUtil.CreateAttributeWithNonEmptyValue(System.Xml.XmlElement,System.String,System.String)">
+            <summary>
+            Creates attribute only if passed value is not empty
             </summary>
         </member>
         <member name="M:JetBrains.Util.XmlUtil.CreateWriter(System.IO.Stream)">

@@ -108,11 +108,6 @@
             Gets or sets whether the indicator should be visible. Shows or hides the indicator with a delay, to avoid flickering.
             </summary>
         </member>
-        <member name="M:JetBrains.ProjectModel.Platforms.Impl.PlatformManagerImpl.LookForWindowsSdk">
-            <summary>
-            Tries to find Windows SDK v6 or higher and returns the path to its Bin folder, or <c>Null</c> if not found.
-            </summary>
-        </member>
         <member name="T:JetBrains.ProjectModel.Impl.Assembly">
             <summary>
             Represents loaded resolved assembly reference.
@@ -280,7 +275,7 @@
             Makes the project reference the specified module
             </summary>
         </member>
-        <member name="M:JetBrains.ProjectModel.IProject.AddAssemblyReference(System.Reflection.AssemblyName,JetBrains.Util.FileSystemPath,System.Boolean)">
+        <member name="M:JetBrains.ProjectModel.IProject.AddAssemblyReference(System.Reflection.AssemblyName,JetBrains.Util.FileSystemPath,System.Boolean,System.Boolean)">
             <summary>
             Adds assembly with the specified name to the project's references
             location indicates assembly location. Null or empty id unknown

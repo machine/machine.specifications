@@ -77,6 +77,24 @@
             Gets document by project item.
             </summary>
         </member>
+        <member name="M:JetBrains.DocumentModel.Impl.DocumentManagerImpl.GetProjectFileSyncObject(JetBrains.ProjectModel.IProjectFile)">
+            <summary>
+            Gets an object to synchronize access to a project file.
+            </summary>
+        </member>
+        <member name="M:JetBrains.DocumentModel.Impl.DocumentManagerImpl.CreateDocument(JetBrains.ProjectModel.IProjectFile,System.Func{JetBrains.DocumentModel.IDocument,JetBrains.Util.ModificationCookie})">
+            <summary>
+            Achtung! Creates a new document each time! Don't use without checking for an existing doc first!
+            </summary>
+        </member>
+        <member name="M:JetBrains.DocumentModel.Impl.DocumentManagerImpl.JetBrains#ComponentModel#IComponent#Init">
+            <summary>
+            <para>Initializes the component. Called by the component container after the component is created.</para>
+            <para><see cref="M:System.IDisposable.Dispose"/> is the pairing method that's guaranteed to be called by the component container to tear down your component.</para>
+            <para>You must not access other components before your <see cref="M:JetBrains.DocumentModel.Impl.DocumentManagerImpl.Init"/> method is called.</para>
+            <para>All of the components that you access from <see cref="M:JetBrains.DocumentModel.Impl.DocumentManagerImpl.Init"/> are guaranteed to exist when your <see cref="M:System.IDisposable.Dispose"/> is called. Any other component might be missing by that time, and trying to get it will throw an exception.</para>
+            </summary>
+        </member>
         <member name="T:JetBrains.DocumentModel.IProjectFileRangeMarker">
             <summary>
             Represents a common interface for range markers in project files

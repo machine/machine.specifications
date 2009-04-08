@@ -164,6 +164,16 @@
             <c>Null</c> when the object is disposed of.
             </summary>
         </member>
+        <member name="T:JetBrains.IDE.TextControlManagerActivityTrackerWithNames">
+            <summary>
+            Knows about the project files and can trace text control file names.
+            </summary>
+        </member>
+        <member name="M:JetBrains.IDE.TextControlManagerActivityTrackerWithNames.LogNewFocusedTextControl(JetBrains.TextControl.ITextControl)">
+            <summary>
+            Focused text control has changed.
+            </summary>
+        </member>
         <member name="T:JetBrains.IDE.TextControlPopupWindowContext">
             <summary>
             Implementaion of <see cref="T:JetBrains.UI.PopupWindowManager.IPopupWindowContext"/> for <see cref="T:JetBrains.TextControl.ITextControl"/>.
