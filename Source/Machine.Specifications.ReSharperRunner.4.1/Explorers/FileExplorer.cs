@@ -43,9 +43,10 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
       IProject project = file.ProjectFile.GetProject();
       string assemblyPath = UnitTestManager.GetOutputAssemblyPath(project).FullPath;
 
-      var contextFactory = new ContextFactory(provider, project, assemblyPath);
-      var contextSpecificationFactory = new ContextSpecificationFactory(provider, project);
-      var behaviorFactory = new BehaviorFactory(provider, project);
+      var cache = new ContextCache();
+      var contextFactory = new ContextFactory(provider, project, assemblyPath, cache);
+      var contextSpecificationFactory = new ContextSpecificationFactory(provider, project, cache);
+      var behaviorFactory = new BehaviorFactory(provider, project, cache);
       var behaviorSpecificationFactory = new BehaviorSpecificationFactory(provider, project);
 
       _elementHandlers = new List<IElementHandler>

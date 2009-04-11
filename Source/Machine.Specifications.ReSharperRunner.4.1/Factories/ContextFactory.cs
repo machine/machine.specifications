@@ -13,19 +13,21 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
     readonly IProjectModelElement _project;
     readonly IUnitTestProvider _provider;
+    readonly ContextCache _cache;
 
-    public ContextFactory(IUnitTestProvider provider, IProjectModelElement project, string assemblyPath)
+    public ContextFactory(IUnitTestProvider provider, IProjectModelElement project, string assemblyPath, ContextCache cache)
     {
       _provider = provider;
-      _project = project;
+      _cache = cache;
+       _project = project;
       _assemblyPath = assemblyPath;
     }
 
     public ContextElement CreateContext(ITypeElement type)
     {
-      if (ContextCache.Classes.ContainsKey(type))
+      if (_cache.Classes.ContainsKey(type))
       {
-        return ContextCache.Classes[type];
+        return _cache.Classes[type];
       }
 
       ContextElement context = new ContextElement(_provider,
@@ -34,7 +36,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                   _assemblyPath,
                                                   type.GetTags(),
                                                   type.IsIgnored());
-      ContextCache.Classes.Add(type, context);
+      _cache.Classes.Add(type, context);
       return context;
     }
 

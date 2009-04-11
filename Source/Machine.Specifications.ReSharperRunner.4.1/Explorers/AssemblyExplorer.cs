@@ -32,9 +32,10 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
       _project = project;
       _consumer = consumer;
 
-      _contextFactory = new ContextFactory(_provider, _project, _assembly.Location);
-      _contextSpecificationFactory = new ContextSpecificationFactory(_provider, _project);
-      _behaviorFactory = new BehaviorFactory(_provider, _project);
+      var cache = new ContextCache();
+      _contextFactory = new ContextFactory(_provider, _project, _assembly.Location, cache);
+      _contextSpecificationFactory = new ContextSpecificationFactory(_provider, _project, cache);
+      _behaviorFactory = new BehaviorFactory(_provider, _project, cache);
       _behaviorSpecificationFactory = new BehaviorSpecificationFactory(_provider, _project);
     }
 

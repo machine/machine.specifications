@@ -11,10 +11,12 @@ namespace Machine.Specifications.ReSharperRunner.Factories
   {
     readonly IProjectModelElement _project;
     readonly IUnitTestProvider _provider;
+    readonly ContextCache _cache;
 
-    public BehaviorFactory(IUnitTestProvider provider, IProjectModelElement project)
+    public BehaviorFactory(IUnitTestProvider provider, IProjectModelElement project, ContextCache cache)
     {
       _provider = provider;
+      _cache = cache;
       _project = project;
     }
 
@@ -26,7 +28,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         return null;
       }
 
-      ContextElement context = ContextCache.Classes[clazz];
+      ContextElement context = _cache.Classes[clazz];
       if (context == null)
       {
         return null;
