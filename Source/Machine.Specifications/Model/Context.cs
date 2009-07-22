@@ -29,7 +29,7 @@ namespace Machine.Specifications.Model
 
     public Context(Type type, object instance, IEnumerable<Establish> contextClauses, Because becauseClause, IEnumerable<Cleanup> cleanupClauses, Subject subject, bool isIgnored, IEnumerable<Tag> tags, bool isSetupForEachSpec)
     {
-      Name = type.Name.ReplaceUnderscores();
+      Name = type.Name.ToFormat();
       Type = type;
       _instance = instance;
       _cleanupClauses = cleanupClauses;

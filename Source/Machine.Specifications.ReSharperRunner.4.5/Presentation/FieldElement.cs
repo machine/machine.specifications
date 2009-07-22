@@ -36,7 +36,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       return String.Format("{0}{1}{2}",
                            GetTitlePrefix(),
                            String.IsNullOrEmpty(GetTitlePrefix()) ? String.Empty : " ",
-                           FieldName.ReplaceUnderscores());
+                           FieldName.ToFormat());
     }
 
     public override bool Matches(string filter, PrefixMatcher matcher)

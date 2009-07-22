@@ -43,7 +43,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public override string GetTitle()
     {
-      return new CLRTypeName(GetTypeClrName()).ShortName.ReplaceUnderscores();
+      return new CLRTypeName(GetTypeClrName()).ShortName.ToFormat();
     }
 
     public override IDeclaredElement GetDeclaredElement()

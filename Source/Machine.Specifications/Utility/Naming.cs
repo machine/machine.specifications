@@ -7,18 +7,13 @@ namespace Machine.Specifications.Utility
     static readonly Regex QuoteRegex = new Regex(@"(?<quoted>__(?<inner>\w+?)__)",
                                                  RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
-    public static string ReplaceUnderscores(this string name)
+    public static string ToFormat(this string name)
     {
       name = ReplaceDoubleUnderscoresWithQuotes(name);
       name = ReplaceUnderscoreEssWithPossessive(name);
       name = ReplaceSingleUnderscoresWithSpaces(name);
 
       return name;
-    }
-
-    public static string ReplaceSpaces(this string name)
-    {
-      return name.Replace(' ', '_');
     }
 
     static string ReplaceUnderscoreEssWithPossessive(string specificationName)

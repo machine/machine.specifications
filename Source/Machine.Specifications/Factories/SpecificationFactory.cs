@@ -11,7 +11,7 @@ namespace Machine.Specifications.Factories
     {
       bool isIgnored = context.IsIgnored || specificationField.HasAttribute<IgnoreAttribute>();
       It it = (It) specificationField.GetValue(context.Instance);
-      string name = specificationField.Name.ReplaceUnderscores();
+      string name = specificationField.Name.ToFormat();
 
       return new Specification(name, it, isIgnored, specificationField);
     }
@@ -20,7 +20,7 @@ namespace Machine.Specifications.Factories
     {
       bool isIgnored = behavior.IsIgnored || specificationField.HasAttribute<IgnoreAttribute>();
       It it = (It) specificationField.GetValue(behavior.Instance);
-      string name = specificationField.Name.ReplaceUnderscores();
+      string name = specificationField.Name.ToFormat();
 
       return new BehaviorSpecification(name, it, isIgnored, specificationField, behavior.Context, behavior);
     }
