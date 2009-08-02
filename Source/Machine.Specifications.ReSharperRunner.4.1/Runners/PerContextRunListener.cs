@@ -1,7 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
+using System.Reflection;
 using JetBrains.ReSharper.TaskRunnerFramework;
 
 using Machine.Specifications.Runner;
@@ -78,8 +77,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       {
         case Status.Failing:
           _server.TaskExplain(task, result.Exception.Message);
-          _server.TaskException(task, new[] { new TaskException(result.Exception.ToSpecException()) });
-          message = result.Exception.Message;
+          _server.TaskException(task, ExceptionResultConverter.ConvertExceptions(result.Exception, out message));
           taskResult = TaskResult.Exception;
           break;
 
@@ -104,9 +102,10 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
     public void OnFatalError(ExceptionResult exception)
     {
+      string message;
       _server.TaskExplain(_contextTask, "Fatal error: " + exception.Message);
-      _server.TaskException(_contextTask, new[] { new TaskException(exception.ToSpecException()) });
-      _server.TaskFinished(_contextTask, null, TaskResult.Exception);
+      _server.TaskException(_contextTask, ExceptionResultConverter.ConvertExceptions(exception, out message));
+      _server.TaskFinished(_contextTask, message, TaskResult.Exception);
     }
     #endregion
 
@@ -125,67 +124,6 @@ namespace Machine.Specifications.ReSharperRunner.Runners
         return null;
       }
       return knownSpecification.RemoteTask;
-    }
-  }
-
-  public static class ExceptionExtensions
-  {
-    public static Exception ToSpecException(this ExceptionResult exceptionResult)
-    {
-      return new SpecException(exceptionResult);
-    }
-  }
-
-  [Serializable]
-  public class SpecException : Exception
-  {
-    readonly ExceptionResult _exceptionResult;
-    //
-    // For guidelines regarding the creation of new exception types, see
-    //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/cpconerrorraisinghandlingguidelines.asp
-    // and
-    //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
-    //
-
-    public SpecException(ExceptionResult exceptionResult) : base(exceptionResult.Message)
-    {
-      _exceptionResult = exceptionResult;
-    }
-
-    public SpecException(string message) : base(message)
-    {
-    }
-
-    public SpecException(string message, Exception inner) : base(message, inner)
-    {
-
-    }
-
-    public override string StackTrace
-    {
-      get
-      {
-        return _exceptionResult.StackTrace;
-      }
-    }
-
-    public override string Message
-    {
-      get
-      {
-        return Environment.NewLine + _exceptionResult.FullTypeName + ": " + _exceptionResult.Message;
-      }
-    }
-
-    public override string ToString()
-    {
-      return _exceptionResult.ToString();
-    }
-
-    protected SpecException(
-      SerializationInfo info,
-      StreamingContext context) : base(info, context)
-    {
     }
   }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization;
 
 namespace Machine.Specifications
 {
@@ -20,14 +19,21 @@ namespace Machine.Specifications
     public string TypeName { get; private set; }
     public string Message { get; private set; }
     public string StackTrace { get; private set; }
+    public ExceptionResult InnerExceptionResult { get; private set; }
 
     public ExceptionResult(Exception exception)
     {
       FullTypeName = exception.GetType().FullName;
       TypeName = exception.GetType().Name;
       Message = exception.Message;
-      _toString = exception.ToString();
       StackTrace = exception.StackTrace;
+
+      if (exception.InnerException != null)
+      {
+        InnerExceptionResult = new ExceptionResult(exception.InnerException);
+      }
+
+      _toString = exception.ToString();
     }
 
     public override string ToString()
