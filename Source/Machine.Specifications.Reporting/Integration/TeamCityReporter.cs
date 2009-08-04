@@ -12,6 +12,7 @@ namespace Machine.Specifications.Reporting.Integration
     string _currentContext;
     string _currentNamespace;
     bool _failureOccured;
+    string _failures;
 
     public TeamCityReporter(Action<string> writer)
     {
@@ -90,7 +91,7 @@ namespace Machine.Specifications.Reporting.Integration
           if (result.Exception != null)
           {
             _writer.WriteTestFailed(GetSpecificationName(specification), 
-             result.Exception.Message, result.Exception.StackTrace);
+             result.Exception.Message, result.Exception.ToString());
           }
           else
           {
@@ -104,7 +105,7 @@ namespace Machine.Specifications.Reporting.Integration
 
     public void OnFatalError(ExceptionResult exception)
     {
-      _writer.WriteError(exception.Message, exception.StackTrace);
+      _writer.WriteError(exception.Message, exception.ToString());
       _failureOccured = true;
     }
 
