@@ -53,6 +53,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="GenerateHtmlReportRunListener.cs" />
+    <Compile Include="GenerateXmlReportListener.cs" />
     <Compile Include="Integration\TeamCityReporter.cs" />
     <Compile Include="Integration\TeamCityServiceMessageWriter.cs" />
     <Compile Include="Model\Assembly.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="ReportGenerator.cs" />
     <Compile Include="CollectReportingInformationRunListener.cs" />
     <Compile Include="SpecificationTreeListener.cs" />
+    <Compile Include="XmlReportGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj">
