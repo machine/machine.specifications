@@ -10,7 +10,7 @@
     <xsl:param name="passedSpecs" select="count($mspec.root//specification[@status='passed'])" />
     <xsl:param name="failedSpecs" select="count($mspec.root//specification[@status='failed'])" />
     <xsl:param name="ignoredSpecs" select="count($mspec.root//specification[@status='ignored'])" />
-    <xsl:param name="notImplementedSpecs" select="count($mspec.root//specification[@status='not_implemented'])" />
+    <xsl:param name="notImplementedSpecs" select="count($mspec.root//specification[@status='not-implemented'])" />
 
     <xsl:param name="barWidth" select="300" />
     <xsl:param name="passedSpecsLength" select="round($passedSpecs div $totalSpecs * $barWidth)" />
