@@ -24,7 +24,7 @@
     </h2>
 
     <h3 class="totals">
-      <xsl:value-of select="count(concern)"/> concerns, <xsl:value-of select="count(concern/context)"/> contexts, <xsl:value-of select="count(concern/context/specification)"/> specifications
+      <xsl:value-of select="count(concern)"/> concern<xsl:if test="count(concern) != 1">s</xsl:if>, <xsl:value-of select="count(concern/context)"/> context<xsl:if test="count(concern/context) != 1">s</xsl:if>, <xsl:value-of select="count(concern/context/specification)"/> specification<xsl:if test="count(concern/context/specification) != 1">s</xsl:if>
     </h3>
 
     <br/>
@@ -39,7 +39,7 @@
     </h3>
     <p class="totals">
       <strong>
-        <xsl:value-of select="count(context)"/> contexts, <xsl:value-of select="count(context/specification)"/> specifications
+        <xsl:value-of select="count(context)"/> context<xsl:if test="count(context) != 1">s</xsl:if>, <xsl:value-of select="count(context/specification)"/> specification<xsl:if test="count(context/specification) != 1">s</xsl:if>
       </strong>
     </p>
     <xsl:apply-templates select="context"/>
@@ -52,7 +52,7 @@
       <xsl:value-of select="@name"/>
     </strong>
     <p class="totals">
-      <xsl:value-of select="count(specification)"/> specifications
+      <xsl:value-of select="count(specification)"/> specification<xsl:if test="count(specification) != 1">s</xsl:if>
     </p>
     <ul>
       <xsl:apply-templates select="specification"/>        
@@ -67,6 +67,9 @@
           <xsl:value-of select="@status"/>
         </xsl:attribute>
         <xsl:value-of select="@name"/>
+        <xsl:if test="@timeTaken">
+          - <xsl:value-of select="@timeTaken"/> seconds        
+        </xsl:if>
       </span>
     </li>    
   </xsl:template>
