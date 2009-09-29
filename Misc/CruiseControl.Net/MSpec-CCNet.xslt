@@ -14,7 +14,7 @@
         .summary { width: 250px }
         .totals { color:LightGrey; }
       </style>
-      <xsl:apply-templates select="$mspec.root" />
+      <xsl:apply-templates select="//MSpec" />
     </div>
   </xsl:template>
 
@@ -74,7 +74,7 @@
     </li>    
   </xsl:template>
 
-  <xsl:template match="mspec.root">
+  <xsl:template match="//MSpec">
 
     <h1>MSpec Report</h1>
     <br/>

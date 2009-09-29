@@ -13,10 +13,10 @@
     <xsl:param name="notImplementedSpecs" select="count($mspec.root//specification[@status='not-implemented'])" />
 
     <xsl:param name="barWidth" select="300" />
-    <xsl:param name="passedSpecsLength" select="round($passedSpecs div $totalSpecs * $barWidth)" />
-    <xsl:param name="failedSpecsLength" select="round($failedSpecs div $totalSpecs * $barWidth)" />
-    <xsl:param name="ignoredSpecsLength" select="round($ignoredSpecs div $totalSpecs * $barWidth)" />
-    <xsl:param name="notImplementedSpecsLength" select="round($notImplementedSpecs div $totalSpecs * $barWidth)" />
+    <xsl:param name="passedSpecsLength" select="$passedSpecs div $totalSpecs * $barWidth" />
+    <xsl:param name="failedSpecsLength" select="$failedSpecs div $totalSpecs * $barWidth" />
+    <xsl:param name="ignoredSpecsLength" select="$ignoredSpecs div $totalSpecs * $barWidth" />
+    <xsl:param name="notImplementedSpecsLength" select="$notImplementedSpecs div $totalSpecs * $barWidth" />
 
     <style type="text/css">
       #mspec .passed { background-color: #80FF00 }
@@ -99,6 +99,6 @@
         </td>
       </tr>
     </table>
-    <xsl:apply-templates select="$mspec.root" />
+    
   </xsl:template>
 </xsl:stylesheet>
