@@ -65,11 +65,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\ReSharper\4.5\JetBrains.Platform.ReSharper.Util.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.ReSharper.CodeInsight.Services, Version=4.5.1170.53, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\ReSharper\4.5\JetBrains.ReSharper.CodeInsight.Services.dll</HintPath>
-      <Private>False</Private>
+
     </Reference>
     <Reference Include="JetBrains.ReSharper.Feature.Services, Version=4.5.1170.53, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
