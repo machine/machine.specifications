@@ -120,7 +120,6 @@
     <Compile Include="Runners\RecursiveMSpecTaskRunner.cs" />
     <Compile Include="Runners\ExecutableSpecificationInfo.cs" />
     <Compile Include="Runners\PerContextRunListener.cs" />
-    <Compile Include="RandomExtensions.cs" />
     <Compile Include="Tasks\BehaviorSpecificationTask.cs" />
     <Compile Include="Tasks\BehaviorTask.cs" />
     <Compile Include="Tasks\ContextTask.cs" />
