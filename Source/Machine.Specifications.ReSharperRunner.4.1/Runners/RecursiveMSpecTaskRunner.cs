@@ -1,13 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
 using JetBrains.ReSharper.TaskRunnerFramework;
-using JetBrains.Util;
 
 using Machine.Specifications.ReSharperRunner.Tasks;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
+using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.ReSharperRunner.Runners
 {
@@ -64,10 +65,22 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     }
     #endregion
 
-    #region Overrides of RecursiveRemoteTaskRunner
     public override void ExecuteRecursive(TaskExecutionNode node)
     {
-      node.Children.Flatten(x => x.Children).ForEach(TryRegisterSpecifications);
+      FlattenChildren(node).Each(TryRegisterSpecifications);
+    }
+
+    static IEnumerable<TaskExecutionNode> FlattenChildren(TaskExecutionNode node)
+    {
+      foreach (var child in node.Children)
+      {
+        yield return child;
+
+        foreach (var descendant in child.Children)
+        {
+          yield return descendant;
+        }
+      }
     }
 
     void TryRegisterSpecifications(TaskExecutionNode node)
@@ -77,7 +90,6 @@ namespace Machine.Specifications.ReSharperRunner.Runners
         _listener.RegisterSpecification(new ExecutableSpecificationInfo(node));
       }
     }
-    #endregion
 
     Assembly LoadContextAssembly(Task task)
     {

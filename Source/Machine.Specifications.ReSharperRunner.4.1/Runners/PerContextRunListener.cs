@@ -1,6 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+
 using JetBrains.ReSharper.TaskRunnerFramework;
 
 using Machine.Specifications.Runner;
@@ -116,14 +115,16 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
     RemoteTask FindTaskFor(SpecificationInfo specification)
     {
-      var knownSpecification = _specifications.FirstOrDefault(x => x.ContainingType == specification.ContainingType &&
-                                                                   x.Name == specification.Name);
-
-      if (knownSpecification == null)
+      foreach(var spec in _specifications)
       {
-        return null;
+        if (spec.ContainingType == specification.ContainingType &&
+            spec.Name == specification.Name)
+        {
+          return spec.RemoteTask;
+        }
       }
-      return knownSpecification.RemoteTask;
+
+      return null;
     }
   }
 }

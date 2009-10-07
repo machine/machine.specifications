@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Reflection;
+
 using JetBrains.ReSharper.TaskRunnerFramework;
 
 namespace Machine.Specifications.ReSharperRunner.Runners
