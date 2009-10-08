@@ -25,6 +25,7 @@ namespace Machine.Specifications.Runner.Impl
 
       var explorer = new AssemblyExplorer();
       var assemblyContexts = new List<IAssemblyContext>(explorer.FindAssemblyContextsIn(assembly));
+      var globalCleanups = new List<ICleanupAfterEveryContextInAssembly>(explorer.FindAssemblyWideContextCleanupsIn(assembly));
 
       _listener.OnAssemblyStart(assembly.GetInfo());
 
@@ -43,7 +44,7 @@ namespace Machine.Specifications.Runner.Impl
 
         foreach (var context in contexts)
         {
-          RunContext(context);
+          RunContext(context, globalCleanups);
         }
       }
       catch (Exception err)
@@ -70,10 +71,10 @@ namespace Machine.Specifications.Runner.Impl
       _listener.OnAssemblyEnd(assembly.GetInfo());
     }
 
-    void RunContext(Context context)
+    void RunContext(Context context, IEnumerable<ICleanupAfterEveryContextInAssembly> globalCleanups)
     {
       IContextRunner runner = ContextRunnerFactory.GetContextRunnerFor(context);
-      runner.Run(context, _listener, _options);
+      runner.Run(context, _listener, _options, globalCleanups);
     }
   }
 }

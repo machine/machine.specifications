@@ -20,5 +20,4 @@ namespace Machine.Specifications.Example
       OnAssemblyCompleteRun = true;
     }
   }
-
 }

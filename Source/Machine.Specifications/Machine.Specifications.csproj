@@ -52,6 +52,7 @@
     <Compile Include="Catch.cs" />
     <Compile Include="Factories\BehaviorFactory.cs" />
     <Compile Include="Factories\ITagExtractor.cs" />
+    <Compile Include="ICleanupAfterEveryContextInAssembly.cs" />
     <Compile Include="Model\Behavior.cs" />
     <Compile Include="Model\BehaviorSpecification.cs" />
     <Compile Include="Runner\Impl\AssemblyRunner.cs" />

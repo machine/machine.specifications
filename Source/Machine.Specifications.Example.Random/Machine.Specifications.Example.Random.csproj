@@ -49,6 +49,7 @@
     <Compile Include="ExampleSpecsWithBehavior.cs" />
     <Compile Include="ExampleSpecsWithInheritance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestCleanupAfterEveryContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj">

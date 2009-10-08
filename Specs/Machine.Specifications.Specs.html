@@ -57,7 +57,7 @@
     </style>
   </head>
   <body>
-    <h1>Machine.Specifications.Specs&nbsp;&nbsp;&nbsp;&nbsp;</h1><span class="count"><h2>4 concerns, 37 contexts, 62 specifications </h2><br></span><h1>Machine.Specifications.Reporting.Specs&nbsp;&nbsp;&nbsp;&nbsp;</h1><span class="count"><h2>1 concern, 1 context, 1 specification </h2><br></span><h1>Machine.Specifications.ConsoleRunner.Specs&nbsp;&nbsp;&nbsp;&nbsp;</h1><span class="count"><h2>1 concern, 6 contexts, 15 specifications </h2><br></span><hr>
+    <h1>Machine.Specifications.Specs&nbsp;&nbsp;&nbsp;&nbsp;</h1><span class="count"><h2>4 concerns, 37 contexts, 67 specifications </h2><br></span><h1>Machine.Specifications.Reporting.Specs&nbsp;&nbsp;&nbsp;&nbsp;</h1><span class="count"><h2>1 concern, 1 context, 1 specification </h2><br></span><h1>Machine.Specifications.ConsoleRunner.Specs&nbsp;&nbsp;&nbsp;&nbsp;</h1><span class="count"><h2>1 concern, 6 contexts, 15 specifications </h2><br></span><hr>
 <hr>
 <h2 class="concern">ContextFactory specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">3 contexts, 4 specifications</span></h3>
 
@@ -74,93 +74,19 @@
 </ul>
 
 <hr>
-<h2 class="concern"> specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">5 contexts, 5 specifications</span></h3>
+<h2 class="concern">Specification Runner specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">24 contexts, 53 specifications</span></h3>
 
-<h3 class="context">when running specs by assembly&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should run them all</li>
-</ul>
-
-
-<h3 class="context">when running specs in an assembly with a reference that cannot be bound&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should fail</li>
-</ul>
-
-
-<h3 class="context">when running specs in which the cleanup throws a non serializable exception&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul></li>
-</ul>
-
-
-<h3 class="context">when running specs by namespace&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should run them all</li>
-</ul>
-
-
-<h3 class="context">when running specs by member&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should run</li>
-</ul>
-
-<hr>
-<h2 class="concern">Specification Runner specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">24 contexts, 48 specifications</span></h3>
-
-<h3 class="context">when running a context with no specifications&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should not establish the context</li>
-	<li>should not cleanup</li>
-</ul>
-
-
-<h3 class="context">when running a context with an ignored specifications&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">3 specifications</span></h4><ul>	<li>should not run the spec</li>
-	<li>should not establish the context</li>
-	<li>should not cleanup</li>
-</ul>
-
-
-<h3 class="context">when running an ignored context&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">3 specifications</span></h4><ul>	<li>should not run the spec</li>
-	<li>should not establish the context</li>
-	<li>should not cleanup</li>
-</ul>
-
-
-<h3 class="context">when running a context with multiple specifications&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should establish the context once</li>
+<h3 class="context">when running a context with inherited specifications&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">4 specifications</span></h4><ul>	<li>should establish the context once</li>
 	<li>should invoke the because clause once</li>
+	<li>should invoke the because clause from the base class once</li>
+	<li>should detect two specs</li>
 </ul>
 
 
-<h3 class="context">when running a context with multiple specifications and setup once per attribute&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should establish the context once</li>
-	<li>should invoke the because clause once</li>
-</ul>
-
-
-<h3 class="context">when running a context with multiple establish clauses&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should fail</li>
-</ul>
-
-
-<h3 class="context">when running a context with failing establish clauses&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should fail</li>
-</ul>
-
-
-<h3 class="context">when running a context with failing because clauses&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should fail</li>
-</ul>
-
-
-<h3 class="context">when running a context with failing specs&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should fail</li>
-</ul>
-
-
-<h3 class="context">when running an assembly with no included contexts&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should not run assembly start</li>
-	<li>should not run assembly complete</li>
-</ul>
-
-
-<h3 class="context">when running a specification with console output&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul></li>
-</li>
-</ul>
-
-
-<h3 class="context">when running a specification with console output and foreach&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul></li>
-</li>
-</ul>
-
-
-<h3 class="context">when running a specification that throws an exception with an inner exception&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should include the inner exception in the result</li>
-</ul>
-
-
-<h3 class="context">when running a behavior&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should not run the behavior specs</li>
+<h3 class="context">when running a context with inherited specifications and setup once per attribute&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">4 specifications</span></h4><ul>	<li>should establish the context twice</li>
+	<li>should invoke the because clause twice</li>
+	<li>should invoke the because clause from the base class twice</li>
+	<li>should detect two specs</li>
 </ul>
 
 
@@ -204,17 +130,96 @@
 </ul>
 
 
-<h3 class="context">when running a context with inherited specifications&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">4 specifications</span></h4><ul>	<li>should establish the context once</li>
-	<li>should invoke the because clause once</li>
-	<li>should invoke the because clause from the base class once</li>
-	<li>should detect two specs</li>
+<h3 class="context">when running a context with no specifications&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">3 specifications</span></h4><ul>	<li>should not establish the context</li>
+	<li>should not cleanup</li>
+	<li>should not perform assembly wide cleanup</li>
 </ul>
 
 
-<h3 class="context">when running a context with inherited specifications and setup once per attribute&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">4 specifications</span></h4><ul>	<li>should establish the context twice</li>
-	<li>should invoke the because clause twice</li>
-	<li>should invoke the because clause from the base class twice</li>
-	<li>should detect two specs</li>
+<h3 class="context">when running a context with an ignored specifications&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">4 specifications</span></h4><ul>	<li>should not run the spec</li>
+	<li>should not establish the context</li>
+	<li>should not cleanup</li>
+	<li>should not perform assembly wide cleanup</li>
+</ul>
+
+
+<h3 class="context">when running an ignored context&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">4 specifications</span></h4><ul>	<li>should not run the spec</li>
+	<li>should not establish the context</li>
+	<li>should not cleanup</li>
+	<li>should not perform assembly wide cleanup</li>
+</ul>
+
+
+<h3 class="context">when running a context with multiple specifications&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">3 specifications</span></h4><ul>	<li>should establish the context once</li>
+	<li>should invoke the because clause once</li>
+	<li>should invoke the assembly wide cleanup once</li>
+</ul>
+
+
+<h3 class="context">when running a context with multiple specifications and setup once per attribute&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">3 specifications</span></h4><ul>	<li>should establish the context for each specification</li>
+	<li>should invoke the because clause for each specification</li>
+	<li>should invoke the assembly wide cleanup once per spec</li>
+</ul>
+
+
+<h3 class="context">when running a context with multiple establish clauses&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should fail</li>
+</ul>
+
+
+<h3 class="context">when running a context with failing establish clauses&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should fail</li>
+</ul>
+
+
+<h3 class="context">when running a context with failing because clauses&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should fail</li>
+</ul>
+
+
+<h3 class="context">when running a context with failing specs&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should fail</li>
+</ul>
+
+
+<h3 class="context">when running an assembly with no included contexts&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul>	<li>should not run assembly start</li>
+	<li>should not run assembly complete</li>
+</ul>
+
+
+<h3 class="context">when running a specification with console output&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul></li>
+</li>
+</ul>
+
+
+<h3 class="context">when running a specification with console output and foreach&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">2 specifications</span></h4><ul></li>
+</li>
+</ul>
+
+
+<h3 class="context">when running a specification that throws an exception with an inner exception&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should include the inner exception in the result</li>
+</ul>
+
+
+<h3 class="context">when running a behavior&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should not run the behavior specs</li>
+</ul>
+
+<hr>
+<h2 class="concern"> specifications&nbsp;&nbsp;&nbsp;&nbsp;</h2><h3><span class="count">5 contexts, 5 specifications</span></h3>
+
+<h3 class="context">when running specs by assembly&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should run them all</li>
+</ul>
+
+
+<h3 class="context">when running specs in an assembly with a reference that cannot be bound&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should fail</li>
+</ul>
+
+
+<h3 class="context">when running specs in which the cleanup throws a non serializable exception&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul></li>
+</ul>
+
+
+<h3 class="context">when running specs by namespace&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should run them all</li>
+</ul>
+
+
+<h3 class="context">when running specs by member&nbsp;&nbsp;&nbsp;&nbsp;</h3><h4><span class="count">1 specification</span></h4><ul>	<li>should run</li>
 </ul>
 
 <hr>

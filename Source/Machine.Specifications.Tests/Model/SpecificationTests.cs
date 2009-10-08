@@ -49,7 +49,7 @@ namespace Machine.Specifications.Model
     public IEnumerable<Result> Run(Context context)
     {
       var runner = ContextRunnerFactory.GetContextRunnerFor(context);
-      return runner.Run(context, new RunListenerBase(), RunOptions.Default);
+      return runner.Run(context, new RunListenerBase(), RunOptions.Default, new ICleanupAfterEveryContextInAssembly[] {});
     }
   }
 }

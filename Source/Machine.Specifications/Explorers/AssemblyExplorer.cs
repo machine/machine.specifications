@@ -30,6 +30,14 @@ namespace Machine.Specifications.Explorers
         .Select(x => CreateContextFrom(x));
     }
 
+    public IEnumerable<ICleanupAfterEveryContextInAssembly> FindAssemblyWideContextCleanupsIn(Assembly assembly)
+    {
+      return assembly.GetExportedTypes()
+        .Where(x =>
+               x.GetInterfaces().Contains(typeof(ICleanupAfterEveryContextInAssembly)))
+        .Select(x => (ICleanupAfterEveryContextInAssembly) Activator.CreateInstance(x));
+    }
+
     public IEnumerable<IAssemblyContext> FindAssemblyContextsIn(Assembly assembly)
     {
       return assembly.GetExportedTypes()

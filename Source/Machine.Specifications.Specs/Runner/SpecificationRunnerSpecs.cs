@@ -12,6 +12,7 @@ namespace Machine.Specifications.Specs.Runner
   {
     Establish context = () =>
     {
+      TestCleanupAfterEveryContext.AfterContextCleanupRun = false;
       context_with_no_specs.ContextEstablished = false;
       context_with_no_specs.CleanupOccurred = false;
     };
@@ -24,6 +25,9 @@ namespace Machine.Specifications.Specs.Runner
 
     It should_not_cleanup = () =>
       context_with_no_specs.CleanupOccurred.ShouldBeFalse();
+
+    It should_not_perform_assembly_wide_cleanup = () =>
+      TestCleanupAfterEveryContext.AfterContextCleanupRun.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
@@ -32,7 +36,10 @@ namespace Machine.Specifications.Specs.Runner
   {
     Establish context = () =>
     {
+      context_with_no_specs.ContextEstablished = false;
+      context_with_no_specs.CleanupOccurred = false;
       context_with_ignore_on_one_spec.IgnoredSpecRan = false;
+      TestCleanupAfterEveryContext.AfterContextCleanupRun = false;
     };
 
     Because of = () =>
@@ -46,6 +53,9 @@ namespace Machine.Specifications.Specs.Runner
 
     It should_not_cleanup = () =>
       context_with_ignore_on_one_spec.CleanupOccurred.ShouldBeFalse();
+
+    It should_not_perform_assembly_wide_cleanup = () =>
+      TestCleanupAfterEveryContext.AfterContextCleanupRun.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
@@ -55,6 +65,7 @@ namespace Machine.Specifications.Specs.Runner
     Establish context = () =>
     {
       context_with_ignore.IgnoredSpecRan = false;
+      TestCleanupAfterEveryContext.AfterContextCleanupRun = false;
     };
 
     Because of = () =>
@@ -68,6 +79,9 @@ namespace Machine.Specifications.Specs.Runner
 
     It should_not_cleanup = () =>
       context_with_ignore.CleanupOccurred.ShouldBeFalse();
+
+    It should_not_perform_assembly_wide_cleanup = () =>
+      TestCleanupAfterEveryContext.AfterContextCleanupRun.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
@@ -78,6 +92,7 @@ namespace Machine.Specifications.Specs.Runner
     {
       context_with_multiple_specifications.EstablishRunCount = 0;
       context_with_multiple_specifications.BecauseClauseRunCount = 0;
+      TestCleanupAfterEveryContext.Reset();
     };
 
     Because of = () =>
@@ -88,27 +103,33 @@ namespace Machine.Specifications.Specs.Runner
 
     It should_invoke_the_because_clause_once = () =>
       context_with_multiple_specifications.BecauseClauseRunCount.ShouldEqual(1);
+
+    It should_invoke_the_assembly_wide_cleanup_once = () =>
+      TestCleanupAfterEveryContext.AfterContextCleanupRunCount.ShouldEqual(1);
   }
 
   [Subject("Specification Runner")]
   public class when_running_a_context_with_multiple_specifications_and_setup_once_per_attribute
     : with_runner
   {
-
     Establish context = () =>
     {
       context_with_multiple_specifications_and_setup_for_each.EstablishRunCount = 0;
       context_with_multiple_specifications_and_setup_for_each.BecauseClauseRunCount = 0;
+      TestCleanupAfterEveryContext.Reset();
     };
 
     Because of = () =>
       Run<context_with_multiple_specifications_and_setup_for_each>();
 
-    It should_establish_the_context_once = () =>
+    It should_establish_the_context_for_each_specification = () =>
       context_with_multiple_specifications_and_setup_for_each.EstablishRunCount.ShouldEqual(2);
 
-    It should_invoke_the_because_clause_once = () =>
+    It should_invoke_the_because_clause_for_each_specification = () =>
       context_with_multiple_specifications_and_setup_for_each.BecauseClauseRunCount.ShouldEqual(2);
+
+    It should_invoke_the_assembly_wide_cleanup_once_per_spec = () =>
+      TestCleanupAfterEveryContext.AfterContextCleanupRunCount.ShouldEqual(2);
   }
 
   [Subject("Specification Runner")]
@@ -151,7 +172,7 @@ namespace Machine.Specifications.Specs.Runner
     Because of = Run<context_with_failing_specs>;
 
     It should_fail = () =>
-    testListener.LastResult.Passed.ShouldBeFalse();
+      testListener.LastResult.Passed.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]

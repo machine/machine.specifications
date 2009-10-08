@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Machine.Specifications.Model;
 
@@ -5,12 +6,12 @@ namespace Machine.Specifications.Runner.Impl
 {
   public interface IContextRunner
   {
-    IEnumerable<Result> Run(Context context, ISpecificationRunListener listener, RunOptions options);
+    IEnumerable<Result> Run(Context context, ISpecificationRunListener listener, RunOptions options, IEnumerable<ICleanupAfterEveryContextInAssembly> globalCleanups);
   }
 
   public class SetupOnceContextRunner : IContextRunner
   {
-    public IEnumerable<Result> Run(Context context, ISpecificationRunListener listener, RunOptions options)
+    public IEnumerable<Result> Run(Context context, ISpecificationRunListener listener, RunOptions options, IEnumerable<ICleanupAfterEveryContextInAssembly> globalCleanups)
     {
       IEnumerable<Result> results;
       listener.OnContextStart(context.GetInfo());
@@ -33,6 +34,10 @@ namespace Machine.Specifications.Runner.Impl
       if (context.HasExecutableSpecifications)
       {
         result = context.Cleanup();
+        foreach (var cleanup in globalCleanups)
+        {
+          cleanup.AfterContextCleanup();
+        }
       }
 
       listener.OnContextEnd(context.GetInfo());
@@ -70,7 +75,7 @@ namespace Machine.Specifications.Runner.Impl
 
   public class SetupForEachContextRunner : IContextRunner
   {
-    public IEnumerable<Result> Run(Context context, ISpecificationRunListener listener, RunOptions options)
+    public IEnumerable<Result> Run(Context context, ISpecificationRunListener listener, RunOptions options, IEnumerable<ICleanupAfterEveryContextInAssembly> globalCleanups)
     {
       var results = new List<Result>();
       listener.OnContextStart(context.GetInfo());
@@ -97,6 +102,11 @@ namespace Machine.Specifications.Runner.Impl
           if (result.Passed && !cleanupResult.Passed)
           {
             result = cleanupResult;
+          }
+
+          foreach (var cleanup in globalCleanups)
+          {
+            cleanup.AfterContextCleanup();
           }
         }
 
