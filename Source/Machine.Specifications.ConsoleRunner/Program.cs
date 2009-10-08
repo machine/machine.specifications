@@ -71,6 +71,20 @@ namespace Machine.Specifications.ConsoleRunner
           
         }
 
+        if (!String.IsNullOrEmpty(options.XmlPath))
+        {
+            if (IsHtmlPathValid(options.XmlPath))
+            {
+                listeners.Add(GetXmlReportListener(options));
+            }
+            else
+            {
+                _console.WriteLine("Invalid xml path:" + options.XmlPath);
+                _console.WriteLine(Resources.UsageStatement);
+                return ExitCode.Failure;
+            }
+        }
+
         listeners.Add(mainListener);
         
         if (options.AssemblyFiles.Count == 0)
@@ -112,6 +126,13 @@ namespace Machine.Specifications.ConsoleRunner
         }
       }
       return ExitCode.Success;
+    }
+
+    private static ISpecificationRunListener GetXmlReportListener(Options options)
+    {
+        var listener = new GenerateXmlReportListener(options.XmlPath, options.ShowTimeInformation);
+
+        return listener;
     }
 
     static bool IsHtmlPathValid(string path)
