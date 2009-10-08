@@ -96,7 +96,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
           break;
       }
 
-	  _server.TaskFinished(task, message, taskResult);
+      _server.TaskFinished(task, message, taskResult);
     }
 
     public void OnFatalError(ExceptionResult exception)
@@ -115,7 +115,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
     RemoteTask FindTaskFor(SpecificationInfo specification)
     {
-      foreach(var spec in _specifications)
+      foreach (var spec in _specifications)
       {
         if (spec.ContainingType == specification.ContainingType &&
             spec.Name == specification.Name)

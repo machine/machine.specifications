@@ -33,7 +33,7 @@ namespace Machine.Specifications.ConsoleRunner
     public ExitCode Run(string[] arguments)
     {
       ExceptionReporter reporter = new ExceptionReporter(_console);
-      
+
       Options options = new Options();
       if (!options.ParseArguments(arguments))
       {
@@ -52,7 +52,7 @@ namespace Machine.Specifications.ConsoleRunner
       {
         mainListener = new RunListener(_console, options.Silent);
       }
-      
+
       try
       {
 
@@ -68,25 +68,25 @@ namespace Machine.Specifications.ConsoleRunner
             _console.WriteLine(Resources.UsageStatement);
             return ExitCode.Failure;
           }
-          
+
         }
 
         if (!String.IsNullOrEmpty(options.XmlPath))
         {
-            if (IsHtmlPathValid(options.XmlPath))
-            {
-                listeners.Add(GetXmlReportListener(options));
-            }
-            else
-            {
-                _console.WriteLine("Invalid xml path:" + options.XmlPath);
-                _console.WriteLine(Resources.UsageStatement);
-                return ExitCode.Failure;
-            }
+          if (IsHtmlPathValid(options.XmlPath))
+          {
+            listeners.Add(GetXmlReportListener(options));
+          }
+          else
+          {
+            _console.WriteLine("Invalid xml path:" + options.XmlPath);
+            _console.WriteLine(Resources.UsageStatement);
+            return ExitCode.Failure;
+          }
         }
 
         listeners.Add(mainListener);
-        
+
         if (options.AssemblyFiles.Count == 0)
         {
           _console.WriteLine(Resources.UsageStatement);
@@ -94,7 +94,7 @@ namespace Machine.Specifications.ConsoleRunner
         }
 
         var listener = new AggregateRunListener(listeners);
-        
+
         ISpecificationRunner specificationRunner = new AppDomainRunner(listener, options.GetRunOptions());
         List<Assembly> assemblies = new List<Assembly>();
         foreach (string assemblyName in options.AssemblyFiles)
@@ -110,7 +110,7 @@ namespace Machine.Specifications.ConsoleRunner
 
         specificationRunner.RunAssemblies(assemblies);
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         reporter.ReportException(ex);
         return ExitCode.Error;
@@ -118,7 +118,7 @@ namespace Machine.Specifications.ConsoleRunner
 
       if (mainListener is ISpecificationResultProvider)
       {
-        var errorProvider = (ISpecificationResultProvider) mainListener;
+        var errorProvider = (ISpecificationResultProvider)mainListener;
         if (errorProvider.FailureOccured)
         {
           Console.WriteLine("Generic failure occurred, no idea what this is");
@@ -130,9 +130,9 @@ namespace Machine.Specifications.ConsoleRunner
 
     private static ISpecificationRunListener GetXmlReportListener(Options options)
     {
-        var listener = new GenerateXmlReportListener(options.XmlPath, options.ShowTimeInformation);
+      var listener = new GenerateXmlReportListener(options.XmlPath, options.ShowTimeInformation);
 
-        return listener;
+      return listener;
     }
 
     static bool IsHtmlPathValid(string path)

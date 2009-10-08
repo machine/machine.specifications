@@ -17,7 +17,7 @@ namespace Machine.Specifications
       }
       return arrayList;
     }
-    
+
     public static bool ContainsAny<T>(this IEnumerable<T> collection, IEnumerable<T> values)
     {
       foreach (T item in values)
@@ -174,13 +174,13 @@ namespace Machine.Specifications
       string expectedEndDelimiter)
     {
       Assert.True(actual.StartsWith(expectedStartDelimiter));
-	  Assert.True(actual.EndsWith(expectedEndDelimiter));
+      Assert.True(actual.EndsWith(expectedEndDelimiter));
     }
 
     public static void ShouldBeSurroundedWith(this string actual, string expectedDelimiter)
     {
       Assert.True(actual.StartsWith(expectedDelimiter));
-	  Assert.True(actual.EndsWith(expectedDelimiter));
+      Assert.True(actual.EndsWith(expectedDelimiter));
     }
 
     public static void ShouldContainErrorMessage(this Exception exception, string expected)

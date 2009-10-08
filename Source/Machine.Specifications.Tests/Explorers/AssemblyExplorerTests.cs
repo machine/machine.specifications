@@ -29,11 +29,11 @@ namespace Machine.Specifications.Explorers
       var names = specifications.Select(x => x.Name).OrderBy(x => x).ToList();
       names.ShouldContainOnly(
         new[]
-		{
-		  "when a customer first views the account summary page",
-		  "when transferring between two accounts",
-		  "when transferring an amount larger than the balance of the from account"
-		}.OrderBy(x => x).ToList()
+    {
+      "when a customer first views the account summary page",
+      "when transferring between two accounts",
+      "when transferring an amount larger than the balance of the from account"
+    }.OrderBy(x => x).ToList()
         );
     }
   }
@@ -110,7 +110,7 @@ namespace Machine.Specifications.Explorers
     {
       context.Specifications.Count().ShouldEqual(1);
     }
-    
+
     [Test]
     public void ShouldReturnOneSpecificationNamedCorrectly()
     {
@@ -124,7 +124,7 @@ namespace Machine.Specifications.Explorers
     private IEnumerable<Model.Context> descriptions;
     private Model.Context context;
 
-    public override void  BeforeEachTest()
+    public override void BeforeEachTest()
     {
       descriptions = Target.FindContextsIn(typeof(Account).Assembly);
       context =
