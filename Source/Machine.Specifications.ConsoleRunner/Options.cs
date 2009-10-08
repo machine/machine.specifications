@@ -11,8 +11,8 @@ namespace Machine.Specifications.ConsoleRunner
 {
   public class Options
   {
-      [Option("xml", "xml", HelpText = "Outputs XML")]
-      public string XmlPath = string.Empty;
+    [Option("xml", "xml", HelpText = "Outputs XML")]
+    public string XmlPath = string.Empty;
 
     [Option(null,
       "html",
