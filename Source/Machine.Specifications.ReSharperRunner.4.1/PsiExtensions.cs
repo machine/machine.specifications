@@ -5,9 +5,11 @@ using System.Linq;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 
+using Machine.Specifications.Model;
+
 namespace Machine.Specifications.ReSharperRunner
 {
-  internal static class PsiExtensions
+  internal static partial class PsiExtensions
   {
     public static bool IsContext(this IDeclaredElement element)
     {
@@ -35,7 +37,7 @@ namespace Machine.Specifications.ReSharperRunner
       return element.IsValidFieldOfType(typeof(Behaves_like<>)) &&
              element.GetFirstGenericArgument() != null &&
              element.GetFirstGenericArgument().HasAttributeInstance(
-               new CLRTypeName(typeof(BehaviorsAttribute).FullName),false);
+               new CLRTypeName(typeof(BehaviorsAttribute).FullName), false);
     }
 
     public static IClass GetFirstGenericArgument(this IDeclaredElement element)
@@ -78,6 +80,53 @@ namespace Machine.Specifications.ReSharperRunner
       }
 
       return !hasInitializer || attributeOwner.HasAttributeInstance(new CLRTypeName(typeof(IgnoreAttribute).FullName), false);
+    }
+
+    public static Subject GetSubject(this IAttributesOwner type)
+    {
+      var attribute = type.GetAttributeInstances(new CLRTypeName(typeof(SubjectAttribute).FullName), true)
+                          .FirstOrDefault();
+
+      if (attribute == null)
+      {
+        return null;
+      }
+
+      if (attribute.PositionParameters().Any(x => x.IsBadValue))
+      {
+        return null;
+      }
+
+      if (attribute.PositionParameters()
+                   .Where(x => x.IsType)
+                   .Select(x => x.TypeValue as IDeclaredType)
+                   .Any(x => x.IsInvalid()))
+      {
+        return null;
+      }
+
+      try
+      {
+        var parameters = attribute.PositionParameters()
+                                  .Select(x =>
+                                    {
+                                      if (x.IsType)
+                                      {
+                                        var declaredType = (IDeclaredType) x.TypeValue;
+                                        return Type.GetType(declaredType.GetCLRName());
+                                      }
+
+                                      return x.ConstantValue.Value;
+                                    })
+                                  .ToArray();
+
+        var subjectAttribute = (SubjectAttribute) Activator.CreateInstance(typeof(SubjectAttribute), parameters);
+        return new Subject(subjectAttribute.SubjectType, subjectAttribute.SubjectText);
+      }
+      catch (Exception)
+      {
+        return null;
+      }
     }
 
     public static ICollection<string> GetTags(this IAttributesOwner type)

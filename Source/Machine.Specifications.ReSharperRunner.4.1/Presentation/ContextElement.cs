@@ -7,6 +7,7 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.UnitTestExplorer;
 
+using Machine.Specifications.Model;
 using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
@@ -14,16 +15,19 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
   internal class ContextElement : Element
   {
     readonly string _assemblyLocation;
+    readonly Subject _subject;
 
     public ContextElement(IUnitTestProvider provider,
                           IProjectModelElement project,
                           string typeName,
                           string assemblyLocation,
+                          Subject subject,
                           ICollection<string> tags,
                           bool isIgnored)
       : base(provider, null, project, typeName, isIgnored)
     {
       _assemblyLocation = assemblyLocation;
+      _subject = subject;
 
       if (tags != null)
       {
@@ -43,7 +47,17 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public override string GetTitle()
     {
-      return new CLRTypeName(GetTypeClrName()).ShortName.ToFormat();
+      return GetSubject() + new CLRTypeName(GetTypeClrName()).ShortName.ToFormat();
+    }
+
+    string GetSubject()
+    {
+      if (_subject == null)
+      {
+        return null;
+      }
+
+      return _subject.FullConcern + ", ";
     }
 
     public override IDeclaredElement GetDeclaredElement()

@@ -34,6 +34,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                   _project,
                                                   type.CLRName,
                                                   _assemblyPath,
+                                                  type.GetSubject(),
                                                   type.GetTags(),
                                                   type.IsIgnored());
       _cache.Classes.Add(type, context);
@@ -46,6 +47,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                 _project,
                                 type.FullyQualifiedName,
                                 _assemblyPath,
+                                type.GetSubject(),
                                 type.GetTags(),
                                 type.IsIgnored());
     }

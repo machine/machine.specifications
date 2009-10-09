@@ -184,6 +184,7 @@
     <Compile Include="Presentation\FieldElement.cs" />
     <Compile Include="Presentation\Presenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PsiExtensions.4.5.cs" />
     <Compile Include="Runners\ExceptionResultConverter.cs" />
   </ItemGroup>
   <ItemGroup>

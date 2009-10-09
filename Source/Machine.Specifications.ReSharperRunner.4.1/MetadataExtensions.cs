@@ -5,6 +5,8 @@ using System.Linq;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ReSharper.Psi;
 
+using Machine.Specifications.Model;
+
 namespace Machine.Specifications.ReSharperRunner
 {
   internal static class MetadataExtensions
@@ -42,6 +44,21 @@ namespace Machine.Specifications.ReSharperRunner
       }
     }
 
+    public static Subject GetSubject(this IMetadataEntity type)
+    {
+      var attributes = type.GetCustomAttributes(typeof(SubjectAttribute).FullName);
+      if (attributes.Count != 1)
+      {
+          return null;
+      }
+      
+      var attribute = attributes.First();
+
+      SubjectAttribute subjectAttribute = (SubjectAttribute)Activator.CreateInstance(typeof(SubjectAttribute), attribute.ConstructorArguments);
+
+      return new Subject(subjectAttribute.SubjectType, subjectAttribute.SubjectText);
+    }
+	  
     public static ICollection<string> GetTags(this IMetadataEntity type)
     {
       return type.AndAllBaseTypes()
