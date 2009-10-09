@@ -24,6 +24,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       : base(provider, parent, project, declaringTypeName, isIgnored || parent.IsExplicit)
     {
       _fieldName = fieldName;
+      AssignCategories(parent.GetCategories().Select(x => x.Name).ToList());
     }
 
     public string FieldName
