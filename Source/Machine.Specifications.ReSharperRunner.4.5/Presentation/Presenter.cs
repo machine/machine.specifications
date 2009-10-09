@@ -2,7 +2,12 @@ using System.Drawing;
 
 using JetBrains.CommonControls;
 using JetBrains.ReSharper.Features.Common.TreePsiBrowser;
+#if RESHARPER_5
+using JetBrains.ReSharper.UnitTestFramework;
+using JetBrains.ReSharper.UnitTestFramework.UI;
+#else
 using JetBrains.ReSharper.UnitTestExplorer;
+#endif
 using JetBrains.TreeModels;
 using JetBrains.UI.TreeView;
 

@@ -180,17 +180,21 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\UnitTestElementComparer.cs">
       <Link>UnitTestElementComparer.cs</Link>
     </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.5\MSpecUnitTestProvider.cs">
+      <Link>MSpecUnitTestProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.5\Presentation\Presenter.cs">
+      <Link>Presentation\Presenter.cs</Link>
+    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.5\Runners\ExceptionResultConverter.cs">
       <Link>Runners\ExceptionResultConverter.cs</Link>
     </Compile>
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="MSpecUnitTestProvider.cs" />
     <Compile Include="Presentation\ContextElement.cs" />
     <Compile Include="Presentation\Element.cs" />
     <Compile Include="Presentation\FieldElement.cs" />
-    <Compile Include="Presentation\Presenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

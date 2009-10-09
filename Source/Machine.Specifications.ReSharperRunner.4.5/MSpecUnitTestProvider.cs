@@ -10,6 +10,10 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.TaskRunnerFramework;
+#if RESHARPER_5
+using JetBrains.ReSharper.UnitTestFramework;
+using JetBrains.ReSharper.UnitTestFramework.UI;
+#endif
 using JetBrains.ReSharper.UnitTestExplorer;
 using JetBrains.TreeModels;
 using JetBrains.UI.TreeView;
@@ -174,6 +178,16 @@ namespace Machine.Specifications.ReSharperRunner
     public bool IsUnitTestElement(IDeclaredElement element)
     {
       return element.IsContext() || element.IsSpecification();
+    }
+
+    public bool IsUnitTestContainer(IDeclaredElement element)
+    {
+      return IsUnitTestElement(element);
+    }
+
+    public bool IsUnitTest(IDeclaredElement element)
+    {
+      return IsUnitTestElement(element);
     }
     #endregion
   }

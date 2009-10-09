@@ -26,17 +26,17 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       _fieldName = fieldName;
     }
 
-  	public override string ShortName
-  	{
-  		get { return FieldName; }
-  	}
+    public override string ShortName
+    {
+      get { return FieldName; }
+    }
 
-  	public string FieldName
+   public string FieldName
     {
       get { return _fieldName; }
     }
 
-  	public override string GetTitle()
+    public override string GetTitle()
     {
       return String.Format("{0}{1}{2}",
                            GetTitlePrefix(),
@@ -44,7 +44,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                            FieldName.ToFormat());
     }
 
-  	public override bool Matches(string filter, IdentifierMatcher matcher)
+    public override bool Matches(string filter, IdentifierMatcher matcher)
     {
       if (Parent.Matches(filter, matcher))
       {
@@ -53,7 +53,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       return matcher.Matches(FieldName);
     }
 
-  	public override IDeclaredElement GetDeclaredElement()
+    public override IDeclaredElement GetDeclaredElement()
     {
       ITypeElement declaredType = GetDeclaredType();
       if (declaredType == null)
