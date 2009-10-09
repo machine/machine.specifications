@@ -1,5 +1,9 @@
 using JetBrains.ProjectModel;
+#if RESHARPER_5
+using JetBrains.ReSharper.UnitTestFramework;
+#else
 using JetBrains.ReSharper.UnitTestExplorer;
+#endif
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {

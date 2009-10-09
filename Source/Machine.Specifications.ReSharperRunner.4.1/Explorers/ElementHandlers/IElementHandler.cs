@@ -1,7 +1,11 @@
 using System.Collections.Generic;
 
 using JetBrains.ReSharper.Psi.Tree;
+#if RESHARPER_5
+using JetBrains.ReSharper.UnitTestFramework;
+#else
 using JetBrains.ReSharper.UnitTestExplorer;
+#endif
 
 namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
 {

@@ -1,7 +1,11 @@
 using System.Collections.Generic;
 
 using JetBrains.ReSharper.Psi.Tree;
+#if RESHARPER_5
+using JetBrains.ReSharper.UnitTestFramework;
+#else
 using JetBrains.ReSharper.UnitTestExplorer;
+#endif
 
 using Machine.Specifications.ReSharperRunner.Factories;
 
@@ -43,7 +47,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
 
       yield return new UnitTestElementDisposition(behaviorElement,
                                                   file.ProjectFile,
-                                                  declaration.GetNameRange(),
+                                                  declaration.GetNavigationRange().TextRange,
                                                   declaration.GetDocumentRange().TextRange);
 
       var behaviorSpecifications =

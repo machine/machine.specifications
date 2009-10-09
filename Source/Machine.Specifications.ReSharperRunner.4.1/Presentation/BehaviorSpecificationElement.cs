@@ -1,5 +1,9 @@
 using JetBrains.ProjectModel;
+#if RESHARPER_5
+using JetBrains.ReSharper.UnitTestFramework;
+#else
 using JetBrains.ReSharper.UnitTestExplorer;
+#endif
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
@@ -12,8 +16,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                                         IProjectModelElement project,
                                         string declaringTypeName,
                                         string fieldName,
-                                        bool isIgnored
-      )
+                                        bool isIgnored)
       : base(provider, behavior, project, declaringTypeName, fieldName, isIgnored || behavior.IsExplicit)
     {
     }

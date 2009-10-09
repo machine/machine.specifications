@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JetBrains.Platform.ReSharper.DocumentManager</name>
+    </assembly>
+    <members>
+        <member name="T:JetBrains.DocumentModel.DocumentBaseWithSolution">
+            <summary>
+            A flavor of <see cref="T:JetBrains.DocumentModel.Impl.DocumentBase"/> that is aware of project files and solutions and can thus implement additional checks.
+            </summary>
+        </member>
+        <member name="F:JetBrains.DocumentModel.DocumentBaseWithSolution.Solution">
+            <summary>
+            Gets the solution this document belongs to, which is optional.
+            </summary>
+        </member>
+        <member name="T:JetBrains.DocumentModel.DocumentManager">
+            <summary>
+            Global document manager.
+            </summary>
+        </member>
+        <member name="M:JetBrains.DocumentModel.DocumentManager.EnsureWritable(JetBrains.DocumentModel.IDocument[])">
+            <summary>
+            Attempts to make all the specified files writable
+            </summary>
+            <param name="documents">Documents to make writable</param>
+        </member>
+        <member name="M:JetBrains.DocumentModel.DocumentManager.GetDocument(JetBrains.ProjectModel.IProjectFile)">
+            <summary>
+            Gets document by project item.
+            </summary>
+        </member>
+        <member name="M:JetBrains.DocumentModel.DocumentManager.GetProjectFile(JetBrains.DocumentModel.IDocument)">
+            <summary>
+            Gets project item by document item.
+            </summary>
+        </member>
+        <member name="M:JetBrains.DocumentModel.DocumentManager.GetUnsavedDocuments">
+            <summary>
+            Returns all unsaved documents.
+            </summary>
+        </member>
+        <member name="M:JetBrains.DocumentModel.DocumentManager.IsDocumentUnsaved(JetBrains.DocumentModel.IDocument)">
+            <summary>
+            Returns true if the specified document has not been saved since the last modification
+            </summary>
+        </member>
+        <member name="M:JetBrains.DocumentModel.DocumentManager.SaveAllDocuments">
+            <summary>
+            Saves all documents 
+            </summary>
+        </member>
+        <member name="M:JetBrains.DocumentModel.DocumentManager.SaveDocument(JetBrains.DocumentModel.IDocument)">
+            <summary>
+            Saves the specified document
+            </summary>
+        </member>
+        <member name="E:JetBrains.DocumentModel.DocumentManager.AfterDocumentSaved">
+            <summary>
+            Raised after a document has been saved.
+            </summary>
+        </member>
+        <member name="E:JetBrains.DocumentModel.DocumentManager.BeforeDocumentChanged">
+            <summary>
+            Raised before a document is modified
+            </summary>
+        </member>
+        <member name="E:JetBrains.DocumentModel.DocumentManager.BeforeDocumentReloaded">
+            <summary>
+            Raised before a document has been changed externally. The handlers of this event are given a chance to
+            cancel the external change.
+            </summary>
+        </member>
+        <member name="E:JetBrains.DocumentModel.DocumentManager.BeforeDocumentSaved">
+            <summary>
+            Raised before a document has been saved. The handlers of this event are given a chance to
+            cancel save.
+            </summary>
+        </member>
+        <member name="T:JetBrains.DocumentModel.DocumentRange">
+            <summary>
+            Text range in document
+            </summary>
+        </member>
+        <member name="M:JetBrains.DocumentModel.DocumentRange.ToString">
+            <summary>
+            Returns the fully qualified type name of this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> containing a fully qualified type name.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.DocumentModel.Impl.DocumentManagerImpl.CreateDocument(JetBrains.ProjectModel.IProjectFile)">
+            <summary>
+            Achtung! Creates a new document each time! Don't use but from <see cref="M:JetBrains.DocumentModel.Impl.DocumentManagerImpl.GetDocument(JetBrains.ProjectModel.IProjectFile)"/>.
+            Implementation does not need to register in the project-file-to-document map.
+            Mind that your document will normally be held on a weak ref.
+            </summary>
+        </member>
+        <member name="M:JetBrains.DocumentModel.Impl.DocumentManagerImpl.GetProjectFileSyncObject(JetBrains.ProjectModel.IProjectFile)">
+            <summary>
+            Gets an object to synchronize access to a project file.
+            </summary>
+        </member>
+        <member name="M:JetBrains.DocumentModel.Impl.DocumentManagerImpl.GetDocument(JetBrains.ProjectModel.IProjectFile)">
+            <summary>
+            Gets document by project item.
+            </summary>
+        </member>
+        <member name="M:JetBrains.DocumentModel.Impl.DocumentManagerImpl.JetBrains#ComponentModel#IComponent#Init">
+            <summary>
+            <para>Initializes the component. Called by the component container after the component is created.</para>
+            <para><see cref="M:System.IDisposable.Dispose"/> is the pairing method that's guaranteed to be called by the component container to tear down your component.</para>
+            <para>You must not access other components before your <see cref="M:JetBrains.DocumentModel.Impl.DocumentManagerImpl.Init"/> method is called.</para>
+            <para>All of the components that you access from <see cref="M:JetBrains.DocumentModel.Impl.DocumentManagerImpl.Init"/> are guaranteed to exist when your <see cref="M:System.IDisposable.Dispose"/> is called. Any other component might be missing by that time, and trying to get it will throw an exception.</para>
+            </summary>
+        </member>
+        <member name="T:JetBrains.DocumentModel.IProjectFileRangeMarker">
+            <summary>
+            Represents a common interface for range markers in project files
+            </summary>
+        </member>
+        <member name="P:JetBrains.DocumentModel.IProjectFileRangeMarker.Range">
+            <summary>
+            Gets the current text range corresponding to the range marker
+            </summary>
+        </member>
+        <member name="P:JetBrains.DocumentModel.IProjectFileRangeMarker.ProjectFile">
+            <summary>
+            Gets the associated document
+            </summary>
+        </member>
+        <member name="P:JetBrains.DocumentModel.IProjectFileRangeMarker.IsValid">
+            <summary>
+            Gets a value indicating whether the range marker is valid
+            </summary>
+        </member>
+        <member name="P:JetBrains.DocumentModel.IProjectFileRangeMarker.IsGreedyToLeft">
+            <summary>
+            Indicates whether the range market is greedy to left
+            </summary>
+        </member>
+        <member name="P:JetBrains.DocumentModel.IProjectFileRangeMarker.IsGreedyToRight">
+            <summary>
+            Indicates whether the range market is greedy to right
+            </summary>
+        </member>
+        <member name="E:JetBrains.DocumentModel.IProjectFileRangeMarker.Changed">
+            <summary>
+            Raised when Range has been changed due to changes in document
+            </summary>
+        </member>
+    </members>
+</doc>

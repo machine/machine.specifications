@@ -3,7 +3,11 @@ using System.Linq;
 
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
+#if RESHARPER_5
+using JetBrains.ReSharper.UnitTestFramework;
+#else
 using JetBrains.ReSharper.UnitTestExplorer;
+#endif
 using JetBrains.Util;
 
 using Machine.Specifications.ReSharperRunner.Factories;
