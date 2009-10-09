@@ -82,7 +82,7 @@ namespace Machine.Specifications.ReSharperRunner
 
     public static ICollection<string> GetTags(this IAttributesOwner type)
     {
-      return type.GetAttributeInstances(new CLRTypeName(typeof(TagsAttribute).FullName), false)
+      return type.GetAttributeInstances(new CLRTypeName(typeof(TagsAttribute).FullName), true)
         .SelectMany(x => x.PositionParameters(), (x, v) => v.ConstantValue.Value.ToString())
         .Distinct()
         .ToList();

@@ -38,12 +38,31 @@ namespace Machine.Specifications.ReSharperRunner
 
     public static ICollection<string> GetTags(this IMetadataEntity type)
     {
-      return type.GetCustomAttributes(typeof(TagsAttribute).FullName)
+      return type.AndAllBaseTypes()
+        .SelectMany(x => x.GetCustomAttributes(typeof(TagsAttribute).FullName))
         .Select(x => x.ConstructorArguments)
         .Flatten(tag => tag.FirstOrDefault() as string,
                  tag => tag.Skip(1).FirstOrDefault() as IEnumerable<string>)
         .Distinct()
         .ToList();
+    }
+
+    static IEnumerable<IMetadataTypeInfo> AndAllBaseTypes(this IMetadataEntity type)
+    {
+      var typeInfo = type as IMetadataTypeInfo;
+      if (typeInfo == null)
+      {
+        yield break;
+      }
+
+      yield return typeInfo;
+      
+      while (typeInfo.Base != null && typeInfo.Base.Type != null)
+      {
+        yield return typeInfo.Base.Type;
+
+        typeInfo = typeInfo.Base.Type;
+      }
     }
 
     public static IMetadataTypeInfo GetFirstGenericArgument(this IMetadataField genericField)
