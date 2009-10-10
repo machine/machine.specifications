@@ -17,12 +17,17 @@ namespace Machine.Specifications.ReSharperRunner
         return false;
       }
 
+      var fields = clazz.Fields;
+      if (fields == null || !fields.Any())
+      {
+        return false;
+      }
+
       return clazz.IsValid() &&
              !clazz.IsAbstract &&
              !clazz.HasAttributeInstance(new CLRTypeName(typeof(BehaviorsAttribute).FullName), false) &&
-             clazz.GetContainingType() == null &&
              clazz.GetAccessRights() == AccessRights.PUBLIC &&
-             clazz.Fields.Any(x => IsSpecification(x) || IsBehavior(x));
+             fields.Any(x => IsSpecification(x) || IsBehavior(x));
     }
     
     public static bool IsBehaviorContainer(this IDeclaredElement element)
