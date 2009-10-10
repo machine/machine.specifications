@@ -16,12 +16,6 @@ namespace Machine.Specifications.ReSharperRunner
         return 0;
       }
 
-      int compare = StringComparer.CurrentCultureIgnoreCase.Compare(x.GetTypeClrName(), y.GetTypeClrName());
-      if (compare != 0)
-      {
-        return compare;
-      }
-
       if ((x is ContextSpecificationElement || x is BehaviorElement) && y is ContextElement)
       {
         return -1;
