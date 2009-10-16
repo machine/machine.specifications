@@ -66,22 +66,22 @@ namespace Machine.Specifications
 
     public static void ShouldBeOfType(this object actual, Type expected)
     {
-      Assert.IsInstanceOfType(expected, actual);
+      Assert.IsInstanceOf(expected, actual);
     }
 
     public static void ShouldBeOfType<T>(this object actual)
     {
-      Assert.IsInstanceOfType(typeof(T), actual);
+      Assert.IsInstanceOf(typeof(T), actual);
     }
 
     public static void ShouldBe(this object actual, Type expected)
     {
-      Assert.IsInstanceOfType(expected, actual);
+      Assert.IsInstanceOf(expected, actual);
     }
 
     public static void ShouldNotBeOfType(this object actual, Type expected)
     {
-      Assert.IsNotInstanceOfType(expected, actual);
+      Assert.IsNotInstanceOf(expected, actual);
     }
 
     public static void ShouldContain(this IList actual, params object[] expected)
