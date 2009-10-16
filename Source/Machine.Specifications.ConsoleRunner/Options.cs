@@ -54,7 +54,7 @@ namespace Machine.Specifications.ConsoleRunner
     {
       StringBuilder sb = new StringBuilder();
       sb.AppendLine("Machine.Specifications");
-      sb.AppendLine("Copyright (C) 2007, 2008");
+      sb.AppendLine("Copyright (C) 2007, 2008, 2009");
       sb.AppendLine("");
       sb.AppendLine(Resources.UsageStatement);
       sb.AppendLine("Options:");
