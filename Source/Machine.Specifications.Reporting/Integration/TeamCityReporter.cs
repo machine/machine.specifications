@@ -12,7 +12,7 @@ namespace Machine.Specifications.Reporting.Integration
     string _currentContext;
     string _currentNamespace;
     bool _failureOccured;
-    string _failures;
+    //string _failures;
 
     public TeamCityReporter(Action<string> writer)
     {
