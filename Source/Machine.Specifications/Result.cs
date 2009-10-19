@@ -49,6 +49,11 @@ namespace Machine.Specifications
     readonly Status _status;
     readonly IDictionary<string, IDictionary<string, string>> _supplements = new Dictionary<string, IDictionary<string, string>>();
 
+    public IDictionary<string, IDictionary<string, string>> Supplements
+    {
+      get { return _supplements; }
+    }
+
     public bool Passed
     {
       get { return _status == Status.Passing; }

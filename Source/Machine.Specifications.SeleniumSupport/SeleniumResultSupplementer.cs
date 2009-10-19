@@ -18,18 +18,25 @@ namespace Machine.Specifications.SeleniumSupport
         return result;
 
       Guid guid = Guid.NewGuid();
-      string pageScreenshotPath = Path.Combine(ImagesPath, guid.ToString() + "-full-page-screenshot");
-      string screenshotPath = Path.Combine(ImagesPath, guid.ToString() + "-screenshot");
+      string pageScreenshotPath = Path.Combine(ImagesPath, guid.ToString() + "-full-page-screenshot.png");
+      string screenshotPath = Path.Combine(ImagesPath, guid.ToString() + "-screenshot.png");
+      string htmlPath = Path.Combine(ImagesPath, guid.ToString() + ".html");
 
       Selenium.CaptureEntirePageScreenshot(pageScreenshotPath, "");
       Selenium.CaptureScreenshot(screenshotPath);
 
       Dictionary<string, string> supplement = new Dictionary<string, string>();
 
-      supplement["full-page-screenshot"] = pageScreenshotPath;
-      supplement["screenshot"] = screenshotPath;
-      supplement["html"] = Selenium.GetHtmlSource();
-      supplement["log"] = Selenium.RetrieveLastRemoteControlLogs();
+      supplement["text-log"] = Selenium.RetrieveLastRemoteControlLogs();
+
+      using (var writer = new StreamWriter(htmlPath))
+      {
+        writer.Write(Selenium.GetHtmlSource());
+      }
+
+      supplement["img-full-page-screenshot"] = pageScreenshotPath;
+      supplement["img-screenshot"] = screenshotPath;
+      supplement["html-source"] = htmlPath;  
 
       return Result.Supplement(result, "selenium", supplement);
     }

@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Linq;
+using System.Web;
 using Machine.Specifications.Runner;
 
 namespace Machine.Specifications.Reporting
@@ -16,6 +17,7 @@ namespace Machine.Specifications.Reporting
     private Dictionary<SpecificationInfo, Result> _resultsBySpecification;
     private bool _showTimeInfo;
     private const string noContextKey = "none";
+    string _resourcePath;
 
     public ReportGenerator()
     {
@@ -40,12 +42,25 @@ namespace Machine.Specifications.Reporting
     {
       if (IsProvidedPathAValidDirectoryPath(_path))
       {
+        CreateResourceDirectoryIn(_path);
         WriteReportsToDirectory();
       }
       else if (IsProvidedPathAValidFilePath(_path))
       {
+        CreateResourceDirectoryIn(Path.GetDirectoryName(_path));
         WriteReportsToFile();
       }
+    }
+
+    void CreateResourceDirectoryIn(string directory)
+    {
+      _resourcePath = Path.Combine(directory, "resources");
+      if (Directory.Exists(_resourcePath))
+      {
+        Directory.Delete(_resourcePath, true);
+      }
+      
+      Directory.CreateDirectory(_resourcePath);
     }
 
     void WriteReportsToFile()
@@ -70,8 +85,6 @@ namespace Machine.Specifications.Reporting
 
     void WriteReportsToDirectory()
     {
-
-
       List<string> htmlPaths = new List<string>();
       _contextsByAssembly.Keys.ToList().ForEach(assembly =>
       {
@@ -371,6 +384,74 @@ namespace Machine.Specifications.Reporting
             specificationListItem = String.Format("\t<li>{0}", specification.Name + " <div class=\"notimplemented\">&lt;--NOT IMPLEMENTED</div><br/>");
             break;
         }
+
+        foreach (var supplement in result.Supplements)
+        {
+          foreach (var supplementItem in supplement.Value)
+          {
+            if (supplementItem.Key.StartsWith("img-"))
+            {
+              try
+              {
+                var imageName = Path.GetFileName(supplementItem.Value);
+                File.Move(supplementItem.Value, Path.Combine(_resourcePath, imageName));
+                specificationListItem += String.Format(
+@"<div>[
+  <a href=""javascript:toggleVisibility('{0}', '{1} {2}')"">Show {1} {2}</a>
+  ]</div><br /><br />
+  <div id='{0}' style='display:none'>
+    <a href='resources/{0}'>
+      <img width='80%' src='resources/{0}' />
+    </a>
+  </div>", imageName, supplement.Key, supplementItem.Key);
+              }
+              catch 
+              {
+              }
+            }
+            else if (supplementItem.Key.StartsWith("html-"))
+            {
+              try
+              {
+                var fileName = Path.GetFileName(supplementItem.Value);
+                File.Move(supplementItem.Value, Path.Combine(_resourcePath, fileName));
+
+                specificationListItem += String.Format(
+@"<div>[
+  <a href=""javascript:toggleVisibility('{0}', '{1} {2}')"">Show {1} {2}</a>
+  ]</div><br /><br />
+  <div id='{0}' style='display:none'>
+    <iframe src='resources/{0}' width='100%' height='600px'>
+    </iframe>
+  </div>", fileName, supplement.Key, supplementItem.Key);
+              }
+              catch 
+              {
+              }
+            }
+            else if (supplementItem.Key.StartsWith("text-"))
+            {
+              try
+              {
+
+                var name = Guid.NewGuid().ToString();
+                specificationListItem += String.Format(
+@"<div>[
+  <a href=""javascript:toggleVisibility('{0}', '{1} {2}')"">Show {1} {2}</a>
+  ]</div><br /><br />
+  <div id='{0}' style='display:none'>
+    <pre>
+{3}
+    </pre>
+  </div>", name, supplement.Key, supplementItem.Key, HttpUtility.HtmlEncode(supplementItem.Value));
+              }
+              catch 
+              {
+              }
+            }
+          }
+        }
+
         specificationListItem += "</li>";
         specificationListBuilder.AppendLine(specificationListItem);
         // TODO: pass/fail goes here?
@@ -444,6 +525,22 @@ namespace Machine.Specifications.Reporting
       
       
     </style>
+<script>
+function toggleVisibility(id, description) {
+          var section;
+          var link;
+ 
+          section = document.getElementById(id);
+          link = document.getElementById(id + ""_link"");
+ 
+          if (section.style.display == ""block"") {
+            section.style.display = ""none""
+            link.innerHTML = ""Show "" + description
+          } else {
+            section.style.display = ""block""
+            link.innerHTML = ""Hide "" + description
+          }
+        }</script>
   </head>
   <body>
     ";
