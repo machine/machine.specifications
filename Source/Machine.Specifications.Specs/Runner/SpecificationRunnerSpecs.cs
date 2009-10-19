@@ -264,6 +264,48 @@ namespace Machine.Specifications.Specs.Runner
       Behaviors.BehaviorSpecRan.ShouldBeFalse();
   }
 
+  [Subject("Specification Runner")]
+  public class when_running_with_tag
+  {
+    Establish context = () =>
+    {
+      TaggedCleanup.Reset();
+      UntaggedCleanup.Reset();
+      UntaggedAssemblyContext.Reset();
+      TaggedAssemblyContext.Reset();
+
+      testListener = new TestListener();
+      var options = new RunOptions(new string[] {"foobar"}, new string[] {});
+
+      runner = new DefaultRunner(testListener, options);
+    };
+
+    Because of = () =>
+      runner.RunMember(typeof(context_with_multiple_specifications).Assembly,
+                       typeof(context_with_multiple_specifications));
+
+    It should_not_run_untagged_assembly_context = () =>
+      UntaggedAssemblyContext.OnAssemblyStartRun.ShouldBeFalse();
+
+    It should_run_tagged_assembly_context = () =>
+      TaggedAssemblyContext.OnAssemblyStartRun.ShouldBeTrue();
+
+    It should_not_run_untagged_assembly_context_complete = () =>
+      UntaggedAssemblyContext.OnAssemblyCompleteRun.ShouldBeFalse();
+
+    It should_run_tagged_assembly_context_complete = () =>
+      TaggedAssemblyContext.OnAssemblyCompleteRun.ShouldBeTrue();
+
+    It should_not_run_untagged_global_cleanup = () =>
+      UntaggedCleanup.AfterContextCleanupRunCount.ShouldEqual(0);
+
+    It should_run_tagged_global_cleanup = () =>
+      TaggedCleanup.AfterContextCleanupRunCount.ShouldBeGreaterThan(0);
+
+    static DefaultRunner runner;
+    static TestListener testListener;
+  }
+
   public class with_runner
   {
     static DefaultRunner runner;

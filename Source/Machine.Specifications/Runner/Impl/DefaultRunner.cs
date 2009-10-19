@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 
 using Machine.Specifications.Explorers;
+using Machine.Specifications.Factories;
 using Machine.Specifications.Model;
 using Machine.Specifications.Utility;
 
@@ -112,8 +113,29 @@ namespace Machine.Specifications.Runner.Impl
     }
   }
 
-  public static class ContextFilteringExtensions
+  public static class TagFilteringExtensions
   {
+    public static IEnumerable<T> FilteredBy<T>(this IEnumerable<T> objects, RunOptions options)
+    {
+      var results = objects;
+      var tagExtractor = new AttributeTagExtractor();
+      
+      if (options.IncludeTags.Any())
+      {
+        var includeTags = options.IncludeTags.Select(tag => new Tag(tag));
+
+        results = results.Where(x => tagExtractor.ExtractTags(x.GetType()).Intersect(includeTags).Any());
+      }
+
+      if (options.ExcludeTags.Any())
+      {
+        var excludeTags = options.ExcludeTags.Select(tag => new Tag(tag));
+        results = results.Where(x => !tagExtractor.ExtractTags(x.GetType()).Intersect(excludeTags).Any());
+      }
+
+      return results;
+    }
+
     public static IEnumerable<Context> FilteredBy(this IEnumerable<Context> contexts, RunOptions options)
     {
       var results = contexts;

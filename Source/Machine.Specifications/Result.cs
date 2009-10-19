@@ -71,7 +71,7 @@ namespace Machine.Specifications
       internal set;
     }
 
-    private Result(Status status, Exception exception)
+    private Result(Exception exception)
     {
       _status = Status.Failing;
       this.Exception = new ExceptionResult(exception);
@@ -99,12 +99,12 @@ namespace Machine.Specifications
 
     public static Result Failure(Exception exception)
     {
-      return new Result(Status.Failing, exception);
+      return new Result(exception);
     }
 
     public static Result ContextFailure(Exception exception)
     {
-      return new Result(Status.Failing, exception);
+      return new Result(exception);
     }
   }
 }

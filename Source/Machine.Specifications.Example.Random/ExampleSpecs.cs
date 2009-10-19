@@ -27,7 +27,7 @@ namespace Machine.Specifications.Specs
     It spec2 = () => { };
   }
 
-  [Tags(tag.example)]
+  [Tags(tag.example, "foobar")]
   public class context_with_multiple_specifications
   {
     public static int EstablishRunCount;

@@ -47,38 +47,6 @@ namespace Machine.Specifications.Model
       _specifications.Add(specification);
     }
 
-    /*
-    public Result VerifySpecification(Specification specification)
-    {
-      ConsoleRedirection consoleRedirection;
-      Result result;
-      using (consoleRedirection = ConsoleRedirection.RedirectConsoleStreams())
-      {
-        if (IsSetupForEachSpec || !_isGlobalContextEstablished)
-        {
-          EstablishContext();
-        }
-
-        if (CriticalContextFailure != null)
-        {
-          return CriticalContextFailure;
-        }
-
-        result = InternalVerifySpecification(specification);
-
-        if (IsSetupForEachSpec || !_isGlobalContextEstablished)
-        {
-          Cleanup();
-        }
-      }
-
-      result.ConsoleOut = _consoleStreamsFromEstablish.Out + consoleRedirection.Streams.Out;
-      result.ConsoleError = _consoleStreamsFromEstablish.Error + consoleRedirection.Streams.Error;
-
-      return result;
-    }
-    */
-
     public Result EstablishContext()
     {
       Result result = Result.Pass();

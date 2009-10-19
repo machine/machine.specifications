@@ -35,7 +35,7 @@ namespace Machine.Specifications.Runner.Impl
       {
         if (hasExecutableSpecifications)
         {
-          assemblyContexts.ForEach(assemblyContext =>
+          assemblyContexts.FilteredBy(_options).ForEach(assemblyContext =>
           {
             assemblyContext.OnAssemblyStart();
             executedAssemblyContexts.Add(assemblyContext);
@@ -75,6 +75,17 @@ namespace Machine.Specifications.Runner.Impl
     {
       IContextRunner runner = ContextRunnerFactory.GetContextRunnerFor(context);
       runner.Run(context, _listener, _options, globalCleanups);
+    }
+  }
+
+  public static class EnumerableExtensions
+  {
+    public static void ForEach<T>(this IEnumerable<T> list, Action<T> action)
+    {
+      foreach (var item in list)
+      {
+        action(item);
+      }
     }
   }
 }

@@ -34,7 +34,7 @@ namespace Machine.Specifications.Runner.Impl
       if (context.HasExecutableSpecifications)
       {
         result = context.Cleanup();
-        foreach (var cleanup in globalCleanups)
+        foreach (var cleanup in globalCleanups.FilteredBy(options))
         {
           cleanup.AfterContextCleanup();
         }
@@ -104,7 +104,7 @@ namespace Machine.Specifications.Runner.Impl
             result = cleanupResult;
           }
 
-          foreach (var cleanup in globalCleanups)
+          foreach (var cleanup in globalCleanups.FilteredBy(options))
           {
             cleanup.AfterContextCleanup();
           }
