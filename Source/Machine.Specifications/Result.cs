@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Machine.Specifications
 {
@@ -46,6 +47,7 @@ namespace Machine.Specifications
   public class Result
   {
     readonly Status _status;
+    readonly IDictionary<string, IDictionary<string, string>> _supplements = new Dictionary<string, IDictionary<string, string>>();
 
     public bool Passed
     {
@@ -71,6 +73,16 @@ namespace Machine.Specifications
       internal set;
     }
 
+    public bool HasSupplement(string name)
+    {
+      return _supplements.ContainsKey(name);
+    }
+
+    public IDictionary<string, string> GetSupplement(string name)
+    {
+      return _supplements[name];
+    }
+
     private Result(Exception exception)
     {
       _status = Status.Failing;
@@ -80,6 +92,26 @@ namespace Machine.Specifications
     private Result(Status status)
     {
       _status = status;
+    }
+
+    private Result(Result result, string supplementName, IDictionary<string, string> supplement)
+    {
+      _status = result.Status;
+      this.Exception = result.Exception;
+
+      foreach (var pair in result._supplements)
+      {
+        _supplements.Add(pair);
+      }
+
+      if (HasSupplement(supplementName))
+      {
+        throw new ArgumentException("Result already has supplement named: " + supplementName, "supplementName");
+      }
+
+      _supplements.Add(supplementName, supplement);
+      this.ConsoleOut = result.ConsoleOut;
+      this.ConsoleError = result.ConsoleError;
     }
 
     public static Result Pass()
@@ -105,6 +137,11 @@ namespace Machine.Specifications
     public static Result ContextFailure(Exception exception)
     {
       return new Result(exception);
+    }
+
+    public static Result Supplement(Result result, string supplementName, IDictionary<string, string> supplement)
+    {
+      return new Result(result, supplementName, supplement);
     }
   }
 }

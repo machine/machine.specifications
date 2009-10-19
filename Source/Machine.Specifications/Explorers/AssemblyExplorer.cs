@@ -38,6 +38,14 @@ namespace Machine.Specifications.Explorers
         .Select(x => (ICleanupAfterEveryContextInAssembly) Activator.CreateInstance(x));
     }
 
+    public IEnumerable<ISupplementSpecificationResults> FindSpecificationSupplementsIn(Assembly assembly)
+    {
+      return assembly.GetExportedTypes()
+        .Where(x =>
+               x.GetInterfaces().Contains(typeof(ISupplementSpecificationResults)))
+        .Select(x => (ISupplementSpecificationResults) Activator.CreateInstance(x));
+    }
+
     public IEnumerable<IAssemblyContext> FindAssemblyContextsIn(Assembly assembly)
     {
       return assembly.GetExportedTypes()

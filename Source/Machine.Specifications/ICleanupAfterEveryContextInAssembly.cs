@@ -4,4 +4,9 @@ namespace Machine.Specifications
   {
     void AfterContextCleanup();
   }
+
+  public interface ISupplementSpecificationResults
+  {
+    Result SupplementResult(Result result);
+  }
 }

@@ -271,8 +271,10 @@ namespace Machine.Specifications.Specs.Runner
     {
       TaggedCleanup.Reset();
       UntaggedCleanup.Reset();
-      UntaggedAssemblyContext.Reset();
       TaggedAssemblyContext.Reset();
+      UntaggedAssemblyContext.Reset();
+      TaggedResultSupplementer.Reset();
+      UntaggedResultSupplementer.Reset();
 
       testListener = new TestListener();
       var options = new RunOptions(new string[] {"foobar"}, new string[] {});
@@ -301,6 +303,12 @@ namespace Machine.Specifications.Specs.Runner
 
     It should_run_tagged_global_cleanup = () =>
       TaggedCleanup.AfterContextCleanupRunCount.ShouldBeGreaterThan(0);
+
+    It should_run_tagged_result_supplementer = () =>
+      TaggedResultSupplementer.SupplementResultRun.ShouldBeTrue();
+
+    It should_not_run_untagged_result_supplementer = () =>
+      UntaggedResultSupplementer.SupplementResultRun.ShouldBeFalse();
 
     static DefaultRunner runner;
     static TestListener testListener;

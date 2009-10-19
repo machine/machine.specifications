@@ -101,4 +101,37 @@ namespace Machine.Specifications.Specs
       OnAssemblyCompleteRun = true;
     }
   }
+
+  [Tags("foobar")]
+  public class TaggedResultSupplementer : ISupplementSpecificationResults
+  {
+    public static bool SupplementResultRun;
+
+    public Result SupplementResult(Result result)
+    {
+      SupplementResultRun = true;
+      return result;
+    }
+
+    public static void Reset()
+    {
+      SupplementResultRun = false;
+    }
+  }
+
+  public class UntaggedResultSupplementer : ISupplementSpecificationResults
+  {
+    public static bool SupplementResultRun;
+
+    public Result SupplementResult(Result result)
+    {
+      SupplementResultRun = true;
+      return result;
+    }
+
+    public static void Reset()
+    {
+      SupplementResultRun = false;
+    }
+  }
 }

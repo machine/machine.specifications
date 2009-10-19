@@ -1,17 +1,18 @@
 using System;
 using System.Collections.Generic;
 using Machine.Specifications.Model;
+using System.Linq;
 
 namespace Machine.Specifications.Runner.Impl
 {
   public interface IContextRunner
   {
-    IEnumerable<Result> Run(Context context, ISpecificationRunListener listener, RunOptions options, IEnumerable<ICleanupAfterEveryContextInAssembly> globalCleanups);
+    IEnumerable<Result> Run(Context context, ISpecificationRunListener listener, RunOptions options, IEnumerable<ICleanupAfterEveryContextInAssembly> globalCleanups, IEnumerable<ISupplementSpecificationResults> resultSupplementers);
   }
 
   public class SetupOnceContextRunner : IContextRunner
   {
-    public IEnumerable<Result> Run(Context context, ISpecificationRunListener listener, RunOptions options, IEnumerable<ICleanupAfterEveryContextInAssembly> globalCleanups)
+    public IEnumerable<Result> Run(Context context, ISpecificationRunListener listener, RunOptions options, IEnumerable<ICleanupAfterEveryContextInAssembly> globalCleanups, IEnumerable<ISupplementSpecificationResults> resultSupplementers)
     {
       IEnumerable<Result> results;
       listener.OnContextStart(context.GetInfo());
@@ -24,11 +25,11 @@ namespace Machine.Specifications.Runner.Impl
 
       if (result.Passed)
       {
-        results = RunSpecifications(context, listener, options);
+        results = RunSpecifications(context, listener, options, resultSupplementers);
       }
       else
       {
-        results = FailSpecifications(context, listener, options, result);
+        results = FailSpecifications(context, listener, options, result, resultSupplementers);
       }
 
       if (context.HasExecutableSpecifications)
@@ -45,12 +46,12 @@ namespace Machine.Specifications.Runner.Impl
       return results;
     }
 
-    private IEnumerable<Result> RunSpecifications(Context context, ISpecificationRunListener listener, RunOptions options)
+    private IEnumerable<Result> RunSpecifications(Context context, ISpecificationRunListener listener, RunOptions options, IEnumerable<ISupplementSpecificationResults> resultSupplementers)
     {
       var results = new List<Result>();
       foreach (var specification in context.Specifications)
       {
-        var runner = new SpecificationRunner(listener, options);
+        var runner = new SpecificationRunner(listener, options, resultSupplementers);
         var result = runner.Run(specification);
 
         results.Add(result);
@@ -59,13 +60,16 @@ namespace Machine.Specifications.Runner.Impl
       return results;
     }
 
-    private IEnumerable<Result> FailSpecifications(Context context, ISpecificationRunListener listener, RunOptions options, Result result)
+    private static IEnumerable<Result> FailSpecifications(Context context, ISpecificationRunListener listener, RunOptions options, Result result, IEnumerable<ISupplementSpecificationResults> resultSupplementers)
     {
+      result = resultSupplementers.FilteredBy(options).Aggregate(result, (r, supplement) => supplement.SupplementResult(r));
+
       var results = new List<Result>();
       foreach (var specification in context.Specifications)
       {
         listener.OnSpecificationStart(specification.GetInfo());
         listener.OnSpecificationEnd(specification.GetInfo(), result);
+
         results.Add(result);
       }
 
@@ -75,7 +79,7 @@ namespace Machine.Specifications.Runner.Impl
 
   public class SetupForEachContextRunner : IContextRunner
   {
-    public IEnumerable<Result> Run(Context context, ISpecificationRunListener listener, RunOptions options, IEnumerable<ICleanupAfterEveryContextInAssembly> globalCleanups)
+    public IEnumerable<Result> Run(Context context, ISpecificationRunListener listener, RunOptions options, IEnumerable<ICleanupAfterEveryContextInAssembly> globalCleanups, IEnumerable<ISupplementSpecificationResults> resultSupplementers)
     {
       var results = new List<Result>();
       listener.OnContextStart(context.GetInfo());
@@ -91,7 +95,7 @@ namespace Machine.Specifications.Runner.Impl
 
         if (result.Passed)
         {
-          var runner = new SpecificationRunner(listener, options);
+          var runner = new SpecificationRunner(listener, options, resultSupplementers);
           result = runner.Run(specification);
         }
 
