@@ -35,7 +35,7 @@ namespace Machine.Specifications.Runner.Impl
       if (context.HasExecutableSpecifications)
       {
         result = context.Cleanup();
-        foreach (var cleanup in globalCleanups.FilteredBy(options))
+        foreach (var cleanup in globalCleanups)
         {
           cleanup.AfterContextCleanup();
         }
@@ -62,7 +62,7 @@ namespace Machine.Specifications.Runner.Impl
 
     private static IEnumerable<Result> FailSpecifications(Context context, ISpecificationRunListener listener, RunOptions options, Result result, IEnumerable<ISupplementSpecificationResults> resultSupplementers)
     {
-      result = resultSupplementers.FilteredBy(options).Aggregate(result, (r, supplement) => supplement.SupplementResult(r));
+      result = resultSupplementers.Aggregate(result, (r, supplement) => supplement.SupplementResult(r));
 
       var results = new List<Result>();
       foreach (var specification in context.Specifications)
@@ -108,7 +108,7 @@ namespace Machine.Specifications.Runner.Impl
             result = cleanupResult;
           }
 
-          foreach (var cleanup in globalCleanups.FilteredBy(options))
+          foreach (var cleanup in globalCleanups)
           {
             cleanup.AfterContextCleanup();
           }

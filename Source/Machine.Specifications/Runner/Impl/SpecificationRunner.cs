@@ -23,7 +23,7 @@ namespace Machine.Specifications.Runner.Impl
     {
       _listener.OnSpecificationStart(specification.GetInfo());
       var result = specification.Verify();
-      result = _resultSupplementers.FilteredBy(_options).Aggregate(result, (r, supplement) => supplement.SupplementResult(r));
+      result = _resultSupplementers.Aggregate(result, (r, supplement) => supplement.SupplementResult(r));
       _listener.OnSpecificationEnd(specification.GetInfo(), result);
 
       return result;

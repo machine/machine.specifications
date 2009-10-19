@@ -36,7 +36,7 @@ namespace Machine.Specifications.Runner.Impl
       {
         if (hasExecutableSpecifications)
         {
-          assemblyContexts.FilteredBy(_options).ForEach(assemblyContext =>
+          assemblyContexts.ForEach(assemblyContext =>
           {
             assemblyContext.OnAssemblyStart();
             executedAssemblyContexts.Add(assemblyContext);
