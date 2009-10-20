@@ -14,7 +14,7 @@ namespace Machine.Specifications.SeleniumSupport
 
     public Result SupplementResult(Result result)
     {
-      if (result.Passed || result.Status == Status.Ignored)
+      if (result.Status != Status.Failing)
         return result;
 
       Guid guid = Guid.NewGuid();
