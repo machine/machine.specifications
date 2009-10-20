@@ -397,7 +397,7 @@ namespace Machine.Specifications.Reporting
                 File.Move(supplementItem.Value, Path.Combine(_resourcePath, imageName));
                 specificationListItem += String.Format(
 @"<div>[
-  <a href=""javascript:toggleVisibility('{0}', '{1} {2}')"">Show {1} {2}</a>
+  <a id='{0}_link' href=""javascript:toggleVisibility('{0}', '{1} {2}')"">Show {1} {2}</a>
   ]</div><br /><br />
   <div id='{0}' style='display:none'>
     <a href='resources/{0}'>
@@ -418,7 +418,7 @@ namespace Machine.Specifications.Reporting
 
                 specificationListItem += String.Format(
 @"<div>[
-  <a href=""javascript:toggleVisibility('{0}', '{1} {2}')"">Show {1} {2}</a>
+  <a id='{0}_link' href=""javascript:toggleVisibility('{0}', '{1} {2}')"">Show {1} {2}</a>
   ]</div><br /><br />
   <div id='{0}' style='display:none'>
     <iframe src='resources/{0}' width='100%' height='600px'>
@@ -437,7 +437,7 @@ namespace Machine.Specifications.Reporting
                 var name = Guid.NewGuid().ToString();
                 specificationListItem += String.Format(
 @"<div>[
-  <a href=""javascript:toggleVisibility('{0}', '{1} {2}')"">Show {1} {2}</a>
+  <a id='{0}_link' href=""javascript:toggleVisibility('{0}', '{1} {2}')"">Show {1} {2}</a>
   ]</div><br /><br />
   <div id='{0}' style='display:none'>
     <pre>
