@@ -4,6 +4,7 @@ using System.Reflection;
 
 using Machine.Specifications.ConsoleRunner.Properties;
 using Machine.Specifications.Runner;
+using Machine.Specifications.Runner.Impl;
 
 namespace Machine.Specifications.ConsoleRunner
 {
@@ -24,7 +25,7 @@ namespace Machine.Specifications.ConsoleRunner
       get; private set;
     }
 
-    public RunListener(IConsole console, bool silent)
+    public RunListener(IConsole console, bool silent, TimingRunListener listener)
     {
       _console = console;
       _silent = silent;

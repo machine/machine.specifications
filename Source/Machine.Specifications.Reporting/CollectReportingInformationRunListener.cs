@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Machine.Specifications;
@@ -51,7 +52,6 @@ namespace Machine.Specifications.Reporting
 
     public virtual void OnRunStart()
     {
-
     }
 
     public virtual void OnRunEnd()
@@ -76,7 +76,7 @@ namespace Machine.Specifications.Reporting
     public virtual void OnSpecificationEnd(SpecificationInfo specification, Result result)
     {
       _specificationsByContext[_currentContext].Add(specification);
-      _resultsBySpecification.Add(specification,result);
+      _resultsBySpecification.Add(specification, result);
     }
 
     public void OnFatalError(ExceptionResult exception)

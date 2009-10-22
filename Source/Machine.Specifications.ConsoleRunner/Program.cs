@@ -43,14 +43,17 @@ namespace Machine.Specifications.ConsoleRunner
 
       List<ISpecificationRunListener> listeners = new List<ISpecificationRunListener>();
 
+      var timingListener = new TimingRunListener();
+      listeners.Add(timingListener);
+
       ISpecificationRunListener mainListener;
       if (options.TeamCityIntegration)
       {
-        mainListener = new TeamCityReporter(_console.WriteLine);
+        mainListener = new TeamCityReporter(_console.WriteLine, timingListener);
       }
       else
       {
-        mainListener = new RunListener(_console, options.Silent);
+        mainListener = new RunListener(_console, options.Silent, timingListener);
       }
 
       try

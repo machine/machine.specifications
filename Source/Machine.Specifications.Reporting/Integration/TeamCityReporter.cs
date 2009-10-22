@@ -1,11 +1,13 @@
 using System;
 using Machine.Specifications.Runner;
+using Machine.Specifications.Runner.Impl;
 
 namespace Machine.Specifications.Reporting.Integration
 {
 
   public class TeamCityReporter : ISpecificationRunListener, ISpecificationResultProvider
   {
+    readonly TimingRunListener _timingListener;
 
     readonly TeamCityServiceMessageWriter _writer;
     string _currentAssembly;
@@ -14,8 +16,9 @@ namespace Machine.Specifications.Reporting.Integration
     bool _failureOccured;
     //string _failures;
 
-    public TeamCityReporter(Action<string> writer)
+    public TeamCityReporter(Action<string> writer, TimingRunListener listener)
     {
+      _timingListener = listener;
       _failureOccured = false;
       _writer = new TeamCityServiceMessageWriter(writer);
     }
@@ -100,7 +103,9 @@ namespace Machine.Specifications.Reporting.Integration
           _failureOccured = true;
           break;
       }
-      _writer.WriteTestFinished(GetSpecificationName(specification), TimeSpan.Zero);
+      var duration = TimeSpan.FromMilliseconds(_timingListener.GetSpecificationTime(specification));
+
+      _writer.WriteTestFinished(GetSpecificationName(specification), duration);
     }
 
     public void OnFatalError(ExceptionResult exception)

@@ -46,7 +46,7 @@ namespace Machine.Specifications.Runner.Impl
       return results;
     }
 
-    private IEnumerable<Result> RunSpecifications(Context context, ISpecificationRunListener listener, RunOptions options, IEnumerable<ISupplementSpecificationResults> resultSupplementers)
+    private static IEnumerable<Result> RunSpecifications(Context context, ISpecificationRunListener listener, RunOptions options, IEnumerable<ISupplementSpecificationResults> resultSupplementers)
     {
       var results = new List<Result>();
       foreach (var specification in context.Specifications)
