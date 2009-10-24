@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using JetBrains.Application;
@@ -15,13 +16,13 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
   internal class ContextElement : Element
   {
     readonly string _assemblyLocation;
-    readonly Subject _subject;
+    readonly string _subject;
 
     public ContextElement(IUnitTestProvider provider,
                           IProjectModelElement project,
                           string typeName,
                           string assemblyLocation,
-                          Subject subject,
+                          string subject,
                           ICollection<string> tags,
                           bool isIgnored)
       : base(provider, null, project, typeName, isIgnored)
@@ -52,12 +53,12 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     string GetSubject()
     {
-      if (_subject == null)
+      if (String.IsNullOrEmpty(_subject))
       {
         return null;
       }
 
-      return _subject.FullConcern + ", ";
+      return _subject + ", ";
     }
 
     public override IDeclaredElement GetDeclaredElement()

@@ -5,8 +5,6 @@ using System.Linq;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 
-using Machine.Specifications.Model;
-
 namespace Machine.Specifications.ReSharperRunner
 {
   internal static partial class PsiExtensions
@@ -82,7 +80,7 @@ namespace Machine.Specifications.ReSharperRunner
       return !hasInitializer || attributeOwner.HasAttributeInstance(new CLRTypeName(typeof(IgnoreAttribute).FullName), false);
     }
 
-    public static Subject GetSubject(this IAttributesOwner type)
+    public static string GetSubjectString(this IAttributesOwner type)
     {
       var attribute = type.GetAttributeInstances(new CLRTypeName(typeof(SubjectAttribute).FullName), true)
                           .FirstOrDefault();
@@ -113,15 +111,14 @@ namespace Machine.Specifications.ReSharperRunner
                                       if (x.IsType)
                                       {
                                         var declaredType = (IDeclaredType) x.TypeValue;
-                                        return Type.GetType(declaredType.GetCLRName());
+                                        return new CLRTypeName(declaredType.GetCLRName()).ShortName;
                                       }
 
-                                      return x.ConstantValue.Value;
+                                      return (string) x.ConstantValue.Value;
                                     })
                                   .ToArray();
 
-        var subjectAttribute = (SubjectAttribute) Activator.CreateInstance(typeof(SubjectAttribute), parameters);
-        return new Subject(subjectAttribute.SubjectType, subjectAttribute.SubjectText);
+        return String.Join(" ", parameters);
       }
       catch (Exception)
       {

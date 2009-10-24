@@ -5,8 +5,6 @@ using System.Linq;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ReSharper.Psi;
 
-using Machine.Specifications.Model;
-
 namespace Machine.Specifications.ReSharperRunner
 {
   internal static class MetadataExtensions
@@ -44,21 +42,31 @@ namespace Machine.Specifications.ReSharperRunner
       }
     }
 
-    public static Subject GetSubject(this IMetadataEntity type)
+    public static string GetSubjectString(this IMetadataEntity type)
     {
       var attributes = type.GetCustomAttributes(typeof(SubjectAttribute).FullName);
       if (attributes.Count != 1)
       {
-          return null;
+        return null;
       }
-      
+
       var attribute = attributes.First();
 
-      SubjectAttribute subjectAttribute = (SubjectAttribute)Activator.CreateInstance(typeof(SubjectAttribute), attribute.ConstructorArguments);
+      var parameters = attribute.ConstructorArguments.Select(x =>
+                                    {
+                                      var typeArgument = x as IMetadataClassType;
+                                      if (typeArgument != null)
+                                      {
+                                        return new CLRTypeName(typeArgument.Type.FullyQualifiedName).ShortName;
+                                      }
 
-      return new Subject(subjectAttribute.SubjectType, subjectAttribute.SubjectText);
+                                      return (string) x;
+                                    })
+                                  .ToArray();
+      
+      return String.Join(" ", parameters);
     }
-	  
+
     public static ICollection<string> GetTags(this IMetadataEntity type)
     {
       return type.AndAllBaseTypes()
@@ -79,7 +87,7 @@ namespace Machine.Specifications.ReSharperRunner
       }
 
       yield return typeInfo;
-      
+
       while (typeInfo.Base != null && typeInfo.Base.Type != null)
       {
         yield return typeInfo.Base.Type;
@@ -90,8 +98,8 @@ namespace Machine.Specifications.ReSharperRunner
 
     public static IMetadataTypeInfo GetFirstGenericArgument(this IMetadataField genericField)
     {
-      var genericArgument = ((IMetadataClassType)genericField.Type).Arguments.First();
-      return ((IMetadataClassType)genericArgument).Type;
+      var genericArgument = ((IMetadataClassType) genericField.Type).Arguments.First();
+      return ((IMetadataClassType) genericArgument).Type;
     }
 
     public static bool IsIgnored(this IMetadataEntity type)
@@ -128,7 +136,7 @@ namespace Machine.Specifications.ReSharperRunner
     {
       return type.GetPrivateFields()
         .Where(x => x.Type is IMetadataClassType)
-        .Where(x => new CLRTypeName(((IMetadataClassType)x.Type).Type.FullyQualifiedName) ==
+        .Where(x => new CLRTypeName(((IMetadataClassType) x.Type).Type.FullyQualifiedName) ==
                     new CLRTypeName(fieldType.FullName));
     }
   }
