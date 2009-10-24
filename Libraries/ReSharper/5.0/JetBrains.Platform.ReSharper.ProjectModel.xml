@@ -572,7 +572,7 @@
             <param name="path">Project location or project file location.</param>
             <returns>The project, or <c>Null</c>.</returns>
         </member>
-        <member name="T:JetBrains.ProjectModel.SpecialFilesManager">
+        <member name="T:JetBrains.ProjectModel.impl.SpecialFiles.SpecialFilesManager">
             <summary>
             Provides a reference-counter based mechanism for keeping non-project items
             </summary>

@@ -91,6 +91,14 @@
             </returns>
             <filterpriority>2</filterpriority>
         </member>
+        <member name="M:JetBrains.DocumentModel.Impl.DocumentManagerImpl.SynchronizeDocumentContentsWithFile(JetBrains.DocumentModel.IDocument)">
+            <summary>
+            Forces synchronizing the document with its content source.
+            For standalone documents or VS documents not opened in the editor, these are external files.
+            For open VS documents, this is the RDT document content.
+            Requires a writer lock.
+            </summary>
+        </member>
         <member name="M:JetBrains.DocumentModel.Impl.DocumentManagerImpl.CreateDocument(JetBrains.ProjectModel.IProjectFile)">
             <summary>
             Achtung! Creates a new document each time! Don't use but from <see cref="M:JetBrains.DocumentModel.Impl.DocumentManagerImpl.GetDocument(JetBrains.ProjectModel.IProjectFile)"/>.
@@ -101,6 +109,11 @@
         <member name="M:JetBrains.DocumentModel.Impl.DocumentManagerImpl.GetProjectFileSyncObject(JetBrains.ProjectModel.IProjectFile)">
             <summary>
             Gets an object to synchronize access to a project file.
+            </summary>
+        </member>
+        <member name="M:JetBrains.DocumentModel.Impl.DocumentManagerImpl.SynchronizeDocumentContentsWithFile_Standalone(JetBrains.DocumentModel.IDocument)">
+            <summary>
+            Implements the standalone case for <see cref="M:JetBrains.DocumentModel.Impl.DocumentManagerImpl.SynchronizeDocumentContentsWithFile(JetBrains.DocumentModel.IDocument)"/>.
             </summary>
         </member>
         <member name="M:JetBrains.DocumentModel.Impl.DocumentManagerImpl.GetDocument(JetBrains.ProjectModel.IProjectFile)">

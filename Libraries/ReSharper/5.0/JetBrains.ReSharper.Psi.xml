@@ -299,11 +299,6 @@
             Get references which should be visited by resolver, and which are syntax-dependednt (not semantic)
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.Tree.IElement.GetSecondClassReferences">
-            <summary>
-            References which depends on first class references. 
-            </summary>
-        </member>
         <member name="M:JetBrains.ReSharper.Psi.Tree.IElement.GetContainingElement``1(System.Boolean)">
             <param name="returnThis">Whether to include the starting element.</param>
         </member>
@@ -785,6 +780,11 @@
             E.g., attribute [XXX] could be resolved into class with name 'XXX' or 'XXXAttribute' 
             </summary>
         </member>
+        <member name="P:JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.IQualifiableReference.IsQualified">
+            <remarks>
+            When IsQualified is true that doesn't mean GetQualifier is not null!
+            </remarks>
+        </member>
         <member name="M:JetBrains.ReSharper.Psi.Resolve.IAccessContext.GetStaticness">
             <summary>
             Determines whether static members are accessible in this context.
@@ -876,6 +876,26 @@
             <item><term>AFTER</term><description>parameter a of method foo</description></item>
             <item><term>AFTER_IN_PARENTHESIS</term><description>parameter a (of method foo)</description></item>
             </list>
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Psi.PsiStrategyHint.NONE">
+            <summary>
+            No hints. Default
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Psi.PsiStrategyHint.OPEN_CHAMELEONS">
+            <summary>
+            Pre-open chameleons
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Psi.PsiStrategyHint.INCREMENTAL">
+            <summary>
+            Store data for incremental reparse, for example tokens
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Psi.PsiStrategyHint.NO_CACHING">
+            <summary>
+            Do not store file in cache
             </summary>
         </member>
         <member name="P:JetBrains.ReSharper.Psi.Search.FindResult.MasterResult">
@@ -1552,7 +1572,7 @@
         </member>
         <member name="M:JetBrains.ReSharper.Psi.DeclaredElementPresenter.MakeSmaller(JetBrains.ReSharper.Psi.DeclaredElementPresenterStyle,System.String@,JetBrains.ReSharper.Psi.DeclaredElementPresenterMarking@)">
             <summary>
-            Tries to cut a long string with <see cref="T:JetBrains.ReSharper.Psi.IParametersOwner"/> by replacing some of the closing parameters with "...".
+            Tries to cut a long string with <see cref="T:JetBrains.ReSharper.Psi.IParametersOwner"/> by replacing some of the closing parameters with "…".
             </summary>
             <param name="presenter"></param>
             <param name="str">"Long" string containing a presentation of a <see cref="T:JetBrains.ReSharper.Psi.IParametersOwner"/>.
@@ -2819,6 +2839,16 @@
             </summary>
             <remarks>Copy from CSharpFormattingStage.ReplaceSpaces() with no algorithmic changes</remarks>
         </member>
+        <member name="M:JetBrains.ReSharper.Psi.Impl.CodeStyle.FormatterImplHelper.TrimRight(JetBrains.ReSharper.Psi.Tree.ITreeNode)">
+            <summary>
+            Trim all left sibling nodes.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.Impl.CodeStyle.FormatterImplHelper.TrimLeft(JetBrains.ReSharper.Psi.Tree.ITreeNode)">
+            <summary>
+            Trim all left sibling nodes.
+            </summary>
+        </member>
         <member name="M:JetBrains.ReSharper.Psi.Impl.CodeStyle.FormatterImplHelper.ComputeEndColumnOfNode(JetBrains.ReSharper.Psi.Tree.ITreeNode,JetBrains.ReSharper.Psi.ExtensionsAPI.Tree.NodeTypeSet)">
             <summary>
             Calculates the end column of the given node. It is either
@@ -3111,15 +3141,15 @@
             <param name="lexer"></param>
             <returns></returns>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.Parsing.TokenBuffer.ReScan(JetBrains.Util.TextRange,JetBrains.Text.BufferRange,JetBrains.Application.CheckForInterrupt)">
+        <member name="M:JetBrains.ReSharper.Psi.Parsing.TokenBuffer.ReScan(JetBrains.Util.TextRange,JetBrains.Text.BufferRange)">
             <summary>
             Rescans the buffer incrementally
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.Parsing.TokenBuffer.ReScanInternalIncremental(JetBrains.Util.TextRange,System.Int32,JetBrains.Application.CheckForInterrupt)">
+        <member name="M:JetBrains.ReSharper.Psi.Parsing.TokenBuffer.ReScanInternalIncremental(JetBrains.Util.TextRange,System.Int32)">
             <returns>Range in document covering all changed tokens.</returns>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.Parsing.TokenBuffer.ReScanInternalFull(JetBrains.Util.TextRange,System.Int32,JetBrains.Application.CheckForInterrupt)">
+        <member name="M:JetBrains.ReSharper.Psi.Parsing.TokenBuffer.ReScanInternalFull(JetBrains.Util.TextRange,System.Int32)">
             <returns>Range in document covering all changed tokens.</returns>
         </member>
         <member name="T:JetBrains.ReSharper.Psi.Parsing.IXmlTokenBuilder">
@@ -3441,26 +3471,6 @@
         <member name="T:JetBrains.ReSharper.Psi.ControlledTransactionCookie">
             <summary>
             Controls that each and every transaction is either committed or rolled back
-            </summary>
-        </member>
-        <member name="F:JetBrains.ReSharper.Psi.PsiStrategyHint.NONE">
-            <summary>
-            No hints. Default
-            </summary>
-        </member>
-        <member name="F:JetBrains.ReSharper.Psi.PsiStrategyHint.OPEN_CHAMELEONS">
-            <summary>
-            Pre-open chameleons
-            </summary>
-        </member>
-        <member name="F:JetBrains.ReSharper.Psi.PsiStrategyHint.INCREMENTAL">
-            <summary>
-            Store data for incremental reparse, for example tokens
-            </summary>
-        </member>
-        <member name="F:JetBrains.ReSharper.Psi.PsiStrategyHint.NO_CACHING">
-            <summary>
-            Do not store file in cache
             </summary>
         </member>
         <member name="T:JetBrains.ReSharper.Psi.ISupportedByPSIChecker">

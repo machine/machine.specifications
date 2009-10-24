@@ -9,6 +9,11 @@
             Helper methods for bookmarks.
             </summary>
         </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Bookmarks.BookmarksHelper.GetBookmarkCoordsOffset(JetBrains.DocumentModel.IDocument,JetBrains.DocumentModel.DocumentCoords)">
+            <summary>
+            Returns offset of bookmark in specified document, corrected by real document content structure.
+            </summary>
+        </member>
         <member name="T:JetBrains.ReSharper.Feature.Services.Bookmarks.XmlDocumentHelper">
             <summary>
             Helper to work with <see cref="T:System.Xml.XmlDocument"/>.
@@ -375,6 +380,11 @@
             <param name="prefferedDeclaration">Declaration to which you would particulary like to write to. Pass null if you do not care.</param>
             <returns>Non-empty sorted list of declarations. Unwanted, ex. designer file, declarations filtered.</returns>
         </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Util.IGoodReference">
+            <summary>
+            Such reference will be always selected in <see cref="M:JetBrains.ReSharper.Feature.Services.Util.CandidatesUtil.SelectGoodReferences(System.Collections.Generic.IList{JetBrains.ReSharper.Psi.Resolve.IReference})"/>
+            </summary>
+        </member>
         <member name="T:JetBrains.ReSharper.Feature.Services.CodeCompletion.CodeCompletionType">
             <summary>
             Defines possible code completion types
@@ -484,6 +494,11 @@
             Force async rehighligting process for given document
             </summary>
             <returns><c>false</c> if daemon wasn't started</returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.Daemon.Daemon.Invalidate">
+            <summary>
+            Invalidate daemon state for all documents
+            </summary>
         </member>
         <!-- Badly formed XML comment ignored for member "P:JetBrains.ReSharper.Daemon.Daemon.Suspended" -->
         <member name="E:JetBrains.ReSharper.Daemon.Daemon.DaemonStateChanged">
@@ -1742,7 +1757,7 @@
         <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.MacroAttribute.ShortDescription">
             <summary>
             Gets macro description (shown in the UI)
-            </summary>    
+            </summary>
         </member>
         <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.MacroAttribute.LongDescription">
             <summary>

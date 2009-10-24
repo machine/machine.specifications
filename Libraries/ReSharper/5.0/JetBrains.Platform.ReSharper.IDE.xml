@@ -25,7 +25,7 @@
             Utility to implement navigation thru  some results
             </summary>
         </member>
-        <member name="M:JetBrains.IDE.PersistableViewManager.CreateTextControl(JetBrains.UI.PersistableDocument.IPersistableView,JetBrains.TextControl.ITextControl@,System.Windows.Forms.UserControl@)">
+        <member name="M:JetBrains.IDE.PersistableViewManager.CreateTextControl(JetBrains.UI.PersistableDocument.IPersistableView)">
             <summary>
             Creates a text control specifically sited in a Persistable View.
             </summary>

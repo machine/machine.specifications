@@ -542,6 +542,7 @@
         <member name="P:JetBrains.UI.StatusBar.JetStatusBarIndicator.ContextMenu">
             <summary>
             Fires when a context menu should be shown.
+            Note: the <see cref="T:JetBrains.UI.PopupMenu.JetPopupMenu"/> object is disposable. You must either avoid creating it by not touching the <see cref="T:System.Lazy`1"/> container, or use the value you get from it (either <see cref="M:JetBrains.UI.PopupMenu.JetPopupMenu.Show"/> the menu, which will then dispose of it correctly, or <see cref="M:System.IDisposable.Dispose"/> of it explicitly).
             </summary>
         </member>
         <member name="P:JetBrains.UI.StatusBar.JetStatusBarIndicator.Cursor">
@@ -1484,36 +1485,36 @@
             Default value is false, which is the same behavior provided by the base ToolStrip class.
             </remarks>
         </member>
-        <member name="M:JetBrains.ActionManagement.ActionStripSplitButton.OnClick(System.EventArgs)">
+        <member name="M:JetBrains.UI.ActionSystem.ActionBar.ActionStripSplitButton.OnClick(System.EventArgs)">
             <summary>Raises the <see cref="E:System.Windows.Forms.Control.Click"></see> event.</summary>
             <param name="e">An <see cref="T:System.EventArgs"></see> that contains the event data. </param>
         </member>
-        <member name="M:JetBrains.ActionManagement.ActionStripSplitButton.OnCheckedChanged(System.EventArgs)">
-            <summary>Raises the <see cref="E:JetBrains.ActionManagement.ActionStripSplitButton.CheckedChanged"></see> event.</summary>
+        <member name="M:JetBrains.UI.ActionSystem.ActionBar.ActionStripSplitButton.OnCheckedChanged(System.EventArgs)">
+            <summary>Raises the <see cref="E:JetBrains.UI.ActionSystem.ActionBar.ActionStripSplitButton.CheckedChanged"></see> event.</summary>
             <param name="e">An <see cref="T:System.EventArgs"></see> that contains the event data. </param>
         </member>
-        <member name="M:JetBrains.ActionManagement.ActionStripSplitButton.OnCheckStateChanged(System.EventArgs)">
-            <summary>Raises the <see cref="E:JetBrains.ActionManagement.ActionStripSplitButton.CheckStateChanged"></see> event.</summary>
+        <member name="M:JetBrains.UI.ActionSystem.ActionBar.ActionStripSplitButton.OnCheckStateChanged(System.EventArgs)">
+            <summary>Raises the <see cref="E:JetBrains.UI.ActionSystem.ActionBar.ActionStripSplitButton.CheckStateChanged"></see> event.</summary>
             <param name="e">An <see cref="T:System.EventArgs"></see> that contains the event data. </param>
         </member>
-        <member name="P:JetBrains.ActionManagement.ActionStripSplitButton.Checked">
+        <member name="P:JetBrains.UI.ActionSystem.ActionBar.ActionStripSplitButton.Checked">
             <summary>Gets or sets a value indicating whether the <see cref="T:System.Windows.Forms.ToolStripButton"></see> is pressed or not pressed.</summary>
             <returns>true if the <see cref="T:System.Windows.Forms.ToolStripButton"></see> is pressed in or not pressed in; otherwise, false. The default is false.</returns>
         </member>
-        <member name="P:JetBrains.ActionManagement.ActionStripSplitButton.CheckOnClick">
+        <member name="P:JetBrains.UI.ActionSystem.ActionBar.ActionStripSplitButton.CheckOnClick">
             <summary>Gets or sets a value indicating whether the <see cref="T:System.Windows.Forms.ToolStripButton"></see> should automatically appear pressed in and not pressed in when clicked.</summary>
             <returns>true if the <see cref="T:System.Windows.Forms.ToolStripButton"></see> should automatically appear pressed in and not pressed in when clicked; otherwise, false. The default is false.</returns>
         </member>
-        <member name="P:JetBrains.ActionManagement.ActionStripSplitButton.CheckState">
+        <member name="P:JetBrains.UI.ActionSystem.ActionBar.ActionStripSplitButton.CheckState">
             <summary>Gets or sets a value indicating whether the <see cref="T:System.Windows.Forms.ToolStripButton"></see> is in the pressed or not pressed state by default, or is in an indeterminate state.</summary>
             <returns>One of the <see cref="T:System.Windows.Forms.CheckState"></see> values. The default is Unchecked.</returns>
             <exception cref="T:System.ComponentModel.InvalidEnumArgumentException">The value assigned is not one of the <see cref="T:System.Windows.Forms.CheckState"></see> values. </exception>
         </member>
-        <member name="E:JetBrains.ActionManagement.ActionStripSplitButton.CheckedChanged">
-            <summary>Occurs when the value of the <see cref="P:JetBrains.ActionManagement.ActionStripSplitButton.Checked"></see> property changes.</summary>
+        <member name="E:JetBrains.UI.ActionSystem.ActionBar.ActionStripSplitButton.CheckedChanged">
+            <summary>Occurs when the value of the <see cref="P:JetBrains.UI.ActionSystem.ActionBar.ActionStripSplitButton.Checked"></see> property changes.</summary>
         </member>
-        <member name="E:JetBrains.ActionManagement.ActionStripSplitButton.CheckStateChanged">
-            <summary>Occurs when the value of the <see cref="P:JetBrains.ActionManagement.ActionStripSplitButton.CheckState"></see> property changes.</summary>
+        <member name="E:JetBrains.UI.ActionSystem.ActionBar.ActionStripSplitButton.CheckStateChanged">
+            <summary>Occurs when the value of the <see cref="P:JetBrains.UI.ActionSystem.ActionBar.ActionStripSplitButton.CheckState"></see> property changes.</summary>
         </member>
         <member name="T:JetBrains.ActionManagement.Impl.ActionInfo">
             <summary>
@@ -1641,35 +1642,35 @@
             A menu or toolbar, that holds DataCantext to use by subitems.
             </summary>
         </member>
-        <member name="T:JetBrains.ActionManagement.DataContext">
+        <member name="T:JetBrains.UI.ActionSystem.DataContext.DataContext">
             <summary>
             The only implementation of IDataContext.
             </summary>
         </member>
-        <member name="M:JetBrains.ActionManagement.DataContext.GetDataProviders">
+        <member name="M:JetBrains.UI.ActionSystem.DataContext.DataContext.GetDataProviders">
             <summary>
             Collects all the available data providers, to query them for a data constant.
             </summary>
         </member>
-        <member name="M:JetBrains.ActionManagement.DataContext.TakeSnapshot(JetBrains.ActionManagement.IDataConstant[])">
+        <member name="M:JetBrains.UI.ActionSystem.DataContext.DataContext.TakeSnapshot(JetBrains.ActionManagement.IDataConstant[])">
             <summary>
             A data context has a limited lifetime.
-            Takes snapshot of the current data context by dupming the available information into a property bag.
+            Takes snapshot of the current data context by dumping the available information into a property bag.
             </summary>
             <param name="constants">Some of the constants in an <see cref="T:JetBrains.ActionManagement.IDataContext"/> cannot be enumerated, as they're coming from an external provider. The constants listed in this parameter are explicitly queried for.</param>
         </member>
-        <member name="M:JetBrains.ActionManagement.DataContextEx.ToPropertyId(JetBrains.ActionManagement.IDataConstant)">
+        <member name="M:JetBrains.UI.ActionSystem.DataContext.DataContextEx.ToPropertyId(JetBrains.ActionManagement.IDataConstant)">
             <summary>
             Creates a property ID identified by a data constant.
             We convert it to a generic <see cref="T:JetBrains.ActionManagement.DataConstant`1"/> type, and then instantiate <see cref="T:JetBrains.ActionManagement.DataConstantPropertyId`1"/> for the same <c>T</c>.
             </summary>
         </member>
-        <member name="M:JetBrains.ActionManagement.DataContextEx.ToPropertyId``1(JetBrains.ActionManagement.DataConstant{``0})">
+        <member name="M:JetBrains.UI.ActionSystem.DataContext.DataContextEx.ToPropertyId``1(JetBrains.ActionManagement.DataConstant{``0})">
             <summary>
             Creates a property ID identified by a data constant.
             </summary>
         </member>
-        <member name="M:JetBrains.ActionManagement.DataContextEx.ToPropertyBag(JetBrains.ActionManagement.IDataContext,JetBrains.ActionManagement.IDataConstant[])">
+        <member name="M:JetBrains.UI.ActionSystem.DataContext.DataContextEx.ToPropertyBag(JetBrains.ActionManagement.IDataContext,JetBrains.ActionManagement.IDataConstant[])">
             <summary>
             Creates a new property bag with a snapshot of this data context.
             </summary>
@@ -1687,6 +1688,11 @@
         <member name="M:JetBrains.ActionManagement.OneOfaListActionHandler.Execute(JetBrains.ActionManagement.IDataContext)">
             <summary>
             When overriden in inheritors performs the handler action
+            </summary>
+        </member>
+        <member name="F:JetBrains.ActionManagement.ShortcutUtil.ourWinFormAndVSKeyPairs">
+            <summary>
+            Warning! Duplicates from both sides
             </summary>
         </member>
         <member name="T:JetBrains.CommonControls.ActiveRichText.FontInfo">
@@ -2310,7 +2316,7 @@
         </member>
         <member name="M:JetBrains.UI.GotoByName.GotoByNameController.BeforeUpdateItems">
             <summary>
-            When the items get dirty (<see cref="F:JetBrains.UI.GotoByName.GotoByNameController.ItemsGottenDirty"/>), this function is called on the UI thread right before the <see cref="M:JetBrains.UI.GotoByName.GotoByNameController.UpdateItems(System.String,System.Func{System.Boolean},System.Func{System.Collections.Generic.IEnumerable{JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem},JetBrains.UI.GotoByName.GotoByNameController.AddItemsBehavior,System.Boolean})"/> thing.
+            When the items get dirty (<see cref="F:JetBrains.UI.GotoByName.GotoByNameController.ItemsGottenDirty"/>), this function is called on the UI thread right before the <see cref="M:JetBrains.UI.GotoByName.GotoByNameController.UpdateItems(System.String,System.Func{System.Collections.Generic.IEnumerable{JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem},JetBrains.UI.GotoByName.GotoByNameController.AddItemsBehavior,System.Boolean})"/> thing.
             The base implementation clears the collection.
             </summary>
         </member>
@@ -2319,13 +2325,11 @@
             Called when an item is to be executed.
             </summary>
         </member>
-        <member name="M:JetBrains.UI.GotoByName.GotoByNameController.UpdateItems(System.String,System.Func{System.Boolean},System.Func{System.Collections.Generic.IEnumerable{JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem},JetBrains.UI.GotoByName.GotoByNameController.AddItemsBehavior,System.Boolean})">
+        <member name="M:JetBrains.UI.GotoByName.GotoByNameController.UpdateItems(System.String,System.Func{System.Collections.Generic.IEnumerable{JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem},JetBrains.UI.GotoByName.GotoByNameController.AddItemsBehavior,System.Boolean})">
             <summary>
             When the items get dirty (<see cref="F:JetBrains.UI.GotoByName.GotoByNameController.ItemsGottenDirty"/>), this function is called on the secondary thread.
-            The function should be checking for <paramref name="checkCancelled"/> every so often.
             </summary>
             <param name="filterString">The filtering string against which the items list should be produced.</param>
-            <param name="checkCancelled">Call from time to time, on <c>True</c>, abort immediately.</param>
             <param name="itemsConsumer">A function you can use to add items to the output collection in a thread-safe manner. The function checks for the items limit and returns whether more items can be added.</param>
         </member>
         <member name="M:JetBrains.UI.GotoByName.GotoByNameController.Init_AsyncAction">
@@ -2352,7 +2356,7 @@
         </member>
         <member name="T:JetBrains.UI.GotoByName.GotoByNameController.AddItemsBehavior">
             <summary>
-            Defines what the <c>FAddItems</c> parameter of the <see cref="M:JetBrains.UI.GotoByName.GotoByNameController.UpdateItems(System.String,System.Func{System.Boolean},System.Func{System.Collections.Generic.IEnumerable{JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem},JetBrains.UI.GotoByName.GotoByNameController.AddItemsBehavior,System.Boolean})"/> function should do.
+            Defines what the <c>FAddItems</c> parameter of the <see cref="M:JetBrains.UI.GotoByName.GotoByNameController.UpdateItems(System.String,System.Func{System.Collections.Generic.IEnumerable{JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem},JetBrains.UI.GotoByName.GotoByNameController.AddItemsBehavior,System.Boolean})"/> function should do.
             </summary>
         </member>
         <member name="F:JetBrains.UI.GotoByName.GotoByNameController.AddItemsBehavior.Append">
@@ -6598,6 +6602,8 @@
         <member name="M:JetBrains.UI.PopupMenu.JetPopupMenu.SetItems(JetBrains.UI.PopupMenu.SimpleMenuItem[])">
             <summary>
             Produces a simple static popup menu with self-contained items, each of which has its own <see cref="E:JetBrains.UI.PopupMenu.SimpleMenuItem.Clicked"/> event.
+            Can be called only once.
+            Cannot be used together with setting <see cref="P:JetBrains.UI.PopupMenu.JetPopupMenu.ItemKeys"/> explicitly.
             </summary>
         </member>
         <member name="M:JetBrains.UI.PopupMenu.JetPopupMenu.Show">
@@ -6616,6 +6622,11 @@
             <summary>
             <para>Displays the menu onscreen. Cannot be called twice.</para>
             <para>Calls <see cref="M:JetBrains.UI.PopupMenu.JetPopupMenu.Show(JetBrains.UI.PopupMenu.JetPopupMenu.ShowWhen)"/> with the <see cref="F:JetBrains.UI.PopupMenu.JetPopupMenu.ShowWhen.NoItemsBannerIfNoItems"/> and <see cref="F:JetBrains.UI.PopupMenu.JetPopupMenu.ShowWhen.AutoExecuteIfSingleItem"/> flags.</para>
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.PopupMenu.JetPopupMenu.ShowModal(JetBrains.UI.PopupMenu.JetPopupMenu.ShowWhen)">
+            <summary>
+            Shows the menu onscreen. Does not return until a menu item is executed or menu is dismissed.
             </summary>
         </member>
         <member name="M:JetBrains.UI.PopupMenu.JetPopupMenu.CheckThread">
@@ -7721,9 +7732,59 @@
             Prevents reentrancy in handlers.
             </summary>
         </member>
+        <member name="F:JetBrains.UI.Application.LogEventListener.myIdentity">
+            <summary>
+            Identity.
+            ACHTUNG ACHTUNG! Special handling in Equals.
+            </summary>
+        </member>
         <member name="F:JetBrains.UI.Application.LogEventListener.myNoReentrancy">
             <summary>
             Reentrancy in these handler methods most probably means infinite recursion.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Application.LogEventListener.#ctor">
+            <summary>
+            Creates a new unique listener.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Application.LogEventListener.#ctor(System.String)">
+            <summary>
+            Creates a listener that could be matched by its identity which prevents adding more than one instance with the same identity to the logger.
+            An empty string is considered to be the unique identity.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Application.LogEventListener.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+            </returns>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. </param><exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.UI.Application.LogEventListener.GetHashCode">
+            <summary>
+            Serves as a hash function for a particular type. 
+            </summary>
+            <returns>
+            A hash code for the current <see cref="T:System.Object"/>.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.UI.Application.LogEventListener.Equals(JetBrains.UI.Application.LogEventListener)">
+            <summary>
+            Indicates whether the current object is equal to another object of the same type.
+            </summary>
+            <returns>
+            true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            </returns>
+            <param name="other">An object to compare with this object.</param>
+        </member>
+        <member name="P:JetBrains.UI.Application.LogEventListener.Identity">
+            <summary>
+            A listener that could be matched by its identity which prevents adding more than one instance with the same identity to the logger.
+            An empty string is considered to be the unique identity.
             </summary>
         </member>
         <member name="E:JetBrains.UI.Application.LogEventListener.OnError">
@@ -8318,6 +8379,11 @@
             <summary>
             Gets whether the application is currently active.
             This means that some of the application top-level windows currently has input focus.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Application.UIApplicationShell.CommandLineInitLogger(JetBrains.Application.ICommandLine)">
+            <summary>
+            Applies the command line arguments to the logger.
             </summary>
         </member>
         <member name="M:JetBrains.UI.Application.UIApplicationShell.GetOfflineHelpFilePath">

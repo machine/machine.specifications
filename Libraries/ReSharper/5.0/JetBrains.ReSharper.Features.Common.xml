@@ -93,7 +93,7 @@
             Must be a function for the <see cref="M:System.Object.Equals(System.Object)"/> operation to work appropriately.
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoCacheElementController`1.UpdateItems(System.String,System.Func{System.Boolean},System.Func{System.Collections.Generic.IEnumerable{JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem},JetBrains.UI.GotoByName.GotoByNameController.AddItemsBehavior,System.Boolean})">
+        <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoCacheElementController`1.UpdateItems(System.String,System.Func{System.Collections.Generic.IEnumerable{JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem},JetBrains.UI.GotoByName.GotoByNameController.AddItemsBehavior,System.Boolean})">
             <summary>
             When the items get dirty (<see cref="F:JetBrains.UI.GotoByName.GotoByNameController.ItemsGottenDirty"/>), this function is called on the secondary thread.
             The function should be checking for <paramref name="checkCancelled"/> every so often.
@@ -108,7 +108,7 @@
             <c>True</c> by default.
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoCacheElementController`1.ICacheElementMatcher.GetElements(JetBrains.ReSharper.Feature.Services.Filtering.IdentifierMatcher,System.Func{`0,System.Boolean},System.Int32,System.Func{System.Boolean})">
+        <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoCacheElementController`1.ICacheElementMatcher.GetElements(JetBrains.ReSharper.Feature.Services.Filtering.IdentifierMatcher,System.Func{`0,System.Boolean},System.Int32,JetBrains.Application.CheckForInterrupt,System.Action)">
              <summary>
              Gets the cache elements for the given filter.
              </summary>
@@ -118,12 +118,15 @@
             <param name="filter">
               Further filters the list of results.
             </param>
-            <param name="limit">Maximum number of items to return, or
+            <param name="limit">
+              Maximum number of items to return, or
               <c>0</c>
-              if unlimited.</param>
+              if unlimited.
+            </param>
             <param name="funcIsCancelled">
               A function to check periodically to abort the lengthy process.
             </param>
+            <param name="itemProcessed"></param>
             <returns>The list of collected elements.</returns>
         </member>
         <member name="T:JetBrains.ReSharper.Features.Common.GoToByName.GotoDeclaredElementController">
@@ -193,13 +196,11 @@
             Called when an item is to be executed.
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoFileController.UpdateItems(System.String,System.Func{System.Boolean},System.Func{System.Collections.Generic.IEnumerable{JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem},JetBrains.UI.GotoByName.GotoByNameController.AddItemsBehavior,System.Boolean})">
+        <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoFileController.UpdateItems(System.String,System.Func{System.Collections.Generic.IEnumerable{JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem},JetBrains.UI.GotoByName.GotoByNameController.AddItemsBehavior,System.Boolean})">
             <summary>
             When the items get dirty (<see cref="F:JetBrains.UI.GotoByName.GotoByNameController.ItemsGottenDirty"/>), this function is called on the secondary thread.
-            The function should be checking for <paramref name="checkCancelled"/> every so often.
             </summary>
             <param name="filterString">The filtering string against which the items list should be produced.</param>
-            <param name="checkCancelled">Call from time to time, on <c>True</c>, abort immediately.</param>
             <param name="itemsConsumer">A function you can use to add items to the output collection in a thread-safe manner. The function checks for the items limit and returns whether more items can be added.</param>
         </member>
         <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoSymbolController.ExecuteItem(JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem)">
@@ -212,7 +213,7 @@
             Formats a declared element into a menu item descriptor, suitable for the GotoByName-style lists.
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.DeclaredElementMenuItemFormatter.Format(JetBrains.ReSharper.Psi.IDeclaredElement)">
+        <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.DeclaredElementMenuItemFormatter.Format(JetBrains.ReSharper.Psi.IDeclaredElement,System.Collections.Generic.IEnumerable{System.Int32})">
             <summary>
             Formats a declared element into a menu item descriptor, suitable for the GotoByName-style lists.
             </summary>

@@ -1995,6 +1995,16 @@
             Gets the child files, non-recursive.
             </summary>
         </member>
+        <member name="M:JetBrains.Util.FileSystemPathEx.GetChildDirectories(JetBrains.Util.FileSystemPath)">
+            <summary>
+            Gets the child directories, non-recursive.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.FileSystemPathEx.GetChildDirectories(JetBrains.Util.FileSystemPath,System.String)">
+            <summary>
+            Gets the child directories, non-recursive.
+            </summary>
+        </member>
         <member name="M:JetBrains.Util.FileSystemPathEx.GetChildren(JetBrains.Util.FileSystemPath)">
             <summary>
             Gets the child files and folders, non-recursive.
@@ -3917,24 +3927,24 @@
             The name of this instance.
             </summary>
         </member>
-        <member name="T:JetBrains.Omea.Base.SpinWaitLockRef">
+        <member name="T:JetBrains.Util.Concurrency.SpinWaitLockRef">
             <summary>
-            A reference wrapper for the <see cref="T:JetBrains.Omea.Base.SpinWaitLock"/> for those usages that don't mind creating a new object.
+            A reference wrapper for the <see cref="T:JetBrains.Util.Concurrency.SpinWaitLock"/> for those usages that don't mind creating a new object.
             </summary>
         </member>
-        <member name="M:JetBrains.Omea.Base.SpinWaitLockRef.Enter">
+        <member name="M:JetBrains.Util.Concurrency.SpinWaitLockRef.Enter">
             <summary>
             Locks.
             </summary>
         </member>
-        <member name="M:JetBrains.Omea.Base.SpinWaitLockRef.Exit">
+        <member name="M:JetBrains.Util.Concurrency.SpinWaitLockRef.Exit">
             <summary>
             Unlocks.
             </summary>
         </member>
-        <member name="M:JetBrains.Omea.Base.SpinWaitLockRef.Push">
+        <member name="M:JetBrains.Util.Concurrency.SpinWaitLockRef.Push">
             <summary>
-            Pushes an <see cref="M:JetBrains.Omea.Base.SpinWaitLockRef.Enter"/>/<see cref="M:JetBrains.Omea.Base.SpinWaitLockRef.Exit"/> bracket.
+            Pushes an <see cref="M:JetBrains.Util.Concurrency.SpinWaitLockRef.Enter"/>/<see cref="M:JetBrains.Util.Concurrency.SpinWaitLockRef.Exit"/> bracket.
             </summary>
         </member>
         <member name="T:JetBrains.Threading.ThreadAccessException">
@@ -6923,6 +6933,20 @@
             ID of the object that caused the exception.
             </summary>
         </member>
+        <member name="M:JetBrains.DataFlow.TryFinally.FinallyException.LogMissedDispose(System.String,System.String,System.String)">
+            <summary>
+            Logs the error of a missed or failed dispose into the <see cref="T:JetBrains.Util.Logger"/> with <see cref="M:JetBrains.Util.Logger.LogException(System.Exception)"/>.
+            </summary>
+            <param name="id">The failed object identity.</param>
+            <param name="message">The failure explanation message.</param>
+            <param name="sOriginatingStackTrace">The stack trace where the object were created, if available.</param>
+        </member>
+        <member name="M:JetBrains.DataFlow.TryFinally.FinallyException.LogMissedDispose(System.String)">
+            <summary>
+            Logs the error of a missed or failed dispose into the <see cref="T:JetBrains.Util.Logger"/> with <see cref="M:JetBrains.Util.Logger.LogException(System.Exception)"/>.
+            </summary>
+            <param name="id">The failed object identity.</param>
+        </member>
         <member name="P:JetBrains.DataFlow.TryFinally.FinallyException.StackTrace">
             <summary>
             Gets a string representation of the frames on the call stack at the time the current exception was thrown.
@@ -6963,24 +6987,25 @@
             or exceprion is thrown
             </summary>
         </member>
-        <member name="T:JetBrains.Util.EnumEx.EnumEx">
+        <member name="T:JetBrains.Util.EnumEx">
             <summary>
             Extension methods for enums.
             </summary>
         </member>
-        <member name="F:JetBrains.Util.EnumEx.EnumEx.myMapEnumValueToName">
+        <member name="F:JetBrains.Util.EnumEx.myMapEnumValueToName">
             <summary>
-            Caches the <see cref="M:JetBrains.Util.EnumEx.EnumEx.GetNamesOfValue(System.Type,System.Object)"/> results, as they use reflection and are thus very slow.
+            Caches the <see cref="M:JetBrains.Util.EnumEx.GetNamesOfValue(System.Type,System.Object)"/> results, as they use reflection and are thus very slow.
+            Copy-on-write, non-locked (the values are expendable and can be regenerated in case of a race).
             </summary>
         </member>
-        <member name="M:JetBrains.Util.EnumEx.EnumEx.CoerceEnumValueSlow``1(``0)">
+        <member name="M:JetBrains.Util.EnumEx.CoerceEnumValueSlow``1(``0)">
             <summary>
             If the enum value does not fall into the list of valid enum values, coerce it to be the first available enum value.
             This is silent, no exception is thrown.
             Note: this operation is slow, do not use often.
             </summary>
         </member>
-        <member name="M:JetBrains.Util.EnumEx.EnumEx.GetNamesOfValue(System.Type,System.Object)">
+        <member name="M:JetBrains.Util.EnumEx.GetNamesOfValue(System.Type,System.Object)">
             <summary>
             Gets all of the alternative names for the value of an enum.
             The value is not required to be coerced to the enum type, it must be of any integral type.
@@ -6988,7 +7013,7 @@
             <param name="type">Enum type.</param>
             <param name="value">Enum value to be named, must be of an integral type.</param>
         </member>
-        <member name="M:JetBrains.Util.EnumEx.EnumEx.UnboxQWord(System.Object)">
+        <member name="M:JetBrains.Util.EnumEx.UnboxQWord(System.Object)">
             <summary>
             Unboxes an object of an integral type (intXXX, bool, byte, char, enum, etc) as a QWORD integer value.
             </summary>
@@ -11624,16 +11649,16 @@
             The auto-container for a <see cref="T:System.Drawing.Graphics"/> device context that has several choices for where to create the graphics from.
             </summary>
         </member>
-        <member name="M:JetBrains.UI.GraphicsContainer.FromScreen">
-            <summary>
-            Creates a screen device context.
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:JetBrains.UI.GraphicsContainer.FromControl(System.Windows.Forms.Control)">
             <summary>
             If the control already exists with its handle, uses its DC, otherwise, a screen DC.
             </summary>
+        </member>
+        <member name="M:JetBrains.UI.GraphicsContainer.FromGetDc(System.IntPtr)">
+            <summary>
+            Creates a generic device context from a window handle (<see cref="M:JetBrains.UI.Interop.Win32Declarations.GetDC(System.IntPtr)"/>).
+            </summary>
+            <param name="hwnd">The handle of the window to paint into.</param>
         </member>
         <member name="M:JetBrains.UI.GraphicsContainer.FromGraphicsOrControl(System.Drawing.Graphics,System.Windows.Forms.Control)">
             <summary>
@@ -11642,6 +11667,11 @@
             </summary>
             <param name="g">The DC to use if non-<c>Null</c>. May be <c>Null</c>.</param>
             <param name="control">The control to use for fallback, must not be <c>Null</c>.</param>
+        </member>
+        <member name="M:JetBrains.UI.GraphicsContainer.FromNothing">
+            <summary>
+            Creates a hollow container that ensures noone ever uses its <see cref="T:System.Drawing.Graphics"/>.
+            </summary>
         </member>
         <member name="M:JetBrains.UI.GraphicsContainer.FromPainting(System.Windows.Forms.Control)">
             <summary>
@@ -11657,15 +11687,15 @@
             </summary>
             <param name="hwnd">The handle of the window to paint into.</param>
         </member>
-        <member name="M:JetBrains.UI.GraphicsContainer.FromGetDc(System.IntPtr)">
+        <member name="M:JetBrains.UI.GraphicsContainer.FromScreen">
             <summary>
-            Creates a generic device context from a window handle (<see cref="M:JetBrains.UI.Interop.Win32Declarations.GetDC(System.IntPtr)"/>).
+            Creates a screen device context.
             </summary>
-            <param name="hwnd">The handle of the window to paint into.</param>
+            <returns></returns>
         </member>
-        <member name="M:JetBrains.UI.GraphicsContainer.FromNothing">
+        <member name="M:JetBrains.UI.GraphicsContainer.SetHighQuality(System.Drawing.Graphics)">
             <summary>
-            Creates a hollow container that ensures noone ever uses its <see cref="T:System.Drawing.Graphics"/>.
+            Sets up the <see cref="T:System.Drawing.Graphics">graphics context</see> for high-quality rendering regardless of the screen settings.
             </summary>
         </member>
         <member name="T:JetBrains.UI.ScreenGraphics">
@@ -11683,16 +11713,16 @@
             Attempts to create a graphics upon the control. If the control handle is not yet available, or the control has already been disposed, uses the screen device context.
             </summary>
         </member>
+        <member name="M:JetBrains.UI.ScreenGraphics.op_Implicit(JetBrains.UI.ScreenGraphics)~System.Drawing.Graphics">
+            <summary>
+            Same as <see cref="P:JetBrains.UI.ScreenGraphics.Graphics"/>.
+            </summary>
+        </member>
         <member name="M:JetBrains.UI.ScreenGraphics.Dispose">
             <summary>
             Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             </summary>
             <filterpriority>2</filterpriority>
-        </member>
-        <member name="M:JetBrains.UI.ScreenGraphics.op_Implicit(JetBrains.UI.ScreenGraphics)~System.Drawing.Graphics">
-            <summary>
-            Same as <see cref="P:JetBrains.UI.ScreenGraphics.Graphics"/>.
-            </summary>
         </member>
         <member name="P:JetBrains.UI.ScreenGraphics.Graphics">
             <summary>
@@ -11710,31 +11740,31 @@
             </summary>
             <param name="hwnd">Handle to the window we're currently painting.</param>
         </member>
+        <member name="M:JetBrains.UI.PaintGraphicsContainer.op_Implicit(JetBrains.UI.PaintGraphicsContainer)~System.Drawing.Graphics">
+            <summary>
+            Same as <see cref="P:JetBrains.UI.PaintGraphicsContainer.Graphics"/>.
+            </summary>
+        </member>
         <member name="M:JetBrains.UI.PaintGraphicsContainer.Dispose">
             <summary>
             Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             </summary>
             <filterpriority>2</filterpriority>
         </member>
-        <member name="M:JetBrains.UI.PaintGraphicsContainer.op_Implicit(JetBrains.UI.PaintGraphicsContainer)~System.Drawing.Graphics">
-            <summary>
-            Same as <see cref="P:JetBrains.UI.PaintGraphicsContainer.Graphics"/>.
-            </summary>
-        </member>
         <member name="P:JetBrains.UI.PaintGraphicsContainer.Graphics">
             <summary>
             Gets the <see cref="P:JetBrains.UI.PaintGraphicsContainer.Graphics"/> object. Don't dispose, dispose the whole <see cref="T:JetBrains.UI.PaintGraphicsContainer"/> instance instead.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.ControlGraphicsContainer.myControl">
+            <summary>
+            The control to create the DC from. <c>Null</c> after dispose.
             </summary>
         </member>
         <member name="F:JetBrains.UI.ControlGraphicsContainer.myGraphics">
             <summary>
             The DC lazily-created from the control, or <c>Null</c> if not created yet.
             Should be disposed of.
-            </summary>
-        </member>
-        <member name="F:JetBrains.UI.ControlGraphicsContainer.myControl">
-            <summary>
-            The control to create the DC from. <c>Null</c> after dispose.
             </summary>
         </member>
         <member name="M:JetBrains.UI.ControlGraphicsContainer.#ctor(System.Windows.Forms.Control)">
@@ -11841,14 +11871,14 @@
             Contains several interop helper functions
             </summary>
         </member>
-        <member name="M:JetBrains.UI.Interop.Helpers.BitBlt(System.IntPtr,System.Drawing.Bitmap,System.Drawing.Point,System.IntPtr,System.Byte,System.Drawing.Rectangle[])">
+        <member name="M:JetBrains.UI.Interop.Helpers.BitBlt(System.Void*,System.Drawing.Bitmap,System.Drawing.Point,System.Void*,System.Byte,System.Drawing.Rectangle[])">
             <summary>
             Blits a bitmap onto a GDI device context.
             </summary>
             <param name="hdcDestination">The target HDC.</param>
             <param name="bitmapSource">The bitmap to blit (the complete bitmap blits to the target).</param>
             <param name="ptDestinationLocation">Blit location coordinates on the target DC.</param>
-            <param name="hdcIntermediate">A device context to be used as blitting source, pass a compatible HDC if you have one, or <see cref="F:System.IntPtr.Zero"/> if it should be on-time-created.</param>
+            <param name="hdcIntermediate">A device context to be used as blitting source, pass a compatible HDC if you have one, or <c>Null</c> if it should be on-time-created.</param>
             <param name="nOpacity">Opacity vaue for blitting, 0x00 is completely transparent, 0xFF is opaque.</param>
             <param name="rectsSource">A collection of the rectangles to blit on the source bitmap. The relative location of these rectangles on the target DC corresponds to their source location. <c>Null</c> to blit the whole bitmap.</param>
         </member>
@@ -11896,11 +11926,11 @@
         <member name="M:JetBrains.UI.Interop.Helpers.RenderBuffered(System.Drawing.Graphics,System.Drawing.Rectangle,System.Action{System.Drawing.Graphics},System.Boolean)">
             <summary>
             Renders to the given device context using an intermediate GDI backbuffer, which works around the ErrorStripeDisease™.
-            Under terminal services, no backbuffer is used, just <paramref name="paint"/> is invoked.
+            Under terminal services, no backbuffer is used, just <paramref name="FPaint"/> is invoked.
             </summary>
             <param name="g">The graphics device context.</param>
             <param name="bounds">Size and location of the painting area in the device context coordinates. When painting, you should use the same coordinates as those in which the bounds are specified, don't use bounds-local coords.</param>
-            <param name="paint">The function that would handle the rendering.</param>
+            <param name="FPaint">The function that would handle the rendering.</param>
             <param name="bSupportAlphaChannel">Whether the blitting of the back-buffer to the screen should support per-pixel alpha, or not. Note that when you turn this on, you must erase the whole area, and GDI text rendering will most likely fail to function properly.</param>
         </member>
         <member name="M:JetBrains.UI.Interop.Helpers.ShowLayered(System.IntPtr,System.Drawing.Rectangle,System.Action{System.Drawing.Graphics})">
@@ -13598,7 +13628,22 @@
             </summary>
             <remarks>Its name <c>TryGetValue</c> is kept for discoverability.</remarks>
         </member>
+        <member name="M:JetBrains.Util.CollectionUtil.TryGetValue``2(System.Collections.Generic.IDictionary{``0,``1},``0,System.Func{``0,``1})">
+            <summary>
+            A <see cref="M:System.Collections.Generic.IDictionary`2.TryGetValue(`0,`1@)"/> version that adds a new entry the <paramref name="key"/> is not present in the <paramref name="dictionary"/>. The new value is given by <paramref name="funcNew"/> in this case.
+            </summary>
+            <remarks>Its name <c>TryGetValue</c> is kept for discoverability.
+            This version takes a function of the key to allow caching the value-creation delegate without creating a new closure each time, as <see cref="M:JetBrains.Util.CollectionUtil.TryGetValue``2(System.Collections.Generic.IDictionary{``0,``1},``0,System.Func{``1})"/> would do. Recommended in high-perf scenarios.
+            </remarks>
+        </member>
         <member name="M:JetBrains.Util.CollectionUtil.AggregateString``1(System.Collections.Generic.IEnumerable{``0},System.String,System.Action{System.Text.StringBuilder,``0})">
+            <summary>
+            Aggregates a number of items into a single string, using the <see cref="T:System.Text.StringBuilder"/>
+            to avoid creating excessive strings when concatenating.
+            Use its <see cref="M:System.Text.StringBuilder.AppendFormat(System.String,System.Object[])"/> method as appropriate.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.AggregateString``1(System.Collections.Generic.IEnumerable{``0},System.String,System.Action{System.Text.StringBuilder,``0},System.Action{System.Text.StringBuilder})">
             <summary>
             Aggregates a number of items into a single string, using the <see cref="T:System.Text.StringBuilder"/>
             to avoid creating excessive strings when concatenating.

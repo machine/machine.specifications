@@ -1373,13 +1373,12 @@
             Override this method with activity that should happen in primary thread before background thread
             </summary>
         </member>
-        <member name="M:JetBrains.Application.InterruptableReadActivity.Work(JetBrains.Application.CheckForInterrupt)">
+        <member name="M:JetBrains.Application.InterruptableReadActivity.Work">
             <summary>
             Override this method with activity that happens in background thread.
             </summary>
             This method should periodically check return value of <c>interrupt</c> and either return or 
             throw <c>ProcessCancelledException</c>
-            <param name="interrupt"></param>
         </member>
         <member name="M:JetBrains.Application.InterruptableReadActivity.EndWorkerThread">
             <summary>
@@ -2089,6 +2088,14 @@
             </summary>
         </member>
         <member name="M:JetBrains.Application.ShellBase.GetProductSettingsSuffix_ShellBase(JetBrains.Application.IApplicationDescriptor)">
+            <summary>
+            Gets the suffix that forms the <see cref="P:JetBrains.Application.ShellBase.ProductRegistryKey"/>, <see cref="P:JetBrains.Application.ShellBase.UserSettingsRoamingDir"/>, and <see cref="P:JetBrains.Application.ShellBase.UserSettingsLocalDir"/>.
+            The template must not include location-specific parts (ie “Software” for registry or “AppData” for folder), as they should be concatenated by consumers.
+            There should be no leading or trailing slashes.
+            Note: NOT SUITABLE for calling in VS-BASED PRODUCTS.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.ShellBase.GetProductSettingsSuffix_ShellBase(System.String,System.Version)">
             <summary>
             Gets the suffix that forms the <see cref="P:JetBrains.Application.ShellBase.ProductRegistryKey"/>, <see cref="P:JetBrains.Application.ShellBase.UserSettingsRoamingDir"/>, and <see cref="P:JetBrains.Application.ShellBase.UserSettingsLocalDir"/>.
             The template must not include location-specific parts (ie “Software” for registry or “AppData” for folder), as they should be concatenated by consumers.
@@ -2919,6 +2926,12 @@
         <member name="F:JetBrains.Build.InstallationData.TargetRootXml.InstallDir">
             <remarks/>
         </member>
+        <member name="F:JetBrains.Build.InstallationData.TargetRootXml.DevEnvInstallDir">
+            <remarks/>
+        </member>
+        <member name="F:JetBrains.Build.InstallationData.TargetRootXml.DevEnvRootDir">
+            <remarks/>
+        </member>
         <member name="T:JetBrains.Build.InstallationData.MacroXml">
             <remarks/>
         </member>
@@ -3039,8 +3052,8 @@
             <para>Gets the version string for the current product, without the company name.</para>
             <para>Examples:</para>
             <code>
-            ReSharper V Full Edition build 5.0.666.239 on 2009-06-12
-            ReSharper V build 5.0.666.239 on 2009-06-12
+            ReSharper 5 Full Edition build 5.0.666.239 on 2009-06-12
+            ReSharper 5 build 5.0.666.239 on 2009-06-12
             build 5.0.666.239 on 2009-06-12
             Full Edition build 5.0.666.239 on 2009-06-12
             </code>
@@ -3807,13 +3820,12 @@
             Override this method with activity that should happen in primary thread before background thread
             </summary>
         </member>
-        <member name="M:JetBrains.Application.InterruptableReadActivityThe.Work(JetBrains.Application.CheckForInterrupt)">
+        <member name="M:JetBrains.Application.InterruptableReadActivityThe.Work">
             <summary>
             Override this method with activity that happens in background thread.
             </summary>
             This method should periodically check return value of <c>d</c> and either return or 
             throw <c>ProcessCancelledException</c>
-            <param name="interrupt"></param>
         </member>
         <member name="P:JetBrains.Application.InterruptableReadActivityThe.FuncCancelled">
             <summary>
