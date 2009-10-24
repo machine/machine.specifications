@@ -12,11 +12,17 @@ namespace Machine.Specifications.ReSharperRunner
     public static bool IsContext(this IMetadataTypeInfo type)
     {
       return !type.IsAbstract &&
+             !type.IsStruct() &&
              type.IsPublic &&
              type.GenericParameters.Length == 0 &&
              !type.HasCustomAttribute(typeof(BehaviorsAttribute).FullName) &&
              (type.GetSpecifications().Any() ||
               type.GetBehaviors().Any());
+    }
+
+    static bool IsStruct(this IMetadataTypeInfo type)
+    {
+      return type.Base.Type.FullyQualifiedName == typeof(ValueType).FullName;
     }
 
     public static IEnumerable<IMetadataField> GetSpecifications(this IMetadataTypeInfo type)
