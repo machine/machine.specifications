@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using JetBrains.Application;
@@ -14,16 +15,19 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
   internal class ContextElement : Element
   {
     readonly string _assemblyLocation;
+    readonly string _subject;
 
     public ContextElement(IUnitTestProvider provider,
                           IProjectModelElement project,
                           string typeName,
                           string assemblyLocation,
+                          string subject,
                           ICollection<string> tags,
                           bool isIgnored)
       : base(provider, null, project, typeName, isIgnored)
     {
       _assemblyLocation = assemblyLocation;
+      _subject = subject;
 
       if (tags != null)
       {
@@ -31,24 +35,34 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       }
     }
 
-	public override string ShortName
-	{
-		get { return GetKind(); }
-	}
+    public override string ShortName
+    {
+      get { return GetKind(); }
+    }
 
     public string AssemblyLocation
     {
       get { return _assemblyLocation; }
     }
 
-	public override bool Matches(string filter, IdentifierMatcher matcher)
+    public override bool Matches(string filter, IdentifierMatcher matcher)
     {
       return matcher.Matches(GetTypeClrName());
     }
 
     public override string GetTitle()
     {
-      return new CLRTypeName(GetTypeClrName()).ShortName.ToFormat();
+      return GetSubject() + new CLRTypeName(GetTypeClrName()).ShortName.ToFormat();
+    }
+
+    string GetSubject()
+    {
+      if (String.IsNullOrEmpty(_subject))
+      {
+        return null;
+      }
+
+      return _subject + ", ";
     }
 
     public override IDeclaredElement GetDeclaredElement()
@@ -76,7 +90,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     {
       if (base.Equals(obj))
       {
-        ContextElement other = (ContextElement)obj;
+        ContextElement other = (ContextElement) obj;
         return Equals(AssemblyLocation, other.AssemblyLocation);
       }
 

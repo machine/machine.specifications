@@ -186,6 +186,9 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.5\Presentation\Presenter.cs">
       <Link>Presentation\Presenter.cs</Link>
     </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.5\PsiExtensions.4.5.cs">
+      <Link>PsiExtensions.4.5.cs</Link>
+    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.5\Runners\ExceptionResultConverter.cs">
       <Link>Runners\ExceptionResultConverter.cs</Link>
     </Compile>
