@@ -178,6 +178,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="MSpecElementNaming.cs" />
     <Compile Include="MSpecUnitTestProvider.cs" />
     <Compile Include="Presentation\ContextElement.cs" />
     <Compile Include="Presentation\Element.cs" />

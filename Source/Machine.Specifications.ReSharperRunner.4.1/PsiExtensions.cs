@@ -30,6 +30,13 @@ namespace Machine.Specifications.ReSharperRunner
       return element.IsValidFieldOfType(typeof(It));
     }
 
+    public static bool IsSupportingField(this IDeclaredElement element)
+    {
+      return element.IsValidFieldOfType(typeof(Establish)) ||
+             element.IsValidFieldOfType(typeof(Because)) ||
+             element.IsValidFieldOfType(typeof(Cleanup));
+    }
+
     public static bool IsBehavior(this IDeclaredElement element)
     {
       return element.IsValidFieldOfType(typeof(Behaves_like<>)) &&
