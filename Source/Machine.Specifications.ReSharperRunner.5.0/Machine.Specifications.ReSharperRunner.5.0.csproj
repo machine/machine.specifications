@@ -180,6 +180,9 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\UnitTestElementComparer.cs">
       <Link>UnitTestElementComparer.cs</Link>
     </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.5\MSpecElementNaming.cs">
+      <Link>MSpecElementNaming.cs</Link>
+    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.5\MSpecUnitTestProvider.cs">
       <Link>MSpecUnitTestProvider.cs</Link>
     </Compile>
