@@ -148,8 +148,20 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\PsiExtensions.cs">
       <Link>PsiExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\ExecutableSpecificationInfo.cs">
-      <Link>Runners\ExecutableSpecificationInfo.cs</Link>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\Notifications\BehaviorSpecificationRemoteTaskNotification.cs">
+      <Link>Runners\Notifications\BehaviorSpecificationRemoteTaskNotification.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\Notifications\ContextSpecificationRemoteTaskNotification.cs">
+      <Link>Runners\Notifications\ContextSpecificationRemoteTaskNotification.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\Notifications\RemoteTaskNotification.cs">
+      <Link>Runners\Notifications\RemoteTaskNotification.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\Notifications\RemoteTaskNotificationFactory.cs">
+      <Link>Runners\Notifications\RemoteTaskNotificationFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\Notifications\SilentRemoteTaskNotification.cs">
+      <Link>Runners\Notifications\SilentRemoteTaskNotification.cs</Link>
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\PerContextRunListener.cs">
       <Link>Runners\PerContextRunListener.cs</Link>

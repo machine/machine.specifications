@@ -5,6 +5,7 @@ using System.Reflection;
 
 using JetBrains.ReSharper.TaskRunnerFramework;
 
+using Machine.Specifications.ReSharperRunner.Runners.Notifications;
 using Machine.Specifications.ReSharperRunner.Tasks;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
@@ -14,6 +15,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 {
   internal class RecursiveMSpecTaskRunner : RecursiveRemoteTaskRunner
   {
+    readonly RemoteTaskNotificationFactory _taskNotificationFactory = new RemoteTaskNotificationFactory();
     Assembly _contextAssembly;
     Type _contextClass;
     PerContextRunListener _listener;
@@ -26,8 +28,8 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     #region Overrides of RemoteTaskRunner
     public override TaskResult Start(TaskExecutionNode node)
     {
-      ContextTask task = (ContextTask)node.RemoteTask;
-
+      ContextTask task = (ContextTask) node.RemoteTask;
+      
       _contextAssembly = LoadContextAssembly(task);
       if (_contextAssembly == null)
       {
@@ -67,7 +69,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
     public override void ExecuteRecursive(TaskExecutionNode node)
     {
-      FlattenChildren(node).Each(TryRegisterSpecifications);
+      FlattenChildren(node).Each(RegisterRemoteTaskNotifications);
     }
 
     static IEnumerable<TaskExecutionNode> FlattenChildren(TaskExecutionNode node)
@@ -83,12 +85,9 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       }
     }
 
-    void TryRegisterSpecifications(TaskExecutionNode node)
+    void RegisterRemoteTaskNotifications(TaskExecutionNode node)
     {
-      if (node.RemoteTask is ContextSpecificationTask)
-      {
-        _listener.RegisterSpecification(new ExecutableSpecificationInfo(node));
-      }
+      _listener.RegisterTaskNotification(_taskNotificationFactory.CreateTaskNotification(node));
     }
 
     Assembly LoadContextAssembly(Task task)

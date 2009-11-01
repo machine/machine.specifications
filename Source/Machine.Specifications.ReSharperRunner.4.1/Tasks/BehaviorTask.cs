@@ -35,18 +35,6 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
       SetXmlAttribute(element, "BehaviorFieldName", BehaviorFieldName);
     }
 
-    #region IEquatable<BehaviorTask> Members
-    public bool Equals(BehaviorTask other)
-    {
-      if (other == null || !base.Equals(other))
-      {
-        return false;
-      }
-
-      return Equals(BehaviorFieldName, other.BehaviorFieldName);
-    }
-    #endregion
-
     public override bool Equals(object other)
     {
       return Equals(other as BehaviorTask);
@@ -61,5 +49,17 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
         return result;
       }
     }
+
+    #region IEquatable<BehaviorTask> Members
+    public bool Equals(BehaviorTask other)
+    {
+      if (other == null || !base.Equals(other))
+      {
+        return false;
+      }
+
+      return Equals(BehaviorFieldName, other.BehaviorFieldName);
+    }
+    #endregion
   }
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 using JetBrains.ReSharper.TaskRunnerFramework;
 
+using Machine.Specifications.ReSharperRunner.Runners.Notifications;
 using Machine.Specifications.Runner;
 
 namespace Machine.Specifications.ReSharperRunner.Runners
@@ -10,7 +11,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
   {
     readonly RemoteTask _contextTask;
     readonly IRemoteTaskServer _server;
-    readonly IList<ExecutableSpecificationInfo> _specifications = new List<ExecutableSpecificationInfo>();
+    readonly IList<RemoteTaskNotification> _taskNotifications = new List<RemoteTaskNotification>();
 
     public PerContextRunListener(IRemoteTaskServer server, RemoteTask contextNode)
     {
@@ -47,36 +48,29 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
     public void OnSpecificationStart(SpecificationInfo specification)
     {
-      RemoteTask task = FindTaskFor(specification);
-      if (task == null)
-      {
-        return;
-      }
+      var notify = CreateTaskNotificationFor(specification);
 
-      _server.TaskStarting(task);
-      _server.TaskProgress(task, "Running specification");
+      notify(task => _server.TaskStarting(task));
+      notify(task => _server.TaskProgress(task, "Running specification"));
     }
 
     public void OnSpecificationEnd(SpecificationInfo specification, Result result)
     {
-      RemoteTask task = FindTaskFor(specification);
-      if (task == null)
-      {
-        return;
-      }
+      var notify = CreateTaskNotificationFor(specification);
 
-      _server.TaskProgress(task, null);
+      notify(task => _server.TaskProgress(task, null));
 
-      _server.TaskOutput(task, result.ConsoleOut, TaskOutputType.STDOUT);
-      _server.TaskOutput(task, result.ConsoleError, TaskOutputType.STDERR);
+      notify(task => _server.TaskOutput(task, result.ConsoleOut, TaskOutputType.STDOUT));
+      notify(task => _server.TaskOutput(task, result.ConsoleError, TaskOutputType.STDERR));
 
       TaskResult taskResult = TaskResult.Success;
       string message = null;
       switch (result.Status)
       {
         case Status.Failing:
-          _server.TaskExplain(task, result.Exception.Message);
-          _server.TaskException(task, ExceptionResultConverter.ConvertExceptions(result.Exception, out message));
+          notify(task => _server.TaskExplain(task, result.Exception.Message));
+          notify(task => _server.TaskException(task,
+                                               ExceptionResultConverter.ConvertExceptions(result.Exception, out message)));
           taskResult = TaskResult.Exception;
           break;
 
@@ -85,18 +79,18 @@ namespace Machine.Specifications.ReSharperRunner.Runners
           break;
 
         case Status.NotImplemented:
-          _server.TaskExplain(task, "Not implemented");
+          notify(task => _server.TaskExplain(task, "Not implemented"));
           message = "Not implemented";
           taskResult = TaskResult.Skipped;
           break;
 
         case Status.Ignored:
-          _server.TaskExplain(task, "Ignored");
+          notify(task => _server.TaskExplain(task, "Ignored"));
           taskResult = TaskResult.Skipped;
           break;
       }
 
-      _server.TaskFinished(task, message, taskResult);
+      notify(task => _server.TaskFinished(task, message, taskResult));
     }
 
     public void OnFatalError(ExceptionResult exception)
@@ -108,23 +102,30 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     }
     #endregion
 
-    internal void RegisterSpecification(ExecutableSpecificationInfo info)
+    internal void RegisterTaskNotification(RemoteTaskNotification notification)
     {
-      _specifications.Add(info);
+      _taskNotifications.Add(notification);
     }
 
-    RemoteTask FindTaskFor(SpecificationInfo specification)
+    Action<Action<RemoteTask>> CreateTaskNotificationFor(SpecificationInfo specification)
     {
-      foreach (var spec in _specifications)
-      {
-        if (spec.ContainingType == specification.ContainingType &&
-            spec.Name == specification.Name)
+      return actionToBePerformedForEachTask =>
         {
-          return spec.RemoteTask;
-        }
-      }
-
-      return null;
+          foreach (var notification in _taskNotifications)
+          {
+            if (notification.Matches(specification))
+            {
+              foreach (var task in notification.RemoteTasks)
+              {
+                actionToBePerformedForEachTask(task);
+              }
+            }
+          }
+        };
     }
+
+    #region Nested type: Action
+    delegate void Action<T>(T arg);
+    #endregion
   }
 }

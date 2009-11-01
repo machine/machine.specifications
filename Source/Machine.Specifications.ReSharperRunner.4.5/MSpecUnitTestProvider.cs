@@ -143,9 +143,7 @@ namespace Machine.Specifications.ReSharperRunner
                {
                  _taskFactory.CreateAssemblyLoadTask(context),
                  _taskFactory.CreateContextTask(context, explicitElements.Contains(context)),
-                 _taskFactory.CreateBehaviorTask(context,
-                                                 behavior,
-                                                 explicitElements.Contains(behavior)),
+                 _taskFactory.CreateBehaviorTask(context, behavior, explicitElements.Contains(behavior)),
                  _taskFactory.CreateBehaviorSpecificationTask(context,
                                                               behaviorSpecification,
                                                               explicitElements.Contains(behaviorSpecification))

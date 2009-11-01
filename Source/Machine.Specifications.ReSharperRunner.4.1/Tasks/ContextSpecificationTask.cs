@@ -35,18 +35,6 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
       SetXmlAttribute(element, "SpecificationFieldName", SpecificationFieldName);
     }
 
-    #region IEquatable<ContextSpecificationTask> Members
-    public bool Equals(ContextSpecificationTask other)
-    {
-      if (other == null || !base.Equals(other))
-      {
-        return false;
-      }
-
-      return Equals(SpecificationFieldName, other.SpecificationFieldName);
-    }
-    #endregion
-
     public override bool Equals(object other)
     {
       return Equals(other as ContextSpecificationTask);
@@ -61,5 +49,17 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
         return result;
       }
     }
+
+    #region IEquatable<ContextSpecificationTask> Members
+    public bool Equals(ContextSpecificationTask other)
+    {
+      if (other == null || !base.Equals(other))
+      {
+        return false;
+      }
+
+      return Equals(SpecificationFieldName, other.SpecificationFieldName);
+    }
+    #endregion
   }
 }

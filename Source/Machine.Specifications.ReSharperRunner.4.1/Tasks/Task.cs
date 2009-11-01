@@ -56,20 +56,6 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
       SetXmlAttribute(element, "RunExplicitly", RunExplicitly.ToString());
     }
 
-    #region IEquatable<RemoteTask> Members
-    public bool Equals(Task other)
-    {
-      if (other == null || !base.Equals(other))
-      {
-        return false;
-      }
-
-      return (Equals(AssemblyLocation, other.AssemblyLocation) &&
-              Equals(ContextTypeName, other.ContextTypeName) &&
-              RunExplicitly == other.RunExplicitly);
-    }
-    #endregion
-
     public override bool Equals(object other)
     {
       return Equals(other as Task);
@@ -86,5 +72,19 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
         return result;
       }
     }
+
+    #region IEquatable<RemoteTask> Members
+    public bool Equals(Task other)
+    {
+      if (other == null || !base.Equals(other))
+      {
+        return false;
+      }
+
+      return (Equals(AssemblyLocation, other.AssemblyLocation) &&
+              Equals(ContextTypeName, other.ContextTypeName) &&
+              RunExplicitly == other.RunExplicitly);
+    }
+    #endregion
   }
 }

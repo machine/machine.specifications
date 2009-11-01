@@ -64,6 +64,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                               new BehaviorSpecificationTask(_providerId,
                                                             context.AssemblyLocation,
                                                             context.GetTypeClrName(),
+                                                            behaviorSpecification.Behavior.FieldName,
                                                             behaviorSpecification.FieldName,
                                                             behaviorSpecification.GetTypeClrName(),
                                                             false));

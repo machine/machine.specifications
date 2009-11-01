@@ -4,24 +4,31 @@ using System.Xml;
 namespace Machine.Specifications.ReSharperRunner.Tasks
 {
   [Serializable]
-  internal class BehaviorSpecificationTask : ContextSpecificationTask, IEquatable<BehaviorSpecificationTask>
+  internal class BehaviorSpecificationTask : Task, IEquatable<BehaviorSpecificationTask>
   {
     readonly string _behaviorTypeName;
+    readonly string _specificationFieldName;
+    readonly string _specificationFieldNameOnContext;
 
     public BehaviorSpecificationTask(XmlElement element) : base(element)
     {
       _behaviorTypeName = GetXmlAttribute(element, "BehaviorTypeName");
+      _specificationFieldName = GetXmlAttribute(element, "SpecificationFieldName");
+      _specificationFieldNameOnContext = GetXmlAttribute(element, "SpecificationFieldNameOnContext");
     }
 
     public BehaviorSpecificationTask(string providerId,
                                      string assemblyLocation,
                                      string contextTypeName,
+                                     string specificationFieldNameOnContext,
                                      string behaviorSpecificationFieldName,
                                      string behaviorTypeName,
                                      bool runExplicitly)
-      : base(providerId, assemblyLocation, contextTypeName, behaviorSpecificationFieldName, runExplicitly)
+      : base(providerId, assemblyLocation, contextTypeName, runExplicitly)
     {
       _behaviorTypeName = behaviorTypeName;
+      _specificationFieldName = behaviorSpecificationFieldName;
+      _specificationFieldNameOnContext = specificationFieldNameOnContext;
     }
 
     public string BehaviorTypeName
@@ -29,24 +36,24 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
       get { return _behaviorTypeName; }
     }
 
+    public string SpecificationFieldName
+    {
+      get { return _specificationFieldName; }
+    }
+
+    public string SpecificationFieldNameOnContext
+    {
+      get { return _specificationFieldNameOnContext; }
+    }
+
     public override void SaveXml(XmlElement element)
     {
       base.SaveXml(element);
 
       SetXmlAttribute(element, "BehaviorTypeName", BehaviorTypeName);
+      SetXmlAttribute(element, "SpecificationFieldName", SpecificationFieldName);
+      SetXmlAttribute(element, "SpecificationFieldNameOnContext", SpecificationFieldNameOnContext);
     }
-
-    #region IEquatable<BehaviorSpecificationTask> Members
-    public bool Equals(BehaviorSpecificationTask other)
-    {
-      if (other == null || !base.Equals(other))
-      {
-        return false;
-      }
-
-      return BehaviorTypeName == other.BehaviorTypeName;
-    }
-    #endregion
 
     public override bool Equals(object other)
     {
@@ -59,8 +66,24 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
       {
         int result = base.GetHashCode();
         result = (result * 397) ^ BehaviorTypeName.GetHashCode();
+        result = (result * 397) ^ SpecificationFieldName.GetHashCode();
+        result = (result * 397) ^ SpecificationFieldNameOnContext.GetHashCode();
         return result;
       }
     }
+
+    #region IEquatable<BehaviorSpecificationTask> Members
+    public bool Equals(BehaviorSpecificationTask other)
+    {
+      if (other == null || !base.Equals(other))
+      {
+        return false;
+      }
+
+      return Equals(BehaviorTypeName, other.BehaviorTypeName) &&
+             Equals(SpecificationFieldName, other.SpecificationFieldName) &&
+             Equals(SpecificationFieldNameOnContext, other.SpecificationFieldNameOnContext);
+    }
+    #endregion
   }
 }

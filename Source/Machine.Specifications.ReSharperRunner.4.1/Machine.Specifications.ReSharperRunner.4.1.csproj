@@ -117,10 +117,14 @@
     <Compile Include="Presentation\BehaviorSpecificationElement.cs" />
     <Compile Include="Presentation\ContextSpecificationElement.cs" />
     <Compile Include="PsiExtensions.cs" />
+    <Compile Include="Runners\Notifications\BehaviorSpecificationRemoteTaskNotification.cs" />
+    <Compile Include="Runners\Notifications\ContextSpecificationRemoteTaskNotification.cs" />
     <Compile Include="Runners\ExceptionResultConverter.cs" />
+    <Compile Include="Runners\Notifications\SilentRemoteTaskNotification.cs" />
     <Compile Include="Runners\RecursiveMSpecTaskRunner.cs" />
-    <Compile Include="Runners\ExecutableSpecificationInfo.cs" />
+    <Compile Include="Runners\Notifications\RemoteTaskNotification.cs" />
     <Compile Include="Runners\PerContextRunListener.cs" />
+    <Compile Include="Runners\Notifications\RemoteTaskNotificationFactory.cs" />
     <Compile Include="Tasks\BehaviorSpecificationTask.cs" />
     <Compile Include="Tasks\BehaviorTask.cs" />
     <Compile Include="Tasks\ContextTask.cs" />
