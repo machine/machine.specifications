@@ -6390,7 +6390,7 @@
         <member name="F:JetBrains.UI.PopupMenu.Impl.SearchHost.InputString">
             <summary>
             Gets or sets the string, as entered in the UI.
-            The changes to this property are withheld for the grace period and after that they apply to the <see cref="F:JetBrains.UI.PopupMenu.Impl.SearchHost.SearchString"/> and <see cref="F:JetBrains.UI.PopupMenu.Impl.SearchHost.SearchRegex"/> properties. During that grace period, the <see cref="F:JetBrains.UI.PopupMenu.Impl.SearchHost.IsPending"/> is <c>True</c>, and <see cref="M:JetBrains.UI.PopupMenu.Impl.SearchHost.CommitPendingChanges"/> will cause the changes to be applied immediately.
+            The changes to this property are withheld for the grace period and after that they apply to the <see cref="F:JetBrains.UI.PopupMenu.Impl.SearchHost.SearchString"/> and <see cref="F:JetBrains.UI.PopupMenu.Impl.SearchHost.SearchPredicate"/> properties. During that grace period, the <see cref="F:JetBrains.UI.PopupMenu.Impl.SearchHost.IsPending"/> is <c>True</c>, and <see cref="M:JetBrains.UI.PopupMenu.Impl.SearchHost.CommitPendingChanges"/> will cause the changes to be applied immediately.
             </summary>
         </member>
         <member name="F:JetBrains.UI.PopupMenu.Impl.SearchHost.IsActive">
@@ -6416,7 +6416,7 @@
             Otherwise, just the user-assigned value is stored.
             </summary>
         </member>
-        <member name="F:JetBrains.UI.PopupMenu.Impl.SearchHost.SearchRegex">
+        <member name="F:JetBrains.UI.PopupMenu.Impl.SearchHost.SearchPredicate">
             <summary>
             Gets the current filtering regex, based on the current <see cref="F:JetBrains.UI.PopupMenu.Impl.SearchHost.SearchString"/>.
             </summary>
@@ -6426,14 +6426,14 @@
             Gets the current filtering string. Any changes to the <see cref="F:JetBrains.UI.PopupMenu.Impl.SearchHost.InputString"/> get into this property as the grace period expires.
             </summary>
         </member>
-        <member name="M:JetBrains.UI.PopupMenu.Impl.SearchHost.IsMatch(JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem,System.Text.RegularExpressions.Regex)">
+        <member name="M:JetBrains.UI.PopupMenu.Impl.SearchHost.IsMatch(JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem,System.Func{System.String,System.Boolean})">
             <summary>
-            Checks whether the given <paramref name="item"/> matches the given <paramref name="regex"/>.
+            Checks whether the given <paramref name="item"/> matches the given <paramref name="predicate"/>.
             </summary>
         </member>
-        <member name="M:JetBrains.UI.PopupMenu.Impl.SearchHost.MakeRegex(System.String)">
+        <member name="M:JetBrains.UI.PopupMenu.Impl.SearchHost.MakeSearchPredicate(System.String)">
             <summary>
-            Produces the matcher regular expression out of a plaintext search string.
+            Produces the matcher predicate out of a plaintext search string.
             Throws on errors.
             </summary>
         </member>
@@ -6505,8 +6505,8 @@
         </member>
         <member name="T:JetBrains.UI.PopupMenu.JetPopupMenu">
             <summary>
-            Interface class for the Jet Popup Menu component.
-            Create an instance, set up the properties and call for the <see cref="M:JetBrains.UI.PopupMenu.JetPopupMenu.Show"/> method.
+            <para>Interface class for the Jet Popup Menu component.</para>
+            <para>Create an instance, set up the properties and call for the <see cref="M:JetBrains.UI.PopupMenu.JetPopupMenu.Show"/> method.</para>
             </summary>
         </member>
         <member name="F:JetBrains.UI.PopupMenu.JetPopupMenu.OptionTrace">
@@ -7053,7 +7053,17 @@
             The default <see cref="T:JetBrains.UI.PopupMenu.IToolBarItemInfo"/> interface implementation.
             </summary>
         </member>
+        <member name="M:JetBrains.UI.PopupMenu.ToolbarItemInfo.#ctor(JetBrains.CommonControls.IPresentableItem,JetBrains.UI.RichText.RichText,System.Windows.Forms.Keys,System.Boolean,System.Action{JetBrains.UI.PopupMenu.Impl.JetPopupMenuDoc})">
+            <summary>
+            Initializes all of the fields.
+            </summary>
+        </member>
         <member name="M:JetBrains.UI.PopupMenu.ToolbarItemInfo.#ctor(JetBrains.CommonControls.IPresentableItem,JetBrains.UI.RichText.RichText,System.Windows.Forms.Keys,System.Boolean,System.Action)">
+            <summary>
+            Initializes all of the fields.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.PopupMenu.ToolbarItemInfo.#ctor(JetBrains.CommonControls.IPresentableItem,JetBrains.UI.RichText.RichText,System.Windows.Forms.Keys,System.Boolean)">
             <summary>
             Initializes all of the fields.
             </summary>

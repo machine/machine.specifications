@@ -57,6 +57,16 @@
             Tries to find Windows SDK v6 or higher and returns the path to its Bin folder, or <c>Null</c> if not found.
             </summary>
         </member>
+        <member name="T:JetBrains.ProjectModel.Impl.ProjectFileModificationCookie">
+            <summary>
+            A modification cookie for a set of documents that are project-file-based.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ProjectModel.Impl.ProjectFileModificationCookie.ProjectFiles">
+            <summary>
+            Gets the set of project files involved in this modification.
+            </summary>
+        </member>
         <member name="M:JetBrains.ProjectModel.IProjectModelElementPresenter.GetIcon(JetBrains.ProjectModel.IProjectModelElement)">
             <summary>
             Gets an icon for project model element
@@ -356,7 +366,7 @@
             Makes the project reference the specified module
             </summary>
         </member>
-        <member name="M:JetBrains.ProjectModel.IProject.AddAssemblyReference(System.Reflection.AssemblyName,JetBrains.Util.FileSystemPath,System.Boolean,System.Boolean)">
+        <member name="M:JetBrains.ProjectModel.IProject.AddAssemblyReference(JetBrains.Metadata.Utils.AssemblyNameInfo,JetBrains.Util.FileSystemPath,System.Boolean,System.Boolean)">
             <summary>
             Adds assembly with the specified name to the project's references
             location indicates assembly location. Null or empty id unknown
@@ -480,6 +490,18 @@
             Looks for the solution settings from the previous version of R#.
             </summary>
         </member>
+        <member name="M:JetBrains.ProjectModel.Impl.SolutionBase.JetBrains#Util#IUserDataHolder#PutData``1(JetBrains.Util.Key{``0},``0)">
+            <summary>
+            Stores given value by specified key.
+            Use <code>PutData(key, null)</code> to remove the association.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ProjectModel.Impl.SolutionBase.JetBrains#Util#IUserDataHolder#GetData``1(JetBrains.Util.Key{``0})">
+            <summary>
+            Retrieves value associated with given key.
+            Returns null when no value is associated.
+            </summary>
+        </member>
         <member name="M:JetBrains.ProjectModel.Impl.SolutionManagerBase.HandleCreateFile(JetBrains.ProjectModel.Impl.ProjectFolderImpl,JetBrains.Util.FileSystemPath,JetBrains.ProjectModel.IProjectFile@)">
             <summary>
             Implementing these functions gets manager a chance to control file behavior. 
@@ -571,6 +593,12 @@
             <param name="solution">Owning solution.</param>
             <param name="path">Project location or project file location.</param>
             <returns>The project, or <c>Null</c>.</returns>
+        </member>
+        <member name="M:JetBrains.ProjectModel.DefaultNamespaceProperty.GetDefaultNamespaceProperty(JetBrains.ProjectModel.IProject)">
+            <summary>
+            The method should be called by <see cref="!:IPsiModule"/> only
+            Use IPsiModule.GetDefaultNamespace instead
+            </summary>
         </member>
         <member name="T:JetBrains.ProjectModel.impl.SpecialFiles.SpecialFilesManager">
             <summary>

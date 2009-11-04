@@ -978,7 +978,7 @@
             The assembly configurations string value, as passed to the ctor.
             </summary>
         </member>
-        <member name="M:JetBrains.Application.Install.Installer.DumpInstallationData(JetBrains.Build.InstallationData.InstallationDataXml,System.String)">
+        <member name="M:JetBrains.Application.Install.Installer.DumpInstallationData(JetBrains.Application.Install.InstallationData.InstallationData,System.String)">
             <summary>
             Dupms the given Registry data into a file.
             </summary>
@@ -1000,15 +1000,15 @@
             Do not call, use <see cref="P:JetBrains.Application.Install.Installer.MapAttributeToInstallers"/>.
             </summary>
         </member>
-        <member name="M:JetBrains.Application.Install.Installer.InvokeAttributeInstallersInstance(JetBrains.Build.InstallationData.InstallationDataXml)">
+        <member name="M:JetBrains.Application.Install.Installer.InvokeAttributeInstallersInstance(JetBrains.Application.Install.InstallationData.InstallationData)">
             <summary>
             Invokes the registration handlers for assembly attributes, see <see cref="P:JetBrains.Application.Install.Installer.MapAttributeToInstallers"/>, from the assemblies listed in the <c>AllAssemblies.xml</c>.
             </summary>
         </member>
-        <member name="M:JetBrains.Application.Install.Installer.InvokeAttributeInstallersStatic(JetBrains.Build.InstallationData.InstallationDataXml)">
+        <member name="M:JetBrains.Application.Install.Installer.InvokeAttributeInstallersStatic(JetBrains.Application.Install.InstallationData.InstallationData)">
             <summary>
             Collects the one-time global registration data from the attribute installers, one that is not per-attribute or per-assembly.
-            Invoked from <see cref="M:JetBrains.Application.Install.Installer.InvokeAttributeInstallersInstance(JetBrains.Build.InstallationData.InstallationDataXml)"/>, don't call manually.
+            Invoked from <see cref="M:JetBrains.Application.Install.Installer.InvokeAttributeInstallersInstance(JetBrains.Application.Install.InstallationData.InstallationData)"/>, don't call manually.
             </summary>
         </member>
         <member name="M:JetBrains.Application.Install.Installer.AssertVersionSpecific">
@@ -1527,11 +1527,6 @@
             Throws if there is no such component. Use <see cref="M:JetBrains.ComponentModel.IComponentContainer.HasComponent``1"/> to check.
             </summary>
         </member>
-        <member name="M:JetBrains.ComponentModel.IComponentContainer.GetComponents">
-            <summary>
-            Returns all of the component implementations, arranged in a stable order.
-            </summary>
-        </member>
         <member name="M:JetBrains.ComponentModel.IComponentContainer.HasComponent``1">
             <summary>
             Gets whether a component whose interface type is <typeparamref name="TInterface"/> is available.
@@ -1566,9 +1561,14 @@
             The sink sees some items going away from the collection view.
             </summary>
         </member>
-        <member name="F:JetBrains.ComponentModel.ComponentContainer.myAllComponentsInitialized">
+        <member name="F:JetBrains.ComponentModel.ComponentContainer.myFOnErrorIgnore">
             <summary>
-            Used to shortcut <see cref="M:JetBrains.ComponentModel.ComponentContainer.InitializeComponentIfNeeded(JetBrains.ComponentModel.IComponent,System.Action{System.Exception},System.Type)"/>.
+            Delegate instance cached for performance.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ComponentModel.ComponentContainer.myFOnErrorThrow">
+            <summary>
+            Delegate instance cached for performance.
             </summary>
         </member>
         <member name="F:JetBrains.ComponentModel.ComponentContainer.myComponentDeclarations">
@@ -1576,11 +1576,13 @@
             Monitors component types coming and going.
             Assigned in <see cref="M:JetBrains.ComponentModel.ComponentContainer.InitializeComponents(JetBrains.ComponentModel.ComponentDeclarationsCache)"/>, released in <see cref="M:JetBrains.ComponentModel.ComponentContainer.Dispose"/>.
             Note: must not be disposed of, it's reusable!
+            Primary Thread access only.
             </summary>
         </member>
         <member name="F:JetBrains.ComponentModel.ComponentContainer.myComponentInitOrderCounter">
             <summary>
             The first free slot for adding to <see cref="F:JetBrains.ComponentModel.ComponentContainer.myComponentInitOrderMap"/>.
+            UI Thread access only.
             </summary>
         </member>
         <member name="F:JetBrains.ComponentModel.ComponentContainer.myComponentInitOrderMap">
@@ -1588,6 +1590,20 @@
             Maps a component instance to its initialization sequence number (this is intentionally non per-Type).
             Counted by exit from <see cref="M:JetBrains.ComponentModel.IComponent.Init"/>.
             Could be used to dispose of the components: when disposed of in reverse init-exit order, it's guaranteed that the set of components not disposed of yet will be no smaller than what was accessible to the component in its init.
+            Primary Thread access only.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ComponentModel.ComponentContainer.myComponentsSortedByType">
+            <summary>
+            Lists values of <see cref="F:JetBrains.ComponentModel.ComponentContainer.myMapImplTypeToComponent"/> sorted by their implementation type. This provides for the stable sorting order, as needed for serializing settings to get the same text representation of the same data repeatedly.
+            Primary thread use only.
+            Updated on each copy-on-write of <see cref="F:JetBrains.ComponentModel.ComponentContainer.myMapImplTypeToComponent"/>. This seems to be better than having the SortedDictionary for storage (O(log(N)) retrieval instead of O(1) for hash-based dictionary).
+            </summary>
+        </member>
+        <member name="F:JetBrains.ComponentModel.ComponentContainer.myCurrentInitializingComponent">
+            <summary>
+            Prevent circular component dependencies: component Init could cause Init of another component when it's accessed, don't allow looping such calls. <see cref="F:JetBrains.ComponentModel.ComponentContainer.myCurrentInitializingComponent"/> is the only component whose GetComponent could be looped from Init.
+            Primary Thread modifications only (inside <see cref="M:JetBrains.ComponentModel.ComponentContainer.InitializeComponentIfNeeded(JetBrains.ComponentModel.ComponentContainer.ComponentInstanceData,System.Action{System.Exception})"/>), lock-free access.
             </summary>
         </member>
         <member name="F:JetBrains.ComponentModel.ComponentContainer.myDispatcher">
@@ -1595,36 +1611,31 @@
             Marks the container's thread affinity.
             </summary>
         </member>
-        <member name="F:JetBrains.ComponentModel.ComponentContainer.myHashComponentsBeingInitialized">
-            <summary>
-            The components are being initialized (we're currently on the stack of their initialization).
-            Components might get other components from their init and exec arbitrary code, we prevent reentrancy into the component init.
-            </summary>
-        </member>
-        <member name="F:JetBrains.ComponentModel.ComponentContainer.myHashComponentsInitialized">
-            <summary>
-            The components that have already been initialized.
-            </summary>
-        </member>
-        <member name="F:JetBrains.ComponentModel.ComponentContainer.myHashInterfaceTypesEverKnown">
-            <summary>
+        <member name="F:JetBrains.ComponentModel.ComponentContainer.myInterfaceTypesEverKnown">
+            <summary> // TODO: proceed from here!!
             The interface types of components that ever were present in this container, to tell apart the errors when requesting a nonexistent component that has gone away already or has never been here.
+            Must be immutable, Primary thread copy-on-write, lock-free access on any threads.
             </summary>
         </member>
-        <member name="F:JetBrains.ComponentModel.ComponentContainer.myIsCreatingComponentInstances">
+        <member name="F:JetBrains.ComponentModel.ComponentContainer.myIsAddingRemovingComponentDeclarationGroups">
             <summary>
-            When a group of component types is loaded, and their instances are created, this flag is raised.
-            It disables calls to <see cref="M:JetBrains.ComponentModel.ComponentContainer.GetComponent``1"/>.
+            When a group of component types is loaded, and their instances are created, this flag is raised. Same for unloading.
+            Prevents reentrancy in these methods because they use copy-on-write which is not reentrable.
+            Primary thread modifications only.
             </summary>
         </member>
         <member name="F:JetBrains.ComponentModel.ComponentContainer.myMapImplTypeToComponent">
             <summary>
             Looks up component instances by the type of their implementation.
+            There're components without any interfaces, that's why we need this map at all.
+            Must be immutable, Primary thread copy-on-write, lock-free access on any threads.
             </summary>
         </member>
         <member name="F:JetBrains.ComponentModel.ComponentContainer.myMapIntfTypeToComponent">
             <summary>
             Looks up component instances by the type of their interface.
+            This is the main component lookup bag.
+            Must be immutable, Primary thread copy-on-write, lock-free access on any threads.
             </summary>
         </member>
         <member name="F:JetBrains.ComponentModel.ComponentContainer.ConfigurationElementName">
@@ -1635,8 +1646,13 @@
         <member name="M:JetBrains.ComponentModel.ComponentContainer.AssertValidComponent(JetBrains.ComponentModel.IComponent)">
             <summary>
             <para>Allows to validate components in the container.</para>
-            <para>Throwing an exception will prevent the component from being loaded.</para> // TODO(H): Check
+            <para>Throwing an exception will prevent the component from being loaded.</para>
             <para>If the error is non-fatal, report it with <see cref="T:JetBrains.Util.Logger"/>'s assertion methods.</para>
+            </summary>
+        </member>
+        <member name="M:JetBrains.ComponentModel.ComponentContainer.GetInitializedComponentsInStableOrder">
+            <summary>
+            Gets all of the currently initialized components in an order that is stable between product runs.
             </summary>
         </member>
         <member name="M:JetBrains.ComponentModel.ComponentContainer.InitializeComponents(JetBrains.ComponentModel.ComponentDeclarationsCache)">
@@ -1649,17 +1665,14 @@
             <summary>
             Just calls the component's <see cref="M:System.IDisposable.Dispose"/>.
             Part of the shutdown.
+            Primary thread use only.
             </summary>
         </member>
         <member name="M:JetBrains.ComponentModel.ComponentContainer.InitializeComponent(JetBrains.ComponentModel.IComponent)">
             <summary>
-            Initializes the component by calling its Init method.
-            Might be reentered if component's Init triggers an Init of some other component.
-            </summary>
-        </member>
-        <member name="M:JetBrains.ComponentModel.ComponentContainer.IsComponentInitialized(JetBrains.ComponentModel.IComponent)">
-            <summary>
-            Tells whether the component's <see cref="M:JetBrains.ComponentModel.IComponent.Init"/> has been called, and <see cref="M:System.IDisposable.Dispose"/> has been not.
+            Initializes the component by calling its <see cref="M:JetBrains.ComponentModel.IComponent.Init"/> method.
+            Might be reentered (for different components only) if component's Init triggers an Init of some other component.
+            Primary thread use only.
             </summary>
         </member>
         <member name="M:JetBrains.ComponentModel.ComponentContainer.IsComponentSupported(JetBrains.ComponentModel.ComponentDescriptor)">
@@ -1668,29 +1681,47 @@
             Override in derived classes to provide the filtering.
             </summary>
         </member>
-        <member name="M:JetBrains.ComponentModel.ComponentContainer.ComponentDeclarationCreate(JetBrains.ComponentModel.ComponentDescriptor)">
+        <member name="M:JetBrains.ComponentModel.ComponentContainer.InitializeComponentIfNeeded(JetBrains.ComponentModel.ComponentContainer.ComponentInstanceData,System.Action{System.Exception})">
             <summary>
-            Called to create a new component from its declaration, typically when the container is inited or new assemblies are loaded.
-            Does not do <see cref="M:JetBrains.ComponentModel.IComponent.Init"/>.
+            To be called from <c>TryGetComponent…</c> only.
+            Inits the component if it has not been inited yet.
+            Usually the caller would check if the component is inited, for speed; we check here once again just in case.
+            Primary thread only (ignored for already-initializeds).
+            </summary>
+            <param name="data">Thing to init.</param>
+            <param name="FOnError">Throw out to abort and never get an invalid component. Ignore or log to allow silent failures, check retval.</param>
+            <returns><c>True</c> if the component is in the initialized state on return. <c>False</c> in case of problems, shouldn't be if <paramref name="FOnError"/> throws.</returns>
+        </member>
+        <member name="M:JetBrains.ComponentModel.ComponentContainer.OnAdd_Logical(System.Collections.Generic.IEnumerable{JetBrains.ComponentModel.ComponentDescriptor})">
+            <summary>
+            Logical Creation.
+            Components are initialized.
             </summary>
         </member>
-        <member name="M:JetBrains.ComponentModel.ComponentContainer.ComponentDeclarationDestroy(JetBrains.ComponentModel.ComponentDescriptor)">
+        <member name="M:JetBrains.ComponentModel.ComponentContainer.OnAdd_Physical(System.Collections.Generic.IEnumerable{JetBrains.ComponentModel.ComponentDescriptor})">
             <summary>
-            Called to destroy a component previously created from this declaration, typically when the container is torn down or some assemblies are “unloaded”.
-            Does not call <see cref="M:System.IDisposable.Dispose"/> on the component, this must be done by the caller.
+            Physical Creation.
+            Component instances are created and added to the store, but not initialized.
             </summary>
         </member>
-        <member name="M:JetBrains.ComponentModel.ComponentContainer.SetInstance(System.Type,JetBrains.ComponentModel.IComponent)">
+        <member name="M:JetBrains.ComponentModel.ComponentContainer.OnRemove_Logical(System.Collections.Generic.List{JetBrains.ComponentModel.ComponentDescriptor})">
             <summary>
-            Stores a new instance in the container.
+            Logical Destruction.
+            Components are disposed of.
             </summary>
-            <param name="interfaceType">Component interface type, might be missing.</param>
-            <param name="component">Component implementation, identifies the component impl type.</param>
+        </member>
+        <member name="M:JetBrains.ComponentModel.ComponentContainer.OnRemove_Physical(System.Collections.Generic.IEnumerable{JetBrains.ComponentModel.ComponentDescriptor})">
+            <summary>
+            Physical Removal.
+            Component instance datas are removed from the store.
+            </summary>
         </member>
         <member name="M:JetBrains.ComponentModel.ComponentContainer.TryGetComponentCore(System.Type,System.Action{System.Exception})">
             <summary>
             Core impl for [Try]GetComponent. NotNull or CanBeNull depending on the params.
             </summary>
+            <param name="componentInterfaceType">Component interface to look up.</param>
+            <param name="FOnError">Throw out to abort and get NotNull, ignore or log to get CanBeNull.</param>
         </member>
         <member name="M:JetBrains.ComponentModel.ComponentContainer.JetBrains#ComponentModel#ICollectionChangedEventSink{JetBrains#ComponentModel#ComponentDescriptor}#OnAdd(System.Collections.Generic.ICollection{JetBrains.ComponentModel.ComponentDescriptor})">
             <summary>
@@ -1700,11 +1731,6 @@
         <member name="M:JetBrains.ComponentModel.ComponentContainer.JetBrains#ComponentModel#ICollectionChangedEventSink{JetBrains#ComponentModel#ComponentDescriptor}#OnRemove(System.Collections.Generic.ICollection{JetBrains.ComponentModel.ComponentDescriptor})">
             <summary>
             The sink sees some items going away from the collection view.
-            </summary>
-        </member>
-        <member name="M:JetBrains.ComponentModel.ComponentContainer.GetComponents">
-            <summary>
-            Returns all of the component implementations, arranged in a stable order.
             </summary>
         </member>
         <member name="M:JetBrains.ComponentModel.ComponentContainer.TryGetComponent(System.Type)">
@@ -1722,6 +1748,53 @@
         <member name="P:JetBrains.ComponentModel.ComponentContainer.ComponentConstructorArgument">
             <summary>
             An argument to the component constructor. The component container itself, by default.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ComponentModel.ComponentContainer.ComponentInitState.Clean">
+            <summary>
+            The component has just been created, it has not been initialized yet.
+            Cannot be returned from GetComponent in this state.
+            If queried from the Primary thread, initializes the component; on other threads, fails.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ComponentModel.ComponentContainer.ComponentInitState.DoingInit">
+            <summary>
+            We're currently initializing the component.
+            Can be queried on the Primary thread only if there're no nested component initializations (because such a condition means a circular dependency); on other threads, fails.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ComponentModel.ComponentContainer.ComponentInitState.Initialized">
+            <summary>
+            The component has been initialized and its instance is accessible from any thread.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ComponentModel.ComponentContainer.ComponentInitState.Corrupted">
+            <summary>
+            We attempted to init the component, but it has failed to complete its Init.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ComponentModel.ComponentContainer.ComponentInstanceData.#ctor(JetBrains.ComponentModel.ComponentDescriptor,System.Object)">
+            <summary>
+            Creates the component instance.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ComponentModel.ComponentContainer.ComponentInstanceData.Component">
+            <summary>
+            The component instance.
+            Three phases:
+            (1) Non-Initialized component, <see cref="F:JetBrains.ComponentModel.ComponentContainer.ComponentInstanceData.Component"/> is non-<c>Null</c> by construction, <see cref="F:JetBrains.ComponentModel.ComponentContainer.ComponentInstanceData.IsInitialized"/> is <c>False</c>. Components are first all created, then all inited, that's why this state exists. Getting this component on the Primary thread inits it, on any other thread fails.
+            (2) Running component, <see cref="F:JetBrains.ComponentModel.ComponentContainer.ComponentInstanceData.Component"/> is still non-<c>Null</c>, <see cref="F:JetBrains.ComponentModel.ComponentContainer.ComponentInstanceData.IsInitialized"/> is <c>True</c>. Possibly, not all components enter this state. Main state of the component when the product is alive. Such a component can be gotten-instance without any restrictions.
+            (3) Disposed component. <see cref="F:JetBrains.ComponentModel.ComponentContainer.ComponentInstanceData.Component"/> is <c>Null</c>, <see cref="F:JetBrains.ComponentModel.ComponentContainer.ComponentInstanceData.IsInitialized"/> is undefined. The datas are removed from the dictionary in bulk, because the dictionary is copy-on-write, and until the pack of components is removed, those that were disposed are in this state. Getting such a component fails.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ComponentModel.ComponentContainer.ComponentInstanceData.Descriptor">
+            <summary>
+            The decriptor from which the component were created. Gives out its interface type.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ComponentModel.ComponentContainer.ComponentInstanceData.IsInitialized">
+            <summary>
+            Init state of the component: whether it is ready for handing out or not, plus a couple service states.
             </summary>
         </member>
         <member name="T:JetBrains.ComponentModel.IXmlExternalizableComponentContainer">
@@ -2487,13 +2560,13 @@
             Gets the folder where the assemblies of this kind reside.
             </summary>
         </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind.ResolveFolder(System.Func{JetBrains.Build.InstallationData.SourceRootXml,JetBrains.Util.FileSystemPath})">
+        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind.ResolveFolder(System.Func{JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot,JetBrains.Util.FileSystemPath})">
             <summary>
             Gets the folder where the assemblies of this kind reside.
             </summary>
             <param name="FResolveRoot">Resolves the source root dirs in the project. Get from <see cref="T:JetBrains.Application.Install.Installer"/> or elsewhere.</param>
         </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind.FindAssemblyFile(System.String,System.Func{JetBrains.Build.InstallationData.SourceRootXml,JetBrains.Util.FileSystemPath})">
+        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind.FindAssemblyFile(System.String,System.Func{JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot,JetBrains.Util.FileSystemPath})">
             <summary>
             Gets the assembly file.
             </summary>
@@ -2723,291 +2796,123 @@
         <member name="P:JetBrains.Build.GuidCache.StrictGuidXml.Value">
             <remarks/>
         </member>
-        <member name="T:JetBrains.Build.InstallationData.InstallationDataXml">
-            <remarks/>
-        </member>
-        <member name="M:JetBrains.Build.InstallationData.InstallationDataXml.RemoveDuplicates">
+        <member name="T:JetBrains.Application.Install.InstallationData.InstallationData">
             <summary>
-            Checks for duplicate keys and values, removes, if any.
+            The root element of the product installation data.
             </summary>
         </member>
-        <member name="M:JetBrains.Build.InstallationData.InstallationDataXml.EnsureNotNull">
+        <member name="M:JetBrains.Application.Install.InstallationData.InstallationData.GuidByVsVersion(System.Collections.Generic.Dictionary{System.Version,System.Guid},System.Version)">
             <summary>
-            Makes sure all of the collections are non-Null (but may be empty).
+            Helper for per-VS installers. Looks up GUIDs per VS version.
             </summary>
         </member>
-        <member name="M:JetBrains.Build.InstallationData.InstallationDataXml.MergeWith(JetBrains.Build.InstallationData.InstallationDataXml)">
+        <member name="M:JetBrains.Application.Install.InstallationData.InstallationData.MergeWith(JetBrains.Application.Install.InstallationData.InstallationData)">
             <summary>
             Merges the <paramref name="addon"/> installation data into the host's, and destroys the former.
             All of the collections are guaranteed to be non-Null
             </summary>
         </member>
-        <member name="P:JetBrains.Build.InstallationData.InstallationDataXml.Registry">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.InstallationData.InstallationDataXml.Files">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.InstallationData.InstallationDataXml.RegistryDataXmlSchema">
-            <summary>
-            Gets the XSD for the Registry Data XML files.
-            </summary>
-        </member>
-        <member name="T:JetBrains.Build.InstallationData.RegistryXml">
-            <remarks/>
-        </member>
-        <member name="M:JetBrains.Build.InstallationData.RegistryXml.#ctor">
-            <summary>
-            The default ctor, leaves the collections empty.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Build.InstallationData.RegistryXml.#ctor(System.Collections.Generic.ICollection{JetBrains.Build.InstallationData.RegistryKeyXml},System.Collections.Generic.ICollection{JetBrains.Build.InstallationData.RegistryValueXml})">
-            <summary>
-            Creates a <see cref="T:JetBrains.Build.InstallationData.RegistryXml"/> object and fills it with data.
-            </summary>
-            <param name="keys">Keys.</param>
-            <param name="values">Values.</param>
-        </member>
-        <member name="M:JetBrains.Build.InstallationData.RegistryXml.MergeWith(JetBrains.Build.InstallationData.RegistryXml)">
-            <summary>
-            Merges the <paramref name="addon"/> <see cref="T:JetBrains.Build.InstallationData.RegistryXml"/> keys and values into the host's, and destroys the former.
-            The <see cref="P:JetBrains.Build.InstallationData.RegistryXml.Key"/> or <see cref="P:JetBrains.Build.InstallationData.RegistryXml.Value"/> colections may be <c>Null</c> on either parameter, but on return they're guaranteed to be non-<c>Null</c> in this object.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Build.InstallationData.RegistryXml.RemoveDuplicates">
+        <member name="M:JetBrains.Application.Install.InstallationData.InstallationData.RemoveDuplicates">
             <summary>
             Checks for duplicate keys and values, removes, if any.
             </summary>
         </member>
-        <member name="M:JetBrains.Build.InstallationData.RegistryXml.ToInstallationData">
+        <member name="P:JetBrains.Application.Install.InstallationData.InstallationData.Folders">
             <summary>
-            Wraps into the installation data object.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:JetBrains.Build.InstallationData.RegistryXml.EnsureNotNull">
-            <summary>
-            Makes sure all of the collections are non-Null (but may be empty).
+            Gets the list of folders with files to install.
             </summary>
         </member>
-        <member name="P:JetBrains.Build.InstallationData.RegistryXml.Key">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.InstallationData.RegistryXml.Value">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.InstallationData.RegistryXml.Macro">
-            <remarks/>
-        </member>
-        <member name="T:JetBrains.Build.InstallationData.RegistryKeyXml">
-            <remarks/>
-        </member>
-        <member name="T:JetBrains.Build.InstallationData.RegistryBaseXml">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.InstallationData.RegistryBaseXml.Hive">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.InstallationData.RegistryBaseXml.Key">
-            <remarks/>
-        </member>
-        <member name="M:JetBrains.Build.InstallationData.RegistryKeyXml.#ctor(JetBrains.Build.InstallationData.RegistryHiveXml,System.String)">
+        <member name="P:JetBrains.Application.Install.InstallationData.InstallationData.Registry">
             <summary>
-            Creates a <see cref="T:JetBrains.Build.InstallationData.RegistryValueXml"/> object.
-            </summary>
-            <param name="hive">Hive.</param>
-            <param name="key">Path to the key under the hive.</param>
-        </member>
-        <member name="M:JetBrains.Build.InstallationData.RegistryKeyXml.CreateValue(System.String,System.Object)">
-            <summary>
-            Creates a new Registry Value that derives its Hive and Key path from the current Registry key.
-            </summary>
-            <param name="name">Name of the value.</param>
-            <param name="value">Value of the value, must be either a <see cref="T:System.String"/> or an <see cref="T:System.Int32"/>.</param>
-            <returns>The new registry value.</returns>
-        </member>
-        <member name="M:JetBrains.Build.InstallationData.RegistryKeyXml.CreateKey(System.String)">
-            <summary>
-            Creates a new Registry Key under the current Registry key.
-            </summary>
-            <param name="relpath">Relative path of the nested Key.</param>
-            <returns>The new registry value.</returns>
-        </member>
-        <member name="M:JetBrains.Build.InstallationData.RegistryKeyXml.ToArray">
-            <summary>
-            Creates a new array consisting of only this object.
+            Gets the installed Registry keys and values.
             </summary>
         </member>
-        <member name="M:JetBrains.Build.InstallationData.RegistryKeyXml.ToString">
+        <member name="T:JetBrains.Application.Install.InstallationData.InstalledFileItemBase">
             <summary>
-            Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+            Base class for all of the files installed to the target system by the Installation Data items.
             </summary>
-            
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledFileItemBase.#ctor(System.String)">
+            <summary>
+            Sets the name of the file item on the target filesystem.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledFileItemBase.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+            </summary>
             <returns>
-            A <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+            true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+            </returns>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. </param><exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledFileItemBase.GetHashCode">
+            <summary>
+            Serves as a hash function for a particular type. 
+            </summary>
+            <returns>
+            A hash code for the current <see cref="T:System.Object"/>.
             </returns>
             <filterpriority>2</filterpriority>
         </member>
-        <member name="T:JetBrains.Build.InstallationData.RegistryHiveXml">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.InstallationData.RegistryHiveXml.Hkcr">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.InstallationData.RegistryHiveXml.Hklm">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.InstallationData.RegistryHiveXml.Hkcu">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.InstallationData.RegistryHiveXml.Hkmu">
-            <remarks/>
-        </member>
-        <member name="T:JetBrains.Build.InstallationData.FileXml">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.InstallationData.FileXml.SourceName">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.InstallationData.FileXml.TargetName">
-            <remarks/>
-        </member>
-        <member name="T:JetBrains.Build.InstallationData.FolderXml">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.InstallationData.FolderXml.Files">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.InstallationData.FolderXml.Id">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.InstallationData.FolderXml.SourceRoot">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.InstallationData.FolderXml.SourceDir">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.InstallationData.FolderXml.TargetRoot">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.InstallationData.FolderXml.TargetDir">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.InstallationData.FolderXml.MsiComponentGuid">
-            <remarks/>
-        </member>
-        <member name="T:JetBrains.Build.InstallationData.SourceRootXml">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.InstallationData.SourceRootXml.ProductBinariesDir">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.InstallationData.SourceRootXml.ProductHomeDir">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.InstallationData.SourceRootXml.PlatformHomeDir">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.InstallationData.SourceRootXml.ProductIntermediateDir">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.InstallationData.SourceRootXml.PlatformIntermediateDir">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.InstallationData.SourceRootXml.ProductReferencesDir">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.InstallationData.SourceRootXml.PlatformReferencesDir">
-            <remarks/>
-        </member>
-        <member name="T:JetBrains.Build.InstallationData.TargetRootXml">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.InstallationData.TargetRootXml.InstallDir">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.InstallationData.TargetRootXml.DevEnvInstallDir">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.InstallationData.TargetRootXml.DevEnvRootDir">
-            <remarks/>
-        </member>
-        <member name="T:JetBrains.Build.InstallationData.MacroXml">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.InstallationData.MacroXml.Name">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.InstallationData.MacroXml.DefaultValue">
-            <remarks/>
-        </member>
-        <member name="T:JetBrains.Build.InstallationData.MacroNameXml">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.InstallationData.MacroNameXml.PackageCodeBase">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.InstallationData.MacroNameXml.SystemDir">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.InstallationData.MacroNameXml.ProductBinariesDir">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.InstallationData.MacroNameXml.DateTime">
-            <remarks/>
-        </member>
-        <member name="T:JetBrains.Build.InstallationData.RegistryValueXml">
-            <remarks/>
-        </member>
-        <member name="M:JetBrains.Build.InstallationData.RegistryValueXml.#ctor(JetBrains.Build.InstallationData.RegistryHiveXml,System.String,System.String,System.Object)">
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledFileItemBase.System#IComparable{JetBrains#Application#Install#InstallationData#InstalledFileItemBase}#CompareTo(JetBrains.Application.Install.InstallationData.InstalledFileItemBase)">
             <summary>
-            Creates a <see cref="T:JetBrains.Build.InstallationData.RegistryValueXml"/> object.
+            Compares the current object with another object of the same type.
             </summary>
-            <param name="hive">Hive.</param>
-            <param name="key">Path to the key under the hive.</param>
-            <param name="name">Name of the value.</param>
-            <param name="value">Value of the value, must be either a <see cref="T:System.String"/> or an <see cref="T:System.Int32"/>.</param>
-        </member>
-        <member name="M:JetBrains.Build.InstallationData.RegistryValueXml.ToArray">
-            <summary>
-            Creates a new array consisting of only this object.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Build.InstallationData.RegistryValueXml.ToRegistry">
-            <summary>
-            Creates a new Registry with just this value.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Build.InstallationData.RegistryValueXml.ToString">
-            <summary>
-            Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
-            </summary>
-            
             <returns>
-            A <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+            A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>. 
             </returns>
-            <filterpriority>2</filterpriority>
+            <param name="other">An object to compare with this object.</param>
         </member>
-        <member name="P:JetBrains.Build.InstallationData.RegistryValueXml.Name">
-            <remarks/>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledFileItemBase.Equals(JetBrains.Application.Install.InstallationData.InstalledFileItemBase)">
+            <summary>
+            Indicates whether the current object is equal to another object of the same type.
+            </summary>
+            <returns>
+            true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            </returns>
+            <param name="other">An object to compare with this object.</param>
         </member>
-        <member name="P:JetBrains.Build.InstallationData.RegistryValueXml.Value">
-            <remarks/>
+        <member name="P:JetBrains.Application.Install.InstallationData.InstalledFileItemBase.TargetName">
+            <summary>
+            The local name of the file on the target system. If left empty, will be the same as the source name. Must be left empty if the source name matches more than one file.
+            </summary>
         </member>
-        <member name="P:JetBrains.Build.InstallationData.RegistryValueXml.Type">
-            <remarks/>
+        <member name="T:JetBrains.Application.Install.InstallationData.InstalledFolder">
+            <summary>
+            Folders that contain files that should be installed on the target system.
+            In MSI, they create <c>Directory</c>s and <c>Component</c>s.
+            </summary>
         </member>
-        <member name="P:JetBrains.Build.InstallationData.RegistryValueXml.Permanent">
-            <remarks/>
+        <member name="P:JetBrains.Application.Install.InstallationData.InstalledFolder.Id">
+            <summary>
+            An ID for this folder entry, from which the component, folder and file IDs in the installation database are derived.
+            </summary>
         </member>
-        <member name="T:JetBrains.Build.InstallationData.RegistryValueTypeXml">
-            <remarks/>
+        <member name="P:JetBrains.Application.Install.InstallationData.InstalledFolder.MsiComponentGuid">
+            <summary>
+            GUID for the component to be generated in the installer.
+            </summary>
         </member>
-        <member name="F:JetBrains.Build.InstallationData.RegistryValueTypeXml.Dword">
-            <remarks/>
+        <member name="P:JetBrains.Application.Install.InstallationData.InstalledFolder.SourceDir">
+            <summary>
+            Relative path from the <see cref="P:JetBrains.Application.Install.InstallationData.InstalledFolder.SourceRoot">specified root</see> to the directory on the source system.
+            </summary>
         </member>
-        <member name="F:JetBrains.Build.InstallationData.RegistryValueTypeXml.String">
-            <remarks/>
+        <member name="P:JetBrains.Application.Install.InstallationData.InstalledFolder.SourceRoot">
+            <summary>
+            One of the root folders to locate the file on the source system.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Install.InstallationData.InstalledFolder.TargetDir">
+            <summary>
+            Relative path from the <see cref="P:JetBrains.Application.Install.InstallationData.InstalledFolder.TargetRoot">specified root</see> to the directory on the target system.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Install.InstallationData.InstalledFolder.TargetRoot">
+            <summary>
+            One of the root folders to locate the file on the target system.
+            </summary>
         </member>
         <member name="T:JetBrains.Build.GuidCache.GuidIdXml">
             <remarks/>
@@ -3157,6 +3062,447 @@
             <summary>
             Gets environment in which this component is scoped and allows for other components inqueries
             </summary>
+        </member>
+        <member name="T:JetBrains.Application.Install.InstallationData.InstallationMacroName">
+            <summary>
+            An enumeration of possible macro names, is not used directly in the XML files, but instead serves as a reference info or string constants from the code.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.InstallationData.InstallationMacroName.PackageCodeBase">
+            <summary>
+            Location of the Package assembly.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.InstallationData.InstallationMacroName.SystemDir">
+            <summary>
+            The System directory. Used to locate the mscoree.dll that is the COM Server for us.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.InstallationData.InstallationMacroName.ProductBinariesDir">
+            <summary>
+            The directory that contains the product binaries.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.InstallationData.InstallationMacroName.DateTime">
+            <summary>
+            Date and time at the moment the macro is resolved, in an arbitrary format. Use with care, because the date-time might resolve at the installation time on the user machine. The format is not defined. Fits for producing generation numbers.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.InstallationData.InstallationTargetDirRoot.InstallDir">
+            <summary>
+            Binaries installation directory on the remote system (the Bin folder).
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.InstallationData.InstallationTargetDirRoot.DevEnvInstallDir">
+            <summary>
+            Visual Studio installation directory on the remote system, the one that contains the DevEnv.exe executable file (the Common7\IDE folder).
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.InstallationData.InstallationTargetDirRoot.DevEnvRootDir">
+            <summary>
+            Visual Studio root directory on the remote system, this is two levels above the Visual Studio InstallDir that contains the DevEnv.exe executable file (the Common7\IDE folder).
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.Install.InstallationData.InstalledFile">
+            <summary>
+            A single satellite file in the installation.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledFile.#ctor(System.String)">
+            <summary>
+            An installation of a file whose source name (on the source file system) and target name (on the target file system) are the same.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledFile.#ctor(System.String,System.String)">
+            <summary>
+            An installation of a file whose source name (on the source file system) and target name (on the target file system) are different.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledFile.GetFilesByMask(JetBrains.Util.FileSystemPath)">
+            <summary>
+            Gets the list of files to be installed if the file specifies a wildcard.
+            </summary>
+            <param name="pathSourceDir">The resolved path to the actual source directory of the file.</param>
+            <returns>A tuple for each discovered file: full path to the source file, and the matching name of the target file.</returns>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledFile.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+            </returns>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. </param><exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledFile.GetHashCode">
+            <summary>
+            Serves as a hash function for a particular type. 
+            </summary>
+            <returns>
+            A hash code for the current <see cref="T:System.Object"/>.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledFile.System#IComparable{JetBrains#Application#Install#InstallationData#InstalledFile}#CompareTo(JetBrains.Application.Install.InstallationData.InstalledFile)">
+            <summary>
+            Compares the current object with another object of the same type.
+            </summary>
+            <returns>
+            A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>. 
+            </returns>
+            <param name="other">An object to compare with this object.</param>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledFile.Equals(JetBrains.Application.Install.InstallationData.InstalledFile)">
+            <summary>
+            Indicates whether the current object is equal to another object of the same type.
+            </summary>
+            <returns>
+            true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            </returns>
+            <param name="other">An object to compare with this object.</param>
+        </member>
+        <member name="P:JetBrains.Application.Install.InstallationData.InstalledFile.SourceName">
+            <summary>
+            The local name of the file on the source system. May be a mask that matches more than one file.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.Install.InstallationData.InstalledRegistry">
+            <summary>
+            Wraps all of the Registry-related data in the installation.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledRegistry.#ctor">
+            <summary>
+            The default ctor, leaves the collections empty.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledRegistry.#ctor(System.Collections.Generic.IEnumerable{JetBrains.Application.Install.InstallationData.InstalledRegistryKey},System.Collections.Generic.IEnumerable{JetBrains.Application.Install.InstallationData.InstalledRegistryValue})">
+            <summary>
+            Creates a <see cref="T:JetBrains.Application.Install.InstallationData.InstalledRegistry"/> object and fills it with data.
+            </summary>
+            <param name="keys">Keys.</param>
+            <param name="values">Values.</param>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledRegistry.MergeWith(JetBrains.Application.Install.InstallationData.InstalledRegistry)">
+            <summary>
+            Merges the <paramref name="addon"/> <see cref="T:JetBrains.Application.Install.InstallationData.InstalledRegistry"/> keys and values into the host's, and destroys the former.
+            The <see cref="P:JetBrains.Application.Install.InstallationData.InstalledRegistry.Keys"/> or <see cref="P:JetBrains.Application.Install.InstallationData.InstalledRegistry.Values"/> colections may be <c>Null</c> on either parameter, but on return they're guaranteed to be non-<c>Null</c> in this object.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledRegistry.RemoveDuplicates">
+            <summary>
+            Checks for duplicate keys and values, removes, if any.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledRegistry.ToInstallationData">
+            <summary>
+            Wraps into the installation data object.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Install.InstallationData.InstalledRegistry.Keys">
+            <summary>
+            Registry Keys to install and then REMOVE when uninstalling.
+            A regsitry value does not require that you write its parent key here. Write a key if you'd like to make sure it will be removed by uninstall.
+            For that matter, do not add foreign keys (eg Visual Studio ones) into which we're writing our values.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Install.InstallationData.InstalledRegistry.Values">
+            <summary>
+            Individual registry values to be installed.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.Install.InstallationData.InstalledRegistryKey">
+            <summary>
+            Registry Keys to install and then REMOVE when uninstalling.
+            A regsitry value does not require that you write its parent key here. Write a key if you'd like to make sure it will be removed by uninstall.
+            For that matter, do not add foreign keys (eg Visual Studio ones) into which we're writing our values.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.Install.InstallationData.InstalledRegistryItemBase">
+            <summary>
+            Base class for installer Registry keys and values.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledRegistryItemBase.#ctor(JetBrains.Application.Install.InstallationData.InstalledRegistryHive,System.String)">
+            <summary>
+            Creates a <see cref="T:JetBrains.Application.Install.InstallationData.InstalledRegistryValue"/> object.
+            </summary>
+            <param name="hive">Hive.</param>
+            <param name="key">Path to the key under the hive.</param>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledRegistryItemBase.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Object"/> class.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledRegistryItemBase.System#IComparable{JetBrains#Application#Install#InstallationData#InstalledRegistryItemBase}#CompareTo(JetBrains.Application.Install.InstallationData.InstalledRegistryItemBase)">
+            <summary>
+            Compares the current object with another object of the same type.
+            </summary>
+            <returns>
+            A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>. 
+            </returns>
+            <param name="other">An object to compare with this object.</param>
+        </member>
+        <member name="P:JetBrains.Application.Install.InstallationData.InstalledRegistryItemBase.Hive">
+            <summary>
+            The Registry hive.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Install.InstallationData.InstalledRegistryItemBase.Key">
+            <summary>
+            Path to the key.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledRegistryKey.#ctor(JetBrains.Application.Install.InstallationData.InstalledRegistryHive,System.String)">
+            <summary>
+            Creates a <see cref="T:JetBrains.Application.Install.InstallationData.InstalledRegistryValue"/> object.
+            </summary>
+            <param name="hive">Hive.</param>
+            <param name="key">Path to the key under the hive.</param>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledRegistryKey.CreateKey(System.String)">
+            <summary>
+            Creates a new Registry Key under the current Registry key.
+            </summary>
+            <param name="relpath">Relative path of the nested Key.</param>
+            <returns>The new registry value.</returns>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledRegistryKey.CreateValue(System.String,System.Object)">
+            <summary>
+            Creates a new Registry Value that derives its Hive and Key path from the current Registry key.
+            </summary>
+            <param name="name">Name of the value.</param>
+            <param name="value">Value of the value, must be either a <see cref="T:System.String"/> or an <see cref="T:System.Int32"/>.</param>
+            <returns>The new registry value.</returns>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledRegistryKey.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+            </summary>
+            
+            <returns>
+            A <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledRegistryKey.System#IComparable{JetBrains#Application#Install#InstallationData#InstalledRegistryKey}#CompareTo(JetBrains.Application.Install.InstallationData.InstalledRegistryKey)">
+            <summary>
+            Compares the current object with another object of the same type.
+            </summary>
+            <returns>
+            A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>. 
+            </returns>
+            <param name="other">An object to compare with this object.</param>
+        </member>
+        <member name="F:JetBrains.Application.Install.InstallationData.InstalledRegistryHive.Hkcr">
+            <summary>
+            <c>HKEY_CLASSES_ROOT</c>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.InstallationData.InstalledRegistryHive.Hklm">
+            <summary>
+            <c>HKEY_LOCAL_MACHINE</c>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.InstallationData.InstalledRegistryHive.Hkcu">
+            <summary>
+            <c>HKEY_CURRENT_USER</c>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.InstallationData.InstalledRegistryHive.Hkmu">
+            <summary>
+            <c>HKEY_LOCAL_MACHINE</c> or <c>HKEY_CURRENT_USER</c>, depending on whether the installation is per-machine or per-user.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.Install.InstallationData.InstalledRegistryValue">
+            <summary>
+            Represents a value to be written to the Registry. On uninstallation, the value will be deleted. It is not necessary to have a key element for each value, unless you want it to be deleted upon uninstallation.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledRegistryValue.#ctor(JetBrains.Application.Install.InstallationData.InstalledRegistryHive,System.String,System.String,System.Object)">
+            <summary>
+            Creates a <see cref="T:JetBrains.Application.Install.InstallationData.InstalledRegistryValue"/> object.
+            </summary>
+            <param name="hive">Hive.</param>
+            <param name="key">Path to the key under the hive.</param>
+            <param name="name">Name of the value.</param>
+            <param name="value">Value of the value, must be either a <see cref="T:System.String"/> or an <see cref="T:System.Int32"/>.</param>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledRegistryValue.ToRegistry">
+            <summary>
+            Creates a new Registry with just this value.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledRegistryValue.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+            </summary>
+            
+            <returns>
+            A <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledRegistryValue.System#IComparable{JetBrains#Application#Install#InstallationData#InstalledRegistryValue}#CompareTo(JetBrains.Application.Install.InstallationData.InstalledRegistryValue)">
+            <summary>
+            Compares the current object with another object of the same type.
+            </summary>
+            <returns>
+            A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>. 
+            </returns>
+            <param name="other">An object to compare with this object.</param>
+        </member>
+        <member name="P:JetBrains.Application.Install.InstallationData.InstalledRegistryValue.IsPermanent">
+            <summary>
+            Specifies that the value should be written on registration and left intact on unregistration.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Install.InstallationData.InstalledRegistryValue.Name">
+            <summary>
+            Name of the value under its key, or an empty string for the default value of the key.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Install.InstallationData.InstalledRegistryValue.Type">
+            <summary>
+            Type of the value, which determines the type of the Windows Registry value to be created. The Value must be formatted accordingly.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Install.InstallationData.InstalledRegistryValue.Value">
+            <summary>
+            Value for the value.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot.ProductBinariesDir">
+            <summary>
+            A directory to which the product is built; contains all of the product binaries. Warning: when doing a local install, this is the same as the target InstallDir.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot.ProductHomeDir">
+            <summary>
+            Home directory of the product, can be used to refer to product library files (see also PlatformHomeDir). Shouldn't be used for the Bin folder, see ProductBinariesDir instead, because it may be redirected on the build.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot.PlatformHomeDir">
+            <summary>
+            Home directory of the platform, can be used to refer to platform library files.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot.ProductIntermediateDir">
+            <summary>
+            A directory into which the Product projects build writes its intermediate files.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot.ProductReferencesDir">
+            <summary>
+            A directory with the Product reference assemblies and files.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot.PlatformReferencesDir">
+            <summary>
+            A directory with the Platform reference assemblies and files.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.Install.InstallationData.InstalledRegistryValueType">
+            <summary>
+            Lists possible types for the Registry values.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.InstallationData.InstalledRegistryValueType.Dword">
+            <summary>
+            An integer DWORD value.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.InstallationData.InstalledRegistryValueType.String">
+            <summary>
+            A string value.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.Install.InstallationData.InstalledShellLink">
+            <summary>
+            Installs a shell link (an .lnk file shortcut).
+            Its <see cref="P:JetBrains.Application.Install.InstallationData.InstalledFileItemBase.TargetName"/> and parent folder's <see cref="P:JetBrains.Application.Install.InstallationData.InstalledFolder.TargetRoot"/>/<see cref="P:JetBrains.Application.Install.InstallationData.InstalledFolder.TargetDir"/> point to the place where the shell link file will be created (.lnk), while the <see cref="P:JetBrains.Application.Install.InstallationData.InstalledShellLink.ShellLinkTargetRoot"/>/<see cref="P:JetBrains.Application.Install.InstallationData.InstalledShellLink.ShellLinkTargetDir"/>/<see cref="P:JetBrains.Application.Install.InstallationData.InstalledShellLink.ShellLinkTargetName"/> point to the target the shell link will be referencing.
+            The source information on the parent <see cref="T:JetBrains.Application.Install.InstallationData.InstalledFolder"/> is not used for the shell link.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledShellLink.#ctor(System.String,JetBrains.Application.Install.InstallationData.InstallationTargetDirRoot,System.String,System.String)">
+             <summary>
+             Sets the name of the file item on the target filesystem.
+             </summary>
+            <param name="sShellLinkFileTargetName">
+            	Name of the shell link file itself on the target filesystem.
+            </param>
+            <param name="shellLinkTargetRoot">
+            	Root folder on the target file system this Shell Link will be pointing to.
+            	Note that this is not the location of the shell link (.lnk) file itself.
+            </param>
+            <param name="shellLinkTargetDir">
+            	Relative path from the
+            	<see cref="P:JetBrains.Application.Install.InstallationData.InstalledShellLink.ShellLinkTargetRoot">root folder</see>
+            	on the target file system this Shell Link will be pointing to.
+            	Note that this is not the location of the shell link (.lnk) file itself.
+            </param>
+            <param name="shellLinkTargetName">
+            	Name of the file on the target file system this Shell Link will be pointing to.
+            	Note that this is not the location of the shell link (.lnk) file itself.
+            </param>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledShellLink.Equals(JetBrains.Application.Install.InstallationData.InstalledShellLink)">
+            <summary>
+            Indicates whether the current object is equal to another object of the same type.
+            </summary>
+            <returns>
+            true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            </returns>
+            <param name="other">An object to compare with this object.</param>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledShellLink.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+            </returns>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. </param><exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallationData.InstalledShellLink.GetHashCode">
+            <summary>
+            Serves as a hash function for a particular type. 
+            </summary>
+            <returns>
+            A hash code for the current <see cref="T:System.Object"/>.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="P:JetBrains.Application.Install.InstallationData.InstalledShellLink.ShellLinkTargetDir">
+            <summary>
+            Relative path from the <see cref="P:JetBrains.Application.Install.InstallationData.InstalledShellLink.ShellLinkTargetRoot">root folder</see> on the target file system this Shell Link will be pointing to.
+            Note that this is not the location of the shell link (.lnk) file itself.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Install.InstallationData.InstalledShellLink.ShellLinkTargetName">
+            <summary>
+            Name of the file on the target file system this Shell Link will be pointing to.
+            Note that this is not the location of the shell link (.lnk) file itself.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Install.InstallationData.InstalledShellLink.ShellLinkTargetRoot">
+            <summary>
+            Root folder on the target file system this Shell Link will be pointing to.
+            Note that this is not the location of the shell link (.lnk) file itself.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Threading.InvocatorEx.QueueAtShort(JetBrains.Threading.GroupingEventHost,System.String,System.TimeSpan,System.Action)">
+            <summary>
+            <para>Queues the action to execute once on the <see cref="!:gehost"/>.<see cref="F:JetBrains.Threading.GroupingEventHost.ReentrancyGuard"/>.<see cref="P:JetBrains.Threading.ReentrancyGuard.Dispatcher"/> thread when the timeout elapses.</para>
+            <para>Handles intervals smaller than <see cref="F:JetBrains.Threading.GroupingEvent.MaxInterval"/> only.</para>
+            <para>Returns a token that cancels the action execution. The token disposal is optional.</para>
+            <para>The execution will be either guarded or not, depending on the <see cref="F:JetBrains.Threading.GroupingEventHost.IsGuarded"/> property value.</para>
+            </summary>
+            <param name="gehost"><c>this</c></param>
+            <param name="name">The name for the task.</param>
+            <param name="F">The action to execute. Exceptions will be trapped.</param>
+            <param name="interval">A non-negative time interval.</param>
         </member>
         <member name="F:JetBrains.ComponentModel.ComponentContainerState.Initial">
             <summary>
@@ -3341,7 +3687,12 @@
             It is preferrable that you avoid using <see cref="T:JetBrains.ComponentModel.ProgramConfigurations"/> wherever possible. Place your components in DLLs so that the <see cref="T:JetBrains.Application.AssemblyConfiguration"/> controls the presence of your component by either loading an assembly or omitting it. For example, a Test implementation should be placed in a tests-only assembly.
             </summary>
         </member>
-        <member name="M:JetBrains.Application.SingletonInstanceCollection`1.SetInstance(System.Type,`0)">
+        <member name="T:JetBrains.Application.SortedTypeToInstanceDictionary`1">
+            <summary>
+            A legacy class for the sorted dictionary. (H): Didn't analyze whether it's better than the standard one.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.SortedTypeToInstanceDictionary`1.SetInstance(System.Type,`0)">
             <summary>
             Sets new instance, if <paramref name="o"/> is non-<c>Null</c>.
             Removes an existing instance if <paramref name="o"/> is <c>Null</c>.
@@ -3566,7 +3917,7 @@
             Looks for previous patchings in the config, removes them.
             </summary>
         </member>
-        <member name="M:JetBrains.Application.Install.BindingRedirectionsInstaller.LoadConfigFile(JetBrains.Application.Install.Installer,JetBrains.Build.InstallationData.SourceRootXml,System.String)">
+        <member name="M:JetBrains.Application.Install.BindingRedirectionsInstaller.LoadConfigFile(JetBrains.Application.Install.Installer,JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot,System.String)">
             <summary>
             Loads the source config file, or creates a new one.
             Ensures it contains enough top-level elements.
@@ -3647,15 +3998,15 @@
             <summary>
             Schedulles creation of a new assembly configuration file with binding redirections.
             </summary>
-            <param name="sTargetConfigFileName">Local name of the resulting config file, including all of the extensions. This file will be installed into the <see cref="F:JetBrains.Build.InstallationData.TargetRootXml.InstallDir"/> folder.</param>
+            <param name="sTargetConfigFileName">Local name of the resulting config file, including all of the extensions. This file will be installed into the <see cref="F:JetBrains.Application.Install.InstallationData.InstallationTargetDirRoot.InstallDir"/> folder.</param>
             <param name="sMsiComponentGuid">GUID for the installation component.</param>
         </member>
-        <member name="M:JetBrains.Application.Install.InstallBindingRedirectionsConfigFileAttribute.#ctor(System.String,JetBrains.Build.InstallationData.SourceRootXml,System.String,System.String)">
+        <member name="M:JetBrains.Application.Install.InstallBindingRedirectionsConfigFileAttribute.#ctor(System.String,JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot,System.String,System.String)">
             <summary>
             Schedulles patching of an existing assembly configuration file with binding redirections.
             </summary>
-            <param name="sTargetConfigFileName">Local name of the resulting config file, including all of the extensions. This file will be installed into the <see cref="F:JetBrains.Build.InstallationData.TargetRootXml.InstallDir"/> folder.</param>
-            <param name="sourceroot">Root folder for looking up the original file. This could be <see cref="F:JetBrains.Build.InstallationData.SourceRootXml.ProductBinariesDir"/> (same as destination), but this is not a recommended scenario, as the file might be patched multiple times in this case. If <paramref name="sSourceRelativePath"/> is not specified, this value is ignored.</param>
+            <param name="sTargetConfigFileName">Local name of the resulting config file, including all of the extensions. This file will be installed into the <see cref="F:JetBrains.Application.Install.InstallationData.InstallationTargetDirRoot.InstallDir"/> folder.</param>
+            <param name="sourceroot">Root folder for looking up the original file. This could be <see cref="F:JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot.ProductBinariesDir"/> (same as destination), but this is not a recommended scenario, as the file might be patched multiple times in this case. If <paramref name="sSourceRelativePath"/> is not specified, this value is ignored.</param>
             <param name="sSourceRelativePath">An optional path to the source file, relative to <paramref name="sourceroot"/>. If non-<c>Null</c>, then the binding redirections are added to the contents of that file. If <c>Null</c>, then a new file is created.</param>
             <param name="sMsiComponentGuid">GUID for the installation component.</param>
         </member>
@@ -3685,7 +4036,7 @@
             The files may reside either in Lib or Bin folders.
             </summary>
         </member>
-        <member name="M:JetBrains.Application.Install.InstallFileAttribute.#ctor(System.String,JetBrains.Build.InstallationData.TargetRootXml,System.String,JetBrains.Build.InstallationData.SourceRootXml,System.String,System.String,System.Boolean,System.String)">
+        <member name="M:JetBrains.Application.Install.InstallFileAttribute.#ctor(System.String,JetBrains.Application.Install.InstallationData.InstallationTargetDirRoot,System.String,JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot,System.String,System.String,System.Boolean,System.String)">
             <summary>
             Adds one or more arbitrary files to the installation.
             </summary>
@@ -3743,7 +4094,7 @@
             Performs local-system installations, hence “Live”.
             </summary>
         </member>
-        <member name="M:JetBrains.Application.Install.LocalInstaller.Install(JetBrains.Build.InstallationData.InstallationDataXml,JetBrains.Application.Install.RegistrationStage,System.Collections.Generic.IDictionary{System.String,System.String},System.Func{JetBrains.Build.InstallationData.SourceRootXml,JetBrains.Util.FileSystemPath},System.Func{JetBrains.Build.InstallationData.TargetRootXml,JetBrains.Util.FileSystemPath},System.Action{System.String})">
+        <member name="M:JetBrains.Application.Install.LocalInstaller.Install(JetBrains.Application.Install.InstallationData.InstallationData,JetBrains.Application.Install.RegistrationStage,System.Collections.Generic.IDictionary{System.String,System.String},System.Func{JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot,JetBrains.Util.FileSystemPath},System.Func{JetBrains.Application.Install.InstallationData.InstallationTargetDirRoot,JetBrains.Util.FileSystemPath},System.Action{System.String})">
             <summary>
             Performs the local installation of the given installation data by writing the Registry keys and copying the files.
             </summary>
@@ -3754,17 +4105,17 @@
             <param name="ResolveTargetDirRoot">Resolves the target directory, for copying the files into.</param>
             <param name="macros">The maros to be substituted on install, if needed.</param>
         </member>
-        <member name="M:JetBrains.Application.Install.LocalInstaller.GetWindowsRegistryRootKey(JetBrains.Build.InstallationData.RegistryHiveXml)">
+        <member name="M:JetBrains.Application.Install.LocalInstaller.GetWindowsRegistryRootKey(JetBrains.Application.Install.InstallationData.InstalledRegistryHive)">
             <summary>
             Gets the proper Windows Registry root key.
             </summary>
         </member>
-        <member name="M:JetBrains.Application.Install.LocalInstaller.InstallFiles(JetBrains.Build.InstallationData.InstallationDataXml,JetBrains.Application.Install.RegistrationStage,System.Action{System.String},System.Func{JetBrains.Build.InstallationData.SourceRootXml,JetBrains.Util.FileSystemPath},System.Func{JetBrains.Build.InstallationData.TargetRootXml,JetBrains.Util.FileSystemPath})">
+        <member name="M:JetBrains.Application.Install.LocalInstaller.InstallFiles(JetBrains.Application.Install.InstallationData.InstallationData,JetBrains.Application.Install.RegistrationStage,System.Action{System.String},System.Func{JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot,JetBrains.Util.FileSystemPath},System.Func{JetBrains.Application.Install.InstallationData.InstallationTargetDirRoot,JetBrains.Util.FileSystemPath})">
             <summary>
             Copies or deletes the files.
             </summary>
         </member>
-        <member name="M:JetBrains.Application.Install.LocalInstaller.InstallRegistry(JetBrains.Build.InstallationData.RegistryXml,JetBrains.Application.Install.RegistrationStage,System.Collections.Generic.IDictionary{System.String,System.String})">
+        <member name="M:JetBrains.Application.Install.LocalInstaller.InstallRegistry(JetBrains.Application.Install.InstallationData.InstalledRegistry,JetBrains.Application.Install.RegistrationStage,System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>
             Executes the registration/unregistration operations on the Registry keys.
             </summary>
@@ -3772,22 +4123,22 @@
             <param name="registrationStage">Processing type.</param>
             <param name="macros">The macros to substitute when processing the keys.</param>
         </member>
-        <member name="M:JetBrains.Application.Install.LocalInstaller.RegisterKey(JetBrains.Build.InstallationData.RegistryKeyXml,System.Collections.Generic.IDictionary{System.String,System.String})">
+        <member name="M:JetBrains.Application.Install.LocalInstaller.RegisterKey(JetBrains.Application.Install.InstallationData.InstalledRegistryKey,System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>
             Writes the key to the Registry.
             </summary>
         </member>
-        <member name="M:JetBrains.Application.Install.LocalInstaller.RegisterValue(JetBrains.Build.InstallationData.RegistryValueXml,System.Collections.Generic.IDictionary{System.String,System.String})">
+        <member name="M:JetBrains.Application.Install.LocalInstaller.RegisterValue(JetBrains.Application.Install.InstallationData.InstalledRegistryValue,System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>
             Writes the value to the Registry.
             </summary>
         </member>
-        <member name="M:JetBrains.Application.Install.LocalInstaller.UnregisterKey(JetBrains.Build.InstallationData.RegistryKeyXml,System.Collections.Generic.IDictionary{System.String,System.String})">
+        <member name="M:JetBrains.Application.Install.LocalInstaller.UnregisterKey(JetBrains.Application.Install.InstallationData.InstalledRegistryKey,System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>
             Deletes the key from the Registry.
             </summary>
         </member>
-        <member name="M:JetBrains.Application.Install.LocalInstaller.UnregisterValue(JetBrains.Build.InstallationData.RegistryValueXml,System.Collections.Generic.IDictionary{System.String,System.String})">
+        <member name="M:JetBrains.Application.Install.LocalInstaller.UnregisterValue(JetBrains.Application.Install.InstallationData.InstalledRegistryValue,System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>
             Deletes the value from the Registry.
             </summary>

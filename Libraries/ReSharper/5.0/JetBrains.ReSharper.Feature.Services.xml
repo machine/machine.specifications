@@ -360,6 +360,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.StructuralSearch.StructuralSearchPatternParams.TreatPostfixAndPrefixOperatorEquivalent">
+            <summary>
+            Only if they are not used in expressions
+            </summary>
+        </member>
         <member name="M:JetBrains.ReSharper.Feature.Services.Util.FileSpecificUtil.GetSortedDeclaration(JetBrains.ReSharper.Psi.ITypeElement,JetBrains.ReSharper.Psi.Tree.ITypeDeclaration,JetBrains.ReSharper.Psi.PsiLanguageType)">
             <summary>
             Returns all declarations of a type where type member can be created. Preferrable declarations are first.
@@ -1337,6 +1342,14 @@
             <summary>
             Executes template with inserting text
             </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.LiveTemplates.LiveTemplatesManager.GetPrefix(JetBrains.DocumentModel.IDocument,System.Int32)">
+            <summary>
+            Generic template prefix (not context specific)
+            </summary>
+            <param name="document"></param>
+            <param name="caretOffset"></param>
+            <returns></returns>
         </member>
         <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.IMacroParameterValue">
             <summary>

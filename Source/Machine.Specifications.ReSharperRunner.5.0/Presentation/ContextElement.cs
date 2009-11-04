@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 using JetBrains.Application;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.Filtering;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.UnitTestFramework;
+using JetBrains.Text;
 
 using Machine.Specifications.Utility;
 

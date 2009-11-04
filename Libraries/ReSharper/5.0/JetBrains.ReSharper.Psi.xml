@@ -25,15 +25,15 @@
              </example>
         </member>
         <member name="M:JetBrains.ReSharper.Psi.Caches.IWordIndex.GetFilesContainingWord(System.String)">
-            <summary>
-            Returns array of project items corresponding to all source code files 
-            containing identifiers which text is equal to given word
-            </summary>
+             <summary>
+             Returns array of project items corresponding to all source code files 
+             containing identifiers which text is equal to given word
+             </summary>
             <param name="word"></param>
             <remarks>Returns empty array if empty array is passed or no such files found.
-            Does not expect null to be passed (throws exception)</remarks>
+             Does not expect null to be passed (throws exception)</remarks>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.Caches.IWordIndex.GetFilesContainingWords(System.String[])">
+        <member name="M:JetBrains.ReSharper.Psi.Caches.IWordIndex.GetFilesContainingWords(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Returns array of project items corresponding to all source code files 
             containing identifiers which text is equal to any of given words
@@ -241,6 +241,21 @@
             <summary>
             Get pre-imported namespaces for specific project file
             </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.IPsiModule.GetDefaultNamespace(JetBrains.ProjectModel.IProjectFile)">
+            <summary>
+            Default namespace for specific project file
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.IPsiModule.IsStrictOff(JetBrains.ProjectModel.IProjectFile)">
+            <summary>
+            Is option strict OFF for specific project file
+            </summary>    
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.IPsiModule.IsExplicitOff(JetBrains.ProjectModel.IProjectFile)">
+            <summary>
+            Is option explicit OFF for specific project file
+            </summary>    
         </member>
         <member name="T:JetBrains.ReSharper.Psi.EntityKindForm">
             <summary>
@@ -577,6 +592,21 @@
         <member name="T:JetBrains.ReSharper.Psi.Impl.PsiManagerImpl.IRangeTranslator">
             <summary>
             Document range translator
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Psi.Impl.Reflection2.AssemblyDataCache.AssemblyName">
+            <summary>
+            Primary assembly name for which this cache was created
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Psi.Impl.Reflection2.AssemblyDataCacheCaching.AssemblyName">
+            <summary>
+            Primary assembly name for which this cache was created
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Psi.Impl.Reflection2.AssemblyDataCacheIntern.AssemblyName">
+            <summary>
+            Primary assembly name for which this cache was created
             </summary>
         </member>
         <member name="T:JetBrains.ReSharper.Psi.Impl.DefaultPsiModuleProviderFactory">
@@ -1696,18 +1726,18 @@
             Decode the references when the clone is inserted into the real tree, and returns the clone position in the tree
             </summary>
         </member>
+        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve2.Impl.ICascadingCache.Recall(System.Object,JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve2.Impl.ICalculationProcess@)">
+            <summary>
+            Returns cached value for key, or FORGET if recalculation is required
+            </summary>
+            <returns></returns>
+        </member>
         <member name="F:JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve2.Impl.CascadingCache.myData">
             <summary>
             Data in this level of cache
             </summary>
             - No value for key means "look upstream if there is upstream, otherwise recalculate" 
             - Other value is calculated value
-        </member>
-        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve2.Impl.CascadingCache.Recall(System.Object,JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve2.Impl.CalculationProcess@)">
-            <summary>
-            Returns cached value for key, or FORGET if recalculation is required
-            </summary>
-            <returns></returns>
         </member>
         <member name="T:JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.Filters.LocalModuleNamesFilter">
             <summary>
@@ -1728,17 +1758,6 @@
         <member name="P:JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.Managed.ManagedReferenceBase`1.HasMultipleNames">
             <summary>
             Override this method if your reference has muiltiple names
-            </summary>
-        </member>
-        <member name="M:JetBrains.ReSharper.Psi.Resolve.IQualifier.GetSymbolTable(System.String[],JetBrains.ReSharper.Psi.Resolve.SymbolTableMode)">
-            <param name="referenceNames">
-            Names of the reference, for which the symbol table is built. 
-            Array is empty if the table should not be filtered.
-            </param>
-        </member>
-        <member name="P:JetBrains.ReSharper.Psi.Resolve.IQualifier.Resolved">
-            <summary>
-            False means failed to resolve
             </summary>
         </member>
         <member name="M:JetBrains.ReSharper.Psi.Caches.Job.Do(JetBrains.Application.Progress.IProgressIndicator)">
@@ -1990,6 +2009,17 @@
         <member name="F:JetBrains.ReSharper.Psi.Naming.NameWord.ourCollectionSuffixes">
             <summary>
             ElementList -> Element
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.Resolve.IQualifier.GetSymbolTable(System.String[],JetBrains.ReSharper.Psi.Resolve.SymbolTableMode)">
+            <param name="referenceNames">
+            Names of the reference, for which the symbol table is built. 
+            Array is empty if the table should not be filtered.
+            </param>
+        </member>
+        <member name="P:JetBrains.ReSharper.Psi.Resolve.IQualifier.Resolved">
+            <summary>
+            False means failed to resolve
             </summary>
         </member>
         <member name="T:JetBrains.ReSharper.Psi.util.StringLiteralConverter">
@@ -2866,7 +2896,7 @@
             find all interfaces of given type (except for ignored ones) which declared given member
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.Impl.PsiManagerImpl.PsiFilesCache.UpdateAfterCommit(System.Collections.Generic.ICollection{JetBrains.ProjectModel.IProjectFile})">
+        <member name="M:JetBrains.ReSharper.Psi.Impl.PsiManagerImpl.PsiFilesCache.UpdateAfterCommit(System.Collections.Generic.IEnumerable{JetBrains.ProjectModel.IProjectFile})">
             <summary>
             Update cached files buckets after commit. 
             </summary>
@@ -3035,11 +3065,6 @@
         <member name="M:JetBrains.ReSharper.Psi.PsiModuleManager.AreInternalsVisibleTo(JetBrains.ReSharper.Psi.IPsiModule,JetBrains.ReSharper.Psi.IPsiModule)">
             <summary>
             Checks if internals from <paramref name="moduleFrom"/> are visible to <paramref name="moduleTo"/>
-            </summary>
-        </member>
-        <member name="P:JetBrains.ReSharper.Psi.Impl.Reflection2.AssemblyDataCache.AssemblyName">
-            <summary>
-            Primary assembly name for which this cache was created
             </summary>
         </member>
         <member name="P:JetBrains.ReSharper.Psi.Impl.Reflection2.Member.Bucket">

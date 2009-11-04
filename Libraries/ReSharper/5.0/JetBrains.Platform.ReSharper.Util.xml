@@ -148,11 +148,6 @@
             Gets or sets the hotizontal component of the anchoring.
             </summary>
         </member>
-        <member name="T:JetBrains.Util.AssemblyIdentity">
-            <summary>
-            This functionality should be a part of the .NET framework, but it isn't for unknown reasons.
-            </summary>
-        </member>
         <member name="T:System.Linq.EnumerableExJet">
             <summary>
             Extension methods that mimic or extend the standard <see cref="T:System.Linq.Enumerable"/> methods, sharing the same names.
@@ -2383,6 +2378,15 @@
             Allows to call a data-adding function on some object that bears the exception context.
             The call is executed in a safe manner.
             </summary>
+        </member>
+        <member name="M:JetBrains.Util.ExceptionEx.FlattenDataValue(System.Object)">
+            <summary>
+            “Flattens” the data value by converting all of the objects to their string representation. Understands some kinds of collections.
+            This is needed for safe marshalling of exceptions containing data values across appdomain boundaries. Keeping original object values might fail unmarshalling their custom types.
+            // TODO: maybe use some parts of exception renderer for walking the value trees
+            </summary>
+            <param name="oValue"></param>
+            <returns></returns>
         </member>
         <member name="M:JetBrains.Util.ExceptionRenderer.RenderException(System.Exception)">
             <summary>
@@ -13636,21 +13640,21 @@
             This version takes a function of the key to allow caching the value-creation delegate without creating a new closure each time, as <see cref="M:JetBrains.Util.CollectionUtil.TryGetValue``2(System.Collections.Generic.IDictionary{``0,``1},``0,System.Func{``1})"/> would do. Recommended in high-perf scenarios.
             </remarks>
         </member>
-        <member name="M:JetBrains.Util.CollectionUtil.AggregateString``1(System.Collections.Generic.IEnumerable{``0},System.String,System.Action{System.Text.StringBuilder,``0})">
+        <member name="M:JetBrains.Util.CollectionUtil.AggregateString``1(System.Collections.Generic.IEnumerable{``0},System.String,System.Func{System.Text.StringBuilder,``0,System.Text.StringBuilder})">
             <summary>
             Aggregates a number of items into a single string, using the <see cref="T:System.Text.StringBuilder"/>
             to avoid creating excessive strings when concatenating.
             Use its <see cref="M:System.Text.StringBuilder.AppendFormat(System.String,System.Object[])"/> method as appropriate.
             </summary>
         </member>
-        <member name="M:JetBrains.Util.CollectionUtil.AggregateString``1(System.Collections.Generic.IEnumerable{``0},System.String,System.Action{System.Text.StringBuilder,``0},System.Action{System.Text.StringBuilder})">
+        <member name="M:JetBrains.Util.CollectionUtil.AggregateString``1(System.Collections.Generic.IEnumerable{``0},System.String,System.Func{System.Text.StringBuilder,``0,System.Text.StringBuilder},System.Func{System.Text.StringBuilder,System.Text.StringBuilder})">
             <summary>
             Aggregates a number of items into a single string, using the <see cref="T:System.Text.StringBuilder"/>
             to avoid creating excessive strings when concatenating.
             Use its <see cref="M:System.Text.StringBuilder.AppendFormat(System.String,System.Object[])"/> method as appropriate.
             </summary>
         </member>
-        <member name="M:JetBrains.Util.CollectionUtil.AggregateString``1(System.Collections.Generic.IEnumerable{``0},System.String,System.String,System.Action{System.Text.StringBuilder,``0},System.Action{System.Text.StringBuilder})">
+        <member name="M:JetBrains.Util.CollectionUtil.AggregateString``1(System.Collections.Generic.IEnumerable{``0},System.String,System.String,System.Func{System.Text.StringBuilder,``0,System.Text.StringBuilder},System.Func{System.Text.StringBuilder,System.Text.StringBuilder})">
             <summary>
             Aggregates a number of items into a single string, using the <see cref="T:System.Text.StringBuilder"/>
             to avoid creating excessive strings when concatenating.
@@ -13662,14 +13666,14 @@
             Aggregates a number of items into a single string, using the <see cref="T:System.Text.StringBuilder"/> to avoid creating excessive strings when concatenating. Use its <see cref="M:System.Text.StringBuilder.AppendFormat(System.String,System.Object[])"/> method as appropriate.
             </summary>
         </member>
-        <member name="M:JetBrains.Util.CollectionUtil.AggregateString``1(System.Collections.Generic.IEnumerable{``0},System.String,System.String,System.Action{System.Text.StringBuilder,``0})">
+        <member name="M:JetBrains.Util.CollectionUtil.AggregateString``1(System.Collections.Generic.IEnumerable{``0},System.String,System.String,System.Func{System.Text.StringBuilder,``0,System.Text.StringBuilder})">
             <summary>
             Aggregates a number of items into a single string, using the <see cref="T:System.Text.StringBuilder"/>
             to avoid creating excessive strings when concatenating.
             Use its <see cref="M:System.Text.StringBuilder.AppendFormat(System.String,System.Object[])"/> method as appropriate.
             </summary>
         </member>
-        <member name="M:JetBrains.Util.CollectionUtil.AggregateString``1(System.Collections.Generic.IEnumerable{``0},System.Action{System.Text.StringBuilder,``0})">
+        <member name="M:JetBrains.Util.CollectionUtil.AggregateString``1(System.Collections.Generic.IEnumerable{``0},System.Func{System.Text.StringBuilder,``0,System.Text.StringBuilder})">
             <summary>
             Aggregates a number of items into a single string, using the <see cref="T:System.Text.StringBuilder"/>
             to avoid creating excessive strings when concatenating.
@@ -13686,6 +13690,11 @@
         <member name="M:JetBrains.Util.CollectionUtil.Permute``1(System.Collections.Generic.IList{``0},``0[])">
             <summary>
             All permutes of collection
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.WhereNotNullCore``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Does not use a predicate, unlike generic <see cref="M:System.Linq.Enumerable.Where``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})"/>.
             </summary>
         </member>
         <member name="M:JetBrains.Util.CollectionUtil.Pop``1(System.Collections.Generic.Stack{``0},System.String)">
@@ -15372,7 +15381,7 @@
         </member>
         <member name="M:JetBrains.Util.XmlWriterEx.CreateWriter(System.IO.Stream)">
             <summary>
-            Creates a writer over the stream with readability-friendly settings (<see cref="T:System.Xml.XmlUtf8RawTextWriterIndent"/>.
+            Creates a writer over the stream with readability-friendly settings (<see cref="T:System.Xml.XmlUtf8RawTextWriterIndent"/>).
             </summary>
         </member>
         <member name="M:JetBrains.Util.XmlWriterEx.Element(System.Xml.XmlWriter,System.String,System.String)">

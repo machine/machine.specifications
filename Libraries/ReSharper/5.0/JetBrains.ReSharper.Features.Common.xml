@@ -108,7 +108,7 @@
             <c>True</c> by default.
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoCacheElementController`1.ICacheElementMatcher.GetElements(JetBrains.ReSharper.Feature.Services.Filtering.IdentifierMatcher,System.Func{`0,System.Boolean},System.Int32,JetBrains.Application.CheckForInterrupt,System.Action)">
+        <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoCacheElementController`1.ICacheElementMatcher.GetElements(JetBrains.Text.IdentifierMatcher,System.Func{`0,System.Boolean},System.Int32,JetBrains.Application.CheckForInterrupt,System.Action)">
              <summary>
              Gets the cache elements for the given filter.
              </summary>
@@ -177,18 +177,18 @@
         <member name="F:JetBrains.ReSharper.Features.Common.GoToByName.GotoFileController.ItemsPassFilter">
             <summary>
             A filter that specifies which items should be let into the output list.
-            NOTE: in most cases, you should use <see cref="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoFileController.RestrictItemsPassFilter(System.Func{JetBrains.ProjectModel.IProjectFile,System.Boolean})"/>, so that to avoid interfering with the internal filtering.
+            NOTE: in most cases, you should use <see cref="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoFileController.RestrictItemsPassFilter(System.Func{JetBrains.ProjectModel.IProjectItem,System.Boolean})"/>, so that to avoid interfering with the internal filtering.
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoFileController.RestrictItemsPassFilter(System.Func{JetBrains.ProjectModel.IProjectFile,System.Boolean})">
+        <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoFileController.RestrictItemsPassFilter(System.Func{JetBrains.ProjectModel.IProjectItem,System.Boolean})">
             <summary>
             ANDs the given condition with the existing <see cref="F:JetBrains.ReSharper.Features.Common.GoToByName.GotoFileController.ItemsPassFilter"/>.
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoFileController.FuncPassAllFilter(JetBrains.ProjectModel.IProjectFile)">
+        <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoFileController.DefaultFilter(JetBrains.ProjectModel.IProjectItem)">
             <summary>
-            The default dummy pass-all filter for the <see cref="F:JetBrains.ReSharper.Features.Common.GoToByName.GotoFileController.ItemsPassFilter"/>.
-            Must be a function for the <see cref="M:System.Object.Equals(System.Object)"/> operation to work appropriately.
+            The default filter for the <see cref="F:JetBrains.ReSharper.Features.Common.GoToByName.GotoFileController.ItemsPassFilter"/>.
+            Filtering according "Include folder flag"
             </summary>
         </member>
         <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoFileController.ExecuteItem(JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem)">
@@ -905,7 +905,7 @@
             Can be assigned only once.
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Features.Common.UI.FileChooser.AllPassProjectFileFilter(JetBrains.ProjectModel.IProjectFile)">
+        <member name="M:JetBrains.ReSharper.Features.Common.UI.FileChooser.AllPassProjectFileFilter(JetBrains.ProjectModel.IProjectItem)">
             <summary>
             An empty filter to assign by default.
             </summary>

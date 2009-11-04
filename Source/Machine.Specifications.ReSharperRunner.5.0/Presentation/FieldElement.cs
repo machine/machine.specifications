@@ -2,10 +2,10 @@ using System;
 using System.Linq;
 
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.Filtering;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.UnitTestFramework;
+using JetBrains.Text;
 
 using Machine.Specifications.Utility;
 

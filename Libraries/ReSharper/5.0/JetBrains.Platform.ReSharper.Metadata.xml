@@ -1852,7 +1852,7 @@
             Interface for resolving assembly names to assemblies
             </summary>
         </member>
-        <member name="M:JetBrains.Metadata.Reader.API.IAssemblyResolver.ResolveAssembly(System.Reflection.AssemblyName,JetBrains.Util.FileSystemPath@)">
+        <member name="M:JetBrains.Metadata.Reader.API.IAssemblyResolver.ResolveAssembly(JetBrains.Metadata.Utils.AssemblyNameInfo,JetBrains.Util.FileSystemPath@)">
             <summary>
             Resolves assembly name to assembly metadata interface
             </summary>
@@ -2665,6 +2665,11 @@
             Gets flag indicating whether the type is abstract
             </summary>
         </member>
+        <member name="P:JetBrains.Metadata.Reader.API.IMetadataTypeInfo.IsImported">
+            <summary>
+            Gets flag indicating whether the type is imported
+            </summary>
+        </member>
         <member name="P:JetBrains.Metadata.Reader.API.IMetadataTypeInfo.Layout">
             <summary>
             Fields layout type
@@ -2765,12 +2770,12 @@
             Manages metadata loading
             </summary>
         </member>
-        <member name="M:JetBrains.Metadata.Reader.API.MetadataLoader.LoadFrom(System.String,JetBrains.Metadata.Reader.API.MetadataLoader.LoadReferencedAssemblyPredicate)">
+        <member name="M:JetBrains.Metadata.Reader.API.MetadataLoader.LoadFrom(System.String,System.Func{JetBrains.Metadata.Utils.AssemblyNameInfo,System.Boolean})">
             <summary>
             Load assembly from the specified file
             </summary>
         </member>
-        <member name="M:JetBrains.Metadata.Reader.API.MetadataLoader.Load(System.Reflection.AssemblyName,JetBrains.Metadata.Reader.API.MetadataLoader.LoadReferencedAssemblyPredicate)">
+        <member name="M:JetBrains.Metadata.Reader.API.MetadataLoader.Load(JetBrains.Metadata.Utils.AssemblyNameInfo,System.Func{JetBrains.Metadata.Utils.AssemblyNameInfo,System.Boolean})">
             <summary>
             Load assembly with the specified name
             </summary>
@@ -3223,15 +3228,21 @@
             Undocumented.
             </summary>
         </member>
-        <member name="M:JetBrains.Metadata.Utils.AssemblyNameExtensions.FindAssemblyFile(JetBrains.Util.FileSystemPath,System.String)">
+        <member name="T:JetBrains.Metadata.Utils.AssemblyNameInfo">
             <summary>
-            Checks for the existing files and choses the assembly extension from the list, eg “exe” or “dll”.
-            Throws if not found.
+            Class which incorporates assembly display name and it's parts.
+            Use it instead of the <see cref="T:System.Reflection.AssemblyName"/>
             </summary>
         </member>
         <member name="F:JetBrains.Metadata.Utils.AssemblyNameExtensions.AssemblyFileExtensions">
             <summary>
             A list of the valid assembly file extensions.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Metadata.Utils.AssemblyNameExtensions.FindAssemblyFile(JetBrains.Util.FileSystemPath,System.String)">
+            <summary>
+            Checks for the existing files and choses the assembly extension from the list, eg “exe” or “dll”.
+            Throws if not found.
             </summary>
         </member>
         <member name="T:JetBrains.Metadata.Utils.AssemblyResolver">
@@ -3249,13 +3260,13 @@
             The list of appdomains we've been installed onto.
             </summary>
         </member>
-        <member name="M:JetBrains.Metadata.Utils.AssemblyResolver.#ctor(System.Collections.Generic.IEnumerable{System.String},System.Func{System.Reflection.AssemblyName,System.Boolean})">
+        <member name="M:JetBrains.Metadata.Utils.AssemblyResolver.#ctor(System.Collections.Generic.IEnumerable{System.String},System.Func{JetBrains.Metadata.Utils.AssemblyNameInfo,System.Boolean})">
             <summary>
             Creates the instance. Call <see cref="M:JetBrains.Metadata.Utils.AssemblyResolver.Install(System.AppDomain)"/> to attach, don't forget to call <see cref="M:JetBrains.Metadata.Utils.AssemblyResolver.Uninstall(System.AppDomain)"/> or <see cref="M:JetBrains.Metadata.Utils.AssemblyResolver.Dispose"/> to detach on shutdown.
             </summary>
             <param name="basedirs">The list of base directories to be probed for the assembly being resolved.</param>
         </member>
-        <member name="M:JetBrains.Metadata.Utils.AssemblyResolver.FromAssembly(System.Reflection.Assembly,System.Func{System.Reflection.AssemblyName,System.Boolean})">
+        <member name="M:JetBrains.Metadata.Utils.AssemblyResolver.FromAssembly(System.Reflection.Assembly,System.Func{JetBrains.Metadata.Utils.AssemblyNameInfo,System.Boolean})">
             <summary>
             Creates a resolver over the single probing directory that is the home directory of the <param name="assembly"/>.
             </summary>
