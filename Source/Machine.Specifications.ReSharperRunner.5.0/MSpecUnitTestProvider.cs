@@ -10,6 +10,8 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.TaskRunnerFramework;
+using JetBrains.ReSharper.UnitTestFramework;
+using JetBrains.ReSharper.UnitTestFramework.UI;
 using JetBrains.ReSharper.UnitTestExplorer;
 using JetBrains.TreeModels;
 using JetBrains.UI.TreeView;
@@ -159,19 +161,22 @@ namespace Machine.Specifications.ReSharperRunner
       return _unitTestElementComparer.Compare(x, y);
     }
 
-    public bool IsUnitTestStuff(IDeclaredElement element)
-    {
-      return IsUnitTestElement(element);
-    }
-
     public void Present(UnitTestElement element, IPresentableItem item, TreeModelNode node, PresentationState state)
     {
       Presenter.UpdateItem(element, node, item, state);
     }
 
-    public bool IsUnitTestElement(IDeclaredElement element)
+    public bool IsElementOfKind(IDeclaredElement declaredElement, UnitTestElementKind elementKind)
     {
-      return element.IsContext() || element.IsSpecification();
+      switch (elementKind)
+      {
+        case UnitTestElementKind.Test:
+          return declaredElement.IsSpecification();
+        case UnitTestElementKind.TestContainer:
+          return declaredElement.IsContext() || declaredElement.IsBehavior();
+      }
+
+      return false;
     }
     #endregion
   }

@@ -594,7 +594,7 @@
             Document range translator
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.Psi.Impl.Reflection2.AssemblyDataCache.AssemblyName">
+        <member name="P:JetBrains.ReSharper.Psi.Impl.Reflection2.IAssemblyDataCache.AssemblyName">
             <summary>
             Primary assembly name for which this cache was created
             </summary>
@@ -1352,7 +1352,7 @@
             Returns random file at specified path
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.ExpectedTypes.CollectionTypeUtil.ElementTypeByCollectionType(JetBrains.ReSharper.Psi.IType,JetBrains.ReSharper.Psi.Resolve.IAccessContext,JetBrains.ReSharper.Psi.PsiLanguageType)">
+        <member name="M:JetBrains.ReSharper.Psi.ExpectedTypes.CollectionTypeUtil.ElementTypeByCollectionType(JetBrains.ReSharper.Psi.IType,JetBrains.ReSharper.Psi.Resolve.IAccessContext)">
             <summary>
             Returns element type if collectionType is a _collection_type_ (described in specification, 15.8.4)
             otherwise, returns null

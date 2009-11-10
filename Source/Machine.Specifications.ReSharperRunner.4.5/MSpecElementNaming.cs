@@ -46,9 +46,9 @@ namespace Machine.Specifications.ReSharperRunner
     }
 #endif
 
-    static bool IsTestElement(IDeclaredElement element)
+    static bool IsTestElement(IDeclaredElement declaredElement)
     {
-      return UnitTestManager.GetInstance(element.GetSolution()).IsUnitTestElement(element);
+      return declaredElement.IsContext() || declaredElement.IsSpecification();
     }
 
     static bool IsContext(IDeclaredElement declaredElement)

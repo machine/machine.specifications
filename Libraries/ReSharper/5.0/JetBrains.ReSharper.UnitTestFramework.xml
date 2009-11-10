@@ -38,25 +38,12 @@
             <param name="consumer"></param>
             <param name="interrupted"></param>
         </member>
-        <member name="M:JetBrains.ReSharper.UnitTestFramework.IUnitTestProvider.IsUnitTestElement(JetBrains.ReSharper.Psi.IDeclaredElement)">
+        <member name="M:JetBrains.ReSharper.UnitTestFramework.IUnitTestProvider.IsElementOfKind(JetBrains.ReSharper.Psi.IDeclaredElement,JetBrains.ReSharper.UnitTestFramework.UnitTestElementKind)">
             <summary>
-            Checks if given declared element is UnitTestElement
+            Replaces IsUnitTestElement, IsUnitTest, IsUnitTestContainer and IsUnitTestStuff methods with single one
             </summary>
-            <param name="element"></param>
-            <returns></returns>
-        </member>
-        <member name="M:JetBrains.ReSharper.UnitTestFramework.IUnitTestProvider.IsUnitTest(JetBrains.ReSharper.Psi.IDeclaredElement)">
-            <summary>
-            Checks if given declared element is a single unit test
-            </summary>
-            <param name="element"></param>
-            <returns></returns>
-        </member>
-        <member name="M:JetBrains.ReSharper.UnitTestFramework.IUnitTestProvider.IsUnitTestContainer(JetBrains.ReSharper.Psi.IDeclaredElement)">
-            <summary>
-            Checks if given declared element is a test suite/class
-            </summary>
-            <param name="element"></param>
+            <param name="declaredElement"></param>
+            <param name="elementKind"></param>
             <returns></returns>
         </member>
         <member name="M:JetBrains.ReSharper.UnitTestFramework.IUnitTestProvider.Present(JetBrains.ReSharper.UnitTestFramework.UnitTestElement,JetBrains.CommonControls.IPresentableItem,JetBrains.TreeModels.TreeModelNode,JetBrains.UI.TreeView.PresentationState)">
