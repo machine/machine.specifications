@@ -83,10 +83,6 @@
       <Project>{89ECD0D1-6CC4-4319-B1B2-389E0B48F40D}</Project>
       <Name>Machine.Specifications.FailingExample</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Machine.Specifications.NUnit\Machine.Specifications.NUnit.csproj">
-      <Project>{E96E4ECF-E3EF-4E1F-9FFE-0998FE4C5D84}</Project>
-      <Name>Machine.Specifications.NUnit</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj">
       <Project>{CCD02629-1262-4F78-9E9F-AC97B942D0E7}</Project>
       <Name>Machine.Specifications</Name>
