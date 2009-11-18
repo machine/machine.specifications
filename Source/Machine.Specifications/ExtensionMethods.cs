@@ -7,19 +7,6 @@ using System.Linq;
 
 namespace Machine.Specifications
 {
-  public static class NUnitCollectionExtensionMethods
-  {
-    public static ArrayList ToArrayList(this IEnumerable enumerable)
-    {
-      ArrayList arrayList = new ArrayList();
-      foreach (object obj in enumerable)
-      {
-        arrayList.Add(obj);
-      }
-      return arrayList;
-    }
-  }
-
   [Serializable]
   public class SpecificationException : Exception
   {
@@ -52,38 +39,8 @@ namespace Machine.Specifications
     }
   }
 
-  public class TestFoo
+  public static class ShouldExtensionMethods
   {
-    public override string ToString()
-    {
-      return @"Hello
-there 
-how are you 
-today?";
-    }
-  }
-
-  public static class NUnitShouldExtensionMethods
-  {
-    public static void Temp2()
-    {
-      1.ShouldBeGreaterThan(2);
-    }
-    public static void Temp()
-    {
-      new object[] {new TestFoo(), 
-        null, 
-        null, 
-        null, 
-        null, 
-        null, 
-        null, 
-        null, 
-        null, 
-        null, 
-        null, 
-        new TestFoo()}.ShouldBeEmpty();
-    }
     private static string Tab(this string str)
     {
       if (string.IsNullOrEmpty(str)) return "";
@@ -123,10 +80,21 @@ today?";
       return sb.ToString();
     }
 
+    private static void temp()
+    {
+      Console.WriteLine("foo\nbar".ToUsefulString());
+    }
+
     private static string ToUsefulString(this object obj)
     {
+      string str;
       if (obj == null) return "[null]";
-      if (obj.GetType() == typeof(string)) return "\"" + obj + "\"";
+      if (obj.GetType() == typeof(string))
+      {
+        str = (string) obj;
+
+        return "\"" + str.Replace("\n", "\\n") + "\"";
+      }
       if (obj.GetType().IsValueType) return "[" + obj + "]";
 
       if (obj is IEnumerable)
@@ -136,7 +104,7 @@ today?";
         return obj.GetType() + ":\n" + enumerable.EachToUsefulString();
       }
 
-      var str = obj.ToString();
+      str = obj.ToString();
 
       if (str == null || str.Trim() == "")
       {
@@ -153,16 +121,17 @@ today?";
 ]", str.Tab(), obj.GetType());
       }
 
+      if (obj.GetType().ToString() == str)
+        return obj.GetType().ToString();
+
       return string.Format("{0}:[{1}]", obj.GetType(), str);
     }
 
-    private static bool SafeEquals(this object left, object right)
+    private static bool SafeEquals<T>(this T left, T right)
     {
-      if (left == null && right != null) return false;
-      if (right == null && left != null) return false;
-      if (left == null) return true;
+      var comparer = new AssertComparer<T>();
 
-      return left.Equals(right);
+      return comparer.Compare(left, right) == 0;
     }
 
     public static void ShouldBeFalse(this bool condition)
@@ -177,24 +146,24 @@ today?";
         throw new SpecificationException("Should be [true] but is [false]");
     }
 
-    public static object ShouldEqual(this object actual, object expected)
+    public static T ShouldEqual<T>(this T actual, T expected)
     {
       if (!actual.SafeEquals(expected))
       {
         throw new SpecificationException(string.Format("Should equal {0} but is {1}", expected.ToUsefulString(), actual.ToUsefulString()));
       }
 
-      return expected;
+      return actual;
     }
 
-    public static object ShouldNotEqual(this object actual, object expected)
+    public static object ShouldNotEqual<T>(this T actual, T expected)
     {
       if (actual.SafeEquals(expected))
       {
         throw new SpecificationException(string.Format("Should not equal {0} but does: {1}", expected.ToUsefulString(), actual.ToUsefulString()));
       }
 
-      return expected;
+      return actual;
     }
 
     public static void ShouldBeNull(this object anObject)
@@ -236,7 +205,8 @@ today?";
 
     public static void ShouldBeOfType(this object actual, Type expected)
     {
-      if (actual.GetType() != expected)
+      if (actual == null) throw new SpecificationException(string.Format("Should be of type {0} but is [null]", expected.GetType()));
+      if (!expected.IsAssignableFrom(actual.GetType()))
       {
         throw new SpecificationException(string.Format("Should be of type {0} but is of type {1}", expected, actual.GetType()));
       }
@@ -244,10 +214,7 @@ today?";
 
     public static void ShouldBeOfType<T>(this object actual)
     {
-      if (actual.GetType() != typeof(T))
-      {
-        throw new SpecificationException(string.Format("Should be of type {0} but is of type {1}", typeof(T), actual.GetType()));
-      }
+      actual.ShouldBeOfType(typeof(T));
     }
 
     public static void ShouldBe(this object actual, Type expected)
@@ -274,10 +241,11 @@ today?";
     public static void ShouldContain<T>(this IEnumerable<T> list, params T[] items)
     {
       var noContain = new List<T>();
+      var comparer = new AssertComparer<T>();
 
       foreach (var item in items)
       {
-        if (!list.Contains(item))
+        if (!list.Contains(item, comparer))
         {
           noContain.Add(item);
         }
@@ -302,10 +270,11 @@ does not contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), n
     public static void ShouldNotContain<T>(this IEnumerable<T> list, params T[] items)
     {
       var contains = new List<T>();
+      var comparer = new AssertComparer<T>();
 
       foreach (var item in items)
       {
-        if (list.Contains(item))
+        if (list.Contains(item, comparer))
         {
           contains.Add(item);
         }
@@ -333,10 +302,22 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
       if (arg2 == null) throw new ArgumentNullException("arg2");
       if (arg1 == null) throw NewException("Should be greater than {0} but is [null]", arg2);
 
-      if (arg1.CompareTo(arg2) <= 0)
+      if (arg1.CompareTo(arg2.TryToChangeType(arg1.GetType())) <= 0)
         throw NewException("Should be greater than {0} but is {1}", arg2, arg1);
         
       return arg1;
+    }
+
+    private static object TryToChangeType(this object original, Type type)
+    {
+      try
+      {
+        return Convert.ChangeType(original, type);
+      }
+      catch 
+      {
+        return original;
+      }
     }
 
     public static IComparable ShouldBeLessThan(this IComparable arg1, IComparable arg2)
@@ -344,7 +325,7 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
       if (arg2 == null) throw new ArgumentNullException("arg2");
       if (arg1 == null) throw NewException("Should be greater than {0} but is [null]", arg2);
 
-      if (arg1.CompareTo(arg2) >= 0)
+      if (arg1.CompareTo(arg2.TryToChangeType(arg1.GetType())) >= 0)
         throw NewException("Should be less than {0} but is {1}", arg2, arg1);
         
       return arg1;
@@ -455,10 +436,11 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
     {
       var source = new List<T>(list);
       var noContain = new List<T>();
+      var comparer = new AssertComparer<T>();
 
       foreach (var item in items)
       {
-        if (!source.Contains(item))
+        if (!source.Contains(item, comparer))
         {
           noContain.Add(item);
         }
@@ -468,16 +450,23 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
         }
       }
 
-      if (noContain.Any())
+      if (noContain.Any() || source.Any())
       {
-        throw new SpecificationException(string.Format(@"Should contain only: {0} 
-entire list: {1}
-does not contain: {2}
-does contain but shouldn't: {3}", items.EachToUsefulString(), list.EachToUsefulString(), noContain.EachToUsefulString(), source.EachToUsefulString()));
+        string message = string.Format(@"Should contain only: {0} 
+entire list: {1}", items.EachToUsefulString(), list.EachToUsefulString());
+        if (noContain.Any())
+        {
+          message += "\ndoes not contain: " + noContain.EachToUsefulString();
+        }
+        if (source.Any())
+        {
+          message += "\ndoes contain but shouldn't: " + source.EachToUsefulString();
+        }
+
+        throw new SpecificationException(message);
       }
     }
 
-    [Obsolete]
     public static Exception ShouldBeThrownBy(this Type exceptionType, Action method)
     {
       Exception exception = Catch.Exception(method);

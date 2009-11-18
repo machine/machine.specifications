@@ -48,6 +48,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AssertComparer.cs" />
     <Compile Include="BehaviorsAttribute.cs" />
     <Compile Include="Catch.cs" />
     <Compile Include="ExtensionMethods.cs" />
