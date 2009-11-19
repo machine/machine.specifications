@@ -52,7 +52,7 @@ class SevenZip
 			filesToZip = filesToZip.gsub("/", sep) if File::ALT_SEPARATOR
 			
 			sevenZip = tool.to_absolute
-			sh "#{sevenZip.escape} #{args} #{zipName.escape} @#{filesToZip}"
+			sh "#{sevenZip.escape} #{args} #{zipName.escape} @#{filesToZip.escape}"
 		end
 	end
 end
