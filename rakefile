@@ -1,5 +1,8 @@
 require 'rake'
 require 'fileutils'
+Dir.glob(File.join(File.dirname(__FILE__), 'tools/Rake/*.rb')).each do |f|
+	require f
+end
 include FileUtils
 
 class String
@@ -15,6 +18,7 @@ end
 version = 'v3.5'
 compileTarget = ENV.include?('target') ? ENV['target'] : 'debug'
 project = "Machine.Specifications"
+packageName = "Distribution/#{project}.zip"
 frameworkDir = File.join(ENV['windir'].dup, 'Microsoft.NET', 'Framework', version)
 msbuild = File.join(frameworkDir, 'msbuild.exe')
 
@@ -66,4 +70,20 @@ end
 desc "Clean"
 task :clean do
   sh "#{msbuild} Source/#{project}.sln /t:Clean /property:Configuration=#{compileTarget}"
+  rm_f packageName
+end
+
+desc "Packages the build artifacts"
+task :package => [ "rebuild", "specs:run" ] do
+  rm_f packageName
+  
+  cp 'Distribution/Specifications/License.txt', "Build/#{compileTarget}"
+  
+  sz = SevenZip.new \
+		 :tool => 'Tools/7-Zip/7za.exe',
+		 :zip_name => packageName
+
+  Dir.chdir("Build/#{compileTarget}") do
+	sz.zip :files => FileList.new('**/*').exclude('Tests')
+  end
 end
