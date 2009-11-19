@@ -51,7 +51,7 @@ namespace :specs do
   task :run do
     puts 'Running Specs...'
     specs = ["Machine.Specifications.Specs.dll", "Machine.Specifications.Reporting.Specs.dll", "Machine.Specifications.ConsoleRunner.Specs.dll"].map {|spec| "Build/#{compileTarget}/Tests/#{spec}"}
-    sh "Build/#{compileTarget}/Machine.Specifications.ConsoleRunner.exe", "--html", "Specs/#{project}.Specs.html", "-x", "example", *(mspec_options + specs)
+    sh "Build/#{compileTarget}/mspec.exe", "--html", "Specs/#{project}.Specs.html", "-x", "example", *(mspec_options + specs)
     puts "Wrote specs to Specs/#{project}.Specs.html, run 'rake specs:view' to see them"
   end
 end

@@ -9,7 +9,7 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Machine.Specifications.ConsoleRunner</RootNamespace>
-    <AssemblyName>Machine.Specifications.ConsoleRunner</AssemblyName>
+    <AssemblyName>mspec</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
