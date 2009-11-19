@@ -1,5 +1,5 @@
-obj
-bin
+/Source/*/obj
+/Source/*/bin
 _ReSharper.*
 *.csproj.user
 *.resharper.user
@@ -13,4 +13,3 @@ NDependOut
 
 .setup-done
 /Distribution/Machine.Specifications-*.zip
-!/tools/Rake/bin
