@@ -13,3 +13,4 @@ NDependOut
 
 .setup-done
 /Distribution/Machine.Specifications-*.zip
+!/tools/Rake/bin
