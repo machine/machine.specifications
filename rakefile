@@ -18,7 +18,7 @@ end
 version = 'v3.5'
 compileTarget = ENV.include?('target') ? ENV['target'] : 'debug'
 project = "Machine.Specifications"
-packageName = "Distribution/#{project}.zip"
+packageName = "Distribution/#{project}-#{compileTarget}.zip"
 frameworkDir = File.join(ENV['windir'].dup, 'Microsoft.NET', 'Framework', version)
 msbuild = File.join(frameworkDir, 'msbuild.exe')
 mspec_options = []

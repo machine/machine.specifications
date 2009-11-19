@@ -12,4 +12,4 @@ _ReSharper.*
 NDependOut
 
 .setup-done
-/Distribution/Machine.Specifications.zip
+/Distribution/Machine.Specifications-*.zip
