@@ -21,6 +21,7 @@ project = "Machine.Specifications"
 packageName = "Distribution/#{project}.zip"
 frameworkDir = File.join(ENV['windir'].dup, 'Microsoft.NET', 'Framework', version)
 msbuild = File.join(frameworkDir, 'msbuild.exe')
+mspec_options = []
 
 task :setup => [ "setup:all" ]
 
@@ -50,7 +51,7 @@ namespace :specs do
   task :run do
     puts 'Running Specs...'
     specs = ["Machine.Specifications.Specs.dll", "Machine.Specifications.Reporting.Specs.dll", "Machine.Specifications.ConsoleRunner.Specs.dll"].map {|spec| "Build/#{compileTarget}/Tests/#{spec}"}
-    sh "Build/#{compileTarget}/Machine.Specifications.ConsoleRunner.exe", "--html", "Specs/#{project}.Specs.html", "-x", "example", *specs
+    sh "Build/#{compileTarget}/Machine.Specifications.ConsoleRunner.exe", "--html", "Specs/#{project}.Specs.html", "-x", "example", *(mspec_options + specs)
     puts "Wrote specs to Specs/#{project}.Specs.html, run 'rake specs:view' to see them"
   end
 end
@@ -88,4 +89,12 @@ task :package => [ "rebuild", "specs:run" ] do
   Dir.chdir("Build/#{compileTarget}") do
 	  sz.zip :files => FileList.new('**/*').exclude('Tests')
   end
+end
+
+desc "Teamcity build"
+task :teamcity => [ :teamcity_environment, :package ]
+
+desc "Sets up the Teamcity environment"
+task :teamcity_environment do
+  mspec_options.push "--teamcity"
 end
