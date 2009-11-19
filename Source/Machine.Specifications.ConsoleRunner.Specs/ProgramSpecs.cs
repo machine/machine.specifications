@@ -10,7 +10,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
 
   [Subject("Console runner")]
   public class when_arguments_are_not_provided
-    : with_runner 
+    : ConsoleRunnerSpecs 
   {
     Because of = ()=>
       program.Run(new string[] {});
@@ -21,7 +21,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
 
   [Subject("Console runner")]
   public class when_running_a_specification_assembly
-    : with_runner 
+    : ConsoleRunnerSpecs 
   {
     Because of = ()=>
       program.Run(new [] {GetPath("Machine.Specifications.Example.dll")});
@@ -50,7 +50,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
 
   [Subject("Console runner")]
   public class when_specifying_a_missing_assembly_on_the_command_line
-    : with_runner 
+    : ConsoleRunnerSpecs 
   {
     const string missingAssemblyName = "Some.Missing.Assembly.dll";
     public static ExitCode exitCode;
@@ -66,7 +66,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
   }
 
   [Subject("Console runner")]
-  public class when_a_specification_fails : with_runner
+  public class when_a_specification_fails : ConsoleRunnerSpecs
   {
     public static ExitCode exitCode;
     const string assemblyWithFailingSpecification = "Machine.Specifications.FailingExample";
@@ -86,7 +86,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
   }
 
   [Subject("Console runner")]
-  public class when_a_specification_fails_and_silent_is_set : with_runner
+  public class when_a_specification_fails_and_silent_is_set : ConsoleRunnerSpecs
   {
     public static ExitCode exitCode;
     const string assemblyWithFailingSpecification = "Machine.Specifications.FailingExample";
@@ -103,7 +103,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
   }
 
   [Subject("Console runner")]
-  public class when_specifying_an_include_filter : with_runner
+  public class when_specifying_an_include_filter : ConsoleRunnerSpecs
   {
     Because of = ()=>
       program.Run(new [] { GetPath("Machine.Specifications.Example.dll"), "--include", "failure"});
@@ -116,7 +116,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       console.ShouldNotContainLineWith("Account Funds transfer, when transferring between two accounts");
   }
 
-  public class with_runner
+  public class ConsoleRunnerSpecs
   {
     public static Program program;
     public static FakeConsole console;

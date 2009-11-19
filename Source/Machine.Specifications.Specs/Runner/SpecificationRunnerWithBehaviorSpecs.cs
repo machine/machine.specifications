@@ -4,7 +4,7 @@ namespace Machine.Specifications.Specs.Runner
 {
   [Subject("Specification Runner")]
   public class when_running_a_context_with_specifications_in_a_behavior
-    : with_runner
+    : RunnerSpecs
   {
     Establish context = () =>
       {
@@ -20,7 +20,7 @@ namespace Machine.Specifications.Specs.Runner
   
   [Subject("Specification Runner")]
   public class when_running_a_context_with_specifications_in_a_behavior_where_the_behavior_field_is_ignored
-    : with_runner
+    : RunnerSpecs
   {
     Establish context = () =>
       {
@@ -36,7 +36,7 @@ namespace Machine.Specifications.Specs.Runner
   
   [Subject("Specification Runner")]
   public class when_running_a_context_with_specifications_in_a_behavior_where_the_behavior_is_ignored
-    : with_runner
+    : RunnerSpecs
   {
     Establish context = () =>
       {
@@ -52,7 +52,7 @@ namespace Machine.Specifications.Specs.Runner
   
   [Subject("Specification Runner")]
   public class when_running_a_context_with_specifications_in_a_behavior_where_the_behavior_specs_are_ignored
-    : with_runner
+    : RunnerSpecs
   {
     Establish context = () =>
       {
@@ -68,7 +68,7 @@ namespace Machine.Specifications.Specs.Runner
 
   [Subject("Specification Runner")]
   public class when_running_a_context_with_nested_behaviors
-    : with_runner
+    : RunnerSpecs
   {
     static Exception Exception;
 
@@ -81,7 +81,7 @@ namespace Machine.Specifications.Specs.Runner
   
   [Subject("Specification Runner")]
   public class when_running_a_context_with_behaviors_that_do_not_have_the_behaviors_attribute
-    : with_runner
+    : RunnerSpecs
   {
     static Exception Exception;
 
@@ -94,7 +94,7 @@ namespace Machine.Specifications.Specs.Runner
   
   [Subject("Specification Runner")]
   public class when_running_a_context_with_behaviors_with_establish
-    : with_runner
+    : RunnerSpecs
   {
     static Exception Exception;
 
@@ -107,7 +107,7 @@ namespace Machine.Specifications.Specs.Runner
   
   [Subject("Specification Runner")]
   public class when_running_a_context_with_behaviors_with_because
-    : with_runner
+    : RunnerSpecs
   {
     static Exception Exception;
 

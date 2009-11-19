@@ -8,7 +8,7 @@ namespace Machine.Specifications.Specs.Runner
 {
   [Subject("Specification Runner")]
   public class when_running_a_context_with_no_specifications
-    : with_runner
+    : RunnerSpecs
   {
     Establish context = () =>
     {
@@ -32,7 +32,7 @@ namespace Machine.Specifications.Specs.Runner
 
   [Subject("Specification Runner")]
   public class when_running_a_context_with_an_ignored_specifications
-    : with_runner
+    : RunnerSpecs
   {
     Establish context = () =>
     {
@@ -60,7 +60,7 @@ namespace Machine.Specifications.Specs.Runner
 
   [Subject("Specification Runner")]
   public class when_running_an_ignored_context
-    : with_runner
+    : RunnerSpecs
   {
     Establish context = () =>
     {
@@ -86,7 +86,7 @@ namespace Machine.Specifications.Specs.Runner
 
   [Subject("Specification Runner")]
   public class when_running_a_context_with_multiple_specifications
-    : with_runner
+    : RunnerSpecs
   {
     Establish context = () =>
     {
@@ -110,7 +110,7 @@ namespace Machine.Specifications.Specs.Runner
 
   [Subject("Specification Runner")]
   public class when_running_a_context_with_multiple_specifications_and_setup_once_per_attribute
-    : with_runner
+    : RunnerSpecs
   {
     Establish context = () =>
     {
@@ -134,7 +134,7 @@ namespace Machine.Specifications.Specs.Runner
 
   [Subject("Specification Runner")]
   public class when_running_a_context_with_multiple_establish_clauses
-    : with_runner
+    : RunnerSpecs
   {
     static Exception exception;
 
@@ -147,7 +147,7 @@ namespace Machine.Specifications.Specs.Runner
 
   [Subject("Specification Runner")]
   public class when_running_a_context_with_failing_establish_clauses
-    : with_runner
+    : RunnerSpecs
   {
     Because of = Run<context_with_failing_establish>;
 
@@ -157,7 +157,7 @@ namespace Machine.Specifications.Specs.Runner
 
   [Subject("Specification Runner")]
   public class when_running_a_context_with_failing_because_clauses
-    : with_runner
+    : RunnerSpecs
   {
     Because of = Run<context_with_failing_because>;
 
@@ -167,7 +167,7 @@ namespace Machine.Specifications.Specs.Runner
 
   [Subject("Specification Runner")]
   public class when_running_a_context_with_failing_specs
-  : with_runner
+  : RunnerSpecs
   {
     Because of = Run<context_with_failing_specs>;
 
@@ -200,7 +200,7 @@ namespace Machine.Specifications.Specs.Runner
   [Subject("Specification Runner")]
   [Ignore]
   public class when_running_a_specification_with_console_output
-    : with_runner
+    : RunnerSpecs
   {
     Because of = () =>
       Run<context_with_console_output>();
@@ -219,7 +219,7 @@ namespace Machine.Specifications.Specs.Runner
   [Subject("Specification Runner")]
   [Ignore]
   public class when_running_a_specification_with_console_output_and_foreach
-    : with_runner
+    : RunnerSpecs
   {
     Because of = () =>
       Run<context_with_console_output_and_for_each>();
@@ -239,7 +239,7 @@ namespace Machine.Specifications.Specs.Runner
 
   [Subject("Specification Runner")]
   public class when_running_a_specification_that_throws_an_exception_with_an_inner_exception
-    : with_runner
+    : RunnerSpecs
   {
     Because of =()=>
       Run<context_with_inner_exception>();
@@ -250,7 +250,7 @@ namespace Machine.Specifications.Specs.Runner
 
   [Subject("Specification Runner")]
   public class when_running_a_behavior
-    : with_runner
+    : RunnerSpecs
   {
     Establish context = () =>
     {
@@ -314,7 +314,7 @@ namespace Machine.Specifications.Specs.Runner
     static TestListener testListener;
   }
 
-  public class with_runner
+  public class RunnerSpecs
   {
     static DefaultRunner runner;
     protected static TestListener testListener;

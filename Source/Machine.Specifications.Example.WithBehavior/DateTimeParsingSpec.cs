@@ -7,7 +7,7 @@ using System;
 namespace Machine.Specifications.Example.WithBehavior
 {
   [Subject("Date time parsing")]
-  public class when_a_date_is_parsed_with_the_regular_expression_parser : with_string_parser
+  public class when_a_date_is_parsed_with_the_regular_expression_parser : DateTimeParsingSpecs
   {
     Establish context = () => { Parser = new RegexParser(); };
 
@@ -17,7 +17,7 @@ namespace Machine.Specifications.Example.WithBehavior
   }
 
   [Subject("Date time parsing")]
-  public class when_a_date_is_parsed_by_the_infrastructure : with_string_parser
+  public class when_a_date_is_parsed_by_the_infrastructure : DateTimeParsingSpecs
   {
     Establish context = () => { Parser = new InfrastructureParser(); };
 
@@ -26,7 +26,7 @@ namespace Machine.Specifications.Example.WithBehavior
     Behaves_like<DateTimeParsingBehavior> a_date_time_parser;
   }
 
-  public abstract class with_string_parser
+  public abstract class DateTimeParsingSpecs
   {
     protected static DateTime ParsedDate;
     protected static IParser Parser;

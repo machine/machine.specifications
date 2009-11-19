@@ -2,7 +2,7 @@ namespace Machine.Specifications.Specs.Runner
 {
   [Subject("Specification Runner")]
   public class when_running_a_context_with_inherited_specifications
-    : with_runner
+    : RunnerSpecs
   {
     Establish context = () =>
       {
@@ -31,7 +31,7 @@ namespace Machine.Specifications.Specs.Runner
 
   [Subject("Specification Runner")]
   public class when_running_a_context_with_inherited_specifications_and_setup_once_per_attribute
-    : with_runner
+    : RunnerSpecs
   {
     Establish context = () =>
       {

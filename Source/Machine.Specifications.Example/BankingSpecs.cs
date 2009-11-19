@@ -4,7 +4,7 @@ namespace Machine.Specifications.Example
 {
   [Subject(typeof(Account), "Funds transfer")]
   public class when_transferring_between_two_accounts
-    : with_from_account_and_to_account
+    : AccountSpecs
   {
     Because of = () =>
       fromAccount.Transfer(1m, toAccount);
@@ -18,7 +18,7 @@ namespace Machine.Specifications.Example
 
   [Subject(typeof(Account), "Funds transfer"), Tags("failure")]
   public class when_transferring_an_amount_larger_than_the_balance_of_the_from_account
-    : with_from_account_and_to_account
+    : AccountSpecs
   {
     static Exception exception;
     Because of =()=>
@@ -30,7 +30,7 @@ namespace Machine.Specifications.Example
 
   public class failure {}
 
-  public abstract class with_from_account_and_to_account
+  public abstract class AccountSpecs
   {
     protected static Account fromAccount;
     protected static Account toAccount;
