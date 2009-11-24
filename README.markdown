@@ -13,7 +13,7 @@ Below docs are a work in progress:
 
 Machine.Specifications is a [Context/Specification](http://www.code-magazine.com/article.aspx?quickid=0805061) framework geared towards removing language noise and simplifying tests. All it asks is that you accept the =()=>.
 
-The source code is available on github at [http://github.com/machine/machine.specifications](http://github.com/machine/machine.specifications). It is released under the terms of the Microsoft Public-License (Ms-PL). Information about this license is contained within the accompanying License.txt file.
+The source code is available on github at [http://github.com/machine/machine.specifications](http://github.com/machine/machine.specifications). It is released under the terms of the MIT license with some parts MS-PL. Information about this license is contained within the accompanying License.txt file.
 
 ## Getting started with MSpec
 
