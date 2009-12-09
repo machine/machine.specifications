@@ -87,6 +87,24 @@ namespace Machine.Specifications.Specs.Runner
       listener.SpecCount.ShouldEqual(1);
   }
 
+  public class when_running_a_nested_context_by_member : running_specs
+  {
+    Because of = () =>
+      runner.RunMember(typeof(Container).Assembly, typeof(Container.nested_context));
+
+    It should_run = () =>
+      listener.SpecCount.ShouldEqual(1);
+  }
+  
+  public class when_running_specs_of_a_nested_context_by_member : running_specs
+  {
+    Because of = () =>
+      runner.RunMember(typeof(Container).Assembly, typeof(Container.nested_context).GetField("should_be_run", BindingFlags.NonPublic | BindingFlags.Instance));
+
+    It should_run = () =>
+      listener.SpecCount.ShouldEqual(1);
+  }
+
   public class TestListener : ISpecificationRunListener
   {
     public int SpecCount = 0;

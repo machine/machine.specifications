@@ -49,7 +49,8 @@ namespace Machine.Specifications.Runner.Impl
 
     public void RunMember(Assembly assembly, MemberInfo member)
     {
-      if (member.MemberType == MemberTypes.TypeInfo)
+      if (member.MemberType == MemberTypes.TypeInfo ||
+          member.MemberType == MemberTypes.NestedType)
       {
         RunClass(member, assembly);
       }

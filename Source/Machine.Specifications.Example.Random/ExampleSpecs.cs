@@ -199,4 +199,13 @@ namespace Machine.Specifications.Specs
       Console.Error.WriteLine("Console.Error message in spec");
     };
   }
+
+  public class Container
+  {
+    [Tags(tag.example)]
+    public class nested_context
+    {
+      It should_be_run = () => { };
+    }
+  }
 }
