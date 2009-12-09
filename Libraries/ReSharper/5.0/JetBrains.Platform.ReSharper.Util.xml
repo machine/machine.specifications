@@ -330,6 +330,15 @@
             Whether this is the primary fiber, a wrapper over the thread's main execution flow, rather than a specifically created coroutine.
             </summary>
         </member>
+        <member name="T:JetBrains.Util.Concurrency.FrugalLocalLazy`1">
+            <summary>
+            <para>Provides support for several common patterns of lazy initialization, including the ability to initialize value types and to use null values.</para>
+            <para>This is a frugal version of <see cref="T:JetBrains.Util.Lazy.Lazy`1"/> and <see cref="T:JetBrains.Util.Concurrency.LocalLazy`1"/> that does not create any objects until the lazy value is initialized to a reference type.</para>
+            <para>This class only supports creating reference types with default constructors in a thread-unsafe manner, but its added memory usage is exactly zero (it takes as much space in the containing class as a field with a reference to the lazily-created value would do).</para>
+            <para>For use in private fields only. Do not expose! Assigning this object to any variables breaks the pattern.</para>
+            </summary>
+            <typeparam name="T">Specifies the type of element being laziliy initialized.</typeparam>
+        </member>
         <member name="T:JetBrains.Threading.GuardAttribute">
             <summary>
             Defines the guarded context affinity of the method: whether it expects to be always executed in a guarded context, or is considered an “outer world” method.
@@ -370,6 +379,13 @@
             <summary>
             Neither <see cref="F:JetBrains.Threading.Rgc.Guarded"/> nor <see cref="F:JetBrains.Threading.Rgc.Unguarded"/> nor <see cref="F:JetBrains.Threading.Rgc.Invariant"/>.
             </summary>
+        </member>
+        <member name="T:JetBrains.Util.Concurrency.LocalLazy`1">
+            <summary>
+            Provides support for several common patterns of lazy initialization, including the ability to initialize value types and to use null values.
+            This is a frugal version of <see cref="T:JetBrains.Util.Lazy.Lazy`1"/> that does not create any objects until the lazy value is initialized to a reference type.
+            </summary>
+            <typeparam name="T">Specifies the type of element being laziliy initialized.</typeparam>
         </member>
         <member name="T:JetBrains.UI.Application.LocalReentrancyGuard">
             <summary>
@@ -619,18 +635,6 @@
             Returns a cookie for terminating the flow.
             </summary>
         </member>
-        <member name="M:JetBrains.DataFlow.IPropertyEx.FlowInto_Grouped``1(JetBrains.DataFlow.IProperty{``0},JetBrains.DataFlow.IProperty{``0},JetBrains.Threading.GroupingEvent)">
-            <summary>
-            Establishes one-way frequency-limited data flow between two properties.
-            The target update occurs no more often than allowed by the signals.
-            </summary>
-        </member>
-        <member name="M:JetBrains.DataFlow.IPropertyEx.FlowInto_Grouped``1(JetBrains.DataFlow.IProperty{``0},JetBrains.DataFlow.IProperty{``0},JetBrains.Threading.GroupingEvent,System.Object)">
-            <summary>
-            Establishes one-way frequency-limited data flow between two properties.
-            The target update occurs no more often than allowed by the signals.
-            </summary>
-        </member>
         <member name="M:JetBrains.DataFlow.IPropertyEx.FlowIntoReadonly``2(JetBrains.DataFlow.IProperty{``0},JetBrains.DataFlow.IProperty{``1},System.Func{``0,``1},System.Object)">
             <summary>
             Establishes a data flow between two properties of different types, thru a converter.
@@ -641,6 +645,18 @@
             <summary>
             Establishes a data flow between two properties.
             Returns a cookie for terminating the flow.
+            </summary>
+        </member>
+        <member name="M:JetBrains.DataFlow.IPropertyEx.FlowInto_Grouped``1(JetBrains.DataFlow.IProperty{``0},JetBrains.DataFlow.IProperty{``0},JetBrains.Threading.GroupingEvent)">
+            <summary>
+            Establishes one-way frequency-limited data flow between two properties.
+            The target update occurs no more often than allowed by the signals.
+            </summary>
+        </member>
+        <member name="M:JetBrains.DataFlow.IPropertyEx.FlowInto_Grouped``1(JetBrains.DataFlow.IProperty{``0},JetBrains.DataFlow.IProperty{``0},JetBrains.Threading.GroupingEvent,System.Object)">
+            <summary>
+            Establishes one-way frequency-limited data flow between two properties.
+            The target update occurs no more often than allowed by the signals.
             </summary>
         </member>
         <member name="M:JetBrains.DataFlow.IPropertyEx.Invert(JetBrains.DataFlow.IProperty{System.Boolean})">
@@ -910,6 +926,18 @@
             <summary>
             For a signal that has an out-value only, fires the signal and collects the out-value.
             </summary>
+        </member>
+        <member name="M:JetBrains.DataFlow.ISignalEx.FireInOut``2(JetBrains.DataFlow.ISignal{JetBrains.DataFlow.InOutEventArgs{``0,``1}},``0)">
+            <summary>
+            For a signal that has an in-out value, fires the signal and collects the out-value.
+            </summary>
+            <remarks>Method name is not <c>Fire</c> because otherwise the <see cref="M:JetBrains.DataFlow.ISignalEx.FireInOut``2(JetBrains.DataFlow.ISignal{JetBrains.DataFlow.InOutEventArgs{``0,``1}},``0,``1)"/> overload conflicts with <see cref="M:JetBrains.DataFlow.IUntypedSignal.Fire(System.Object,System.Object)"/>.</remarks>
+        </member>
+        <member name="M:JetBrains.DataFlow.ISignalEx.FireInOut``2(JetBrains.DataFlow.ISignal{JetBrains.DataFlow.InOutEventArgs{``0,``1}},``0,``1)">
+            <summary>
+            For a signal that has an in-out value, fires the signal and collects the out-value.
+            </summary>
+            <remarks>Method name is not <c>Fire</c> because otherwise the <see cref="M:JetBrains.DataFlow.ISignalEx.FireInOut``2(JetBrains.DataFlow.ISignal{JetBrains.DataFlow.InOutEventArgs{``0,``1}},``0,``1)"/> overload conflicts with <see cref="M:JetBrains.DataFlow.IUntypedSignal.Fire(System.Object,System.Object)"/>.</remarks>
         </member>
         <member name="M:JetBrains.DataFlow.ISignalEx.FlowDeferredInto(JetBrains.DataFlow.IUntypedSignal,JetBrains.DataFlow.ISimpleSignal)">
             <summary>
@@ -1980,16 +2008,6 @@
             Extension methods.
             </summary>
         </member>
-        <member name="M:JetBrains.Util.FileSystemPathEx.GetChildFiles(JetBrains.Util.FileSystemPath)">
-            <summary>
-            Gets the child files, non-recursive.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Util.FileSystemPathEx.GetChildFiles(JetBrains.Util.FileSystemPath,System.String)">
-            <summary>
-            Gets the child files, non-recursive.
-            </summary>
-        </member>
         <member name="M:JetBrains.Util.FileSystemPathEx.GetChildDirectories(JetBrains.Util.FileSystemPath)">
             <summary>
             Gets the child directories, non-recursive.
@@ -2000,14 +2018,24 @@
             Gets the child directories, non-recursive.
             </summary>
         </member>
-        <member name="M:JetBrains.Util.FileSystemPathEx.GetChildren(JetBrains.Util.FileSystemPath)">
+        <member name="M:JetBrains.Util.FileSystemPathEx.GetChildDirectories(JetBrains.Util.FileSystemPath,System.String,JetBrains.Util.PathSearchFlags)">
             <summary>
-            Gets the child files and folders, non-recursive.
+            Gets the child directories.
             </summary>
         </member>
-        <member name="M:JetBrains.Util.FileSystemPathEx.GetChildren(JetBrains.Util.FileSystemPath,System.String)">
+        <member name="M:JetBrains.Util.FileSystemPathEx.GetChildFiles(JetBrains.Util.FileSystemPath)">
             <summary>
-            Gets the child files and folders, non-recursive.
+            Gets the child files, non-recursive.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.FileSystemPathEx.GetChildFiles(JetBrains.Util.FileSystemPath,System.String)">
+            <summary>
+            Gets the child files, non-recursive.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.FileSystemPathEx.GetChildFiles(JetBrains.Util.FileSystemPath,System.String,JetBrains.Util.PathSearchFlags)">
+            <summary>
+            Gets the child files.
             </summary>
         </member>
         <member name="M:JetBrains.Util.FileSystemPathEx.GetDescendants(JetBrains.Util.FileSystemPath)">
@@ -2015,7 +2043,7 @@
             Gets the descendant files and folders, recursive.
             </summary>
         </member>
-        <member name="M:JetBrains.Util.FileSystemPathEx.GetDescendants(JetBrains.Util.FileSystemPath,System.String)">
+        <member name="M:JetBrains.Util.FileSystemPathEx.GetDescendants(JetBrains.Util.FileSystemPath,System.String,JetBrains.Util.PathSearchFlags)">
             <summary>
             Gets the descendant files and folders, recursive.
             </summary>
@@ -2088,6 +2116,70 @@
         <member name="M:JetBrains.UI.Interop.HResultsEx.Succeeded(JetBrains.Interop.WinApi.HResults)">
             <summary>
             The <c>SUCCEEDED</c> WinAPI Macro.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Util.OnError">
+            <summary>
+            Option for the functions that serve as a <c>[NotNull]</c> or <c>[CanBeNull]</c> implementation, depending on the settings.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.OnError.#ctor(System.Action{System.Exception})">
+            <summary>
+            Initializes with the handler to be called on <see cref="M:JetBrains.Util.OnError.Handle(System.Exception)"/>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Util.OnError.Ignore">
+            <summary>
+            A handler that ignores failures.
+            Provides for <c>[CanBeNull]</c> behavior.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Util.OnError.Throw">
+            <summary>
+            A handler that always throws an exception.
+            When the calling function is properly implemented, provides for <c>[NotNull]</c> behavior.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.OnError.Handle(System.Exception)">
+            <summary>
+            <para>Called by a not-null-or-can-be-null function when an exception-worth error occurs. Could throw, store, or ignore the failure.</para>
+            <para>The calling code must be ready that an exception might be thrown out (<c>[NotNull]</c> case).</para>
+            <para>The calling code must be ready that execution might continue (<c>[CanBeNull]</c> case should return <c>Null</c> if so).</para>
+            <para>Typical usage:</para>
+            <code>
+            if(isFailed)
+            {
+                onerror.Handle(new InvalidOperationException("FAIL").AddData("More", () => "Info"));	// Throws in [NotNull] case
+                return null;	// Executes in [CanBeNull] case
+            }
+            </code>
+            </summary>
+        </member>
+        <member name="T:JetBrains.Util.PathSearchFlags">
+            <summary>
+            Controls how <see cref="T:JetBrains.Util.FileSystemPath"/> looks for its sub-paths.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Util.PathSearchFlags.RecurseIntoSubdirectories">
+            <summary>
+            If set, includes items in subfolders with the search. Otherwise looks among immediate children only.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Util.PathSearchFlags.ExcludeHidden">
+            <summary>
+            Excludes items that have <see cref="F:System.IO.FileAttributes.Hidden"/> attribute set.
+            Functions that are non-recursive by default (eg <see cref="M:JetBrains.Util.FileSystemPathEx.GetChildFiles(JetBrains.Util.FileSystemPath)"/>) when working in recursive mode will not exclude files in hidden directories.
+            Natively recursive functions, like <see cref="M:JetBrains.Util.FileSystemPathEx.GetDescendants(JetBrains.Util.FileSystemPath)"/>, do not recurse into hidden directories at all.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Util.PathSearchFlags.ExcludeFiles">
+            <summary>
+            Does not return paths that point to files.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Util.PathSearchFlags.ExcludeDirectories">
+            <summary>
+            Does not return paths that point to directories.
             </summary>
         </member>
         <member name="T:JetBrains.Util.DisposablesHelper">
@@ -2388,6 +2480,14 @@
             <param name="oValue"></param>
             <returns></returns>
         </member>
+        <member name="M:JetBrains.Util.ExceptionRenderer.GetAllNestedExceptions(System.Exception)">
+            <summary>
+            Looks up all of the exceptions in the exception tree. Checks for the <see cref="P:System.Exception.InnerException"/>, other possible exception properties (eg <see cref="P:System.Reflection.ReflectionTypeLoadException.LoaderExceptions"/>), and data bag. The original exception is too included with the collection.
+            </summary>
+            <param name="ex">The exception to look into.</param>
+            <returns>The <paramref name="ex"/> plus all of the nested exceptions.</returns>
+            <remarks>This method is slow somewhat and does not cache the results.</remarks>
+        </member>
         <member name="M:JetBrains.Util.ExceptionRenderer.RenderException(System.Exception)">
             <summary>
             <para>Renders a string representation of the exception by collecting all of the data about the original exception and all of the inner/related exceptions in the tree.</para>
@@ -2396,6 +2496,7 @@
             </summary>
             <param name="ex">The exception to render.</param>
             <returns>The string representation.</returns>
+            <remarks>This method might be slow, but it caches the rendered data on the exception after the first call.</remarks>
         </member>
         <member name="M:JetBrains.Util.ExceptionRenderer.RenderExceptionEx(System.Exception,System.String@,System.String@)">
             <summary>
@@ -2406,8 +2507,9 @@
             <param name="ex">The exception to render.</param>
             <param name="message">Only the message of the exception, omitting all of the data fields. There is the advanced logic to also include the messages of the inner exceptions, if they're omitted from the outer one.</param>
             <param name="content">The full string representation of the exception content.</param>
+            <remarks>This method might be slow, but it caches the rendered data on the exception after the first call.</remarks>
         </member>
-        <member name="M:JetBrains.Util.ExceptionRenderer.RenderExceptionMessageAndData(System.Exception)">
+        <member name="M:JetBrains.Util.ExceptionRenderer.RenderOuterExceptionMessageAndData(System.Exception)">
             <summary>
             Renders the exception message that includes all of the additional data fields, but of the outermost exception only.
             </summary>
@@ -2543,14 +2645,6 @@
             <summary>
             Parse string to nullable enum with returning specified default value if parameter is null or invalid
             </summary>
-        </member>
-        <member name="T:System.Lazy`1">
-            <summary>
-            Provides support for several common patterns of lazy initialization,
-            including the ability to initialize value types and to use null values.
-            </summary>
-            <typeparam name="T">Specifies the type of element being laziliy initialized.</typeparam>
-            <remarks>Warning! Unlike MS implementation, ISerializable not yet implemented.</remarks>
         </member>
         <member name="T:JetBrains.Util.CollectionAdapter`1">
             <summary>
@@ -6435,19 +6529,9 @@
             ANDs two boolean properties.
             </summary>
         </member>
-        <member name="M:JetBrains.DataFlow.PropertyBinding.CreateOr(JetBrains.DataFlow.IProperty{System.Boolean},JetBrains.DataFlow.IProperty{System.Boolean})">
-            <summary>
-            ORs two boolean properties.
-            </summary>
-        </member>
         <member name="M:JetBrains.DataFlow.PropertyBinding.CreateAndMultibinding(JetBrains.DataFlow.IProperty{System.Boolean},JetBrains.DataFlow.IProperty{System.Boolean},JetBrains.DataFlow.IProperty{System.Boolean})">
             <summary>
             Binds two <see cref="T:System.Boolean"/> properties to a third by ANDing their values.
-            </summary>
-        </member>
-        <member name="M:JetBrains.DataFlow.PropertyBinding.CreateOrMultibinding(JetBrains.DataFlow.IProperty{System.Boolean},JetBrains.DataFlow.IProperty{System.Boolean},JetBrains.DataFlow.IProperty{System.Boolean})">
-            <summary>
-            Binds two <see cref="T:System.Boolean"/> properties to a third by ORing their values.
             </summary>
         </member>
         <member name="M:JetBrains.DataFlow.PropertyBinding.CreateCascading``3(JetBrains.DataFlow.IProperty{``0},System.Func{``0,JetBrains.DataFlow.IProperty{``1}},JetBrains.DataFlow.IProperty{``1},JetBrains.DataFlow.IProperty{``2},JetBrains.DataFlow.DataFlowDirection)">
@@ -6479,6 +6563,16 @@
             <summary>
             Creates a binding that negates a value of the boolean property.
             The negated property is created inplace, and returned as a result.
+            </summary>
+        </member>
+        <member name="M:JetBrains.DataFlow.PropertyBinding.CreateOr(JetBrains.DataFlow.IProperty{System.Boolean},JetBrains.DataFlow.IProperty{System.Boolean})">
+            <summary>
+            ORs two boolean properties.
+            </summary>
+        </member>
+        <member name="M:JetBrains.DataFlow.PropertyBinding.CreateOrMultibinding(JetBrains.DataFlow.IProperty{System.Boolean},JetBrains.DataFlow.IProperty{System.Boolean},JetBrains.DataFlow.IProperty{System.Boolean})">
+            <summary>
+            Binds two <see cref="T:System.Boolean"/> properties to a third by ORing their values.
             </summary>
         </member>
         <member name="M:JetBrains.DataFlow.PropertyBinding.MirrorCollection``2(JetBrains.DataFlow.ICollectionEvents{``0},JetBrains.DataFlow.ICollectionEvents{``1},System.Func{``0,``1},System.Object)">
@@ -10269,6 +10363,12 @@
             </summary>
             <param name="prefix">A prefix that will be prepended to each of the output lines.</param>
         </member>
+        <member name="F:JetBrains.Util.DebugOutputLogEventListener.OptionDontWriteDebugStream">
+            <summary>
+            Helper flag to prevent the logger messages from being emitted as traces when it's known that the message will get into the traces with some other means.
+            Eg when capturing Trace::WriteLine into the Logger, the logger should be prevented from emitting it to the Debug stream, as it will be a duplicate.
+            </summary>
+        </member>
         <member name="M:JetBrains.Util.DebugOutputLogEventListener.WriteDebugStream(System.String,System.String)">
             <summary>
             Writes a <paramref name="body"/> string to the Debug output stream.
@@ -11112,11 +11212,19 @@
             </summary>
             
         </member>
-        <member name="M:JetBrains.Util.DataStructures.ChunkArray`1.#ctor(System.Int32)">
+        <member name="M:JetBrains.Util.DataStructures.ChunkList`1.#ctor(System.Int32)">
             <summary>
             Create chunk array with pre-allocated given size
             </summary>
-            <param name="length"></param>
+            <param name="initialSize"></param>
+        </member>
+        <member name="M:JetBrains.Util.DataStructures.ChunkList`1.Compact">
+            <summary>
+            Resize last chunk to fit exact element number
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.DataStructures.ChunkList`1.BinarySearch(System.Func{`0,System.Int32})">
+            <returns>found index. Less than 0 if not found</returns>
         </member>
         <member name="T:JetBrains.Util.Locator`1">
             <summary>
@@ -14758,16 +14866,6 @@
             Gets whether this instance points to a file, and that file exists on disk.
             </summary>
         </member>
-        <member name="P:JetBrains.Util.FileSystemPath.FileModificationTime">
-            <summary>
-            Gets the last write time of the file represented by this instance. Throws if there is no such file.
-            </summary>
-        </member>
-        <member name="P:JetBrains.Util.FileSystemPath.Name">
-            <summary>
-            Gets the local name of the file/directory (the component after the last separator).
-            </summary>
-        </member>
         <member name="P:JetBrains.Util.FileSystemPath.ExtensionNoDot">
             <summary>
             Gets the file extension, without the leading dot.
@@ -14779,6 +14877,22 @@
             Gets the file extension, including the leading dot.
             </summary>
             <example><c>C:\autoexec.bat</c> -> <c>.bat</c></example>
+        </member>
+        <member name="P:JetBrains.Util.FileSystemPath.FileModificationTime">
+            <summary>
+            Gets the last write time of the file represented by this instance. Throws if there is no such file.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Util.FileSystemPath.IsHidden">
+            <summary>
+            Gets whether this file system path is a hidden file or folder.
+            Returns <c>False</c> for nonexistent paths.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Util.FileSystemPath.Name">
+            <summary>
+            Gets the local name of the file/directory (the component after the last separator).
+            </summary>
         </member>
         <member name="T:JetBrains.Util.IndexComparer`1">
             <summary>

@@ -14,9 +14,9 @@
             Indicates that the file, possibly a resource file, does not contain metadata
             </summary>
         </member>
-        <member name="T:JetBrains.Metadata.Access.Fusion.FusionMetadataProvider">
+        <member name="T:JetBrains.Metadata.Access.ILReader.ILReaderMetadataProvider">
             <summary>
-            Provides metadata interface for various sources (Fusion variant)
+            Provides metadata interface for various sources (ILReader version, only managed code)
             </summary>
         </member>
         <member name="M:JetBrains.Metadata.Access.IMetadataProvider.DisposeMetadataAccess(JetBrains.Metadata.Access.IMetadataAccess)">
@@ -24,11 +24,6 @@
             You must call DisposeMetadataAccess after every GetFrom* method,
             but if you're loading assemblies via MetadataLoader that will be done for you automatically
             on loader dispose
-            </summary>
-        </member>
-        <member name="T:JetBrains.Metadata.Access.ILReader.ILReaderMetadataProvider">
-            <summary>
-            Provides metadata interface for various sources (ILReader version, only managed code)
             </summary>
         </member>
         <member name="T:JetBrains.Metadata.Access.TypeDefProperties">
@@ -313,6 +308,11 @@
             Gets unique MVID
             </summary>
         </member>
+        <member name="P:JetBrains.Metadata.Access.IMetadataAccess.TargetPlatform">
+            <summary>
+            Gets target platform
+            </summary>
+        </member>
         <member name="P:JetBrains.Metadata.Access.IMetadataAccess.NestedTypeMap">
             <summary>
             Nested-relation between types
@@ -333,7 +333,7 @@
             The name of the exported type
             </summary>
         </member>
-        <member name="P:JetBrains.Metadata.Access.ExportedTypeProperty.Implemetation">
+        <member name="P:JetBrains.Metadata.Access.ExportedTypeProperty.Implementation">
             <summary>
             An mdFile, mdAssemblyRef, or mdExportedType metadata token that contains or allows access to the properties of the exported type
             </summary>
@@ -584,1267 +584,6 @@
         <member name="T:JetBrains.Metadata.IL.StackBehaviour">
             <summary>
              StackBehaviour enumeration
-            </summary>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.CloseEnum(System.UIntPtr)">
-            <summary>Close an enumeration of elements in the metadata</summary>
-            <param name="hEnum">An enumeration handle returned from one of the EnumXXXX methods</param>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.CountEnum(System.UIntPtr,System.Int32@)">
-            <summary>Count the number of items available in an enumerations</summary>
-            <param name="hEnum">An enumeration handle returned from one of the EnumXXXX methods</param>
-            <param name="count">An output parameter which is filled with the item count</param>
-            <returns>The HRESULT from the COM method</returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.ResetEnum(System.UIntPtr,System.UInt32)">
-            <summary>Reset an enumeration to a specific position</summary>
-            <param name="hEnum">An enumeration handle returned from one of the EnumXXXX methods</param>
-            <param name="ulPos">The item position to reset to</param>
-            <returns>The HRESULT from the COM method</returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)">
-             <summary>Tokens representing typedefs from an enumeration of typedefs in the metadata scope</summary>
-             <example>
-             <code>
-              int hEnum=0;
-              int[] toks=new int[5];
-              int enumCount;
-              try {
-                impScope.EnumTypeDefs(ref hEnum,toks,toks.Length,out enumCount);
-                char[] nameBuffer=new char[2048];
-                int nameLen=0;
-                int superType=0;
-                int typeFlags=0;
-                int global=0;
-                while(enumCount&gt;0) {
-                  for(int I=0;I&lt;enumCount;I++) { 
-                    Console.Error.Write(toks[I].ToString("X8"));
-                    impScope.GetTypeDefProps(toks[I],nameBuffer,nameBuffer.Length,out nameLen,out typeFlags,out superType);
-                    impScope.IsGlobal(toks[I],out global);
-                    Console.Error.WriteLine(" "+new String(nameBuffer,0,nameLen)+" "+typeFlags.ToString("X8")+" "+superType.ToString("X8")+" "+global);
-                    }
-            
-                  impScope.EnumTypeDefs(ref hEnum,toks,toks.Length,out enumCount);
-                  }
-                } 
-              finally {
-                if(hEnum!=0) impScope.CloseEnum(hEnum);
-                }
-             </code>
-             </example>
-             <param name="phEnum">Output parameter which will be populated with the enum handle or which represents the enum handle to continue enumerating from</param>
-             <param name="rTypeDefs">An array into which the typedefs are returned</param>
-             <param name="cMax">Maximum number of items to return, size of the <paramref name="rTypeDefs"/> array. Use CountEnum to size this.</param>
-             <param name="pcTypeDefs">Actual number of items to returned in the <paramref name="rTypeDefs"/> array</param>
-             <returns>The HRESULT from the COM method</returns>
-             <seealso cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumInterfaceImpls(System.UIntPtr@,System.UInt32,System.UInt32[],System.Int32,System.Int32@)"/>
-             <seealso cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeRefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumInterfaceImpls(System.UIntPtr@,System.UInt32,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Tokens representing interface implementations from an enumeration in the metadata scope</summary>
-            <example><see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></example>
-            <param name="phEnum">Output parameter which will be populated with the enum handle or which represents the enum handle to continue enumerating from</param>
-            <param name="td">Token specifying the TypeDef whose InterfaceImpls are required</param>
-            <param name="rTypeDefs">An array into which the typedefs are returned</param>
-            <param name="cMax">Maximum number of items to return, size of the <paramref name="rTypeDefs"/> array. Use CountEnum to size this.</param>
-            <param name="pcTypeDefs">Actual number of items to returned in the <paramref name="rTypeDefs"/> array</param>
-            <returns>The HRESULT from the COM method</returns>
-            <seealso cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeRefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/>
-            <seealso cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeRefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate tokens represention type references from an enumeration in the metadata scope</summary>
-            <example><see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></example>
-            <param name="phEnum">Output parameter which will be populated with the enum handle or which represents the enum handle to continue enumerating from</param>
-            <param name="rTypeDefs">An array into which the typedefs are returned</param>
-            <param name="cMax">Maximum number of items to return, size of the <paramref name="rTypeDefs"/> array. Use CountEnum to size this.</param>
-            <param name="pcTypeDefs">Actual number of items to returned in the <paramref name="rTypeDefs"/> array</param>
-            <returns>The HRESULT from the COM method</returns>
-            <seealso cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumInterfaceImpls(System.UIntPtr@,System.UInt32,System.UInt32[],System.Int32,System.Int32@)"/>
-            <seealso cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.FindTypeDefByName(System.String,System.UInt32,System.UInt32@)">
-            <summary>Find a typedef token by the name of the type</summary>
-            <param name="szTypeDef">The name of the type</param>
-            <param name="tkEnclosingClass">The enclosing class for the type or 0 (token_null)</param>
-            <param name="ptd">The output parameter into which the typedef token will be written</param>
-            <returns>The HRESULT from the COM method</returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetScopeProps(System.Char[],System.Int32,System.Int32@,System.Guid@)">
-            <summary>Get some properties from the scope - these are the module name and the module MVID unique GUID</summary>
-            <param name="szName">Char buffer into which the name is written</param>
-            <param name="cchName">Size of the buffer <paramref name="szName"/></param>
-            <param name="pchName">Output parameter of the number of characters actually written to <paramref name="szName"/></param>
-            <param name="mvid">Guid into which the MVID is written</param>
-            <returns>The HRESULT from the COM method</returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetModuleFromScope(System.UInt32@)">
-            <summary>Get the metadata token for the module on which this scope was opened</summary>
-            <param name="pmd">The output parameter into which the module token is written</param>
-            <returns>The HRESULT from the COM method</returns>      
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetTypeDefProps(System.UInt32,System.Text.StringBuilder,System.Int32,System.Int32@,System.UInt32@,System.UInt32@)">
-            <summary>Get the name, flags and base class of a typedef (if appropriate)</summary>
-            <param name="td">Token to retrieve the properties from</param>
-            <param name="szTypeDef">Char buffer into which the name will be written</param>
-            <param name="cchTypeDef">Size of the buffer <paramref name="szTypeDef"/></param>
-            <param name="pchTypeDef">Output parameter for the actual number of characters written into the buffer <paramref name="szTypeDef"/></param>      
-            <param name="pdwTypeDefFlags">Outpu parameter for the flags from this typedef</param>
-            <param name="ptkExtends">Output parameter for the base type token</param>
-            <returns>The HRESULT from the COM method</returns>      
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetInterfaceImplProps(System.UInt32,System.UInt32@,System.UInt32@)">
-            <summary>Get the interface implementation details</summary>
-            <param name="iiImpl">Interface implementation instance token from <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumInterfaceImpls(System.UIntPtr@,System.UInt32,System.UInt32[],System.Int32,System.Int32@)"/></param>
-            <param name="pClass">Output class token implementing interface</param>
-            <param name="ptkIface">Output interface token implemented by class</param>
-            <returns>The HRESULT from the COM method</returns>      
-            <seealso cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumInterfaceImpls(System.UIntPtr@,System.UInt32,System.UInt32[],System.Int32,System.Int32@)"/>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetTypeRefProps(System.UInt32,System.UInt32@,System.Char*,System.Int32,System.Int32@)">
-            <summary>Get the properties from a typeref</summary>
-            <param name="tr">The typeref token to retrieve details from</param>
-            <param name="ptkResolutionScope">Output token for the resolution scope, either a moduleref or an assemblyref</param>
-            <param name="szName">Char buffer into which the name will be written</param>
-            <param name="cchName">Size of the buffer <paramref name="szName"/></param>
-            <param name="pchName">Output parameter for the actual number of characters written into the buffer <paramref name="szName"/></param>      
-            <returns>The HRESULT from the COM method</returns>         
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.ResolveTypeRef(System.UInt32,System.Guid@,System.Object@,System.UInt32@)">
-            <summary>Return the scope and token for a typedef corresponding to a (possibly imported) typeref</summary>
-            <param name="tr">Typeref to resolve</param>
-            <param name="riid">Interface type GUID for the returned interface, normally IID_IMetadataImport</param>
-            <param name="ppIScope">Output object which may be cast to the interface type specified in <paramref name="riid"/></param>
-            <param name="ptd">Output parameter into which the typedef token in the scope <paramref name="ppIScope"/> is written</param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumMembers(System.UIntPtr@,System.UInt32,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate the members of a type</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></param>
-            <param name="cl">Typedef token to enumerate members from</param>
-            <param name="rMembers">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rMembers"/></param>
-            <param name="pcTokens">Output parameter for the actual count of tokens written into <paramref name="rMembers"/></param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumMembersWithName(System.UIntPtr@,System.UInt32,System.String,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate the members of a type which match the specified name</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></param>
-            <param name="cl">Typedef token to enumerate members from</param>
-            <param name="szName">Name of the members to enumerate</param>
-            <param name="rMembers">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rMembers"/></param>
-            <param name="pcTokens">Output parameter for the actual count of tokens written into <paramref name="rMembers"/></param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumMethods(System.UIntPtr@,System.UInt32,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate the methods of a type</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></param>
-            <param name="cl">Typedef token to enumerate members from</param>
-            <param name="rMembers">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rMembers"/></param>
-            <param name="pcTokens">Output parameter for the actual count of tokens written into <paramref name="rMembers"/></param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumMethodsWithName(System.UIntPtr@,System.UInt32,System.String,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate the methods of a type which match the specified name</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></param>
-            <param name="cl">Typedef token to enumerate members from</param>
-            <param name="szName">Name of the members to enumerate</param>
-            <param name="rMembers">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rMembers"/></param>
-            <param name="pcTokens">Output parameter for the actual count of tokens written into <paramref name="rMembers"/></param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumFields(System.UIntPtr@,System.UInt32,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate the fields of a type</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></param>
-            <param name="cl">Typedef token to enumerate members from</param>
-            <param name="rMembers">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rMembers"/></param>
-            <param name="pcTokens">Output parameter for the actual count of tokens written into <paramref name="rMembers"/></param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumFieldsWithName(System.UIntPtr@,System.UInt32,System.String,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate the fields of a type which match the specified name</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></param>
-            <param name="cl">Typedef token to enumerate members from</param>
-            <param name="szName">Name of the members to enumerate</param>
-            <param name="rMembers">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rMembers"/></param>
-            <param name="pcTokens">Output parameter for the actual count of tokens written into <paramref name="rMembers"/></param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumParams(System.UIntPtr@,System.UInt32,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate the parameters of a methods</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></param>
-            <param name="cl">Typedef token to enumerate members from</param>
-            <param name="rMembers">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rMembers"/></param>
-            <param name="pcTokens">Output parameter for the actual count of tokens written into <paramref name="rMembers"/></param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumMemberRefs(System.UIntPtr@,System.UInt32,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Retrieve all of the member refs for a specified type within the scope</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></param>
-            <param name="cl">Token to enumerate members from. Use 0 (token_null) for globals</param>
-            <param name="rMembers">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rMembers"/></param>
-            <param name="pcTokens">Output parameter for the actual count of tokens written into <paramref name="rMembers"/></param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumMethodImpls(System.UIntPtr@,System.UInt32,System.UInt32[],System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Retrieve all of the methods implementation details</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></param>
-            <param name="td">Typedef to enumerate methods implementations from</param>
-            <param name="rMethodBody">Array into which the method body tokens are written</param>
-            <param name="rMethodDecl">Array into which the method interface declaration tokens are written</param>
-            <param name="cMax">Size of the arrays <paramref name="rMethodBody"/> and <paramref name="rMethodDecl"/></param>
-            <param name="pcTokens">Output parameter for the actual count of tokens written into <paramref name="rMethodBody"/> and <paramref name="rMethodDecl"/></param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumPermissionSets(System.UIntPtr@,System.UInt32,System.UInt32,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Retrieve all of the permission sets for a specified type within the scope</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></param>
-            <param name="tk">Token to enumerate members from</param>
-            <param name="dwActions">Mask of actions to return if non-zero</param>
-            <param name="rPermission">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rPermission"/></param>
-            <param name="pcTokens">Output parameter for the actual count of tokens written into <paramref name="rPermission"/></param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.FindMember(System.UInt32,System.String,System.Byte[],System.Int32,System.UInt32@)">
-            <summary>Find a member by name</summary>
-            <param name="td">Typedef to search</param>
-            <param name="szName">Member name</param>
-            <param name="pvSigBlob">Signature blob to filter names by</param>
-            <param name="cbSigBlob">Number of bytes in <paramref name="pvSigBlob"/></param>
-            <param name="pmb">Output parameter for the matched member</param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.FindMethod(System.UInt32,System.String,System.Byte[],System.Int32,System.UInt32@)">
-            <summary>Find a method by name</summary>
-            <param name="td">Typedef to search</param>
-            <param name="szName">Member name</param>
-            <param name="pvSigBlob">Signature blob to filter names by</param>
-            <param name="cbSigBlob">Number of bytes in <paramref name="pvSigBlob"/></param>
-            <param name="pmb">Output parameter for the matched member</param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.FindField(System.UInt32,System.String,System.Byte[],System.Int32,System.UInt32@)">
-            <summary>Find a field by name</summary>
-            <param name="td">Typedef to search</param>
-            <param name="szName">Member name</param>
-            <param name="pvSigBlob">Signature blob to filter names by</param>
-            <param name="cbSigBlob">Number of bytes in <paramref name="pvSigBlob"/></param>
-            <param name="pmb">Output parameter for the matched member</param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.FindMemberRef(System.UInt32,System.String,System.Byte[],System.Int32,System.UInt32@)">
-            <summary>Find a memberref by name</summary>
-            <param name="td">Typedef to search</param>
-            <param name="szName">Member name</param>
-            <param name="pvSigBlob">Signature blob to filter names by</param>
-            <param name="cbSigBlob">Number of bytes in <paramref name="pvSigBlob"/></param>
-            <param name="pmb">Output parameter for the matched member</param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetMethodProps(System.UInt32,System.UInt32@,System.Text.StringBuilder,System.Int32,System.Int32@,System.UInt32@,System.IntPtr@,System.Int32@,System.UInt32@,System.UInt32@)">
-            <summary>Retrieve the method detail for a method token</summary>
-            <param name="mb">The method token to retrieve properties from</param>
-            <param name="pClass">The output parameter for the token representing the class owning this method token</param>
-            <param name="szMethod">Char array into which the method name is written</param>
-            <param name="cchMethod">Size of the array <paramref name="szMethod"/></param>param>
-            <param name="pchMethod">Actual count written into the array <paramref name="szMethod"/></param>
-            <param name="pdwAttr">Output parameter for the method flags</param>
-            <param name="ppvSigBlob">Output parameters for the native pointer to the signature blob. Retrieve data using System.Marshal.Copy</param>
-            <param name="pcbSigBlob">Output parameter for number of bytes in the signature blob</param>
-            <param name="pulCodeRVA">Output parameter for relative virtual address in the assembly of the method's code</param>
-            <param name="pdwImplFlags">Output parameter for the method implementation flags</param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetMemberRefProps(System.UInt32,System.UInt32@,System.Char*,System.Int32,System.Int32@,System.IntPtr@,System.Int32@)">
-            <summary>Retrieve the member detail for a memberref token</summary>
-            <param name="mr">The memberref token to retrieve properties from</param>
-            <param name="ptk">The output parameter for the token representing the class def or ref owning this member token</param>
-            <param name="szMember">Char array into which the member name is written</param>
-            <param name="cchMember">Size of the array <paramref name="szMember"/></param>param>
-            <param name="pchMember">Actual count written into the array <paramref name="szMember"/></param>
-            <param name="ppvSigBlob">Output parameters for the native pointer to the signature blob. Retrieve data using System.Marshal.Copy</param>
-            <param name="pbSigBlob">Output parameter for number of bytes in the signature blob</param>
-            <returns>The HRESULT from the COM member</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumProperties(System.UIntPtr@,System.UInt32,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate the properties on a type</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></param>
-            <param name="td">Token to enumerate properties from</param>
-            <param name="rProperties">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rProperties"/></param>
-            <param name="pcProperties">Output parameter for the actual count of tokens written into <paramref name="rProperties"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumEvents(System.UIntPtr@,System.UInt32,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate the events on a type</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></param>
-            <param name="td">Token to enumerate events from</param>
-            <param name="rEvents">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rEvents"/></param>
-            <param name="pcEvents">Output parameter for the actual count of tokens written into <paramref name="rEvents"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetEventProps(System.UInt32,System.UInt32@,System.Text.StringBuilder,System.Int32,System.Int32@,System.UInt32@,System.UInt32@,System.UInt32@,System.UInt32@,System.UInt32@,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Get the detail for an event</summary>
-            <param name="ev">Event token</param>
-            <param name="pClass">Type in which event is defined</param>
-            <param name="szEvent">Char buffer into which event name is written</param>
-            <param name="cchEvent">Buffer size of <paramref name="szEvent"/></param>
-            <param name="pchEvent">Output parameter for the actual number of characters written into <paramref name="szEvent"/></param>
-            <param name="pdwEventFlags">Output parameter for the event flags</param>
-            <param name="ptkEventType">Output parameter for the event typeref token</param> 
-            <param name="pmdAddOn">Output parameter for the add method token</param>
-            <param name="pmdRemoveOn">Output parameter for the remove method token</param>
-            <param name="pmdFire">Output parameter for the fire method token</param>
-            <param name="rmdOtherMethod">Array into which other methods tokens associated with this event are written</param>
-            <param name="cMax">Size of the <paramref name="rmdOtherMethod"/> array</param>
-            <param name="pcOtherMethod">Output parameter for the actual count written into the <paramref name="rmdOtherMethod"/> array</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumMethodSemantics(System.UIntPtr@,System.UInt32,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Return extended method semantics information</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></param>
-            <param name="mb">Methoddef token for method of interest</param>
-            <param name="rEventProp">Array into which event or property with which this method is associated is written</param>
-            <param name="cMax">Size of the <paramref name="rEventProp"/> array</param>
-            <param name="pcEventProp">Output parameter for the actual count written into the <paramref name="rEventProp"/> array</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetMethodSemantics(System.UInt32,System.UInt32,System.UInt32@)">
-            <summary>Return the semantics bits for a method and the event or property with which it is associated</summary>
-            <param name="mb">Method token</param>
-            <param name="tkEventProp">Event or property token</param>
-            <param name="pdwSemanticsFlags">Output parameter of the semantics flags</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetClassLayout(System.UInt32,System.UInt32@,System.Int64[],System.Int32,System.Int32@,System.UInt32@)">
-            <summary>Get the class layout (fixed field offsets) for a class</summary>
-            <param name="td">Typedef token for the class</param>
-            <param name="pdwPackSize">Output parameter for packing alignment in bytes</param>
-            <param name="rFieldOffset">Array of long ints into which the field offset information will be written. Each long int is a concatanation of the offset and the token for the field for which the offset is being defined</param>
-            <param name="cMax">Size of the array in <paramref name="rFieldOffset"/></param>
-            <param name="pcFieldOffset">Output parameter for the actual count of fields written into <paramref name="rFieldOffset"/></param>
-            <param name="pulClassSize">Output parameter for total class size</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetFieldMarshal(System.UInt32,System.IntPtr@,System.Int32@)">
-            <summary>Get the field marshalling information</summary>
-            <param name="tk">Token to retrieve marshalling infomation for</param>
-            <param name="ppvNativeType">Output parameter for pointer to native type signature for marshalling</param>
-            <param name="pcbNativeType">Output parameter for the count of bytes for <paramref name="ppvNativeType"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetRVA(System.UInt32,System.UInt32@,System.Int32@)">
-            <summary>Get the Relative Virtual Address for data associated with a token</summary>
-            <param name="tk">Token to retrieve RVA infomation for</param>
-            <param name="pulCodeRVA">Output parameter for the RVA</param>
-            <param name="pdwImplFlags">Output parameter for the implementation flags</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetPermissionSetProps(System.UInt32,System.UInt32@,System.IntPtr@,System.Int32@)">
-            <summary>Get the detail for a permission set</summary>
-            <param name="pm">Permission set token</param>
-            <param name="pdwAction">Output parameter for the action set mask</param>
-            <param name="ppvPermission">Output parameter for the native pointer to the permission blob</param>
-            <param name="pcbPermission">Output parameter for the byte count in <paramref name="ppvPermission"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetSigFromToken(System.UInt32,System.IntPtr@,System.Int32@)">
-            <summary>Get the signature blob associated with a token</summary>
-            <param name="mdSig">The token to retrieve the signature from</param>
-            <param name="ppvSig">Output parameter for the native pointer to the permission blob</param>
-            <param name="pcbSig">Output parameter for the byte count in <paramref name="ppvSig"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetModuleRefProps(System.UInt32,System.Char[],System.Int32,System.Int32@)">
-            <summary>Retrive the detail of an imported module</summary>
-            <param name="mur">Module ref token</param>
-            <param name="szName">Char buffer into which the name is written</param>
-            <param name="cchName">Size of the buffer <paramref name="szName"/></param>
-            <param name="pchName">Output parameter of the number of characters actually written to <paramref name="szName"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumModuleRefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate all of the module refs in this scope</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></param>
-            <param name="rModuleRefs">Array into which the module refs are written</param>
-            <param name="cMax">Size of the array <paramref name="rModuleRefs"/></param>
-            <param name="pcModuleRefs">Output parameter for the actual count written into <paramref name="rModuleRefs"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetTypeSpecFromToken(System.UInt32,System.IntPtr@,System.Int32@)">
-            <summary>Get the type signature blob from a typespec token</summary>
-            <param name="typespec">Typespec token</param>
-            <param name="ppvSig">Output parameter for the native pointer to the signature blob</param>
-            <param name="pcbSig">Output parameter for the byte count in <paramref name="ppvSig"/></param>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetNameFromToken(System.UInt32,System.IntPtr@)">
-            <summary>DEPRECATED: Retrieve name from token</summary>
-            <param name="tk">Token to retrive name from. Must have a name</param>
-            <param name="pszUtf8NamePtr">Ouput parameter to populate with a native pointer to the name in UTF8 format</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumUnresolvedMethods(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate all methods which are not yet resolved</summary>
-            <remarks>See the unmanaged metadata API documentation for details</remarks>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></param>
-            <param name="rMethods">Array into which the method refs are written</param>
-            <param name="cMax">Size of the array <paramref name="rMethods"/></param>
-            <param name="pcTokens">Output parameter for the actual count written into <paramref name="rMethods"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetUserString(System.UInt32,System.Char[],System.Int32,System.Int32@)">
-            <summary>Get a string from the user heap</summary>
-            <param name="stk">Token for the string</param>
-            <param name="szString">Char array into which the string is written</param>
-            <param name="cchString">Size of the array <paramref name="szString"/></param>
-            <param name="pchString">Output parameter for the actual count of characters written into <paramref name="szString"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetPinvokeMap(System.UInt32,System.UInt32@,System.Char[],System.Int32,System.Int32@,System.UInt32@)">
-            <summary>Get the extended information for a PInvoke method</summary>
-            <param name="tk">PInvoke field or method token</param>
-            <param name="pdwMappingFlags">Output parameter for the mapping flags</param>
-            <param name="szImportName">Char buffer into which the name will be written</param>
-            <param name="cchImportName">Size of the array <paramref name="szImportName"/></param>
-            <param name="pchImportName">Output parameter for the actual count of characters written into <paramref name="szImportName"/></param>
-            <param name="pmrImportDLL">Output parameter into which the token for the imported module is written</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumSignatures(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate over all the signatures in the assembly. What a pointless method</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></param>
-            <param name="rSignatures">Array into which signature tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rSignatures"/></param>
-            <param name="pcSignatures">Output parameter for the actual count written into <paramref name="rSignatures"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeSpecs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate over all the typespecs in the assembly.</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></param>
-            <param name="rTypeSpecs">Array into which typespec tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rTypeSpecs"/></param>
-            <param name="pcTypeSpecs">Output parameter for the actual count written into <paramref name="rTypeSpecs"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumUserStrings(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate over all the user strings in the assembly.</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></param>
-            <param name="rStrings">Array into which string tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rStrings"/></param>
-            <param name="pcStrings">Output parameter for the actual count written into <paramref name="rStrings"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetParamForMethodIndex(System.UInt32,System.Int32,System.UInt32@)">
-            <summary>Get the parameter token for a particular method parameter</summary>
-            <param name="md">Method token</param>
-            <param name="ulParamSeq">Parameter ordinal number</param>
-            <param name="ppd">Output parameter into which parameter token is written</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumCustomAttributes(System.UIntPtr@,System.UInt32,System.UInt32,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate over all the custom attributes in the assembly.</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.EnumTypeDefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)"/></param>
-            <param name="tk">Scope token or 0 (token_null) for all</param>
-            <param name="tkType">Type token or 0 (token_null) for all</param>
-            <param name="rCustomAttributes">Array into which attribute tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rCustomAttributes"/></param>
-            <param name="pcCustomAttributes">Output parameter for the actual count written into <paramref name="rCustomAttributes"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetCustomAttributeProps(System.UInt32,System.UInt32@,System.UInt32@,System.IntPtr@,System.Int32@)">
-            <summary>Get the detail for a custom attribute</summary>
-            <param name="cv">Custom attribute token</param>
-            <param name="ptkObj">Object token attribute is associated with</param>
-            <param name="ptkType">Type token attribute is associated with</param>
-            <param name="ppBlob">Output parameter into which native attribute blob pointer is written</param>
-            <param name="pcbSize">Output parameter into which size of attribute blob is written</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.FindTypeRef(System.UInt32,System.String,System.UInt32@)">
-            <summary>Resolve a type by name</summary>
-            <param name="tkResolutionScope">Token defining scope to be searched</param>
-            <param name="szName">Name of type to resolve</param>
-            <param name="ptr">Output parameter into which typeref token is written</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetMemberProps(System.UInt32,System.UInt32@,System.Char[],System.Int32,System.Int32@,System.Int32@,System.IntPtr@,System.Int32@,System.UInt32@,System.UInt32@,System.UInt32@,System.IntPtr@,System.Int32@)">
-            <summary>Get the detailed properties for a member</summary>
-            <param name="mb">Member token to retrieve detail from</param>
-            <param name="pClass">Output parameter for class token owning member</param>
-            <param name="szMember">Char array into which member name will be written</param>
-            <param name="cchMember">Size of the <paramref name="szMember"/> array</param>
-            <param name="pchMember">Output parameter for the actual number of chars written into <paramref name="szMember"/></param>
-            <param name="pdwAttr">Output parameter for member flags</param>
-            <param name="ppvSigBlob">Output parameters for the native pointer to the signature blob. Retrieve data using System.Marshal.Copy</param>
-            <param name="pcbSigBlob">Output parameter for number of bytes in the signature blob</param>
-            <param name="pulCodeRVA">Output parameter for any associated relative virtual address</param>
-            <param name="pdwImplFlags">Output parameter for implementation flags</param>
-            <param name="pdwCPlusTypeFlag">Output parameter for element type for any associated constant value</param>
-            <param name="ppValue">Output parameter for native pointer to constant value data</param>
-            <param name="pcchValue">Output parameter for string size if constant value is a string</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetFieldProps(System.UInt32,System.UInt32@,System.Text.StringBuilder,System.Int32,System.Int32@,System.UInt32@,System.IntPtr@,System.Int32@,System.Int32@,System.IntPtr@,System.Int32@)">
-            <summary>Get the detailed properties for a field</summary>
-            <param name="mb">Field token to retrieve detail from</param>
-            <param name="pClass">Output parameter for class token owning field</param>
-            <param name="szField">Char array into which field name will be written</param>
-            <param name="cchField">Size of the <paramref name="szField"/> array</param>
-            <param name="pchField">Output parameter for the actual number of chars written into <paramref name="szField"/></param>
-            <param name="pdwAttr">Output parameter for field flags</param>
-            <param name="ppvSigBlob">Output parameters for the native pointer to the signature blob. Retrieve data using System.Marshal.Copy</param>
-            <param name="pcbSigBlob">Output parameter for number of bytes in the signature blob</param>
-            <param name="pdwCPlusTypeFlag">Output parameter for element type for any associated constant value</param>
-            <param name="ppValue">Output parameter for native pointer to constant value data</param>
-            <param name="pcchValue">Output parameter for string size if constant value is a string</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetPropertyProps(System.UInt32,System.UInt32@,System.Text.StringBuilder,System.Int32,System.Int32@,System.UInt32@,System.IntPtr@,System.Int32@,System.Int32@,System.IntPtr@,System.Int32@,System.UInt32@,System.UInt32@,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Get the detailed properties for a property</summary>
-            <param name="prop">Property token to retrieve detail from</param>
-            <param name="pClass">Output parameter for class token owning property</param>
-            <param name="szProperty">Char array into which property name will be written</param>
-            <param name="cchProperty">Size of the <paramref name="szProperty"/> array</param>
-            <param name="pchProperty">Output parameter for the actual number of chars written into <paramref name="szProperty"/></param>
-            <param name="pdwPropFlags">Output parameter for property flags</param>
-            <param name="ppvSigBlob">Output parameters for the native pointer to the signature blob. Retrieve data using System.Marshal.Copy</param>
-            <param name="pcbSigBlob">Output parameter for number of bytes in the signature blob</param>
-            <param name="pdwCPlusTypeFlag">Output parameter for element type for any associated constant value</param>
-            <param name="ppDefaultValue">Output parameter for native pointer to constant value data</param>
-            <param name="pcchDefaultValue">Output parameter for string size if constant value is a string</param>
-            <param name="pmdSetter">Output parameter for the method token for the setter</param>
-            <param name="pmdGetter">Output parameter for the method token for the getter</param>
-            <param name="rmdOtherMethod">Array into which other methods tokens associated with this property are written</param>
-            <param name="cMax">Size of the <paramref name="rmdOtherMethod"/> array</param>
-            <param name="pcOtherMethod">Output parameter for the actual count written into the <paramref name="rmdOtherMethod"/> array</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetParamProps(System.UInt32,System.UInt32@,System.UInt32@,System.Text.StringBuilder,System.Int32,System.Int32@,System.UInt32@,System.UInt32@,System.IntPtr@,System.Int32@)">
-            <summary>Get the detail for a parameter</summary>
-            <param name="tk">Parameter token</param>
-            <param name="pmd">Output parameter for the owning method token</param>
-            <param name="pulSequence">Output parameter for the ordinal position of this parameter</param>  
-            <param name="szName">Char buffer into which the name is written</param>
-            <param name="cchName">Size of the buffer <paramref name="szName"/></param>
-            <param name="pchName">Output parameter of the number of characters actually written to <paramref name="szName"/></param>
-            <param name="pdwAttr">Output parameter for parameter flags</param>
-            <param name="pdwCPlusTypeFlag">Output parameter for element type for any associated constant value</param>
-            <param name="ppValue">Output parameter for native pointer to constant value data</param>
-            <param name="pcchValue">Output parameter for string size if constant value is a string</param>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetCustomAttributeByName(System.UInt32,System.String,System.IntPtr@,System.Int32@)">
-            <summary>Retrieve a custom attribute by type name</summary>
-            <param name="tkObj">Object token to which the attribute is attached</param>
-            <param name="szName">Name of the attribute to retrive</param>
-            <param name="ppData">Output parameter into which native pointer to custom attribute data will be written</param>
-            <param name="pcbData">Output parameter into which size of attribute data will be written</param>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.IsValidToken(System.UInt32)">
-            <summary>Determine if a token is valid</summary>
-            <param name="tk">Token to test for validity</param>
-            <returns>A bool which is true if the token is valid</returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetNestedClassProps(System.UInt32,System.UInt32@)">
-            <summary>Get the containing class for a nested class</summary>
-            <param name="tdNestedClass">Token for the nested class</param>
-            <param name="ptdEnclosingClass">Output parameter into which the token for the enclosing class is written</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.GetNativeCallConvFromSig(System.IntPtr,System.Int32,System.UInt32@)">
-            <summary>Decode the native calling convention from a signature</summary>
-            <param name="pvSig">A native pointer to the signature blob</param>
-            <param name="cbSig">Count of bytes in the signature</param>
-            <param name="pCallConv">Output parameter into which the calling convention is written</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport.IsGlobal(System.UInt32,System.UInt32@)">
-            <summary>Test a token to see if it is global</summary>
-            <param name="pd">Token to test</param>
-            <param name="pbGlobal">Output parameters which is 1 if global or zero if now</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.CloseEnum(System.UIntPtr)">
-            <summary>Close an enumeration of elements in the metadata</summary>
-            <param name="hEnum">An enumeration handle returned from one of the EnumXXXX methods</param>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.CountEnum(System.UIntPtr,System.Int32@)">
-            <summary>Count the number of items available in an enumerations</summary>
-            <param name="hEnum">An enumeration handle returned from one of the EnumXXXX methods</param>
-            <param name="count">An output parameter which is filled with the item count</param>
-            <returns>The HRESULT from the COM method</returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.ResetEnum(System.UIntPtr,System.UInt32)">
-            <summary>Reset an enumeration to a specific position</summary>
-            <param name="hEnum">An enumeration handle returned from one of the EnumXXXX methods</param>
-            <param name="ulPos">The item position to reset to</param>
-            <returns>The HRESULT from the COM method</returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)">
-             <summary>Tokens representing typedefs from an enumeration of typedefs in the metadata scope</summary>
-             <example>
-             <code>
-              int hEnum=0;
-              int[] toks=new int[5];
-              int enumCount;
-              try {
-                impScope.EnumTypeDefs(ref hEnum,toks,toks.Length,out enumCount);
-                char[] nameBuffer=new char[2048];
-                int nameLen=0;
-                int superType=0;
-                int typeFlags=0;
-                int global=0;
-                while(enumCount&gt;0) {
-                  for(int I=0;I&lt;enumCount;I++) { 
-                    Console.Error.Write(toks[I].ToString("X8"));
-                    impScope.GetTypeDefProps(toks[I],nameBuffer,nameBuffer.Length,out nameLen,out typeFlags,out superType);
-                    impScope.IsGlobal(toks[I],out global);
-                    Console.Error.WriteLine(" "+new String(nameBuffer,0,nameLen)+" "+typeFlags.ToString("X8")+" "+superType.ToString("X8")+" "+global);
-                    }
-            
-                  impScope.EnumTypeDefs(ref hEnum,toks,toks.Length,out enumCount);
-                  }
-                } 
-              finally {
-                if(hEnum!=0) impScope.CloseEnum(hEnum);
-                }
-             </code>
-             </example>
-             <param name="phEnum">Output parameter which will be populated with the enum handle or which represents the enum handle to continue enumerating from</param>
-             <param name="rTypeDefs">An array into which the typedefs are returned</param>
-             <param name="cMax">Maximum number of items to return, size of the <paramref name="rTypeDefs"/> array. Use CountEnum to size this.</param>
-             <param name="pcTypeDefs">Actual number of items to returned in the <paramref name="rTypeDefs"/> array</param>
-             <returns>The HRESULT from the COM method</returns>
-             <seealso cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumInterfaceImpls(System.UIntPtr@,System.UInt32,System.UInt32*,System.Int32,System.Int32@)"/>
-             <seealso cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeRefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumInterfaceImpls(System.UIntPtr@,System.UInt32,System.UInt32*,System.Int32,System.Int32@)">
-            <summary>Tokens representing interface implementations from an enumeration in the metadata scope</summary>
-            <example><see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></example>
-            <param name="phEnum">Output parameter which will be populated with the enum handle or which represents the enum handle to continue enumerating from</param>
-            <param name="td">Token specifying the TypeDef whose InterfaceImpls are required</param>
-            <param name="rTypeDefs">An array into which the typedefs are returned</param>
-            <param name="cMax">Maximum number of items to return, size of the <paramref name="rTypeDefs"/> array. Use CountEnum to size this.</param>
-            <param name="pcTypeDefs">Actual number of items to returned in the <paramref name="rTypeDefs"/> array</param>
-            <returns>The HRESULT from the COM method</returns>
-            <seealso cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeRefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/>
-            <seealso cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeRefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)">
-            <summary>Enumerate tokens represention type references from an enumeration in the metadata scope</summary>
-            <example><see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></example>
-            <param name="phEnum">Output parameter which will be populated with the enum handle or which represents the enum handle to continue enumerating from</param>
-            <param name="rTypeDefs">An array into which the typedefs are returned</param>
-            <param name="cMax">Maximum number of items to return, size of the <paramref name="rTypeDefs"/> array. Use CountEnum to size this.</param>
-            <param name="pcTypeDefs">Actual number of items to returned in the <paramref name="rTypeDefs"/> array</param>
-            <returns>The HRESULT from the COM method</returns>
-            <seealso cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumInterfaceImpls(System.UIntPtr@,System.UInt32,System.UInt32*,System.Int32,System.Int32@)"/>
-            <seealso cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.FindTypeDefByName(System.String,System.UInt32,System.UInt32@)">
-            <summary>Find a typedef token by the name of the type</summary>
-            <param name="szTypeDef">The name of the type</param>
-            <param name="tkEnclosingClass">The enclosing class for the type or 0 (token_null)</param>
-            <param name="ptd">The output parameter into which the typedef token will be written</param>
-            <returns>The HRESULT from the COM method</returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetScopeProps(System.Char[],System.Int32,System.Int32@,System.Guid@)">
-            <summary>Get some properties from the scope - these are the module name and the module MVID unique GUID</summary>
-            <param name="szName">Char buffer into which the name is written</param>
-            <param name="cchName">Size of the buffer <paramref name="szName"/></param>
-            <param name="pchName">Output parameter of the number of characters actually written to <paramref name="szName"/></param>
-            <param name="mvid">Guid into which the MVID is written</param>
-            <returns>The HRESULT from the COM method</returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetModuleFromScope(System.UInt32@)">
-            <summary>Get the metadata token for the module on which this scope was opened</summary>
-            <param name="pmd">The output parameter into which the module token is written</param>
-            <returns>The HRESULT from the COM method</returns>      
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetTypeDefProps(System.UInt32,System.Char*,System.Int32,System.Int32@,System.UInt32@,System.UInt32@)">
-            <summary>Get the name, flags and base class of a typedef (if appropriate)</summary>
-            <param name="td">Token to retrieve the properties from</param>
-            <param name="szTypeDef">Char buffer into which the name will be written</param>
-            <param name="cchTypeDef">Size of the buffer <paramref name="szTypeDef"/></param>
-            <param name="pchTypeDef">Output parameter for the actual number of characters written into the buffer <paramref name="szTypeDef"/></param>      
-            <param name="pdwTypeDefFlags">Outpu parameter for the flags from this typedef</param>
-            <param name="ptkExtends">Output parameter for the base type token</param>
-            <returns>The HRESULT from the COM method</returns>      
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetInterfaceImplProps(System.UInt32,System.UInt32@,System.UInt32@)">
-            <summary>Get the interface implementation details</summary>
-            <param name="iiImpl">Interface implementation instance token from <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumInterfaceImpls(System.UIntPtr@,System.UInt32,System.UInt32*,System.Int32,System.Int32@)"/></param>
-            <param name="pClass">Output class token implementing interface</param>
-            <param name="ptkIface">Output interface token implemented by class</param>
-            <returns>The HRESULT from the COM method</returns>      
-            <seealso cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumInterfaceImpls(System.UIntPtr@,System.UInt32,System.UInt32*,System.Int32,System.Int32@)"/>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetTypeRefProps(System.UInt32,System.UInt32@,System.Char[],System.Int32,System.Int32@)">
-            <summary>Get the properties from a typeref</summary>
-            <param name="tr">The typeref token to retrieve details from</param>
-            <param name="ptkResolutionScope">Output token for the resolution scope, either a moduleref or an assemblyref</param>
-            <param name="szName">Char buffer into which the name will be written</param>
-            <param name="cchName">Size of the buffer <paramref name="szName"/></param>
-            <param name="pchName">Output parameter for the actual number of characters written into the buffer <paramref name="szName"/></param>      
-            <returns>The HRESULT from the COM method</returns>         
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.ResolveTypeRef(System.UInt32,System.Guid@,System.Object@,System.UInt32@)">
-            <summary>Return the scope and token for a typedef corresponding to a (possibly imported) typeref</summary>
-            <param name="tr">Typeref to resolve</param>
-            <param name="riid">Interface type GUID for the returned interface, normally IID_IMetadataImport</param>
-            <param name="ppIScope">Output object which may be cast to the interface type specified in <paramref name="riid"/></param>
-            <param name="ptd">Output parameter into which the typedef token in the scope <paramref name="ppIScope"/> is written</param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumMembers(System.UIntPtr@,System.UInt32,System.UInt32*,System.Int32,System.Int32@)">
-            <summary>Enumerate the members of a type</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></param>
-            <param name="cl">Typedef token to enumerate members from</param>
-            <param name="rMembers">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rMembers"/></param>
-            <param name="pcTokens">Output parameter for the actual count of tokens written into <paramref name="rMembers"/></param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumMembersWithName(System.UIntPtr@,System.UInt32,System.String,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate the members of a type which match the specified name</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></param>
-            <param name="cl">Typedef token to enumerate members from</param>
-            <param name="szName">Name of the members to enumerate</param>
-            <param name="rMembers">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rMembers"/></param>
-            <param name="pcTokens">Output parameter for the actual count of tokens written into <paramref name="rMembers"/></param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumMethods(System.UIntPtr@,System.UInt32,System.UInt32*,System.Int32,System.Int32@)">
-            <summary>Enumerate the methods of a type</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></param>
-            <param name="cl">Typedef token to enumerate members from</param>
-            <param name="rMembers">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rMembers"/></param>
-            <param name="pcTokens">Output parameter for the actual count of tokens written into <paramref name="rMembers"/></param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumMethodsWithName(System.UIntPtr@,System.UInt32,System.String,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate the methods of a type which match the specified name</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></param>
-            <param name="cl">Typedef token to enumerate members from</param>
-            <param name="szName">Name of the members to enumerate</param>
-            <param name="rMembers">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rMembers"/></param>
-            <param name="pcTokens">Output parameter for the actual count of tokens written into <paramref name="rMembers"/></param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumFields(System.UIntPtr@,System.UInt32,System.UInt32*,System.Int32,System.Int32@)">
-            <summary>Enumerate the fields of a type</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></param>
-            <param name="cl">Typedef token to enumerate members from</param>
-            <param name="rMembers">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rMembers"/></param>
-            <param name="pcTokens">Output parameter for the actual count of tokens written into <paramref name="rMembers"/></param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumFieldsWithName(System.UIntPtr@,System.UInt32,System.String,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate the fields of a type which match the specified name</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></param>
-            <param name="cl">Typedef token to enumerate members from</param>
-            <param name="szName">Name of the members to enumerate</param>
-            <param name="rMembers">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rMembers"/></param>
-            <param name="pcTokens">Output parameter for the actual count of tokens written into <paramref name="rMembers"/></param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumParams(System.UIntPtr@,System.UInt32,System.UInt32*,System.Int32,System.Int32@)">
-            <summary>Enumerate the parameters of a methods</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></param>
-            <param name="cl">Typedef token to enumerate members from</param>
-            <param name="rMembers">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rMembers"/></param>
-            <param name="pcTokens">Output parameter for the actual count of tokens written into <paramref name="rMembers"/></param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumMemberRefs(System.UIntPtr@,System.UInt32,System.UInt32*,System.Int32,System.Int32@)">
-            <summary>Retrieve all of the member refs for a specified type within the scope</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></param>
-            <param name="cl">Token to enumerate members from. Use 0 (token_null) for globals</param>
-            <param name="rMembers">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rMembers"/></param>
-            <param name="pcTokens">Output parameter for the actual count of tokens written into <paramref name="rMembers"/></param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumMethodImpls(System.UIntPtr@,System.UInt32,System.UInt32*,System.UInt32*,System.Int32,System.Int32@)">
-            <summary>Retrieve all of the methods implementation details</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></param>
-            <param name="td">Typedef to enumerate methods implementations from</param>
-            <param name="rMethodBody">Array into which the method body tokens are written</param>
-            <param name="rMethodDecl">Array into which the method interface declaration tokens are written</param>
-            <param name="cMax">Size of the arrays <paramref name="rMethodBody"/> and <paramref name="rMethodDecl"/></param>
-            <param name="pcTokens">Output parameter for the actual count of tokens written into <paramref name="rMethodBody"/> and <paramref name="rMethodDecl"/></param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumPermissionSets(System.UIntPtr@,System.UInt32,System.UInt32,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Retrieve all of the permission sets for a specified type within the scope</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></param>
-            <param name="tk">Token to enumerate members from</param>
-            <param name="dwActions">Mask of actions to return if non-zero</param>
-            <param name="rPermission">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rPermission"/></param>
-            <param name="pcTokens">Output parameter for the actual count of tokens written into <paramref name="rPermission"/></param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.FindMember(System.UInt32,System.String,System.Byte[],System.Int32,System.UInt32@)">
-            <summary>Find a member by name</summary>
-            <param name="td">Typedef to search</param>
-            <param name="szName">Member name</param>
-            <param name="pvSigBlob">Signature blob to filter names by</param>
-            <param name="cbSigBlob">Number of bytes in <paramref name="pvSigBlob"/></param>
-            <param name="pmb">Output parameter for the matched member</param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.FindMethod(System.UInt32,System.String,System.Byte[],System.Int32,System.UInt32@)">
-            <summary>Find a method by name</summary>
-            <param name="td">Typedef to search</param>
-            <param name="szName">Member name</param>
-            <param name="pvSigBlob">Signature blob to filter names by</param>
-            <param name="cbSigBlob">Number of bytes in <paramref name="pvSigBlob"/></param>
-            <param name="pmb">Output parameter for the matched member</param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.FindField(System.UInt32,System.String,System.Byte[],System.Int32,System.UInt32@)">
-            <summary>Find a field by name</summary>
-            <param name="td">Typedef to search</param>
-            <param name="szName">Member name</param>
-            <param name="pvSigBlob">Signature blob to filter names by</param>
-            <param name="cbSigBlob">Number of bytes in <paramref name="pvSigBlob"/></param>
-            <param name="pmb">Output parameter for the matched member</param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.FindMemberRef(System.UInt32,System.String,System.Byte[],System.Int32,System.UInt32@)">
-            <summary>Find a memberref by name</summary>
-            <param name="td">Typedef to search</param>
-            <param name="szName">Member name</param>
-            <param name="pvSigBlob">Signature blob to filter names by</param>
-            <param name="cbSigBlob">Number of bytes in <paramref name="pvSigBlob"/></param>
-            <param name="pmb">Output parameter for the matched member</param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetMethodProps(System.UInt32,System.UInt32@,System.Char*,System.Int32,System.Int32@,System.UInt32@,System.IntPtr@,System.Int32@,System.UInt32@,System.UInt32@)">
-            <summary>Retrieve the method detail for a method token</summary>
-            <param name="mb">The method token to retrieve properties from</param>
-            <param name="pClass">The output parameter for the token representing the class owning this method token</param>
-            <param name="szMethod">Char array into which the method name is written</param>
-            <param name="cchMethod">Size of the array <paramref name="szMethod"/></param>
-            <param name="pchMethod">Actual count written into the array <paramref name="szMethod"/></param>
-            <param name="pdwAttr">Output parameter for the method flags</param>
-            <param name="ppvSigBlob">Output parameters for the native pointer to the signature blob. Retrieve data using System.Marshal.Copy</param>
-            <param name="pcbSigBlob">Output parameter for number of bytes in the signature blob</param>
-            <param name="pulCodeRVA">Output parameter for relative virtual address in the assembly of the method's code</param>
-            <param name="pdwImplFlags">Output parameter for the method implementation flags</param>
-            <returns>The HRESULT from the COM method</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetMemberRefProps(System.UInt32,System.UInt32@,System.Char[],System.Int32,System.Int32@,System.IntPtr@,System.Int32@)">
-            <summary>Retrieve the member detail for a memberref token</summary>
-            <param name="mr">The memberref token to retrieve properties from</param>
-            <param name="ptk">The output parameter for the token representing the class def or ref owning this member token</param>
-            <param name="szMember">Char array into which the member name is written</param>
-            <param name="cchMember">Size of the array <paramref name="szMember"/></param>
-            <param name="pchMember">Actual count written into the array <paramref name="szMember"/></param>
-            <param name="ppvSigBlob">Output parameters for the native pointer to the signature blob. Retrieve data using System.Marshal.Copy</param>
-            <param name="pbSigBlob">Output parameter for number of bytes in the signature blob</param>
-            <returns>The HRESULT from the COM member</returns> 
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumProperties(System.UIntPtr@,System.UInt32,System.UInt32*,System.Int32,System.Int32@)">
-            <summary>Enumerate the properties on a type</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></param>
-            <param name="td">Token to enumerate properties from</param>
-            <param name="rProperties">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rProperties"/></param>
-            <param name="pcProperties">Output parameter for the actual count of tokens written into <paramref name="rProperties"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumEvents(System.UIntPtr@,System.UInt32,System.UInt32*,System.Int32,System.Int32@)">
-            <summary>Enumerate the events on a type</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></param>
-            <param name="td">Token to enumerate events from</param>
-            <param name="rEvents">Array into which the member tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rEvents"/></param>
-            <param name="pcEvents">Output parameter for the actual count of tokens written into <paramref name="rEvents"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetEventProps(System.UInt32,System.UInt32@,System.Char*,System.Int32,System.Int32@,System.UInt32@,System.UInt32@,System.UInt32@,System.UInt32@,System.UInt32@,System.UInt32*,System.Int32,System.Int32@)">
-            <summary>Get the detail for an event</summary>
-            <param name="ev">Event token</param>
-            <param name="pClass">Type in which event is defined</param>
-            <param name="szEvent">Char buffer into which event name is written</param>
-            <param name="cchEvent">Buffer size of <paramref name="szEvent"/></param>
-            <param name="pchEvent">Output parameter for the actual number of characters written into <paramref name="szEvent"/></param>
-            <param name="pdwEventFlags">Output parameter for the event flags</param>
-            <param name="ptkEventType">Output parameter for the event typeref token</param> 
-            <param name="pmdAddOn">Output parameter for the add method token</param>
-            <param name="pmdRemoveOn">Output parameter for the remove method token</param>
-            <param name="pmdFire">Output parameter for the fire method token</param>
-            <param name="rmdOtherMethod">Array into which other methods tokens associated with this event are written</param>
-            <param name="cMax">Size of the <paramref name="rmdOtherMethod"/> array</param>
-            <param name="pcOtherMethod">Output parameter for the actual count written into the <paramref name="rmdOtherMethod"/> array</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumMethodSemantics(System.UIntPtr@,System.UInt32,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Return extended method semantics information</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></param>
-            <param name="mb">Methoddef token for method of interest</param>
-            <param name="rEventProp">Array into which event or property with which this method is associated is written</param>
-            <param name="cMax">Size of the <paramref name="rEventProp"/> array</param>
-            <param name="pcEventProp">Output parameter for the actual count written into the <paramref name="rEventProp"/> array</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetMethodSemantics(System.UInt32,System.UInt32,System.UInt32@)">
-            <summary>Return the semantics bits for a method and the event or property with which it is associated</summary>
-            <param name="mb">Method token</param>
-            <param name="tkEventProp">Event or property token</param>
-            <param name="pdwSemanticsFlags">Output parameter of the semantics flags</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetClassLayout(System.UInt32,System.UInt32@,System.Int64[],System.Int32,System.Int32@,System.UInt32@)">
-            <summary>Get the class layout (fixed field offsets) for a class</summary>
-            <param name="td">Typedef token for the class</param>
-            <param name="pdwPackSize">Output parameter for packing alignment in bytes</param>
-            <param name="rFieldOffset">Array of long ints into which the field offset information will be written. Each long int is a concatanation of the offset and the token for the field for which the offset is being defined</param>
-            <param name="cMax">Size of the array in <paramref name="rFieldOffset"/></param>
-            <param name="pcFieldOffset">Output parameter for the actual count of fields written into <paramref name="rFieldOffset"/></param>
-            <param name="pulClassSize">Output parameter for total class size</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetFieldMarshal(System.UInt32,System.IntPtr@,System.Int32@)">
-            <summary>Get the field marshalling information</summary>
-            <param name="tk">Token to retrieve marshalling infomation for</param>
-            <param name="ppvNativeType">Output parameter for pointer to native type signature for marshalling</param>
-            <param name="pcbNativeType">Output parameter for the count of bytes for <paramref name="ppvNativeType"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetRVA(System.UInt32,System.UInt32@,System.Int32@)">
-            <summary>Get the Relative Virtual Address for data associated with a token</summary>
-            <param name="tk">Token to retrieve RVA infomation for</param>
-            <param name="pulCodeRVA">Output parameter for the RVA</param>
-            <param name="pdwImplFlags">Output parameter for the implementation flags</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetPermissionSetProps(System.UInt32,System.UInt32@,System.IntPtr@,System.Int32@)">
-            <summary>Get the detail for a permission set</summary>
-            <param name="pm">Permission set token</param>
-            <param name="pdwAction">Output parameter for the action set mask</param>
-            <param name="ppvPermission">Output parameter for the native pointer to the permission blob</param>
-            <param name="pcbPermission">Output parameter for the byte count in <paramref name="ppvPermission"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetSigFromToken(System.UInt32,System.IntPtr@,System.Int32@)">
-            <summary>Get the signature blob associated with a token</summary>
-            <param name="mdSig">The token to retrieve the signature from</param>
-            <param name="ppvSig">Output parameter for the native pointer to the permission blob</param>
-            <param name="pcbSig">Output parameter for the byte count in <paramref name="ppvSig"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetModuleRefProps(System.UInt32,System.Char[],System.Int32,System.Int32@)">
-            <summary>Retrive the detail of an imported module</summary>
-            <param name="mur">Module ref token</param>
-            <param name="szName">Char buffer into which the name is written</param>
-            <param name="cchName">Size of the buffer <paramref name="szName"/></param>
-            <param name="pchName">Output parameter of the number of characters actually written to <paramref name="szName"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumModuleRefs(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate all of the module refs in this scope</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></param>
-            <param name="rModuleRefs">Array into which the module refs are written</param>
-            <param name="cMax">Size of the array <paramref name="rModuleRefs"/></param>
-            <param name="pcModuleRefs">Output parameter for the actual count written into <paramref name="rModuleRefs"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetTypeSpecFromToken(System.UInt32,System.IntPtr@,System.Int32@)">
-            <summary>Get the type signature blob from a typespec token</summary>
-            <param name="typespec">Typespec token</param>
-            <param name="ppvSig">Output parameter for the native pointer to the signature blob</param>
-            <param name="pcbSig">Output parameter for the byte count in <paramref name="ppvSig"/></param>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetNameFromToken(System.UInt32,System.IntPtr@)">
-            <summary>DEPRECATED: Retrieve name from token</summary>
-            <param name="tk">Token to retrive name from. Must have a name</param>
-            <param name="pszUtf8NamePtr">Ouput parameter to populate with a native pointer to the name in UTF8 format</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumUnresolvedMethods(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate all methods which are not yet resolved</summary>
-            <remarks>See the unmanaged metadata API documentation for details</remarks>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></param>
-            <param name="rMethods">Array into which the method refs are written</param>
-            <param name="cMax">Size of the array <paramref name="rMethods"/></param>
-            <param name="pcTokens">Output parameter for the actual count written into <paramref name="rMethods"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetUserString(System.UInt32,System.Char[],System.Int32,System.Int32@)">
-            <summary>Get a string from the user heap</summary>
-            <param name="stk">Token for the string</param>
-            <param name="szString">Char array into which the string is written</param>
-            <param name="cchString">Size of the array <paramref name="szString"/></param>
-            <param name="pchString">Output parameter for the actual count of characters written into <paramref name="szString"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetPinvokeMap(System.UInt32,System.UInt32@,System.Char[],System.Int32,System.Int32@,System.UInt32@)">
-            <summary>Get the extended information for a PInvoke method</summary>
-            <param name="tk">PInvoke field or method token</param>
-            <param name="pdwMappingFlags">Output parameter for the mapping flags</param>
-            <param name="szImportName">Char buffer into which the name will be written</param>
-            <param name="cchImportName">Size of the array <paramref name="szImportName"/></param>
-            <param name="pchImportName">Output parameter for the actual count of characters written into <paramref name="szImportName"/></param>
-            <param name="pmrImportDLL">Output parameter into which the token for the imported module is written</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumSignatures(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate over all the signatures in the assembly. What a pointless method</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></param>
-            <param name="rSignatures">Array into which signature tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rSignatures"/></param>
-            <param name="pcSignatures">Output parameter for the actual count written into <paramref name="rSignatures"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeSpecs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)">
-            <summary>Enumerate over all the typespecs in the assembly.</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></param>
-            <param name="rTypeSpecs">Array into which typespec tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rTypeSpecs"/></param>
-            <param name="pcTypeSpecs">Output parameter for the actual count written into <paramref name="rTypeSpecs"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumUserStrings(System.UIntPtr@,System.UInt32[],System.Int32,System.Int32@)">
-            <summary>Enumerate over all the user strings in the assembly.</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></param>
-            <param name="rStrings">Array into which string tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rStrings"/></param>
-            <param name="pcStrings">Output parameter for the actual count written into <paramref name="rStrings"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetParamForMethodIndex(System.UInt32,System.Int32,System.UInt32@)">
-            <summary>Get the parameter token for a particular method parameter</summary>
-            <param name="md">Method token</param>
-            <param name="ulParamSeq">Parameter ordinal number</param>
-            <param name="ppd">Output parameter into which parameter token is written</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumCustomAttributes(System.UIntPtr@,System.UInt32,System.UInt32,System.UInt32*,System.Int32,System.Int32@)">
-            <summary>Enumerate over all the custom attributes in the assembly.</summary>
-            <param name="phEnum">Enumeration handle <see cref="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.EnumTypeDefs(System.UIntPtr@,System.UInt32*,System.Int32,System.Int32@)"/></param>
-            <param name="tk">Scope token or 0 (token_null) for all</param>
-            <param name="tkType">Type token or 0 (token_null) for all</param>
-            <param name="rCustomAttributes">Array into which attribute tokens are written</param>
-            <param name="cMax">Size of the array <paramref name="rCustomAttributes"/></param>
-            <param name="pcCustomAttributes">Output parameter for the actual count written into <paramref name="rCustomAttributes"/></param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetCustomAttributeProps(System.UInt32,System.UInt32@,System.UInt32@,System.IntPtr@,System.Int32@)">
-            <summary>Get the detail for a custom attribute</summary>
-            <param name="cv">Custom attribute token</param>
-            <param name="ptkObj">Object token attribute is associated with</param>
-            <param name="ptkType">Type token attribute is associated with</param>
-            <param name="ppBlob">Output parameter into which native attribute blob pointer is written</param>
-            <param name="pcbSize">Output parameter into which size of attribute blob is written</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.FindTypeRef(System.UInt32,System.String,System.UInt32@)">
-            <summary>Resolve a type by name</summary>
-            <param name="tkResolutionScope">Token defining scope to be searched</param>
-            <param name="szName">Name of type to resolve</param>
-            <param name="ptr">Output parameter into which typeref token is written</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetMemberProps(System.UInt32,System.UInt32@,System.Char*,System.Int32,System.Int32@,System.Int32@,System.IntPtr@,System.Int32@,System.UInt32@,System.UInt32@,System.UInt32@,System.IntPtr@,System.Int32@)">
-            <summary>Get the detailed properties for a member</summary>
-            <param name="mb">Member token to retrieve detail from</param>
-            <param name="pClass">Output parameter for class token owning member</param>
-            <param name="szMember">Char array into which member name will be written</param>
-            <param name="cchMember">Size of the <paramref name="szMember"/> array</param>
-            <param name="pchMember">Output parameter for the actual number of chars written into <paramref name="szMember"/></param>
-            <param name="pdwAttr">Output parameter for member flags</param>
-            <param name="ppvSigBlob">Output parameters for the native pointer to the signature blob. Retrieve data using System.Marshal.Copy</param>
-            <param name="pcbSigBlob">Output parameter for number of bytes in the signature blob</param>
-            <param name="pulCodeRVA">Output parameter for any associated relative virtual address</param>
-            <param name="pdwImplFlags">Output parameter for implementation flags</param>
-            <param name="pdwCPlusTypeFlag">Output parameter for element type for any associated constant value</param>
-            <param name="ppValue">Output parameter for native pointer to constant value data</param>
-            <param name="pcchValue">Output parameter for string size if constant value is a string</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetFieldProps(System.UInt32,System.UInt32@,System.Char*,System.Int32,System.Int32@,System.UInt32@,System.IntPtr@,System.Int32@,System.Int32@,System.IntPtr@,System.Int32@)">
-            <summary>Get the detailed properties for a field</summary>
-            <param name="mb">Field token to retrieve detail from</param>
-            <param name="pClass">Output parameter for class token owning field</param>
-            <param name="szField">Char array into which field name will be written</param>
-            <param name="cchField">Size of the <paramref name="szField"/> array</param>
-            <param name="pchField">Output parameter for the actual number of chars written into <paramref name="szField"/></param>
-            <param name="pdwAttr">Output parameter for field flags</param>
-            <param name="ppvSigBlob">Output parameters for the native pointer to the signature blob. Retrieve data using System.Marshal.Copy</param>
-            <param name="pcbSigBlob">Output parameter for number of bytes in the signature blob</param>
-            <param name="pdwCPlusTypeFlag">Output parameter for element type for any associated constant value</param>
-            <param name="ppValue">Output parameter for native pointer to constant value data</param>
-            <param name="pcchValue">Output parameter for string size if constant value is a string</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetPropertyProps(System.UInt32,System.UInt32@,System.Char*,System.Int32,System.Int32@,System.UInt32@,System.IntPtr@,System.Int32@,System.Int32@,System.IntPtr@,System.Int32@,System.UInt32@,System.UInt32@,System.UInt32*,System.Int32,System.Int32@)">
-            <summary>Get the detailed properties for a property</summary>
-            <param name="prop">Property token to retrieve detail from</param>
-            <param name="pClass">Output parameter for class token owning property</param>
-            <param name="szProperty">Char array into which property name will be written</param>
-            <param name="cchProperty">Size of the <paramref name="szProperty"/> array</param>
-            <param name="pchProperty">Output parameter for the actual number of chars written into <paramref name="szProperty"/></param>
-            <param name="pdwPropFlags">Output parameter for property flags</param>
-            <param name="ppvSigBlob">Output parameters for the native pointer to the signature blob. Retrieve data using System.Marshal.Copy</param>
-            <param name="pcbSigBlob">Output parameter for number of bytes in the signature blob</param>
-            <param name="pdwCPlusTypeFlag">Output parameter for element type for any associated constant value</param>
-            <param name="ppDefaultValue">Output parameter for native pointer to constant value data</param>
-            <param name="pcchDefaultValue">Output parameter for string size if constant value is a string</param>
-            <param name="pmdSetter">Output parameter for the method token for the setter</param>
-            <param name="pmdGetter">Output parameter for the method token for the getter</param>
-            <param name="rmdOtherMethod">Array into which other methods tokens associated with this property are written</param>
-            <param name="cMax">Size of the <paramref name="rmdOtherMethod"/> array</param>
-            <param name="pcOtherMethod">Output parameter for the actual count written into the <paramref name="rmdOtherMethod"/> array</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetParamProps(System.UInt32,System.UInt32@,System.UInt32@,System.Char*,System.Int32,System.Int32@,System.UInt32@,System.UInt32@,System.IntPtr@,System.Int32@)">
-            <summary>Get the detail for a parameter</summary>
-            <param name="tk">Parameter token</param>
-            <param name="pmd">Output parameter for the owning method token</param>
-            <param name="pulSequence">Output parameter for the ordinal position of this parameter</param>  
-            <param name="szName">Char buffer into which the name is written</param>
-            <param name="cchName">Size of the buffer <paramref name="szName"/></param>
-            <param name="pchName">Output parameter of the number of characters actually written to <paramref name="szName"/></param>
-            <param name="pdwAttr">Output parameter for parameter flags</param>
-            <param name="pdwCPlusTypeFlag">Output parameter for element type for any associated constant value</param>
-            <param name="ppValue">Output parameter for native pointer to constant value data</param>
-            <param name="pcchValue">Output parameter for string size if constant value is a string</param>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetCustomAttributeByName(System.UInt32,System.String,System.IntPtr@,System.Int32@)">
-            <summary>Retrieve a custom attribute by type name</summary>
-            <param name="tkObj">Object token to which the attribute is attached</param>
-            <param name="szName">Name of the attribute to retrive</param>
-            <param name="ppData">Output parameter into which native pointer to custom attribute data will be written</param>
-            <param name="pcbData">Output parameter into which size of attribute data will be written</param>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.IsValidToken(System.UInt32)">
-            <summary>Determine if a token is valid</summary>
-            <param name="tk">Token to test for validity</param>
-            <returns>A bool which is true if the token is valid</returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetNestedClassProps(System.UInt32,System.UInt32@)">
-            <summary>Get the containing class for a nested class</summary>
-            <param name="tdNestedClass">Token for the nested class</param>
-            <param name="ptdEnclosingClass">Output parameter into which the token for the enclosing class is written</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.GetNativeCallConvFromSig(System.IntPtr,System.Int32,System.UInt32@)">
-            <summary>Decode the native calling convention from a signature</summary>
-            <param name="pvSig">A native pointer to the signature blob</param>
-            <param name="cbSig">Count of bytes in the signature</param>
-            <param name="pCallConv">Output parameter into which the calling convention is written</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetadataImport2.IsGlobal(System.UInt32,System.UInt32@)">
-            <summary>Test a token to see if it is global</summary>
-            <param name="pd">Token to test</param>
-            <param name="pbGlobal">Output parameters which is 1 if global or zero if now</param>
-            <returns>The HRESULT from the COM method</returns>       
-        </member>
-        <member name="T:JetBrains.Metadata.Access.Fusion.IMetaDataDispenserEx">
-            <summary>Wrapper for the IMetaDataDispenserEx COM unmanaged API</summary>
-            <remarks>The methods on this class are documented in the Metadata Unmanaged API document in the SDK Tool Developers Guide</remarks> 
-            <example>
-            <code>
-            IMetaDataDispenserEx dispenser=new MetaDataDispenserEx();
-            IMetadataImport impScope=null;
-            object rawScope=null;
-            Guid iidImp=Constants.IID_IMetadataImport;
-            dispenser.OpenScope("bytecode.exe",0,ref iidImp,out rawScope);
-            impScope=(IMetadataImport)rawScope;
-            </code>
-            </example>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetaDataDispenserEx.DefineScope(System.Guid@,System.UInt32,System.Guid@,System.Object@)">
-            <summary>Define a new metadata scope</summary>
-            <param name="rclsid">A Guid representing Constants.CLSID_CorMetaDataRuntime.ToByteArray();</param>
-            <param name="flags">Always pass 0</param>
-            <param name="iid">A GUID for the required interface, one of IID_IMetaDataEmit, IID_IMetadataImport, IID_IMetaDataAssemblyEmit or IID_IMetadataAssemblyImport</param>
-            <param name="scope">Output parameter which will be initialised to the new scope. Should be cast to the interface specified in <paramref name="iid"/></param>
-            <returns>The HRESULT from the COM method</returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetaDataDispenserEx.OpenScope(System.String,System.UInt32,System.Guid@,System.Object@)">
-            <summary>Open a metadata scope on an existing assembly file</summary>
-            <param name="file">A fully qualified file name of an assembly</param>
-            <param name="flags">0 for read, 1 for write</param>
-            <param name="iid">GUID for the required interface, one of IID_IMetaDataEmit, IID_IMetadataImport, IID_IMetaDataAssemblyEmit or IID_IMetadataAssemblyImport</param>
-            <param name="scope">Output parameter which will be initialised to the new scope. Should be cast to the interface specified in <paramref name="iid"/></param>
-            <returns>The HRESULT from the COM method</returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetaDataDispenserEx.OpenScopeOnMemory(System.IntPtr,System.UInt32,System.UInt32,System.Guid@,System.Object@)">
-            <summary>Open a metadata scope on an existing set of metadata mapped into memory</summary>
-            <param name="data">The bytes of the assembly (i.e. base address of a mapped assembly dll file)</param>
-            <param name="size">Count of bytes in <paramref name="data"/></param>
-            <param name="flags">0 for read, 1 for write</param>
-            <param name="iid">GUID for the required interface, one of IID_IMetaDataEmit, IID_IMetadataImport, IID_IMetaDataAssemblyEmit or IID_IMetadataAssemblyImport</param>
-            <param name="scope">Output parameter which will be initialised to the new scope. Should be cast to the interface specified in <paramref name="iid"/></param>
-            <returns>The HRESULT from the COM method</returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetaDataDispenserEx.SetOption(System.Guid@,System.Object)">
-            <summary>Set an option for the metadata API behaviour</summary>
-            <param name="iid">GUID for the metadata option to set</param>
-            <param name="optValue">Option specific variant data. Note that this object must be convertable to a variant according to the rules in the topic "Default Marshaling for Objects" in the SDK help</param>
-            <returns>The HRESULT from the COM method</returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetaDataDispenserEx.GetOption(System.Guid@,System.Object@)">
-            <summary>Get an option for the metadata API behaviour</summary>
-            <param name="iid">GUID for the metadata option to set</param>
-            <param name="optValue">Option specific variant data. Note that this object must be convertable to a variant according to the rules in the topic "Default Marshaling for Objects" in the SDK help</param>
-            <returns>The HRESULT from the COM method</returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetaDataDispenserEx.OpenScopeOnITypeInfo(System.Object,System.UInt32,System.Guid@,System.Object@)">
-            <summary>Open a metadata scope on an object description from a COM type library (I think)</summary>
-            <param name="info">A COM ITypeInfo interface pointer for a type in a type library</param>
-            <param name="flags">0 for read, 1 for write</param>
-            <param name="iid">GUID for the required interface, one of IID_IMetaDataEmit, IID_IMetadataImport, IID_IMetaDataAssemblyEmit or IID_IMetadataAssemblyImport</param>
-            <param name="scope">Output parameter which will be initialised to the new scope. Should be cast to the interface specified in <paramref name="iid"/></param>
-            <returns>The HRESULT from the COM method</returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetaDataDispenserEx.GetCORSystemDirectory(System.Char[],System.Int32,System.Int32@)">
-            <summary>Get the system directory for the CIL Runtime</summary>
-            <param name="dir">A char buffer big enough to hold the longest result</param>
-            <param name="size">Size of the buffer <paramref name="dir"/></param>
-            <param name="count">Number of chars written into <paramref name="dir"/> or number of required chars if larger than <paramref name="size"/></param>
-            <returns>The HRESULT from the COM method</returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetaDataDispenserEx.FindAssembly(System.String,System.String,System.String,System.String,System.Char[],System.Int32,System.Int32@)">
-            <summary>Find the best match for an assembly using the rules from the CIL Runtime</summary>
-            <returns>The HRESULT from the COM method</returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Access.Fusion.IMetaDataDispenserEx.FindAssemblyModule(System.String,System.String,System.String,System.String,System.Char[],System.Int32,System.Int32@)">
-            <summary>Find the best match for an assembly module using the rules from the CIL Runtime</summary>
-            <returns>The HRESULT from the COM method</returns>
-        </member>
-        <member name="T:JetBrains.Metadata.Access.Fusion.MetaDataDispenserEx">
-            <summary>Alternate interface for IMetaDataDispenserEx. tlbimp.exe creates these, I don't know why so I copied it</summary>
-            <remarks>The GUID may be incorrect on this interface</remarks>
-        </member>
-        <member name="T:JetBrains.Metadata.Access.Fusion.CorMetaDataDispenserExClass">
-            <summary>Co class for the MetadataDispenserEx interface</summary>
-        </member>
-        <member name="T:JetBrains.Metadata.Access.Fusion.Constants">
-            <summary>Set of constants for useful GUIDS</summary>
-        </member>
-        <member name="T:JetBrains.Metadata.Access.Fusion.IMetadataTables">
-            <summary>
-            This API isn't big endian friendly since it indexes directly into the memory that is stored in little endian format.
             </summary>
         </member>
         <member name="T:JetBrains.Metadata.Reader.API.IAssemblyResolver">
@@ -3293,70 +2032,20 @@
             Reader on bytes stream
             </summary>
         </member>
-        <member name="M:JetBrains.Metadata.Utils.MetadataBlobReader.ReadInt64">
-            <summary>
-            Read long
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:JetBrains.Metadata.Utils.MetadataBlobReader.ReadTypeDefOrTypeRefEncoded">
             <summary>
             Decodes encoded type token
             </summary>
         </member>
-        <member name="M:JetBrains.Metadata.Utils.MetadataBlob.#ctor(JetBrains.Util.FileSystemPath)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="fileName">Name of the file</param>
-        </member>
-        <member name="M:JetBrains.Metadata.Utils.MetadataBlob.#ctor(System.IO.Stream)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="stream">Stream with data</param>
-        </member>
-        <member name="M:JetBrains.Metadata.Utils.MetadataBlob.#ctor(System.Byte[])">
-            <summary>
-            Ctor
-            </summary>
-            <param name="buffer">Source array</param>
-        </member>
-        <member name="M:JetBrains.Metadata.Utils.MetadataBlob.ReadBoolean(System.Int32)">
-            <summary>
-            Read bool value from stream
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Utils.MetadataBlob.ReadChar(System.Int32)">
-            <summary>
-            Read char value from stream
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Utils.MetadataBlob.ReadSingle(System.Int32)">
-            <summary>
-            Read float value from stream
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:JetBrains.Metadata.Utils.MetadataBlob.ReadDouble(System.Int32)">
-            <summary>
-            Read double value from stream
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:JetBrains.Metadata.Utils.MetadataBlob.ReadInt16(System.Int32)">
             <summary>
             Read short value from stream
             </summary>
-            <returns></returns>
         </member>
         <member name="M:JetBrains.Metadata.Utils.MetadataBlob.ReadSByte(System.Int32)">
             <summary>
              Read signed byte
             </summary>
-            <returns></returns>
         </member>
         <member name="M:JetBrains.Metadata.Utils.MetadataBlob.ReadUInt8(System.Int32)">
             <summary>
@@ -3374,13 +2063,11 @@
             <summary>
             Read int value
             </summary>
-            <returns></returns>
         </member>
         <member name="M:JetBrains.Metadata.Utils.MetadataBlob.ReadUInt32(System.Int32)">
             <summary>
             Read uint
             </summary>
-            <returns></returns>
         </member>
         <member name="M:JetBrains.Metadata.Utils.MetadataBlob.ReadBytes(System.Int32,System.Int32)">
             <summary>
@@ -3391,6 +2078,11 @@
         <member name="M:JetBrains.Metadata.Utils.MetadataBlob.ReadTypeDefOrTypeRefEncoded(System.Int32)">
             <summary>
             Decodes encoded type token
+            </summary>
+        </member>
+        <member name="M:JetBrains.Metadata.Utils.MetadataBlob.ReadInt64(System.Int32)">
+            <summary>
+            Read long value
             </summary>
         </member>
         <member name="T:JetBrains.Metadata.Utils.Pdb.PdbFile">
@@ -3636,7 +2328,7 @@
             CLI header
             </summary>
         </member>
-        <member name="M:JetBrains.Metadata.Utils.PE.CLIHeader.#ctor(System.IO.BinaryReader,JetBrains.Metadata.Utils.PE.PEFile)">
+        <member name="M:JetBrains.Metadata.Utils.PE.CLIHeader.#ctor(JetBrains.Metadata.Utils.IBinaryReader,JetBrains.Metadata.Utils.PE.PEFile)">
             <summary>
             ctor
             </summary>
@@ -3673,14 +2365,14 @@
             Base class for PE directory
             </summary>
         </member>
-        <member name="M:JetBrains.Metadata.Utils.PE.Directories.PEDirectoryBase.Read(System.IO.BinaryReader,System.Int32)">
+        <member name="M:JetBrains.Metadata.Utils.PE.Directories.PEDirectoryBase.Read(JetBrains.Metadata.Utils.IBinaryReader,System.Int32)">
             <summary>
             Read directory
             </summary>
             <param name="rdr">reader</param>
             <param name="size">Size of directory</param>
         </member>
-        <member name="M:JetBrains.Metadata.Utils.PE.Directories.DebugDirectory.Read(System.IO.BinaryReader,System.Int32)">
+        <member name="M:JetBrains.Metadata.Utils.PE.Directories.DebugDirectory.Read(JetBrains.Metadata.Utils.IBinaryReader,System.Int32)">
             <summary>
             Read directory
             </summary>
@@ -3697,7 +2389,7 @@
             Debug Directory entry
             </summary>
         </member>
-        <member name="M:JetBrains.Metadata.Utils.PE.Directories.DebugDirectory.Entry.#ctor(System.IO.BinaryReader)">
+        <member name="M:JetBrains.Metadata.Utils.PE.Directories.DebugDirectory.Entry.#ctor(JetBrains.Metadata.Utils.IBinaryReader)">
             <summary>
             ctor
             </summary>
@@ -3964,37 +2656,37 @@
             <summary>
             </summary>
         </member>
-        <member name="P:JetBrains.Metadata.Utils.PE.MetaDataHeader.Signature">
+        <member name="P:JetBrains.Metadata.Utils.PE.MetadataHeader.Signature">
             <summary>
             Netadata header signature
             </summary>
         </member>
-        <member name="P:JetBrains.Metadata.Utils.PE.MetaDataHeader.MajorVersion">
+        <member name="P:JetBrains.Metadata.Utils.PE.MetadataHeader.MajorVersion">
             <summary>
             Major version
             </summary>
         </member>
-        <member name="P:JetBrains.Metadata.Utils.PE.MetaDataHeader.MinorVersion">
+        <member name="P:JetBrains.Metadata.Utils.PE.MetadataHeader.MinorVersion">
             <summary>
             Minor version
             </summary>
         </member>
-        <member name="P:JetBrains.Metadata.Utils.PE.MetaDataHeader.Reserved">
+        <member name="P:JetBrains.Metadata.Utils.PE.MetadataHeader.Reserved">
             <summary>
             Reserved
             </summary>
         </member>
-        <member name="P:JetBrains.Metadata.Utils.PE.MetaDataHeader.VersionString">
+        <member name="P:JetBrains.Metadata.Utils.PE.MetadataHeader.VersionString">
             <summary>
             Metadata version
             </summary>
         </member>
-        <member name="P:JetBrains.Metadata.Utils.PE.MetaDataHeader.Flags">
+        <member name="P:JetBrains.Metadata.Utils.PE.MetadataHeader.Flags">
             <summary>
             Metadat flags
             </summary>
         </member>
-        <member name="P:JetBrains.Metadata.Utils.PE.MetaDataHeader.StreamHeaders">
+        <member name="P:JetBrains.Metadata.Utils.PE.MetadataHeader.StreamHeaders">
             <summary>
             Metadata streams information
             </summary>
@@ -4074,7 +2766,7 @@
             Portable Executable file
             </summary>
         </member>
-        <member name="M:JetBrains.Metadata.Utils.PE.PEFile.#ctor(System.IO.BinaryReader)">
+        <member name="M:JetBrains.Metadata.Utils.PE.PEFile.#ctor(JetBrains.Metadata.Utils.IBinaryReader)">
             <summary>
             ctor
             </summary>
@@ -4184,7 +2876,7 @@
             Metadata stream information
             </summary>
         </member>
-        <member name="M:JetBrains.Metadata.Utils.PE.StreamHeader.#ctor(System.IO.BinaryReader)">
+        <member name="M:JetBrains.Metadata.Utils.PE.StreamHeader.#ctor(JetBrains.Metadata.Utils.IBinaryReader)">
             <summary>
             ctor
             </summary>

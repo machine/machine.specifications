@@ -29,6 +29,29 @@
             Return all child <see cref="T:System.Xml.XmlElement"/> with specified name.
             </summary>
         </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Bulbs.FunctionalGroupAttribute">
+            <summary>
+            This attribute is used to set custom icon for group of CAs and QFses
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Bulbs.FunctionalGroupAttribute.IconForReason(JetBrains.ReSharper.Feature.Services.Bulbs.ActionAvailabilityReason)">
+            <summary>
+            Returns custom icon for group
+            </summary>
+            <param name="reason">Just ignore this in common case. Or use if your
+            icon depends on severety.</param>
+            <returns></returns>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Bulbs.FunctionalGroupAttribute.Order">
+            <summary>
+            Used to ensure groups order. 
+            Refactoring actions - 0
+            Generate asctions - 10
+            Configure actions - 40
+            Default actions - 50   
+            Disable actions - 100
+            </summary>
+        </member>
         <member name="M:JetBrains.ReSharper.Feature.Services.Bulbs.IBulbAction.IsAvailable(JetBrains.Util.IUserDataHolder)">
             <summary>
             Check if this action is available at the constructed context.
@@ -143,6 +166,11 @@
             Maintains code completion options
             </summary>
         </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.CodeCompletion.CodeCompletionSettings.CaseSensitiveCompletion">
+            <summary>
+            Note: this property is no more configurable thru the UI.
+            </summary>
+        </member>
         <member name="F:JetBrains.ReSharper.Feature.Services.CodeCompletion.CodeCompletionSettings.HighlightImmediateMembers">
             <summary>
             Note: this property is no more configurable thru the UI.
@@ -168,7 +196,7 @@
             Gets flag indicating whether this item should be automatically completed if it is the only in a list
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.ILookupItem.MatchPrefix(System.String,System.Boolean)">
+        <member name="M:JetBrains.ReSharper.Feature.Services.Lookup.ILookupItem.MatchPrefix(System.String)">
             <summary>
             Returns value indicating whether the item matches a given prefix
             </summary>
@@ -365,6 +393,12 @@
             Only if they are not used in expressions
             </summary>
         </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.StructuralSearch.StructuralSearchPatternParams.MatchAllMethodsWithoutModifiers">
+            <summary>
+            If this modifier is set pattern "$type$ $method$($args$) $stmt$" will match all methods no matter
+            which modifiers they have (private/public, static, etc.)
+            </summary>
+        </member>
         <member name="M:JetBrains.ReSharper.Feature.Services.Util.FileSpecificUtil.GetSortedDeclaration(JetBrains.ReSharper.Psi.ITypeElement,JetBrains.ReSharper.Psi.Tree.ITypeDeclaration,JetBrains.ReSharper.Psi.PsiLanguageType)">
             <summary>
             Returns all declarations of a type where type member can be created. Preferrable declarations are first.
@@ -385,10 +419,11 @@
             <param name="prefferedDeclaration">Declaration to which you would particulary like to write to. Pass null if you do not care.</param>
             <returns>Non-empty sorted list of declarations. Unwanted, ex. designer file, declarations filtered.</returns>
         </member>
-        <member name="T:JetBrains.ReSharper.Feature.Services.Util.IGoodReference">
+        <member name="T:JetBrains.ReSharper.Feature.Services.Util.IImplicitReference">
             <summary>
-            Such reference will be always selected in <see cref="M:JetBrains.ReSharper.Feature.Services.Util.CandidatesUtil.SelectGoodReferences(System.Collections.Generic.IList{JetBrains.ReSharper.Psi.Resolve.IReference})"/>
+            Implicit references, which target determined by context (not always in this file), not owner itself
             </summary>
+            <remarks>Such reference will be always selected in <see cref="M:JetBrains.ReSharper.Feature.Services.Util.CandidatesUtil.SelectGoodReferences(System.Collections.Generic.IList{JetBrains.ReSharper.Psi.Resolve.IReference})"/></remarks>
         </member>
         <member name="T:JetBrains.ReSharper.Feature.Services.CodeCompletion.CodeCompletionType">
             <summary>
@@ -1827,9 +1862,9 @@
             Replaces one template with another
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateStorage.Type">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateStorage.Icon">
             <summary>
-            Gets storage type
+            Get storage icon
             </summary>
         </member>
         <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateStorage.Name">
@@ -1850,11 +1885,6 @@
         <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.ITemplateStorage.Templates">
             <summary>
             Gets templates located in this folder
-            </summary>
-        </member>
-        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.StorageType">
-            <summary>
-            Defines possible storage types
             </summary>
         </member>
         <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages.IPredefinedStorage.Restore(JetBrains.ReSharper.LiveTemplates.Templates.Template)">

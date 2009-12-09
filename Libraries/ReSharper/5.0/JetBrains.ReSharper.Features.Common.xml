@@ -96,10 +96,8 @@
         <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoCacheElementController`1.UpdateItems(System.String,System.Func{System.Collections.Generic.IEnumerable{JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem},JetBrains.UI.GotoByName.GotoByNameController.AddItemsBehavior,System.Boolean})">
             <summary>
             When the items get dirty (<see cref="F:JetBrains.UI.GotoByName.GotoByNameController.ItemsGottenDirty"/>), this function is called on the secondary thread.
-            The function should be checking for <paramref name="checkCancelled"/> every so often.
             </summary>
             <param name="filterString">The filtering string against which the items list should be produced.</param>
-            <param name="checkCancelled">Call from time to time, on <c>True</c>, abort immediately.</param>
             <param name="itemsConsumer">A function you can use to add items to the output collection in a thread-safe manner. The function checks for the items limit and returns whether more items can be added.</param>
         </member>
         <member name="P:JetBrains.ReSharper.Features.Common.GoToByName.GotoCacheElementController`1.LibrariesFlagAutoSwitch">

@@ -105,12 +105,17 @@
             Root interface for all objects associated with a project
             </summary>
         </member>
+        <member name="M:JetBrains.ProjectModel.IProjectElement.GetProject">
+            <summary>
+            Gets the project that owns this project element.
+            On an <see cref="T:JetBrains.ProjectModel.IProject"/>, returns self.
+            </summary>
+        </member>
         <member name="M:JetBrains.ProjectModel.IProjectElement.GetPersistentID">
             <summary>
             Returns persistent ID of the project element. This ID remains valid between sessions,
             but does not survive after renaming or moving the element.
             </summary>
-            <returns></returns>
         </member>
         <member name="P:JetBrains.ProjectModel.IProjectElement.IsValid">
             <summary>
@@ -435,6 +440,12 @@
         <member name="T:JetBrains.ProjectModel.ISolution">
             <summary>
             Solution is a group of related projects
+            </summary>
+        </member>
+        <member name="P:JetBrains.ProjectModel.ISolution.SolutionProject">
+            <summary>
+            The project of the solution itself.
+            Always present in VS implementation. Might be missing in some cases in standalone impl for unknown reason, take care.
             </summary>
         </member>
         <member name="E:JetBrains.ProjectModel.ISolution.MakingWritable">

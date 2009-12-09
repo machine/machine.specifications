@@ -1,5 +1,6 @@
+using System.Collections.Generic;
+
 using JetBrains.ReSharper.Psi;
-using JetBrains.Util.DataStructures;
 
 using Machine.Specifications.ReSharperRunner.Presentation;
 
@@ -9,10 +10,10 @@ namespace Machine.Specifications.ReSharperRunner.Factories
   {
     public ContextCache()
     {
-      Classes = new Dictionary2<ITypeElement, ContextElement>();
+      Classes = new Dictionary<ITypeElement, ContextElement>();
     }
 
-    public Dictionary2<ITypeElement, ContextElement> Classes
+    public IDictionary<ITypeElement, ContextElement> Classes
     {
       get;
       private set;

@@ -205,6 +205,12 @@
               Looks up a localized string similar to Untitled.
             </summary>
         </member>
+        <member name="M:JetBrains.UI.About.AboutControl.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
         <member name="T:JetBrains.ActionManagement.ActionManagerEx">
             <summary>
             Extensions for <see cref="T:JetBrains.ActionManagement.ActionManager"/>.
@@ -542,7 +548,7 @@
         <member name="P:JetBrains.UI.StatusBar.JetStatusBarIndicator.ContextMenu">
             <summary>
             Fires when a context menu should be shown.
-            Note: the <see cref="T:JetBrains.UI.PopupMenu.JetPopupMenu"/> object is disposable. You must either avoid creating it by not touching the <see cref="T:System.Lazy`1"/> container, or use the value you get from it (either <see cref="M:JetBrains.UI.PopupMenu.JetPopupMenu.Show"/> the menu, which will then dispose of it correctly, or <see cref="M:System.IDisposable.Dispose"/> of it explicitly).
+            Note: the <see cref="T:JetBrains.UI.PopupMenu.JetPopupMenu"/> object is disposable. You must either avoid creating it by not touching the <see cref="T:JetBrains.Util.Lazy.Lazy`1"/> container, or use the value you get from it (either <see cref="M:JetBrains.UI.PopupMenu.JetPopupMenu.Show"/> the menu, which will then dispose of it correctly, or <see cref="M:System.IDisposable.Dispose"/> of it explicitly).
             </summary>
         </member>
         <member name="P:JetBrains.UI.StatusBar.JetStatusBarIndicator.Cursor">
@@ -7736,6 +7742,23 @@
             License server information
             </summary>
         </member>
+        <member name="F:JetBrains.UI.src.Shell.License.ObtainPermanentLicenseForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.src.Shell.License.ObtainPermanentLicenseForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:JetBrains.UI.src.Shell.License.ObtainPermanentLicenseForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
         <member name="T:JetBrains.UI.Application.LogEventListener">
             <summary>
             Listens for <see cref="T:JetBrains.Util.Logger"/> events, reports them to the consumer.
@@ -8158,6 +8181,11 @@
         <member name="F:JetBrains.UI.Application.Progress.UITaskExecutorRun.IsDone">
             <summary>
             Set to <c>True</c> after the task has finished running.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Application.Progress.UITaskExecutorRun.PushProgressCanceledInterruptableCookie(JetBrains.Application.Progress.IProgressIndicator,JetBrains.UI.Application.Progress.TaskThreadAffinity)">
+            <summary>
+            Throws the <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> on <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.IsCanceled"/>.
             </summary>
         </member>
         <member name="M:JetBrains.UI.Application.Progress.UITaskExecutorRun.Run">
@@ -8633,12 +8661,6 @@
             the contents of this method with the code editor.
             </summary>
         </member>
-        <member name="M:JetBrains.UI.Application.License.LicenseInfoForm.InitializeComponent">
-            <summary>
-            Required method for Designer support - do not modify
-            the contents of this method with the code editor.
-            </summary>
-        </member>
         <member name="F:JetBrains.UI.Application.License.PasteTextBox.components">
             <summary>
             Required designer variable.
@@ -8687,16 +8709,6 @@
             <summary>
             Clean up any resources being used.
             </summary>
-        </member>
-        <member name="M:JetBrains.UI.Application.Progress.ProgressWindow.ExecuteTask(System.String,JetBrains.Application.Progress.TaskCancelable,System.Action{JetBrains.Application.Progress.IProgressIndicator})">
-            <summary>
-            Executes the task without exiting the method until the task is completed.
-            </summary>
-            <param name="name">Task name. Must not be empty.</param>
-            <param name="task">The task to execute.</param>
-            <param name="cancelable">Whether the task could be canceled by the user, if the task progress indication provided by <see cref="T:JetBrains.Application.Progress.ITaskExecutor"/> supports canceling.</param>
-            <returns>Whether the task has completed execution (ie was not canceled). Note that a <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> could cancel even a <see cref="F:JetBrains.Application.Progress.TaskCancelable.No"/> task.</returns>
-            <remarks>Any return values of the task should be assigned inside the closure that implements the <paramref name="task"/>.</remarks>
         </member>
         <member name="P:JetBrains.UI.Application.Progress.ProgressWindow.TaskThread">
             <summary>
@@ -9099,6 +9111,1095 @@
         <member name="P:JetBrains.UI.StatusBar.Indicators.TrefoilIndicator.WantsResize">
             <summary>
             Fires when the control would like to be reasked of its desired size.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Demo.TaskDialogDemo.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.Demo.TaskDialogDemo.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.Demo.TaskDialogDemo.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.Emulation.AdjustControls.GetBestSize(System.Drawing.Graphics,System.String,System.Drawing.Rectangle,System.Boolean)">
+            <summary>
+            Measure a multiline string
+            </summary>
+            <param name="gr">Graphics</param>
+            <param name="text">string to measure</param>
+            <param name="rect">Original rect. The width will be taken as fixed.</param>
+            <param name="textboxControl">True if you want to measure the string for a textbox control</param>
+            <returns>A Size object with the measure of the string according with the params</returns>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.Emulation.AdjustControls.GetBestSize(System.Windows.Forms.Control,System.String,System.Drawing.Rectangle)">
+            <summary>
+            Measure a multiline string for a Control
+            
+            http://www.mobilepractices.com/2008/01/making-multiline-measurestring-work.html
+            </summary>
+            <param name="control">control</param>
+            <param name="text">string to measure</param>
+            <param name="rect">Original rect. The width will be taken as fixed.</param>
+            <returns>A Size object with the measure of the string according with the params</returns>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Emulation.CommandLinkButton.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.Emulation.CommandLinkButton.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.Emulation.CommandLinkButton.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Emulation.EmulateExpInfoButton.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.Emulation.EmulateExpInfoButton.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.Emulation.EmulateExpInfoButton.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.TaskDialog.Emulation.EmulateTaskDialog">
+            <summary>
+            Tries to emulate the Task Dialog. Form will be called when the call to
+            Task Dialog is not supported.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.IActiveTaskDialog.ClickButton(System.Int32)">
+            <summary>
+            Simulate the action of a button click in the TaskDialog. This can be a DialogResult value 
+            or the ButtonID set on a TasDialogButton set on TaskDialog.Buttons.
+            </summary>
+            <param name="buttonId">Indicates the button ID to be selected.</param>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.IActiveTaskDialog.SetProgressBarMarquee(System.Boolean,System.UInt32)">
+            <summary>
+            Sets the animation state of the Marquee Progress Bar.
+            </summary>
+            <param name="startMarquee">true starts the marquee animation and false stops it.</param>
+            <param name="speed">The time in milliseconds between refreshes.</param>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.IActiveTaskDialog.ClickRadioButton(System.Int32)">
+            <summary>
+            Simulate the action of a radio button click in the TaskDialog. 
+            The passed buttonID is the ButtonID set on a TaskDialogButton set on TaskDialog.RadioButtons.
+            </summary>
+            <param name="buttonId">Indicates the button ID to be selected.</param>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.Emulation.EmulateTaskDialog.BuildControlButton(System.Int32,System.String)">
+            <summary>
+            Creates a standard button with a common event handler to close the
+            the form and return the button's Id.
+            </summary>
+            <param name="tag">The button's Id.</param>
+            <param name="text">The button's name.</param>
+            <returns></returns>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.Emulation.EmulateTaskDialog.BuildControlLinkLabel(System.Windows.Forms.Padding,System.String)">
+            <summary>
+            Creates a standard link label and will convert any anchor links to
+            a proper link.
+            </summary>
+            <param name="margin">The margin of the link label.</param>
+            <param name="text">The text of the link label.</param>
+            <returns></returns>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.Emulation.EmulateTaskDialog.BuildForm">
+            <summary>
+            Main entry method to build the form.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.Emulation.EmulateTaskDialog.CloseForm">
+            <summary>
+            Closes the form and populate the necessary return results.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.Emulation.EmulateTaskDialog.SetLinkLabelText(System.Windows.Forms.LinkLabel,System.String)">
+            <summary>
+            Parses a LinkLabel text and extract out all the anchor (a) tags.
+            Then it will parse all the anchor tags and create the relevant
+            links in the text.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.Emulation.EmulateTaskDialog.ToString">
+            <summary>
+            This will return the formatted contents of the form. Useful when
+            the user press "ctrl + c" on the form.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.Emulation.EmulateTaskDialog.EmulateTaskDialog_KeyDown(System.Object,System.Windows.Forms.KeyEventArgs)">
+            <summary>
+            Detect user pressing "ctrl + c".
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Emulation.EmulateTaskDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.Emulation.EmulateTaskDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.Emulation.EmulateTaskDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.TaskDialog.Show(JetBrains.UI.TaskDialog.TaskDialogParams)">
+            <summary>
+            Creates, displays, and operates a task dialog. The task dialog contains application-defined messages, title,
+            verification check box, command links and push buttons, plus any combination of predefined icons and push buttons
+            as specified on the other members of the class before calling Show.
+            </summary>
+            <returns>The result of the dialog, either a DialogResult value for common push buttons set in the CommonButtons
+            member or the ButtonID from a TaskDialogButton structure set on the Buttons member.</returns>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.TaskDialog.Show(JetBrains.UI.TaskDialog.TaskDialogParams,System.Windows.Forms.IWin32Window)">
+            <summary>
+            Creates, displays, and operates a task dialog. The task dialog contains application-defined messages, title,
+            verification check box, command links and push buttons, plus any combination of predefined icons and push buttons
+            as specified on the other members of the class before calling Show.
+            </summary>
+            <param name="parameters">Task dialog parameters</param>
+            <param name="owner">Owner window the task Dialog will modal to.</param>
+            <returns>The result of the dialog, either a DialogResult value for common push buttons set in the CommonButtons
+            member or the ButtonID from a TaskDialogButton structure set on the Buttons member.</returns>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.TaskDialog.Show(JetBrains.UI.TaskDialog.TaskDialogParams,System.IntPtr)">
+            <summary>
+            Creates, displays, and operates a task dialog. The task dialog contains application-defined messages, title,
+            verification check box, command links and push buttons, plus any combination of predefined icons and push buttons
+            as specified on the other members of the class before calling Show.
+            </summary>
+            <param name="parameters">Task dialog parameters</param>
+            <param name="hwndOwner">Owner window the task Dialog will modal to.</param>
+            <returns>The result of the dialog, either a DialogResult value for common push buttons set in the CommonButtons
+            member or the ButtonID from a TaskDialogButton structure set on the Buttons member.</returns>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.TaskDialog.Show(JetBrains.UI.TaskDialog.TaskDialogParams,System.Windows.Forms.IWin32Window,System.Boolean@)">
+            <summary>
+            Creates, displays, and operates a task dialog. The task dialog contains application-defined messages, title,
+            verification check box, command links and push buttons, plus any combination of predefined icons and push buttons
+            as specified on the other members of the class before calling Show.
+            </summary>
+            <param name="parameters">Task dialog parameters</param>
+            <param name="owner">Owner window the task Dialog will modal to.</param>
+            <param name="verificationFlagChecked">Returns true if the verification checkbox was checked when the dialog
+            was dismissed.</param>
+            <returns>The result of the dialog, either a DialogResult value for common push buttons set in the CommonButtons
+            member or the ButtonID from a TaskDialogButton structure set on the Buttons member.</returns>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.TaskDialog.Show(JetBrains.UI.TaskDialog.TaskDialogParams,System.IntPtr,System.Boolean@)">
+            <summary>
+            Creates, displays, and operates a task dialog. The task dialog contains application-defined messages, title,
+            verification check box, command links and push buttons, plus any combination of predefined icons and push buttons
+            as specified on the other members of the class before calling Show.
+            </summary>
+            <param name="parameters">Task dialog parameters</param>
+            <param name="hwndOwner">Owner window the task Dialog will modal to.</param>
+            <param name="verificationFlagChecked">Returns true if the verification checkbox was checked when the dialog
+            was dismissed.</param>
+            <returns>The result of the dialog, either a DialogResult value for common push buttons set in the CommonButtons
+            member or the ButtonID from a TaskDialogButton structure set on the Buttons member.</returns>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.TaskDialog.Show(JetBrains.UI.TaskDialog.TaskDialogParams,System.Windows.Forms.IWin32Window,System.Boolean@,System.Int32@)">
+            <summary>
+            Creates, displays, and operates a task dialog. The task dialog contains application-defined messages, title,
+            verification check box, command links and push buttons, plus any combination of predefined icons and push buttons
+            as specified on the other members of the class before calling Show.
+            </summary>
+            <param name="parameters">Task dialog parameters</param>
+            <param name="owner">Owner window the task Dialog will modal to.</param>
+            <param name="verificationFlagChecked">Returns true if the verification checkbox was checked when the dialog
+            was dismissed.</param>
+            <param name="radioButtonResult">The radio botton selected by the user.</param>
+            <returns>The result of the dialog, either a DialogResult value for common push buttons set in the CommonButtons
+            member or the ButtonID from a TaskDialogButton structure set on the Buttons member.</returns>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.TaskDialog.Show(JetBrains.UI.TaskDialog.TaskDialogParams,System.IntPtr,System.Boolean@,System.Int32@)">
+            <summary>
+            Creates, displays, and operates a task dialog. The task dialog contains application-defined messages, title,
+            verification check box, command links and push buttons, plus any combination of predefined icons and push buttons
+            as specified on the other members of the class before calling Show.
+            </summary>
+            <param name="parameters">Task dialog parameters</param>
+            <param name="hwndOwner">Owner window the task Dialog will modal to.</param>
+            <param name="verificationFlagChecked">Returns true if the verification checkbox was checked when the dialog
+            was dismissed.</param>
+            <param name="radioButtonResult">The radio botton selected by the user.</param>
+            <returns>The result of the dialog, either a DialogResult value for common push buttons set in the CommonButtons
+            member or the ButtonID from a TaskDialogButton structure set on the Buttons member.</returns>
+        </member>
+        <member name="T:JetBrains.UI.TaskDialog.SwitchingTaskDialog">
+            <summary>
+            Uses Native TaskDialog if available and Emulation if not
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.WindowTitle">
+            <summary>
+            The string to be used for the dialog box title.
+            If this parameter is NULL, the filename of the executable program is used.
+            Default: Shell.Instance.Descriptor.ProductFullName
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.MainInstruction">
+            <summary>
+            The string to be used for the main instruction.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.Content">
+            <summary>
+            The string to be used for the dialog’s primary content. If the EnableHyperlinks member is true,
+            then this string may contain hyperlinks in the form: <A HREF="executablestring">Hyperlink Text</A>. 
+            WARNING: Enabling hyperlinks when using content from an unsafe source may cause security vulnerabilities.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.CommonButtons">
+            <summary>
+            Specifies the push buttons displayed in the dialog box. This parameter may be a combination of flags.
+            If no common buttons are specified and no custom buttons are specified using the Buttons member, the
+            dialog box will contain the OK button by default.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.MainIcon">
+            <summary>
+            Specifies a built in icon for the main icon in the dialog. If this is set to none
+            and the CustomMainIcon is null then no main icon will be displayed.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.CustomMainIcon">
+            <summary>
+            Specifies a custom in icon for the main icon in the dialog. If this is set to none
+            and the CustomMainIcon member is null then no main icon will be displayed.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.FooterIcon">
+            <summary>
+            Specifies a built in icon for the icon to be displayed in the footer area of the
+            dialog box. If this is set to none and the CustomFooterIcon member is null then no
+            footer icon will be displayed.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.CustomFooterIcon">
+            <summary>
+            Specifies a custom icon for the icon to be displayed in the footer area of the
+            dialog box. If this is set to none and the CustomFooterIcon member is null then no
+            footer icon will be displayed.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.Buttons">
+            <summary>
+            Specifies the custom push buttons to display in the dialog. Use CommonButtons member for
+            common buttons; OK, Yes, No, Retry and Cancel, and Buttons when you want different text
+            on the push buttons.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.RadioButtons">
+            <summary>
+            Specifies the radio buttons to display in the dialog.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.EnableHyperlinks">
+            <summary>
+            Enables hyperlink processing for the strings specified in the Content, ExpandedInformation
+            and FooterText members. When enabled, these members may be strings that contain hyperlinks
+            in the form: <A HREF="executablestring">Hyperlink Text</A>. 
+            WARNING: Enabling hyperlinks when using content from an unsafe source may cause security vulnerabilities.
+            Note: Task Dialog will not actually execute any hyperlinks. Hyperlink execution must be handled
+            in the callback function specified by Callback member.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.AllowDialogCancellation">
+            <summary>
+            Indicates that the dialog should be able to be closed using Alt-F4, Escape and the title bar’s
+            close button even if no cancel button is specified in either the CommonButtons or Buttons members.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.UseCommandLinks">
+            <summary>
+            Indicates that the buttons specified in the Buttons member should be displayed as command links
+            (using a standard task dialog glyph) instead of push buttons.  When using command links, all
+            characters up to the first new line character in the ButtonText member (of the TaskDialogButton
+            structure) will be treated as the command link’s main text, and the remainder will be treated
+            as the command link’s note. This flag is ignored if the Buttons member has no entires.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.UseCommandLinksNoIcon">
+            <summary>
+            Indicates that the buttons specified in the Buttons member should be displayed as command links
+            (without a glyph) instead of push buttons. When using command links, all characters up to the
+            first new line character in the ButtonText member (of the TaskDialogButton structure) will be
+            treated as the command link’s main text, and the remainder will be treated as the command link’s
+            note. This flag is ignored if the Buttons member has no entires.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.ExpandFooterArea">
+            <summary>
+            Indicates that the string specified by the ExpandedInformation member should be displayed at the
+            bottom of the dialog’s footer area instead of immediately after the dialog’s content. This flag
+            is ignored if the ExpandedInformation member is null.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.ExpandedByDefault">
+            <summary>
+            Indicates that the string specified by the ExpandedInformation member should be displayed
+            when the dialog is initially displayed. This flag is ignored if the ExpandedInformation member
+            is null.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.VerificationFlagChecked">
+            <summary>
+            Indicates that the verification checkbox in the dialog should be checked when the dialog is
+            initially displayed. This flag is ignored if the VerificationText parameter is null.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.ShowProgressBar">
+            <summary>
+            Indicates that a Progress Bar should be displayed.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.ShowMarqueeProgressBar">
+            <summary>
+            Indicates that an Marquee Progress Bar should be displayed.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.CallbackTimer">
+            <summary>
+            Indicates that the TaskDialog’s callback should be called approximately every 200 milliseconds.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.PositionRelativeToWindow">
+            <summary>
+            Indicates that the TaskDialog should be positioned (centered) relative to the owner window
+            passed when calling Show. If not set (or no owner window is passed), the TaskDialog is
+            positioned (centered) relative to the monitor. Default: true
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.RightToLeftLayout">
+            <summary>
+            Indicates that the TaskDialog should have right to left layout.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.NoDefaultRadioButton">
+            <summary>
+            Indicates that the TaskDialog should have no default radio button.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.CanBeMinimized">
+            <summary>
+            Indicates that the TaskDialog can be minimised. Works only if there if parent window is null. Will enable cancellation also.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.DefaultButton">
+            <summary>
+            Indicates the default button for the dialog. This may be any of the values specified
+            in ButtonId members of one of the TaskDialogButton structures in the Buttons array,
+            or one a DialogResult value that corresponds to a buttons specified in the CommonButtons Member.
+            If this member is zero or its value does not correspond to any button ID in the dialog,
+            then the first button in the dialog will be the default. 
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.DefaultRadioButton">
+            <summary>
+            Indicates the default radio button for the dialog. This may be any of the values specified
+            in ButtonId members of one of the TaskDialogButton structures in the RadioButtons array.
+            If this member is zero or its value does not correspond to any radio button ID in the dialog,
+            then the first button in RadioButtons will be the default.
+            The property NoDefaultRadioButton can be set to have no default.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.VerificationText">
+            <summary>
+            The string to be used to label the verification checkbox. If this member is null, the
+            verification checkbox is not displayed in the dialog box.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.ExpandedInformation">
+            <summary>
+            The string to be used for displaying additional information. The additional information is
+            displayed either immediately below the content or below the footer text depending on whether
+            the ExpandFooterArea member is true. If the EnameHyperlinks member is true, then this string
+            may contain hyperlinks in the form: <A HREF="executablestring">Hyperlink Text</A>.
+            WARNING: Enabling hyperlinks when using content from an unsafe source may cause security vulnerabilities.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.ExpandedControlText">
+            <summary>
+            The string to be used to label the button for collapsing the expanded information. This
+            member is ignored when the ExpandedInformation member is null. If this member is null
+            and the CollapsedControlText is specified, then the CollapsedControlText value will be
+            used for this member as well.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.CollapsedControlText">
+            <summary>
+            The string to be used to label the button for expanding the expanded information. This
+            member is ignored when the ExpandedInformation member is null.  If this member is null
+            and the ExpandedControlText is specified, then the ExpandedControlText value will be
+            used for this member as well.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.Footer">
+            <summary>
+            The string to be used in the footer area of the dialog box. If the EnableHyperlinks member
+            is true, then this string may contain hyperlinks in the form: <A HREF="executablestring">
+            Hyperlink Text</A>.
+            WARNING: Enabling hyperlinks when using content from an unsafe source may cause security vulnerabilities.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.Width">
+            <summary>
+            Width of the Task Dialog's client area in DLU's. If 0, Task Dialog will calculate the ideal width.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogParams.Callback">
+            <summary>
+            The callback that receives messages from the Task Dialog when various events occur.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.TaskDialog.TaskDialogCallback">
+            <summary>
+            The signature of the callback that recieves notificaitons from the Task Dialog.
+            </summary>
+            <param name="taskDialog">The active task dialog which has methods that can be performed on an active Task Dialog.</param>
+            <param name="args">The notification arguments including the type of notification and information for the notification.</param>
+            <returns>Return value meaning varies depending on the Notification member of args.</returns>
+        </member>
+        <member name="T:JetBrains.UI.TaskDialog.TaskDialogProgressBarState">
+            <summary>
+            Progress bar state.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogProgressBarState.Normal">
+            <summary>
+            Normal.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogProgressBarState.Error">
+            <summary>
+            Error state.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogProgressBarState.Paused">
+            <summary>
+            Paused state.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.TaskDialog.TaskDialogNotificationKind">
+            <summary>
+            Task Dialog callback notifications. 
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogNotificationKind.Created">
+            <summary>
+            Sent by the Task Dialog once the dialog has been created and before it is displayed.
+            The value returned by the callback is ignored.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogNotificationKind.ButtonClicked">
+            <summary>
+            Sent by the Task Dialog when the user selects a button or command link in the task dialog.
+            The button ID corresponding to the button selected will be available in the
+            TaskDialogNotificationArgs. To prevent the Task Dialog from closing, the application must
+            return true, otherwise the Task Dialog will be closed and the button ID returned to via
+            the original application call.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogNotificationKind.HyperlinkClicked">
+            <summary>
+            Sent by the Task Dialog when the user clicks on a hyperlink in the Task Dialog’s content.
+            The string containing the HREF of the hyperlink will be available in the
+            TaskDialogNotificationArgs. To prevent the TaskDialog from shell executing the hyperlink,
+            the application must return TRUE, otherwise ShellExecute will be called.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogNotificationKind.Timer">
+            <summary>
+            Sent by the Task Dialog approximately every 200 milliseconds when TaskDialog.CallbackTimer
+            has been set to true. The number of milliseconds since the dialog was created or the
+            notification returned true is available on the TaskDialogNotificationArgs. To reset
+            the tickcount, the application must return true, otherwise the tickcount will continue to
+            increment.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogNotificationKind.Destroyed">
+            <summary>
+            Sent by the Task Dialog when it is destroyed and its window handle no longer valid.
+            The value returned by the callback is ignored.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogNotificationKind.RadioButtonClicked">
+            <summary>
+            Sent by the Task Dialog when the user selects a radio button in the task dialog.
+            The button ID corresponding to the button selected will be available in the
+            TaskDialogNotificationArgs.
+            The value returned by the callback is ignored.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogNotificationKind.DialogConstructed">
+            <summary>
+            Sent by the Task Dialog once the dialog has been constructed and before it is displayed.
+            The value returned by the callback is ignored.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogNotificationKind.VerificationClicked">
+            <summary>
+            Sent by the Task Dialog when the user checks or unchecks the verification checkbox.
+            The verificationFlagChecked value is available on the TaskDialogNotificationArgs.
+            The value returned by the callback is ignored.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogNotificationKind.Help">
+            <summary>
+            Sent by the Task Dialog when the user presses F1 on the keyboard while the dialog has focus.
+            The value returned by the callback is ignored.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogNotificationKind.ExpandoButtonClicked">
+            <summary>
+            Sent by the task dialog when the user clicks on the dialog's expando button.
+            The expanded value is available on the TaskDialogNotificationArgs.
+            The value returned by the callback is ignored.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.TaskDialog.TaskDialogIcon">
+            <summary>
+            The System icons the TaskDialog supports.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogIcon.None">
+            <summary>
+            No Icon.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogIcon.Warning">
+            <summary>
+            System warning icon.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogIcon.Error">
+            <summary>
+            System Error icon.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogIcon.Information">
+            <summary>
+            System Information icon.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogIcon.Shield">
+            <summary>
+            Shield icon.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogIcon.Question">
+            <summary>
+            Question icon
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.TaskDialog.TaskDialogCommonButtons">
+            <summary>
+            The TaskDialog common button flags used to specify the builtin bottons to show in the TaskDialog.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogCommonButtons.None">
+            <summary>
+            No common buttons.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogCommonButtons.Ok">
+            <summary>
+            OK common button. If selected Task Dialog will return DialogResult.OK.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogCommonButtons.Yes">
+            <summary>
+            Yes common button. If selected Task Dialog will return DialogResult.Yes.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogCommonButtons.No">
+            <summary>
+            No common button. If selected Task Dialog will return DialogResult.No.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogCommonButtons.Cancel">
+            <summary>
+            Cancel common button. If selected Task Dialog will return DialogResult.Cancel.
+            If this button is specified, the dialog box will respond to typical cancel actions (Alt-F4 and Escape).
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogCommonButtons.Retry">
+            <summary>
+            Retry common button. If selected Task Dialog will return DialogResult.Retry.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.TaskDialogCommonButtons.Close">
+            <summary>
+            Close common button. If selected Task Dialog will return this value.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.TaskDialog.TaskDialogNotificationArgs">
+            <summary>
+            Arguments passed to the TaskDialog callback.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogNotificationArgs.NotificationKind">
+            <summary>
+            What the TaskDialog callback is a notification of.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogNotificationArgs.ButtonId">
+            <summary>
+            The button ID if the notification is about a button. This a DialogResult
+            value or the ButtonID member of a TaskDialogButton set in the
+            TaskDialog.Buttons member.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogNotificationArgs.Hyperlink">
+            <summary>
+            The HREF string of the hyperlink the notification is about.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogNotificationArgs.TimerTickCount">
+            <summary>
+            The number of milliseconds since the dialog was opened or the last time the
+            callback for a timer notification reset the value by returning true.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogNotificationArgs.VerificationFlagChecked">
+            <summary>
+            The state of the verification flag when the notification is about the verification flag.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogNotificationArgs.Expanded">
+            <summary>
+            The state of the dialog expando when the notification is about the expando.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods">
+            <summary>
+            Class to hold native code interop declarations.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.WM_USER">
+            <summary>
+            WM_USER taken from WinUser.h
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TaskDialogIndirect(JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG@,System.Int32@,System.Int32@,System.Boolean@)">
+            <summary>
+            TaskDialogIndirect taken from commctl.h
+            </summary>
+            <param name="pTaskConfig">All the parameters about the Task Dialog to Show.</param>
+            <param name="pnButton">The push button pressed.</param>
+            <param name="pnRadioButton">The radio button that was selected.</param>
+            <param name="pfVerificationFlagChecked">The state of the verification checkbox on dismiss of the Task Dialog.</param>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.SendMessage(System.IntPtr,System.UInt32,System.IntPtr,System.IntPtr)">
+            <summary>
+            Win32 SendMessage.
+            </summary>
+            <param name="hWnd">Window handle to send to.</param>
+            <param name="Msg">The windows message to send.</param>
+            <param name="wParam">Specifies additional message-specific information.</param>
+            <param name="lParam">Specifies additional message-specific information.</param>
+            <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.SendMessageWithString(System.IntPtr,System.UInt32,System.IntPtr,System.String)">
+            <summary>
+            Win32 SendMessage.
+            </summary>
+            <param name="hWnd">Window handle to send to.</param>
+            <param name="Msg">The windows message to send.</param>
+            <param name="wParam">Specifies additional message-specific information.</param>
+            <param name="lParam">Specifies additional message-specific information as a string.</param>
+            <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+        </member>
+        <member name="T:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG">
+            <summary>
+            TASKDIALOGCONFIG taken from commctl.h.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.cbSize">
+            <summary>
+            Size of the structure in bytes.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.hwndParent">
+            <summary>
+            Parent window handle.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.hInstance">
+            <summary>
+            Module instance handle for resources.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.dwFlags">
+            <summary>
+            Flags.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.dwCommonButtons">
+            <summary>
+            Bit flags for commonly used buttons.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.pszWindowTitle">
+            <summary>
+            Window title.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.MainIcon">
+            <summary>
+            The Main icon. Overloaded member. Can be string, a handle, a special value or a resource ID.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.pszMainInstruction">
+            <summary>
+            Main Instruction.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.pszContent">
+            <summary>
+            Content.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.cButtons">
+            <summary>
+            Count of custom Buttons.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.pButtons">
+            <summary>
+            Array of custom buttons.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.nDefaultButton">
+            <summary>
+            ID of default button.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.cRadioButtons">
+            <summary>
+            Count of radio Buttons.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.pRadioButtons">
+            <summary>
+            Array of radio buttons.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.nDefaultRadioButton">
+            <summary>
+            ID of default radio button.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.pszVerificationText">
+            <summary>
+            Text for verification check box. often "Don't ask be again".
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.pszExpandedInformation">
+            <summary>
+            Expanded Information.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.pszExpandedControlText">
+            <summary>
+            Text for expanded control.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.pszCollapsedControlText">
+            <summary>
+            Text for expanded control.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.FooterIcon">
+            <summary>
+            Icon for the footer. An overloaded member link MainIcon.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.pszFooter">
+            <summary>
+            Footer Text.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.pfCallback">
+            <summary>
+            Function pointer for callback.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.lpCallbackData">
+            <summary>
+            Data that will be passed to the call back.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOGCONFIG.cxWidth">
+            <summary>
+            Width of the Task Dialog's area in DLU's.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_ELEMENTS">
+            <summary>
+            TASKDIALOG_ELEMENTS taken from CommCtrl.h
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_ELEMENTS.TDE_CONTENT">
+            <summary>
+            The content element.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_ELEMENTS.TDE_EXPANDED_INFORMATION">
+            <summary>
+            Expanded Information.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_ELEMENTS.TDE_FOOTER">
+            <summary>
+            Footer.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_ELEMENTS.TDE_MAIN_INSTRUCTION">
+            <summary>
+            Main Instructions
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_FLAGS">
+            <summary>
+            TASKDIALOG_FLAGS taken from CommCtrl.h.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_FLAGS.TDF_ENABLE_HYPERLINKS">
+            <summary>
+            Enable hyperlinks.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_FLAGS.TDF_USE_HICON_MAIN">
+            <summary>
+            Use icon handle for main icon.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_FLAGS.TDF_USE_HICON_FOOTER">
+            <summary>
+            Use icon handle for footer icon.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_FLAGS.TDF_ALLOW_DIALOG_CANCELLATION">
+            <summary>
+            Allow dialog to be cancelled, even if there is no cancel button.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_FLAGS.TDF_USE_COMMAND_LINKS">
+            <summary>
+            Use command links rather than buttons.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_FLAGS.TDF_USE_COMMAND_LINKS_NO_ICON">
+            <summary>
+            Use command links with no icons rather than buttons.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_FLAGS.TDF_EXPAND_FOOTER_AREA">
+            <summary>
+            Show expanded info in the footer area.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_FLAGS.TDF_EXPANDED_BY_DEFAULT">
+            <summary>
+            Expand by default.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_FLAGS.TDF_VERIFICATION_FLAG_CHECKED">
+            <summary>
+            Start with verification flag already checked.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_FLAGS.TDF_SHOW_PROGRESS_BAR">
+            <summary>
+            Show a progress bar.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_FLAGS.TDF_SHOW_MARQUEE_PROGRESS_BAR">
+            <summary>
+            Show a marquee progress bar.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_FLAGS.TDF_CALLBACK_TIMER">
+            <summary>
+            Callback every 200 milliseconds.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_FLAGS.TDF_POSITION_RELATIVE_TO_WINDOW">
+            <summary>
+            Center the dialog on the owner window rather than the monitor.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_FLAGS.TDF_RTL_LAYOUT">
+            <summary>
+            Right to Left Layout.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_FLAGS.TDF_NO_DEFAULT_RADIO_BUTTON">
+            <summary>
+            No default radio button.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_FLAGS.TDF_CAN_BE_MINIMIZED">
+            <summary>
+            Task Dialog can be minimized.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_ICON_ELEMENTS">
+            <summary>
+            TASKDIALOG_ICON_ELEMENTS taken from CommCtrl.h
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_ICON_ELEMENTS.TDIE_ICON_MAIN">
+            <summary>
+            Main instruction icon.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_ICON_ELEMENTS.TDIE_ICON_FOOTER">
+            <summary>
+            Footer icon.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_MESSAGES">
+            <summary>
+            TASKDIALOG_MESSAGES taken from CommCtrl.h.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_MESSAGES.TDM_CLICK_BUTTON">
+            <summary>
+            Click button.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_MESSAGES.TDM_SET_MARQUEE_PROGRESS_BAR">
+            <summary>
+            Set Progress bar to be marquee mode.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_MESSAGES.TDM_SET_PROGRESS_BAR_STATE">
+            <summary>
+            Set Progress bar state.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_MESSAGES.TDM_SET_PROGRESS_BAR_RANGE">
+            <summary>
+            Set progress bar range.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_MESSAGES.TDM_SET_PROGRESS_BAR_POS">
+            <summary>
+            Set progress bar position.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_MESSAGES.TDM_SET_PROGRESS_BAR_MARQUEE">
+            <summary>
+            Set progress bar marquee (animation).
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_MESSAGES.TDM_SET_ELEMENT_TEXT">
+            <summary>
+            Set a text element of the Task Dialog.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_MESSAGES.TDM_CLICK_RADIO_BUTTON">
+            <summary>
+            Click a radio button.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_MESSAGES.TDM_ENABLE_BUTTON">
+            <summary>
+            Enable or disable a button.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_MESSAGES.TDM_ENABLE_RADIO_BUTTON">
+            <summary>
+            Enable or disable a radio button.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_MESSAGES.TDM_CLICK_VERIFICATION">
+            <summary>
+            Check or uncheck the verfication checkbox.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_MESSAGES.TDM_UPDATE_ELEMENT_TEXT">
+            <summary>
+            Update the text of an element (no effect if origially set as null).
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_MESSAGES.TDM_SET_BUTTON_ELEVATION_REQUIRED_STATE">
+            <summary>
+            Designate whether a given Task Dialog button or command link should have a User Account Control (UAC) shield icon.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TASKDIALOG_MESSAGES.TDM_UPDATE_ICON">
+            <summary>
+            Refreshes the icon of the task dialog.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.TaskDialog.Native.TaskDialogUnsafeNativeMethods.TaskDialogCallback">
+            <summary>
+            The signature of the callback that receives messages from the Task Dialog when various events occur.
+            </summary>
+            <param name="hwnd">The window handle of the </param>
+            <param name="msg">The message being passed.</param>
+            <param name="wParam">wParam which is interpreted differently depending on the message.</param>
+            <param name="lParam">wParam which is interpreted differently depending on the message.</param>
+            <param name="refData">The refrence data that was set to TaskDialog.CallbackData.</param>
+            <returns>A HRESULT value. The return value is specific to the message being processed. </returns>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.TaskDialogCustomButton.#ctor(System.Int32,System.String)">
+            <summary>
+            Initialize the custom button.
+            </summary>
+            <param name="id">The ID of the button. This value is returned by TaskDialog.Show when
+            the button is clicked. Typically this will be a value in the DialogResult enum.</param>
+            <param name="text">The string that appears on the button.</param>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogCustomButton.ButtonId">
+            <summary>
+            The ID of the button. This value is returned by TaskDialog.Show when the button is clicked.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.TaskDialog.TaskDialogCustomButton.ButtonText">
+            <summary>
+            The string that appears on the button.
             </summary>
         </member>
         <member name="T:JetBrains.CommonControls.ITooltipInfo">

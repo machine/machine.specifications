@@ -41,6 +41,11 @@
             <remarks>Returns empty array if empty array is passed or no such files found.
             Does not expect null to be passed (throws exception)</remarks>
         </member>
+        <member name="M:JetBrains.ReSharper.Psi.Caches.IWordIndex.ContainsWord(JetBrains.ProjectModel.IProjectFile,System.String)">
+            <summary>
+            Check if file contains given word
+            </summary>
+        </member>
         <member name="M:JetBrains.ReSharper.Psi.Caches.IWordIndex.GetWords(System.String,JetBrains.ReSharper.Psi.ExtensionsAPI.Caches2.IWordIndexLanguageProvider)">
             <summary>
             Tokenize
@@ -250,12 +255,19 @@
         <member name="M:JetBrains.ReSharper.Psi.IPsiModule.IsStrictOff(JetBrains.ProjectModel.IProjectFile)">
             <summary>
             Is option strict OFF for specific project file
-            </summary>    
+            </summary>
         </member>
         <member name="M:JetBrains.ReSharper.Psi.IPsiModule.IsExplicitOff(JetBrains.ProjectModel.IProjectFile)">
             <summary>
             Is option explicit OFF for specific project file
-            </summary>    
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Psi.IPsiModule.DisplayName">
+            <summary>
+            Module name to display in UI
+            For regular modules the same as Name
+            Primary for web modules usefull
+            </summary>
         </member>
         <member name="T:JetBrains.ReSharper.Psi.EntityKindForm">
             <summary>
@@ -543,17 +555,6 @@
             Assembly name of the assembly where this type is defined, or null if unspecified
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.Util.Caches.AbstractPersistentCache`2.Load(JetBrains.Application.Progress.IProgressIndicator)">
-            <summary>
-            Returns false in the following cases:
-              - cache directory does not exist
-              - cache format version did not match
-              - one or more record's CRC did not match
-              - total cache CRC did not match
-              - IO problem occured
-            In all these cases it automatically resets the cache on the disk to an empty one.
-            </summary>
-        </member>
         <member name="M:JetBrains.ReSharper.Psi.Caches.ICache.Update(System.Collections.Generic.ICollection{JetBrains.ProjectModel.IProjectFile})">
             <summary>
             Synchronously update caches
@@ -649,34 +650,6 @@
             Returns <c>null</c> if this element actually is not scope.
             </summary>
         </member>
-        <member name="T:JetBrains.ReSharper.Psi.ExtensionsAPI.ILanguageSpecificSearcherFactory">
-            <summary>
-            Language servide should implement the searcher factory to allow the finder look into files with specific language
-            </summary>
-        </member>
-        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.ILanguageSpecificSearcherFactory.GetRelatedDeclaredElements(JetBrains.ReSharper.Psi.IDeclaredElement)">
-            <summary>
-            Get the declared elements which should be searched for along with the given element
-            </summary>
-        </member>
-        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.ILanguageSpecificSearcherFactory.GetDerivedFindRequest(JetBrains.ReSharper.Psi.Search.FindResultReference)">
-            <summary>
-            Get the derived find request. When "Find Usages' found reference, this can return few more declared elements which should be found.
-            </summary>
-            <returns>Collection of declared elements which should be searched, predicate if their result should be consumed, and boolean value indicating if original find result is relevant, i.e. should be consumed</returns>
-        </member>
-        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.ILanguageSpecificSearcherFactory.GetNavigateToTargets(JetBrains.ReSharper.Psi.IDeclaredElement)">
-            <summary>
-            Provider could override "Goto declaration" behavour, by providing preferred elements
-            The <c>bool</c> value indicatis wether the original navigation target is relevant, out should be omitted
-            </summary>
-        </member>
-        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.ILanguageSpecificSearcherFactory.TransformNavigationTargets(System.Collections.Generic.ICollection{JetBrains.ReSharper.Psi.Search.FindResultDeclaration})">
-            <summary>
-            Provider could transform navigation targets through this method.
-            If not transformed, return the original collection. If transformed, return new one
-            </summary>
-        </member>
         <member name="M:JetBrains.ReSharper.Psi.Impl.OutputAssembliesCache.RemoveProjectOutputAssembly(JetBrains.ProjectModel.IProject)">
             <returns>Old output assembly</returns>
         </member>
@@ -720,19 +693,58 @@
             PSI module provider for special solution projects
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.Impl.Search.SearcherBase.ProcessProjectItem(JetBrains.ProjectModel.IProjectFile)">
+        <member name="T:JetBrains.ReSharper.Psi.ExtensionsAPI.ILanguageSpecificSearcherFactory">
+            <summary>
+            Language service should implement the searcher factory to allow the finder look into files with specific language
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.ILanguageSpecificSearcherFactory2.GetRelatedDeclaredElements(JetBrains.ReSharper.Psi.IDeclaredElement)">
+            <summary>
+            Get the declared elements which should be searched for along with the given element
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.ILanguageSpecificSearcherFactory2.GetDerivedFindRequest(JetBrains.ReSharper.Psi.Search.FindResultReference)">
+            <summary>
+            Get the derived find request. When "Find Usages' found reference, this can return few more declared elements which should be found.
+            </summary>
+            <returns>Collection of declared elements which should be searched, predicate if their result should be consumed, and boolean value indicating if original find result is relevant, i.e. should be consumed</returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.ILanguageSpecificSearcherFactory2.GetNavigateToTargets(JetBrains.ReSharper.Psi.IDeclaredElement)">
+            <summary>
+            Provider could override "Goto declaration" behavour, by providing preferred elements
+            The <c>bool</c> value indicatis wether the original navigation target is relevant, out should be omitted
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.ILanguageSpecificSearcherFactory2.TransformNavigationTargets(System.Collections.Generic.ICollection{JetBrains.ReSharper.Psi.Search.FindResultDeclaration})">
+            <summary>
+            Provider could transform navigation targets through this method.
+            If not transformed, return the original collection or <c>null</c>. If transformed, return new one
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Psi.ExtensionsAPI.ILanguageSpecificSearcherFactory2.Language">
+            <summary>
+            Get the language for which this factory works. If it is applicable to many languages, return <see cref="F:JetBrains.ReSharper.Psi.PsiLanguageType.ANY"/>
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.ILanguageSpecificSearchWordsProvider.GetAllPossibleWordsInFile(JetBrains.ReSharper.Psi.IDeclaredElement)">
+            <summary>
+            Enumerate words which should occur in the file to contain reference to <paramref name="element"/>. 
+            Return <c>null</c> or <see cref="F:System.String.Empty"/> in enumeration to switch word filtering off
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.ILanguageSpecificSearcher.ProcessProjectItem(JetBrains.ProjectModel.IProjectFile,JetBrains.ReSharper.Psi.Search.FindResultConsumer)">
             <returns>True if further search is not needed</returns>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.Impl.Search.SearcherBase.ProcessElement(JetBrains.ReSharper.Psi.Tree.ITreeNode)">
+        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.ILanguageSpecificSearcher.ProcessElement(JetBrains.ReSharper.Psi.Tree.IElement,JetBrains.ReSharper.Psi.Search.FindResultConsumer)">
             <returns>True if further search is not needed</returns>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.Impl.Search.SearcherBase.ProcessLibraryFile(JetBrains.ReSharper.Psi.Caches.ILibraryFile)">
+        <member name="M:JetBrains.ReSharper.Psi.Impl.Search.SearcherBase.ProcessProjectItem(JetBrains.ProjectModel.IProjectFile,JetBrains.ReSharper.Psi.Search.FindResultConsumer)">
             <returns>True if further search is not needed</returns>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.ILanguageSpecificSearcher.ProcessProjectItem(JetBrains.ProjectModel.IProjectFile)">
+        <member name="M:JetBrains.ReSharper.Psi.Impl.Search.SearcherBase.ProcessElement(JetBrains.ReSharper.Psi.Tree.IElement,JetBrains.ReSharper.Psi.Search.FindResultConsumer)">
             <returns>True if further search is not needed</returns>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.ILanguageSpecificSearcher.ProcessElement(JetBrains.ReSharper.Psi.Tree.IElement)">
+        <member name="M:JetBrains.ReSharper.Psi.Impl.Search.SearcherBase.ProcessLibraryFile(JetBrains.ReSharper.Psi.Caches.ILibraryFile,JetBrains.ReSharper.Psi.Search.FindResultConsumer)">
             <returns>True if further search is not needed</returns>
         </member>
         <member name="M:JetBrains.ReSharper.Psi.Impl.Shared.GeneratedRangeMap`1.Add(JetBrains.Util.TextRange,JetBrains.ReSharper.Psi.Impl.Shared.ElementRange{`0})">
@@ -762,6 +774,7 @@
         <member name="M:JetBrains.ReSharper.Psi.Resolve.IReference.GetAllNames">
             <summary>
             Returns all reference names (i.e., all possible short names of corresponding DeclaredElement)
+            <remarks>Can be invoked on invalid refernce!</remarks>
             </summary>
         </member>
         <member name="M:JetBrains.ReSharper.Psi.Resolve.IReference.GetReferenceSymbolTable(System.Boolean)">
@@ -1049,6 +1062,7 @@
             <listheader><term>Enum member name</term><description>Description or example</description></listheader>
             <item><term>NONE</term><description>Do not show type parameters</description></item>
             <item><term>CLR</term><description>CLR-style, i.e. the number of type parameters after `</description></item>
+            <item><term>INDICATE</term><description>Shows syntax indicating presense of type parameters, but doesn't list them</description></item>
             <item><term>FULL</term><description>Show type parameters with their names(default value)</description></item>
             <item><term>FULL_WITH_VARIANCE</term><description>Show type parameters with their names(default value) and in/ outs</description></item>
             </list>
@@ -2022,6 +2036,17 @@
             False means failed to resolve
             </summary>
         </member>
+        <member name="M:JetBrains.ReSharper.Psi.Util.Caches.AbstractPersistentCache`2.Load(JetBrains.Application.Progress.IProgressIndicator)">
+            <summary>
+            Returns false in the following cases:
+              - cache directory does not exist
+              - cache format version did not match
+              - one or more record's CRC did not match
+              - total cache CRC did not match
+              - IO problem occured
+            In all these cases it automatically resets the cache on the disk to an empty one.
+            </summary>
+        </member>
         <member name="T:JetBrains.ReSharper.Psi.util.StringLiteralConverter">
             <summary>
             Summary description for StringLiteralConverter.
@@ -2700,6 +2725,12 @@
             Get all names from the symbol table, starting from the given prefix <paramref name="prefix"/>. 
             </summary>
         </member>
+        <member name="T:JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.ILightweightScope">
+            <summary>
+            Marker interface indicating that <see cref="M:JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.IScope.AddDeclarationsBeforeElement(JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.IWritableSymbolTable,JetBrains.ReSharper.Psi.Tree.IElement,System.Int32,JetBrains.ReSharper.Psi.Resolve.SymbolTableMode)"/> and <see cref="M:JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.IScope.AddDeclarationsAfterElement(JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.IWritableSymbolTable,JetBrains.ReSharper.Psi.Tree.IElement,System.Int32,JetBrains.ReSharper.Psi.Resolve.SymbolTableMode)"/>
+            are empty
+            </summary>
+        </member>
         <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.IWritableSymbolTable.AddSymbol(JetBrains.ReSharper.Psi.IDeclaredElement,JetBrains.ReSharper.Psi.Resolve.ISubstitution,JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.IScope,System.Int32)">
             <summary>
               adds declared symbol into symbol table
@@ -2836,6 +2867,11 @@
         <member name="T:JetBrains.ReSharper.Psi.TrivialElementInstancePointer`1">
             <summary>
             Implements trivial element pointer functinality
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Psi.INonCachableExpressionType">
+            <summary>
+            Marking interrface indicating that give expression type couldn't be cached
             </summary>
         </member>
         <member name="M:JetBrains.ReSharper.Psi.ModifiersOwnerExtension.CanBeOverriden(JetBrains.ReSharper.Psi.IModifiersOwner)">
@@ -3104,12 +3140,12 @@
             Filters our static methods of class object
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.ResolveUtil.AddDeclarationsForProperDeclaredType(JetBrains.ReSharper.Psi.IDeclaredType,System.Int32,JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.IScope,JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.IWritableSymbolTable,System.Boolean,System.Boolean,JetBrains.ReSharper.Psi.Resolve.SymbolTableMode,JetBrains.Util.LocalHashSet{JetBrains.ReSharper.Psi.IDeclaredType}@)">
+        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.ResolveUtil.AddDeclarationsForProperDeclaredType(JetBrains.ReSharper.Psi.IDeclaredType,System.Int32,JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.IScope,JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.IWritableSymbolTable,System.Boolean,System.Boolean,JetBrains.ReSharper.Psi.Resolve.SymbolTableMode,System.Collections.Generic.HashSet{JetBrains.ReSharper.Psi.IDeclaredType})">
             <summary>
             "Proper" declared type means that it does not refer to type parameter
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.Impl.Search.FinderUtil.CollectNames(System.Collections.Generic.IEnumerable{JetBrains.ReSharper.Psi.IDeclaredElement})">
+        <member name="M:JetBrains.ReSharper.Psi.Impl.Search.FinderUtil.CollectAllPossibleNames(JetBrains.ReSharper.Psi.IDeclaredElement)">
             <summary>
             collects all names by which elements can be used in code
             </summary>
@@ -3118,6 +3154,13 @@
             <summary>
             Narrow search domain to files which contains ALL of the given words
             </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.Impl.Search.FinderUtil.GetInheritorsClosure(JetBrains.ReSharper.Psi.ITypeElement)">
+            <summary>
+            Get all names of the possible inheritos and it's count
+            </summary>
+            <param name="typeElement"></param>
+            <returns></returns>
         </member>
         <member name="T:JetBrains.ReSharper.Psi.ExtensionsAPI.LanguageSpecificSearcherFactoryAttribute">
             <summary>
@@ -3202,7 +3245,7 @@
             Checks if given type equals to predefined string, bool, sbyte, byte, short, ushort, int, uint, long, ulong, decimal, double, float, char
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.PredefinedType.IsSimplePredefined(System.String)">
+        <member name="M:JetBrains.ReSharper.Psi.PredefinedType.IsSimplePredefinedClrName(System.String)">
             <summary>
             Checks if given type equals to predefined string, bool, sbyte, byte, short, ushort, int, uint, long, ulong, decimal, double, float, char
             </summary>
@@ -3241,6 +3284,8 @@
             <summary>
             Incrementally update reference list.
             </summary>
+            <param name="element"></param>
+            <param name="oldReferences">Old references. Can be invalid.</param>
         </member>
         <member name="M:JetBrains.ReSharper.Psi.Resolve.IReferenceFactory.HasReference(JetBrains.ReSharper.Psi.Tree.IElement,System.Collections.Generic.ICollection{System.String})">
             <summary>
@@ -3375,11 +3420,6 @@
             <summary>
             Get the underlying type pointer
             </summary> 
-        </member>
-        <member name="F:JetBrains.ReSharper.Psi.Impl.Reflection2.XMLDocIndex.myHash">
-            <summary>
-            Map from hash code of member ID to list of ranges in file
-            </summary>
         </member>
         <member name="M:JetBrains.ReSharper.Psi.Impl.Reflection2.XMLDocIndex.#ctor(JetBrains.ProjectModel.IAssembly,System.Boolean)">
             <summary>

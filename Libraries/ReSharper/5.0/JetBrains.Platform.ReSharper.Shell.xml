@@ -1480,19 +1480,12 @@
             <para>Prepended with the product name automatically. Might be empty, in which case the product name will be used.</para>
             </param>
             <param name="task">The task to execute.</param>
-            <param name="cancelable">Whether the task could be canceled by the user, if the task progress indication provided by <see cref="T:JetBrains.Application.Progress.ITaskExecutor"/> supports canceling.</param>
-            <returns>Whether the task has completed execution (ie was not canceled). Note that a <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> could cancel even a <see cref="F:JetBrains.Application.Progress.TaskCancelable.No"/> task.</returns>
-            <remarks>Any return values of the task should be assigned inside the closure that implements the <paramref name="task"/>.</remarks>
-        </member>
-        <member name="M:JetBrains.Application.Progress.CommandLineTaskExecutor.ExecuteTask(System.String,JetBrains.Application.Progress.TaskCancelable,System.Action{JetBrains.Application.Progress.IProgressIndicator})">
-            <summary>
-            Executes the task without exiting the method until the task is completed.
-            </summary>
-            <param name="name">Task name. Must not be empty.</param>
-            <param name="task">The task to execute.</param>
-            <param name="cancelable">Whether the task could be canceled by the user, if the task progress indication provided by <see cref="T:JetBrains.Application.Progress.ITaskExecutor"/> supports canceling.</param>
-            <returns>Whether the task has completed execution (ie was not canceled).</returns>
-            <remarks>Any return values of the task should be assigned inside the closure that implements the <paramref name="task"/>.</remarks>
+            <param name="cancelable">
+            <para>Whether the task could be canceled by the user, if the task progress indication provided by <see cref="T:JetBrains.Application.Progress.ITaskExecutor"/> supports canceling.</para>
+            <para>The <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> pattern is supported, which means that an <see cref="T:JetBrains.Application.InterruptableActivityCookie"/> is plugged on the task thread to throw a <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> when called for a check with a <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.IsCanceled"/> <c>False</c>; such an exception is called by the task executor and converted into a <c>False</c> return value.</para>
+            </param>
+            <returns>Whether the task has completed execution (i.e. was not canceled). Note that even a <see cref="F:JetBrains.Application.Progress.TaskCancelable.No"/> task could be canceled by setting <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.IsCanceled"/> to <c>False</c> or throwing a <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/>.</returns>
+            <remarks>If you would like to return any values from the <paramref name="task"/>, assign them to local variables within the closure.</remarks>
         </member>
         <member name="T:JetBrains.Application.Progress.ProcessCancelledException">
             <summary>
@@ -1561,16 +1554,6 @@
             The sink sees some items going away from the collection view.
             </summary>
         </member>
-        <member name="F:JetBrains.ComponentModel.ComponentContainer.myFOnErrorIgnore">
-            <summary>
-            Delegate instance cached for performance.
-            </summary>
-        </member>
-        <member name="F:JetBrains.ComponentModel.ComponentContainer.myFOnErrorThrow">
-            <summary>
-            Delegate instance cached for performance.
-            </summary>
-        </member>
         <member name="F:JetBrains.ComponentModel.ComponentContainer.myComponentDeclarations">
             <summary>
             Monitors component types coming and going.
@@ -1603,7 +1586,7 @@
         <member name="F:JetBrains.ComponentModel.ComponentContainer.myCurrentInitializingComponent">
             <summary>
             Prevent circular component dependencies: component Init could cause Init of another component when it's accessed, don't allow looping such calls. <see cref="F:JetBrains.ComponentModel.ComponentContainer.myCurrentInitializingComponent"/> is the only component whose GetComponent could be looped from Init.
-            Primary Thread modifications only (inside <see cref="M:JetBrains.ComponentModel.ComponentContainer.InitializeComponentIfNeeded(JetBrains.ComponentModel.ComponentContainer.ComponentInstanceData,System.Action{System.Exception})"/>), lock-free access.
+            Primary Thread modifications only (inside <see cref="M:JetBrains.ComponentModel.ComponentContainer.InitializeComponentIfNeeded(JetBrains.ComponentModel.ComponentContainer.ComponentInstanceData,JetBrains.Util.OnError)"/>), lock-free access.
             </summary>
         </member>
         <member name="F:JetBrains.ComponentModel.ComponentContainer.myDispatcher">
@@ -1612,7 +1595,7 @@
             </summary>
         </member>
         <member name="F:JetBrains.ComponentModel.ComponentContainer.myInterfaceTypesEverKnown">
-            <summary> // TODO: proceed from here!!
+            <summary>
             The interface types of components that ever were present in this container, to tell apart the errors when requesting a nonexistent component that has gone away already or has never been here.
             Must be immutable, Primary thread copy-on-write, lock-free access on any threads.
             </summary>
@@ -1681,7 +1664,7 @@
             Override in derived classes to provide the filtering.
             </summary>
         </member>
-        <member name="M:JetBrains.ComponentModel.ComponentContainer.InitializeComponentIfNeeded(JetBrains.ComponentModel.ComponentContainer.ComponentInstanceData,System.Action{System.Exception})">
+        <member name="M:JetBrains.ComponentModel.ComponentContainer.InitializeComponentIfNeeded(JetBrains.ComponentModel.ComponentContainer.ComponentInstanceData,JetBrains.Util.OnError)">
             <summary>
             To be called from <c>TryGetComponent…</c> only.
             Inits the component if it has not been inited yet.
@@ -1689,8 +1672,8 @@
             Primary thread only (ignored for already-initializeds).
             </summary>
             <param name="data">Thing to init.</param>
-            <param name="FOnError">Throw out to abort and never get an invalid component. Ignore or log to allow silent failures, check retval.</param>
-            <returns><c>True</c> if the component is in the initialized state on return. <c>False</c> in case of problems, shouldn't be if <paramref name="FOnError"/> throws.</returns>
+            <param name="onerror">Throw out to abort and never get an invalid component. Ignore or log to allow silent failures, check retval.</param>
+            <returns><c>True</c> if the component is in the initialized state on return. <c>False</c> in case of problems, shouldn't be if <paramref name="onerror"/> throws.</returns>
         </member>
         <member name="M:JetBrains.ComponentModel.ComponentContainer.OnAdd_Logical(System.Collections.Generic.IEnumerable{JetBrains.ComponentModel.ComponentDescriptor})">
             <summary>
@@ -1716,12 +1699,12 @@
             Component instance datas are removed from the store.
             </summary>
         </member>
-        <member name="M:JetBrains.ComponentModel.ComponentContainer.TryGetComponentCore(System.Type,System.Action{System.Exception})">
+        <member name="M:JetBrains.ComponentModel.ComponentContainer.TryGetComponentCore(System.Type,JetBrains.Util.OnError)">
             <summary>
             Core impl for [Try]GetComponent. NotNull or CanBeNull depending on the params.
             </summary>
             <param name="componentInterfaceType">Component interface to look up.</param>
-            <param name="FOnError">Throw out to abort and get NotNull, ignore or log to get CanBeNull.</param>
+            <param name="onerror">Throw out to abort and get NotNull, ignore or log to get CanBeNull.</param>
         </member>
         <member name="M:JetBrains.ComponentModel.ComponentContainer.JetBrains#ComponentModel#ICollectionChangedEventSink{JetBrains#ComponentModel#ComponentDescriptor}#OnAdd(System.Collections.Generic.ICollection{JetBrains.ComponentModel.ComponentDescriptor})">
             <summary>
@@ -4383,15 +4366,11 @@
             A task executor that just calls the task method.
             </summary>
         </member>
-        <member name="M:JetBrains.Application.Progress.SimpleTaskExecutor.ExecuteTask(System.String,JetBrains.Application.Progress.TaskCancelable,System.Action{JetBrains.Application.Progress.IProgressIndicator})">
+        <member name="M:JetBrains.Application.Progress.SimpleTaskExecutor.PushProgressCanceledInterruptableCookie(JetBrains.Application.Progress.IProgressIndicator)">
             <summary>
-            Executes the task without exiting the method until the task is completed.
+            Throws the <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> on <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.IsCanceled"/>.
+            This is the simple non-UI implementation. UI-related implementations should use a similar method from the <c>UITaskExecutorRun</c>.
             </summary>
-            <param name="name">Task name. Must not be empty.</param>
-            <param name="task">The task to execute.</param>
-            <param name="cancelable">Whether the task could be canceled by the user, if the task progress indication provided by <see cref="T:JetBrains.Application.Progress.ITaskExecutor"/> supports canceling.</param>
-            <returns>Whether the task has completed execution (ie was not canceled). Note that a <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> could cancel even a <see cref="F:JetBrains.Application.Progress.TaskCancelable.No"/> task.</returns>
-            <remarks>Any return values of the task should be assigned inside the closure that implements the <paramref name="task"/>.</remarks>
         </member>
         <member name="T:JetBrains.Application.Progress.SubProgressIndicator">
             <summary>
@@ -4811,7 +4790,7 @@
             </summary>
             <param name="name">A name to identify the event.</param>
             <param name="interval">The grouping interval. The incoming events are grouped until there's a pause of the <paramref name="interval"/> length, and after that the outgoing event is fired. The interval must be not above <see cref="F:JetBrains.Threading.GroupingEvent.MaxInterval"/>.</param>
-            <param name="action">The action for the outgoing event. This action will be executed on the primaty thread and under the <see cref="T:JetBrains.Threading.ReentrancyGuard"/>.</param>
+            <param name="action">Optional. The action for the outgoing event. This action will be executed on the primaty thread and under the <see cref="T:JetBrains.Threading.ReentrancyGuard"/>. If you omit this action, advise the <see cref="P:JetBrains.Threading.GroupingEvent.Outgoing"/> event on the return value.</param>
             <returns>The event on which the incoming events can be fired. Must be disposed of.</returns>
         </member>
         <member name="M:JetBrains.Threading.Invocator.QueueReadLock(System.String,System.Action)">
