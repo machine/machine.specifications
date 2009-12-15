@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportGeneratorSpecs.cs" />
     <Compile Include="SpecificationTreeListenerSpecs.cs" />
   </ItemGroup>
   <ItemGroup>

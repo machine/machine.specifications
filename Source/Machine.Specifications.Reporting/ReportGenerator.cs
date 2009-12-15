@@ -170,7 +170,7 @@ namespace Machine.Specifications.Reporting
 
       var contextsByConcern = new Dictionary<string, Dictionary<string, List<ContextInfo>>>();
 
-      contextsByAssembly.Keys.ToList().ForEach(assembly =>
+      contextsByAssembly.Keys.OrderBy(x => x).ToList().ForEach(assembly =>
       {
         contextsByConcern[assembly] =
           OrganizeContextsByConcern(contextsByAssembly[assembly]);
@@ -180,7 +180,7 @@ namespace Machine.Specifications.Reporting
       RenderHR(reportBuilder);
       RenderHR(reportBuilder);
 
-      contextsByAssembly.Keys.ToList().ForEach(assembly =>
+      contextsByAssembly.Keys.OrderBy(x => x).ToList().ForEach(assembly =>
       {
         RenderConcerns(contextsByConcern[assembly], reportBuilder);
         reportBuilder.AppendLine("<br><br>");
@@ -285,10 +285,8 @@ namespace Machine.Specifications.Reporting
 
     private void RenderConcerns(Dictionary<string, List<ContextInfo>> contextsByConcern, StringBuilder reportBuilder)
     {
-      foreach (string concern in contextsByConcern.Keys)
-      {
-        RenderConcern(concern, contextsByConcern[concern], reportBuilder);
-      }
+      contextsByConcern.Keys.OrderBy(x => x).ToList()
+        .ForEach(concern => RenderConcern(concern, contextsByConcern[concern], reportBuilder));
     }
 
     private void RenderConcern(string concernName, List<ContextInfo> contextsInConcern, StringBuilder reportBuilder)
@@ -325,8 +323,8 @@ namespace Machine.Specifications.Reporting
 
     private void RenderContexts(List<ContextInfo> contexts, StringBuilder reportBuilder)
     {
-      contexts.ForEach(context =>
-        reportBuilder.Append(RenderContext(context)));
+      contexts.OrderBy(x => x.FullName).ToList()
+        .ForEach(context => reportBuilder.Append(RenderContext(context)));
     }
 
     public string RenderContext(ContextInfo context)
@@ -366,7 +364,7 @@ namespace Machine.Specifications.Reporting
     {
       StringBuilder specificationListBuilder = new StringBuilder();
 
-      foreach (SpecificationInfo specification in specifications)
+      specifications.OrderBy(x => x.Name).ToList().ForEach(specification =>
       {
         Result result = _resultsBySpecification[specification];
         string specificationListItem = "";
@@ -455,7 +453,7 @@ namespace Machine.Specifications.Reporting
         specificationListItem += "</li>";
         specificationListBuilder.AppendLine(specificationListItem);
         // TODO: pass/fail goes here?
-      }
+      });
 
       return String.Format("<ul>{0}</ul>", specificationListBuilder);
     }
