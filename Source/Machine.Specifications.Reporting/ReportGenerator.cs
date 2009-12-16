@@ -364,7 +364,7 @@ namespace Machine.Specifications.Reporting
     {
       StringBuilder specificationListBuilder = new StringBuilder();
 
-      specifications.OrderBy(x => x.Name).ToList().ForEach(specification =>
+      foreach (SpecificationInfo specification in specifications)
       {
         Result result = _resultsBySpecification[specification];
         string specificationListItem = "";
@@ -453,7 +453,7 @@ namespace Machine.Specifications.Reporting
         specificationListItem += "</li>";
         specificationListBuilder.AppendLine(specificationListItem);
         // TODO: pass/fail goes here?
-      });
+      }
 
       return String.Format("<ul>{0}</ul>", specificationListBuilder);
     }
