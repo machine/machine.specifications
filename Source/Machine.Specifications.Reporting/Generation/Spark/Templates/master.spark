@@ -49,6 +49,7 @@
 </head>
 <body>
   <Assembly assembly="_assembly" each="var _assembly in Model.Assemblies.OrderBy(x => x.Name)" />
+  <em if="Model.Meta.ShouldGenerateTimeInfo">Generated on ${Model.Meta.GeneratedAt.ToLongDateString()} at ${Model.Meta.GeneratedAt.ToLongTimeString()}.</em>
   <hr />
   <hr />
   

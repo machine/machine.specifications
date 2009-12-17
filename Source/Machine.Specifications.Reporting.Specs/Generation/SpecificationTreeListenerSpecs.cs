@@ -26,7 +26,10 @@ namespace Machine.Specifications.Reporting.Specs.Generation
       () => listener.Run.TotalSpecifications.ShouldEqual(6);
 
     It should_set_the_report_generation_date =
-      () => DateTime.Now.AddSeconds(-5).ShouldBeLessThan(listener.Run.GeneratedAt);
+      () => DateTime.Now.AddSeconds(-5).ShouldBeLessThan(listener.Run.Meta.GeneratedAt);
+    
+    It should_default_to_no_timestamp =
+      () => listener.Run.Meta.ShouldGenerateTimeInfo.ShouldBeFalse();
   }
 }
 

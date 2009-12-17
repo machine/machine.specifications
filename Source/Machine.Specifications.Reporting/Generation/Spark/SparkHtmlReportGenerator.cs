@@ -11,6 +11,7 @@ namespace Machine.Specifications.Reporting.Generation.Spark
   {
     readonly IFileSystem _fileSystem;
     readonly string _path;
+    readonly bool _showTimeInfo;
     readonly ISparkRenderer _renderer;
     readonly Func<string, TextWriter> _streamFactory;
     string _resourcePath;
@@ -27,6 +28,7 @@ namespace Machine.Specifications.Reporting.Generation.Spark
                                     Func<string, TextWriter> streamFactory)
     {
       _path = path;
+      _showTimeInfo = showTimeInfo;
       _fileSystem = fileSystem;
       _renderer = renderer;
       _streamFactory = streamFactory;
@@ -34,6 +36,8 @@ namespace Machine.Specifications.Reporting.Generation.Spark
 
     public void GenerateReport(Run run)
     {
+      run.Meta.ShouldGenerateTimeInfo = _showTimeInfo;
+
       if (_fileSystem.IsValidPathToDirectory(_path))
       {
         CreateResourceDirectoryIn(_path);
@@ -49,10 +53,18 @@ namespace Machine.Specifications.Reporting.Generation.Spark
     void WriteReportsToDirectory(Run run)
     {
       run.Assemblies
-        .Select(assembly => new Run(new[] { assembly })
-                            {
-                              GeneratedAt = run.GeneratedAt
-                            })
+        .Select(assembly =>
+          {
+            var run1 = new Run(new[] { assembly })
+                       {
+                         Meta =
+                           {
+                             GeneratedAt = run.Meta.GeneratedAt,
+                             ShouldGenerateTimeInfo = run.Meta.ShouldGenerateTimeInfo
+                           }
+                       };
+            return run1;
+          })
         .Each(assembyRun =>
           {
             var path = GetReportFilePath(assembyRun);
@@ -81,7 +93,7 @@ namespace Machine.Specifications.Reporting.Generation.Spark
     {
       return String.Format("{0}_{1:MMddyyyy_HHmmss}.html",
                            Path.Combine(_path, run.Assemblies.First().Name),
-                           run.GeneratedAt);
+                           run.Meta.GeneratedAt);
     }
   }
 }

@@ -15,14 +15,14 @@ namespace Machine.Specifications.Reporting.Model
 
     public Run(IEnumerable<Assembly> assemblies) : base(assemblies.Cast<SpecificationContainer>())
     {
-      GeneratedAt = DateTime.Now;
+      Meta = new Meta { GeneratedAt = DateTime.Now };
       _assemblies = assemblies;
       _totalAssemblies = assemblies.Count();
       _totalConcerns = assemblies.Sum(x => x.TotalConcerns);
       _totalContexts = assemblies.Sum(x => x.TotalContexts);
     }
 
-    public DateTime GeneratedAt
+    public Meta Meta
     {
       get;
       set;

@@ -40,7 +40,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
         Renderer = MockRepository.GenerateStub<ISparkRenderer>();
 
         Generator = new SparkHtmlReportGenerator(ReportPath,
-                                                 true,
+                                                 false,
                                                  FileSystem,
                                                  Renderer,
                                                  p =>
@@ -70,7 +70,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
     It should_render_one_report =
       () => Renderer.AssertWasCalled(x => x.Render(Arg<Run>.Is.Equal(Run), Arg<TextWriter>.Is.NotNull));
   }
-
+  
   [Subject(typeof(SparkHtmlReportGenerator))]
   public class when_reporting_to_a_directory
   {
@@ -98,7 +98,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
         ReportPathsUsed = new List<string>();
 
         Generator = new SparkHtmlReportGenerator(ReportDirectory,
-                                                 true,
+                                                 false,
                                                  FileSystem,
                                                  Renderer,
                                                  p =>
@@ -113,7 +113,9 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
                         new Assembly("assembly 1", new Concern[] { }),
                         new Assembly("assembly 2", new Concern[] { })
                       })
-              { GeneratedAt = new DateTime(2009, 12, 17, 19, 59, 33) };
+              {
+                Meta = { GeneratedAt = new DateTime(2009, 12, 17, 19, 59, 33) }
+              };
       };
 
     Because of = () => Generator.GenerateReport(Run);
@@ -135,5 +137,50 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
       () => Renderer.AssertWasCalled(x => x.Render(Arg<Run>.Matches(y => y.Assemblies.Count() == 1),
                                                    Arg<TextWriter>.Is.NotNull),
                                      o => o.Repeat.Times(Run.Assemblies.Count()));
+  }
+
+  [Subject(typeof(SparkHtmlReportGenerator))]
+  public class when_rendering_reports_with_time_info
+  {
+    static SparkHtmlReportGenerator Generator;
+    static Run Run;
+    static IFileSystem FileSystem;
+    static string ReportPath;
+    static ISparkRenderer Renderer;
+
+    Establish context = () =>
+    {
+      ReportPath = @"C:\path\to\the\report.html";
+
+      FileSystem = MockRepository.GenerateStub<IFileSystem>();
+      FileSystem
+        .Stub(x => x.IsValidPathToDirectory(ReportPath))
+        .Return(false);
+
+      FileSystem = MockRepository.GenerateStub<IFileSystem>();
+      FileSystem
+        .Stub(x => x.IsValidPathToFile(ReportPath))
+        .Return(true);
+
+      Renderer = MockRepository.GenerateStub<ISparkRenderer>();
+
+      Generator = new SparkHtmlReportGenerator(ReportPath,
+                                               true,
+                                               FileSystem,
+                                               Renderer,
+                                               p => new StringWriter());
+
+      Run = new Run(new[]
+                      {
+                        new Assembly("assembly 1", new Concern[] { }),
+                        new Assembly("assembly 2", new Concern[] { })
+                      });
+    };
+
+    Because of = () => Generator.GenerateReport(Run);
+
+    It should_render_the_report_with_time_info =
+      () => Renderer.AssertWasCalled(x => x.Render(Arg<Run>.Matches(y => y.Meta.ShouldGenerateTimeInfo),
+                                                   Arg<TextWriter>.Is.Anything));
   }
 }

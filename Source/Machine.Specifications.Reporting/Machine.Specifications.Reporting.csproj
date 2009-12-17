@@ -66,6 +66,7 @@
     <Compile Include="Model\Context.cs" />
     <Compile Include="Model\ISpecificationNode.cs" />
     <Compile Include="Model\ISpecificationVisitor.cs" />
+    <Compile Include="Model\Meta.cs" />
     <Compile Include="Model\Run.cs" />
     <Compile Include="Model\Specification.cs" />
     <Compile Include="Model\SpecificationContainer.cs" />
