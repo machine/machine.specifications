@@ -4,6 +4,8 @@ using System.IO;
 using System.Reflection;
 using Machine.Specifications.ConsoleRunner.Properties;
 using Machine.Specifications.Reporting;
+using Machine.Specifications.Reporting.Generation.Html;
+using Machine.Specifications.Reporting.Generation.Xml;
 using Machine.Specifications.Reporting.Integration;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;

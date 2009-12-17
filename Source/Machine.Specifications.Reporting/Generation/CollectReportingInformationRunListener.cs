@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using Machine.Specifications;
+﻿using System.Collections.Generic;
+
 using Machine.Specifications.Runner;
 
-namespace Machine.Specifications.Reporting
+namespace Machine.Specifications.Reporting.Generation
 {
   public class CollectReportingInformationRunListener : ISpecificationRunListener
   {
@@ -84,3 +80,5 @@ namespace Machine.Specifications.Reporting
     }
   }
 }
+
+

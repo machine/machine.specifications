@@ -1,4 +1,4 @@
-namespace Machine.Specifications.Reporting
+namespace Machine.Specifications.Reporting.Generation.Xml
 {
   public class GenerateXmlReportListener : CollectReportingInformationRunListener
   {

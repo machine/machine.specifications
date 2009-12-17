@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using System.Linq;
 using System.Web;
+
 using Machine.Specifications.Runner;
 
-namespace Machine.Specifications.Reporting
+namespace Machine.Specifications.Reporting.Generation.Html
 {
-  public class ReportGenerator
+  public class HtmlReportGenerator
   {
     private string _path;
     private Dictionary<string, List<ContextInfo>> _contextsByAssembly;
@@ -19,17 +19,17 @@ namespace Machine.Specifications.Reporting
     private const string noContextKey = "none";
     string _resourcePath;
 
-    public ReportGenerator()
+    public HtmlReportGenerator()
     {
       _path = string.Empty;
     }
 
-    public ReportGenerator(string path)
+    public HtmlReportGenerator(string path)
     {
       _path = path;
     }
 
-    public ReportGenerator(string path, Dictionary<string, List<ContextInfo>> contextsByAssembly, Dictionary<ContextInfo, List<SpecificationInfo>> specificationsByContext, Dictionary<SpecificationInfo, Result> resultsBySpecification, bool showTimeInfo)
+    public HtmlReportGenerator(string path, Dictionary<string, List<ContextInfo>> contextsByAssembly, Dictionary<ContextInfo, List<SpecificationInfo>> specificationsByContext, Dictionary<SpecificationInfo, Result> resultsBySpecification, bool showTimeInfo)
     {
       _path = path;
       _contextsByAssembly = contextsByAssembly;

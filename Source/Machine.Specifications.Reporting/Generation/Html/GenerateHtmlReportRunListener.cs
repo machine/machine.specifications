@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Machine.Specifications.Reporting
+﻿namespace Machine.Specifications.Reporting.Generation.Html
 {
   public class GenerateHtmlReportRunListener : CollectReportingInformationRunListener
   {
@@ -21,8 +16,10 @@ namespace Machine.Specifications.Reporting
     public override void OnRunEnd()
     {
       base.OnRunEnd();
-      ReportGenerator reportGenerator = new ReportGenerator(_htmlPath, ContextsByAssembly, SpecificationsByContext, ResultsBySpecification, _showTimeInfo);
+      HtmlReportGenerator reportGenerator = new HtmlReportGenerator(_htmlPath, ContextsByAssembly, SpecificationsByContext, ResultsBySpecification, _showTimeInfo);
       reportGenerator.WriteReports();
     }
   }
 }
+
+

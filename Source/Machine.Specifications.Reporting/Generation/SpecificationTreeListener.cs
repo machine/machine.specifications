@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
 using Machine.Specifications.Reporting.Model;
 using Machine.Specifications.Runner;
 
-namespace Machine.Specifications.Reporting
+namespace Machine.Specifications.Reporting.Generation
 {
   public static class SpecificationTreeMapping
   {
@@ -93,3 +92,5 @@ namespace Machine.Specifications.Reporting
     }
   }
 }
+
+

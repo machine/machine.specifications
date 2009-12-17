@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
+
 using Machine.Specifications.Runner;
 
-namespace Machine.Specifications.Reporting
+namespace Machine.Specifications.Reporting.Generation.Xml
 {
   public class XmlReportGenerator
   {
@@ -99,26 +100,26 @@ namespace Machine.Specifications.Reporting
     private void RenderAssemblies(XmlWriter reportBuilder, Dictionary<string, List<ContextInfo>> contextsByAssembly)
     {
       contextsByAssembly.Keys.ToList().ForEach(assembly =>
-                                                 {
-                                                   reportBuilder.WriteStartElement("assembly");
-                                                   reportBuilder.WriteAttributeString("name", assembly);
-                                                   RenderConcerns(reportBuilder, contextsByAssembly[assembly]);
-                                                   reportBuilder.WriteEndElement();
-                                                 });
+        {
+          reportBuilder.WriteStartElement("assembly");
+          reportBuilder.WriteAttributeString("name", assembly);
+          RenderConcerns(reportBuilder, contextsByAssembly[assembly]);
+          reportBuilder.WriteEndElement();
+        });
     }
 
     private void RenderConcerns(XmlWriter reportBuilder, IEnumerable<ContextInfo> contexts)
     {
       Dictionary<string, List<ContextInfo>> contextsByConcern = OrganiseContextsByConcern(contexts);
       contextsByConcern.Keys.ToList().ForEach(concern =>
-                                                {
-                                                  reportBuilder.WriteStartElement("concern");
-                                                  reportBuilder.WriteAttributeString("name", concern);
+        {
+          reportBuilder.WriteStartElement("concern");
+          reportBuilder.WriteAttributeString("name", concern);
 
-                                                  RenderContexts(reportBuilder, contextsByConcern[concern]);
+          RenderContexts(reportBuilder, contextsByConcern[concern]);
 
-                                                  reportBuilder.WriteEndElement();
-                                                });
+          reportBuilder.WriteEndElement();
+        });
     }
 
     private static Dictionary<string, List<ContextInfo>> OrganiseContextsByConcern(IEnumerable<ContextInfo> contexts)

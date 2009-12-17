@@ -2,15 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Machine.Specifications.Reporting.Generation.Html;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Utility;
 
-namespace Machine.Specifications.Reporting.Specs
+namespace Machine.Specifications.Reporting.Specs.Generation.Html
 {
-  [Subject(typeof(ReportGenerator))]
+  [Subject(typeof(HtmlReportGenerator))]
   public class when_rendering_the_HTML_report : ReportGeneratorSpecs
   {
-    static ReportGenerator Report;
+    static HtmlReportGenerator Report;
     static RunResult RunResult;
     static string Html;
 
@@ -32,11 +33,11 @@ namespace Machine.Specifications.Reporting.Specs
               .Build();
           });
 
-        Report = new ReportGenerator("",
-                                     RunResult.ContextsByAssembly,
-                                     RunResult.SpecificationsByContext,
-                                     RunResult.ResultsBySpecification,
-                                     false);
+        Report = new HtmlReportGenerator("",
+                                         RunResult.ContextsByAssembly,
+                                         RunResult.SpecificationsByContext,
+                                         RunResult.ResultsBySpecification,
+                                         false);
       };
 
     Because of = () => { Html = Report.Render(RunResult.ContextsByAssembly); };
