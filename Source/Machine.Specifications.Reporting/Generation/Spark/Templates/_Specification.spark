@@ -4,10 +4,8 @@
   <div class="failure">&lArr; FAILED</div>
   <p class="exception_type">
     ${spec.Exception.TypeName}
-    <pre class="exception_message">
-      result.Exception
-     </pre>
   </p>
+  <pre class="exception_message">${spec.Exception}</pre>
 </test>
 
 <div if="spec.Status == Status.NotImplemented" class="notimplemented">&lArr; NOT IMPLEMENTED</div>

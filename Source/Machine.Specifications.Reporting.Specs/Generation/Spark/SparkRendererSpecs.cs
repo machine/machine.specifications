@@ -53,9 +53,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
                                            ),
                                          Context("a 2 c 2 context 1",
                                                  Spec("a 2 c 2 c 1 specification 2",
-                                                      Result.Failure(
-                                                        new NotImplementedException("outer",
-                                                                                    new InvalidOperationException("inner")))),
+                                                      Result.Failure(PrepareException())),
                                                  Spec("a 2 c 2 c 1 specification 1", Result.NotImplemented())
                                            )
                                    ),
@@ -170,6 +168,32 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
     static Specification Spec(string name, Result result)
     {
       return new Specification(name, result);
+    }
+
+    static Exception PrepareException()
+    {
+      try
+      {
+        try
+        {
+          SomeAction();
+        }
+        catch(Exception ex)
+        {
+          throw new InvalidOperationException("something bad happened", ex);
+        }
+      }
+      catch (Exception ex)
+      {
+        return ex;
+      }
+
+      return null;
+    }
+
+    static void SomeAction()
+    {
+      throw new NotImplementedException();
     }
   }
 }
