@@ -1,4 +1,6 @@
-﻿using Machine.Specifications.Example;
+﻿using System;
+
+using Machine.Specifications.Example;
 using Machine.Specifications.Reporting.Generation;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
@@ -22,6 +24,9 @@ namespace Machine.Specifications.Reporting.Specs.Generation
 
     It should_set_the_total_specifications =
       () => listener.Run.TotalSpecifications.ShouldEqual(6);
+
+    It should_set_the_report_generation_date =
+      () => DateTime.Now.AddSeconds(-5).ShouldBeLessThan(listener.Run.GeneratedAt);
   }
 }
 

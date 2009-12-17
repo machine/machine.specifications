@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>169</NoWarn>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Rhino.Mocks, Version=3.5.0.2, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
@@ -42,10 +44,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GenerateSparkHtmlReportRunListenerSpecs.cs" />
+    <Compile Include="Generation\Spark\GenerateSparkHtmlReportRunListenerSpecs.cs" />
+    <Compile Include="Generation\Spark\SparkRendererSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReportGeneratorSpecs.cs" />
-    <Compile Include="SpecificationTreeListenerSpecs.cs" />
+    <Compile Include="Generation\Html\HtmlReportGeneratorSpecs.cs" />
+    <Compile Include="Generation\Spark\SparkHtmlReportGeneratorSpecs.cs" />
+    <Compile Include="Generation\SpecificationTreeListenerSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications.Example\Machine.Specifications.Example.csproj">
@@ -69,4 +73,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>copy /y "$(SolutionDir)$(SolutionName).Reporting\bin\$(ConfigurationName)\$(SolutionName).Reporting.Templates.dll" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

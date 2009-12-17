@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
 using Newtonsoft.Json;
 
 namespace Machine.Specifications.Reporting.Model
@@ -15,10 +15,17 @@ namespace Machine.Specifications.Reporting.Model
 
     public Run(IEnumerable<Assembly> assemblies) : base(assemblies.Cast<SpecificationContainer>())
     {
+      GeneratedAt = DateTime.Now;
       _assemblies = assemblies;
       _totalAssemblies = assemblies.Count();
       _totalConcerns = assemblies.Sum(x => x.TotalConcerns);
       _totalContexts = assemblies.Sum(x => x.TotalContexts);
+    }
+
+    public DateTime GeneratedAt
+    {
+      get;
+      set;
     }
 
     public IEnumerable<Assembly> Assemblies

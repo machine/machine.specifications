@@ -1,0 +1,51 @@
+﻿<html>
+<head>
+  <title>Machine.Specifications Report</title>
+  <style type="text/css">
+    body {
+      font-family: Arial,Helvetica,sans-serif;
+      font-size: .9em;
+    }
+    .count {
+      color: LightGrey;
+    }
+
+    .failure {
+      color: red;
+      font-weight: bold;
+      display: inline;
+    }
+
+    .notimplemented {
+      color: orange;
+      font-weight: bold;
+      display: inline;
+    }
+
+    p.exception_type {
+      color: black;
+      font-weight: bold;
+      display: inline;
+    }
+
+    pre.exception_message {
+      border-style: dashed;
+      border-color: #FF828D;
+      border-width: thin;
+      background-color: #FFD2CF;
+      white-space: pre-wrap; /* CSS2.1 compliant */
+      white-space: -moz-pre-wrap; /* Mozilla-based browsers */
+      white-space: o-pre-wrap; /* Opera 7+ */
+      padding: 1em;
+    }
+
+    hr {
+      color: LightGrey;
+      border: 1px solid LightGrey;
+      height: 1px;
+    }
+  </style>
+</head>
+<body>
+</body>
+</html>

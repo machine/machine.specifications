@@ -41,7 +41,7 @@ namespace Machine.Specifications.Reporting.Generation
       _assemblies = new List<Assembly>();
     }
 
-    public void OnRunEnd()
+    public virtual void OnRunEnd()
     {
       _run = new Run(_assemblies);
     }

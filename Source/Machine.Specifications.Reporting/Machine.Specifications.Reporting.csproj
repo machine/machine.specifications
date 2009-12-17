@@ -35,7 +35,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\NewtonSoft\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Spark, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7f8549eed921a12c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\Spark\Spark.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -46,11 +51,16 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="GenerateHtmlReportRunListener.cs" />
-    <Compile Include="GenerateSparkHtmlReportRunListener.cs" />
-    <Compile Include="GenerateXmlReportListener.cs" />
+    <Compile Include="Generation\Html\GenerateHtmlReportRunListener.cs" />
+    <Compile Include="Generation\Spark\GenerateSparkHtmlReportRunListener.cs" />
+    <Compile Include="Generation\Spark\FileSystem.cs" />
+    <Compile Include="Generation\Spark\SparkRenderer.cs" />
+    <Compile Include="Generation\Spark\SparkViewEngineFactory.cs" />
+    <Compile Include="Generation\Spark\SparkView.cs" />
+    <Compile Include="Generation\Xml\GenerateXmlReportListener.cs" />
     <Compile Include="Integration\TeamCityReporter.cs" />
     <Compile Include="Integration\TeamCityServiceMessageWriter.cs" />
+    <Compile Include="Generation\ISpecificationTreeReportGenerator.cs" />
     <Compile Include="Model\Assembly.cs" />
     <Compile Include="Model\Concern.cs" />
     <Compile Include="Model\Context.cs" />
@@ -60,16 +70,25 @@
     <Compile Include="Model\Specification.cs" />
     <Compile Include="Model\SpecificationContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReportGenerator.cs" />
-    <Compile Include="CollectReportingInformationRunListener.cs" />
-    <Compile Include="SpecificationTreeListener.cs" />
-    <Compile Include="XmlReportGenerator.cs" />
+    <Compile Include="Generation\Html\HtmlReportGenerator.cs" />
+    <Compile Include="Generation\CollectReportingInformationRunListener.cs" />
+    <Compile Include="Generation\Spark\SparkHtmlReportGenerator.cs" />
+    <Compile Include="Generation\SpecificationTreeListener.cs" />
+    <Compile Include="Generation\Xml\XmlReportGenerator.cs" />
+    <Compile Include="TemplateBuilderPostBuildStep.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj">
       <Project>{CCD02629-1262-4F78-9E9F-AC97B942D0E7}</Project>
       <Name>Machine.Specifications</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Generation\Spark\Templates\master.spark">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Visitors\" />
@@ -82,4 +101,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>"%25systemroot%25\Microsoft.NET\Framework\v2.0.50727\installutil.exe" "$(TargetPath)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
