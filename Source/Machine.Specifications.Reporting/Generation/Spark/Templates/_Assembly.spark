@@ -2,5 +2,13 @@
   ${assembly.Name}
 </h1>
 <h2 class="count">
-  ${assembly.TotalConcerns} ${Pluralize("concern", assembly.TotalConcerns)}, ${assembly.TotalContexts} ${Pluralize("context", assembly.TotalContexts)}, ${assembly.TotalSpecifications} ${Pluralize("specification", assembly.TotalSpecifications)}
+  ${assembly.TotalConcerns} ${Pluralize("concern", assembly.TotalConcerns)},
+  ${assembly.TotalContexts} ${Pluralize("context", assembly.TotalContexts)},
+  ${assembly.TotalSpecifications} ${Pluralize("specification", assembly.TotalSpecifications)}
+  <test if="assembly.FailingSpecifications > 0">,
+    <span class="failure">${assembly.FailingSpecifications} ${Pluralize("failure", assembly.FailingSpecifications)}</span>
+  </test>
+  <test if="assembly.NotImplementedSpecifications > 0">,
+    <span class="notimplemented">${assembly.NotImplementedSpecifications} ${Pluralize("not implemented spec", assembly.NotImplementedSpecifications)}</span>
+  </test>
 </h2>

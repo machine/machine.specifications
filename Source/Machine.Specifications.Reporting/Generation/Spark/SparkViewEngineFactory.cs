@@ -1,4 +1,5 @@
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 using Spark;
@@ -31,8 +32,9 @@ namespace Machine.Specifications.Reporting.Generation.Spark
       var settings = new SparkSettings()
         .SetPageBaseType(typeof(SparkView))
         .SetAutomaticEncoding(true)
-        .AddNamespace("System")
-        .AddNamespace("System.Linq");
+        .AddNamespace(typeof(string).Namespace)
+        .AddNamespace(typeof(Enumerable).Namespace)
+        .AddNamespace(typeof(Status).Namespace);
 
       var dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
       var templates = new FileSystemViewFolder(Path.Combine(dir, "Generation\\Spark\\Templates"));

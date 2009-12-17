@@ -53,16 +53,16 @@
   <hr />
   
   <for each="var _assembly in Model.Assemblies.OrderBy(x => x.Name)">
-      <Concern concern="_concern" each="var _concern in _assembly.Concerns.OrderBy(x => x.Name)">
-          <Context context="_context" each="var _context in _concern.Contexts.OrderBy(x => x.Name)">
-            <ul if="_context.Specifications.Any()">
-              <li each="var _spec in _context.Specifications">
-                <Specification spec="_spec" />
-              </li>
-            </ul>
-          </Context>
-      </Concern>
-      <hr />
+    <Concern concern="_concern" each="var _concern in _assembly.Concerns.OrderBy(x => x.Name)">
+      <Context context="_context" each="var _context in _concern.Contexts.OrderBy(x => x.Name)">
+        <ul if="_context.Specifications.Any()">
+          <li each="var _spec in _context.Specifications">
+            <Specification spec="_spec" />
+          </li>
+        </ul>
+      </Context>
+    </Concern>
+    <hr />
   </for>
 </body>
 </html>

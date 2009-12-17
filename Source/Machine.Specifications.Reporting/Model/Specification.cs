@@ -7,11 +7,13 @@ namespace Machine.Specifications.Reporting.Model
   public class Specification : ISpecificationNode
   {
     readonly Status _status;
+    readonly ExceptionResult _exception;
     readonly string _name;
 
-    public Specification(string name, Status status)
+    public Specification(string name, Result result)
     {
-      _status = status;
+      _status = result.Status;
+      _exception = result.Exception;
       _name = name;
     }
 
@@ -23,6 +25,11 @@ namespace Machine.Specifications.Reporting.Model
     public string Name
     {
       get { return _name; }
+    }
+
+    public ExceptionResult Exception
+    {
+      get { return _exception; }
     }
 
     public void Accept(ISpecificationVisitor visitor)

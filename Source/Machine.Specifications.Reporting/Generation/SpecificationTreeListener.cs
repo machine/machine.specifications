@@ -20,7 +20,7 @@ namespace Machine.Specifications.Reporting.Generation
 
     public static Specification ToNode(this SpecificationInfo specification, Result result)
     {
-      return new Specification(specification.Name, result.Status);
+      return new Specification(specification.Name, result);
     }
   }
 
