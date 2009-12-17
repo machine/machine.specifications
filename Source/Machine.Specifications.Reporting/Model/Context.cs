@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 
@@ -14,7 +12,7 @@ namespace Machine.Specifications.Reporting.Model
     public Context(string name, IEnumerable<Specification> specifications) : base(specifications)
     {
       _name = name;
-      _specifications = specifications.OrderBy(x => x.Name).ToList();
+      _specifications = specifications;
     }
 
     public string Name

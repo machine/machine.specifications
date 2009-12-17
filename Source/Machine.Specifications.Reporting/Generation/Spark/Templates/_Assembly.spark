@@ -1,0 +1,6 @@
+﻿<h1>
+  ${assembly.Name}
+</h1>
+<h2 class="count">
+  ${assembly.TotalConcerns} concerns, ${assembly.TotalContexts} contexts, ${assembly.TotalSpecifications} specifications
+</h2>

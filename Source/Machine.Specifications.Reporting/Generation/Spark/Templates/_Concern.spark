@@ -1,0 +1,7 @@
+﻿<h2 class="concern">
+  ${concern.Name} specifications
+</h2>
+<h3 class="count">
+  ${concern.TotalContexts} contexts, ${concern.TotalSpecifications} specifications
+</h3>
+<render />

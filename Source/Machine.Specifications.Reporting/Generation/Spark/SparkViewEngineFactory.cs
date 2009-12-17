@@ -30,6 +30,7 @@ namespace Machine.Specifications.Reporting.Generation.Spark
     {
       var settings = new SparkSettings()
         .SetPageBaseType(typeof(SparkView))
+        .SetAutomaticEncoding(true)
         .AddNamespace("System")
         .AddNamespace("System.Linq");
 

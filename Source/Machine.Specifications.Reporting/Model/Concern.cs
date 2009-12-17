@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
 using Newtonsoft.Json;
 
 namespace Machine.Specifications.Reporting.Model
@@ -15,7 +14,7 @@ namespace Machine.Specifications.Reporting.Model
     public Concern(string name, IEnumerable<Context> contexts) : base(contexts.Cast<SpecificationContainer>())
     {
       _name = name;
-      _contexts = contexts.OrderBy(x => x.Name).ToList();
+      _contexts = contexts;
       _totalContexts = contexts.Count();
     }
 

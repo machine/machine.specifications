@@ -1,0 +1,7 @@
+﻿<h3 class="context">
+  ${context.Name}
+</h3>
+<h4 class="count">
+  ${context.TotalSpecifications} specifications
+</h4>
+<render />

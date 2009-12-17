@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Machine.Specifications.Reporting.Model
+﻿namespace Machine.Specifications.Reporting.Model
 {
   public interface ISpecificationVisitor
   {

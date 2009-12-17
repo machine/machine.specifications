@@ -1,3 +1,6 @@
+using System;
+using System.Web;
+
 using Machine.Specifications.Reporting.Model;
 
 using Spark;
@@ -10,6 +13,11 @@ namespace Machine.Specifications.Reporting.Generation.Spark
     {
       get;
       set;
+    }
+
+    public string H(object value)
+    {
+      return HttpUtility.HtmlEncode(Convert.ToString(value));
     }
   }
 }
