@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 
@@ -44,94 +45,52 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
 
         Run = new Run(new[]
                       {
-                        new Assembly("assembly 2",
-                                     new[]
-                                     {
-                                       new Concern("a 2 concern 2",
-                                                   new[]
-                                                   {
-                                                     new Context("a 2 c 2 context 2",
-                                                                 new[]
-                                                                 {
-                                                                   new Specification("a 2 c 2 c 2 specification 2",
-                                                                                     Status.Passing),
-                                                                   new Specification("a 2 c 2 c 2 specification 1",
-                                                                                     Status.Passing)
-                                                                 }),
-                                                     new Context("a 2 c 2 context 1",
-                                                                 new[]
-                                                                 {
-                                                                   new Specification("a 2 c 2 c 1 specification 2",
-                                                                                     Status.Passing),
-                                                                   new Specification("a 2 c 2 c 1 specification 1",
-                                                                                     Status.Passing)
-                                                                 }),
-                                                   }),
-                                       new Concern("a 2 concern 1",
-                                                   new[]
-                                                   {
-                                                     new Context("a 2 c 1 context 2",
-                                                                 new[]
-                                                                 {
-                                                                   new Specification("a 2 c 1 c 2 specification 2",
-                                                                                     Status.Passing),
-                                                                   new Specification("a 2 c 1 c 2 specification 1",
-                                                                                     Status.Passing)
-                                                                 }),
-                                                     new Context("a 2 c 1 context 1",
-                                                                 new[]
-                                                                 {
-                                                                   new Specification("a 2 c 1 c 1 specification 2",
-                                                                                     Status.Passing),
-                                                                   new Specification("a 2 c 1 c 1 specification 1",
-                                                                                     Status.Passing)
-                                                                 }),
-                                                   }),
-                                     }),
-                        new Assembly("assembly 1",
-                                     new[]
-                                     {
-                                       new Concern("a 1 concern 2",
-                                                   new[]
-                                                   {
-                                                     new Context("a 1 c 2 context 2",
-                                                                 new[]
-                                                                 {
-                                                                   new Specification("a 1 c 2 c 2 specification 2",
-                                                                                     Status.Passing),
-                                                                   new Specification("a 1 c 2 c 2 specification 1",
-                                                                                     Status.Passing)
-                                                                 }),
-                                                     new Context("a 1 c 2 context 1",
-                                                                 new[]
-                                                                 {
-                                                                   new Specification("a 1 c 2 c 1 specification 2",
-                                                                                     Status.Passing),
-                                                                   new Specification("a 1 c 2 c 1 specification 1",
-                                                                                     Status.Passing)
-                                                                 }),
-                                                   }),
-                                       new Concern("a 1 concern 1",
-                                                   new[]
-                                                   {
-                                                     new Context("a 1 c 1 context 2",
-                                                                 new[]
-                                                                 {
-                                                                   new Specification("a 1 c 1 c 2 specification 2",
-                                                                                     Status.Passing),
-                                                                   new Specification("a 1 c 1 c 2 specification 1",
-                                                                                     Status.Passing)
-                                                                 }),
-                                                     new Context("a 1 c 1 context 1",
-                                                                 new[]
-                                                                 {
-                                                                   new Specification("a 1 c 1 c 1 specification 2",
-                                                                                     Status.Passing),
-                                                                   new Specification("a 1 c 1 c 1 specification 1",
-                                                                                     Status.Passing)
-                                                                 }),
-                                                   }),
-                                     }),
+                        Assembly("assembly 2",
+                                 Concern("a 2 concern 2",
+                                         Context("a 2 c 2 context 2",
+                                                 Spec("a 2 c 2 c 2 specification 2", Result.Pass()),
+                                                 Spec("a 2 c 2 c 2 specification 1", Result.Ignored())
+                                           ),
+                                         Context("a 2 c 2 context 1",
+                                                 Spec("a 2 c 2 c 1 specification 2",
+                                                      Result.Failure(
+                                                        new NotImplementedException("outer",
+                                                                                    new InvalidOperationException("inner")))),
+                                                 Spec("a 2 c 2 c 1 specification 1", Result.NotImplemented())
+                                           )
+                                   ),
+                                 Concern("a 2 concern 1",
+                                         Context("a 2 c 1 context 2",
+                                                 Spec("a 2 c 1 c 2 specification 2", Result.Pass()),
+                                                 Spec("a 2 c 1 c 2 specification 1", Result.Pass())
+                                           ),
+                                         Context("a 2 c 1 context 1",
+                                                 Spec("a 2 c 1 c 1 specification 2", Result.Pass()),
+                                                 Spec("a 2 c 1 c 1 specification 1", Result.Pass())
+                                           )
+                                   )),
+                        Assembly("assembly 1",
+                                 Concern("a 1 concern 2",
+                                         Context("a 1 c 2 context 2",
+                                                 Spec("a 1 c 2 c 2 specification 2", Result.Pass()),
+                                                 Spec("a 1 c 2 c 2 specification 1", Result.Pass())
+                                           ),
+                                         Context("a 1 c 2 context 1",
+                                                 Spec("a 1 c 2 c 1 specification 2", Result.Pass()),
+                                                 Spec("a 1 c 2 c 1 specification 1", Result.Pass())
+                                           )
+                                   ),
+                                 Concern("a 1 concern 1",
+                                         Context("a 1 c 1 context 2",
+                                                 Spec("a 1 c 1 c 2 specification 2", Result.Pass()),
+                                                 Spec("a 1 c 1 c 2 specification 1", Result.Pass())
+                                           ),
+                                         Context("a 1 c 1 context 1",
+                                                 Spec("a 1 c 1 c 1 specification 2", Result.Pass()),
+                                                 Spec("a 1 c 1 c 1 specification 1", Result.Pass())
+                                           )
+                                   )
+                          )
                       });
 
         Renderer = new SparkRenderer();
@@ -156,7 +115,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
 
           assembly1.ShouldBeLessThan(assembly2);
         };
-    
+
     It should_order_concerns_by_name =
       () =>
         {
@@ -165,7 +124,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
 
           assembly1Concern1.ShouldBeLessThan(assembly2Concern1);
         };
-    
+
     It should_order_concerns_inside_assemblies_by_name =
       () =>
         {
@@ -174,7 +133,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
 
           assembly1Concern1.ShouldBeLessThan(assembly1Concern2);
         };
-    
+
     It should_order_contexts_by_name =
       () =>
         {
@@ -183,7 +142,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
 
           context1.ShouldBeLessThan(context2);
         };
-    
+
     It should_order_specifications_in_the_order_they_were_executed =
       () =>
         {
@@ -192,5 +151,25 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
 
           spec1.ShouldBeLessThan(spec2);
         };
+
+    static Assembly Assembly(string name, params Concern[] concerns)
+    {
+      return new Assembly(name, concerns);
+    }
+
+    static Concern Concern(string name, params Context[] contexts)
+    {
+      return new Concern(name, contexts);
+    }
+
+    static Context Context(string name, params Specification[] specifications)
+    {
+      return new Context(name, specifications);
+    }
+
+    static Specification Spec(string name, Result result)
+    {
+      return new Specification(name, result);
+    }
   }
 }
