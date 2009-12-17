@@ -2,5 +2,5 @@
   ${assembly.Name}
 </h1>
 <h2 class="count">
-  ${assembly.TotalConcerns} concerns, ${assembly.TotalContexts} contexts, ${assembly.TotalSpecifications} specifications
+  ${assembly.TotalConcerns} ${Pluralize("concern", assembly.TotalConcerns)}, ${assembly.TotalContexts} ${Pluralize("context", assembly.TotalContexts)}, ${assembly.TotalSpecifications} ${Pluralize("specification", assembly.TotalSpecifications)}
 </h2>

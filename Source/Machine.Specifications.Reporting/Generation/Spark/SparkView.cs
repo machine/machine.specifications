@@ -19,5 +19,15 @@ namespace Machine.Specifications.Reporting.Generation.Spark
     {
       return HttpUtility.HtmlEncode(Convert.ToString(value));
     }
+
+    public static string Pluralize(string caption, int count)
+    {
+      if (count > 1 || count == 0)
+      {
+        caption += "s";
+      }
+
+      return caption;
+    }
   }
 }

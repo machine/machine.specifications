@@ -2,6 +2,6 @@
   ${context.Name}
 </h3>
 <h4 class="count">
-  ${context.TotalSpecifications} specifications
+  ${context.TotalSpecifications} ${Pluralize("specification", context.TotalSpecifications)}
 </h4>
 <render />
