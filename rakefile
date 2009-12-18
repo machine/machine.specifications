@@ -96,7 +96,7 @@ task :package => [ "rebuild", "tests:run", "specs:run" ] do
 		 :zip_name => packageName
 
   Dir.chdir("Build/#{compileTarget}") do
-	  sz.zip :files => FileList.new('**/*').exclude('Tests')
+	  sz.zip :files => FileList.new('**/*').exclude('*.InstallLog').exclude('*.InstallState').exclude('Generation').exclude('Tests')
   end
 end
 
