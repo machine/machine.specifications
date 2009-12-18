@@ -103,7 +103,7 @@
     <None Include="Generation\Spark\Templates\_Context.spark">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Generation\Spark\Templates\master.spark">
+    <None Include="Generation\Spark\Templates\report.spark">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Generation\Spark\Templates\_Assembly.spark">
