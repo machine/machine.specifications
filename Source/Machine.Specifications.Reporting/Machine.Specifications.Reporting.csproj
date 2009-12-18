@@ -53,7 +53,7 @@
     </Compile>
     <Compile Include="Generation\Html\GenerateHtmlReportRunListener.cs" />
     <Compile Include="Generation\Spark\GenerateSparkHtmlReportRunListener.cs" />
-    <Compile Include="Generation\Spark\FileSystem.cs" />
+    <Compile Include="FileSystem.cs" />
     <Compile Include="Generation\Spark\SparkRenderer.cs" />
     <Compile Include="Generation\Spark\SparkViewEngineFactory.cs" />
     <Compile Include="Generation\Spark\SparkView.cs" />
@@ -81,6 +81,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Visitors\FailedSpecificationLinker.cs" />
+    <Compile Include="Visitors\FileBasedResultSupplementPreparation.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Visitors\LinkerExtensions.cs" />
     <Compile Include="Visitors\NotImplementedSpecificationLinker.cs" />
   </ItemGroup>

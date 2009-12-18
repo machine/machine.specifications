@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Machine.Specifications.Reporting.Generation.Spark
+namespace Machine.Specifications.Reporting
 {
   public interface IFileSystem
   {
@@ -9,6 +9,7 @@ namespace Machine.Specifications.Reporting.Generation.Spark
     void CreateOrOverwriteDirectory(string path);
     bool IsValidPathToFile(string path);
     void DeleteIfFileExists(string path);
+    void Move(string source, string destination);
   }
 
   internal class FileSystem : IFileSystem
@@ -46,6 +47,11 @@ namespace Machine.Specifications.Reporting.Generation.Spark
       {
         File.Delete(path);
       }
+    }
+
+    public void Move(string source, string destination)
+    {
+      File.Move(source, destination);
     }
   }
 }

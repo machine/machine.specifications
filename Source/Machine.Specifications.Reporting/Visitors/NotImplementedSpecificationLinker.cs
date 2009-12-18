@@ -8,8 +8,15 @@ namespace Machine.Specifications.Reporting.Visitors
     Specification _firstNotImplemented;
     Specification _lastNotImplemented;
 
+    public void Initialize(VisitorContext context)
+    {
+    }
+
     public void Visit(Run run)
     {
+      _firstNotImplemented = null;
+      _lastNotImplemented = null;
+
       run.Assemblies.Each(Visit);
 
       run.NextNotImplemented = _firstNotImplemented;

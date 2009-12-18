@@ -52,6 +52,7 @@
     <Compile Include="Generation\Spark\SparkHtmlReportGeneratorSpecs.cs" />
     <Compile Include="Generation\SpecificationTreeListenerSpecs.cs" />
     <Compile Include="Visitors\FailedSpecificationLinkerSpecs.cs" />
+    <Compile Include="Visitors\FileBasedResultSupplementPreparationSpecs.cs" />
     <Compile Include="Visitors\NotImplementedSpecificationLinkerSpecs.cs" />
   </ItemGroup>
   <ItemGroup>

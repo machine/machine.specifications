@@ -224,6 +224,9 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
 
     Because of = () => Generator.GenerateReport(Run);
 
+    It should_initialize_all_visitors =
+      () => Visitors.Each(v => v.AssertWasCalled(x => x.Initialize(Arg<VisitorContext>.Is.NotNull)));
+    
     It should_enrich_the_report_using_all_visitors =
       () => Visitors.Each(v => v.AssertWasCalled(x => x.Visit(Run)));
   }

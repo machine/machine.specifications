@@ -16,7 +16,6 @@ namespace Machine.Specifications.Reporting.Generation.Spark
     readonly bool _showTimeInfo;
     readonly ISpecificationVisitor[] _specificationVisitors;
     readonly Func<string, TextWriter> _streamFactory;
-    string _resourcePath;
 
     public SparkHtmlReportGenerator(string path, bool showTimeInfo)
       : this(path,
@@ -27,7 +26,8 @@ namespace Machine.Specifications.Reporting.Generation.Spark
              new ISpecificationVisitor[]
              {
                new FailedSpecificationLinker(),
-               new NotImplementedSpecificationLinker()
+               new NotImplementedSpecificationLinker(),
+               new FileBasedResultSupplementPreparation()
              })
     {
     }
@@ -51,18 +51,25 @@ namespace Machine.Specifications.Reporting.Generation.Spark
     {
       run.Meta.ShouldGenerateTimeInfo = _showTimeInfo;
 
-      _specificationVisitors.Each(x => x.Visit(run));
+      Func<string, string> resourcePathCreator = p => String.Empty;
+      Action<Run> writeReport = r => { };
 
       if (_fileSystem.IsValidPathToDirectory(_path))
       {
-        CreateResourceDirectoryIn(_path);
-        WriteReportsToDirectory(run);
+        resourcePathCreator = p => CreateResourceDirectoryIn(p);
+        writeReport = r => WriteReportsToDirectory(r);
       }
       else if (_fileSystem.IsValidPathToFile(_path))
       {
-        CreateResourceDirectoryIn(Path.GetDirectoryName(_path));
-        WriteReportToFile(run, _path);
+        resourcePathCreator = p => CreateResourceDirectoryIn(Path.GetDirectoryName(p));
+        writeReport = r => WriteReportToFile(r, _path);
       }
+
+      var resources = resourcePathCreator(_path);
+      _specificationVisitors.Each(x => x.Initialize(new VisitorContext { ResourcePath = resources }));
+      _specificationVisitors.Each(x => x.Visit(run));
+
+      writeReport(run);
     }
 
     void WriteReportsToDirectory(Run run)
@@ -93,11 +100,12 @@ namespace Machine.Specifications.Reporting.Generation.Spark
       }
     }
 
-    void CreateResourceDirectoryIn(string directory)
+    string CreateResourceDirectoryIn(string directory)
     {
-      _resourcePath = Path.Combine(directory, "resources");
+      var resourcePath = Path.Combine(directory, "resources");
 
-      _fileSystem.CreateOrOverwriteDirectory(_resourcePath);
+      _fileSystem.CreateOrOverwriteDirectory(resourcePath);
+      return resourcePath;
     }
 
     string GetReportFilePath(Run run)

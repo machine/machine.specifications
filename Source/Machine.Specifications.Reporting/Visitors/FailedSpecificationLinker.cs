@@ -8,8 +8,15 @@ namespace Machine.Specifications.Reporting.Visitors
     Specification _firstFail;
     Specification _lastFail;
 
+    public void Initialize(VisitorContext context)
+    {
+    }
+
     public void Visit(Run run)
     {
+      _firstFail = null;
+      _lastFail = null;
+
       run.Assemblies.Each(Visit);
 
       run.NextFailed = _firstFail;
