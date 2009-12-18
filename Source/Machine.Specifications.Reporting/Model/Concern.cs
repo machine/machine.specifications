@@ -14,7 +14,7 @@ namespace Machine.Specifications.Reporting.Model
     public Concern(string name, IEnumerable<Context> contexts) : base(contexts.Cast<SpecificationContainer>())
     {
       _name = name;
-      _contexts = contexts;
+      _contexts = contexts.OrderBy(x => x.Name);
       _totalContexts = contexts.Count();
     }
 

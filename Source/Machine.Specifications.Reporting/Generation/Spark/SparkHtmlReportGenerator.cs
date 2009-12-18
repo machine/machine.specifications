@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 
 using Machine.Specifications.Reporting.Model;
+using Machine.Specifications.Reporting.Visitors;
 using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Reporting.Generation.Spark
@@ -11,13 +12,24 @@ namespace Machine.Specifications.Reporting.Generation.Spark
   {
     readonly IFileSystem _fileSystem;
     readonly string _path;
-    readonly bool _showTimeInfo;
     readonly ISparkRenderer _renderer;
+    readonly bool _showTimeInfo;
+    readonly ISpecificationVisitor[] _specificationVisitors;
     readonly Func<string, TextWriter> _streamFactory;
     string _resourcePath;
 
     public SparkHtmlReportGenerator(string path, bool showTimeInfo)
-      : this(path, showTimeInfo, new FileSystem(), new SparkRenderer(), p => new StreamWriter(p))
+      : this(path,
+             showTimeInfo,
+             new FileSystem(),
+             new SparkRenderer(),
+             p => new StreamWriter(p),
+             new ISpecificationVisitor[]
+             {
+               new SpecificationIdGenerator(),
+               new FailedSpecificationLinker(),
+               new NotImplementedSpecificationLinker()
+             })
     {
     }
 
@@ -25,18 +37,22 @@ namespace Machine.Specifications.Reporting.Generation.Spark
                                     bool showTimeInfo,
                                     IFileSystem fileSystem,
                                     ISparkRenderer renderer,
-                                    Func<string, TextWriter> streamFactory)
+                                    Func<string, TextWriter> streamFactory,
+                                    ISpecificationVisitor[] specificationVisitors)
     {
       _path = path;
       _showTimeInfo = showTimeInfo;
       _fileSystem = fileSystem;
       _renderer = renderer;
       _streamFactory = streamFactory;
+      _specificationVisitors = specificationVisitors;
     }
 
     public void GenerateReport(Run run)
     {
       run.Meta.ShouldGenerateTimeInfo = _showTimeInfo;
+
+      _specificationVisitors.Each(x => x.Visit(run));
 
       if (_fileSystem.IsValidPathToDirectory(_path))
       {
@@ -53,18 +69,14 @@ namespace Machine.Specifications.Reporting.Generation.Spark
     void WriteReportsToDirectory(Run run)
     {
       run.Assemblies
-        .Select(assembly =>
-          {
-            var run1 = new Run(new[] { assembly })
-                       {
-                         Meta =
-                           {
-                             GeneratedAt = run.Meta.GeneratedAt,
-                             ShouldGenerateTimeInfo = run.Meta.ShouldGenerateTimeInfo
-                           }
-                       };
-            return run1;
-          })
+        .Select(assembly => new Run(new[] { assembly })
+                            {
+                              Meta =
+                                {
+                                  GeneratedAt = run.Meta.GeneratedAt,
+                                  ShouldGenerateTimeInfo = run.Meta.ShouldGenerateTimeInfo
+                                }
+                            })
         .Each(assembyRun =>
           {
             var path = GetReportFilePath(assembyRun);

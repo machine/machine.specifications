@@ -33,9 +33,9 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
   }
 
   [Subject(typeof(SparkRenderer))]
-  public class when_a_report_with_unordered_items_is_rendered
+  public class when_a_report_with_unordered_items_is_rendered : ReportSpecs
   {
-    static Run Run;
+    static Run Report;
     static SparkRenderer Renderer;
     static StringWriter Writer;
     static string Html;
@@ -44,9 +44,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
       {
         Writer = new StringWriter();
 
-        Run = new Run(new[]
-                      {
-                        Assembly("assembly 2",
+        Report = Run(Assembly("assembly 2",
                                  Concern("a 2 concern 2",
                                          Context("a 2 c 2 context 2",
                                                  Spec("a 2 c 2 c 2 specification 2", Result.Pass()),
@@ -98,14 +96,14 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
                                            )
                                    )
                           )
-                      });
+                      );
 
         Renderer = new SparkRenderer();
       };
 
     Because of = () =>
       {
-        Renderer.Render(Run, Writer);
+        Renderer.Render(Report, Writer);
         Html = Writer.ToString();
       };
 
@@ -158,51 +156,5 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
 
           spec1.ShouldBeLessThan(spec2);
         };
-
-    static Assembly Assembly(string name, params Concern[] concerns)
-    {
-      return new Assembly(name, concerns);
-    }
-
-    static Concern Concern(string name, params Context[] contexts)
-    {
-      return new Concern(name, contexts);
-    }
-
-    static Context Context(string name, params Specification[] specifications)
-    {
-      return new Context(name, specifications);
-    }
-
-    static Specification Spec(string name, Result result)
-    {
-      return new Specification(name, result);
-    }
-
-    static Exception PrepareException()
-    {
-      try
-      {
-        try
-        {
-          SomeAction();
-        }
-        catch (Exception ex)
-        {
-          throw new InvalidOperationException("something bad happened", ex);
-        }
-      }
-      catch (Exception ex)
-      {
-        return ex;
-      }
-
-      return null;
-    }
-
-    static void SomeAction()
-    {
-      throw new NotImplementedException();
-    }
   }
 }

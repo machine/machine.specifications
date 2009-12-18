@@ -47,7 +47,8 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
                                                    {
                                                      ReportPathUsed = p;
                                                      return new StringWriter();
-                                                   });
+                                                   },
+                                                 new ISpecificationVisitor[] { });
 
         Run = new Run(new[]
                       {
@@ -70,7 +71,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
     It should_render_one_report =
       () => Renderer.AssertWasCalled(x => x.Render(Arg<Run>.Is.Equal(Run), Arg<TextWriter>.Is.NotNull));
   }
-  
+
   [Subject(typeof(SparkHtmlReportGenerator))]
   public class when_reporting_to_a_directory
   {
@@ -105,8 +106,8 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
                                                    {
                                                      ReportPathsUsed.Add(p);
                                                      return new StringWriter();
-                                                   }
-          );
+                                                   },
+                                                 new ISpecificationVisitor[] { });
 
         Run = new Run(new[]
                       {
@@ -149,38 +150,81 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
     static ISparkRenderer Renderer;
 
     Establish context = () =>
-    {
-      ReportPath = @"C:\path\to\the\report.html";
+      {
+        ReportPath = @"C:\path\to\the\report.html";
 
-      FileSystem = MockRepository.GenerateStub<IFileSystem>();
-      FileSystem
-        .Stub(x => x.IsValidPathToDirectory(ReportPath))
-        .Return(false);
+        FileSystem = MockRepository.GenerateStub<IFileSystem>();
+        FileSystem
+          .Stub(x => x.IsValidPathToFile(ReportPath))
+          .Return(true);
 
-      FileSystem = MockRepository.GenerateStub<IFileSystem>();
-      FileSystem
-        .Stub(x => x.IsValidPathToFile(ReportPath))
-        .Return(true);
+        Renderer = MockRepository.GenerateStub<ISparkRenderer>();
 
-      Renderer = MockRepository.GenerateStub<ISparkRenderer>();
+        Generator = new SparkHtmlReportGenerator(ReportPath,
+                                                 true,
+                                                 FileSystem,
+                                                 Renderer,
+                                                 p => new StringWriter(),
+                                                 new ISpecificationVisitor[] { });
 
-      Generator = new SparkHtmlReportGenerator(ReportPath,
-                                               true,
-                                               FileSystem,
-                                               Renderer,
-                                               p => new StringWriter());
-
-      Run = new Run(new[]
+        Run = new Run(new[]
                       {
                         new Assembly("assembly 1", new Concern[] { }),
                         new Assembly("assembly 2", new Concern[] { })
                       });
-    };
+      };
 
     Because of = () => Generator.GenerateReport(Run);
 
     It should_render_the_report_with_time_info =
       () => Renderer.AssertWasCalled(x => x.Render(Arg<Run>.Matches(y => y.Meta.ShouldGenerateTimeInfo),
                                                    Arg<TextWriter>.Is.Anything));
+  }
+
+  [Subject(typeof(SparkHtmlReportGenerator))]
+  public class when_rendering_reports_with_enriched_metadata
+  {
+    static SparkHtmlReportGenerator Generator;
+    static Run Run;
+    static IFileSystem FileSystem;
+    static string ReportPath;
+    static ISparkRenderer Renderer;
+    static ISpecificationVisitor[] Visitors;
+
+    Establish context = () =>
+      {
+        ReportPath = @"C:\path\to\the\report.html";
+
+        FileSystem = MockRepository.GenerateStub<IFileSystem>();
+        FileSystem
+          .Stub(x => x.IsValidPathToFile(ReportPath))
+          .Return(true);
+
+        Renderer = MockRepository.GenerateStub<ISparkRenderer>();
+
+        Visitors = new[]
+                   {
+                     MockRepository.GenerateStub<ISpecificationVisitor>(),
+                     MockRepository.GenerateStub<ISpecificationVisitor>()
+                   };
+
+        Generator = new SparkHtmlReportGenerator(ReportPath,
+                                                 true,
+                                                 FileSystem,
+                                                 Renderer,
+                                                 p => new StringWriter(),
+                                                 Visitors);
+
+        Run = new Run(new[]
+                      {
+                        new Assembly("assembly 1", new Concern[] { }),
+                        new Assembly("assembly 2", new Concern[] { })
+                      });
+      };
+
+    Because of = () => Generator.GenerateReport(Run);
+
+    It should_enrich_the_report_using_all_visitors =
+      () => Visitors.Each(v => v.AssertWasCalled(x => x.Visit(Run)));
   }
 }

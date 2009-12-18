@@ -10,6 +10,7 @@ namespace Machine.Specifications.Reporting.Model
     readonly ExceptionResult _exception;
     readonly string _name;
     readonly IDictionary<string, IDictionary<string, string>> _supplements;
+    readonly Metadata _metadata = new Metadata();
 
     public Specification(string name, Result result)
     {
@@ -48,6 +49,11 @@ namespace Machine.Specifications.Reporting.Model
     public IEnumerable<ISpecificationNode> Children
     {
       get { yield break; }
+    }
+
+    public Metadata Metadata
+    {
+      get { return _metadata; }
     }
   }
 }

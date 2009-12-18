@@ -67,6 +67,7 @@
     <Compile Include="Model\ISpecificationNode.cs" />
     <Compile Include="Model\ISpecificationVisitor.cs" />
     <Compile Include="Model\Meta.cs" />
+    <Compile Include="Model\Metadata.cs" />
     <Compile Include="Model\Run.cs" />
     <Compile Include="Model\Specification.cs" />
     <Compile Include="Model\SpecificationContainer.cs" />
@@ -79,6 +80,9 @@
     <Compile Include="TemplateBuilderPostBuildStep.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Visitors\FailedSpecificationLinker.cs" />
+    <Compile Include="Visitors\SpecificationIdGenerator.cs" />
+    <Compile Include="Visitors\NotImplementedSpecificationLinker.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj">
@@ -102,9 +106,6 @@
     <None Include="Generation\Spark\Templates\_Concern.spark">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Visitors\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

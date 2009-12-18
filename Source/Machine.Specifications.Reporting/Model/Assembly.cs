@@ -15,7 +15,7 @@ namespace Machine.Specifications.Reporting.Model
     public Assembly(string name, IEnumerable<Concern> concerns) : base(concerns.Cast<SpecificationContainer>())
     {
       _name = name;
-      _concerns = concerns;
+      _concerns = concerns.OrderBy(x => x.Name);
       _totalConerns = concerns.Count();
       _totalContexts = concerns.Sum(x => x.TotalContexts);
     }

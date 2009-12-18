@@ -16,7 +16,7 @@ namespace Machine.Specifications.Reporting.Model
     public Run(IEnumerable<Assembly> assemblies) : base(assemblies.Cast<SpecificationContainer>())
     {
       Meta = new Meta { GeneratedAt = DateTime.Now };
-      _assemblies = assemblies;
+      _assemblies = assemblies.OrderBy(x => x.Name);
       _totalAssemblies = assemblies.Count();
       _totalConcerns = assemblies.Sum(x => x.TotalConcerns);
       _totalContexts = assemblies.Sum(x => x.TotalContexts);

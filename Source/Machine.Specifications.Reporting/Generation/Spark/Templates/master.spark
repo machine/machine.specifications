@@ -62,14 +62,14 @@
   </script>  
 </head>
 <body>
-  <Assembly assembly="_assembly" each="var _assembly in Model.Assemblies.OrderBy(x => x.Name)" />
+  <Assembly assembly="_assembly" each="var _assembly in Model.Assemblies" />
   <em if="Model.Meta.ShouldGenerateTimeInfo">Generated on ${Model.Meta.GeneratedAt.ToLongDateString()} at ${Model.Meta.GeneratedAt.ToLongTimeString()}.</em>
   <hr />
   <hr />
   
-  <for each="var _assembly in Model.Assemblies.OrderBy(x => x.Name)">
-    <Concern concern="_concern" each="var _concern in _assembly.Concerns.OrderBy(x => x.Name)">
-      <Context context="_context" each="var _context in _concern.Contexts.OrderBy(x => x.Name)">
+  <for each="var _assembly in Model.Assemblies">
+    <Concern concern="_concern" each="var _concern in _assembly.Concerns">
+      <Context context="_context" each="var _context in _concern.Contexts">
         <ul if="_context.Specifications.Any()">
           <li each="var _spec in _context.Specifications">
             <Specification spec="_spec" />
