@@ -59,25 +59,25 @@ namespace Machine.Specifications.Reporting.Model
       get { return _assemblies.Cast<ISpecificationNode>(); }
     }
 
-    ICanFail ILinkToCanFail.Previous
+    public ILinkTarget PreviousFailed
     {
       get;
       set;
     }
 
-    ICanFail ILinkToCanFail.Next
+    public ILinkTarget NextFailed
     {
       get;
       set;
     }
 
-    ICanBeNotImplemented ILinkToNotImplemented.Previous
+    public ILinkTarget PreviousNotImplemented
     {
       get;
       set;
     }
 
-    ICanBeNotImplemented ILinkToNotImplemented.Next
+    public ILinkTarget NextNotImplemented
     {
       get;
       set;

@@ -3,12 +3,16 @@
 <if condition="spec.Status == Status.Failing">
   <div class="failure">
     &lArr; FAILED
-    <div class="prev-next-links">
-      <a if="((ICanFail) spec).Previous != null"
-         href="#${((ICanFail) spec).Previous.Id}" title="Go to previous failed specification">&uArr;</a>
-      <a if="((ICanFail) spec).Next != null"
-         href="#${((ICanFail) spec).Next.Id}" title="Go to next failed specification">&dArr;</a>
-    </div>
+    <ul class="prev-next">
+      <li class="prev failure">
+        <a if="spec.PreviousFailed != null"
+           href="#${spec.PreviousFailed.Id}" title="Go to previous failed specification">&uArr;</a>
+      </li>
+      <li class="next failure">
+        <a if="spec.NextFailed != null"
+           href="#${spec.NextFailed.Id}" title="Go to next failed specification">&dArr;</a>
+      </li>
+    </ul>
   </div>
   <p class="exception_type">
     ${spec.Exception.TypeName}
@@ -18,12 +22,16 @@
 
 <div if="spec.Status == Status.NotImplemented" class="notimplemented">
   &lArr; NOT IMPLEMENTED
-  <div class="prev-next-links">
-    <a if="((ICanBeNotImplemented) spec).Previous != null"
-       href="#${((ICanBeNotImplemented) spec).Previous.Id}" title="Go to previous unimplemented specification">&uArr;</a>
-    <a if="((ICanBeNotImplemented) spec).Next != null"
-       href="#${((ICanBeNotImplemented) spec).Next.Id}" title="Go to next unimplemented specification">&dArr;</a>
-  </div>
+  <ul class="prev-next">
+    <li class="prev notimplemented">
+      <a if="spec.PreviousNotImplemented != null"
+         href="#${spec.PreviousNotImplemented.Id}" title="Go to previous not implemented specification">&uArr;</a>
+    </li>
+    <li class="next notimplemented">
+      <a if="spec.NextNotImplemented != null"
+         href="#${spec.NextNotImplemented.Id}" title="Go to next not implemented specification">&dArr;</a>
+    </li>
+  </ul>
 </div>
 
 <for each="var supplement in spec.Supplements">
@@ -33,9 +41,27 @@
       <div>
         [<a id="${name}_link" href="javascript:toggleVisibility('${name}', '${supplement.Key} ${item.Key}');">Show ${supplement.Key} ${item.Key}</a>]
       </div>
-      <div id="${name}" style="display: none;">
+      <div id="${name}" class="supplement">
         <pre>${item.Value}</pre>
       </div>
     </if>
   </for> 
 </for>
+
+<script type="text/javascript" once="toggle-visibility">
+  function toggleVisibility(id, description)
+  {
+    var section = document.getElementById(id);
+    var link = document.getElementById(id + "_link");
+
+    if (section.style.display == "block")
+    {
+      section.style.display = "none";
+      link.innerHTML = "Show " + description;
+    } else
+    {
+      section.style.display = "block";
+      link.innerHTML = "Hide " + description;
+    }
+  };
+</script> 

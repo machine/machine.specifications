@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Machine.Specifications.Reporting.Model
 {
-  public class Specification : ISpecificationNode, ICanFail, ICanBeNotImplemented
+  public class Specification : ISpecificationNode, ILinkTarget, ILinkToCanFail, ILinkToNotImplemented
   {
     readonly ExceptionResult _exception;
     readonly Guid _id;
@@ -58,25 +58,25 @@ namespace Machine.Specifications.Reporting.Model
       get { yield break; }
     }
 
-    ICanFail ILinkToCanFail.Next
+    public ILinkTarget NextFailed
     {
       get;
       set;
     }
 
-    ICanFail ILinkToCanFail.Previous
+    public ILinkTarget PreviousFailed
     {
       get;
       set;
     }
 
-    ICanBeNotImplemented ILinkToNotImplemented.Next
+    public ILinkTarget NextNotImplemented
     {
       get;
       set;
     }
 
-    ICanBeNotImplemented ILinkToNotImplemented.Previous
+    public ILinkTarget PreviousNotImplemented
     {
       get;
       set;

@@ -8,7 +8,7 @@
     }
     
     .count {
-      color: LightGrey;
+      color: lightgrey;
     }
 
     .failure {
@@ -41,33 +41,68 @@
     }
 
     hr {
-      color: LightGrey;
-      border: 1px solid LightGrey;
+      color: lightgrey;
+      border: 1px solid lightgrey;
       height: 1px;
     }
-  </style>
-  <script type="text/javascript">
-    function toggleVisibility(id, description) {
-      var section = document.getElementById(id);
-      var link = document.getElementById(id + "_link");
-
-      if (section.style.display == "block") {
-        section.style.display = "none";
-        link.innerHTML = "Show " + description;
-      } else {
-        section.style.display = "block";
-        link.innerHTML = "Hide " + description;
+    
+    ul.prev-next {
+      padding: 0;
+      margin: 0;
+      font-size: 2em;
       }
+      
+    .spec ul.prev-next {
+      float: right;
+      right: 30%;
+      position: absolute;
+      margin-top: -1em;
+      }
+
+    ul.prev-next li {
+      display: inline;
+      padding: 0;
+      margin: 0;
     }
-  </script>  
+
+    ul.prev-next li a {
+      color: lightgrey;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 0 .3em;
+      border: 1px solid #000;
+    }
+
+    ul.prev-next li.notimplemented a {
+      border-color: orange;
+    }
+
+    ul.prev-next li.failure a {
+      border-color: red;
+    }
+
+    ul.prev-next li.notimplemented a:hover {
+      background-color: orange;
+      color: #000;
+    }
+
+    ul.prev-next li.failure a:hover {
+      background-color: red;
+      color: #fff;
+    }
+
+    div.supplement {
+      display: none;
+      }
+  </style>
 </head>
 <body>
-  <ul class="prev-next-links">
-    <li if="((ILinkToCanFail) Model).Next != null">
-      <a href="#${((ILinkToCanFail) Model).Next.Id}">Go to first failed specification &dArr;</a>
+  <ul class="prev-next">
+    <li if="Model.NextFailed != null" class="next failure">
+      <a href="#${Model.NextFailed.Id}">Go to first failed specification &dArr;</a>
     </li>
-    <li if="((ILinkToNotImplemented) Model).Next != null">
-      <a href="#${((ILinkToNotImplemented) Model).Next.Id}">Go to first unimplemented specification &dArr;</a>
+    <li if="Model.NextNotImplemented != null" class="next notimplemented">
+      <a href="#${Model.NextNotImplemented.Id}">Go to first not implemented specification &dArr;</a>
     </li>
   </ul>
   
@@ -81,7 +116,7 @@
     <Concern concern="_concern" each="var _concern in _assembly.Concerns">
       <Context context="_context" each="var _context in _concern.Contexts">
         <ul if="_context.Specifications.Any()">
-          <li each="var _spec in _context.Specifications">
+          <li class="spec" each="var _spec in _context.Specifications">
             <Specification spec="_spec" />
           </li>
         </ul>

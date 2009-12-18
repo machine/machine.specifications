@@ -45,27 +45,27 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
     Because of = () => Linker.Visit(Report);
 
     It should_not_assign_a__previous__link_to_the_report =
-      () => ((ILinkToCanFail) Report).Previous.ShouldBeNull();
+      () => Report.PreviousFailed.ShouldBeNull();
 
     It should_assign_a__next__link_to_the_report =
-      () => ((ILinkToCanFail) Report).Next.ShouldEqual(First);
+      () =>  Report.NextFailed.ShouldEqual(First);
 
     It should_assign_a__next__link_to_the_first_failed_spec =
-      () => ((ICanFail) First).Next.ShouldEqual(Second);
+      () => First.NextFailed.ShouldEqual(Second);
 
     It should_not_assign_a__previous__link_to_the_first_failed_spec =
-      () => ((ICanFail) First).Previous.ShouldBeNull();
+      () => First.PreviousFailed.ShouldBeNull();
 
     It should_assign_a__next__link_to_the_second_failed_spec =
-      () => ((ICanFail) Second).Next.ShouldEqual(Last);
+      () => Second.NextFailed.ShouldEqual(Last);
 
     It should_assign_a__previous__link_to_the_second_failed_spec =
-      () => ((ICanFail) Second).Previous.ShouldEqual(First);
+      () => Second.PreviousFailed.ShouldEqual(First);
 
     It should_not_assign_a__next__link_to_the_last_failed_spec =
-      () => ((ICanFail) Last).Next.ShouldBeNull();
+      () => Last.NextFailed.ShouldBeNull();
 
     It should_assign_a__previous__link_to_the_last_failed_spec =
-      () => ((ICanFail) Last).Previous.ShouldEqual(Second);
+      () => Last.PreviousFailed.ShouldEqual(Second);
   }
 }

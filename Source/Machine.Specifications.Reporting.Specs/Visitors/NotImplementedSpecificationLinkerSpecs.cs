@@ -43,24 +43,24 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
     Because of = () => Linker.Visit(Report);
 
     It should_not_assign_a__previous__link_to_the_report =
-      () => ((ILinkToNotImplemented) Report).Previous.ShouldBeNull();
+      () => Report.PreviousNotImplemented.ShouldBeNull();
 
     It should_assign_a__next__link_to_the_report =
-      () => ((ILinkToNotImplemented) Report).Next.ShouldEqual(First);
+      () => Report.NextNotImplemented.ShouldEqual(First);
 
     It should_not_assign_a__previous__link_to_the_first_failed_spec =
-      () => ((ICanBeNotImplemented) First).Previous.ShouldBeNull();
+      () => First.PreviousNotImplemented.ShouldBeNull();
 
     It should_assign_a__next__link_to_the_second_failed_spec =
-      () => ((ICanBeNotImplemented) Second).Next.ShouldEqual(Last);
+      () => Second.NextNotImplemented.ShouldEqual(Last);
 
     It should_assign_a__previous__link_to_the_second_failed_spec =
-      () => ((ICanBeNotImplemented) Second).Previous.ShouldEqual(First);
+      () => Second.PreviousNotImplemented.ShouldEqual(First);
 
     It should_not_assign_a__next__link_to_the_last_failed_spec =
-      () => ((ICanBeNotImplemented) Last).Next.ShouldBeNull();
+      () => Last.NextNotImplemented.ShouldBeNull();
 
     It should_assign_a__previous__link_to_the_last_failed_spec =
-      () => ((ICanBeNotImplemented) Last).Previous.ShouldEqual(Second);
+      () => Last.PreviousNotImplemented.ShouldEqual(Second);
   }
 }

@@ -5,14 +5,14 @@ namespace Machine.Specifications.Reporting.Visitors
 {
   public class FailedSpecificationLinker : ISpecificationVisitor
   {
-    ICanFail _firstFail;
-    ICanFail _lastFail;
+    Specification _firstFail;
+    Specification _lastFail;
 
     public void Visit(Run run)
     {
       run.Assemblies.Each(Visit);
 
-      ((ILinkToCanFail) run).Next = _firstFail;
+      run.NextFailed = _firstFail;
     }
 
     public void Visit(Assembly assembly)
@@ -39,8 +39,8 @@ namespace Machine.Specifications.Reporting.Visitors
 
       if (_lastFail != null)
       {
-        ((ICanFail) specification).Previous = _lastFail;
-        _lastFail.Next = specification;
+        specification.PreviousFailed = _lastFail;
+        _lastFail.NextFailed = specification;
       }
 
       _lastFail = specification;

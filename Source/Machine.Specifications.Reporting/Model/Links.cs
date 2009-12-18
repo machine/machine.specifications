@@ -2,49 +2,41 @@
 
 namespace Machine.Specifications.Reporting.Model
 {
-  public interface ILinkToCanFail
-  {
-    ICanFail Next
-    {
-      get;
-      set;
-    }
-
-    ICanFail Previous
-    {
-      get;
-      set;
-    }
-  }
-
-  public interface ICanFail : ILinkToCanFail
+  public interface ILinkTarget
   {
     Guid Id
     {
       get;
+    }
+  }
+
+  public interface ILinkToCanFail
+  {
+    ILinkTarget NextFailed
+    {
+      get;
+      set;
+    }
+
+    ILinkTarget PreviousFailed
+    {
+      get;
+      set;
     }
   }
 
   public interface ILinkToNotImplemented
   {
-    ICanBeNotImplemented Next
+    ILinkTarget NextNotImplemented
     {
       get;
       set;
     }
 
-    ICanBeNotImplemented Previous
+    ILinkTarget PreviousNotImplemented
     {
       get;
       set;
-    }
-  }
-
-  public interface ICanBeNotImplemented : ILinkToNotImplemented
-  {
-    Guid Id
-    {
-      get;
     }
   }
 }
