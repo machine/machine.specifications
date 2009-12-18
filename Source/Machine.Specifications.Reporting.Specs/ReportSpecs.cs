@@ -1,10 +1,6 @@
 using System;
 
 using Machine.Specifications.Reporting.Model;
-using Machine.Specifications.Reporting.Visitors;
-using Machine.Specifications.Utility;
-
-using Rhino.Mocks;
 
 namespace Machine.Specifications.Reporting.Specs
 {
@@ -12,19 +8,7 @@ namespace Machine.Specifications.Reporting.Specs
   {
     protected static Run Run(params Assembly[] assemblies)
     {
-      var run = new Run(assemblies);
-
-      var fileSystem = MockRepository.GenerateStub<IFileSystem>();
-      
-      new ISpecificationVisitor[]
-      {
-        new FailedSpecificationLinker(),
-        new NotImplementedSpecificationLinker(),
-        new FileBasedResultSupplementPreparation(fileSystem)
-      }
-        .Each(x => x.Visit(run));
-
-      return run;
+      return new Run(assemblies);
     }
 
     protected static Assembly Assembly(string name, params Concern[] concerns)

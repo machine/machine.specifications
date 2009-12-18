@@ -137,13 +137,14 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
               .Where(x => x.Key.StartsWith("text-img-"))
               .Each(x => x.Value.ShouldStartWith(@"Failed to copy supplement C:\some\"));
   }
-  
+
   [Subject(typeof(FileBasedResultSupplementPreparation))]
-  public class when_copying_file_based_result_supplements_fails_and_the_error_message_generates_conflict : ReportSpecs
+  public class when_copying_file_based_result_supplements_fails_and_the_error_message_generates_a_conflict : ReportSpecs
   {
     static FileBasedResultSupplementPreparation Preparation;
     static Specification Failing;
     static Run Report;
+    static IDictionary<string, string> FirstSupplement;
 
     Establish context = () =>
       {
@@ -161,7 +162,8 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
                                          new Dictionary<string, string>
                                          {
                                            { "img-image", @"C:\some\image.png" },
-                                           { "text-img-image", "will conflict with img-image" }
+                                           { "text-img-image-error", "will conflict with error for img-image" },
+                                           { "text-img-image-error-error", "will conflict with error for img-image" }
                                          }));
 
         Report = Run(Assembly("assembly 1",
@@ -170,9 +172,22 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
                                               Failing))));
       };
 
-    Because of = () => Preparation.Visit(Report);
+    Because of = () =>
+      {
+        Preparation.Visit(Report);
+
+        FirstSupplement = Report.Assemblies.First()
+          .Concerns.First()
+          .Contexts.First()
+          .Specifications.First()
+          .Supplements.First()
+          .Value;
+      };
 
     It should_succeed =
       () => true.ShouldBeTrue();
+
+    It should_create_a_unique_error_key =
+      () => FirstSupplement.Keys.ShouldContain("text-img-image-error-error-error");
   }
 }

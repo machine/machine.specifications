@@ -70,8 +70,14 @@ namespace Machine.Specifications.Reporting.Visitors
           }
           catch (Exception ex)
           {
-            var error = String.Format("Failed to copy supplement {0}\r\n{1}", x.ItemValue, ex);
-            return x.UpdateItemKeyAndValue(TextSupplementPrefix + x.ItemKey + Guid.NewGuid(), error);
+            var message = String.Format("Failed to copy supplement {0}\r\n{1}", x.ItemValue, ex);
+            var key = TextSupplementPrefix + x.ItemKey + "-error";
+            while (specification.Supplements[x.Name].ContainsKey(key))
+            {
+              key += "-error";
+            }
+            
+            return x.UpdateItemKeyAndValue(key, message);
           }
         });
 

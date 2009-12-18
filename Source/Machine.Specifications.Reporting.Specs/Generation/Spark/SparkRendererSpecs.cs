@@ -4,6 +4,10 @@ using System.Linq;
 
 using Machine.Specifications.Reporting.Generation.Spark;
 using Machine.Specifications.Reporting.Model;
+using Machine.Specifications.Reporting.Visitors;
+using Machine.Specifications.Utility;
+
+using Rhino.Mocks;
 
 namespace Machine.Specifications.Reporting.Specs.Generation.Spark
 {
@@ -64,7 +68,9 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
                                                                      {
                                                                        { "text-some", "some <em>text</em>" },
                                                                        { "img-some", @"C:\some\image\image" },
-                                                                       { "html-some", @"C:\some\html\file" }
+                                                                       { "html-some", @"C:\some\html\file" },
+                                                                       { "img-should-fail-copy", @"C:\some\html\image-should-fail-copy" },
+                                                                       { "html-should-fail-copy", @"C:\some\html\file-should-fail-copy" }
                                                                      })),
                                               Spec("a 2 c 1 c 2 specification 1", Result.Pass())
                                         ),
@@ -98,6 +104,8 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
                                 )
                        )
           );
+
+        RunDefaultVisitors(Report);
 
         Renderer = new SparkRenderer();
       };
@@ -157,5 +165,21 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
 
           spec1.ShouldBeLessThan(spec2);
         };
+
+    static void RunDefaultVisitors(Run run)
+    {
+      var fileSystem = MockRepository.GenerateStub<IFileSystem>();
+      fileSystem
+        .Stub(x => x.Move(Arg<string>.Matches(y=>y.EndsWith("-should-fail-copy")), Arg<string>.Is.Anything))
+        .Throw(PrepareException());
+
+      new ISpecificationVisitor[]
+      {
+        new FailedSpecificationLinker(),
+        new NotImplementedSpecificationLinker(),
+        new FileBasedResultSupplementPreparation(fileSystem)
+      }
+        .Each(x => x.Visit(run));
+    }
   }
 }
