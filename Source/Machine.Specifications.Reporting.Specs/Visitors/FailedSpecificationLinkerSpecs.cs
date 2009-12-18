@@ -6,7 +6,7 @@ using Machine.Specifications.Reporting.Visitors;
 namespace Machine.Specifications.Reporting.Specs.Visitors
 {
   [Subject(typeof(FailedSpecificationLinker))]
-  public class when_failed_specifications_are_linked_by_id : ReportSpecs
+  public class when_failed_specifications_are_linked : ReportSpecs
   {
     static FailedSpecificationLinker Linker;
     static Run Report;
@@ -40,28 +40,32 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
                                               Last,
                                               Spec("a 2 c 1 c 2 specification 2", Result.Pass()))))
           );
-
-        new SpecificationIdGenerator().Visit(Report);
       };
 
     Because of = () => Linker.Visit(Report);
 
+    It should_not_assign_a__previous__link_to_the_report =
+      () => ((ILinkToCanFail) Report).Previous.ShouldBeNull();
+
+    It should_assign_a__next__link_to_the_report =
+      () => ((ILinkToCanFail) Report).Next.ShouldEqual(First);
+
     It should_assign_a__next__link_to_the_first_failed_spec =
-      () => First.Metadata[FailedSpecificationLinker.Next].ShouldBeOfType<Guid>();
+      () => ((ICanFail) First).Next.ShouldEqual(Second);
 
     It should_not_assign_a__previous__link_to_the_first_failed_spec =
-      () => First.Metadata[FailedSpecificationLinker.Previous].ShouldBeNull();
+      () => ((ICanFail) First).Previous.ShouldBeNull();
 
     It should_assign_a__next__link_to_the_second_failed_spec =
-      () => Second.Metadata[FailedSpecificationLinker.Next].ShouldBeOfType<Guid>();
+      () => ((ICanFail) Second).Next.ShouldEqual(Last);
 
     It should_assign_a__previous__link_to_the_second_failed_spec =
-      () => Second.Metadata[FailedSpecificationLinker.Previous].ShouldBeOfType<Guid>();
+      () => ((ICanFail) Second).Previous.ShouldEqual(First);
 
     It should_not_assign_a__next__link_to_the_last_failed_spec =
-      () => Last.Metadata[FailedSpecificationLinker.Next].ShouldBeNull();
+      () => ((ICanFail) Last).Next.ShouldBeNull();
 
     It should_assign_a__previous__link_to_the_last_failed_spec =
-      () => Last.Metadata[FailedSpecificationLinker.Previous].ShouldBeOfType<Guid>();
+      () => ((ICanFail) Last).Previous.ShouldEqual(Second);
   }
 }

@@ -64,10 +64,10 @@
     <Compile Include="Model\Assembly.cs" />
     <Compile Include="Model\Concern.cs" />
     <Compile Include="Model\Context.cs" />
+    <Compile Include="Model\Links.cs" />
     <Compile Include="Model\ISpecificationNode.cs" />
     <Compile Include="Model\ISpecificationVisitor.cs" />
     <Compile Include="Model\Meta.cs" />
-    <Compile Include="Model\Metadata.cs" />
     <Compile Include="Model\Run.cs" />
     <Compile Include="Model\Specification.cs" />
     <Compile Include="Model\SpecificationContainer.cs" />
@@ -81,7 +81,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Visitors\FailedSpecificationLinker.cs" />
-    <Compile Include="Visitors\SpecificationIdGenerator.cs" />
     <Compile Include="Visitors\NotImplementedSpecificationLinker.cs" />
   </ItemGroup>
   <ItemGroup>

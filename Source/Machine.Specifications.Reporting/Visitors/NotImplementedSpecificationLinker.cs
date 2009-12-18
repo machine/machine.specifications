@@ -5,13 +5,14 @@ namespace Machine.Specifications.Reporting.Visitors
 {
   public class NotImplementedSpecificationLinker : ISpecificationVisitor
   {
-    public const string Next = "Next_NotImplemented_Spec";
-    public const string Previous = "Previous_NotImplemented_Spec";
-    Specification _lastNotImplementedSpec;
+    ICanBeNotImplemented _firstNotImplemented;
+    ICanBeNotImplemented _lastNotImplemented;
 
     public void Visit(Run run)
     {
       run.Assemblies.Each(Visit);
+
+      ((ILinkToNotImplemented) run).Next = _firstNotImplemented;
     }
 
     public void Visit(Assembly assembly)
@@ -36,12 +37,18 @@ namespace Machine.Specifications.Reporting.Visitors
         return;
       }
 
-      if (_lastNotImplementedSpec != null)
+      if (_lastNotImplemented != null)
       {
-        specification.Metadata[Previous] = _lastNotImplementedSpec.Metadata[SpecificationIdGenerator.Id];
-        _lastNotImplementedSpec.Metadata[Next] = specification.Metadata[SpecificationIdGenerator.Id];
+        ((ICanBeNotImplemented) specification).Previous = _lastNotImplemented;
+        _lastNotImplemented.Next = specification;
       }
-      _lastNotImplementedSpec = specification;
+
+      _lastNotImplemented = specification;
+
+      if (_firstNotImplemented == null)
+      {
+        _firstNotImplemented = specification;
+      }
     }
   }
 }

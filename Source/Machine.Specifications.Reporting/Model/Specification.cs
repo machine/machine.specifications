@@ -1,23 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Newtonsoft.Json;
 
 namespace Machine.Specifications.Reporting.Model
 {
-  public class Specification : ISpecificationNode
+  public class Specification : ISpecificationNode, ICanFail, ICanBeNotImplemented
   {
-    readonly Status _status;
     readonly ExceptionResult _exception;
+    readonly Guid _id;
     readonly string _name;
+    readonly Status _status;
     readonly IDictionary<string, IDictionary<string, string>> _supplements;
-    readonly Metadata _metadata = new Metadata();
 
     public Specification(string name, Result result)
     {
+      _id = Guid.NewGuid();
       _status = result.Status;
       _exception = result.Exception;
       _supplements = result.Supplements;
       _name = name;
+    }
+
+    public Guid Id
+    {
+      get { return _id; }
     }
 
     public Status Status
@@ -51,9 +58,28 @@ namespace Machine.Specifications.Reporting.Model
       get { yield break; }
     }
 
-    public Metadata Metadata
+    ICanFail ILinkToCanFail.Next
     {
-      get { return _metadata; }
+      get;
+      set;
+    }
+
+    ICanFail ILinkToCanFail.Previous
+    {
+      get;
+      set;
+    }
+
+    ICanBeNotImplemented ILinkToNotImplemented.Next
+    {
+      get;
+      set;
+    }
+
+    ICanBeNotImplemented ILinkToNotImplemented.Previous
+    {
+      get;
+      set;
     }
   }
 }

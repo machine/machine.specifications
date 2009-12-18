@@ -1,12 +1,10 @@
-using System;
-
 using Machine.Specifications.Reporting.Model;
 using Machine.Specifications.Reporting.Visitors;
 
 namespace Machine.Specifications.Reporting.Specs.Visitors
 {
   [Subject(typeof(NotImplementedSpecificationLinker))]
-  public class when_unimplemented_specifications_are_linked_by_id : ReportSpecs
+  public class when_unimplemented_specifications_are_linked : ReportSpecs
   {
     static NotImplementedSpecificationLinker Linker;
     static Run Report;
@@ -40,28 +38,29 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
                                               Last,
                                               Spec("a 2 c 1 c 2 specification 2", Result.Pass()))))
           );
-
-        new SpecificationIdGenerator().Visit(Report);
       };
 
     Because of = () => Linker.Visit(Report);
 
-    It should_assign_a__next__link_to_the_first_unimplemented_spec =
-      () => First.Metadata[NotImplementedSpecificationLinker.Next].ShouldBeOfType<Guid>();
+    It should_not_assign_a__previous__link_to_the_report =
+      () => ((ILinkToNotImplemented) Report).Previous.ShouldBeNull();
 
-    It should_not_assign_a__previous__link_to_the_first_unimplemented_spec =
-      () => First.Metadata[NotImplementedSpecificationLinker.Previous].ShouldBeNull();
+    It should_assign_a__next__link_to_the_report =
+      () => ((ILinkToNotImplemented) Report).Next.ShouldEqual(First);
 
-    It should_assign_a__next__link_to_the_second_unimplemented_spec =
-      () => Second.Metadata[NotImplementedSpecificationLinker.Next].ShouldBeOfType<Guid>();
+    It should_not_assign_a__previous__link_to_the_first_failed_spec =
+      () => ((ICanBeNotImplemented) First).Previous.ShouldBeNull();
 
-    It should_assign_a__previous__link_to_the_second_unimplemented_spec =
-      () => Second.Metadata[NotImplementedSpecificationLinker.Previous].ShouldBeOfType<Guid>();
+    It should_assign_a__next__link_to_the_second_failed_spec =
+      () => ((ICanBeNotImplemented) Second).Next.ShouldEqual(Last);
 
-    It should_not_assign_a__next__link_to_the_last_unimplemented_spec =
-      () => Last.Metadata[NotImplementedSpecificationLinker.Next].ShouldBeNull();
+    It should_assign_a__previous__link_to_the_second_failed_spec =
+      () => ((ICanBeNotImplemented) Second).Previous.ShouldEqual(First);
 
-    It should_assign_a__previous__link_to_the_last_unimplemented_spec =
-      () => Last.Metadata[NotImplementedSpecificationLinker.Previous].ShouldBeOfType<Guid>();
+    It should_not_assign_a__next__link_to_the_last_failed_spec =
+      () => ((ICanBeNotImplemented) Last).Next.ShouldBeNull();
+
+    It should_assign_a__previous__link_to_the_last_failed_spec =
+      () => ((ICanBeNotImplemented) Last).Previous.ShouldEqual(Second);
   }
 }

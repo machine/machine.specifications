@@ -1,14 +1,14 @@
-﻿<a name="${spec.Metadata[Machine.Specifications.Reporting.Visitors.SpecificationIdGenerator.Id]}">${spec.Name}</a>
+﻿<a name="${spec.Id}">${spec.Name}</a>
 
 <if condition="spec.Status == Status.Failing">
   <div class="failure">
     &lArr; FAILED
-    <a if="spec.Metadata[Machine.Specifications.Reporting.Visitors.FailedSpecificationLinker.Previous] != null"
-       href="#${spec.Metadata[Machine.Specifications.Reporting.Visitors.FailedSpecificationLinker.Previous]}"
-       title="Go to previous failed specification">&uArr;</a>
-    <a if="spec.Metadata[Machine.Specifications.Reporting.Visitors.FailedSpecificationLinker.Next] != null"
-       href="#${spec.Metadata[Machine.Specifications.Reporting.Visitors.FailedSpecificationLinker.Next]}"
-       title="Go to next failed specification">&dArr;</a>
+    <div class="prev-next-links">
+      <a if="((ICanFail) spec).Previous != null"
+         href="#${((ICanFail) spec).Previous.Id}" title="Go to previous failed specification">&uArr;</a>
+      <a if="((ICanFail) spec).Next != null"
+         href="#${((ICanFail) spec).Next.Id}" title="Go to next failed specification">&dArr;</a>
+    </div>
   </div>
   <p class="exception_type">
     ${spec.Exception.TypeName}
@@ -18,12 +18,12 @@
 
 <div if="spec.Status == Status.NotImplemented" class="notimplemented">
   &lArr; NOT IMPLEMENTED
-  <a if="spec.Metadata[Machine.Specifications.Reporting.Visitors.NotImplementedSpecificationLinker.Previous] != null"
-     href="#${spec.Metadata[Machine.Specifications.Reporting.Visitors.NotImplementedSpecificationLinker.Previous]}"
-     title="Go to previous unimplemented specification">&uArr;</a>
-  <a if="spec.Metadata[Machine.Specifications.Reporting.Visitors.NotImplementedSpecificationLinker.Next] != null"
-     href="#${spec.Metadata[Machine.Specifications.Reporting.Visitors.NotImplementedSpecificationLinker.Next]}"
-     title="Go to next unimplemented specification">&dArr;</a>
+  <div class="prev-next-links">
+    <a if="((ICanBeNotImplemented) spec).Previous != null"
+       href="#${((ICanBeNotImplemented) spec).Previous.Id}" title="Go to previous unimplemented specification">&uArr;</a>
+    <a if="((ICanBeNotImplemented) spec).Next != null"
+       href="#${((ICanBeNotImplemented) spec).Next.Id}" title="Go to next unimplemented specification">&dArr;</a>
+  </div>
 </div>
 
 <for each="var supplement in spec.Supplements">

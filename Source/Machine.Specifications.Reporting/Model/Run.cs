@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Machine.Specifications.Reporting.Model
 {
-  public class Run : SpecificationContainer, ISpecificationNode
+  public class Run : SpecificationContainer, ISpecificationNode, ILinkToCanFail, ILinkToNotImplemented
   {
     readonly IEnumerable<Assembly> _assemblies;
     readonly int _totalAssemblies;
@@ -57,6 +57,30 @@ namespace Machine.Specifications.Reporting.Model
     public IEnumerable<ISpecificationNode> Children
     {
       get { return _assemblies.Cast<ISpecificationNode>(); }
+    }
+
+    ICanFail ILinkToCanFail.Previous
+    {
+      get;
+      set;
+    }
+
+    ICanFail ILinkToCanFail.Next
+    {
+      get;
+      set;
+    }
+
+    ICanBeNotImplemented ILinkToNotImplemented.Previous
+    {
+      get;
+      set;
+    }
+
+    ICanBeNotImplemented ILinkToNotImplemented.Next
+    {
+      get;
+      set;
     }
   }
 }

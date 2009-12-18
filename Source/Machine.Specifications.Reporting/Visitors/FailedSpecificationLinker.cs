@@ -5,13 +5,14 @@ namespace Machine.Specifications.Reporting.Visitors
 {
   public class FailedSpecificationLinker : ISpecificationVisitor
   {
-    public const string Next = "Next_Failed_Spec";
-    public const string Previous = "Previous_Failed_Spec";
-    Specification _lastFailedSpec;
+    ICanFail _firstFail;
+    ICanFail _lastFail;
 
     public void Visit(Run run)
     {
       run.Assemblies.Each(Visit);
+
+      ((ILinkToCanFail) run).Next = _firstFail;
     }
 
     public void Visit(Assembly assembly)
@@ -36,12 +37,18 @@ namespace Machine.Specifications.Reporting.Visitors
         return;
       }
 
-      if (_lastFailedSpec != null)
+      if (_lastFail != null)
       {
-        specification.Metadata[Previous] = _lastFailedSpec.Metadata[SpecificationIdGenerator.Id];
-        _lastFailedSpec.Metadata[Next] = specification.Metadata[SpecificationIdGenerator.Id];
+        ((ICanFail) specification).Previous = _lastFail;
+        _lastFail.Next = specification;
       }
-      _lastFailedSpec = specification;
+
+      _lastFail = specification;
+
+      if (_firstFail == null)
+      {
+        _firstFail = specification;
+      }
     }
   }
 }

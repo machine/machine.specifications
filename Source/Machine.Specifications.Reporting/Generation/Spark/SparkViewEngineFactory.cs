@@ -1,9 +1,12 @@
 using System.IO;
 using System.Linq;
-using System.Reflection;
+
+using Machine.Specifications.Reporting.Model;
 
 using Spark;
 using Spark.FileSystem;
+
+using Assembly = System.Reflection.Assembly;
 
 namespace Machine.Specifications.Reporting.Generation.Spark
 {
@@ -34,7 +37,8 @@ namespace Machine.Specifications.Reporting.Generation.Spark
         .SetAutomaticEncoding(true)
         .AddNamespace(typeof(string).Namespace)
         .AddNamespace(typeof(Enumerable).Namespace)
-        .AddNamespace(typeof(Status).Namespace);
+        .AddNamespace(typeof(Status).Namespace)
+        .AddNamespace(typeof(Run).Namespace);
 
       var dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
       var templates = new FileSystemViewFolder(Path.Combine(dir, "Generation\\Spark\\Templates"));

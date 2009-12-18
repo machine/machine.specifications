@@ -14,7 +14,6 @@ namespace Machine.Specifications.Reporting.Specs
 
       new ISpecificationVisitor[]
       {
-        new SpecificationIdGenerator(),
         new FailedSpecificationLinker(),
         new NotImplementedSpecificationLinker()
       }

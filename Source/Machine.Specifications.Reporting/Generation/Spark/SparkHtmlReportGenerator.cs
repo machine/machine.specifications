@@ -26,7 +26,6 @@ namespace Machine.Specifications.Reporting.Generation.Spark
              p => new StreamWriter(p),
              new ISpecificationVisitor[]
              {
-               new SpecificationIdGenerator(),
                new FailedSpecificationLinker(),
                new NotImplementedSpecificationLinker()
              })
