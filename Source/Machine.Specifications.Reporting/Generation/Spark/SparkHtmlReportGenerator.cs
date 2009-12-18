@@ -16,6 +16,7 @@ namespace Machine.Specifications.Reporting.Generation.Spark
     readonly bool _showTimeInfo;
     readonly ISpecificationVisitor[] _specificationVisitors;
     readonly Func<string, TextWriter> _streamFactory;
+    string _resources;
 
     public SparkHtmlReportGenerator(string path, bool showTimeInfo)
       : this(path,
@@ -65,10 +66,7 @@ namespace Machine.Specifications.Reporting.Generation.Spark
         writeReport = r => WriteReportToFile(r, _path);
       }
 
-      var resources = resourcePathCreator(_path);
-      _specificationVisitors.Each(x => x.Initialize(new VisitorContext { ResourcePath = resources }));
-      _specificationVisitors.Each(x => x.Visit(run));
-
+      _resources = resourcePathCreator(_path);
       writeReport(run);
     }
 
@@ -94,21 +92,24 @@ namespace Machine.Specifications.Reporting.Generation.Spark
 
     void WriteIndexToFile(Run run, string path)
     {
-      WriteReport(path, (r, w) => r.RenderIndex(run, w));
+      WriteReport(path, run, (renderer, writer, theRun) => renderer.RenderIndex(theRun, writer));
     }
 
     void WriteReportToFile(Run run, string path)
     {
-      WriteReport(path, (r, w) => r.Render(run, w));
+      WriteReport(path, run, (renderer, writer, theRun) => renderer.Render(theRun, writer));
     }
 
-    void WriteReport(string path, Action<ISparkRenderer, TextWriter> renderAction)
+    void WriteReport(string path, Run run, Action<ISparkRenderer, TextWriter, Run> renderAction)
     {
+      _specificationVisitors.Each(x => x.Initialize(new VisitorContext { ResourcePath = _resources }));
+      _specificationVisitors.Each(x => x.Visit(run));
+
       _fileSystem.DeleteIfFileExists(path);
 
       using (var writer = _streamFactory(path))
       {
-        renderAction(_renderer, writer);
+        renderAction(_renderer, writer, run);
       }
     }
 
