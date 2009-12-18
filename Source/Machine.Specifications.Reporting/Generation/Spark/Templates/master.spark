@@ -93,7 +93,13 @@
 
     div.supplement {
       display: none;
+    }
+      
+    @media print {
+      ul.prev-next {
+        display: none;
       }
+    }
   </style>
 </head>
 <body>
