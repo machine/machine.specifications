@@ -1,6 +1,8 @@
 using System;
 
 using Machine.Specifications.Reporting.Model;
+using Machine.Specifications.Reporting.Visitors;
+using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Reporting.Specs
 {
@@ -8,7 +10,17 @@ namespace Machine.Specifications.Reporting.Specs
   {
     protected static Run Run(params Assembly[] assemblies)
     {
-      return new Run(assemblies);
+      var run = new Run(assemblies);
+
+      new ISpecificationVisitor[]
+      {
+        new SpecificationIdGenerator(),
+        new FailedSpecificationLinker(),
+        new NotImplementedSpecificationLinker()
+      }
+        .Each(x => x.Visit(run));
+
+      return run;
     }
 
     protected static Assembly Assembly(string name, params Concern[] concerns)

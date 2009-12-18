@@ -1,14 +1,30 @@
-﻿${spec.Name}
+﻿<a name="${spec.Metadata[Machine.Specifications.Reporting.Visitors.SpecificationIdGenerator.Id]}">${spec.Name}</a>
 
 <if condition="spec.Status == Status.Failing">
-  <div class="failure">&lArr; FAILED</div>
+  <div class="failure">
+    &lArr; FAILED
+    <a if="spec.Metadata[Machine.Specifications.Reporting.Visitors.FailedSpecificationLinker.Previous] != null"
+       href="#${spec.Metadata[Machine.Specifications.Reporting.Visitors.FailedSpecificationLinker.Previous]}"
+       title="Go to previous failed specification">&uArr;</a>
+    <a if="spec.Metadata[Machine.Specifications.Reporting.Visitors.FailedSpecificationLinker.Next] != null"
+       href="#${spec.Metadata[Machine.Specifications.Reporting.Visitors.FailedSpecificationLinker.Next]}"
+       title="Go to next failed specification">&dArr;</a>
+  </div>
   <p class="exception_type">
     ${spec.Exception.TypeName}
   </p>
   <pre class="exception_message">${spec.Exception}</pre>
 </if>
 
-<div if="spec.Status == Status.NotImplemented" class="notimplemented">&lArr; NOT IMPLEMENTED</div>
+<div if="spec.Status == Status.NotImplemented" class="notimplemented">
+  &lArr; NOT IMPLEMENTED
+  <a if="spec.Metadata[Machine.Specifications.Reporting.Visitors.NotImplementedSpecificationLinker.Previous] != null"
+     href="#${spec.Metadata[Machine.Specifications.Reporting.Visitors.NotImplementedSpecificationLinker.Previous]}"
+     title="Go to previous unimplemented specification">&uArr;</a>
+  <a if="spec.Metadata[Machine.Specifications.Reporting.Visitors.NotImplementedSpecificationLinker.Next] != null"
+     href="#${spec.Metadata[Machine.Specifications.Reporting.Visitors.NotImplementedSpecificationLinker.Next]}"
+     title="Go to next unimplemented specification">&dArr;</a>
+</div>
 
 <for each="var supplement in spec.Supplements">
   <for each="var item in supplement.Value">

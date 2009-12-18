@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -45,58 +44,60 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
         Writer = new StringWriter();
 
         Report = Run(Assembly("assembly 2",
-                                 Concern("a 2 concern 2",
-                                         Context("a 2 c 2 context 2",
-                                                 Spec("a 2 c 2 c 2 specification 2", Result.Pass()),
-                                                 Spec("a 2 c 2 c 2 specification 1", Result.Ignored())
-                                           ),
-                                         Context("a 2 c 2 context 1",
-                                                 Spec("a 2 c 2 c 1 specification 2",
-                                                      Result.Failure(PrepareException())),
-                                                 Spec("a 2 c 2 c 1 specification 1", Result.NotImplemented())
-                                           )
-                                   ),
-                                 Concern("a 2 concern 1",
-                                         Context("a 2 c 1 context 2",
-                                                 Spec("a 2 c 1 c 2 specification 2",
-                                                      Result.Supplement(Result.Pass(),
-                                                                        "the supplement",
-                                                                        new Dictionary<string, string>
-                                                                        {
-                                                                          { "text-some", "some <em>text</em>" },
-                                                                          { "img-some", @"C:\some\image\file" },
-                                                                          { "html-some", @"C:\some\html\file" }
-                                                                        })),
-                                                 Spec("a 2 c 1 c 2 specification 1", Result.Pass())
-                                           ),
-                                         Context("a 2 c 1 context 1",
-                                                 Spec("a 2 c 1 c 1 specification 2", Result.Pass()),
-                                                 Spec("a 2 c 1 c 1 specification 1", Result.Pass())
-                                           )
-                                   )),
-                        Assembly("assembly 1",
-                                 Concern("a 1 concern 2",
-                                         Context("a 1 c 2 context 2",
-                                                 Spec("a 1 c 2 c 2 specification 2", Result.Pass()),
-                                                 Spec("a 1 c 2 c 2 specification 1", Result.Pass())
-                                           ),
-                                         Context("a 1 c 2 context 1",
-                                                 Spec("a 1 c 2 c 1 specification 2", Result.Pass()),
-                                                 Spec("a 1 c 2 c 1 specification 1", Result.Pass())
-                                           )
-                                   ),
-                                 Concern("a 1 concern 1",
-                                         Context("a 1 c 1 context 2",
-                                                 Spec("a 1 c 1 c 2 specification 2", Result.Pass()),
-                                                 Spec("a 1 c 1 c 2 specification 1", Result.Pass())
-                                           ),
-                                         Context("a 1 c 1 context 1",
-                                                 Spec("a 1 c 1 c 1 specification 2", Result.Pass()),
-                                                 Spec("a 1 c 1 c 1 specification 1", Result.Pass())
-                                           )
-                                   )
-                          )
-                      );
+                              Concern("a 2 concern 2",
+                                      Context("a 2 c 2 context 2",
+                                              Spec("a 2 c 2 c 2 specification 2", Result.Pass()),
+                                              Spec("a 2 c 2 c 2 specification 1", Result.Ignored())
+                                        ),
+                                      Context("a 2 c 2 context 1",
+                                              Spec("a 2 c 2 c 1 specification 2",
+                                                   Result.Failure(PrepareException())),
+                                              Spec("a 2 c 2 c 1 specification 1", Result.NotImplemented())
+                                        )
+                                ),
+                              Concern("a 2 concern 1",
+                                      Context("a 2 c 1 context 2",
+                                              Spec("a 2 c 1 c 2 specification 2",
+                                                   Result.Supplement(Result.Pass(),
+                                                                     "the supplement",
+                                                                     new Dictionary<string, string>
+                                                                     {
+                                                                       { "text-some", "some <em>text</em>" },
+                                                                       { "img-some", @"C:\some\image\file" },
+                                                                       { "html-some", @"C:\some\html\file" }
+                                                                     })),
+                                              Spec("a 2 c 1 c 2 specification 1", Result.Pass())
+                                        ),
+                                      Context("a 2 c 1 context 1",
+                                              Spec("a 2 c 1 c 1 specification 2", Result.Pass()),
+                                              Spec("a 2 c 1 c 1 specification 1",
+                                                   Result.Failure(PrepareException()))
+                                        )
+                                )),
+                     Assembly("assembly 1",
+                              Concern("a 1 concern 2",
+                                      Context("a 1 c 2 context 2",
+                                              Spec("a 1 c 2 c 2 specification 2", Result.NotImplemented()),
+                                              Spec("a 1 c 2 c 2 specification 1", Result.Pass())
+                                        ),
+                                      Context("a 1 c 2 context 1",
+                                              Spec("a 1 c 2 c 1 specification 2", Result.Pass()),
+                                              Spec("a 1 c 2 c 1 specification 1",
+                                                   Result.Failure(PrepareException()))
+                                        )
+                                ),
+                              Concern("a 1 concern 1",
+                                      Context("a 1 c 1 context 2",
+                                              Spec("a 1 c 1 c 2 specification 2", Result.Pass()),
+                                              Spec("a 1 c 1 c 2 specification 1", Result.NotImplemented())
+                                        ),
+                                      Context("a 1 c 1 context 1",
+                                              Spec("a 1 c 1 c 1 specification 2", Result.Pass()),
+                                              Spec("a 1 c 1 c 1 specification 1", Result.Pass())
+                                        )
+                                )
+                       )
+          );
 
         Renderer = new SparkRenderer();
       };
