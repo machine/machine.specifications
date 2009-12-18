@@ -18,7 +18,8 @@ namespace Machine.Specifications.Reporting
 
       var descriptors = new List<SparkViewDescriptor>
                         {
-                          new SparkViewDescriptor().AddTemplate(SparkViewEngineFactory.DefaultTemplate)
+                          new SparkViewDescriptor().AddTemplate(SparkViewEngineFactory.ReportTemplate),
+                          new SparkViewDescriptor().AddTemplate(SparkViewEngineFactory.IndexTemplate)
                         };
 
       var targetPath = factory.TemplateAssemblyPath;

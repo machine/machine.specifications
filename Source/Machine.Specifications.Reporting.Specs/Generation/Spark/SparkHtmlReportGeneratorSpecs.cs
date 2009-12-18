@@ -70,6 +70,9 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
 
     It should_render_one_report =
       () => Renderer.AssertWasCalled(x => x.Render(Arg<Run>.Is.Equal(Run), Arg<TextWriter>.Is.NotNull));
+
+    It should_not_render_the_report_summary =
+      () => Renderer.AssertWasNotCalled(x => x.RenderIndex(Arg<Run>.Is.Anything, Arg<TextWriter>.Is.Anything));
   }
 
   [Subject(typeof(SparkHtmlReportGenerator))]
@@ -124,20 +127,20 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
     It should_create_a_directory_for_the_report_resources =
       () => FileSystem.AssertWasCalled(x => x.CreateOrOverwriteDirectory(ResourceDirectory));
 
-    It should_overwrite_existing_reports =
+    It should_overwrite_existing_reports_and_summaries =
       () => FileSystem.AssertWasCalled(x => x.DeleteIfFileExists(Arg<string>.Is.Anything),
-                                       o => o.Repeat.Times(Run.Assemblies.Count()));
+                                       o => o.Repeat.Times(Run.Assemblies.Count() + 1));
 
     It should_create_a_reports_in_the_report_directory =
       () => ReportPathsUsed.Each(x => x.ShouldStartWith(ReportDirectory));
-
-    It should_put_the_report_generation_date_in_the_file_name =
-      () => ReportPathsUsed.Each(x => x.ShouldEndWith("_12172009_195933.html"));
 
     It should_render_one_report_for_every_assembly_that_was_run =
       () => Renderer.AssertWasCalled(x => x.Render(Arg<Run>.Matches(y => y.Assemblies.Count() == 1),
                                                    Arg<TextWriter>.Is.NotNull),
                                      o => o.Repeat.Times(Run.Assemblies.Count()));
+    
+    It should_render_the_report_summary =
+      () => Renderer.AssertWasCalled(x => x.RenderIndex(Arg<Run>.Is.Same(Run), Arg<TextWriter>.Is.NotNull));
   }
 
   [Subject(typeof(SparkHtmlReportGenerator))]

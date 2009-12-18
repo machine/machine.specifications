@@ -1,5 +1,7 @@
 ﻿<h1>
-  ${assembly.Name}
+  <render section="assembly-name">
+    ${assembly.Name}
+  </render>
 </h1>
 <h2 class="count">
   ${assembly.TotalConcerns} ${Pluralize("concern", assembly.TotalConcerns)},

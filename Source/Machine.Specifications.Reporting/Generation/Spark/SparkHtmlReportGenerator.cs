@@ -88,15 +88,27 @@ namespace Machine.Specifications.Reporting.Generation.Spark
             var path = GetReportFilePath(assembyRun);
             WriteReportToFile(assembyRun, path);
           });
+
+      WriteIndexToFile(run, GetIndexFilePath());
+    }
+
+    void WriteIndexToFile(Run run, string path)
+    {
+      WriteReport(path, (r, w) => r.RenderIndex(run, w));
     }
 
     void WriteReportToFile(Run run, string path)
+    {
+      WriteReport(path, (r, w) => r.Render(run, w));
+    }
+
+    void WriteReport(string path, Action<ISparkRenderer, TextWriter> renderAction)
     {
       _fileSystem.DeleteIfFileExists(path);
 
       using (var writer = _streamFactory(path))
       {
-        _renderer.Render(run, writer);
+        renderAction(_renderer, writer);
       }
     }
 
@@ -110,9 +122,12 @@ namespace Machine.Specifications.Reporting.Generation.Spark
 
     string GetReportFilePath(Run run)
     {
-      return String.Format("{0}_{1:MMddyyyy_HHmmss}.html",
-                           Path.Combine(_path, run.Assemblies.First().Name),
-                           run.Meta.GeneratedAt);
+      return String.Format("{0}.html", Path.Combine(_path, run.Assemblies.First().Name));
+    }
+
+    string GetIndexFilePath()
+    {
+      return Path.Combine(_path, "index.html");
     }
   }
 }

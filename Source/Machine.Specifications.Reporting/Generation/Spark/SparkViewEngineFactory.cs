@@ -12,7 +12,8 @@ namespace Machine.Specifications.Reporting.Generation.Spark
 {
   public class SparkViewEngineFactory
   {
-    public const string DefaultTemplate = "master.spark";
+    public const string ReportTemplate = "master.spark";
+    public const string IndexTemplate = "index.spark";
 
     public string TemplateAssemblyPath
     {

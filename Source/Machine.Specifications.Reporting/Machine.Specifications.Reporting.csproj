@@ -94,6 +94,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Generation\Spark\Templates\index.spark">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Generation\Spark\Templates\_Specification.spark">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
