@@ -62,7 +62,17 @@
   </script>  
 </head>
 <body>
+  <ul class="prev-next-links">
+    <li if="((ILinkToCanFail) Model).Next != null">
+      <a href="#${((ILinkToCanFail) Model).Next.Id}">Go to first failed specification &dArr;</a>
+    </li>
+    <li if="((ILinkToNotImplemented) Model).Next != null">
+      <a href="#${((ILinkToNotImplemented) Model).Next.Id}">Go to first unimplemented specification &dArr;</a>
+    </li>
+  </ul>
+  
   <Assembly assembly="_assembly" each="var _assembly in Model.Assemblies" />
+  
   <em if="Model.Meta.ShouldGenerateTimeInfo">Generated on ${Model.Meta.GeneratedAt.ToLongDateString()} at ${Model.Meta.GeneratedAt.ToLongTimeString()}.</em>
   <hr />
   <hr />
