@@ -32,23 +32,26 @@ namespace Machine.Specifications.Reporting.Visitors
 
     public void Visit(Specification specification)
     {
-      if (specification.Status != Status.NotImplemented)
+      if (IsNotImplemented(specification))
       {
         return;
       }
 
-      if (_lastNotImplemented != null)
-      {
-        specification.PreviousNotImplemented = _lastNotImplemented;
-        _lastNotImplemented.NextNotImplemented = specification;
-      }
+      _lastNotImplemented = specification.LinkNotImplementedTo(_lastNotImplemented);
+      SetFirstNotImplemented(specification);
+    }
 
-      _lastNotImplemented = specification;
-
+    void SetFirstNotImplemented(Specification specification)
+    {
       if (_firstNotImplemented == null)
       {
         _firstNotImplemented = specification;
       }
+    }
+
+    static bool IsNotImplemented(Specification specification)
+    {
+      return specification.Status != Status.NotImplemented;
     }
   }
 }

@@ -32,19 +32,22 @@ namespace Machine.Specifications.Reporting.Visitors
 
     public void Visit(Specification specification)
     {
-      if (specification.Status != Status.Failing)
+      if (IsFailing(specification))
       {
         return;
       }
 
-      if (_lastFail != null)
-      {
-        specification.PreviousFailed = _lastFail;
-        _lastFail.NextFailed = specification;
-      }
+      _lastFail = specification.LinkFailureTo(_lastFail);
+      SetFirstFailure(specification);
+    }
 
-      _lastFail = specification;
+    static bool IsFailing(Specification specification)
+    {
+      return specification.Status != Status.Failing;
+    }
 
+    void SetFirstFailure(Specification specification)
+    {
       if (_firstFail == null)
       {
         _firstFail = specification;

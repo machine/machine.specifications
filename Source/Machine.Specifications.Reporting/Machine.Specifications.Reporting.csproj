@@ -81,6 +81,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Visitors\FailedSpecificationLinker.cs" />
+    <Compile Include="Visitors\LinkerExtensions.cs" />
     <Compile Include="Visitors\NotImplementedSpecificationLinker.cs" />
   </ItemGroup>
   <ItemGroup>
