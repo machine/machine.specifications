@@ -63,7 +63,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
                                                                      new Dictionary<string, string>
                                                                      {
                                                                        { "text-some", "some <em>text</em>" },
-                                                                       { "img-some", @"C:\some\image\file" },
+                                                                       { "img-some", @"C:\some\image\image" },
                                                                        { "html-some", @"C:\some\html\file" }
                                                                      })),
                                               Spec("a 2 c 1 c 2 specification 1", Result.Pass())

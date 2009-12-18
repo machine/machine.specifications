@@ -4,6 +4,8 @@ using Machine.Specifications.Reporting.Model;
 using Machine.Specifications.Reporting.Visitors;
 using Machine.Specifications.Utility;
 
+using Rhino.Mocks;
+
 namespace Machine.Specifications.Reporting.Specs
 {
   public class ReportSpecs
@@ -12,10 +14,13 @@ namespace Machine.Specifications.Reporting.Specs
     {
       var run = new Run(assemblies);
 
+      var fileSystem = MockRepository.GenerateStub<IFileSystem>();
+      
       new ISpecificationVisitor[]
       {
         new FailedSpecificationLinker(),
-        new NotImplementedSpecificationLinker()
+        new NotImplementedSpecificationLinker(),
+        new FileBasedResultSupplementPreparation(fileSystem)
       }
         .Each(x => x.Visit(run));
 

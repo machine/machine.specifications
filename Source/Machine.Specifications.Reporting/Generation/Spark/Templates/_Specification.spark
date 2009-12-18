@@ -36,6 +36,27 @@
 
 <for each="var supplement in spec.Supplements">
   <for each="var item in supplement.Value">
+    <if condition='item.Key.StartsWith("img-")'>
+      <var name="Guid.NewGuid()" />
+      <div>
+        [<a id="${name}_link" href="javascript:toggleVisibility('${name}', '${supplement.Key} ${item.Key}');">Show ${supplement.Key} ${item.Key}</a>]
+      </div>
+      <div id="${name}" class="supplement">
+        <a href="resources/${item.Value}">
+          <img width="80%" src="resources/${item.Value}" />
+        </a>
+      </div>
+    </if>
+    <if condition='item.Key.StartsWith("html-")'>
+      <var name="Guid.NewGuid()" />
+      <div>
+        [<a id="${name}_link" href="javascript:toggleVisibility('${name}', '${supplement.Key} ${item.Key}');">Show ${supplement.Key} ${item.Key}</a>]
+      </div>
+      <div id="${name}" class="supplement">
+        <iframe src="resources/${item.Value}" width="100%" height="600px">
+        </iframe>
+      </div>
+    </if>
     <if condition='item.Key.StartsWith("text-")'>
       <var name="Guid.NewGuid()" />
       <div>
