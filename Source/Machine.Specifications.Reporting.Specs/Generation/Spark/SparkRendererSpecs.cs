@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -59,7 +60,15 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
                                    ),
                                  Concern("a 2 concern 1",
                                          Context("a 2 c 1 context 2",
-                                                 Spec("a 2 c 1 c 2 specification 2", Result.Pass()),
+                                                 Spec("a 2 c 1 c 2 specification 2",
+                                                      Result.Supplement(Result.Pass(),
+                                                                        "the supplement",
+                                                                        new Dictionary<string, string>
+                                                                        {
+                                                                          { "text-some", "some <em>text</em>" },
+                                                                          { "img-some", @"C:\some\image\file" },
+                                                                          { "html-some", @"C:\some\html\file" }
+                                                                        })),
                                                  Spec("a 2 c 1 c 2 specification 1", Result.Pass())
                                            ),
                                          Context("a 2 c 1 context 1",
@@ -178,7 +187,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
         {
           SomeAction();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
           throw new InvalidOperationException("something bad happened", ex);
         }

@@ -9,11 +9,13 @@ namespace Machine.Specifications.Reporting.Model
     readonly Status _status;
     readonly ExceptionResult _exception;
     readonly string _name;
+    readonly IDictionary<string, IDictionary<string, string>> _supplements;
 
     public Specification(string name, Result result)
     {
       _status = result.Status;
       _exception = result.Exception;
+      _supplements = result.Supplements;
       _name = name;
     }
 
@@ -30,6 +32,11 @@ namespace Machine.Specifications.Reporting.Model
     public ExceptionResult Exception
     {
       get { return _exception; }
+    }
+
+    public IDictionary<string, IDictionary<string, string>> Supplements
+    {
+      get { return _supplements; }
     }
 
     public void Accept(ISpecificationVisitor visitor)

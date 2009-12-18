@@ -1,11 +1,25 @@
 ﻿${spec.Name}
 
-<test if="spec.Status == Status.Failing">
+<if condition="spec.Status == Status.Failing">
   <div class="failure">&lArr; FAILED</div>
   <p class="exception_type">
     ${spec.Exception.TypeName}
   </p>
   <pre class="exception_message">${spec.Exception}</pre>
-</test>
+</if>
 
 <div if="spec.Status == Status.NotImplemented" class="notimplemented">&lArr; NOT IMPLEMENTED</div>
+
+<for each="var supplement in spec.Supplements">
+  <for each="var item in supplement.Value">
+    <if condition='item.Key.StartsWith("text-")'>
+      <var name="Guid.NewGuid()" />
+      <div>
+        [<a id="${name}_link" href="javascript:toggleVisibility('${name}', '${supplement.Key} ${item.Key}');">Show ${supplement.Key} ${item.Key}</a>]
+      </div>
+      <div id="${name}" style="display: none;">
+        <pre>${item.Value}</pre>
+      </div>
+    </if>
+  </for> 
+</for>

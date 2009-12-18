@@ -46,6 +46,20 @@
       height: 1px;
     }
   </style>
+  <script type="text/javascript">
+  function toggleVisibility(id, description) {
+    var section = document.getElementById(id);
+    var link = document.getElementById(id + "_link");
+
+    if (section.style.display == "block") {
+      section.style.display = "none";
+      link.innerHTML = "Show " + description;
+    } else {
+      section.style.display = "block";
+      link.innerHTML = "Hide " + description;
+    }
+  }
+  </script>  
 </head>
 <body>
   <Assembly assembly="_assembly" each="var _assembly in Model.Assemblies.OrderBy(x => x.Name)" />
