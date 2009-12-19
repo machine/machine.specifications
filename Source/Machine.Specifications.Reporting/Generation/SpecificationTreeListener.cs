@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 using Machine.Specifications.Reporting.Model;
@@ -30,6 +31,7 @@ namespace Machine.Specifications.Reporting.Generation
     List<Assembly> _assemblies;
     Dictionary<string, List<Context>> _concernsToContexts;
     List<Specification> _specifications;
+    int _nextId;
 
     public Run Run
     {
@@ -38,6 +40,7 @@ namespace Machine.Specifications.Reporting.Generation
 
     public void OnRunStart()
     {
+      _nextId = 1;
       _assemblies = new List<Assembly>();
     }
 
@@ -84,11 +87,18 @@ namespace Machine.Specifications.Reporting.Generation
 
     public void OnSpecificationEnd(SpecificationInfo specification, Result result)
     {
-      _specifications.Add(specification.ToNode(result));
+      _specifications.Add(AssignId(specification.ToNode(result)));
     }
 
     public void OnFatalError(ExceptionResult exception)
     {
+    }
+
+    Specification AssignId(Specification node)
+    {
+      node.Id = _nextId.ToString(CultureInfo.InvariantCulture);
+      _nextId++;
+      return node;
     }
   }
 }

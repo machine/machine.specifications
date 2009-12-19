@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Machine.Specifications.Reporting.Model
+﻿namespace Machine.Specifications.Reporting.Model
 {
   public interface ILinkTarget
   {
-    Guid Id
+    string Id
     {
       get;
     }
