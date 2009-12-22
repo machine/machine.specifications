@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Machine.Specifications.ConsoleRunner.Properties;
-using Machine.Specifications.Reporting;
-using Machine.Specifications.Reporting.Generation.Html;
+using Machine.Specifications.Reporting.Generation.Spark;
 using Machine.Specifications.Reporting.Generation.Xml;
 using Machine.Specifications.Reporting.Integration;
 using Machine.Specifications.Runner;
@@ -147,7 +146,7 @@ namespace Machine.Specifications.ConsoleRunner
 
     public ISpecificationRunListener GetHtmlReportListener(Options options)
     {
-      return new GenerateHtmlReportRunListener(options.HtmlPath, options.ShowTimeInformation);
+      return new GenerateSparkHtmlReportRunListener(options.HtmlPath, options.ShowTimeInformation);
     }
   }
 }
