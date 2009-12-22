@@ -72,13 +72,17 @@ namespace Machine.Specifications.Reporting.Generation.Spark
 
     void WriteReportsToDirectory(Run run)
     {
+      var indexFilePath = GetIndexFilePath();
+
       run.Assemblies
         .Select(assembly => new Run(new[] { assembly })
                             {
                               Meta =
                                 {
                                   GeneratedAt = run.Meta.GeneratedAt,
-                                  ShouldGenerateTimeInfo = run.Meta.ShouldGenerateTimeInfo
+                                  ShouldGenerateTimeInfo = run.Meta.ShouldGenerateTimeInfo,
+                                  ShouldGenerateIndexLink = true,
+                                  IndexLink = Path.GetFileName(indexFilePath)
                                 }
                             })
         .Each(assembyRun =>
@@ -87,7 +91,7 @@ namespace Machine.Specifications.Reporting.Generation.Spark
             WriteReportToFile(assembyRun, path);
           });
 
-      WriteIndexToFile(run, GetIndexFilePath());
+      WriteIndexToFile(run, indexFilePath);
     }
 
     void WriteIndexToFile(Run run, string path)

@@ -71,6 +71,10 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
 
     It should_not_render_the_report_summary =
       () => Renderer.AssertWasNotCalled(x => x.RenderIndex(Arg<Run>.Is.Anything, Arg<TextWriter>.Is.Anything));
+
+    It should_not_link_the_report_to_the_summary =
+      () => Renderer.AssertWasCalled(x => x.Render(Arg<Run>.Matches(y => y.Meta.ShouldGenerateIndexLink == false),
+                                                   Arg<TextWriter>.Is.Anything));
   }
 
   [Subject(typeof(SparkHtmlReportGenerator))]
@@ -137,8 +141,18 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
                                                    Arg<TextWriter>.Is.NotNull),
                                      o => o.Repeat.Times(Run.Assemblies.Count()));
 
+    It should_link_the_assembly_reports_to_the_summary =
+      () => Renderer.AssertWasCalled(x => x.Render(Arg<Run>.Matches(y => y.Meta.ShouldGenerateIndexLink &&
+                                                                         y.Meta.IndexLink == "index.html"),
+                                                   Arg<TextWriter>.Is.Anything),
+                                     o => o.Repeat.Times(Run.Assemblies.Count()));
+
     It should_render_the_report_summary =
       () => Renderer.AssertWasCalled(x => x.RenderIndex(Arg<Run>.Is.Same(Run), Arg<TextWriter>.Is.NotNull));
+
+    It should_not_link_the_summary_to_itself =
+      () => Renderer.AssertWasCalled(x => x.RenderIndex(Arg<Run>.Matches(y => y.Meta.ShouldGenerateIndexLink == false),
+                                                        Arg<TextWriter>.Is.Anything));
   }
 
   [Subject(typeof(SparkHtmlReportGenerator))]

@@ -30,6 +30,9 @@ namespace Machine.Specifications.Reporting.Specs.Generation
     
     It should_default_to_no_timestamp =
       () => listener.Run.Meta.ShouldGenerateTimeInfo.ShouldBeFalse();
+    
+    It should_default_to_no_link_to_the_summary =
+      () => listener.Run.Meta.ShouldGenerateIndexLink.ShouldBeFalse();
   }
 }
 

@@ -170,7 +170,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
     {
       var fileSystem = MockRepository.GenerateStub<IFileSystem>();
       fileSystem
-        .Stub(x => x.Move(Arg<string>.Matches(y=>y.EndsWith("-should-fail-copy")), Arg<string>.Is.Anything))
+        .Stub(x => x.Move(Arg<string>.Matches(y => y.EndsWith("-should-fail-copy")), Arg<string>.Is.Anything))
         .Throw(PrepareException());
 
       new ISpecificationVisitor[]

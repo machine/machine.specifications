@@ -4,11 +4,11 @@
   <div class="failure">
     &lArr; FAILED
     <ul class="prev-next">
-      <li class="prev failure">
+      <li class="failure">
         <a if="spec.PreviousFailed != null"
            href="#${spec.PreviousFailed.Id}" title="Go to previous failed specification">&uArr;</a>
       </li>
-      <li class="next failure">
+      <li class="failure">
         <a if="spec.NextFailed != null"
            href="#${spec.NextFailed.Id}" title="Go to next failed specification">&dArr;</a>
       </li>

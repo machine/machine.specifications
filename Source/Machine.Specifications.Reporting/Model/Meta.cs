@@ -15,5 +15,17 @@ namespace Machine.Specifications.Reporting.Model
       get;
       set;
     }
+
+    public bool ShouldGenerateIndexLink
+    {
+      get;
+      set;
+    }
+
+    public string IndexLink
+    {
+      get;
+      set;
+    }
   }
 }

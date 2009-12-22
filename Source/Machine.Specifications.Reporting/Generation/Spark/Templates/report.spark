@@ -70,7 +70,7 @@
       text-decoration: none;
       font-weight: bold;
       padding: 0 .3em;
-      border: 1px solid #000;
+      border: 1px solid lightgrey;
     }
 
     ul.prev-next li.notimplemented a {
@@ -90,6 +90,11 @@
       background-color: red;
       color: #fff;
     }
+    
+    ul.prev-next li.back a:hover {
+      background-color: #444;
+      color: #fff;
+    }
 
     div.supplement {
       display: none;
@@ -104,10 +109,13 @@
 </head>
 <body>
   <ul class="prev-next">
-    <li if="Model.NextFailed != null" class="next failure">
+    <li if="Model.Meta.ShouldGenerateIndexLink" class="back">
+      <a href="${Model.Meta.IndexLink}" title="Go back to the report summary">&laquo; Back</a>
+    </li>
+    <li if="Model.NextFailed != null" class="failure">
       <a href="#${Model.NextFailed.Id}">Go to first failed specification &dArr;</a>
     </li>
-    <li if="Model.NextNotImplemented != null" class="next notimplemented">
+    <li if="Model.NextNotImplemented != null" class="notimplemented">
       <a href="#${Model.NextNotImplemented.Id}">Go to first not implemented specification &dArr;</a>
     </li>
   </ul>
