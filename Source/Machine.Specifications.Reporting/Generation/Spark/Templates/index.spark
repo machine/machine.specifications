@@ -2,26 +2,7 @@
 <head>
   <title>Machine.Specifications Report Summary</title>
   <style type="text/css">
-    body {
-      font-family: Arial,Helvetica,sans-serif;
-      font-size: .9em;
-    }
-    
-    .count {
-      color: lightgrey;
-    }
-
-    .failure {
-      color: red;
-      font-weight: bold;
-      display: inline;
-    }
-
-    .notimplemented {
-      color: orange;
-      font-weight: bold;
-      display: inline;
-    }
+    <Stylesheet />
   </style>
 </head>
 <body>
