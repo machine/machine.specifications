@@ -13,3 +13,5 @@ NDependOut
 
 .setup-done
 /Distribution/Machine.Specifications-*.zip
+
+/Specs/*.xml
