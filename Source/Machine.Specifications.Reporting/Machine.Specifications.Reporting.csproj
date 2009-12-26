@@ -51,7 +51,6 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Generation\Html\GenerateHtmlReportRunListener.cs" />
     <Compile Include="Generation\Spark\GenerateSparkHtmlReportRunListener.cs" />
     <Compile Include="FileSystem.cs" />
     <Compile Include="Generation\Spark\SparkRenderer.cs" />
@@ -72,7 +71,6 @@
     <Compile Include="Model\Specification.cs" />
     <Compile Include="Model\SpecificationContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Generation\Html\HtmlReportGenerator.cs" />
     <Compile Include="Generation\CollectReportingInformationRunListener.cs" />
     <Compile Include="Generation\Spark\SparkHtmlReportGenerator.cs" />
     <Compile Include="Generation\SpecificationTreeListener.cs" />

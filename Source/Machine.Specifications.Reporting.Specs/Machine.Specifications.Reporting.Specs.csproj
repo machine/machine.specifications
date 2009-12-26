@@ -52,7 +52,6 @@
     <Compile Include="ReportSpecs.cs" />
     <Compile Include="Generation\Spark\SparkRendererSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Generation\Html\HtmlReportGeneratorSpecs.cs" />
     <Compile Include="Generation\Spark\SparkHtmlReportGeneratorSpecs.cs" />
     <Compile Include="Generation\SpecificationTreeListenerSpecs.cs" />
     <Compile Include="Visitors\FailedSpecificationLinkerSpecs.cs" />
