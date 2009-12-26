@@ -82,6 +82,6 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>copy /y "$(SolutionDir)$(SolutionName).Reporting\bin\$(ConfigurationName)\$(SolutionName).Reporting.Templates.dll" "$(TargetDir)"</PostBuildEvent>
+    <PostBuildEvent>copy /y "$(SolutionDir)..\Build\$(ConfigurationName)\$(SolutionName).Reporting.Templates.dll" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
