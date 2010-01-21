@@ -1,5 +1,5 @@
 using System;
-
+using System.Diagnostics;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Naming.Elements;
 
@@ -28,6 +28,18 @@ namespace Machine.Specifications.ReSharperRunner
       new MSpecElementNaming("Machine.Specifications_SupportingField",
                              "Machine.Specifications supporting field (Establish, Because, Cleanup)",
                              IsSupportingField);
+
+    public static readonly IElementKind Fields = new MSpecElementNaming("Machine.Specifications_Field",
+                                                                        "Machine.Specifications non-supporting field",
+                                                                        IsField);
+
+    public static readonly IElementKind Constants = new MSpecElementNaming("Machine.Specifications_Constant",
+                                                                           "Machine.Specifications constant",
+                                                                           IsConstant);
+
+    public static readonly IElementKind Locals = new MSpecElementNaming("Machine.Specifications_Local",
+                                                                        "Machine.Specifications local",
+                                                                        IsLocal);
 
     protected MSpecElementNaming(string name, string presentableName, Func<IDeclaredElement, bool> isApplicable)
       : base(name, presentableName, isApplicable)
@@ -61,6 +73,21 @@ namespace Machine.Specifications.ReSharperRunner
       return declaredElement.IsSpecification() && IsTestElement(declaredElement);
     }
 
+    static bool IsField(IDeclaredElement declaredElement)
+    {
+      return declaredElement.IsField() && IsInTestElementOrContext(declaredElement);
+    }
+
+    static bool IsConstant(IDeclaredElement declaredElement)
+    {
+        return declaredElement.IsConstant() && IsInTestElementOrContext(declaredElement);
+    }
+
+    static bool IsLocal(IDeclaredElement declaredElement)
+    {
+        return declaredElement.IsLocal() && IsInTestElementOrContext(declaredElement);
+    }
+
     static bool IsBehavior(IDeclaredElement declaredElement)
     {
       return declaredElement.IsBehavior() && IsTestElement(declaredElement.GetContainingType());
@@ -68,8 +95,12 @@ namespace Machine.Specifications.ReSharperRunner
 
     static bool IsSupportingField(IDeclaredElement declaredElement)
     {
-      return declaredElement.IsSupportingField() &&
-             (IsTestElement(declaredElement.GetContainingType()) || IsContextBase(declaredElement.GetContainingType()));
+      return declaredElement.IsSupportingField() && IsInTestElementOrContext(declaredElement);
+    }
+
+    static bool IsInTestElementOrContext(IDeclaredElement declaredElement)
+    {
+        return IsTestElement(declaredElement.GetContainingType()) || IsContextBase(declaredElement.GetContainingType());
     }
   }
 }

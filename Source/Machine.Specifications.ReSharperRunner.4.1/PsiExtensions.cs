@@ -37,6 +37,22 @@ namespace Machine.Specifications.ReSharperRunner
              element.IsValidFieldOfType(typeof(Cleanup));
     }
 
+    public static bool IsField(this IDeclaredElement element)
+    {
+      return element is IField;
+    }
+
+    public static bool IsConstant(this IDeclaredElement element)
+    {
+      return (element.IsField() && ((IField)element).IsConstant) ||
+             (element.IsLocal() && ((ILocalVariable)element).IsConstant);
+    }
+
+    public static bool IsLocal(this IDeclaredElement element)
+    {
+      return element is ILocalVariable;
+    }
+
     public static bool IsBehavior(this IDeclaredElement element)
     {
       return element.IsValidFieldOfType(typeof(Behaves_like<>)) &&
