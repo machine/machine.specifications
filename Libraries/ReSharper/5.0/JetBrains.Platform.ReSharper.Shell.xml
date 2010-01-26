@@ -32,7 +32,7 @@
             The AD can tell product properties, like name, version, build date, and URIs, and the list of product assemblies for various product configurations. A configuration is defined elsewhere, when starting the Shell over this AD, or specified for the setup package builder to tell which DLLs should go into setup.
             To start a Shell, create an AD of the specific type, give it enough context as needed, and call its overload of <c>StartShell</c>. A Shell cannot be created directly. A newly-created Shell remembers its underlying AD and uses it to get the list of the assemblies to run for the product.
             Even though you can create an AD directly, things Visual Studio integration package and setup package builder use autodiscovery to locate the AD because they're not product-specific and cannot know the exact AD class type. An <see cref="T:JetBrains.Application.ApplicationDescriptorAttribute"/> defnies the Application Descriptor to be created.
-            <para>Note: <see cref="T:JetBrains.Application.IApplicationDescriptor"/> is all-static and the same throughout all the product runs, <see cref="T:JetBrains.Application.IShellStarter"/> is bound to the single product run (but multiple shell runs, if needed), so it binds to cmdline and VS version, and the <see cref="T:JetBrains.Application.Shell"/> is for a single Shell run, and its <see cref="P:JetBrains.Application.Shell.AssemblyConfigurations"/> is unique per run.</para>
+            <para>Note: <see cref="T:JetBrains.Application.IApplicationDescriptor"/> is all-static and the same throughout all the product runs, <see cref="T:JetBrains.Application.IShellStarter"/> is bound to the single product run (but multiple shell runs, if needed), so it binds to cmdline and VS version, and the <see cref="T:JetBrains.Application.Shell"/> is for a single Shell run (in Visual Studio, our Shell can be started and stopped multiple times within the same VS run), and its <see cref="P:JetBrains.Application.Shell.AssemblyConfigurations"/> is unique per run.</para>
             </summary>
         </member>
         <member name="P:JetBrains.Application.IApplicationDescriptor.AllAssembliesResourceAssembly">
@@ -1350,6 +1350,14 @@
             <param name="totalWorkUnits">The inclusive upper limit of the progress range.</param>
             <param name="sTaskName">The <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> value to be set for the run. You SHOULD NOT leave it unmodified, unless you are running a subprogress.</param>
         </member>
+        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.StartProgress(JetBrains.Application.Progress.IProgressIndicator,System.Int32)">
+            <summary>
+            <para>Just call <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> and return the same instance of <see cref="T:JetBrains.Application.Progress.IProgressIndicator"/>. See <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> for details.</para>
+            </summary>
+            <param name="progress">Progress indicator.</param>
+            <param name="totalWorkUnits">The inclusive upper limit of the progress range.</param>
+            <returns>The same instance of IProgressIndicator in order ot use fluent interface.</returns>
+        </member>
         <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.StartStop(JetBrains.Application.Progress.IProgressIndicator,System.Int32,System.String,System.Action)">
             <summary>
             <para>Starts the progress to run through the [0..totalWorkUnits] range, executes <paramref name="action"/>, and then stops the progress. Use <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator,System.Double,System.Action{JetBrains.Application.Progress.IProgressIndicator})"/> to move the progress across the range.</para>
@@ -1468,6 +1476,10 @@
             <summary>
             Can execute a task.
             </summary>
+            <remarks>
+            This object is stateless, and thus not disposable.
+            Execution of each of the tasks is an action in itself, with its own disposable scope.
+            </remarks>
         </member>
         <member name="M:JetBrains.Application.Progress.ITaskExecutor.ExecuteTask(System.String,JetBrains.Application.Progress.TaskCancelable,System.Action{JetBrains.Application.Progress.IProgressIndicator})">
             <summary>
@@ -1484,7 +1496,7 @@
             <para>Whether the task could be canceled by the user, if the task progress indication provided by <see cref="T:JetBrains.Application.Progress.ITaskExecutor"/> supports canceling.</para>
             <para>The <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> pattern is supported, which means that an <see cref="T:JetBrains.Application.InterruptableActivityCookie"/> is plugged on the task thread to throw a <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> when called for a check with a <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.IsCanceled"/> <c>False</c>; such an exception is called by the task executor and converted into a <c>False</c> return value.</para>
             </param>
-            <returns>Whether the task has completed execution (i.e. was not canceled). Note that even a <see cref="F:JetBrains.Application.Progress.TaskCancelable.No"/> task could be canceled by setting <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.IsCanceled"/> to <c>False</c> or throwing a <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/>.</returns>
+            <returns>Whether the task has completed execution (i.e. was not canceled). Note that even a <see cref="F:JetBrains.Application.Progress.TaskCancelable.No"/> task could be canceled by setting <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.IsCanceled"/> to <c>False</c> or throwing a <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> or letting some other exception out of the <paramref name="task">task function</paramref>.</returns>
             <remarks>If you would like to return any values from the <paramref name="task"/>, assign them to local variables within the closure.</remarks>
         </member>
         <member name="T:JetBrains.Application.Progress.ProcessCancelledException">
@@ -2125,17 +2137,16 @@
             Caches <see cref="P:JetBrains.Application.ShellBase.UserSettingsRoamingDir"/>.
             </summary>
         </member>
-        <member name="M:JetBrains.Application.ShellBase.#ctor(JetBrains.Application.IShellStarter,System.Collections.Generic.IList{JetBrains.Application.AssemblyConfiguration},JetBrains.Application.ExceptionReport.ExceptionReporting)">
+        <member name="M:JetBrains.Application.ShellBase.#ctor(JetBrains.Application.IShellStarter,System.Collections.Generic.IList{JetBrains.Application.AssemblyConfiguration})">
             <summary>
             Creates a Shell instance. To create a Shell, use a <c>Start</c> overload on an <see cref="T:JetBrains.Application.IApplicationDescriptor"/> for the product you'd like to run.
             </summary>
             <param name="shellstarter">Process runtime context.</param>
             <param name="assemblyconfigurations">Defines the of assemblies to use for the product.</param>
-            <param name="exceptionReporting">Exception reporting.</param>
         </member>
         <member name="F:JetBrains.Application.ShellBase.ProductRegistryKeyPrefix">
             <summary>
-            Registry prefix before the <see cref="M:JetBrains.Application.ShellBase.GetProductSettingsSuffix_ShellBase(JetBrains.Application.IApplicationDescriptor)"/>.
+            Registry prefix before the <see cref="M:JetBrains.Application.ShellBase.GetProductSettingsSuffix_ShellBase(System.String,System.Version)"/>.
             </summary>
         </member>
         <member name="F:JetBrains.Application.ShellBase.PropExtendBuildDescription">
@@ -2779,14 +2790,150 @@
         <member name="P:JetBrains.Build.GuidCache.StrictGuidXml.Value">
             <remarks/>
         </member>
+        <member name="T:JetBrains.Application.Install.Guids.GuidEntry">
+            <summary>
+            An entry in the GUID Store.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Install.Guids.GuidEntry.Guid">
+            <summary>
+            GUID value of this entry.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Install.Guids.GuidEntry.Key">
+            <summary>
+            Key to this entry. Must be unique throughout the dictionary.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.Install.Guids.GuidEntryKey">
+            <summary>
+            Key to the GUID in the GUID Store.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.Guids.GuidEntryKey.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+            </returns>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. </param><exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.Application.Install.Guids.GuidEntryKey.GetHashCode">
+            <summary>
+            Serves as a hash function for a particular type. 
+            </summary>
+            <returns>
+            A hash code for the current <see cref="T:System.Object"/>.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.Application.Install.Guids.GuidEntryKey.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.Application.Install.Guids.GuidEntryKey.Equals(JetBrains.Application.Install.Guids.GuidEntryKey)">
+            <summary>
+            Indicates whether the current object is equal to another object of the same type.
+            </summary>
+            <returns>
+            true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            </returns>
+            <param name="other">An object to compare with this object.</param>
+        </member>
+        <member name="P:JetBrains.Application.Install.Guids.GuidEntryKey.Name">
+            <summary>
+            Gets the name of the key.
+            This is the only key identity.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.Install.Guids.GuidEntryKeyConverter">
+            <summary>
+            Knows how to switch between <see cref="T:JetBrains.Application.Install.Guids.GuidEntryKey"/>s and <see cref="T:System.String"/>s.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.Guids.GuidEntryKeyConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <summary>
+            Returns whether this converter can convert an object of the given type to the type of this converter, using the specified context.
+            </summary>
+            <returns>
+            true if this converter can perform the conversion; otherwise, false.
+            </returns>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context. </param><param name="sourceType">A <see cref="T:System.Type"/> that represents the type you want to convert from. </param>
+        </member>
+        <member name="M:JetBrains.Application.Install.Guids.GuidEntryKeyConverter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <summary>
+            Returns whether this converter can convert the object to the specified type, using the specified context.
+            </summary>
+            <returns>
+            true if this converter can perform the conversion; otherwise, false.
+            </returns>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context. </param><param name="destinationType">A <see cref="T:System.Type"/> that represents the type you want to convert to. </param>
+        </member>
+        <member name="M:JetBrains.Application.Install.Guids.GuidEntryKeyConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <summary>
+            Converts the given object to the type of this converter, using the specified context and culture information.
+            </summary>
+            <returns>
+            An <see cref="T:System.Object"/> that represents the converted value.
+            </returns>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context. </param><param name="culture">The <see cref="T:System.Globalization.CultureInfo"/> to use as the current culture. </param><param name="value">The <see cref="T:System.Object"/> to convert. </param><exception cref="T:System.NotSupportedException">The conversion cannot be performed. </exception>
+        </member>
+        <member name="M:JetBrains.Application.Install.Guids.GuidEntryKeyConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+            <summary>
+            Converts the given value object to the specified type, using the specified context and culture information.
+            </summary>
+            <returns>
+            An <see cref="T:System.Object"/> that represents the converted value.
+            </returns>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context. </param><param name="culture">A <see cref="T:System.Globalization.CultureInfo"/>. If null is passed, the current culture is assumed. </param><param name="value">The <see cref="T:System.Object"/> to convert. </param><param name="destinationType">The <see cref="T:System.Type"/> to convert the <paramref name="value"/> parameter to. </param><exception cref="T:System.ArgumentNullException">The <paramref name="destinationType"/> parameter is null. </exception><exception cref="T:System.NotSupportedException">The conversion cannot be performed. </exception>
+        </member>
+        <member name="T:JetBrains.Application.Install.Guids.GuidEntryKeys">
+            <summary>
+            Well-known values for <see cref="T:JetBrains.Application.Install.Guids.GuidEntryKey"/>.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.Install.Guids.GuidStore">
+            <summary>
+            Represents a store of GUIDs keyed by strings.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.Guids.GuidStore.GetEntry(JetBrains.Application.Install.Guids.GuidEntryKey)">
+            <summary>
+            Tries to get an entry by its key.
+            Throws if missing.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.Guids.GuidStore.TryGetEntry(JetBrains.Application.Install.Guids.GuidEntryKey)">
+            <summary>
+            Tries to get an entry by its key.
+            <c>Null</c>s if missing.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.Guids.GuidStore.TryGetEntryOrPropose(JetBrains.Application.Install.Guids.GuidEntryKey)">
+            <summary>
+            Tries to get an entry by its key.
+            If missing, adds a new entry to the <see cref="P:JetBrains.Application.Install.Guids.GuidStore.ProposedEntries"/> collection, and returns an empty (but still non-<c>Null</c>) GUID.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Install.Guids.GuidStore.Entries">
+            <summary>
+            A GUID value with its key.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Install.Guids.GuidStore.ProposedEntries">
+            <summary>
+            For GUID values whose keys were missing from the store, new entries are emitted into this collection, so that they could be moved into the main <see cref="P:JetBrains.Application.Install.Guids.GuidStore.Entries"/> collection by the operator.
+            </summary>
+        </member>
         <member name="T:JetBrains.Application.Install.InstallationData.InstallationData">
             <summary>
             The root element of the product installation data.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.Install.InstallationData.InstallationData.GuidByVsVersion(System.Collections.Generic.Dictionary{System.Version,System.Guid},System.Version)">
-            <summary>
-            Helper for per-VS installers. Looks up GUIDs per VS version.
             </summary>
         </member>
         <member name="M:JetBrains.Application.Install.InstallationData.InstallationData.MergeWith(JetBrains.Application.Install.InstallationData.InstallationData)">
@@ -2870,11 +3017,6 @@
         <member name="P:JetBrains.Application.Install.InstallationData.InstalledFolder.Id">
             <summary>
             An ID for this folder entry, from which the component, folder and file IDs in the installation database are derived.
-            </summary>
-        </member>
-        <member name="P:JetBrains.Application.Install.InstallationData.InstalledFolder.MsiComponentGuid">
-            <summary>
-            GUID for the component to be generated in the installer.
             </summary>
         </member>
         <member name="P:JetBrains.Application.Install.InstallationData.InstalledFolder.SourceDir">
@@ -3839,9 +3981,64 @@
             Helper for <see cref="M:JetBrains.Application.DataFlowEx.FlowIntoGuarded``1(JetBrains.DataFlow.ICollectionEvents{``0},JetBrains.DataFlow.ICollectionEvents{``0},System.Object,System.Boolean)"/>.
             </summary>
         </member>
+        <member name="T:JetBrains.Application.ExceptionReport.ExceptionReporting">
+            <summary>
+            Central class of the Exception Reporting subsystem.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.ExceptionReport.ExceptionReporting.myDispatcher">
+            <summary>
+            Identifies the owning thread.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.ExceptionReport.ExceptionReporting.myIsInInternalMode">
+            <summary>
+            Whether the product is running in Internal Mode. Knows this earlier than the Shell with its <see cref="P:JetBrains.Application.Shell.IsInInternalMode"/>. Cannot be reset once the session was seen in internal mode.
+            </summary>
+        </member>
         <member name="M:JetBrains.Application.ExceptionReport.ExceptionReporting.IsRelevantException(System.Exception)">
             <summary>
             Looks for our company/product names in the stack trace.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.ExceptionReport.ExceptionReporting.AttachToLogger">
+            <summary>
+            Starts listening logger events with this exception reporter.
+            Previously listening exception reporters are stacked beneath and deactivated until this method is reverted by disposing of its return value.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.ExceptionReport.ExceptionReporting.SetInternalMode">
+            <summary>
+            Tells the Exception Reporting we've entered the Internal mode. Should be called as early as it gets known.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.ExceptionReport.ExceptionReporting.TaskExecutor">
+            <summary>
+            Gets the task executor passed to nested <see cref="M:JetBrains.Application.ExceptionReport.ExceptionReporting.SetStrategy(JetBrains.Application.ExceptionReport.IExceptionReportStrategy)">strategies</see> to handle the exceptions.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.ExceptionReport.ExceptionReporting.IsShowingExceptionsToUser">
+            <summary>
+            Central property for deciding whether to show any exceptions to the user.
+            Sometimes we'd like to suppress exception notifications at all (eg for trade show demos), in these cases this flag goes low.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.ExceptionReport.ExceptionReporting.ExceptionReporterAttachedToLogger.myReportersStack">
+            <summary>
+            Free-threaded, lock-free reads, copy-on-write.
+            Stacks reporters, the last one is active.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.ExceptionReport.ExceptionReporting.ExceptionReporterAttachedToLogger.AddReporter(JetBrains.Application.ExceptionReport.ExceptionReporting)">
+            <summary>
+            Starts listening logger events with this exception reporter.
+            Previously listening exception reporters are stacked beneath and deactivated until this method is reverted by disposing of its return value.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.ExceptionReport.ExceptionReporting.ExceptionReporterAttachedToLogger.OnException(System.Object,JetBrains.DataFlow.EventArgs{System.Exception})">
+            <summary>
+            Exception occured. Dispatch to reporter on top of stack.
+            Might be empty, as we would never remove exception listener.
             </summary>
         </member>
         <member name="T:JetBrains.Application.ExecuteOrQueueSingular">
@@ -3977,21 +4174,19 @@
             A new file could also be created.
             </summary>
         </member>
-        <member name="M:JetBrains.Application.Install.InstallBindingRedirectionsConfigFileAttribute.#ctor(System.String,System.String)">
+        <member name="M:JetBrains.Application.Install.InstallBindingRedirectionsConfigFileAttribute.#ctor(System.String)">
             <summary>
             Schedulles creation of a new assembly configuration file with binding redirections.
             </summary>
             <param name="sTargetConfigFileName">Local name of the resulting config file, including all of the extensions. This file will be installed into the <see cref="F:JetBrains.Application.Install.InstallationData.InstallationTargetDirRoot.InstallDir"/> folder.</param>
-            <param name="sMsiComponentGuid">GUID for the installation component.</param>
         </member>
-        <member name="M:JetBrains.Application.Install.InstallBindingRedirectionsConfigFileAttribute.#ctor(System.String,JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot,System.String,System.String)">
+        <member name="M:JetBrains.Application.Install.InstallBindingRedirectionsConfigFileAttribute.#ctor(System.String,JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot,System.String)">
             <summary>
             Schedulles patching of an existing assembly configuration file with binding redirections.
             </summary>
             <param name="sTargetConfigFileName">Local name of the resulting config file, including all of the extensions. This file will be installed into the <see cref="F:JetBrains.Application.Install.InstallationData.InstallationTargetDirRoot.InstallDir"/> folder.</param>
             <param name="sourceroot">Root folder for looking up the original file. This could be <see cref="F:JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot.ProductBinariesDir"/> (same as destination), but this is not a recommended scenario, as the file might be patched multiple times in this case. If <paramref name="sSourceRelativePath"/> is not specified, this value is ignored.</param>
             <param name="sSourceRelativePath">An optional path to the source file, relative to <paramref name="sourceroot"/>. If non-<c>Null</c>, then the binding redirections are added to the contents of that file. If <c>Null</c>, then a new file is created.</param>
-            <param name="sMsiComponentGuid">GUID for the installation component.</param>
         </member>
         <member name="T:JetBrains.Application.Install.InstallerVsVersionAffinity">
             <summary>
@@ -4019,7 +4214,7 @@
             The files may reside either in Lib or Bin folders.
             </summary>
         </member>
-        <member name="M:JetBrains.Application.Install.InstallFileAttribute.#ctor(System.String,JetBrains.Application.Install.InstallationData.InstallationTargetDirRoot,System.String,JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot,System.String,System.String,System.Boolean,System.String)">
+        <member name="M:JetBrains.Application.Install.InstallFileAttribute.#ctor(System.String,JetBrains.Application.Install.InstallationData.InstallationTargetDirRoot,System.String,JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot,System.String,System.String,System.Boolean)">
             <summary>
             Adds one or more arbitrary files to the installation.
             </summary>
@@ -4030,7 +4225,6 @@
             <param name="sFilesMask">Mask for picking the files from the folder on the compilation site (source). More than one file is OK. File names will be the same on the installation site (target).</param>
             <param name="recursive">Process all folders recursively</param>
             <param name="id">The unique identifier for this installation entry.</param>
-            <param name="sMsiComponentGuid">GUID for the MSI component, required unless <paramref name="recursive"/>.</param>
         </member>
         <member name="P:JetBrains.Application.Install.InstallFileAttribute.FilesMask">
             <summary>
@@ -4042,14 +4236,9 @@
             The unique identifier for this installation entry.
             </summary>
         </member>
-        <member name="P:JetBrains.Application.Install.InstallFileAttribute.MsiComponentGuid">
-            <summary>
-            GUID for the MSI component, unless <see cref="P:JetBrains.Application.Install.InstallFileAttribute.IsRecursive"/>.
-            </summary>
-        </member>
         <member name="P:JetBrains.Application.Install.InstallFileAttribute.IsRecursive">
             <summary>
-            Porcess all subfolders recursively, or not
+            Process all subfolders recursively, or not
             </summary>
         </member>
         <member name="P:JetBrains.Application.Install.InstallFileAttribute.SourceRelativeDir">
@@ -4691,11 +4880,6 @@
             <param name="name">Name for the <see cref="P:JetBrains.Threading.Invocator.ReentrancyGuard"/> lifting.</param>
             <param name="action">The action to be executed in the clean state.</param>
         </member>
-        <member name="M:JetBrains.Threading.Invocator.AssertGuarded">
-            <summary>
-            Checks that the activity is executed on the proper thread and is being guarded from reentrancy.
-            </summary>
-        </member>
         <member name="M:JetBrains.Threading.Invocator.ExecuteOrQueue(System.String,System.Action)">
             <summary>
             <para>Executes an action on the <see cref="P:JetBrains.Application.Shell.PrimaryDispatcher">primary thread</see> in a <see cref="T:JetBrains.Threading.ReentrancyGuard">guarded context</see>.</para>
@@ -4716,6 +4900,12 @@
             <param name="name">The name for the task.</param>
             <param name="action">The action to execute. Exceptions will be trapped.</param>
             <returns><c>True</c> if executed immediately, <c>False</c> if queued (<see cref="M:JetBrains.Threading.ReentrancyGuard.TryExecute(System.String,System.Action)"/>-compatible behavior).</returns>
+        </member>
+        <member name="M:JetBrains.Threading.Invocator.LogAssertGuarded">
+            <summary>
+            <para>Checks that the activity is executed on the proper thread and is being guarded from reentrancy.</para>
+            <para>Does not break execution, just logs the failure — the common case of the failure is adding new guard-checks, in which case the features could go on functioning “as before” without breaking execution, but logging the failure.</para>
+            </summary>
         </member>
         <member name="M:JetBrains.Threading.Invocator.PushQueue(System.String,System.Action)">
             <summary>
@@ -4886,7 +5076,7 @@
             A base test that is set up for creating the Platform Test Shell.
             </summary>
         </member>
-        <member name="T:JetBrains.Application.test.TestDataFlowEx">
+        <member name="T:JetBrains.Application.Test.TestDataFlowEx">
             <summary>
             Tests the shell-specific extensions to DF entities.
             </summary>
@@ -5029,6 +5219,250 @@
             Must be in the global namespace.
             This class tears down the Test Shell at the end of the assembly tests execution.
             Plant a class in each assembly with tests, inherited from this one.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.ExceptionReport.StoringExceptionReportService">
+            <summary>
+            Stores all of the reported exceptions (with either reporting method) without showing them to the user.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.Defines">
+             <summary>Pre-compile-time defined constants that emulate the C++ #define that has a value.</summary>
+            <remarks>The set of #defines and their default values are given in an MSBuild file. The defauls could be overridden on the build server.</remarks>
+        </member>
+        <member name="F:JetBrains.Application.Defines.CompanyName">
+             <summary>
+              <para>
+                <c>#define CompanyName JetBrains</c>
+              </para>
+              <para>Short company name.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.IsModeAssert">
+             <summary>
+              <para>
+                <c>#define IsModeAssert True</c>
+              </para>
+              <para>Whether debug asserts should be active and throw runtime exceptions.</para>
+              <para>Default is ON. OFF for production builds.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.IsModeStatistics">
+             <summary>
+              <para>
+                <c>#define IsModeStatistics False</c>
+              </para>
+              <para>Whether statistics should be collected by the Statistics class.</para>
+              <para>Default is OFF.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.IsMsiIncludePdb">
+             <summary>
+              <para>
+                <c>#define IsMsiIncludePdb True</c>
+              </para>
+              <para>Whether PDBs for product binaries should be packed into the Setup.</para>
+              <para>If True, it is an error if a PDB is missing.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.IsMsiIncludeXmlDoc">
+             <summary>
+              <para>
+                <c>#define IsMsiIncludeXmlDoc True</c>
+              </para>
+              <para>Whether XmlDocs for product binaries should be packed into the Setup.</para>
+              <para>If True, it is an error if an XmlDoc file is missing.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.IsMsiProductBinariesStrongName">
+             <summary>
+              <para>
+                <c>#define IsMsiProductBinariesStrongName True</c>
+              </para>
+              <para>Whether product binaries packed into MSI must have strong names. If True, Setup build will fail unless assemblies have strong names.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.IsProductionBuild">
+             <summary>
+              <para>
+                <c>#define IsProductionBuild False</c>
+              </para>
+              <para>Defines whether this is the Production Build — that is, production license should be used instead of the EAP license, and any optional checks should be deactivated.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.IsReSharper">
+             <summary>
+              <para>
+                <c>#define IsReSharper True</c>
+              </para>
+              <para>Demo Define.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.ModeAssertName">
+             <summary>
+              <para>
+                <c>#define ModeAssertName JET_MODE_ASSERT</c>
+              </para>
+              <para>Name of the IsModeAssert-induced conditional compilation symbol.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.ModeStatisticsName">
+             <summary>
+              <para>
+                <c>#define ModeStatisticsName JET_MODE_STATISTICS</c>
+              </para>
+              <para>Name of the IsModeAssert-induced conditional compilation symbol.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.PragmaOnce_Platform_Defines_Targets">
+             <summary>
+              <para>
+                <c>#define PragmaOnce_Platform_Defines_Targets True</c>
+              </para>
+              <para>Pragma Once.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.PragmaOnce_Product_Defines_Targets">
+             <summary>
+              <para>
+                <c>#define PragmaOnce_Product_Defines_Targets True</c>
+              </para>
+              <para>Pragma Once.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.ProductName">
+             <summary>
+              <para>
+                <c>#define ProductName ReSharper</c>
+              </para>
+              <para>Name of the current product. If there're multiple products built on these sources, their least common generic name.</para>
+              <para>You MUST NOT use this define where an Application Descriptor is available (this includes any time when Shell is running). This is ONLY for out-of-shell and build-time uses.</para>
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.Defines.Const">
+             <summary>Literal versions of the properties.</summary>
+            <remarks>Use these const fields only where use of a constant is mandatory. Otherwise use the static readonly field in the outer class, which stands better in the compiled assembly.</remarks>
+        </member>
+        <member name="F:JetBrains.Application.Defines.Const.CompanyName">
+             <summary>
+              <para>
+                <c>#define CompanyName JetBrains</c>
+              </para>
+              <para>Short company name.</para>
+              <para>Use this const field only where use of a constant is mandatory. Otherwise use the static readonly field in the outer class, which stands better in the compiled assembly.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.Const.IsModeAssert">
+             <summary>
+              <para>
+                <c>#define IsModeAssert True</c>
+              </para>
+              <para>Whether debug asserts should be active and throw runtime exceptions.</para>
+              <para>Default is ON. OFF for production builds.</para>
+              <para>Use this const field only where use of a constant is mandatory. Otherwise use the static readonly field in the outer class, which stands better in the compiled assembly.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.Const.IsModeStatistics">
+             <summary>
+              <para>
+                <c>#define IsModeStatistics False</c>
+              </para>
+              <para>Whether statistics should be collected by the Statistics class.</para>
+              <para>Default is OFF.</para>
+              <para>Use this const field only where use of a constant is mandatory. Otherwise use the static readonly field in the outer class, which stands better in the compiled assembly.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.Const.IsMsiIncludePdb">
+             <summary>
+              <para>
+                <c>#define IsMsiIncludePdb True</c>
+              </para>
+              <para>Whether PDBs for product binaries should be packed into the Setup.</para>
+              <para>If True, it is an error if a PDB is missing.</para>
+              <para>Use this const field only where use of a constant is mandatory. Otherwise use the static readonly field in the outer class, which stands better in the compiled assembly.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.Const.IsMsiIncludeXmlDoc">
+             <summary>
+              <para>
+                <c>#define IsMsiIncludeXmlDoc True</c>
+              </para>
+              <para>Whether XmlDocs for product binaries should be packed into the Setup.</para>
+              <para>If True, it is an error if an XmlDoc file is missing.</para>
+              <para>Use this const field only where use of a constant is mandatory. Otherwise use the static readonly field in the outer class, which stands better in the compiled assembly.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.Const.IsMsiProductBinariesStrongName">
+             <summary>
+              <para>
+                <c>#define IsMsiProductBinariesStrongName True</c>
+              </para>
+              <para>Whether product binaries packed into MSI must have strong names. If True, Setup build will fail unless assemblies have strong names.</para>
+              <para>Use this const field only where use of a constant is mandatory. Otherwise use the static readonly field in the outer class, which stands better in the compiled assembly.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.Const.IsProductionBuild">
+             <summary>
+              <para>
+                <c>#define IsProductionBuild False</c>
+              </para>
+              <para>Defines whether this is the Production Build — that is, production license should be used instead of the EAP license, and any optional checks should be deactivated.</para>
+              <para>Use this const field only where use of a constant is mandatory. Otherwise use the static readonly field in the outer class, which stands better in the compiled assembly.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.Const.IsReSharper">
+             <summary>
+              <para>
+                <c>#define IsReSharper True</c>
+              </para>
+              <para>Demo Define.</para>
+              <para>Use this const field only where use of a constant is mandatory. Otherwise use the static readonly field in the outer class, which stands better in the compiled assembly.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.Const.ModeAssertName">
+             <summary>
+              <para>
+                <c>#define ModeAssertName JET_MODE_ASSERT</c>
+              </para>
+              <para>Name of the IsModeAssert-induced conditional compilation symbol.</para>
+              <para>Use this const field only where use of a constant is mandatory. Otherwise use the static readonly field in the outer class, which stands better in the compiled assembly.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.Const.ModeStatisticsName">
+             <summary>
+              <para>
+                <c>#define ModeStatisticsName JET_MODE_STATISTICS</c>
+              </para>
+              <para>Name of the IsModeAssert-induced conditional compilation symbol.</para>
+              <para>Use this const field only where use of a constant is mandatory. Otherwise use the static readonly field in the outer class, which stands better in the compiled assembly.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.Const.PragmaOnce_Platform_Defines_Targets">
+             <summary>
+              <para>
+                <c>#define PragmaOnce_Platform_Defines_Targets True</c>
+              </para>
+              <para>Pragma Once.</para>
+              <para>Use this const field only where use of a constant is mandatory. Otherwise use the static readonly field in the outer class, which stands better in the compiled assembly.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.Const.PragmaOnce_Product_Defines_Targets">
+             <summary>
+              <para>
+                <c>#define PragmaOnce_Product_Defines_Targets True</c>
+              </para>
+              <para>Pragma Once.</para>
+              <para>Use this const field only where use of a constant is mandatory. Otherwise use the static readonly field in the outer class, which stands better in the compiled assembly.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Defines.Const.ProductName">
+             <summary>
+              <para>
+                <c>#define ProductName ReSharper</c>
+              </para>
+              <para>Name of the current product. If there're multiple products built on these sources, their least common generic name.</para>
+              <para>You MUST NOT use this define where an Application Descriptor is available (this includes any time when Shell is running). This is ONLY for out-of-shell and build-time uses.</para>
+              <para>Use this const field only where use of a constant is mandatory. Otherwise use the static readonly field in the outer class, which stands better in the compiled assembly.</para>
             </summary>
         </member>
     </members>

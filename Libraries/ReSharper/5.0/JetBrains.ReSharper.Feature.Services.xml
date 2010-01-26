@@ -29,6 +29,17 @@
             Return all child <see cref="T:System.Xml.XmlElement"/> with specified name.
             </summary>
         </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Bulbs.ContextActionAttribute">
+            <summary>
+            Indicates that the class, marked with this attribute, is a context action.
+            It should have public constructor with signature (ISolution, ITextControl)
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Bulbs.ContextActionAttribute.Disabled">
+            <summary>
+            If action is disabled by default
+            </summary>
+        </member>
         <member name="T:JetBrains.ReSharper.Feature.Services.Bulbs.FunctionalGroupAttribute">
             <summary>
             This attribute is used to set custom icon for group of CAs and QFses
@@ -47,9 +58,25 @@
             Used to ensure groups order. 
             Refactoring actions - 0
             Generate asctions - 10
-            Configure actions - 40
             Default actions - 50   
-            Disable actions - 100
+            Configure actions - 100
+            Disable actions - 500
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Bulbs.IContextActionDataProvider.GetSelectedElement``1(System.Boolean,System.Boolean)">
+            <summary>
+            Returns element under caret
+            </summary>
+            <typeparam name="T">Element type</typeparam>
+            <param name="checkDocumentRange">If documentRange should be cheked for valid</param>
+            <param name="ignoreSpaces">If spaces should be ignored</param>
+            <returns>Element under caret</returns>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Bulbs.QuickFixAttribute">
+            <summary>
+            Indicates that the class, marked with this attribute, is a quick-fix. 
+            It will be automatically registered for all errors, 
+            for which it has public constructors
             </summary>
         </member>
         <member name="M:JetBrains.ReSharper.Feature.Services.Bulbs.IBulbAction.IsAvailable(JetBrains.Util.IUserDataHolder)">
@@ -174,6 +201,11 @@
         <member name="F:JetBrains.ReSharper.Feature.Services.CodeCompletion.CodeCompletionSettings.HighlightImmediateMembers">
             <summary>
             Note: this property is no more configurable thru the UI.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.CodeCompletion.ICodeCompletionContext.EvaluateLookupItems">
+            <summary>
+            Valid after items are evaluated
             </summary>
         </member>
         <member name="T:JetBrains.ReSharper.Feature.Services.Lookup.DeclaredElementLookupItem">
@@ -380,14 +412,6 @@
             Gets visual replace range
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Feature.Services.StructuralSearch.IMatchingContext.Copy">
-            <summary>
-            Creates context's copy with limited functionallity:
-            it doesn't add any new matches to it.
-            Used for temporarily matches.
-            </summary>
-            <returns></returns>
-        </member>
         <member name="F:JetBrains.ReSharper.Feature.Services.StructuralSearch.StructuralSearchPatternParams.TreatPostfixAndPrefixOperatorEquivalent">
             <summary>
             Only if they are not used in expressions
@@ -453,11 +477,6 @@
         <member name="M:JetBrains.ReSharper.Feature.Services.CodeCompletion.CompletionStatisticsManager.PriorityStringList.IncreasePriority(System.String)">
             <summary>
             Increases priority of the specified item by 1
-            </summary>
-        </member>
-        <member name="M:JetBrains.ReSharper.Feature.Services.CodeCompletion.ICodeCompletionContext.EvaluateLookupItems">
-            <summary>
-            Valid after items are evaluated
             </summary>
         </member>
         <member name="M:JetBrains.ReSharper.Feature.Services.CodeCompletion.ICodeCompletionHost.InvokeHostCodeCompletion">
@@ -676,7 +695,7 @@
         <member name="P:JetBrains.ReSharper.Daemon.DaemonStageResult.RehighlightedRange">
             <summary>
             Range in the document for which the highlighting was recalculated. 
-            All old highlightingsthat are inside this range will be removed 
+            All old highlightings that are inside this range will be removed 
             from the editor and replaced with the returned ones.
             </summary>
         </member>
@@ -909,7 +928,7 @@
             If this property is true, options are refreshed on change
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorWorkflow.GenerateAndFinish(System.String)">
+        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorWorkflow.GenerateAndFinish(System.String,JetBrains.Application.Progress.IProgressIndicator)">
             <summary>
             Generates code and commits transaction (for non-advanced scenario)
             </summary>
@@ -920,13 +939,13 @@
             </summary>
             <param name="commandName">Name of command for Undo</param>
         </member>
-        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorWorkflow.Generate">
+        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorWorkflow.Generate(JetBrains.Application.Progress.IProgressIndicator)">
             <summary>
             Starts transaction, generates code, build Options.Output
             </summary>
             <returns>object to Dispose to rollback transaction, e.g. on Cancel</returns>
         </member>
-        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.GeneratorWorkflowBase.GenerateAndFinish(System.String)">
+        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.GeneratorWorkflowBase.GenerateAndFinish(System.String,JetBrains.Application.Progress.IProgressIndicator)">
             <summary>
             Generates code and commits transaction (for non-advanced scenario)
             </summary>
@@ -937,7 +956,7 @@
             </summary>
             <param name="commandName">Name of command for Undo</param>
         </member>
-        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.GeneratorWorkflowBase.Generate">
+        <member name="M:JetBrains.ReSharper.Feature.Services.Generate.GeneratorWorkflowBase.Generate(JetBrains.Application.Progress.IProgressIndicator)">
             <summary>
             Starts transaction, generates code, build Options.Output
             </summary>
@@ -1346,7 +1365,7 @@
             Finalizes the template
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.LiveTemplateHotspotSessionController.Init(JetBrains.TextControl.ITextControl,System.Int32@,JetBrains.ProjectModel.ISolution)">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.LiveTemplateHotspotSessionController.Init(System.String,JetBrains.TextControl.ITextControl,System.Int32@,JetBrains.ProjectModel.ISolution)">
             <summary>
             Initializes within a context
             </summary>
@@ -1374,6 +1393,11 @@
             </summary>
         </member>
         <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.LiveTemplates.LiveTemplatesManager.CreateHotspotSessionFromTemplate(JetBrains.ReSharper.LiveTemplates.Templates.Template,JetBrains.ProjectModel.ISolution,JetBrains.TextControl.ITextControl)">
+            <summary>
+            Executes template with inserting text
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.LiveTemplates.LiveTemplatesManager.CreateHotspotSessionFromTemplate(System.String,JetBrains.ReSharper.LiveTemplates.Templates.Template,JetBrains.ProjectModel.ISolution,JetBrains.TextControl.ITextControl)">
             <summary>
             Executes template with inserting text
             </summary>
@@ -2862,6 +2886,19 @@
             <summary>
             Presents the declared element as a header for HTML quick doc
             </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Search.ISpecialElementFinder.GetSearchTarget(JetBrains.ReSharper.Psi.Tree.IFile,System.Nullable{JetBrains.DocumentModel.DocumentRange},System.Nullable{System.Int32})">
+            <summary>
+            Get special finder's search targets
+            </summary>
+            <param name="file"></param>
+            <param name="range">
+              Range in document (selection or caret only). Can be null if invoked on project item
+            </param>
+            <param name="caretOffset">
+              Caret position. Can be null if invoked on project item
+            </param>
+            <returns></returns>
         </member>
         <member name="M:JetBrains.ReSharper.Feature.Services.SelectEmbracingConstruct.DotSelection.GetParentInternal(JetBrains.ReSharper.Psi.Tree.ITokenNode)">
             <summary>

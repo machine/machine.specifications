@@ -216,6 +216,24 @@
             Extensions for <see cref="T:JetBrains.ActionManagement.ActionManager"/>.
             </summary>
         </member>
+        <member name="M:JetBrains.ActionManagement.ActionManagerEx.ExecuteAction(JetBrains.ActionManagement.ActionManager,System.String)">
+            <summary>
+            <para>Calls <see cref="M:JetBrains.ActionManagement.ActionManager.UpdateAction(JetBrains.ActionManagement.IUpdatableAction)"/> on the action and, if the action is available, executes it.</para>
+            <para>It's an error if the action does not exist or is not executable or is not available at the moment.</para>
+            </summary>
+            <param name="actionman">This.</param>
+            <param name="actionId">ID to the action.</param>
+        </member>
+        <member name="M:JetBrains.ActionManagement.ActionManagerEx.ExecuteActionIfAvailable(JetBrains.ActionManagement.ActionManager,System.String)">
+            <summary>
+            <para>Calls <see cref="M:JetBrains.ActionManagement.ActionManager.UpdateAction(JetBrains.ActionManagement.IUpdatableAction)"/> on the action and, if the action is available, executes it.</para>
+            <para>It's an error if the action does not exist or is not executable.</para>
+            <para>It's not an error if the action is unavailable (<c>False</c> is returned in such a case).</para>
+            </summary>
+            <param name="actionman">This.</param>
+            <param name="actionId">ID to the action.</param>
+            <returns>Whether the action was available (= was executed).</returns>
+        </member>
         <member name="M:JetBrains.ActionManagement.ActionManagerEx.GetHowToExecuteAction(JetBrains.ActionManagement.ActionManager,System.String)">
             <summary>
             Tells the user how to execute the given action.
@@ -2830,6 +2848,9 @@
             <summary>
             A pre-setup label for use on the dialogs.
             </summary>
+        </member>
+        <member name="M:JetBrains.UI.Options.Helpers.Controls.Label.#ctor(System.String,System.Windows.Forms.Padding)">
+            <param name="marginPlus">Added to the default margin.</param>
         </member>
         <member name="T:JetBrains.UI.Options.Helpers.Controls.SectionHeading">
             <summary>
@@ -7491,6 +7512,47 @@
             
             <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs" /> that contains the event data. </param>
         </member>
+        <member name="T:JetBrains.Application.ExceptionReport.MessageBoxExceptionReportService">
+            <summary>
+            When the Issue Tracker is not available in a UI application, shows exceptions in message boxes.
+            This is also the case on early startup or when the <see cref="T:JetBrains.Application.IApplicationDescriptor"/> could not be obtained.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.ExceptionReport.MessageBoxExceptionReportService.mySingleMessageBox">
+            <summary>
+            Do not show more than one msgbox at a time.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.ExceptionReport.MessageBoxExceptionReportService.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Object"/> class.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.ExceptionReport.MessageBoxExceptionReportService.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Object"/> class.
+            </summary>
+            <param name="sProductName">Product name, if known at the call site. If <c>Null</c>, <see cref="F:JetBrains.Application.Defines.ProductName"/> will be used.</param>
+        </member>
+        <member name="M:JetBrains.Application.ExceptionReport.MessageBoxExceptionReportService.ShowException(System.Exception,System.String)">
+            <summary>
+            Shows an exception message box.
+            Prevents two from being shown simultaneousely.
+            </summary>
+            <param name="exception">The exception whose details are to be shown.</param>
+            <param name="sProductName">Product name, if known at the call site. If <c>Null</c>, <see cref="F:JetBrains.Application.Defines.ProductName"/> will be used.</param>
+        </member>
+        <member name="T:JetBrains.UI.Application.ExceptionReport.SubmitToTrackerExceptionReportServiceComponent">
+            <summary>
+            When <see cref="F:JetBrains.UI.Application.ExceptionReport.SubmitToTrackerExceptionReportServiceComponent.Shell"/> is running, takes over Exception Reporting to provide smart behavior: show popup exception notifier, store exceptions, submit the whole list.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.ExceptionReport.SubmitToTrackerExceptionReportService.LoginInformation">
+            <summary>
+            When Shell is running, its component binds this to the Setting Store.
+            Otherwise work isolated, ask every time.
+            </summary>
+        </member>
         <member name="T:JetBrains.UI.TreeView.TreeModelView">
             <summary>
             Provides default viewer for tree models
@@ -7757,82 +7819,6 @@
             <summary>
             Required method for Designer support - do not modify
             the contents of this method with the code editor.
-            </summary>
-        </member>
-        <member name="T:JetBrains.UI.Application.LogEventListener">
-            <summary>
-            Listens for <see cref="T:JetBrains.Util.Logger"/> events, reports them to the consumer.
-            Prevents reentrancy in handlers.
-            </summary>
-        </member>
-        <member name="F:JetBrains.UI.Application.LogEventListener.myIdentity">
-            <summary>
-            Identity.
-            ACHTUNG ACHTUNG! Special handling in Equals.
-            </summary>
-        </member>
-        <member name="F:JetBrains.UI.Application.LogEventListener.myNoReentrancy">
-            <summary>
-            Reentrancy in these handler methods most probably means infinite recursion.
-            </summary>
-        </member>
-        <member name="M:JetBrains.UI.Application.LogEventListener.#ctor">
-            <summary>
-            Creates a new unique listener.
-            </summary>
-        </member>
-        <member name="M:JetBrains.UI.Application.LogEventListener.#ctor(System.String)">
-            <summary>
-            Creates a listener that could be matched by its identity which prevents adding more than one instance with the same identity to the logger.
-            An empty string is considered to be the unique identity.
-            </summary>
-        </member>
-        <member name="M:JetBrains.UI.Application.LogEventListener.Equals(System.Object)">
-            <summary>
-            Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-            </summary>
-            <returns>
-            true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
-            </returns>
-            <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. </param><exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception><filterpriority>2</filterpriority>
-        </member>
-        <member name="M:JetBrains.UI.Application.LogEventListener.GetHashCode">
-            <summary>
-            Serves as a hash function for a particular type. 
-            </summary>
-            <returns>
-            A hash code for the current <see cref="T:System.Object"/>.
-            </returns>
-            <filterpriority>2</filterpriority>
-        </member>
-        <member name="M:JetBrains.UI.Application.LogEventListener.Equals(JetBrains.UI.Application.LogEventListener)">
-            <summary>
-            Indicates whether the current object is equal to another object of the same type.
-            </summary>
-            <returns>
-            true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-            </returns>
-            <param name="other">An object to compare with this object.</param>
-        </member>
-        <member name="P:JetBrains.UI.Application.LogEventListener.Identity">
-            <summary>
-            A listener that could be matched by its identity which prevents adding more than one instance with the same identity to the logger.
-            An empty string is considered to be the unique identity.
-            </summary>
-        </member>
-        <member name="E:JetBrains.UI.Application.LogEventListener.OnError">
-            <summary>
-            <see cref="M:JetBrains.Util.ILogEventListener.OnError(System.String)"/>.
-            </summary>
-        </member>
-        <member name="E:JetBrains.UI.Application.LogEventListener.OnException">
-            <summary>
-            <see cref="M:JetBrains.Util.ILogEventListener.OnException(System.Exception)"/>.
-            </summary>
-        </member>
-        <member name="E:JetBrains.UI.Application.LogEventListener.OnMessage">
-            <summary>
-            <see cref="M:JetBrains.Util.ILogEventListener.OnMessage(System.String,JetBrains.Util.LoggingLevel)"/>.
             </summary>
         </member>
         <member name="T:JetBrains.UI.Application.MouseWheelRedirector">
@@ -8203,6 +8189,16 @@
             Gets or creates the thread on which the task should be executed (either the current one, or the special worker thread, see <see cref="F:JetBrains.UI.Application.Progress.UITaskExecutorRun.myTaskThreadAffinity"/>).
             </summary>
         </member>
+        <member name="M:JetBrains.UI.Application.Progress.UITaskExecutorRun.RunStartTask">
+            <summary>
+            Starts the task, on whichever thread needed.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Application.Progress.UITaskExecutorRun.RunStartTaskCallTaskAction">
+            <summary>
+            The <see cref="F:JetBrains.UI.Application.Progress.UITaskExecutorRun.myTask"/> caller impl, runs on task target thread, at the end notifies the owner thru <see cref="F:JetBrains.UI.Application.Progress.UITaskExecutorRun.IsDone"/> async.
+            </summary>
+        </member>
         <member name="M:JetBrains.UI.Application.Progress.UITaskExecutorRun.Run_AttachUI">
             <summary>
             Progress UI for the task run, as specified by the owner of this Run object.
@@ -8216,16 +8212,6 @@
         <member name="M:JetBrains.UI.Application.Progress.UITaskExecutorRun.Run_WaitUntilDone">
             <summary>
             Pumps messages until the task is thru.
-            </summary>
-        </member>
-        <member name="M:JetBrains.UI.Application.Progress.UITaskExecutorRun.RunStartTask">
-            <summary>
-            Starts the task, on whichever thread needed.
-            </summary>
-        </member>
-        <member name="M:JetBrains.UI.Application.Progress.UITaskExecutorRun.RunStartTaskCallTaskAction">
-            <summary>
-            The <see cref="F:JetBrains.UI.Application.Progress.UITaskExecutorRun.myTask"/> caller impl, runs on task target thread, at the end notifies the owner thru <see cref="F:JetBrains.UI.Application.Progress.UITaskExecutorRun.IsDone"/> async.
             </summary>
         </member>
         <member name="T:JetBrains.UI.Application.Progress.UITaskExecutorSwitchingImplementation">
@@ -8683,9 +8669,24 @@
             Filled in by <see cref="!:ReadFromXml"/>.
             </summary>
         </member>
-        <member name="T:JetBrains.UI.Application.PluginSupport.PluginManager.PluginLoaderLogListener">
+        <member name="F:JetBrains.UI.Application.PluginSupport.PluginManager.PluginCommandLineSwitch">
             <summary>
-            Collects errors that occur while a particular plugin is being loaded.
+            Name of the command line switch that instructs the product to load an arbitrary DLL file as a plugin.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.Application.PluginSupport.PluginManager.PluginsDirectoryMachine">
+            <summary>
+            Directory with per-machine plugins.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.Application.PluginSupport.PluginManager.PluginsDirectoryUserLocal">
+            <summary>
+            Directory with per-user plugins that aren't roamed within a network.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.Application.PluginSupport.PluginManager.PluginsDirectoryUserRoaming">
+            <summary>
+            Directory with per-user plugins that would roam within a network.
             </summary>
         </member>
         <member name="M:JetBrains.UI.Application.PluginSupport.PluginsTableForm.InitializeComponent">
@@ -9283,7 +9284,36 @@
             Creates, displays, and operates a task dialog. The task dialog contains application-defined messages, title,
             verification check box, command links and push buttons, plus any combination of predefined icons and push buttons
             as specified on the other members of the class before calling Show.
+            
+            Uses UIApplicationShell.Instance.MainWindow as parent window if available
             </summary>
+            <returns>The result of the dialog, either a DialogResult value for common push buttons set in the CommonButtons
+            member or the ButtonID from a TaskDialogButton structure set on the Buttons member.</returns>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.TaskDialog.Show(JetBrains.UI.TaskDialog.TaskDialogParams,System.Boolean@,System.Int32@)">
+            <summary>
+            Creates, displays, and operates a task dialog. The task dialog contains application-defined messages, title,
+            verification check box, command links and push buttons, plus any combination of predefined icons and push buttons
+            as specified on the other members of the class before calling Show.
+            
+            Uses UIApplicationShell.Instance.MainWindow as parent window if available
+            </summary>
+            <param name="parameters">Task dialog parameters</param>
+            <param name="verificationFlagChecked">Returns true if the verification checkbox was checked when the dialog was dismissed.</param>
+            <param name="radioButtonResult">The radio botton selected by the user.</param>
+            <returns>The result of the dialog, either a DialogResult value for common push buttons set in the CommonButtons
+            member or the ButtonID from a TaskDialogButton structure set on the Buttons member.</returns>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.TaskDialog.Show(JetBrains.UI.TaskDialog.TaskDialogParams,System.Boolean@)">
+            <summary>
+            Creates, displays, and operates a task dialog. The task dialog contains application-defined messages, title,
+            verification check box, command links and push buttons, plus any combination of predefined icons and push buttons
+            as specified on the other members of the class before calling Show.
+            
+            Uses UIApplicationShell.Instance.MainWindow as parent window if available
+            </summary>
+            <param name="parameters">Task dialog parameters</param>
+            <param name="verificationFlagChecked">Returns true if the verification checkbox was checked when the dialog was dismissed.</param>
             <returns>The result of the dialog, either a DialogResult value for common push buttons set in the CommonButtons
             member or the ButtonID from a TaskDialogButton structure set on the Buttons member.</returns>
         </member>
@@ -9362,6 +9392,11 @@
             <param name="radioButtonResult">The radio botton selected by the user.</param>
             <returns>The result of the dialog, either a DialogResult value for common push buttons set in the CommonButtons
             member or the ButtonID from a TaskDialogButton structure set on the Buttons member.</returns>
+        </member>
+        <member name="M:JetBrains.UI.TaskDialog.TaskDialog.TodoUseHere">
+            <summary>
+            Marker method for places where TaskDialog should be used in place of any msgboxes or custom dialogs :) TODO!
+            </summary>
         </member>
         <member name="T:JetBrains.UI.TaskDialog.SwitchingTaskDialog">
             <summary>
@@ -10987,6 +11022,806 @@
             <para><see cref="M:System.IDisposable.Dispose"/> is the pairing method that's guaranteed to be called by the component container to tear down your component.</para>
             <para>You must not access other components before your <see cref="M:JetBrains.ComponentModel.IComponent.Init"/> method is called.</para>
             <para>All of the components that you access from <see cref="M:JetBrains.ComponentModel.IComponent.Init"/> are guaranteed to exist when your <see cref="M:System.IDisposable.Dispose"/> is called. Any other component might be missing by that time, and trying to get it will throw an exception.</para>
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Updates.UpdateFilterRunner">
+            <summary>
+            Runs the updates filter script downloaded from the server.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdateFilterRunner.RunFilter(System.IO.Stream,System.Action{System.Xml.XmlWriter})">
+            <summary>
+            Runs the remote-received Updates filter data against the local configuration.
+            Returns the list of products that pass the filter.
+            </summary>
+            <param name="streamFilter">XSLT filter, as received from the server.</param>
+            <param name="FWriteLocalEnvironmentData">The func to write the XML DOC to run the <paramref name="streamFilter"/> against.</param>
+            <returns>The list of updates available for our instance.</returns>
+        </member>
+        <member name="T:JetBrains.UI.Updates.UpdateInfo">
+            <summary>
+            Data about individual updates available for the current product.
+            A collection of such structs is the output of the check-for-updates subsystem.
+            Note: fields serialized as elements for the ease of XSLT processing, as we can add a new element to the parent scope at any time.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfo.RootElementName">
+            <summary>
+            Root element of the document containing a collection of <see cref="T:JetBrains.UI.Updates.UpdateInfo"/> structures.
+            The children of those element should be of the <see cref="T:JetBrains.UI.Updates.UpdateInfo"/> type, in the XML Serializer sense.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfo.CompanyName">
+            <summary>
+            <para>Vendor name.</para>
+            <para><see cref="F:JetBrains.Application.CompanyInfo.Name"/> for JetBrains products.</para>
+            <para>MUST be present.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfo.Description">
+            <summary>
+            A freehand description of this update.
+            <para>Optional.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfo.DownloadUri">
+            <summary>
+            <para>The URI from which the installation package could be download. This MUST be the direct download link, not the download HTML page (see <see cref="F:JetBrains.UI.Updates.UpdateInfo.InformationUri"/> for that), as the updater might use it for fetching the installation package.</para>
+            <para>This URI need not be unique and could point to the same versionless verbatim for any most recent release builds.</para>
+            <para>Optional.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfo.IconData">
+            <summary>
+            <para>A BASE64 stream with a serialized <see cref="T:System.Drawing.Bitmap"/> to be displayed as an icon for this update.</para>
+            <para>Optional.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfo.InformationUri">
+            <summary>
+            <para>The identity of this update. A link to the online information page for this particular update. MUST be unique among ALL updates — not only those currently available, but also any past and future ones.</para>
+            <para>MUST be present.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfo.IsFree">
+            <summary>
+            <para>Whether this will be a free update.</para>
+            <para>If <c>True</c>, then the customer will not have to pay for the product.</para>
+            <para>If <c>False</c>, then the upgrade MIGHT require a license.</para>
+            <para>Optional.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfo.PriceTag">
+            <summary>
+            <para>If the pricing information is available for the product, specifies the price tag in freehand form.</para>
+            <para><see cref="F:JetBrains.UI.Updates.UpdateInfo.IsFree"/> should be used for free upgrades instead.</para>
+            <para>Optional.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfo.ProductFullName">
+            <summary>
+            <para>Full name of the product installed by this update, which includes the product name plus any marketing version. This should not include the company name.</para>
+            <para><see cref="P:JetBrains.Application.IApplicationDescriptor.ProductFullName"/> for JetBrains products.</para>
+            <para><see cref="F:JetBrains.UI.Updates.UpdateInfo.ProductName"/> will be used if not specified.</para>
+            <para>Optional.</para>
+            </summary>
+            <example><c>ReSharper 2.5.1</c></example>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfo.ProductName">
+            <summary>
+            <para>Short name of the product installed by this update. This should include neither company name nor version number.</para>
+            <para><see cref="P:JetBrains.Application.IApplicationDescriptor.ProductName"/> for JetBrains products.</para>
+            <para>MUST be present.</para>
+            </summary>
+            <example><c>ReSharper</c></example>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfo.ProductVersion">
+            <summary>
+            <para>The four-component technical version of the product installed by this update.</para>
+            <para>MUST be present.</para>
+            </summary>
+            <example><c>4.5.1234.17</c></example>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfo.ReservedA">
+            <summary>
+            All custom attributes go in here.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfo.ReservedE">
+            <summary>
+            All custom elements go in here.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfo.Title">
+            <summary>
+            <para>Short title for the update.</para>
+            <para>MUST be present.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfo.UpdateKind">
+            <summary>
+            <para>The kind of the update, see <see cref="T:JetBrains.UI.Updates.UpdateInfo.PredefinedUpdateKinds"/> for recognized values.</para>
+            <para>The predefined values are replaced with display text when presented, and custom values are presented as is.</para>
+            <para>Optional.</para>
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.Updates.UpdateInfo.Identity">
+            <summary>
+            Gets the Identity of this instance, which is the <see cref="F:JetBrains.UI.Updates.UpdateInfo.InformationUri"/>.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Updates.UpdateInfo.PredefinedUpdateKinds">
+            <summary>
+            <see cref="F:JetBrains.UI.Updates.UpdateInfo.UpdateKind"/> recognized values.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfo.PredefinedUpdateKinds.Service">
+            <summary>
+            This is a service update and it's generally for fixing the bugs.
+            </summary>
+            <example><c>ReSharper 3.0.1</c> after <c>ReSharper 3.0</c></example>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfo.PredefinedUpdateKinds.Features">
+            <summary>
+            This is a new release that includes new features.
+            </summary>
+            <example><c>ReSharper 4.0</c> after <c>ReSharper 3.0</c></example>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfo.PredefinedUpdateKinds.Preview">
+            <summary>
+            This is a prerelease build, quality questionable.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Updates.UpdateInfoContainer">
+            <summary>
+            <para>While <see cref="T:JetBrains.UI.Updates.UpdateInfo"/> is the class that's downloaded from the server, this class wraps it and stores locally, along with additional info like whether it were shown to the user, or were ignored.</para>
+            <para><see cref="P:JetBrains.UI.Updates.UpdateInfo.Identity"/> is the identity. The <see cref="T:JetBrains.UI.Updates.UpdateInfo"/> is replaced on each new download.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfoContainer.InitialSnoozeInterval">
+            <summary>
+            When the update is first downloaded, its <see cref="F:JetBrains.UI.Updates.UpdateInfoContainer.SnoozeInterval"/> is assumed to be <see cref="F:JetBrains.UI.Updates.UpdateInfoContainer.InitialSnoozeInterval"/>.
+            On each next snooze, <see cref="M:JetBrains.UI.Updates.UpdateInfoContainer.Snooze(System.Boolean)"/> adjusts the <see cref="F:JetBrains.UI.Updates.UpdateInfoContainer.SnoozeInterval"/> to have a new value.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfoContainer.AdvertiseAfter">
+            <summary>
+            <para>The update popup should not be displayed before this date (UTC).</para>
+            <para>Used for snoozing the update notifications on the local machine.</para>
+            <para>Initially <c>Null</c>, then set by <see cref="M:JetBrains.UI.Updates.UpdateInfoContainer.Snooze(System.Boolean)"/>.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfoContainer.Category">
+            <summary>
+            The owning category.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfoContainer.DataProperty">
+            <summary>
+            The update info, as downloaded from the server.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateInfoContainer.SnoozeInterval">
+            <summary>
+            <para>Recommended interval for the next snooze.</para>
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdateInfoContainer.CreateViewWinForms">
+            <summary>
+            Creates a WinForms view for this update.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdateInfoContainer.Snooze(System.Boolean)">
+            <summary>
+            Snoozes the <see cref="F:JetBrains.UI.Updates.UpdateInfoContainer.AdvertiseAfter"/> value.
+            </summary>
+            <param name="showLater">If true the <see cref="F:JetBrains.UI.Updates.UpdateInfoContainer.SnoozeInterval"/> proberty will be increased exponentially. So user will see information about the updates again. <br/>
+            If false the <see cref="F:JetBrains.UI.Updates.UpdateInfoContainer.SnoozeInterval"/> will be set to 10 years. So the update will never be shown again.</param>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdateInfoContainer.ReadFromStream(JetBrains.UI.Updates.UpdatesCategory,System.Xml.XmlReader)">
+            <summary>
+            Creates a category when a new one is added (by user).
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdateInfoContainer.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
+            </summary>
+            <returns>
+            true if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, false.
+            </returns>
+            <param name="obj">The <see cref="T:System.Object" /> to compare with the current <see cref="T:System.Object" />. </param>
+            <exception cref="T:System.NullReferenceException">The <paramref name="obj" /> parameter is null.</exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdateInfoContainer.GetHashCode">
+            <summary>
+            Serves as a hash function for a particular type. 
+            </summary>
+            <returns>
+            A hash code for the current <see cref="T:System.Object" />.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdateInfoContainer.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdateInfoContainer.Equals(JetBrains.UI.Updates.UpdateInfoContainer)">
+            <summary>
+            Indicates whether the current object is equal to another object of the same type.
+            </summary>
+            <returns>
+            true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
+            </returns>
+            <param name="other">An object to compare with this object.</param>
+        </member>
+        <member name="P:JetBrains.UI.Updates.UpdateInfoContainer.Data">
+            <summary>
+            The update info, as downloaded from the server.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.Updates.UpdateInfoContainer.Identity">
+            <summary>
+            Identity for this update, as taken from <see cref="P:JetBrains.UI.Updates.UpdateInfoContainer.Data"/>-&gt;<see cref="P:JetBrains.UI.Updates.UpdateInfo.Identity"/>.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo">
+            <summary>
+            Base class for the data about the local environment against which the updates consider their applicability.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo.Collect">
+            <summary>
+            Collects the info from the current environment.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo.DateTimeSubInfo">
+            <summary>
+            Extensive date components to have them available for queries in the XML form.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo.DateTimeSubInfo.Date">
+            <summary>
+            The date only in the standard ISO 8601 format.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo.DateTimeSubInfo.DateTime">
+            <summary>
+            The date-time in the standard ISO 8601 format.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo.DateTimeSubInfo.Days2000">
+            <summary>
+            For the ease of comparison, the date as a single integer: the number of days since Jan 1, 2000.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo.DateTimeSubInfo.Time">
+            <summary>
+            The time only in the standard ISO 8601 format.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo.VersionSubInfo">
+            <summary>
+            Extensive version components to have them available for queries in the XML form.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo.VersionSubInfo.Build">
+            <summary>
+            The single version component.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo.VersionSubInfo.Dot2">
+            <summary>
+            Four-component version string, <c>Major.Minor</c> format, eg <c>1.2</c>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo.VersionSubInfo.Dot3">
+            <summary>
+            Four-component version string, <c>Major.Minor.Build</c> format, eg <c>1.2.3</c>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo.VersionSubInfo.Dot4">
+            <summary>
+            Four-component version string, <c>Major.Minor.Build.Revision</c> format, eg <c>1.2.3.4</c>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo.VersionSubInfo.Major">
+            <summary>
+            The single version component.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo.VersionSubInfo.Minor">
+            <summary>
+            The single version component.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo.VersionSubInfo.Revision">
+            <summary>
+            The single version component.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Updates.UpdatesCategory">
+            <summary>
+            A single category of updates that manages the updates for a single product.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdatesCategory.CheckForUpdatesInterval">
+            <summary>
+            Interval between automatic check-for-update attempts.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdatesCategory.CustomizeLocalEnvironmentInfo">
+            <summary>
+            <para>When the updates manager is about to check for updates for this updates category, it collects the information about the local environment. The downloaded filter will be applied to this data. This event allows to replace or alter this information before it's used.</para>
+            <para>Initially, it's of the <see cref="T:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo"/> type, as gotten from the <see cref="P:JetBrains.UI.Updates.UpdatesManager.LocalEnvironmentInfo"/>. You could change it to a serializable object of an arbitrary type.</para>
+            <para>This event should be advised on each shell startup.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdatesCategory.CustomizeQueryStringParams">
+            <summary>
+            <para>When the updates manager checks for updates, it downloads the XSLT filter from <see cref="F:JetBrains.UI.Updates.UpdatesCategory.UpdatesFilterUri"/>, plus some optional query string parameters that identify the local environment, if needed. This event allows to replace or alter this information before it's used.</para>
+            <para>Initially, it's gotten from the <see cref="P:JetBrains.UI.Updates.UpdatesManager.LocalEnvironmentInfo"/> <see cref="M:JetBrains.UI.Updates.UpdatesLocalInfoManager.CollectQueryStringParams(System.Object)"/>, called of the <see cref="F:JetBrains.UI.Updates.UpdatesCategory.CustomizeLocalEnvironmentInfo"/> result. You could change or replace the key-value pairs dictionary.</para>
+            <para>This event should be advised on each shell startup.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdatesCategory.IsActive">
+            <summary>
+            Whether the category is active, can download and display updates. This property is not persisted and must be set to <c>True</c> on each new <see cref="T:JetBrains.Application.Shell"/> session. Otherwise, the owning code is considered unloaded (eg plugin) and the updates are suppressed.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdatesCategory.LastActivationDate">
+            <summary>
+            The moment this category was activated (<see cref="F:JetBrains.UI.Updates.UpdatesCategory.IsActive"/> = <c>True</c>) last time.
+            Will be cleaned up if unused for a long time.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdatesCategory.LastDownloadAttemptDate">
+            <summary>
+            Previous download attempt for this category.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdatesCategory.LastDownloadSummary">
+            <summary>
+            Summary on the last download attempt. Freehand text.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdatesCategory.LastSuccessfulDownloadDate">
+            <summary>
+            The moment this category could download from <see cref="F:JetBrains.UI.Updates.UpdatesCategory.UpdatesFilterUri"/> last time.
+            Will be cleaned up if failed for a long time.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdatesCategory.Name">
+            <summary>
+            The identity of the category.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdatesCategory.UpdateInfos">
+            <summary>
+            The list of available updates. Custom serialization protocol.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdatesCategory.UpdatesFilterUri">
+            <summary>
+            The URI to download the updates filter from. The filter is an XSLT sciript that's run against the collected local environment information to determine which updates are applicable and emit the list of those.	// TODO: details
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesCategory.CollectLocalEnvironmentInfo">
+            <summary>
+            <para>When the updates manager is about to check for updates for this updates category, it collects the information about the local environment. The downloaded filter will be applied to this data. Collects this data first from the <see cref="P:JetBrains.UI.Updates.UpdatesManager.LocalEnvironmentInfo"/>, then applying the <see cref="F:JetBrains.UI.Updates.UpdatesCategory.CustomizeLocalEnvironmentInfo"/> customizations to it.</para>
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesCategory.IsEligibleForNotifications">
+            <summary>
+            Checks if update notifications could be displayed for this cat to the end user.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesCategory.RegisterDownloadResult(System.Boolean,System.String,JetBrains.UI.Updates.UpdateInfo[])">
+            <summary>
+            After downloading new update info for this cat, registers the success or failure.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesCategory.CreateByUser(JetBrains.UI.Updates.UpdatesManager,System.String,System.Uri)">
+            <summary>
+            Creates a category when a new one is added (by user).
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesCategory.ReadFromStream(JetBrains.UI.Updates.UpdatesManager,System.Xml.XmlReader)">
+            <summary>
+            Creates a category when a new one is added (by user).
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesCategory.WriteToStream(System.Xml.XmlWriter)">
+            <summary>
+            Serialzation.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesCategory.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="P:JetBrains.UI.Updates.UpdatesCategory.LastSuccessfulDownloadVersion">
+            <summary>
+            The build number of the product that successfully downloaded this category.
+            Update notifications should not be displayed for the category until there's a successful download by the current product version, to make sure the updates list is still relevant.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Updates.UpdatesCategory.LocalEnvironmentInfo">
+            <summary>
+            Collects info about the local environment against which the updates are checked.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdatesCategory.LocalEnvironmentInfo.FilterableData">
+            <summary>
+            Filterable data that describes the product on the local machine. The XSLT received from the updates server should be run against this data (<see cref="T:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo"/> or any customizations by the <see cref="T:JetBrains.UI.Updates.UpdatesCategory"/> owner thru the <see cref="F:JetBrains.UI.Updates.UpdatesCategory.CustomizeLocalEnvironmentInfo"/>) in its XML representation.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdatesCategory.LocalEnvironmentInfo.QueryString">
+            <summary>
+            The query string for the URI to download the updates from, as extracted from the main data (<see cref="F:JetBrains.UI.Updates.UpdatesCategory.LocalEnvironmentInfo.FilterableData"/>), could be customized with <see cref="F:JetBrains.UI.Updates.UpdatesCategory.CustomizeQueryStringParams"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesCategory.LocalEnvironmentInfo.WriteFilterableData(System.Xml.XmlWriter)">
+            <summary>
+            Writes <see cref="F:JetBrains.UI.Updates.UpdatesCategory.LocalEnvironmentInfo.FilterableData"/> into XML.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Updates.UpdatesDownloaderSession">
+            <summary>
+            Manages retrieving the updates info data stream, and schedulling such updates.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesDownloaderSession.BeginRun">
+            <summary>
+            Initiates the download, promises to self-dispose when done.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesDownloaderSession.BeginRun_Worker(JetBrains.UI.Updates.UpdatesCategory.LocalEnvironmentInfo)">
+            <summary>
+            Runs on another thread.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesDownloaderSession.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="T:JetBrains.UI.Updates.UpdatesLocalInfoManager">
+            <summary>
+            Child of <see cref="T:JetBrains.UI.Updates.UpdatesManager"/>.
+            Manages the local environment info that takes part in the Update process.
+            Collects <see cref="T:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo"/>, forms the Web request query string.
+            Override this component to add more data to the collected local info.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesLocalInfoManager.CollectLocalEnvironmentInfo">
+            <summary>
+            Collects the info about the local environment.
+            Updates are conditional against its properties, such as the product version.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesLocalInfoManager.CollectQueryStringParams">
+            <summary>
+            Out of the <see cref="T:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo"/> for the current environment, collects those parameters that should go into the query string on the server requests.
+            </summary>
+            <returns>Name-value pairs collection.</returns>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesLocalInfoManager.CollectQueryStringParams(System.Object)">
+            <summary>
+            Out of the given <see cref="T:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo"/> variation for the current environment, collects those parameters that should go into the query string on the server requests.
+            </summary>
+            <returns>Name-value pairs collection.</returns>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesLocalInfoManager.CollectQueryStringParams_Walk(System.Object,System.Collections.Generic.IDictionary{System.String,System.String},System.String)">
+            <summary>
+            Walks the <see cref="T:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo"/> structs with reflection.
+            Picks <see cref="T:JetBrains.UI.Updates.UpdatesLocalInfoManager.QueryStringParamAttribute"/>-ed fields as params, recurses into <see cref="T:JetBrains.UI.Updates.UpdatesLocalInfoManager.QueryStringContainerAttribute"/> fields only. Param names are container names plus field name.
+            </summary>
+            <param name="container">The current container to walk.</param>
+            <param name="bag">Target bag.</param>
+            <param name="sPrefixWithDot">Container-induced prefix for the field names, eg <c>Product.Version.</c> in <c>Product.Version.Major</c> param name.</param>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesLocalInfoManager.Init">
+            <summary>
+            <para>Initializes the component. Called by the component container after the component is created.</para>
+            <para><see cref="M:System.IDisposable.Dispose"/> is the pairing method that's guaranteed to be called by the component container to tear down your component.</para>
+            <para>You must not access other components before your <see cref="M:JetBrains.ComponentModel.IComponent.Init"/> method is called.</para>
+            <para>All of the components that you access from <see cref="M:JetBrains.ComponentModel.IComponent.Init"/> are guaranteed to exist when your <see cref="M:System.IDisposable.Dispose"/> is called. Any other component might be missing by that time, and trying to get it will throw an exception.</para>
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesLocalInfoManager.System#IDisposable#Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesLocalInfoManager.JetBrains#ComponentModel#IComponent#Init">
+            <summary>
+            <para>Initializes the component. Called by the component container after the component is created.</para>
+            <para><see cref="M:System.IDisposable.Dispose"/> is the pairing method that's guaranteed to be called by the component container to tear down your component.</para>
+            <para>You must not access other components before your <see cref="M:JetBrains.ComponentModel.IComponent.Init"/> method is called.</para>
+            <para>All of the components that you access from <see cref="M:JetBrains.ComponentModel.IComponent.Init"/> are guaranteed to exist when your <see cref="M:System.IDisposable.Dispose"/> is called. Any other component might be missing by that time, and trying to get it will throw an exception.</para>
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Updates.UpdatesLocalInfoManager.QueryStringContainerAttribute">
+            <summary>
+            In the <see cref="T:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo"/> and alike, denotes the fields whose members we should check for <see cref="T:JetBrains.UI.Updates.UpdatesLocalInfoManager.QueryStringParamAttribute"/>.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Updates.UpdatesLocalInfoManager.QueryStringParamAttribute">
+            <summary>
+            Specifies that this field of <see cref="T:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo"/> should be included with the UpdateInfo Web request query string.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdatesManager.ShellProductCategoryOwner">
+            <summary>
+            Creates/activates the cat of the Shell product.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdatesManager.Categories">
+            <summary>
+            <para>Gets the list of update categories. Each one downloads its own list of available updates, and supports a single product.</para>
+            <para>The default category, <see cref="F:JetBrains.UI.Updates.UpdatesManager.Categories"/>.<see cref="P:JetBrains.UI.Updates.UpdatesManagerCategories.ShellProductCategory"/>, is guaranteed to exist. Other categories could be added by plugins, as needed. They're persisted by the manager in the product settings, so normally you do not have to create it each time. However, it could be deleted if the settings are lost, if the updates URI is dead for some time, or if it is not activated for some time.</para>
+            <para>On startup, you should activate your category with <see cref="F:JetBrains.UI.Updates.UpdatesCategory.IsActive"/> for it to check for new updates and report them, otherwise it will consider the owner to be inactive or unloaded, hibernate, and expire after some time.</para>
+            <para>To create a new category</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdatesManager.IsDownloadUpdateDataAllowed">
+            <summary>
+            Whether to download the data for new updates.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesManager.RunUpdatesFilter(System.IO.Stream,System.Action{System.Xml.XmlWriter})">
+            <summary>
+            Runs the remote-received Updates filter data against the local configuration.
+            Returns the list of update products that pass the filter.
+            </summary>
+            <param name="streamFilter">XSLT filter, as received from the server.</param>
+            <param name="FWriteLocalEnvironmentData">The func to write the XML DOC to run the <paramref name="streamFilter"/> against.</param>
+            <returns>The list of updates available for our instance.</returns>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesManager.Init">
+            <summary>
+            <para>Initializes the component. Called by the component container after the component is created.</para>
+            <para><see cref="M:System.IDisposable.Dispose"/> is the pairing method that's guaranteed to be called by the component container to tear down your component.</para>
+            <para>You must not access other components before your <see cref="M:JetBrains.ComponentModel.IComponent.Init"/> method is called.</para>
+            <para>All of the components that you access from <see cref="M:JetBrains.ComponentModel.IComponent.Init"/> are guaranteed to exist when your <see cref="M:System.IDisposable.Dispose"/> is called. Any other component might be missing by that time, and trying to get it will throw an exception.</para>
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesManager.Init_Download_Deferred">
+            <summary>
+            Called from <see cref="M:JetBrains.UI.Updates.UpdatesManager.Init_Download"/>, after some time passes. Let plugins reg/activate their categories, and let the startup activities ceise.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesManager.System#IDisposable#Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesManager.JetBrains#ComponentModel#IComponent#Init">
+            <summary>
+            <para>Initializes the component. Called by the component container after the component is created.</para>
+            <para><see cref="M:System.IDisposable.Dispose"/> is the pairing method that's guaranteed to be called by the component container to tear down your component.</para>
+            <para>You must not access other components before your <see cref="M:JetBrains.ComponentModel.IComponent.Init"/> method is called.</para>
+            <para>All of the components that you access from <see cref="M:JetBrains.ComponentModel.IComponent.Init"/> are guaranteed to exist when your <see cref="M:System.IDisposable.Dispose"/> is called. Any other component might be missing by that time, and trying to get it will throw an exception.</para>
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesManager.JetBrains#Util#IXmlExternalizable#ReadFromXml(System.Xml.XmlElement)">
+            <summary>
+            <para>This method is called on the component to populate it with default or loaded settings, unless the component implements <see cref="T:JetBrains.Util.IXmlUpgradable"/> and returns <c>True</c> from its handler.</para>
+            <para>The element is taken from the settings file, if available.</para>
+            <para>If not, and there are settings files from the older versions, and the component does not implement <see cref="T:JetBrains.Util.IXmlUpgradable"/>, this method is called with the old settings.</para>
+            <para>Otherwise, this method is called with an empty element or a <c>Null</c> value.</para>
+            <para>For the first time, this method is called right before component's init.</para>
+            <para>The settings-reading protocol might be executed more than once thru the component lifetime.</para>
+            </summary>
+            <param name="element"></param>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesManager.JetBrains#Util#IXmlExternalizable#WriteToXml(System.Xml.XmlElement)">
+            <summary>
+            Called when the component should serialize its settings into the XML presentation, for saving into the settings file.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.Updates.UpdatesManager.LocalEnvironmentInfo">
+            <summary>
+            Child of <see cref="T:JetBrains.UI.Updates.UpdatesManager"/>.
+            Manages the local environment info that takes part in the Update process.
+            Collects <see cref="T:JetBrains.UI.Updates.UpdateLocalEnvironmentInfo"/>, forms the Web request query string.
+            Override this component to add more data to the collected local info.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.Updates.UpdatesManager.JetBrains#ComponentModel#IXmlExternalizableComponent#Scope">
+            <summary>
+            Gets the scope that defines which store the data goes into.
+            Must not be <c>Null</c>.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.Updates.UpdatesManager.JetBrains#ComponentModel#IXmlExternalizableComponent#TagName">
+            <summary>
+            Gets the Tag Name of the XML Element in the settings file.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdatesManager.Settings.IsDownloadUpdateDataAllowed">
+            <summary>
+            Whether to download the data for new updates.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesManager.Settings.System#IDisposable#Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesManager.Settings.JetBrains#ComponentModel#IComponent#Init">
+            <summary>
+            <para>Initializes the component. Called by the component container after the component is created.</para>
+            <para><see cref="M:System.IDisposable.Dispose"/> is the pairing method that's guaranteed to be called by the component container to tear down your component.</para>
+            <para>You must not access other components before your <see cref="M:JetBrains.UI.Updates.UpdatesManager.Init"/> method is called.</para>
+            <para>All of the components that you access from <see cref="M:JetBrains.UI.Updates.UpdatesManager.Init"/> are guaranteed to exist when your <see cref="M:System.IDisposable.Dispose"/> is called. Any other component might be missing by that time, and trying to get it will throw an exception.</para>
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesManager.Settings.JetBrains#Util#IXmlExternalizable#ReadFromXml(System.Xml.XmlElement)">
+            <summary>
+            <para>This method is called on the component to populate it with default or loaded settings, unless the component implements <see cref="T:JetBrains.Util.IXmlUpgradable"/> and returns <c>True</c> from its handler.</para>
+            <para>The element is taken from the settings file, if available.</para>
+            <para>If not, and there are settings files from the older versions, and the component does not implement <see cref="T:JetBrains.Util.IXmlUpgradable"/>, this method is called with the old settings.</para>
+            <para>Otherwise, this method is called with an empty element or a <c>Null</c> value.</para>
+            <para>For the first time, this method is called right before component's init.</para>
+            <para>The settings-reading protocol might be executed more than once thru the component lifetime.</para>
+            </summary>
+            <param name="element"></param>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesManager.Settings.JetBrains#Util#IXmlExternalizable#WriteToXml(System.Xml.XmlElement)">
+            <summary>
+            Called when the component should serialize its settings into the XML presentation, for saving into the settings file.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.Updates.UpdatesManager.Settings.JetBrains#ComponentModel#IXmlExternalizableComponent#Scope">
+            <summary>
+            Gets the scope that defines which store the data goes into.
+            Must not be <c>Null</c>.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.Updates.UpdatesManager.Settings.JetBrains#ComponentModel#IXmlExternalizableComponent#TagName">
+            <summary>
+            Gets the Tag Name of the XML Element in the settings file.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Updates.UpdatesManagerCategories">
+            <summary>
+            Implements <see cref="F:JetBrains.UI.Updates.UpdatesManager.Categories"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesManagerCategories.Add(System.String,System.Uri)">
+            <summary>
+            <para>Creates and adds a new category. Throws if the category already exists. A newly-created category is active by default.</para>
+            <para>The use of other <c>Add</c> overloads is prohibited.</para>
+            </summary>
+            <param name="name">Name for the category. Must be unique.</param>
+            <param name="uriUpdatesFilter">The URI to download the updates filter from. The filter is an XSLT sciript that's run against the collected local environment information to determine which updates are applicable and emit the list of those.	// TODO: details</param>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesManagerCategories.AddOrActivate(System.String,System.Uri)">
+            <summary>
+            <para>Creates and adds a new category, if it does not exist yet. If the category with such a name already exists, updates the <see cref="F:JetBrains.UI.Updates.UpdatesCategory.UpdatesFilterUri"/> with the given value and activates the category by setting its <see cref="F:JetBrains.UI.Updates.UpdatesCategory.IsActive"/> to <c>True</c>. A newly-created category is active by default.</para>
+            <para>The use of other <c>Add</c> overloads is prohibited.</para>
+            </summary>
+            <param name="name">Name for the category. Must be unique.</param>
+            <param name="uriUpdatesFilter">The URI to download the updates filter from. The filter is an XSLT sciript that's run against the collected local environment information to determine which updates are applicable and emit the list of those.	// TODO: details</param>
+        </member>
+        <member name="P:JetBrains.UI.Updates.UpdatesManagerCategories.ShellProductCategory">
+            <summary>
+            <para>Gets the default <see cref="T:JetBrains.UI.Updates.UpdatesManager"/> <see cref="T:JetBrains.UI.Updates.UpdatesCategory"/> for the product currently running the <see cref="T:JetBrains.Application.Shell"/>.</para>
+            <para>May be missing if there are no updates for the product (<see cref="P:JetBrains.Application.IApplicationDescriptor.UpdatesFilterUri"/> == <c>Null</c>).</para>
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Updates.UpdatesPage">
+            <summary>
+            Options page for <see cref="F:JetBrains.UI.Updates.UpdatesPage.UpdatesManager"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesPage.JetBrains#UI#Options#IOptionsPage#OnOk">
+            <summary>
+            Invoked when OK button in the options dialog is pressed.
+            If the page returns <c>false</c>, the the options dialog won't be closed, and focus will be put into this page.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesPage.JetBrains#UI#Options#IOptionsPage#ValidatePage">
+            <summary>
+            Check if the settings on the page are consistent, and page could be closed.
+            </summary>
+            <returns><c>true</c> if page data is consistent.</returns>
+        </member>
+        <member name="P:JetBrains.UI.Updates.UpdatesPage.JetBrains#UI#Options#IOptionsPage#Control">
+            <summary>
+            Control to be shown as page.
+            May be <c>Null</c> if the page does not have any UI.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.Updates.UpdatesPage.JetBrains#UI#Options#IOptionsPage#Id">
+            <summary>
+            Gets the ID of this option page.
+            <see cref="T:JetBrains.UI.Options.IOptionsDialog"/> or <see cref="T:JetBrains.UI.Options.OptionsPageDescriptor"/> could be used to retrieve the <see cref="T:JetBrains.UI.Options.OptionsManager"/> out of it.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Updates.UpdatesPageComponent">
+            <summary>
+            Adds the “Updates” page to the Options dialog if there are any udpates available.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdatesPageComponent.IsEnabled">
+            <summary>
+            Allows to disable the auto-adding of the options page. Make this class a SCInterface to access this prop, if you ever need this.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesPageComponent.System#IDisposable#Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesPageComponent.JetBrains#ComponentModel#IComponent#Init">
+            <summary>
+            <para>Initializes the component. Called by the component container after the component is created.</para>
+            <para><see cref="M:System.IDisposable.Dispose"/> is the pairing method that's guaranteed to be called by the component container to tear down your component.</para>
+            <para>You must not access other components before your <see cref="M:JetBrains.ComponentModel.IComponent.Init"/> method is called.</para>
+            <para>All of the components that you access from <see cref="M:JetBrains.ComponentModel.IComponent.Init"/> are guaranteed to exist when your <see cref="M:System.IDisposable.Dispose"/> is called. Any other component might be missing by that time, and trying to get it will throw an exception.</para>
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesPopupAlerts.System#IDisposable#Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesPopupAlerts.JetBrains#ComponentModel#IComponent#Init">
+            <summary>
+            <para>Initializes the component. Called by the component container after the component is created.</para>
+            <para><see cref="M:System.IDisposable.Dispose"/> is the pairing method that's guaranteed to be called by the component container to tear down your component.</para>
+            <para>You must not access other components before your <see cref="M:JetBrains.ComponentModel.IComponent.Init"/> method is called.</para>
+            <para>All of the components that you access from <see cref="M:JetBrains.ComponentModel.IComponent.Init"/> are guaranteed to exist when your <see cref="M:System.IDisposable.Dispose"/> is called. Any other component might be missing by that time, and trying to get it will throw an exception.</para>
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Updates.UpdatesShellProductCategoryOwner">
+            <summary>
+            Maintains the default <see cref="T:JetBrains.UI.Updates.UpdatesManager"/> <see cref="T:JetBrains.UI.Updates.UpdatesCategory"/> for the product currently running the <see cref="T:JetBrains.Application.Shell"/>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Updates.UpdatesShellProductCategoryOwner.CategoryName">
+            <summary>
+            <para>Name of the default category in which the <see cref="T:JetBrains.Application.Shell"/> product updates are listed.</para>
+            <para>Plugins should use categories with different names.</para>
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesShellProductCategoryOwner.Init">
+            <summary>
+            <para>Initializes the component. Called by the component container after the component is created.</para>
+            <para><see cref="M:System.IDisposable.Dispose"/> is the pairing method that's guaranteed to be called by the component container to tear down your component.</para>
+            <para>You must not access other components before your <see cref="M:JetBrains.ComponentModel.IComponent.Init"/> method is called.</para>
+            <para>All of the components that you access from <see cref="M:JetBrains.ComponentModel.IComponent.Init"/> are guaranteed to exist when your <see cref="M:System.IDisposable.Dispose"/> is called. Any other component might be missing by that time, and trying to get it will throw an exception.</para>
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdatesShellProductCategoryOwner.System#IDisposable#Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="P:JetBrains.UI.Updates.UpdatesShellProductCategoryOwner.Category">
+            <summary>
+            Gets the updates category this object maintains.
+            May be missing if there are no updates for the product (<see cref="P:JetBrains.Application.IApplicationDescriptor.UpdatesFilterUri"/> == <c>Null</c>).
             </summary>
         </member>
         <member name="T:JetBrains.CommonControls.Validation.IControlListener">

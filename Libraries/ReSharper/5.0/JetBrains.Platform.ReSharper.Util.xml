@@ -148,6 +148,13 @@
             Gets or sets the hotizontal component of the anchoring.
             </summary>
         </member>
+        <member name="T:JetBrains.Util.Collections.EnumerableCollection`1">
+            <summary>
+            This class adapts <see cref="T:System.Collections.Generic.IEnumerable`1"/> to <see cref="T:System.Collections.Generic.ICollection`1"/> involving count of items.
+            Used to optimize getting count of items only.
+            </summary>
+            <typeparam name="T">The type of the elements in the collection.</typeparam>
+        </member>
         <member name="T:System.Linq.EnumerableExJet">
             <summary>
             Extension methods that mimic or extend the standard <see cref="T:System.Linq.Enumerable"/> methods, sharing the same names.
@@ -187,6 +194,13 @@
             <summary>
             Index of previous entry in the chain of keys with the same hashcodes (modulo size), -1 means first
             </summary>
+        </member>
+        <member name="T:JetBrains.Util.Collections.ICountable`1">
+            <summary>
+            Exposes the enumerator, which supports a simple iteration over a collection of a specified type 
+            and count of objects in the collection.
+            </summary>
+            <typeparam name="T">The type of objects to enumerate.</typeparam>
         </member>
         <member name="F:JetBrains.Util.StrongToWeakDictionary`2.Entry.HashCode">
             <summary>
@@ -635,13 +649,13 @@
             Returns a cookie for terminating the flow.
             </summary>
         </member>
-        <member name="M:JetBrains.DataFlow.IPropertyEx.FlowIntoReadonly``2(JetBrains.DataFlow.IProperty{``0},JetBrains.DataFlow.IProperty{``1},System.Func{``0,``1},System.Object)">
+        <member name="M:JetBrains.DataFlow.IPropertyEx.FlowIntoReadonly``2(JetBrains.DataFlow.IProperty{``0},JetBrains.DataFlow.IProperty{``1},System.Func{``0,``1},JetBrains.DataFlow.StandardPreconditions.ReadonlyToken)">
             <summary>
             Establishes a data flow between two properties of different types, thru a converter.
             Returns a cookie for terminating the flow.
             </summary>
         </member>
-        <member name="M:JetBrains.DataFlow.IPropertyEx.FlowIntoReadonly``1(JetBrains.DataFlow.IProperty{``0},JetBrains.DataFlow.IProperty{``0},System.Object)">
+        <member name="M:JetBrains.DataFlow.IPropertyEx.FlowIntoReadonly``1(JetBrains.DataFlow.IProperty{``0},JetBrains.DataFlow.IProperty{``0},JetBrains.DataFlow.StandardPreconditions.ReadonlyToken)">
             <summary>
             Establishes a data flow between two properties.
             Returns a cookie for terminating the flow.
@@ -2118,6 +2132,126 @@
             The <c>SUCCEEDED</c> WinAPI Macro.
             </summary>
         </member>
+        <member name="T:JetBrains.Util.ExceptionText">
+            <summary>
+            Result of rendering an exception.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.ExceptionText.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Object"/> class.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Util.ExceptionText.FullText">
+            <summary>
+            <para>String representation of the exception rendered by collecting all of the data about the original exception and all of the inner/related exceptions in the tree.</para>
+            <para>A more detailed and well-organized counterpart for <see cref="T:System.Exception"/>'s <see cref="M:System.Exception.ToString"/> method.</para>
+            </summary>
+        </member>
+        <member name="F:JetBrains.Util.ExceptionText.Message">
+            <summary>
+            <para>Message of the exception, into which all of the inner exceptions' messages are also included.</para>
+            <para>A more detailed counterpart for <see cref="T:System.Exception"/>'s <see cref="P:System.Exception.Message"/> property.</para>
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Application.LogEventListener">
+            <summary>
+            Listens for <see cref="T:JetBrains.Util.Logger"/> events, reports them to the consumer.
+            Prevents reentrancy in handlers.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Util.ILogEventListener">
+            <summary>
+            Consumes the activities reported to the <see cref="T:JetBrains.Util.Logger"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.ILogEventListener.OnError(System.String)">
+            <summary>
+            An error has occured and was reported to the <see cref="M:JetBrains.Util.Logger.LogError(System.String)"/> method, or <see cref="M:JetBrains.Util.Logger.Fail(System.String)"/> / <see cref="M:JetBrains.Util.Logger.Assert(System.Boolean,System.String)"/> methods were called.
+            The error text is also reported to <see cref="M:JetBrains.Util.ILogEventListener.OnMessage(System.String,JetBrains.Util.LoggingLevel)"/> prefixed with <see cref="F:JetBrains.Util.Logger.ErrorMessagePrefix"/>, and to <see cref="M:JetBrains.Util.ILogEventListener.OnException(System.Exception)"/> with an exception whose message is <see cref="!:error"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.ILogEventListener.OnException(System.Exception)">
+            <summary>
+            An exception has occured and were reported to one of the <see cref="M:JetBrains.Util.Logger.LogException(System.Exception)"/>-family methods.
+            Of its text, only the message is automatically supplied to <see cref="M:JetBrains.Util.ILogEventListener.OnMessage(System.String,JetBrains.Util.LoggingLevel)"/>, prefixed with <see cref="F:JetBrains.Util.Logger.ExceptionMessagePrefix"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.ILogEventListener.OnMessage(System.String,JetBrains.Util.LoggingLevel)">
+            <summary>
+            A text message of a specific importance level.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Application.LogEventListener.myIdentity">
+            <summary>
+            Identity.
+            ACHTUNG ACHTUNG! Special handling in Equals.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Application.LogEventListener.myNoReentrancy">
+            <summary>
+            Reentrancy in these handler methods most probably means infinite recursion.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Application.LogEventListener.#ctor">
+            <summary>
+            Creates a new unique listener.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Application.LogEventListener.#ctor(System.String)">
+            <summary>
+            Creates a listener that could be matched by its identity which prevents adding more than one instance with the same identity to the logger.
+            An empty string is considered to be the unique identity.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Application.LogEventListener.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+            </returns>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. </param><exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.UI.Application.LogEventListener.GetHashCode">
+            <summary>
+            Serves as a hash function for a particular type. 
+            </summary>
+            <returns>
+            A hash code for the current <see cref="T:System.Object"/>.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.UI.Application.LogEventListener.Equals(JetBrains.UI.Application.LogEventListener)">
+            <summary>
+            Indicates whether the current object is equal to another object of the same type.
+            </summary>
+            <returns>
+            true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            </returns>
+            <param name="other">An object to compare with this object.</param>
+        </member>
+        <member name="P:JetBrains.UI.Application.LogEventListener.Identity">
+            <summary>
+            A listener that could be matched by its identity which prevents adding more than one instance with the same identity to the logger.
+            An empty string is considered to be the unique identity.
+            </summary>
+        </member>
+        <member name="E:JetBrains.UI.Application.LogEventListener.OnError">
+            <summary>
+            <see cref="M:JetBrains.Util.ILogEventListener.OnError(System.String)"/>.
+            </summary>
+        </member>
+        <member name="E:JetBrains.UI.Application.LogEventListener.OnException">
+            <summary>
+            <see cref="M:JetBrains.Util.ILogEventListener.OnException(System.Exception)"/>.
+            </summary>
+        </member>
+        <member name="E:JetBrains.UI.Application.LogEventListener.OnMessage">
+            <summary>
+            <see cref="M:JetBrains.Util.ILogEventListener.OnMessage(System.String,JetBrains.Util.LoggingLevel)"/>.
+            </summary>
+        </member>
         <member name="T:JetBrains.Util.OnError">
             <summary>
             Option for the functions that serve as a <c>[NotNull]</c> or <c>[CanBeNull]</c> implementation, depending on the settings.
@@ -2495,18 +2629,10 @@
             <para>Note that <see cref="P:System.Exception.Message"/> plus <see cref="P:System.Exception.StackTrace"/> might miss the custom fields of the exception, and <see cref="M:System.Exception.ToString"/> ignores related exceptions that are not exactly inners (eg <see cref="P:System.Reflection.ReflectionTypeLoadException.LoaderExceptions"/>).</para>
             </summary>
             <param name="ex">The exception to render.</param>
-            <returns>The string representation.</returns>
-            <remarks>This method might be slow, but it caches the rendered data on the exception after the first call.</remarks>
-        </member>
-        <member name="M:JetBrains.Util.ExceptionRenderer.RenderExceptionEx(System.Exception,System.String@,System.String@)">
-            <summary>
-            <para>Renders a string representation of the exception by collecting all of the data about the original exception and all of the inner/related exceptions in the tree.</para>
-            <para>Explicitly outlines the relation between the exceptions, like which is whose inner and where they're coming from in the inner-exception tree.</para>
-            <para>Note that <see cref="P:System.Exception.Message"/> plus <see cref="P:System.Exception.StackTrace"/> might miss the custom fields of the exception, and <see cref="M:System.Exception.ToString"/> ignores related exceptions that are not exactly inners (eg <see cref="P:System.Reflection.ReflectionTypeLoadException.LoaderExceptions"/>).</para>
-            </summary>
-            <param name="ex">The exception to render.</param>
-            <param name="message">Only the message of the exception, omitting all of the data fields. There is the advanced logic to also include the messages of the inner exceptions, if they're omitted from the outer one.</param>
-            <param name="content">The full string representation of the exception content.</param>
+            <returns>
+            <para>A string containing all of the meaningful messages of all the inner exceptions.</para>
+            <para>A string with the above message plus stack traces and any other associated data.</para>
+            </returns>
             <remarks>This method might be slow, but it caches the rendered data on the exception after the first call.</remarks>
         </member>
         <member name="M:JetBrains.Util.ExceptionRenderer.RenderOuterExceptionMessageAndData(System.Exception)">
@@ -3576,16 +3702,6 @@
             The per-thread guard instance.
             </summary>
         </member>
-        <member name="F:JetBrains.Threading.ReentrancyGuard.Disposables">
-            <summary>
-            Reentrancy guard lives forever.
-            </summary>
-        </member>
-        <member name="F:JetBrains.Threading.ReentrancyGuard.myCanExecuteNow">
-            <summary>
-            A composite property that monitors both <see cref="P:JetBrains.Threading.ReentrancyGuard.IsExecuting"/> and <see cref="P:JetBrains.Threading.ReentrancyGuard.IsExecutionSuppressed"/> and shows whether we can execute actions at the moment.
-            </summary>
-        </member>
         <member name="F:JetBrains.Threading.ReentrancyGuard.myDispatcher">
             <summary>
             A dispatcher that identifies the guarded thread.
@@ -3595,13 +3711,6 @@
             <summary>
             While executing an action, the reentrancy constraint can be lifted and another action executed.
             The executions and liftings thus form a stack.
-            </summary>
-        </member>
-        <member name="F:JetBrains.Threading.ReentrancyGuard.myIsExecutionSuppressed">
-            <summary>
-            External consumers might raise this flag to temporarily suppress execution of the actions.
-            For example, when a shell RW lock is taken on the primary thread, the actions are postponed.
-            Affects the composite <see cref="F:JetBrains.Threading.ReentrancyGuard.myCanExecuteNow"/> state.
             </summary>
         </member>
         <member name="F:JetBrains.Threading.ReentrancyGuard.myQueueActions">
@@ -3628,12 +3737,6 @@
             <summary>
             Checks that the activity is executed on the proper thread and is being guarded from reentrancy.
             </summary>
-        </member>
-        <member name="M:JetBrains.Threading.ReentrancyGuard.Dispose">
-            <summary>
-            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            </summary>
-            <filterpriority>2</filterpriority>
         </member>
         <member name="M:JetBrains.Threading.ReentrancyGuard.Execute(System.String,System.Action)">
             <summary>
@@ -3678,6 +3781,11 @@
             <param name="name">Identifies the action being executed.</param>
             <param name="action">The action to execute. Exceptions will be trapped.</param>
         </member>
+        <member name="M:JetBrains.Threading.ReentrancyGuard.AddExceptionData(System.Exception)">
+            <summary>
+            Dumps state for an exception.
+            </summary>
+        </member>
         <member name="M:JetBrains.Threading.ReentrancyGuard.AssertCanExecute(System.String)">
             <summary>
             Check that thread-affinity and reentrancy conditions allow us to execute an action right now.
@@ -3704,14 +3812,14 @@
         </member>
         <member name="P:JetBrains.Threading.ReentrancyGuard.CanExecuteNow">
             <summary>
-            Tells whether the guard can execute actions at this moment, which means there's no action currently executing and <see cref="P:JetBrains.Threading.ReentrancyGuard.IsExecutionSuppressed"/> is not high. Readonly.
+            Tells whether the guard can execute actions at this moment, which means there's no action currently executing. Readonly.
             </summary>
             <seealso cref="P:JetBrains.Threading.ReentrancyGuard.IsExecuting"/>
-            <seealso cref="P:JetBrains.Threading.ReentrancyGuard.IsExecutionSuppressed"/>
         </member>
         <member name="P:JetBrains.Threading.ReentrancyGuard.CurrentActionName">
             <summary>
             <para>Gets a readonly property that tells the name of the current action (an execution or a lifting of the reentrancy constraint, see <see cref="P:JetBrains.Threading.ReentrancyGuard.IsExecuting"/>), or <c>Null</c> if neither is present.</para>
+            <para>This is always non-<c>Null</c> when <see cref="P:JetBrains.Threading.ReentrancyGuard.IsExecuting"/>, but could be also non-<c>Null</c> when not <see cref="P:JetBrains.Threading.ReentrancyGuard.IsExecuting"/> (if <see cref="M:JetBrains.Threading.ReentrancyGuard.AllowNestedExecution(System.String,System.Action)"/> was called).</para>
             </summary>
         </member>
         <member name="P:JetBrains.Threading.ReentrancyGuard.Dispatcher">
@@ -3727,14 +3835,9 @@
         </member>
         <member name="P:JetBrains.Threading.ReentrancyGuard.IsExecuting">
             <summary>
-            <para>Gets a readonly property that tells whether a reentrant-safe execution is currently on top of the stack.</para>
-            <para>If <c>True</c>, then <see cref="P:JetBrains.Threading.ReentrancyGuard.CanExecuteNow"/> is <c>False</c>. If <c>False</c>, then <see cref="P:JetBrains.Threading.ReentrancyGuard.CanExecuteNow"/> might still be <c>False</c> if suppressed by an external consumer with <see cref="P:JetBrains.Threading.ReentrancyGuard.IsExecutionSuppressed"/>.</para>
-            </summary>
-        </member>
-        <member name="P:JetBrains.Threading.ReentrancyGuard.IsExecutionSuppressed">
-            <summary>
-            External consumers might raise this flag to temporarily suppress execution of the actions.
-            For example, when a shell RW lock is taken on the primary thread, the actions are postponed.
+            <para>Gets whether a reentrant-safe execution is currently in progress.</para>
+            <para>If <c>True</c>, then <see cref="P:JetBrains.Threading.ReentrancyGuard.CanExecuteNow"/> is <c>False</c>.</para>
+            <para>As the <see cref="M:JetBrains.Threading.ReentrancyGuard.AllowNestedExecution(System.String,System.Action)"/> method that “lifts” the guard, this flag falls and only becomes <c>True</c> when an execution, not lifting, is on top of the executions stack.</para>
             </summary>
         </member>
         <member name="T:JetBrains.Threading.ReentrancyGuard.ExecutionStack">
@@ -3744,35 +3847,41 @@
             Main-thread-only.
             </summary>
         </member>
+        <member name="F:JetBrains.Threading.ReentrancyGuard.ExecutionStack.myCurrentActionName">
+            <summary>
+            Backend for <see cref="P:JetBrains.Threading.ReentrancyGuard.ExecutionStack.CurrentActionName"/>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Threading.ReentrancyGuard.ExecutionStack.myIsExecuting">
+            <summary>
+            Backend for <see cref="P:JetBrains.Threading.ReentrancyGuard.ExecutionStack.IsExecuting"/>.
+            </summary>
+        </member>
         <member name="F:JetBrains.Threading.ReentrancyGuard.ExecutionStack.myStack">
             <summary>
             Storage for executions and liftings.
-            An execution is addded with <see cref="M:JetBrains.Threading.ReentrancyGuard.Execute(System.String,System.Action)"/>, and a lifting with <see cref="M:JetBrains.Threading.ReentrancyGuard.AllowNestedExecution(System.String,System.Action)"/>. An execution prevents other executions, and a lifting allows them.
+            An execution is added with <see cref="M:JetBrains.Threading.ReentrancyGuard.Execute(System.String,System.Action)"/>, and a lifting with <see cref="M:JetBrains.Threading.ReentrancyGuard.AllowNestedExecution(System.String,System.Action)"/>. An execution prevents other executions, and a lifting allows them.
             An execution can only be added into an empty stack or on top of a lifting, and a lifting can only be added on top of an execution.
             Thus, the bottom of the stack and every even-indexed item is an execution, and every odd-indexed item is a lifting.
+            Thread safety: changes only on the home thread (remember, this is the execution stack, not the actions queue). Safe to read on the home thread only. Lock-free.
             </summary>
         </member>
-        <member name="F:JetBrains.Threading.ReentrancyGuard.ExecutionStack.CurrentActionName">
+        <member name="F:JetBrains.Threading.ReentrancyGuard.ExecutionStack.IsExecutingFalling">
             <summary>
-            The name of the execution or lifting currently active (on top of the execution stack), or <c>Null</c> if there's none such.
+            Event.
             </summary>
-        </member>
-        <member name="F:JetBrains.Threading.ReentrancyGuard.ExecutionStack.IsExecuting">
-            <summary>
-            Tells whether an execution is currently in progress.
-            This means that the stack is not empty (an <see cref="M:JetBrains.Threading.ReentrancyGuard.Execute(System.String,System.Action)"/> is running), and the execution guard has not been lifted with <see cref="M:JetBrains.Threading.ReentrancyGuard.AllowNestedExecution(System.String,System.Action)"/> since the last <see cref="M:JetBrains.Threading.ReentrancyGuard.Execute(System.String,System.Action)"/>.
-            </summary>
-            <remarks>Technically, tells whether the number of items in the stack is even.</remarks>
         </member>
         <member name="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.PushExecution(System.String)">
             <summary>
             Records an execution on the stack, removes upon retval disposal.
+            Home thread only.
             </summary>
             <param name="name">Item name.</param>
         </member>
         <member name="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.PushLifting(System.String)">
             <summary>
             Records a reentrancy constraint lifting on the stack, removes upon retval disposal.
+            Home thread only.
             </summary>
             <param name="name">Item name.</param>
         </member>
@@ -3786,6 +3895,24 @@
             </returns>
             <filterpriority>2</filterpriority>
         </member>
+        <member name="P:JetBrains.Threading.ReentrancyGuard.ExecutionStack.CurrentActionName">
+            <summary>
+            The name of the execution or lifting currently active (on top of the execution stack), or <c>Null</c> if there's none such.
+            </summary>
+            <remarks>
+            This property could be evaluated on demand, but this is not thread-safe, so we make a copy in a thread-safe context (execution stack is only modified on the home thread).
+            </remarks>
+        </member>
+        <member name="P:JetBrains.Threading.ReentrancyGuard.ExecutionStack.IsExecuting">
+            <summary>
+            Tells whether an execution is currently in progress.
+            This means that the stack is not empty (an <see cref="M:JetBrains.Threading.ReentrancyGuard.Execute(System.String,System.Action)"/> is running), and the execution guard has not been lifted with <see cref="M:JetBrains.Threading.ReentrancyGuard.AllowNestedExecution(System.String,System.Action)"/> since the last <see cref="M:JetBrains.Threading.ReentrancyGuard.Execute(System.String,System.Action)"/>.
+            </summary>
+            <remarks>
+            Technically, tells whether the number of items in the stack is even.
+            This property could be evaluated on demand, but this is not thread-safe, so we make a copy in a thread-safe context (execution stack is only modified on the home thread).
+            </remarks>
+        </member>
         <member name="T:JetBrains.Threading.ReentrancyGuard.ExecutionStack.StackEventsLite`1">
             <summary>
             A stack data structure with events, lite version (compared to <see cref="T:JetBrains.DataFlow.CollectionEvents`1"/> and others), without interlocking.
@@ -3796,16 +3923,20 @@
             Fires when an add/remove operation is performed on the storage.
             </summary>
         </member>
+        <member name="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.StackEventsLite`1.PushAdd(`0)">
+            <summary>
+            An <see cref="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.StackEventsLite`1.Add(`0)"/>-<see cref="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.StackEventsLite`1.Remove(`0)"/> pair of actions.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.StackEventsLite`1.TryGetLast">
+            <summary>
+            Peeks the item on top of the stack. <c>Null</c> if empty.
+            </summary>
+        </member>
         <member name="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.StackEventsLite`1.Add(`0)">
             <summary>
             Adds an item to the stack. Updates the properties.
             </summary>
-        </member>
-        <member name="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.StackEventsLite`1.Peek">
-            <summary>
-            Peeks the item on top of the stack. Throws if empty.
-            </summary>
-            <returns></returns>
         </member>
         <member name="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.StackEventsLite`1.Remove(`0)">
             <summary>
@@ -10335,28 +10466,6 @@
             Listens for the <see cref="T:JetBrains.Util.Logger"/> events and reports them into the Debug stream.
             </summary>
         </member>
-        <member name="T:JetBrains.Util.ILogEventListener">
-            <summary>
-            Consumes the activities reported to the <see cref="T:JetBrains.Util.Logger"/>.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Util.ILogEventListener.OnError(System.String)">
-            <summary>
-            An error has occured and was reported to the <see cref="M:JetBrains.Util.Logger.LogError(System.String)"/> method, or <see cref="M:JetBrains.Util.Logger.Fail(System.String)"/> / <see cref="M:JetBrains.Util.Logger.Assert(System.Boolean,System.String)"/> methods were called.
-            The error text is also reported to <see cref="M:JetBrains.Util.ILogEventListener.OnMessage(System.String,JetBrains.Util.LoggingLevel)"/> prefixed with <see cref="F:JetBrains.Util.Logger.ErrorMessagePrefix"/>, and to <see cref="M:JetBrains.Util.ILogEventListener.OnException(System.Exception)"/> with an exception whose message is <see cref="!:error"/>.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Util.ILogEventListener.OnException(System.Exception)">
-            <summary>
-            An exception has occured and were reported to one of the <see cref="M:JetBrains.Util.Logger.LogException(System.Exception)"/>-family methods.
-            Of its text, only the message is automatically supplied to <see cref="M:JetBrains.Util.ILogEventListener.OnMessage(System.String,JetBrains.Util.LoggingLevel)"/>, prefixed with <see cref="F:JetBrains.Util.Logger.ExceptionMessagePrefix"/>.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Util.ILogEventListener.OnMessage(System.String,JetBrains.Util.LoggingLevel)">
-            <summary>
-            A text message of a specific importance level.
-            </summary>
-        </member>
         <member name="M:JetBrains.Util.DebugOutputLogEventListener.#ctor(System.String)">
             <summary>
             Constructs the listener.
@@ -10556,7 +10665,7 @@
             The message is prepended with a timestamp and written to the log. The listeners are notified.
             </summary>
         </member>
-        <member name="M:JetBrains.Util.Logger.Log(System.Object)">
+        <member name="M:JetBrains.Util.Logger.Log(System.Object,System.IO.TextWriter)">
             <summary>
             The logging implementation. Logs the object's string representation.
             </summary>
@@ -14665,22 +14774,17 @@
             <para>Unlike <see cref="M:JetBrains.Util.TextRange.Contains(System.Int32)"/>, the right offset is not included, because the range ends before the character with such an index.</para>
             </summary>
         </member>
-        <member name="M:JetBrains.Util.TextRange.IsValid">
-            <summary>
-            Should be replaced with <see cref="T:System.Nullable`1"/> of <see cref="T:JetBrains.Util.TextRange"/> wherever possible.
-            Avoid using in new code.
-            Checks that the range is not the <see cref="F:JetBrains.Util.TextRange.InvalidRange"/>.
-            </summary>
-        </member>
         <member name="M:JetBrains.Util.TextRange.AssertValid">
             <summary>
             Asserts that this range is valid, which means that it's not an <see cref="F:JetBrains.Util.TextRange.InvalidRange"/>.
+            Throws in ASSERT mode only.
             </summary>
         </member>
         <member name="M:JetBrains.Util.TextRange.AssertNormalized">
             <summary>
             Asserts that this range is normalized, which means that its <see cref="P:JetBrains.Util.TextRange.Length"/> is nonnegative.
             Includes <see cref="M:JetBrains.Util.TextRange.AssertValid"/>.
+            Throws in ASSERT mode only.
             </summary>
         </member>
         <member name="M:JetBrains.Util.TextRange.Normalized">
@@ -14716,6 +14820,13 @@
             <summary>
             <para>Whether the range is empty.</para>
             <para>The <see cref="P:JetBrains.Util.TextRange.Length"/> of an empty range is zero, and its <see cref="P:JetBrains.Util.TextRange.StartOffset"/> is the same as its <see cref="P:JetBrains.Util.TextRange.EndOffset"/>.</para>
+            </summary>
+        </member>
+        <member name="P:JetBrains.Util.TextRange.IsValid">
+            <summary>
+            Should be replaced with <see cref="T:System.Nullable`1"/> of <see cref="T:JetBrains.Util.TextRange"/> wherever possible.
+            Avoid using in new code.
+            Checks that the range is not the <see cref="F:JetBrains.Util.TextRange.InvalidRange"/>.
             </summary>
         </member>
         <member name="P:JetBrains.Util.TextRange.IsNormalized">
@@ -15522,6 +15633,11 @@
         <member name="M:JetBrains.Util.XmlWriterEx.PushElementNs(System.Xml.XmlWriter,System.String,System.String)">
             <summary>
             <see cref="M:System.Xml.XmlWriter.WriteStartElement(System.String)"/> + <see cref="M:System.Xml.XmlWriter.WriteEndElement"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.XmlWriterEx.WriteXml(System.IO.Stream,System.Action{System.Xml.XmlWriter})">
+            <summary>
+            Creates a writer over the stream with readability-friendly settings (<see cref="T:System.Xml.XmlUtf8RawTextWriterIndent"/>).
             </summary>
         </member>
         <member name="T:JetBrains.Util.Tests.CompoundException">

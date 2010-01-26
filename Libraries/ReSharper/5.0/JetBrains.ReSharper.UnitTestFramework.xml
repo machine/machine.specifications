@@ -46,6 +46,14 @@
             <param name="elementKind"></param>
             <returns></returns>
         </member>
+        <member name="M:JetBrains.ReSharper.UnitTestFramework.IUnitTestProvider.IsElementOfKind(JetBrains.ReSharper.UnitTestFramework.UnitTestElement,JetBrains.ReSharper.UnitTestFramework.UnitTestElementKind)">
+            <summary>
+            Replaces IsUnitTestElement, IsUnitTest, IsUnitTestContainer and IsUnitTestStuff methods with single one
+            </summary>
+            <param name="element"></param>
+            <param name="elementKind"></param>
+            <returns></returns>
+        </member>
         <member name="M:JetBrains.ReSharper.UnitTestFramework.IUnitTestProvider.Present(JetBrains.ReSharper.UnitTestFramework.UnitTestElement,JetBrains.CommonControls.IPresentableItem,JetBrains.TreeModels.TreeModelNode,JetBrains.UI.TreeView.PresentationState)">
             <summary>
             Present unit test

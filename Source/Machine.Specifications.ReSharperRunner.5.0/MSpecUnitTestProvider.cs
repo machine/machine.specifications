@@ -161,6 +161,19 @@ namespace Machine.Specifications.ReSharperRunner
       return _unitTestElementComparer.Compare(x, y);
     }
 
+    public bool IsElementOfKind(UnitTestElement element, UnitTestElementKind elementKind)
+    {
+      switch (elementKind)
+      {
+        case UnitTestElementKind.Test:
+          return element is ContextSpecificationElement;
+        case UnitTestElementKind.TestContainer:
+          return element is ContextElement || element is BehaviorElement;
+      }
+
+      return false;
+    }
+
     public void Present(UnitTestElement element, IPresentableItem item, TreeModelNode node, PresentationState state)
     {
       Presenter.UpdateItem(element, node, item, state);

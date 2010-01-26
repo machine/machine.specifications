@@ -596,6 +596,16 @@
             Resolves assembly name to assembly metadata interface
             </summary>
         </member>
+        <member name="P:JetBrains.Metadata.Reader.API.IMetadataForwardedTypeInfo.AssemblyName">
+            <summary>
+            Where the forwarded type is declared (forwarded to)
+            </summary>
+        </member>
+        <member name="P:JetBrains.Metadata.Reader.API.IMetadataForwardedTypeInfo.FullName">
+            <summary>
+            Forwarded type FQN
+            </summary>
+        </member>
         <member name="P:JetBrains.Metadata.Reader.API.IMethodBodyLocalVariable.Method">
             <summary>
             Owner
@@ -738,7 +748,13 @@
         </member>
         <member name="M:JetBrains.Metadata.Reader.API.IMetadataAssembly.GetExportedTypes">
             <summary>
-            Collect exported types from other modules
+            Gets types exported from other modules
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JetBrains.Metadata.Reader.API.IMetadataAssembly.GetForwardedTypes">
+            <summary>
+            Gets types forwarded to another assembly (TypeForwardedTo)
             </summary>
             <returns></returns>
         </member>
@@ -1965,6 +1981,11 @@
         <member name="M:System.GAC.IAssemblyCacheItem.AbortItem">
             <summary>
             Undocumented.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Metadata.Reader.Impl.MetadataCustomAttribute.ReadResult">
+            <summary>
+            Short class representing two states: holding object value and CannotHandleUnresolvedType
             </summary>
         </member>
         <member name="T:JetBrains.Metadata.Utils.AssemblyNameInfo">
