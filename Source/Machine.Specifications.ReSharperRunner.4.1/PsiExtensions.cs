@@ -24,6 +24,20 @@ namespace Machine.Specifications.ReSharperRunner
              clazz.GetAccessRights() == AccessRights.PUBLIC &&
              clazz.Fields.Any(x => IsSpecification(x) || IsBehavior(x));
     }
+    
+    public static bool IsBehaviorContainer(this IDeclaredElement element)
+    {
+      var clazz = element as IClass;
+      if (clazz == null)
+      {
+        return false;
+      }
+
+      return clazz.IsValid() &&
+             !clazz.IsAbstract &&
+             clazz.HasAttributeInstance(new CLRTypeName(typeof(BehaviorsAttribute).FullName), false) &&
+             clazz.Fields.Any(IsSpecification);
+    }
 
     public static bool IsSpecification(this IDeclaredElement element)
     {

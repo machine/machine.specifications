@@ -1,5 +1,5 @@
 using System;
-using System.Diagnostics;
+
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Naming.Elements;
 
@@ -53,14 +53,9 @@ namespace Machine.Specifications.ReSharperRunner
     }
 #endif
 
-    static bool IsTestElement(IDeclaredElement declaredElement)
-    {
-      return declaredElement.IsContext() || declaredElement.IsSpecification();
-    }
-
     static bool IsContext(IDeclaredElement declaredElement)
     {
-      return declaredElement.IsContext() && IsTestElement(declaredElement);
+      return declaredElement.IsContext();
     }
 
     static bool IsContextBase(IDeclaredElement declaredElement)
@@ -70,37 +65,42 @@ namespace Machine.Specifications.ReSharperRunner
 
     static bool IsSpecification(IDeclaredElement declaredElement)
     {
-      return declaredElement.IsSpecification() && IsTestElement(declaredElement);
-    }
-
-    static bool IsField(IDeclaredElement declaredElement)
-    {
-      return declaredElement.IsField() && IsInTestElementOrContext(declaredElement);
-    }
-
-    static bool IsConstant(IDeclaredElement declaredElement)
-    {
-        return declaredElement.IsConstant() && IsInTestElementOrContext(declaredElement);
-    }
-
-    static bool IsLocal(IDeclaredElement declaredElement)
-    {
-        return declaredElement.IsLocal() && IsInTestElementOrContext(declaredElement);
-    }
-
-    static bool IsBehavior(IDeclaredElement declaredElement)
-    {
-      return declaredElement.IsBehavior() && IsTestElement(declaredElement.GetContainingType());
+      return declaredElement.IsSpecification() && IsInSpecificationContainer(declaredElement);
     }
 
     static bool IsSupportingField(IDeclaredElement declaredElement)
     {
-      return declaredElement.IsSupportingField() && IsInTestElementOrContext(declaredElement);
+      return declaredElement.IsSupportingField() && IsInSpecificationContainer(declaredElement);
     }
 
-    static bool IsInTestElementOrContext(IDeclaredElement declaredElement)
+    static bool IsBehavior(IDeclaredElement declaredElement)
     {
-        return IsTestElement(declaredElement.GetContainingType()) || IsContextBase(declaredElement.GetContainingType());
+      return declaredElement.IsBehavior() && IsInSpecificationContainer(declaredElement);
+    }
+
+    static bool IsField(IDeclaredElement declaredElement)
+    {
+      return declaredElement.IsField() && IsInSpecificationContainer(declaredElement);
+    }
+
+    static bool IsConstant(IDeclaredElement declaredElement)
+    {
+      return declaredElement.IsConstant() && IsInSpecificationContainer(declaredElement);
+    }
+
+    static bool IsLocal(IDeclaredElement declaredElement)
+    {
+      return declaredElement.IsLocal() && IsInSpecificationContainer(declaredElement);
+    }
+
+    /// <summary>
+    /// Determines if the declared element is contained in a MSpec-related container type,
+    /// i.e.: Context, context base class, class with <see cref="BehaviorsAttribute" />.
+    /// </summary>
+    static bool IsInSpecificationContainer(IDeclaredElement declaredElement)
+    {
+      var containingType = declaredElement.GetContainingType();
+      return IsContext(containingType) || containingType.IsBehaviorContainer() || IsContextBase(containingType);
     }
   }
 }
