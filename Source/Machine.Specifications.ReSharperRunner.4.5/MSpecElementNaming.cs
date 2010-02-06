@@ -2,11 +2,6 @@ using System;
 
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Naming.Elements;
-using JetBrains.ReSharper.UnitTestExplorer;
-
-#if RESHARPER_5
-using JetBrains.ReSharper.UnitTestFramework;
-#endif
 
 namespace Machine.Specifications.ReSharperRunner
 {
