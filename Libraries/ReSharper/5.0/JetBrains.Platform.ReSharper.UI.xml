@@ -205,6 +205,49 @@
               Looks up a localized string similar to Untitled.
             </summary>
         </member>
+        <member name="F:JetBrains.UI.About.AboutBox.MinPictureWidth">
+            <summary>
+            Min width of the image.
+            Dialog is sized to fit the image, too small a width will give trouble to the text.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.About.AboutBox.InitView_Image">
+            <summary>
+            Properly-sized image control. <c>Null</c> if not available for this product.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.About.AboutBox.SwitchIntoCopyClipboardMode(System.String)">
+            <summary>
+            Enables copying the textual About data to the clipboard.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.About.AboutBox.PopulateEventArgs.AddClipboardData(System.String)">
+            <summary>
+            Adds data to the text content that will be copied to clipboard.
+            Either a single-line string or a set of CRLF-terminated lines.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.About.AboutBox.PopulateEventArgs.AddControl(System.Windows.Forms.Control)">
+            <summary>
+            Adds a control to the About Box presentation. <see cref="F:System.Windows.Forms.DockStyle.Fill"/> docking recommended.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.About.AboutBoxActionHandler.JetBrains#ActionManagement#IActionHandler#Update(JetBrains.ActionManagement.IDataContext,JetBrains.ActionManagement.ActionPresentation,JetBrains.ActionManagement.DelegateUpdate)">
+            <summary>
+            Updates action visual presentation. If presentation.Enabled is set to false, Execute
+            will not be called.
+            </summary>
+            <param name="context">DataContext</param>
+            <param name="presentation">presentation to update</param>
+            <param name="nextUpdate">delegate to call</param>
+        </member>
+        <member name="M:JetBrains.UI.About.AboutBoxActionHandler.JetBrains#ActionManagement#IActionHandler#Execute(JetBrains.ActionManagement.IDataContext,JetBrains.ActionManagement.DelegateExecute)">
+            <summary>
+            Executes action. Called after Update, that set ActionPresentation.Enabled to true.
+            </summary>
+            <param name="context">DataContext</param>
+            <param name="nextExecute">delegate to call</param>
+        </member>
         <member name="M:JetBrains.UI.About.AboutControl.InitializeComponent">
             <summary> 
             Required method for Designer support - do not modify 
@@ -240,8 +283,8 @@
             This includes the main menu location (if present in main menu) and keyboard shortcut (if set).
             If neither is available, displays the action name for binding in the keyboard customizations dialog.
             </summary>
-            <param name="actionman">Action Manager.</param>
-            <param name="sActionID">ID of the action to hint on.</param>
+            <param name="actionMan">Action Manager.</param>
+            <param name="actionID">ID of the action to hint on.</param>
         </member>
         <member name="M:JetBrains.ActionManagement.ActionManagerEx.GetHowToExecuteAction(JetBrains.ActionManagement.ActionManager,System.Type)">
             <summary>
@@ -249,7 +292,7 @@
             This includes the main menu location (if present in main menu) and keyboard shortcut (if set).
             If neither is available, displays the action name for binding in the keyboard customizations dialog.
             </summary>
-            <param name="actionman">Action Manager.</param>
+            <param name="actionMan">Action Manager.</param>
             <param name="typeActionHandler">Type of the action handler class for the action that should be hinted. Allows to make a strongly-type reference to the action instead of using the action ID.</param>
         </member>
         <member name="M:JetBrains.ActionManagement.ActionManagerEx.GetShortcutString(JetBrains.ActionManagement.ActionManager,JetBrains.ActionManagement.IExecutableAction)">
@@ -477,6 +520,84 @@
             <summary>
             This class represents a form that should be owned by a main IDE window. It should be used as a base
             class for various dialogs etc
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.CommonControls.Controls.SplitedButton.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.CommonControls.Controls.SplitedButton.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:JetBrains.UI.CommonControls.Controls.SplitedButton.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.CommonControls.Controls.SplitedButton.DoubleClickedEnabled">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.CommonControls.Controls.SplitedButton.AlwaysDropDown">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.CommonControls.Controls.SplitedButton.AlwaysHoverChange">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.CommonControls.Controls.SplitedButton.CalculateSplitRect">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.CommonControls.Controls.SplitedButton.FillSplitHeight">
+            <summary>
+            Gets or sets a value indicating whether [fill split height].
+            </summary>
+            <value><c>true</c> if [fill split height]; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:JetBrains.UI.CommonControls.Controls.SplitedButton.SplitHeight">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.CommonControls.Controls.SplitedButton.SplitWidth">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.CommonControls.Controls.SplitedButton.NormalImage">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.CommonControls.Controls.SplitedButton.HoverImage">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.CommonControls.Controls.SplitedButton.ClickedImage">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.CommonControls.Controls.SplitedButton.DisabledImage">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.CommonControls.Controls.SplitedButton.FocusedImage">
+            <summary>
+            
             </summary>
         </member>
         <member name="T:JetBrains.UI.CommonControls.LinkLabel">
@@ -1826,6 +1947,15 @@
             
             <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
         </member>
+        <member name="P:JetBrains.CommonControls.TabStrip.PresentableItemMargin">
+            <summary>
+            Tab page can be drawn not directly from the rect bounds but with
+            some spaces or margins. Without an account for these shifts, the
+            presentable item will be drawn directly on the tab border.
+            This margin shift the drawing of the presentable item and is accounted
+            in the calculation of tab width;
+            </summary>
+        </member>
         <member name="T:JetBrains.CommonControls.IPresentableItem">
             <summary>
             Provides mechanism for specifying most common data for presentation items.
@@ -2140,6 +2270,11 @@
             </summary>
         </member>
         <member name="M:JetBrains.UI.Controls.RichTextLabel.#ctor(JetBrains.UI.RichText.RichTextBlock)">
+            <summary>
+            Creates a rich text label, setting the given text.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Controls.RichTextLabel.#ctor(JetBrains.UI.RichText.RichText)">
             <summary>
             Creates a rich text label, setting the given text.
             </summary>
@@ -3017,6 +3152,11 @@
             Threshold under which the splitter is considered to be collapsed.
             </summary>
         </member>
+        <member name="F:JetBrains.UI.Options.OptionsDialog.OptionNavigation">
+            <summary>
+            Whether to enable and user-expose the navigation-related features.
+            </summary>
+        </member>
         <member name="F:JetBrains.UI.Options.OptionsDialog.myDisposablesTreeViewVisible">
             <summary>
             Stores the actions performed while the tree view is visible.
@@ -3062,6 +3202,11 @@
             The splitter with the tree on the left and the current page on the right.
             </summary>
         </member>
+        <member name="F:JetBrains.UI.Options.OptionsDialog.myToolStripContainer">
+            <summary>
+            Contains the tool strips and the main content.
+            </summary>
+        </member>
         <member name="F:JetBrains.UI.Options.OptionsDialog.myToolbarGlobal">
             <summary>
             The dialog-global toolbar.
@@ -3070,16 +3215,6 @@
         <member name="F:JetBrains.UI.Options.OptionsDialog.myToolbarNavigation">
             <summary>
             The dialog-global navigation toolbar.
-            </summary>
-        </member>
-        <member name="F:JetBrains.UI.Options.OptionsDialog.myToolStripContainer">
-            <summary>
-            Contains the tool strips and the main content.
-            </summary>
-        </member>
-        <member name="F:JetBrains.UI.Options.OptionsDialog.OptionNavigation">
-            <summary>
-            Whether to enable and user-expose the navigation-related features.
             </summary>
         </member>
         <member name="F:JetBrains.UI.Options.OptionsDialog.CurrentPageProperty">
@@ -8405,11 +8540,6 @@
             This means that some of the application top-level windows currently has input focus.
             </summary>
         </member>
-        <member name="M:JetBrains.UI.Application.UIApplicationShell.CommandLineInitLogger(JetBrains.Application.ICommandLine)">
-            <summary>
-            Applies the command line arguments to the logger.
-            </summary>
-        </member>
         <member name="M:JetBrains.UI.Application.UIApplicationShell.GetOfflineHelpFilePath">
             <summary>
             Gets the default path to the offline help file.
@@ -8432,6 +8562,11 @@
             </summary>
             <param name="keyword"></param>
             <returns></returns>
+        </member>
+        <member name="M:JetBrains.UI.Application.UIApplicationShell.Init_MessageBoxHandlers">
+            <summary>
+            Message box: show real UI message boxes when in UI shell mode, use Descriptor for info, and such.
+            </summary>
         </member>
         <member name="P:JetBrains.UI.Application.UIApplicationShell.HasInstance">
             <summary>
@@ -8465,6 +8600,11 @@
         <member name="F:JetBrains.UI.Application.UIApplicationShell.HelpKind.Msdn">
             <summary>
             MSDN help.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Application.UIApplicationShellStarter">
+            <summary>
+            UI-Shell-Specific starter (UI-sepcific assembly configurations etc).
             </summary>
         </member>
         <member name="M:JetBrains.UI.Application.UIApplicationShellStarter.GetAssemblyConfigurations">
@@ -11181,14 +11321,14 @@
         <member name="F:JetBrains.UI.Updates.UpdateInfoContainer.InitialSnoozeInterval">
             <summary>
             When the update is first downloaded, its <see cref="F:JetBrains.UI.Updates.UpdateInfoContainer.SnoozeInterval"/> is assumed to be <see cref="F:JetBrains.UI.Updates.UpdateInfoContainer.InitialSnoozeInterval"/>.
-            On each next snooze, <see cref="M:JetBrains.UI.Updates.UpdateInfoContainer.Snooze(System.Boolean)"/> adjusts the <see cref="F:JetBrains.UI.Updates.UpdateInfoContainer.SnoozeInterval"/> to have a new value.
+            On each next snooze, <see cref="M:JetBrains.UI.Updates.UpdateInfoContainer.Snooze"/> adjusts the <see cref="F:JetBrains.UI.Updates.UpdateInfoContainer.SnoozeInterval"/> to have a new value.
             </summary>
         </member>
         <member name="F:JetBrains.UI.Updates.UpdateInfoContainer.AdvertiseAfter">
             <summary>
             <para>The update popup should not be displayed before this date (UTC).</para>
             <para>Used for snoozing the update notifications on the local machine.</para>
-            <para>Initially <c>Null</c>, then set by <see cref="M:JetBrains.UI.Updates.UpdateInfoContainer.Snooze(System.Boolean)"/>.</para>
+            <para>Initially <c>Null</c>, then set by <see cref="M:JetBrains.UI.Updates.UpdateInfoContainer.Snooze"/>.</para>
             </summary>
         </member>
         <member name="F:JetBrains.UI.Updates.UpdateInfoContainer.Category">
@@ -11211,12 +11351,15 @@
             Creates a WinForms view for this update.
             </summary>
         </member>
-        <member name="M:JetBrains.UI.Updates.UpdateInfoContainer.Snooze(System.Boolean)">
+        <member name="M:JetBrains.UI.Updates.UpdateInfoContainer.Snooze">
             <summary>
             Snoozes the <see cref="F:JetBrains.UI.Updates.UpdateInfoContainer.AdvertiseAfter"/> value.
             </summary>
-            <param name="showLater">If true the <see cref="F:JetBrains.UI.Updates.UpdateInfoContainer.SnoozeInterval"/> proberty will be increased exponentially. So user will see information about the updates again. <br/>
-            If false the <see cref="F:JetBrains.UI.Updates.UpdateInfoContainer.SnoozeInterval"/> will be set to 10 years. So the update will never be shown again.</param>
+        </member>
+        <member name="M:JetBrains.UI.Updates.UpdateInfoContainer.Snooze(System.TimeSpan)">
+            <summary>
+            Snoozes the <see cref="F:JetBrains.UI.Updates.UpdateInfoContainer.AdvertiseAfter"/> value.
+            </summary>
         </member>
         <member name="M:JetBrains.UI.Updates.UpdateInfoContainer.ReadFromStream(JetBrains.UI.Updates.UpdatesCategory,System.Xml.XmlReader)">
             <summary>
@@ -12465,57 +12608,6 @@
             Fires when the control would like to be reasked of its desired size.
             </summary>
         </member>
-        <member name="T:JetBrains.WindowManagement.DevenvCenterCornerAnchoringRect">
-            <summary>
-            Defines the anchoring for the GotoByName-style menus.
-            </summary>
-        </member>
-        <member name="F:JetBrains.WindowManagement.DevenvCenterCornerAnchoringRect.myDevenvAnchor">
-            <summary>
-            Anchors to the DEVENV window.
-            </summary>
-        </member>
-        <member name="M:JetBrains.WindowManagement.DevenvCenterCornerAnchoringRect.#ctor">
-            <summary>
-            Inits the instance.
-            </summary>
-        </member>
-        <member name="M:JetBrains.WindowManagement.DevenvCenterCornerAnchoringRect.OnDevenvAnchorChanged(System.Object,System.EventArgs)">
-            <summary>
-            Update.
-            </summary>
-            <param name="sender"></param>
-            <param name="e"></param>
-        </member>
-        <member name="M:JetBrains.WindowManagement.DevenvCenterCornerAnchoringRect.Dispose">
-            <summary>
-            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            </summary>
-            <filterpriority>2</filterpriority>
-        </member>
-        <member name="M:JetBrains.WindowManagement.DevenvCenterCornerAnchoringRect.UpdateAnchor">
-            <summary>
-            Updates the anchoring rectangle as it gets dirty.
-            </summary>
-        </member>
-        <member name="T:JetBrains.WindowManagement.DevenvLayouter">
-            <summary>
-            Layouts a window by placing it relatively to the DEVENV window.
-            </summary>
-        </member>
-        <member name="M:JetBrains.WindowManagement.DevenvLayouter.CreateCenteredCorner">
-            <summary>
-            Creates a layouter that layouts the content by its top-left corner at approximately the center of the DEVENV window.
-            When the content size changes, its left-top corner won't move.
-            Unlike <see cref="M:JetBrains.WindowManagement.DevenvLayouter.CreateCenteredMiddle"/>, it's not truely centered, but the title of your content won't jump when it resizes.
-            </summary>
-        </member>
-        <member name="M:JetBrains.WindowManagement.DevenvLayouter.CreateCenteredMiddle">
-            <summary>
-            Creates a layouter that places the content in the center of the DEVENV window. When the content size changes, it remains centered.
-            Unlike <see cref="M:JetBrains.WindowManagement.DevenvLayouter.CreateCenteredCorner"/>, this layouter won't fix the content's title in place, but at each moment the content will be truely centered in the DEVENV window.
-            </summary>
-        </member>
         <member name="M:JetBrains.WindowManagement.Impl.ToolWindowFrame.EnsureContentRequired">
             <summary>
             If <see cref="P:JetBrains.WindowManagement.Impl.ToolWindowFrame.Content"/> is missing yet, requests it from the owner.
@@ -12544,6 +12636,24 @@
         <member name="P:JetBrains.WindowManagement.ToolWindowDescriptorAttribute.SupportedEditions">
             <summary>
             <c>Null</c> means that it should exist in all editions.
+            </summary>
+        </member>
+        <member name="T:JetBrains.WindowManagement.MainWindowLayouter">
+            <summary>
+            Layouts a window by placing it relatively to the main window.
+            </summary>
+        </member>
+        <member name="M:JetBrains.WindowManagement.MainWindowLayouter.CreateCenteredCorner">
+            <summary>
+            Creates a layouter that layouts the content by its top-left corner at approximately the center of the main window.
+            When the content size changes, its left-top corner won't move.
+            Unlike <see cref="M:JetBrains.WindowManagement.MainWindowLayouter.CreateCenteredMiddle"/>, it's not truely centered, but the title of your content won't jump when it resizes.
+            </summary>
+        </member>
+        <member name="M:JetBrains.WindowManagement.MainWindowLayouter.CreateCenteredMiddle">
+            <summary>
+            Creates a layouter that places the content in the center of the main window. When the content size changes, it remains centered.
+            Unlike <see cref="M:JetBrains.WindowManagement.MainWindowLayouter.CreateCenteredCorner"/>, this layouter won't fix the content's title in place, but at each moment the content will be truely centered in the main window.
             </summary>
         </member>
         <member name="T:JetBrains.UI.WindowManagement.WindowFrame">
@@ -12609,9 +12719,9 @@
             </summary>
             <param name="window">The window to attach to and track its window rectangle.</param>
         </member>
-        <member name="M:JetBrains.UI.WindowAnchoringRect.AnchorToDevenv">
+        <member name="M:JetBrains.UI.WindowAnchoringRect.AnchorToMainWindow">
             <summary>
-            Gets an anchoring rect that tracks the DEVENV window visual position.
+            Gets an anchoring rect that tracks the main window visual position.
             </summary>
         </member>
         <member name="M:JetBrains.UI.WindowAnchoringRect.Update">

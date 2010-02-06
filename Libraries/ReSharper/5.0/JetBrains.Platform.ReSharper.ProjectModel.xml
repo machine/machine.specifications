@@ -485,7 +485,7 @@
             Gets the full path for the solution settings file, which includes the product version now.
             </summary>
         </member>
-        <member name="M:JetBrains.ProjectModel.Impl.SolutionBase.GetSolutionSettingsFileSuffix(JetBrains.ComponentModel.XmlExternalizationScope)">
+        <member name="M:JetBrains.ProjectModel.Impl.SolutionBase.GetSolutionOrProjectSettingsFileSuffix(JetBrains.ComponentModel.XmlExternalizationScope)">
             <summary>
             Suffix for the solution settings file (the trailing extensions), scope-dependent, leading dot included.
             Usually, <c>".resharper.user"</c> and <c>".resharper"</c>

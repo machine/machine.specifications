@@ -594,6 +594,15 @@
             <param name="coll">The collection.</param>
             <param name="handler">The handler that executes the opening bracket and returns an <see cref="T:System.IDisposable"/> that executes the closing bracket when disposed of.</param>
         </member>
+        <member name="M:JetBrains.DataFlow.ICollectionEventsEx.PushForEachItem``1(JetBrains.DataFlow.ICollectionEvents{``0},System.Func{JetBrains.DataFlow.AddRemoveEventArgs{``0},System.IDisposable})">
+            <summary>
+            Executes a pair of actions for each of the items in the collection.
+            When a new items comes into view, executes the <paramref name="handler"/> for it. The return value of the <paramref name="handler"/> is the closing bracket and will be executed when the collection item goes off the view.
+            </summary>
+            <typeparam name="TValue">Type of the collection items.</typeparam>
+            <param name="coll">The collection.</param>
+            <param name="handler">The handler that executes the opening bracket and returns an <see cref="T:System.IDisposable"/> that executes the closing bracket when disposed of.</param>
+        </member>
         <member name="T:JetBrains.DataFlow.IPropertyEx">
             <summary>
             Extension method helpers for the data flow classes.
@@ -7191,19 +7200,24 @@
             Wraps a property with an event into an <see cref="T:JetBrains.DataFlow.IProperty`1"/>.
             </summary>
         </member>
+        <member name="M:JetBrains.DataFlow.WinFormsProperty.Create``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Boolean)">
+            <summary>
+            Returns a data flow property bound to a WinForms standard property (one usually coupled with an event).
+            </summary>
+            <typeparam name="TSource">Source object type.</typeparam>
+            <typeparam name="TValue">Property value type.</typeparam>
+            <param name="source">The source winforms property owner.</param>
+            <param name="propertyExpression">Expression to retrieve property</param>
+            <param name="sinkEvents">Whether to sink the events from the WinForms property about its updates. Looks for an event with the {PropertyName}+“Changed” name.</param>
+        </member>
         <member name="M:JetBrains.DataFlow.WinFormsProperty.Create``1(System.Object,System.String,System.Boolean)">
             <summary>
             Returns a data flow property bound to a WinForms standard property (one usually coupled with an event).
             </summary>
             <typeparam name="TValue">Property value type.</typeparam>
             <param name="source">The source winforms property owner.</param>
-            <param name="sPropertyName">The source winforms property name.</param>
-            <param name="bSinkEvents">Whether to sink the events from the WinForms property about its updates. Looks for an event with the {PropertyName}+“Changed” name.</param>
-        </member>
-        <member name="M:JetBrains.DataFlow.WinFormsProperty.GetWinFormsPropertyInfo(System.Object,System.String)">
-            <summary>
-            Locates the property on the source object.
-            </summary>
+            <param name="propertyName">The source winforms property name.</param>
+            <param name="sinkEvents">Whether to sink the events from the WinForms property about its updates. Looks for an event with the {PropertyName}+“Changed” name.</param>
         </member>
         <member name="T:JetBrains.Text.IBuffer">
             <summary>
@@ -15189,7 +15203,7 @@
             In order to get varying results on adjacent calls, there must be a shared Random object.
             </summary>
         </member>
-        <member name="F:JetBrains.Util.StringUtil.myRegexMacro">
+        <member name="F:JetBrains.Util.StringUtil.ourRegexMacro">
             <summary>
             Caches the macro substitution regex.
             </summary>

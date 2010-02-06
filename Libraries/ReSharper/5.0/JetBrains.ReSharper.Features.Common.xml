@@ -87,12 +87,6 @@
             ANDs the given condition with the existing <see cref="F:JetBrains.ReSharper.Features.Common.GoToByName.GotoCacheElementController`1.ItemsPassFilter"/>.
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoCacheElementController`1.FuncPassAllFilter(`0)">
-            <summary>
-            The default dummy pass-all filter for the <see cref="F:JetBrains.ReSharper.Features.Common.GoToByName.GotoCacheElementController`1.ItemsPassFilter"/>.
-            Must be a function for the <see cref="M:System.Object.Equals(System.Object)"/> operation to work appropriately.
-            </summary>
-        </member>
         <member name="M:JetBrains.ReSharper.Features.Common.GoToByName.GotoCacheElementController`1.UpdateItems(System.String,System.Func{System.Collections.Generic.IEnumerable{JetBrains.UI.PopupMenu.Impl.JetPopupMenuItem},JetBrains.UI.GotoByName.GotoByNameController.AddItemsBehavior,System.Boolean})">
             <summary>
             When the items get dirty (<see cref="F:JetBrains.UI.GotoByName.GotoByNameController.ItemsGottenDirty"/>), this function is called on the secondary thread.
@@ -821,11 +815,6 @@
             Rip FQ Name from a declared element, in the specified language, suitable for use by the picker owner.
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Features.Common.UI.DeclaredElementChooser.AllPassDeclaredElementFilter(JetBrains.ReSharper.Psi.IDeclaredElement)">
-            <summary>
-            An empty filter to assign by default.
-            </summary>
-        </member>
         <member name="M:JetBrains.ReSharper.Features.Common.UI.DeclaredElementChooser.CreateCompletionController">
             <summary>
             Creates the chooser-specific completion controller.
@@ -901,11 +890,6 @@
             Gets or sets the filter that narrows down the picker items (in the drop-down picker tree).
             This is usually a superset of the <see cref="F:JetBrains.ReSharper.Features.Common.UI.FileChooser.CompletionItemsPassFilter"/> items, as it has to include the nodes that contain the useful items. Items under the excluded nodes are excluded automatically.
             Can be assigned only once.
-            </summary>
-        </member>
-        <member name="M:JetBrains.ReSharper.Features.Common.UI.FileChooser.AllPassProjectFileFilter(JetBrains.ProjectModel.IProjectItem)">
-            <summary>
-            An empty filter to assign by default.
             </summary>
         </member>
         <member name="M:JetBrains.ReSharper.Features.Common.UI.FileChooser.InitPicker">

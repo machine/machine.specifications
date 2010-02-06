@@ -107,5 +107,10 @@
             Provider icon to display on Options page, <c>null</c> for default icon
             </summary>
         </member>
+        <member name="P:JetBrains.ReSharper.UnitTestFramework.UnitTestManager.EnableDebugInternal">
+            <summary>
+            Enables Debugging of TaskRunner. Internal feature. Not persisted.
+            </summary>
+        </member>
     </members>
 </doc>

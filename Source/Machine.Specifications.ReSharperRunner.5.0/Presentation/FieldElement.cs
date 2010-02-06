@@ -17,11 +17,11 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     protected FieldElement(IUnitTestProvider provider,
                            UnitTestElement parent,
-                           IProjectModelElement project,
+                           ProjectModelElementEnvoy projectEnvoy,
                            string declaringTypeName,
                            string fieldName,
                            bool isIgnored)
-      : base(provider, parent, project, declaringTypeName, isIgnored || parent.IsExplicit)
+      : base(provider, parent, projectEnvoy, declaringTypeName, isIgnored || parent.IsExplicit)
     {
       _fieldName = fieldName;
     }

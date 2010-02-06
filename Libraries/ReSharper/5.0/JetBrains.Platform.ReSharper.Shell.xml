@@ -81,6 +81,11 @@
             Gets the licensing implementation.
             </summary>
         </member>
+        <member name="P:JetBrains.Application.IApplicationDescriptor.ProductAboutBoxImage">
+            <summary>
+            AboutBox for the product shows this image. Recommended minimum width: <c>200h</c>.
+            </summary>
+        </member>
         <member name="P:JetBrains.Application.IApplicationDescriptor.ProductBirthDate">
             <summary>
             The birth date of the product. Used for the lower copyright year and so on.
@@ -201,6 +206,11 @@
         <member name="P:JetBrains.Application.ApplicationDescriptor.LicenseSupport">
             <summary>
             Gets the licensing implementation.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.ApplicationDescriptor.ProductAboutBoxImage">
+            <summary>
+            AboutBox for the product shows this image. Recommended minimum width: <c>200h</c>.
             </summary>
         </member>
         <member name="P:JetBrains.Application.ApplicationDescriptor.ProductBirthDate">
@@ -934,11 +944,6 @@
             This class should not be made static (and, conscequently, public interface methods on it), so that it were created and disposed accordingly, with its underlying <see cref="T:JetBrains.Metadata.Utils.AssemblyResolver"/>.
             </summary>
         </member>
-        <member name="F:JetBrains.Application.Install.Installer.myAssemblyResolver">
-            <summary>
-            Helps with finding the assemblies residing at custom probing paths.
-            </summary>
-        </member>
         <member name="F:JetBrains.Application.Install.Installer.myMapAttributeToInstallers">
             <summary>
             Maps the attributes storing the installation data to the objects that process their registration and unregistration.
@@ -970,12 +975,16 @@
         <member name="F:JetBrains.Application.Install.Installer.AssemblyConfigurations">
             <summary>
             Gets the assembly configurations in which the product is running, which defines the set of assemblies from <see cref="T:JetBrains.Build.AllAssemblies.AllAssembliesXml"/> to load.
-            Currently, an assembly must meet all of the configurations to be loaded.
             </summary>
         </member>
         <member name="F:JetBrains.Application.Install.Installer.AssemblyConfigurationsString">
             <summary>
             The assembly configurations string value, as passed to the ctor.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.Installer.BeforeInstallationDataHarvestComplete">
+            <summary>
+            Fired after the <see cref="T:JetBrains.Application.Install.IInstallAttributes"/> handlers are called for the installation data, but before it's handed out to consumers (and stored in the cache).
             </summary>
         </member>
         <member name="M:JetBrains.Application.Install.Installer.DumpInstallationData(JetBrains.Application.Install.InstallationData.InstallationData,System.String)">
@@ -988,10 +997,11 @@
             Self-registers for COM those assemblies that require such registration.
             </summary>
         </member>
-        <member name="M:JetBrains.Application.Install.Installer.HarvestInstallationData">
+        <member name="M:JetBrains.Application.Install.Installer.GetInstallationData">
             <summary>
             Gets all the Registry data that should be written to or erased from the Registry upon installation or uninstallation.
             This includes the static app-global Registry data and dynamic registration info collected from the Assembly attributes.
+            The first call is slow (the installation data is harvested), subsequent calls are fast because the result is cached.
             </summary>
         </member>
         <member name="M:JetBrains.Application.Install.Installer.CollectAttributeInstallers">
@@ -1073,435 +1083,31 @@
             Maps the attributes storing the installation data to the objects that process their registration and unregistration.
             </summary>
         </member>
-        <member name="T:JetBrains.Application.Install.RegistrationStage">
+        <member name="F:JetBrains.Application.Install.InstallerApplicationDescriptor.myDescriptorInstalledProduct">
             <summary>
-            Defines the exact stage of the registration process of which the handler is being queried.
+            Descriptor of the product we're installing.
             </summary>
         </member>
-        <member name="F:JetBrains.Application.Install.RegistrationStage.Register">
+        <member name="M:JetBrains.Application.Install.InstallerShellStarter.StartShell">
             <summary>
-            The assembly is being registered.
+            <para>Starts the application shell based on this instance.</para>
+            <para>The <see cref="P:JetBrains.Application.Shell.HasInstance"/> is expected to be <c>True</c> after this method returns. It's an error to call this method if already <see cref="P:JetBrains.Application.Shell.HasInstance"/> is <c>True</c>.</para>
+            <para>See notes on <see cref="T:JetBrains.Application.IApplicationDescriptor"/> for info on how Shells and Application Descriptors work together, and how this method should be implemented.</para>
             </summary>
         </member>
-        <member name="F:JetBrains.Application.Install.RegistrationStage.Unregister">
+        <member name="P:JetBrains.Application.Install.InstallerShellStarter.ApplicationDescriptor">
             <summary>
-            The assembly is being unregistered.
+            Gets the <see cref="T:JetBrains.Application.IApplicationDescriptor">Application Descriptor</see> for the application and the <see cref="T:JetBrains.Application.Shell"/> that will be created.
             </summary>
         </member>
-        <member name="T:JetBrains.Application.KnownSettings`1">
+        <member name="P:JetBrains.Application.Install.InstallerShellStarter.CommandLine">
             <summary>
-            Maintains a table of the pre-registered setting identities that are validated as much as possible.
-            The settings can be accessed thru a strongly-typed key, with their type and default value consistent across all the calls.
-            The settings are still stored in the <see cref="T:JetBrains.Application.GlobalSettingsTable"/>.
-            </summary>
-            <typeparam name="TKey"></typeparam>
-        </member>
-        <member name="F:JetBrains.Application.KnownSettings`1.myKnownSettings">
-            <summary>
-            The list of the known settings.
+            Gets the application command line.
             </summary>
         </member>
-        <member name="M:JetBrains.Application.KnownSettings`1.#ctor">
+        <member name="T:JetBrains.Application.ShellBase">
             <summary>
-            Creates an empty table to be filled with <see cref="M:JetBrains.Application.KnownSettings`1.Register(JetBrains.Application.KnownSettings{`0}.SettingDescriptor)"/> afterwards.
-            <see cref="M:JetBrains.Application.KnownSettings`1.AssertAllRegistered"/> is not called, it's up to you.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.KnownSettings`1.#ctor(JetBrains.Application.KnownSettings{`0}.SettingDescriptor[])">
-            <summary>
-            Creates an initialized table, uses <see cref="M:JetBrains.Application.KnownSettings`1.AssertAllRegistered"/> to check that there are no orphaned keys in the <typeparamref name="TKey"/> enum.
-            </summary>
-            <param name="descriptors"></param>
-        </member>
-        <member name="M:JetBrains.Application.KnownSettings`1.AssertKnownType(System.Type)">
-            <summary>
-            Checks whether we support settings of the type <paramref name="type"/>.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.KnownSettings`1.AssertAllRegistered">
-            <summary>
-            Checks that all the keys from the <see cref="T:JetBrains.Util.Key"/> enum are present in the table.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.KnownSettings`1.Get``1(`0)">
-            <summary>
-            Gets a setting by its strongly-typed key.
-            </summary>
-            <typeparam name="T">Type of the setting. Must exactly match the expected setting value type.</typeparam>
-            <param name="key">The strongly-typed key for the setting.</param>
-            <returns>The setting value, if available.</returns>
-        </member>
-        <member name="M:JetBrains.Application.KnownSettings`1.Register(JetBrains.Application.KnownSettings{`0}.SettingDescriptor)">
-            <summary>
-            Adds a new known setting.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.KnownSettings`1.Register(`0,System.Object)">
-            <summary>
-            Adds a new known setting.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.KnownSettings`1.Register(`0,System.String,System.Object)">
-            <summary>
-            Adds a new known setting.
-            </summary>
-        </member>
-        <member name="T:JetBrains.Application.KnownSettings`1.SettingDescriptor">
-            <summary>
-            Describes a known setting with its type and default value.
-            </summary>
-        </member>
-        <member name="F:JetBrains.Application.KnownSettings`1.SettingDescriptor.DefaultValue">
-            <summary>
-            Default value, must be of type <see cref="T:System.Type"/>.
-            </summary>
-        </member>
-        <member name="F:JetBrains.Application.KnownSettings`1.SettingDescriptor.Key">
-            <summary>
-            The key in the known settings table.
-            </summary>
-        </member>
-        <member name="F:JetBrains.Application.KnownSettings`1.SettingDescriptor.SettingKey">
-            <summary>
-            The settings-key in the underlying settings store.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.KnownSettings`1.SettingDescriptor.#ctor(`0,System.String,System.Object)">
-            <summary>
-            Validates and fills in.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.KnownSettings`1.SettingDescriptor.#ctor(`0,System.Object)">
-            <summary>
-            Validates and fills in.
-            The settings key name is deferred from the key value.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.KnownSettings`1.SettingDescriptor.AssertValid">
-            <summary>
-            Throws if fields are invalid.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.License.ILicenseSupport.CreateLicenseData(System.String,System.String,System.String)">
-            <summary>
-            Creates license data using licenseKey, userName and company name. If only one type of licenses is acceptable,
-            normally returns new LicenseData(...). Otherwise some additional processing should take place
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.License.ILicenseSupport.GetLicenseAgreement(JetBrains.Application.License.LicenseType)">
-            <summary>
-            License agreement in rich text. NULL if no license agreement is necessary
-            </summary>
-        </member>
-        <member name="P:JetBrains.Application.License.ILicenseSupport.ProductGuid">
-            <summary>
-            Guid (with braces), that is used to store Date marker
-            </summary>
-        </member>
-        <member name="P:JetBrains.Application.License.ILicenseSupport.FreeTrialPeriod">
-            <summary>
-            Number of days, free trial period lasts
-            </summary>
-        </member>
-        <member name="P:JetBrains.Application.License.ILicenseSupport.FeedbackRequestPeriod">
-            <summary>
-            Number of free trial days, after which feedback is requested.
-            Negative value means feedback is never requested.
-            </summary>
-        </member>
-        <member name="P:JetBrains.Application.License.ILicenseSupport.LeftDaysNotification">
-            <summary>
-            Identifies, when to start informing user that, his free trial
-            period ends up 
-            </summary>
-        </member>
-        <member name="P:JetBrains.Application.License.ILicenseSupport.ProductFamily">
-            <summary>
-            JetBrains license server supports ProductFamily as guid without braces !!!
-            </summary>
-        </member>
-        <member name="P:JetBrains.Application.License.LicenseChecker.IsChecksumOK">
-            does stored checksum corresponds to the username's one?
-            checksum occupies 16 bits
-        </member>
-        <member name="P:JetBrains.Application.License.LicenseChecker.Version">
-            gets OmniaMea version stored in the license code
-            occupies 16 bits
-        </member>
-        <member name="P:JetBrains.Application.License.LicenseChecker.Type">
-            gets type of the license stored in the license code
-            occupies 8 bits
-        </member>
-        <member name="P:JetBrains.Application.License.LicenseChecker.GenerationDate">
-            gets license generation date stored in the license code
-            occupies 16 bits
-        </member>
-        <member name="P:JetBrains.Application.License.LicenseChecker.ExpirationDate">
-            gets license expiration date stored in the license code
-            occupies 16 bits
-        </member>
-        <member name="M:JetBrains.Application.OneTimeInitializationManager.IsInitializationNeeded(System.Boolean)">
-            <summary>
-            Checks if the one-time-init is needed.
-            Optionally, marks it as done in the Registry (write-touches Current User hive only).
-            </summary>
-            <param name="bMarkAsDone">Whether to mark one-time-init as performed for this config.</param>
-            <returns>Whether one-time-init was required.</returns>
-        </member>
-        <member name="M:JetBrains.Application.OneTimeInitializationManager.OnCheckFailed(System.Security.SecurityException)">
-            <summary>
-            Invoked when one-time-init fails to read/write the Regsitry. Should report to the user in an app-dependent manner.
-            </summary>
-        </member>
-        <member name="P:JetBrains.Application.OneTimeInitializationManager.ActualIdentity">
-            <summary>
-            If the per-machine one-time-init value is not available, this value is used instead.
-            </summary>
-        </member>
-        <member name="P:JetBrains.Application.OneTimeInitializationManager.IsOneTimeInitAllowed">
-            <summary>
-            Gets whether the one-time-init is allowed to run at the moment, eg the main window has already been created.
-            </summary>
-        </member>
-        <member name="T:JetBrains.Application.OneTimeInitializationAttribute">
-            <summary>
-            To use this feature implement <see cref="T:JetBrains.Application.IOneTimeInitializationHandler"/> with default constructor.
-            This class is not expected to be <see cref="T:JetBrains.ComponentModel.IComponent"/>.
-            Initialization will be performed in UIThread on <c>IVsShellComponent.OnAfterStartup()</c> call time.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator,System.Double,System.Action{JetBrains.Application.Progress.IProgressIndicator})">
-            <summary>
-            <para>Advances the <paramref name="progressParent"/> by <paramref name="fUnitsInParentIndicator"/> units, while running the <paramref name="funcAdvanceSubprogress"/> task.</para>
-            <para>Unlike the core <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/> method, the increment goes gradually, as the <paramref name="funcAdvanceSubprogress"/> calls <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> on the <see cref="T:JetBrains.Application.Progress.IProgressIndicator"/> it is given as a parameter. Note that its units are totally indipendent of the <paramref name="fUnitsInParentIndicator"/> in the <paramref name="progressParent"/>. Any range it chooses in its <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> will result in <paramref name="fUnitsInParentIndicator"/> advance of the parent.</para>
-            </summary>
-            <param name="progressParent">The parent progress.</param>
-            <param name="fUnitsInParentIndicator">The number of units used up from the <paramref name="progressParent"/>, in terms of its parent <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>, when you do <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> on this subprogress with any units of your liking.</param>
-            <param name="funcAdvanceSubprogress">The subtask that gets its own subprogress.</param>
-        </member>
-        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.CreateSubProgress(JetBrains.Application.Progress.IProgressIndicator,System.Double)">
-            <summary>
-            <para>A sub-routine runs the whole <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> run on the subprogress, with units of its own choice in <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> and <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/> on the subprogress, which uses up only <paramref name="fUnitsInParentIndicator"/> in the parent <paramref name="progressParent"/>, in terms of its parent <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>.</para>
-            <para>This way, a few tasks could share the full progress range without knowing that they're using it together, each one running the whole length of its subprogress.</para>
-            </summary>
-            <param name="progressParent">The parent progress.</param>
-            <param name="fUnitsInParentIndicator">The number of units used up from the <paramref name="progressParent"/>, in terms of its parent <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>, when you do <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> on this subprogress with any units of your liking.</param>
-        </member>
-        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.CreateSubProgress(JetBrains.Application.Progress.IProgressIndicator)">
-            <summary>
-              <para>
-                A sub-routine runs the whole <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/>
-                run on the subprogress, with units of its own choice in <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> and
-                <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/> on the subprogress, in terms of its parent
-                <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>.
-              </para>
-              <para>
-                This way, a few tasks could share the full progress range without knowing that they're using it together,
-                each one running the whole length of its subprogress.
-              </para>
-            </summary>
-            <param name="progressParent">The parent progress.</param>
-        </member>
-        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.ForEachWithProgressImpl``1(System.Collections.Generic.ICollection{``0},JetBrains.Application.Progress.IProgressIndicator,System.String,System.Boolean,System.Action{JetBrains.Application.Progress.IProgressIndicator,``0})">
-            <summary>
-            A LINQ-like FOREACH with progress.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.ForEachWithProgress``1(System.Collections.Generic.ICollection{``0},JetBrains.Application.Progress.IProgressIndicator,System.String,System.Boolean,System.Action{``0,JetBrains.Application.Progress.IProgressIndicator})">
-            <summary>
-            A LINQ-like FOREACH with progress.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.ForEachWithProgress``1(System.Collections.Generic.ICollection{``0},JetBrains.Application.Progress.IProgressIndicator,System.String,System.Action{``0,JetBrains.Application.Progress.IProgressIndicator})">
-            <summary>
-            A LINQ-like FOREACH with progress.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.ForEachWithProgress``1(System.Collections.Generic.ICollection{``0},JetBrains.Application.Progress.IProgressIndicator,System.String,System.Boolean,System.Action{``0})">
-            <summary>
-            A LINQ-like FOREACH with progress.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.ForEachWithProgress``1(System.Collections.Generic.ICollection{``0},JetBrains.Application.Progress.IProgressIndicator,System.String,System.Action{``0})">
-            <summary>
-            A LINQ-like FOREACH with progress.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.SelectWProgress``2(System.Collections.Generic.ICollection{``0},JetBrains.Application.Progress.IProgressIndicator,System.String,System.Func{``0,``1})">
-            <summary>
-            A LINQ-like SELECT statement with progress.
-            Works on <see cref="T:System.Collections.Generic.ICollection`1"/>, returns a committed <see cref="T:System.Collections.Generic.List`1"/>.
-            </summary>
-            <typeparam name="TSource">Source item types.</typeparam>
-            <typeparam name="TResult">Resulting item types.</typeparam>
-            <param name="source">Source items.</param>
-            <param name="progress">The progress to track the source items iteration.</param>
-            <param name="taskname">Name for the progress run.</param>
-            <param name="selector">Selector function.</param>
-            <returns>The resulting items.</returns>
-        </member>
-        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Start(JetBrains.Application.Progress.IProgressIndicator,System.Int32,System.String)">
-            <summary>
-            <para>Starts the progress to run through the [0..totalWorkUnits] range. You MUST call <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> at the end. Use <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator,System.Double,System.Action{JetBrains.Application.Progress.IProgressIndicator})"/> to move the progress across the range.</para>
-            <para>Generally, you SHOULD set the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> to identify the current execution span, once per <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Start(JetBrains.Application.Progress.IProgressIndicator,System.Int32,System.String)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/>, and change the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> when doing <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator,System.Double,System.Action{JetBrains.Application.Progress.IProgressIndicator})"/> to comment on the progress.</para>
-            <para>If you would like to delegate a sub-range to a nested routine, you SHOULD create a <see cref="T:JetBrains.Application.Progress.SubProgressIndicator"/> and pass the resulting <see cref="T:JetBrains.Application.Progress.IProgressIndicator"/> to the routine, so that it ran a whole range from its point of view, which would then map to a sub-range of this progress indicator.</para>
-            </summary>
-            <param name="progress">Progress indicator.</param>
-            <param name="totalWorkUnits">The inclusive upper limit of the progress range.</param>
-            <param name="sTaskName">The <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> value to be set for the run. You SHOULD NOT leave it unmodified, unless you are running a subprogress.</param>
-        </member>
-        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.StartProgress(JetBrains.Application.Progress.IProgressIndicator,System.Int32)">
-            <summary>
-            <para>Just call <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> and return the same instance of <see cref="T:JetBrains.Application.Progress.IProgressIndicator"/>. See <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> for details.</para>
-            </summary>
-            <param name="progress">Progress indicator.</param>
-            <param name="totalWorkUnits">The inclusive upper limit of the progress range.</param>
-            <returns>The same instance of IProgressIndicator in order ot use fluent interface.</returns>
-        </member>
-        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.StartStop(JetBrains.Application.Progress.IProgressIndicator,System.Int32,System.String,System.Action)">
-            <summary>
-            <para>Starts the progress to run through the [0..totalWorkUnits] range, executes <paramref name="action"/>, and then stops the progress. Use <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator,System.Double,System.Action{JetBrains.Application.Progress.IProgressIndicator})"/> to move the progress across the range.</para>
-            <para>Generally, you SHOULD set the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> to identify the current execution span, once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/>, and change the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> when doing <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator,System.Double,System.Action{JetBrains.Application.Progress.IProgressIndicator})"/> to comment on the progress.</para>
-            <para>If you would like to delegate a sub-range to a nested routine, you SHOULD create a <see cref="T:JetBrains.Application.Progress.SubProgressIndicator"/> and pass the resulting <see cref="T:JetBrains.Application.Progress.IProgressIndicator"/> to the routine, so that it ran a whole range from its point of view, which would then map to a sub-range of this progress indicator.</para>
-            </summary>
-            <param name="progress">Progress indicator.</param>
-            <param name="totalWorkUnits">The inclusive upper limit of the progress range.</param>
-            <param name="taskName">The <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> value to be set for the run. You SHOULD NOT leave it unmodified, unless you are running a subprogress.</param>
-            <param name="action">The task to execute in between <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> and <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/>.</param>
-        </member>
-        <member name="M:JetBrains.Application.TypeIndexBuilder.LoadIndex(System.Xml.XmlDocument)">
-            <summary>
-            Loads a map from assembly name to a map for attribute fqn to type fqn
-            </summary>
-            <param name="document"></param>
-            <returns></returns>
-        </member>
-        <member name="M:JetBrains.Application.InterruptableReadActivity.Start">
-            <summary>
-            Override this method with activity that should happen in primary thread before background thread
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.InterruptableReadActivity.Work">
-            <summary>
-            Override this method with activity that happens in background thread.
-            </summary>
-            This method should periodically check return value of <c>interrupt</c> and either return or 
-            throw <c>ProcessCancelledException</c>
-        </member>
-        <member name="M:JetBrains.Application.InterruptableReadActivity.EndWorkerThread">
-            <summary>
-            This method will always be invoked at the end of worker thread
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.InterruptableReadActivity.Finish">
-            <summary>
-            Override this method with activity that will happen in primary thread after worker thread finishesю
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.InterruptableReadActivity.OnInterrupt">
-            <summary>
-            This method is invoked in primary thread if work is interrupted. 
-            </summary>
-            If this method is invoked, <cref>Finish</cref> will NOT be called.
-            
-        </member>
-        <member name="T:JetBrains.Application.Progress.IProgressIndicator">
-            <summary>
-            <para>Given to a lengthy task that knows its progress, used to enable the UI indications of the task progress.</para>
-            <para>You should read all of the member summaries before using this class.</para>
-            </summary>
-            <seealso cref="T:JetBrains.Application.Progress.IProgressIndicatorModel"/>
-        </member>
-        <member name="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)">
-            <summary>
-            <para>Advances the progress within the range, as defined by the <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> call.</para>
-            <para><see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> MUST be called first.</para>
-            </summary>
-            <param name="units">A whole or fractional number of units from the [0..totalWorkUnits] range, as defined by the <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> method.</param>
-        </member>
-        <member name="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)">
-            <summary>
-            <para>Starts the progress to run through the [0..totalWorkUnits] range. You MUST call <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> at the end. Use <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/> to move the progress across the range.</para>
-            <para>Generally, you SHOULD set the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> to identify the current execution span, once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/>, and change the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> when doing <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/> to comment on the progress.</para>
-            <para>If you would like to delegate a sub-range to a nested routine, you SHOULD create a <see cref="T:JetBrains.Application.Progress.SubProgressIndicator"/> and pass the resulting <see cref="T:JetBrains.Application.Progress.IProgressIndicator"/> to the routine, so that it ran a whole range from its point of view, which would then map to a sub-range of this progress indicator.</para>
-            </summary>
-            <param name="totalWorkUnits">The inclusive upper limit of the progress range.</param>
-        </member>
-        <member name="M:JetBrains.Application.Progress.IProgressIndicator.Stop">
-            <summary>
-            <para>Completes the progress run. You MUST call <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> if you previously called <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>.</para>
-            <para>Generally, you SHOULD always call the <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> pair on the given indicator, even if gotten no items to process, so that a <see cref="T:JetBrains.Application.Progress.SubProgressIndicator"/> could use up the parent range consistently.</para>
-            </summary>
-        </member>
-        <member name="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText">
-            <summary>
-            <para>A title of the current item being processed by the activity which the progress is visualizing.</para>
-            <para>You SHOULD set <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> run, and <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>, if applicable.</para>
-            </summary>
-        </member>
-        <member name="P:JetBrains.Application.Progress.IProgressIndicator.IsCanceled">
-            <summary>
-            <para>Whether the activity which the progress is visualizing has been canceled externally. This could be user's clicking on the "Cancel" button of the UI the progress is bound to.</para>
-            <para>You should check this property periodically and cut off the remaining activity if <c>True</c>. You MIGHT throw <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> for that, still it's recommended not to use exceptions for flow control, but check <see cref="P:JetBrains.Application.Progress.IProgressIndicator.IsCanceled"/> on all of the levels of nesting.</para>
-            </summary>
-        </member>
-        <member name="P:JetBrains.Application.Progress.IProgressIndicator.TaskName">
-            <summary>
-            <para>A title of the whole activity which the progress is visualizing.</para>
-            <para>You SHOULD set <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> run, and <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>, if applicable.</para>
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.Progress.ProgressIndicatorBase.Dispose">
-            <summary>
-            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            </summary>
-            <filterpriority>2</filterpriority>
-        </member>
-        <member name="P:JetBrains.Application.Progress.ProgressIndicatorBase.Fraction">
-            <summary>
-            Gives out the progress value as a floating point number in the [0…1] range.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.Progress.CommandLineProgressIndicator.Render">
-            <summary>
-              Renders current state of Console progress
-            </summary>
-        </member>
-        <member name="T:JetBrains.Application.Progress.CommandLineTaskExecutor">
-            <summary>
-            Task executor for progress in console
-            </summary>
-        </member>
-        <member name="T:JetBrains.Application.Progress.ITaskExecutor">
-            <summary>
-            Can execute a task.
-            </summary>
-            <remarks>
-            This object is stateless, and thus not disposable.
-            Execution of each of the tasks is an action in itself, with its own disposable scope.
-            </remarks>
-        </member>
-        <member name="M:JetBrains.Application.Progress.ITaskExecutor.ExecuteTask(System.String,JetBrains.Application.Progress.TaskCancelable,System.Action{JetBrains.Application.Progress.IProgressIndicator})">
-            <summary>
-            Executes the task without exiting the method until the task is completed.
-            </summary>
-            <param name="name">
-            <para>Task title, short form.</para>
-            <para>This is used for the progress window title by the UI progress indicators.</para>
-            <para>The long form of the task caption should go to the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> of the <paramref name="task"/>'s <see cref="T:JetBrains.Application.Progress.IProgressIndicator"/>.</para>
-            <para>Prepended with the product name automatically. Might be empty, in which case the product name will be used.</para>
-            </param>
-            <param name="task">The task to execute.</param>
-            <param name="cancelable">
-            <para>Whether the task could be canceled by the user, if the task progress indication provided by <see cref="T:JetBrains.Application.Progress.ITaskExecutor"/> supports canceling.</para>
-            <para>The <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> pattern is supported, which means that an <see cref="T:JetBrains.Application.InterruptableActivityCookie"/> is plugged on the task thread to throw a <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> when called for a check with a <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.IsCanceled"/> <c>False</c>; such an exception is called by the task executor and converted into a <c>False</c> return value.</para>
-            </param>
-            <returns>Whether the task has completed execution (i.e. was not canceled). Note that even a <see cref="F:JetBrains.Application.Progress.TaskCancelable.No"/> task could be canceled by setting <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.IsCanceled"/> to <c>False</c> or throwing a <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> or letting some other exception out of the <paramref name="task">task function</paramref>.</returns>
-            <remarks>If you would like to return any values from the <paramref name="task"/>, assign them to local variables within the closure.</remarks>
-        </member>
-        <member name="T:JetBrains.Application.Progress.ProcessCancelledException">
-            <summary>
-            A special Platform exception that fires when an interruptible activity is aborted.
+            Some base implementations for the very-abstract <see cref="T:JetBrains.Application.Shell"/> class.
             </summary>
         </member>
         <member name="T:JetBrains.Application.Shell">
@@ -2054,7 +1660,7 @@
         </member>
         <member name="P:JetBrains.Application.Shell.IsInInternalMode">
             <summary>
-            Indicates that the current shell is running in the internal mode, so some extra functionality is available
+            Indicates that the current shell is running in the internal mode, so some extra functionality is available.
             </summary>
         </member>
         <member name="P:JetBrains.Application.Shell.IsTestShell">
@@ -2094,11 +1700,6 @@
             <summary>
             Gets the list of legacy user-settings dirs (coming from previous product version), actually found on the local system, sorted in descending priority order.
             The second part of the tuple is the product version of the legacy settings file.
-            </summary>
-        </member>
-        <member name="T:JetBrains.Application.ShellBase">
-            <summary>
-            Some base implementations for the very-abstract <see cref="T:JetBrains.Application.Shell"/> class.
             </summary>
         </member>
         <member name="F:JetBrains.Application.ShellBase.Disposables">
@@ -2154,6 +1755,11 @@
             If the <see cref="T:JetBrains.Application.IApplicationDescriptor"/> has this entry in its bag, it will be called to extend the standard <see cref="P:JetBrains.Application.ShellBase.BuildDescription"/>.
             </summary>
         </member>
+        <member name="M:JetBrains.Application.ShellBase.CommandLineInitLogger(JetBrains.Application.ICommandLine)">
+            <summary>
+            Applies the command line arguments to the logger.
+            </summary>
+        </member>
         <member name="M:JetBrains.Application.ShellBase.GetProductSettingsSuffix_ShellBase(JetBrains.Application.IApplicationDescriptor)">
             <summary>
             Gets the suffix that forms the <see cref="P:JetBrains.Application.ShellBase.ProductRegistryKey"/>, <see cref="P:JetBrains.Application.ShellBase.UserSettingsRoamingDir"/>, and <see cref="P:JetBrains.Application.ShellBase.UserSettingsLocalDir"/>.
@@ -2206,6 +1812,12 @@
             <summary>
             Prevents <see cref="P:JetBrains.Application.ShellBase.Invocator"/> reentrancy when a lock is taken (temporary).
             Asserts that any primary-thread lock is guarded by <see cref="P:JetBrains.Application.ShellBase.Invocator"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.ShellBase.Init_IsInInternalMode">
+            <summary>
+            Checks whether the assembly config means we're running in the Internal mode.
+            Inits things to the Internal mode as needed.
             </summary>
         </member>
         <member name="M:JetBrains.Application.ShellBase.InitializeComponents(JetBrains.ComponentModel.ComponentDeclarationsCache)">
@@ -2277,6 +1889,452 @@
             <summary>
             Gets the list of legacy user-settings dirs (coming from previous product version), actually found on the local system, sorted in descending priority order.
             The second part of the tuple is the product version of the legacy settings file.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallerShell.OnLoadSettingsXmlBag(System.Action{System.Xml.XmlDocument,JetBrains.ComponentModel.XmlExternalizationScope})">
+            <summary>
+            <para>Invoked by the base implementation when it's time to load the XML Settings Bag from the permanent storage. Typically, in <see cref="M:JetBrains.ComponentModel.XmlExternalizableComponentContainer.LoadSettings"/> that's called from <see cref="M:JetBrains.ComponentModel.ComponentContainer.InitializeComponents(JetBrains.ComponentModel.ComponentDeclarationsCache)"/>.</para>
+            <para>This logic (like, choosing the file) must be implemented by the inheritor. The inheritor might look for legacy settings files from previous versions if the normal settings file is missing and set <see cref="M:JetBrains.ComponentModel.XmlExternalizableComponentContainer.ShouldUpgradeSettings(System.Version)"/> to use them with <see cref="T:JetBrains.Util.IXmlUpgradable"/> components.</para>
+            <para>Call <see paramref="funcDeserializeXmlBag"/> to submit the XML representation of the settings for a particular scope (see <see cref="M:JetBrains.ComponentModel.XmlExternalizableComponentContainer.DeserializeXmlBag(System.Xml.XmlDocument,JetBrains.ComponentModel.XmlExternalizationScope)"/> for details).</para>
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallerShell.OnSaveSettingsXmlBag(System.Func{System.Xml.XmlDocument,JetBrains.ComponentModel.XmlExternalizationScope,System.Boolean})">
+            <summary>
+            <para>Invoked by the base implementation when it's time to save the XML Settings Bag to the permanent storage. Typically, in response to <see cref="M:JetBrains.ComponentModel.XmlExternalizableComponentContainer.SaveSettings"/> after the components are serialized into the bag.</para>
+            <para>This logic (like, choosing the file) must be implemented by the inheritor.</para>
+            <para>Call <see paramref="funcSerializeXmlBag"/> to get the settings for a particular scope in XML representation (see <see cref="M:JetBrains.ComponentModel.XmlExternalizableComponentContainer.SerializeXmlBag(System.Xml.XmlDocument,JetBrains.ComponentModel.XmlExternalizationScope)"/> for details).</para>
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.Install.RegistrationStage">
+            <summary>
+            Defines the exact stage of the registration process of which the handler is being queried.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.RegistrationStage.Register">
+            <summary>
+            The assembly is being registered.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.RegistrationStage.Unregister">
+            <summary>
+            The assembly is being unregistered.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.KnownSettings`1">
+            <summary>
+            Maintains a table of the pre-registered setting identities that are validated as much as possible.
+            The settings can be accessed thru a strongly-typed key, with their type and default value consistent across all the calls.
+            The settings are still stored in the <see cref="T:JetBrains.Application.GlobalSettingsTable"/>.
+            </summary>
+            <typeparam name="TKey"></typeparam>
+        </member>
+        <member name="F:JetBrains.Application.KnownSettings`1.myKnownSettings">
+            <summary>
+            The list of the known settings.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.KnownSettings`1.#ctor">
+            <summary>
+            Creates an empty table to be filled with <see cref="M:JetBrains.Application.KnownSettings`1.Register(JetBrains.Application.KnownSettings{`0}.SettingDescriptor)"/> afterwards.
+            <see cref="M:JetBrains.Application.KnownSettings`1.AssertAllRegistered"/> is not called, it's up to you.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.KnownSettings`1.#ctor(JetBrains.Application.KnownSettings{`0}.SettingDescriptor[])">
+            <summary>
+            Creates an initialized table, uses <see cref="M:JetBrains.Application.KnownSettings`1.AssertAllRegistered"/> to check that there are no orphaned keys in the <typeparamref name="TKey"/> enum.
+            </summary>
+            <param name="descriptors"></param>
+        </member>
+        <member name="M:JetBrains.Application.KnownSettings`1.AssertKnownType(System.Type)">
+            <summary>
+            Checks whether we support settings of the type <paramref name="type"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.KnownSettings`1.AssertAllRegistered">
+            <summary>
+            Checks that all the keys from the <see cref="T:JetBrains.Util.Key"/> enum are present in the table.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.KnownSettings`1.Get``1(`0)">
+            <summary>
+            Gets a setting by its strongly-typed key.
+            </summary>
+            <typeparam name="T">Type of the setting. Must exactly match the expected setting value type.</typeparam>
+            <param name="key">The strongly-typed key for the setting.</param>
+            <returns>The setting value, if available.</returns>
+        </member>
+        <member name="M:JetBrains.Application.KnownSettings`1.Register(JetBrains.Application.KnownSettings{`0}.SettingDescriptor)">
+            <summary>
+            Adds a new known setting.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.KnownSettings`1.Register(`0,System.Object)">
+            <summary>
+            Adds a new known setting.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.KnownSettings`1.Register(`0,System.String,System.Object)">
+            <summary>
+            Adds a new known setting.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.KnownSettings`1.SettingDescriptor">
+            <summary>
+            Describes a known setting with its type and default value.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.KnownSettings`1.SettingDescriptor.DefaultValue">
+            <summary>
+            Default value, must be of type <see cref="T:System.Type"/>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.KnownSettings`1.SettingDescriptor.Key">
+            <summary>
+            The key in the known settings table.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.KnownSettings`1.SettingDescriptor.SettingKey">
+            <summary>
+            The settings-key in the underlying settings store.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.KnownSettings`1.SettingDescriptor.#ctor(`0,System.String,System.Object)">
+            <summary>
+            Validates and fills in.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.KnownSettings`1.SettingDescriptor.#ctor(`0,System.Object)">
+            <summary>
+            Validates and fills in.
+            The settings key name is deferred from the key value.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.KnownSettings`1.SettingDescriptor.AssertValid">
+            <summary>
+            Throws if fields are invalid.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.License.ILicenseSupport.CreateLicenseData(System.String,System.String,System.String)">
+            <summary>
+            Creates license data using licenseKey, userName and company name. If only one type of licenses is acceptable,
+            normally returns new LicenseData(...). Otherwise some additional processing should take place
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.License.ILicenseSupport.GetLicenseAgreement(JetBrains.Application.License.LicenseType)">
+            <summary>
+            License agreement in rich text. NULL if no license agreement is necessary
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.License.ILicenseSupport.ProductGuid">
+            <summary>
+            Guid (with braces), that is used to store Date marker
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.License.ILicenseSupport.FreeTrialPeriod">
+            <summary>
+            Number of days, free trial period lasts
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.License.ILicenseSupport.FeedbackRequestPeriod">
+            <summary>
+            Number of free trial days, after which feedback is requested.
+            Negative value means feedback is never requested.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.License.ILicenseSupport.LeftDaysNotification">
+            <summary>
+            Identifies, when to start informing user that, his free trial
+            period ends up 
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.License.ILicenseSupport.ProductFamily">
+            <summary>
+            JetBrains license server supports ProductFamily as guid without braces !!!
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.License.LicenseChecker.IsChecksumOK">
+            does stored checksum corresponds to the username's one?
+            checksum occupies 16 bits
+        </member>
+        <member name="P:JetBrains.Application.License.LicenseChecker.Version">
+            gets OmniaMea version stored in the license code
+            occupies 16 bits
+        </member>
+        <member name="P:JetBrains.Application.License.LicenseChecker.Type">
+            gets type of the license stored in the license code
+            occupies 8 bits
+        </member>
+        <member name="P:JetBrains.Application.License.LicenseChecker.GenerationDate">
+            gets license generation date stored in the license code
+            occupies 16 bits
+        </member>
+        <member name="P:JetBrains.Application.License.LicenseChecker.ExpirationDate">
+            gets license expiration date stored in the license code
+            occupies 16 bits
+        </member>
+        <member name="M:JetBrains.Application.OneTimeInitializationManager.IsInitializationNeeded(System.Boolean)">
+            <summary>
+            Checks if the one-time-init is needed.
+            Optionally, marks it as done in the Registry (write-touches Current User hive only).
+            </summary>
+            <param name="bMarkAsDone">Whether to mark one-time-init as performed for this config.</param>
+            <returns>Whether one-time-init was required.</returns>
+        </member>
+        <member name="M:JetBrains.Application.OneTimeInitializationManager.OnCheckFailed(System.Security.SecurityException)">
+            <summary>
+            Invoked when one-time-init fails to read/write the Regsitry. Should report to the user in an app-dependent manner.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.OneTimeInitializationManager.ActualIdentity">
+            <summary>
+            If the per-machine one-time-init value is not available, this value is used instead.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.OneTimeInitializationManager.IsOneTimeInitAllowed">
+            <summary>
+            Gets whether the one-time-init is allowed to run at the moment, eg the main window has already been created.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.OneTimeInitializationAttribute">
+            <summary>
+            To use this feature implement <see cref="T:JetBrains.Application.IOneTimeInitializationHandler"/> with default constructor.
+            This class is not expected to be <see cref="T:JetBrains.ComponentModel.IComponent"/>.
+            Initialization will be performed in UIThread on <c>IVsShellComponent.OnAfterStartup()</c> call time.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator,System.Double,System.Action{JetBrains.Application.Progress.IProgressIndicator})">
+            <summary>
+            <para>Advances the <paramref name="progressParent"/> by <paramref name="fUnitsInParentIndicator"/> units, while running the <paramref name="funcAdvanceSubprogress"/> task.</para>
+            <para>Unlike the core <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/> method, the increment goes gradually, as the <paramref name="funcAdvanceSubprogress"/> calls <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> on the <see cref="T:JetBrains.Application.Progress.IProgressIndicator"/> it is given as a parameter. Note that its units are totally indipendent of the <paramref name="fUnitsInParentIndicator"/> in the <paramref name="progressParent"/>. Any range it chooses in its <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> will result in <paramref name="fUnitsInParentIndicator"/> advance of the parent.</para>
+            </summary>
+            <param name="progressParent">The parent progress.</param>
+            <param name="fUnitsInParentIndicator">The number of units used up from the <paramref name="progressParent"/>, in terms of its parent <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>, when you do <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> on this subprogress with any units of your liking.</param>
+            <param name="funcAdvanceSubprogress">The subtask that gets its own subprogress.</param>
+        </member>
+        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.CreateSubProgress(JetBrains.Application.Progress.IProgressIndicator,System.Double)">
+            <summary>
+            <para>A sub-routine runs the whole <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> run on the subprogress, with units of its own choice in <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> and <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/> on the subprogress, which uses up only <paramref name="fUnitsInParentIndicator"/> in the parent <paramref name="progressParent"/>, in terms of its parent <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>.</para>
+            <para>This way, a few tasks could share the full progress range without knowing that they're using it together, each one running the whole length of its subprogress.</para>
+            </summary>
+            <param name="progressParent">The parent progress.</param>
+            <param name="fUnitsInParentIndicator">The number of units used up from the <paramref name="progressParent"/>, in terms of its parent <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>, when you do <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> on this subprogress with any units of your liking.</param>
+        </member>
+        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.CreateSubProgress(JetBrains.Application.Progress.IProgressIndicator)">
+            <summary>
+              <para>
+                A sub-routine runs the whole <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/>
+                run on the subprogress, with units of its own choice in <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> and
+                <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/> on the subprogress, in terms of its parent
+                <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>.
+              </para>
+              <para>
+                This way, a few tasks could share the full progress range without knowing that they're using it together,
+                each one running the whole length of its subprogress.
+              </para>
+            </summary>
+            <param name="progressParent">The parent progress.</param>
+        </member>
+        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.ForEachWithProgressImpl``1(System.Collections.Generic.ICollection{``0},JetBrains.Application.Progress.IProgressIndicator,System.String,System.Boolean,System.Action{JetBrains.Application.Progress.IProgressIndicator,``0})">
+            <summary>
+            A LINQ-like FOREACH with progress.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.ForEachWithProgress``1(System.Collections.Generic.ICollection{``0},JetBrains.Application.Progress.IProgressIndicator,System.String,System.Boolean,System.Action{``0,JetBrains.Application.Progress.IProgressIndicator})">
+            <summary>
+            A LINQ-like FOREACH with progress.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.ForEachWithProgress``1(System.Collections.Generic.ICollection{``0},JetBrains.Application.Progress.IProgressIndicator,System.String,System.Action{``0,JetBrains.Application.Progress.IProgressIndicator})">
+            <summary>
+            A LINQ-like FOREACH with progress.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.ForEachWithProgress``1(System.Collections.Generic.ICollection{``0},JetBrains.Application.Progress.IProgressIndicator,System.String,System.Boolean,System.Action{``0})">
+            <summary>
+            A LINQ-like FOREACH with progress.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.ForEachWithProgress``1(System.Collections.Generic.ICollection{``0},JetBrains.Application.Progress.IProgressIndicator,System.String,System.Action{``0})">
+            <summary>
+            A LINQ-like FOREACH with progress.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.SelectWProgress``2(System.Collections.Generic.ICollection{``0},JetBrains.Application.Progress.IProgressIndicator,System.String,System.Func{``0,``1})">
+            <summary>
+            A LINQ-like SELECT statement with progress.
+            Works on <see cref="T:System.Collections.Generic.ICollection`1"/>, returns a committed <see cref="T:System.Collections.Generic.List`1"/>.
+            </summary>
+            <typeparam name="TSource">Source item types.</typeparam>
+            <typeparam name="TResult">Resulting item types.</typeparam>
+            <param name="source">Source items.</param>
+            <param name="progress">The progress to track the source items iteration.</param>
+            <param name="taskname">Name for the progress run.</param>
+            <param name="selector">Selector function.</param>
+            <returns>The resulting items.</returns>
+        </member>
+        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Start(JetBrains.Application.Progress.IProgressIndicator,System.Int32,System.String)">
+            <summary>
+            <para>Starts the progress to run through the [0..totalWorkUnits] range. You MUST call <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> at the end. Use <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator,System.Double,System.Action{JetBrains.Application.Progress.IProgressIndicator})"/> to move the progress across the range.</para>
+            <para>Generally, you SHOULD set the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> to identify the current execution span, once per <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Start(JetBrains.Application.Progress.IProgressIndicator,System.Int32,System.String)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/>, and change the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> when doing <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator,System.Double,System.Action{JetBrains.Application.Progress.IProgressIndicator})"/> to comment on the progress.</para>
+            <para>If you would like to delegate a sub-range to a nested routine, you SHOULD create a <see cref="T:JetBrains.Application.Progress.SubProgressIndicator"/> and pass the resulting <see cref="T:JetBrains.Application.Progress.IProgressIndicator"/> to the routine, so that it ran a whole range from its point of view, which would then map to a sub-range of this progress indicator.</para>
+            </summary>
+            <param name="progress">Progress indicator.</param>
+            <param name="totalWorkUnits">The inclusive upper limit of the progress range.</param>
+            <param name="sTaskName">The <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> value to be set for the run. You SHOULD NOT leave it unmodified, unless you are running a subprogress.</param>
+        </member>
+        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.StartProgress(JetBrains.Application.Progress.IProgressIndicator,System.Int32)">
+            <summary>
+            <para>Just call <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> and return the same instance of <see cref="T:JetBrains.Application.Progress.IProgressIndicator"/>. See <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> for details.</para>
+            </summary>
+            <param name="progress">Progress indicator.</param>
+            <param name="totalWorkUnits">The inclusive upper limit of the progress range.</param>
+            <returns>The same instance of IProgressIndicator in order ot use fluent interface.</returns>
+        </member>
+        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.StartStop(JetBrains.Application.Progress.IProgressIndicator,System.Int32,System.String,System.Action)">
+            <summary>
+            <para>Starts the progress to run through the [0..totalWorkUnits] range, executes <paramref name="action"/>, and then stops the progress. Use <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator,System.Double,System.Action{JetBrains.Application.Progress.IProgressIndicator})"/> to move the progress across the range.</para>
+            <para>Generally, you SHOULD set the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> to identify the current execution span, once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/>, and change the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> when doing <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator,System.Double,System.Action{JetBrains.Application.Progress.IProgressIndicator})"/> to comment on the progress.</para>
+            <para>If you would like to delegate a sub-range to a nested routine, you SHOULD create a <see cref="T:JetBrains.Application.Progress.SubProgressIndicator"/> and pass the resulting <see cref="T:JetBrains.Application.Progress.IProgressIndicator"/> to the routine, so that it ran a whole range from its point of view, which would then map to a sub-range of this progress indicator.</para>
+            </summary>
+            <param name="progress">Progress indicator.</param>
+            <param name="totalWorkUnits">The inclusive upper limit of the progress range.</param>
+            <param name="taskName">The <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> value to be set for the run. You SHOULD NOT leave it unmodified, unless you are running a subprogress.</param>
+            <param name="action">The task to execute in between <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> and <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/>.</param>
+        </member>
+        <member name="M:JetBrains.Application.TypeIndexBuilder.LoadIndex(System.Xml.XmlDocument,JetBrains.Util.DataStructures.DataIntern{System.String})">
+            <summary>
+            Loads a map from assembly name to a map for attribute fqn to type fqn
+            </summary>
+            <param name="document"></param>
+            <param name="internator"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JetBrains.Application.InterruptableReadActivity.Start">
+            <summary>
+            Override this method with activity that should happen in primary thread before background thread
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.InterruptableReadActivity.Work">
+            <summary>
+            Override this method with activity that happens in background thread.
+            </summary>
+            This method should periodically check return value of <c>interrupt</c> and either return or 
+            throw <c>ProcessCancelledException</c>
+        </member>
+        <member name="M:JetBrains.Application.InterruptableReadActivity.EndWorkerThread">
+            <summary>
+            This method will always be invoked at the end of worker thread
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.InterruptableReadActivity.Finish">
+            <summary>
+            Override this method with activity that will happen in primary thread after worker thread finishesю
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.InterruptableReadActivity.OnInterrupt">
+            <summary>
+            This method is invoked in primary thread if work is interrupted. 
+            </summary>
+            If this method is invoked, <cref>Finish</cref> will NOT be called.
+            
+        </member>
+        <member name="T:JetBrains.Application.Progress.IProgressIndicator">
+            <summary>
+            <para>Given to a lengthy task that knows its progress, used to enable the UI indications of the task progress.</para>
+            <para>You should read all of the member summaries before using this class.</para>
+            </summary>
+            <seealso cref="T:JetBrains.Application.Progress.IProgressIndicatorModel"/>
+        </member>
+        <member name="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)">
+            <summary>
+            <para>Advances the progress within the range, as defined by the <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> call.</para>
+            <para><see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> MUST be called first.</para>
+            </summary>
+            <param name="units">A whole or fractional number of units from the [0..totalWorkUnits] range, as defined by the <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> method.</param>
+        </member>
+        <member name="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)">
+            <summary>
+            <para>Starts the progress to run through the [0..totalWorkUnits] range. You MUST call <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> at the end. Use <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/> to move the progress across the range.</para>
+            <para>Generally, you SHOULD set the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> to identify the current execution span, once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/>, and change the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> when doing <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/> to comment on the progress.</para>
+            <para>If you would like to delegate a sub-range to a nested routine, you SHOULD create a <see cref="T:JetBrains.Application.Progress.SubProgressIndicator"/> and pass the resulting <see cref="T:JetBrains.Application.Progress.IProgressIndicator"/> to the routine, so that it ran a whole range from its point of view, which would then map to a sub-range of this progress indicator.</para>
+            </summary>
+            <param name="totalWorkUnits">The inclusive upper limit of the progress range.</param>
+        </member>
+        <member name="M:JetBrains.Application.Progress.IProgressIndicator.Stop">
+            <summary>
+            <para>Completes the progress run. You MUST call <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> if you previously called <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>.</para>
+            <para>Generally, you SHOULD always call the <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> pair on the given indicator, even if gotten no items to process, so that a <see cref="T:JetBrains.Application.Progress.SubProgressIndicator"/> could use up the parent range consistently.</para>
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText">
+            <summary>
+            <para>A title of the current item being processed by the activity which the progress is visualizing.</para>
+            <para>You SHOULD set <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> run, and <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>, if applicable.</para>
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Progress.IProgressIndicator.IsCanceled">
+            <summary>
+            <para>Whether the activity which the progress is visualizing has been canceled externally. This could be user's clicking on the "Cancel" button of the UI the progress is bound to.</para>
+            <para>You should check this property periodically and cut off the remaining activity if <c>True</c>. You MIGHT throw <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> for that, still it's recommended not to use exceptions for flow control, but check <see cref="P:JetBrains.Application.Progress.IProgressIndicator.IsCanceled"/> on all of the levels of nesting.</para>
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Progress.IProgressIndicator.TaskName">
+            <summary>
+            <para>A title of the whole activity which the progress is visualizing.</para>
+            <para>You SHOULD set <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> run, and <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>, if applicable.</para>
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Progress.ProgressIndicatorBase.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="P:JetBrains.Application.Progress.ProgressIndicatorBase.Fraction">
+            <summary>
+            Gives out the progress value as a floating point number in the [0…1] range.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Progress.CommandLineProgressIndicator.Render">
+            <summary>
+              Renders current state of Console progress
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.Progress.CommandLineTaskExecutor">
+            <summary>
+            Task executor for progress in console
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.Progress.ITaskExecutor">
+            <summary>
+            Can execute a task.
+            </summary>
+            <remarks>
+            This object is stateless, and thus not disposable.
+            Execution of each of the tasks is an action in itself, with its own disposable scope.
+            </remarks>
+        </member>
+        <member name="M:JetBrains.Application.Progress.ITaskExecutor.ExecuteTask(System.String,JetBrains.Application.Progress.TaskCancelable,System.Action{JetBrains.Application.Progress.IProgressIndicator})">
+            <summary>
+            Executes the task without exiting the method until the task is completed.
+            </summary>
+            <param name="name">
+            <para>Task title, short form.</para>
+            <para>This is used for the progress window title by the UI progress indicators.</para>
+            <para>The long form of the task caption should go to the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> of the <paramref name="task"/>'s <see cref="T:JetBrains.Application.Progress.IProgressIndicator"/>.</para>
+            <para>Prepended with the product name automatically. Might be empty, in which case the product name will be used.</para>
+            </param>
+            <param name="task">The task to execute.</param>
+            <param name="cancelable">
+            <para>Whether the task could be canceled by the user, if the task progress indication provided by <see cref="T:JetBrains.Application.Progress.ITaskExecutor"/> supports canceling.</para>
+            <para>The <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> pattern is supported, which means that an <see cref="T:JetBrains.Application.InterruptableActivityCookie"/> is plugged on the task thread to throw a <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> when called for a check with a <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.IsCanceled"/> <c>False</c>; such an exception is called by the task executor and converted into a <c>False</c> return value.</para>
+            </param>
+            <returns>Whether the task has completed execution (i.e. was not canceled). Note that even a <see cref="F:JetBrains.Application.Progress.TaskCancelable.No"/> task could be canceled by setting <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.IsCanceled"/> to <c>False</c> or throwing a <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> or letting some other exception out of the <paramref name="task">task function</paramref>.</returns>
+            <remarks>If you would like to return any values from the <paramref name="task"/>, assign them to local variables within the closure.</remarks>
+        </member>
+        <member name="T:JetBrains.Application.Progress.ProcessCancelledException">
+            <summary>
+            A special Platform exception that fires when an interruptible activity is aborted.
             </summary>
         </member>
         <member name="M:JetBrains.Application.Test.BaseTest.ThrowLoggedExceptions(System.Boolean)">
@@ -2748,48 +2806,6 @@
         <member name="P:JetBrains.Build.AllAssemblies.ProductEditionXml.DisplayName">
             <remarks/>
         </member>
-        <member name="T:JetBrains.Build.GuidCache.GuidCacheXml">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.GuidCache.GuidCacheXml.AllAssembliesXmlSchema">
-            <summary>
-            Gets the XSD for the GuidCache.xml.
-            </summary>
-        </member>
-        <member name="P:JetBrains.Build.GuidCache.GuidCacheXml.Item(System.String)">
-            <summary>
-            Looks up a GUID by its loose name.
-            </summary>
-        </member>
-        <member name="P:JetBrains.Build.GuidCache.GuidCacheXml.Item(JetBrains.Build.GuidCache.GuidIdXml)">
-            <summary>
-            Looks up a GUID by its strict id.
-            </summary>
-        </member>
-        <member name="P:JetBrains.Build.GuidCache.GuidCacheXml.Strict">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.GuidCache.GuidCacheXml.Loose">
-            <remarks/>
-        </member>
-        <member name="T:JetBrains.Build.GuidCache.LooseGuidXml">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.GuidCache.LooseGuidXml.Name">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.GuidCache.LooseGuidXml.Value">
-            <remarks/>
-        </member>
-        <member name="T:JetBrains.Build.GuidCache.StrictGuidXml">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.GuidCache.StrictGuidXml.Id">
-            <remarks/>
-        </member>
-        <member name="P:JetBrains.Build.GuidCache.StrictGuidXml.Value">
-            <remarks/>
-        </member>
         <member name="T:JetBrains.Application.Install.Guids.GuidEntry">
             <summary>
             An entry in the GUID Store.
@@ -3039,21 +3055,6 @@
             One of the root folders to locate the file on the target system.
             </summary>
         </member>
-        <member name="T:JetBrains.Build.GuidCache.GuidIdXml">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.GuidCache.GuidIdXml.MsiComponent_RegistryData_Hklm">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.GuidCache.GuidIdXml.MsiComponent_RegistryData_Hkcu">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.GuidCache.GuidIdXml.MsiComponent_RegistryData_Hkmu">
-            <remarks/>
-        </member>
-        <member name="F:JetBrains.Build.GuidCache.GuidIdXml.MsiComponent_RegistryData_Hkcr">
-            <remarks/>
-        </member>
         <member name="M:JetBrains.ActivityTracking.Impl.ActivityTracker.JetBrains#ComponentModel#IComponent#Init">
             <summary>
             <para>Initializes the component. Called by the component container after the component is created.</para>
@@ -3118,7 +3119,7 @@
         </member>
         <member name="T:JetBrains.Application.ShellStarter">
             <summary>
-            <see cref="T:JetBrains.Application.IShellStarter"/> basic implementation.
+            <see cref="T:JetBrains.Application.IShellStarter"/> basic implementation. Provides well-known assembly configurations based on the Registry and Command Line.
             </summary>
         </member>
         <member name="M:JetBrains.Application.ShellStarter.GetAssemblyConfigurations">
@@ -3137,6 +3138,11 @@
         <member name="M:JetBrains.Application.ShellStarter.GetRegistryProductEdition">
             <summary>
             Gets the current product edition, in terms of the list of assembly configurations that describe the edition.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.ShellStarter.GetInternalMode">
+            <summary>
+            Checks cmdline for Internal Mode params, add Internal/Public mode if the product supports such configs.
             </summary>
         </member>
         <member name="M:JetBrains.Application.ShellStarter.StartShell">
@@ -3241,6 +3247,11 @@
         <member name="M:JetBrains.Application.Install.InstallationData.InstalledFile.#ctor(System.String,System.String)">
             <summary>
             An installation of a file whose source name (on the source file system) and target name (on the target file system) are different.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Install.InstallationData.InstalledFile.Metadata">
+            <summary>
+            Any additional metadata on the files.
             </summary>
         </member>
         <member name="M:JetBrains.Application.Install.InstallationData.InstalledFile.GetFilesByMask(JetBrains.Util.FileSystemPath)">
@@ -4421,14 +4432,14 @@
             <para>By default, no special threading model is implied on the members. They could be modified on any thread and fire changes on any thread.</para>
             </summary>
         </member>
-        <member name="F:JetBrains.Application.Progress.ProgressIndicator.myEpsilon">
-            <summary>
-            Epsilon for the <see cref="T:System.Double"/> parameters of the progress.
-            </summary>
-        </member>
         <member name="F:JetBrains.Application.Progress.ProgressIndicator.myAdvanceFactor">
             <summary>
             The factor to be applied to the <see cref="!:Advance"/> units to make them <see cref="!:Fraction"/> units.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Progress.ProgressIndicator.myEpsilon">
+            <summary>
+            Epsilon for the <see cref="T:System.Double"/> parameters of the progress.
             </summary>
         </member>
         <member name="F:JetBrains.Application.Progress.ProgressIndicator.myFraction">

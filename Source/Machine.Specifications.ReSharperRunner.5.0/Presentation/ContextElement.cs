@@ -18,13 +18,13 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     readonly string _subject;
 
     public ContextElement(IUnitTestProvider provider,
-                          IProjectModelElement project,
+                          ProjectModelElementEnvoy projectEnvoy,
                           string typeName,
                           string assemblyLocation,
                           string subject,
                           ICollection<string> tags,
                           bool isIgnored)
-      : base(provider, null, project, typeName, isIgnored)
+      : base(provider, null, projectEnvoy, typeName, isIgnored)
     {
       _assemblyLocation = assemblyLocation;
       _subject = subject;

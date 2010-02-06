@@ -1,5 +1,5 @@
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.UnitTestExplorer;
+using JetBrains.ReSharper.UnitTestFramework;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
@@ -9,7 +9,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                                        // ReSharper disable SuggestBaseTypeForParameter
                                        ContextElement context,
                                        // ReSharper restore SuggestBaseTypeForParameter
-                                       IProjectModelElement project,
+                                       ProjectModelElementEnvoy project,
                                        string declaringTypeName,
                                        string fieldName,
                                        bool isIgnored)

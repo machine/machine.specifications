@@ -1372,11 +1372,14 @@
             Gets fully qualified name of the type
             </summary>
         </member>
-        <member name="P:JetBrains.Metadata.Reader.API.IMetadataTypeInfo.Name">
+        <member name="P:JetBrains.Metadata.Reader.API.IMetadataTypeInfo.NamespaceName">
             <summary>
-            Gets name of the type.
-            That's fully qualified name for top-level types
-            and nested component for nested types
+            Gets namespace of the type.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Metadata.Reader.API.IMetadataTypeInfo.TypeName">
+            <summary>
+            Gets short name of the type.
             </summary>
         </member>
         <member name="P:JetBrains.Metadata.Reader.API.IMetadataTypeInfo.DeclaringAssemblyName">

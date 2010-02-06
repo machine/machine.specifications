@@ -18,14 +18,14 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     protected Element(IUnitTestProvider provider,
                       UnitTestElement parent,
-                      IProjectModelElement project,
+                      ProjectModelElementEnvoy projectEnvoy,
                       string declaringTypeName,
                       bool isIgnored)
       : base(provider, parent)
     {
-      if (project == null && !Shell.Instance.IsTestShell)
+      if (projectEnvoy == null && !Shell.Instance.IsTestShell)
       {
-        throw new ArgumentNullException("project");
+        throw new ArgumentNullException("projectEnvoy");
       }
 
       if (declaringTypeName == null)
@@ -33,11 +33,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
         throw new ArgumentNullException("declaringTypeName");
       }
 
-      if (project != null)
-      {
-        _projectEnvoy = new ProjectModelElementEnvoy(project);
-      }
-
+      _projectEnvoy = projectEnvoy;
       _declaringTypeName = declaringTypeName;
 
       if (isIgnored)

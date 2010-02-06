@@ -689,11 +689,6 @@
             Primary assembly name for which this cache was created
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.Psi.Impl.Reflection2.AssemblyDataCacheCaching.AssemblyName">
-            <summary>
-            Primary assembly name for which this cache was created
-            </summary>
-        </member>
         <member name="P:JetBrains.ReSharper.Psi.Impl.Reflection2.AssemblyDataCacheIntern.AssemblyName">
             <summary>
             Primary assembly name for which this cache was created
@@ -2251,23 +2246,6 @@
             A smart element which resurrects from model changes by tracking its location
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.Impl.Reflection2.ReflectionPsiCache.GetCachedFile(JetBrains.ProjectModel.IAssembly)">
-            <summary>
-            Tries to load cached PSI for given assembly. Returns <c>null</c> if cached PSI does not exist or out of date
-            </summary>
-            <param name="assembly"></param>
-            <returns></returns>
-        </member>
-        <member name="M:JetBrains.ReSharper.Psi.Impl.Reflection2.ReflectionPsiCache.SaveFileInCache(JetBrains.ProjectModel.IAssembly,JetBrains.ReSharper.Psi.Caches.ILibraryFile)">
-            <summary>
-            Save loaded PSI in caches
-            </summary>
-        </member>
-        <member name="M:JetBrains.ReSharper.Psi.Impl.Reflection2.ReflectionPsiCache.SaveXMLDocIndexInCache(JetBrains.ProjectModel.IAssembly,JetBrains.Util.FileSystemPath,JetBrains.ReSharper.Psi.Impl.Reflection2.XmlDocIndex)">
-            <summary>
-            Save XML documentation index in caches
-            </summary>
-        </member>
         <member name="T:JetBrains.ReSharper.Psi.Impl.Search.ConstructorSpecialReferenceSearcher">
             <summary>
             Search for ":this()", ":base()" references....
@@ -2641,7 +2619,7 @@
             Root of cached declarations tree for a file
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.Caches2.ProjectFilePart.GetRelevantDefines(JetBrains.ReSharper.Psi.PreProcessingDirective[])">
+        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.Caches2.ProjectFilePart.GetRelevantDefines(System.Collections.Generic.IList{JetBrains.ReSharper.Psi.PreProcessingDirective})">
             <summary>
             Returns sorted array
             </summary>
@@ -3134,21 +3112,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.Impl.Reflection2.ReflectionPsiCacheManagerImpl.SaveFileInCache(JetBrains.ProjectModel.IAssembly,JetBrains.ReSharper.Psi.Caches.ILibraryFile)">
-            <summary>
-            Save assembly data in caches
-            </summary>
-        </member>
-        <member name="M:JetBrains.ReSharper.Psi.Impl.Reflection2.ReflectionPsiCacheManagerImpl.SaveXMLDocIndexInCache(JetBrains.ProjectModel.IAssembly,JetBrains.Util.FileSystemPath,JetBrains.ReSharper.Psi.Impl.Reflection2.XmlDocIndex)">
-            <summary>
-            Save XML documentation index in caches
-            </summary>
-        </member>
-        <member name="M:JetBrains.ReSharper.Psi.Impl.Reflection2.ReflectionPsiCacheManagerImpl.IsSystemAssembly(JetBrains.ProjectModel.IAssembly)">
-            <summary>
-            Assembly is couned as system if it is located in framework dir or in GAC
-            </summary>
-        </member>
         <member name="T:JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.Filters.StaticEnumMethodsFilter">
             <summary>
             Filters our static methods of class object
@@ -3380,13 +3343,6 @@
             <summary>
             Validation of partial inference result for purposes of extension method symbol table filtering
             </summary>
-        </member>
-        <member name="M:JetBrains.ReSharper.Psi.Resolve.TypeInferenceUtil.MethodGroupImplicitInference(JetBrains.ReSharper.Psi.IMethod,JetBrains.ReSharper.Psi.Resolve.ISubstitution,JetBrains.ReSharper.Psi.IDelegate,JetBrains.ReSharper.Psi.Resolve.ISubstitution,System.Boolean)">
-            <summary>
-            Infers values for method type parameters. Returns 'null' if inference fails, methodSubstitution 
-            extended with type parameter values if it succeeds
-            </summary>
-            <returns></returns>
         </member>
         <member name="M:JetBrains.ReSharper.Psi.Resolve.TypeInferenceUtil.InferTypes(JetBrains.ReSharper.Psi.PsiLanguageType,JetBrains.ReSharper.Psi.IType,JetBrains.ReSharper.Psi.IType,System.Collections.Generic.ICollection{JetBrains.ReSharper.Psi.ITypeParameter})">
             <summary>
@@ -3669,6 +3625,11 @@
             <param name="types"></param>
             <param name="languageType"></param>
             <returns></returns>
+        </member>
+        <member name="T:JetBrains.ReSharper.Psi.XmlIndex.XmlIndexingLexer">
+            <summary>
+            Xml file lexer with byte offset in file for each token
+            </summary>
         </member>
     </members>
 </doc>

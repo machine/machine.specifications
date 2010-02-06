@@ -412,6 +412,21 @@
             Gets visual replace range
             </summary>
         </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Psi.UnresolvedDeclaredType">
+            <summary>
+            Represents an unresolved type name
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Psi.UnresolvedDeclaredType.Candidates">
+            <summary>
+            Gets collection of possible resolution candidates
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Psi.UnresolvedDeclaredType.Resolution">
+            <summary>
+            Gets or sets resolution for this unresolved type
+            </summary>
+        </member>
         <member name="F:JetBrains.ReSharper.Feature.Services.StructuralSearch.StructuralSearchPatternParams.TreatPostfixAndPrefixOperatorEquivalent">
             <summary>
             Only if they are not used in expressions

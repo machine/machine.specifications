@@ -102,9 +102,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\AssemblyExplorer.cs">
-      <Link>Explorers\AssemblyExplorer.cs</Link>
-    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\ElementHandlers\BehaviorElementHandler.cs">
       <Link>Explorers\ElementHandlers\BehaviorElementHandler.cs</Link>
     </Compile>
@@ -117,38 +114,14 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\ElementHandlers\IElementHandler.cs">
       <Link>Explorers\ElementHandlers\IElementHandler.cs</Link>
     </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\FileExplorer.cs">
-      <Link>Explorers\FileExplorer.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\BehaviorFactory.cs">
-      <Link>Factories\BehaviorFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\BehaviorSpecificationFactory.cs">
-      <Link>Factories\BehaviorSpecificationFactory.cs</Link>
-    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\ContextCache.cs">
       <Link>Factories\ContextCache.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\ContextFactory.cs">
-      <Link>Factories\ContextFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\ContextSpecificationFactory.cs">
-      <Link>Factories\ContextSpecificationFactory.cs</Link>
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\UnitTestTaskFactory.cs">
       <Link>Factories\UnitTestTaskFactory.cs</Link>
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\MetadataExtensions.cs">
       <Link>MetadataExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Presentation\BehaviorElement.cs">
-      <Link>Presentation\BehaviorElement.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Presentation\BehaviorSpecificationElement.cs">
-      <Link>Presentation\BehaviorSpecificationElement.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Presentation\ContextSpecificationElement.cs">
-      <Link>Presentation\ContextSpecificationElement.cs</Link>
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\PsiExtensions.cs">
       <Link>PsiExtensions.cs</Link>
@@ -207,8 +180,17 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Explorers\AssemblyExplorer.cs" />
+    <Compile Include="Explorers\FileExplorer.cs" />
+    <Compile Include="Factories\BehaviorFactory.cs" />
+    <Compile Include="Factories\BehaviorSpecificationFactory.cs" />
+    <Compile Include="Factories\ContextFactory.cs" />
+    <Compile Include="Factories\ContextSpecificationFactory.cs" />
     <Compile Include="MSpecUnitTestProvider.cs" />
+    <Compile Include="Presentation\BehaviorElement.cs" />
+    <Compile Include="Presentation\BehaviorSpecificationElement.cs" />
     <Compile Include="Presentation\ContextElement.cs" />
+    <Compile Include="Presentation\ContextSpecificationElement.cs" />
     <Compile Include="Presentation\Element.cs" />
     <Compile Include="Presentation\FieldElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

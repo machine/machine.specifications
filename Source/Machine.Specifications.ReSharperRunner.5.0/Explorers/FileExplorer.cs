@@ -7,7 +7,7 @@ using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.UnitTestExplorer;
+using JetBrains.ReSharper.UnitTestFramework;
 
 using Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers;
 using Machine.Specifications.ReSharperRunner.Factories;
@@ -41,13 +41,14 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
       _interrupted = interrupted;
 
       IProject project = file.ProjectFile.GetProject();
+      var projectEnvoy = new ProjectModelElementEnvoy(project);
       string assemblyPath = UnitTestManager.GetOutputAssemblyPath(project).FullPath;
 
       var cache = new ContextCache();
-      var contextFactory = new ContextFactory(provider, project, assemblyPath, cache);
-      var contextSpecificationFactory = new ContextSpecificationFactory(provider, project, cache);
-      var behaviorFactory = new BehaviorFactory(provider, project, cache);
-      var behaviorSpecificationFactory = new BehaviorSpecificationFactory(provider, project);
+      var contextFactory = new ContextFactory(provider, projectEnvoy, assemblyPath, cache);
+      var contextSpecificationFactory = new ContextSpecificationFactory(provider, projectEnvoy, cache);
+      var behaviorFactory = new BehaviorFactory(provider, projectEnvoy, cache);
+      var behaviorSpecificationFactory = new BehaviorSpecificationFactory(provider, projectEnvoy);
 
       _elementHandlers = new List<IElementHandler>
                          {

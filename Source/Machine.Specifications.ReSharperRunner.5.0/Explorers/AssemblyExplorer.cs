@@ -1,9 +1,10 @@
 using System;
 using System.Linq;
 
+using JetBrains.Application;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.UnitTestExplorer;
+using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.Util;
 
 using Machine.Specifications.ReSharperRunner.Factories;
@@ -19,24 +20,25 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
     readonly UnitTestElementConsumer _consumer;
     readonly ContextFactory _contextFactory;
     readonly ContextSpecificationFactory _contextSpecificationFactory;
-    readonly IProject _project;
-    readonly MSpecUnitTestProvider _provider;
 
     public AssemblyExplorer(MSpecUnitTestProvider provider,
                             IMetadataAssembly assembly,
                             IProject project,
                             UnitTestElementConsumer consumer)
     {
-      _provider = provider;
       _assembly = assembly;
-      _project = project;
       _consumer = consumer;
 
-      var cache = new ContextCache();
-      _contextFactory = new ContextFactory(_provider, _project, _assembly.Location, cache);
-      _contextSpecificationFactory = new ContextSpecificationFactory(_provider, _project, cache);
-      _behaviorFactory = new BehaviorFactory(_provider, _project, cache);
-      _behaviorSpecificationFactory = new BehaviorSpecificationFactory(_provider, _project);
+      using (ReadLockCookie.Create())
+      {
+        var projectEnvoy = new ProjectModelElementEnvoy(project);
+
+        var cache = new ContextCache();
+        _contextFactory = new ContextFactory(provider, projectEnvoy, _assembly.Location, cache);
+        _contextSpecificationFactory = new ContextSpecificationFactory(provider, projectEnvoy, cache);
+        _behaviorFactory = new BehaviorFactory(provider, projectEnvoy, cache);
+        _behaviorSpecificationFactory = new BehaviorSpecificationFactory(provider, projectEnvoy);
+      }
     }
 
     public void Explore()
