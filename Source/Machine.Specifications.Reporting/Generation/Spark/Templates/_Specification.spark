@@ -42,8 +42,8 @@
         [<a id="${name}_link" href="javascript:toggleVisibility('${name}', '${supplement.Key} ${item.Key}');">Show ${supplement.Key} ${item.Key}</a>]
       </div>
       <div id="${name}" class="supplement">
-        <a href="resources/${item.Value}">
-          <img width="80%" src="resources/${item.Value}" />
+        <a href="resources/${System.IO.Path.GetFileName(item.Value)}">
+          <img width="80%" src="resources/${System.IO.Path.GetFileName(item.Value)}" />
         </a>
       </div>
     </if>
@@ -53,7 +53,7 @@
         [<a id="${name}_link" href="javascript:toggleVisibility('${name}', '${supplement.Key} ${item.Key}');">Show ${supplement.Key} ${item.Key}</a>]
       </div>
       <div id="${name}" class="supplement">
-        <iframe src="resources/${item.Value}" width="100%" height="600px">
+        <iframe src="resources/${System.IO.Path.GetFileName(item.Value)}" width="100%" height="600px">
         </iframe>
       </div>
     </if>
