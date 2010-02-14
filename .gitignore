@@ -2,7 +2,7 @@
 /Source/*/bin
 _ReSharper.*
 *.csproj.user
-*.resharper.user
+*.[Rr]e[Ss]harper.user
 *.resharper
 *.suo
 *.cache
