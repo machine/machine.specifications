@@ -1,16 +1,14 @@
 require 'rake'
 require 'fileutils'
 Dir.glob(File.join(File.dirname(__FILE__), 'tools/Rake/*.rb')).each do |f|
-	require f
+  require f
 end
 include FileUtils
 
 version = 'v3.5'
-compileTarget = ENV.include?('target') ? ENV['target'] : 'debug'
+compileTarget = ENV.include?('target') ? ENV['target'] : 'Debug'
 project = "Machine.Specifications"
 packageName = "Distribution/#{project}-#{compileTarget}.zip"
-frameworkDir = File.join(ENV['windir'].dup, 'Microsoft.NET', 'Framework', version)
-msbuild = File.join(frameworkDir, 'msbuild.exe')
 mspec_options = []
 
 desc "Build and run specs"
@@ -18,7 +16,12 @@ task :default => [ "build", "tests:run", "specs:run" ]
 
 desc "Build"
 task :build do
-  sh "#{msbuild} Source/#{project}.sln /property:Configuration=#{compileTarget}"
+  MSBuild.compile \
+    :project => "Source/#{project}.sln",
+    :version => version,
+    :properties => {
+      :Configuration => compileTarget
+    }
 end
 
 namespace :specs do
@@ -36,13 +39,13 @@ end
 
 namespace :tests do
   task :run do
-	puts 'Running NUnit tests...'
-	tests = ["Machine.Specifications.Tests.dll"].map {|test| "Build/#{compileTarget}/Tests/#{test}"}
-	runner = NUnitRunner.new :compilemode => compileTarget, :platform => 'x86', :results => "Specs"
-	runner.executeTests tests
-	
-	puts 'Running Gallio tests...'
-	sh "Tools/Gallio/v3.1.397/Gallio.Echo.exe", "Build/#{compileTarget}/Tests/Gallio/Machine.Specifications.TestGallioAdapter.3.1.Tests.dll", "/plugin-directory:Build/#{compileTarget}", "/r:Local"
+    puts 'Running NUnit tests...'
+    tests = ["Machine.Specifications.Tests.dll"].map {|test| "Build/#{compileTarget}/Tests/#{test}"}
+    runner = NUnitRunner.new :compilemode => compileTarget, :platform => 'x86', :results => "Specs"
+    runner.executeTests tests
+
+    puts 'Running Gallio tests...'
+    sh "Tools/Gallio/v3.1.397/Gallio.Echo.exe", "Build/#{compileTarget}/Tests/Gallio/Machine.Specifications.TestGallioAdapter.3.1.Tests.dll", "/plugin-directory:Build/#{compileTarget}", "/r:Local"
   end
 end
 
@@ -55,12 +58,29 @@ end
 
 desc "Rebuild"
 task :rebuild => [ :clean ] do
-  sh "#{msbuild} Source/#{project}.sln /property:Configuration=#{compileTarget}"
+  MSBuild.compile \
+    :project => "Source/#{project}.sln",
+    :version => version,
+    :properties => {
+      :Configuration => compileTarget
+    },
+    :switches => {
+      :target => 'Rebuild'
+    }
 end
 
 desc "Clean"
 task :clean do
-  sh "#{msbuild} Source/#{project}.sln /t:Clean /property:Configuration=#{compileTarget}"
+  MSBuild.compile \
+    :project => "Source/#{project}.sln",
+    :version => version,
+    :properties => {
+      :Configuration => compileTarget
+    },
+    :switches => {
+      :target => 'Clean'
+    }
+
   rm_f packageName
   rm_rf "Build"
 end
@@ -73,11 +93,11 @@ task :package => [ "rebuild", "tests:run", "specs:run" ] do
   cp_r 'Distribution/Specifications/.', "Build/#{compileTarget}/"
   
   sz = SevenZip.new \
-		 :tool => 'Tools/7-Zip/7za.exe',
-		 :zip_name => packageName
+    :tool => 'Tools/7-Zip/7za.exe',
+    :zip_name => packageName
 
   Dir.chdir("Build/#{compileTarget}") do
-	  sz.zip :files => FileList.new('**/*').exclude('*.InstallLog').exclude('*.InstallState').exclude('Generation').exclude('Tests')
+    sz.zip :files => FileList.new('**/*').exclude('*.InstallLog').exclude('*.InstallState').exclude('Generation').exclude('Tests')
   end
 end
 
