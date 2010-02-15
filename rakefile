@@ -1,15 +1,41 @@
 require 'rake'
 require 'fileutils'
+require 'configatron'
 Dir.glob(File.join(File.dirname(__FILE__), 'tools/Rake/*.rb')).each do |f|
   require f
 end
 include FileUtils
 
-version = 'v3.5'
-compileTarget = ENV.include?('target') ? ENV['target'] : 'Debug'
 project = "Machine.Specifications"
-packageName = "Distribution/#{project}-#{compileTarget}.zip"
 mspec_options = []
+
+task :configure do
+  version = ENV.include?('version') ? ENV['version'].to_sym : :net_35
+  target = ENV.include?('target') ? ENV['target'] : 'Debug'
+  
+  build_config = {
+    :net_35 => {
+      :version => 'v3.5',
+      :project => project,
+      :compileTarget => target,
+      :outDir => "Build/net-3.5/#{target}/",
+      :packageName => "Distribution/#{project}-net-3.5-#{target}.zip"
+    },
+    :net_40 => {
+      :version => 'v4\Full',
+      :project => "#{project}-2010",
+      :compileTarget => "#{target} .NET 4.0".escape,
+      :outDir => "Build/net-4.0/#{target}/",
+      :packageName => "Distribution/#{project}-net-4.0-#{target}.zip"
+    }
+  }
+  
+  configatron.configure_from_hash build_config[version]
+  configatron.protect_all!
+  puts configatron.inspect
+end
+
+Rake::Task["configure"].invoke
 
 desc "Build and run specs"
 task :default => [ "build", "tests:run", "specs:run" ]
@@ -17,10 +43,10 @@ task :default => [ "build", "tests:run", "specs:run" ]
 desc "Build"
 task :build do
   MSBuild.compile \
-    :project => "Source/#{project}.sln",
-    :version => version,
+    :project => "Source/#{configatron.project}.sln",
+    :version => configatron.version,
     :properties => {
-      :Configuration => compileTarget
+      :Configuration => configatron.compileTarget
     }
 end
 
@@ -31,38 +57,38 @@ namespace :specs do
 
   task :run do
     puts 'Running Specs...'
-    specs = ["Machine.Specifications.Specs.dll", "Machine.Specifications.Reporting.Specs.dll", "Machine.Specifications.ConsoleRunner.Specs.dll"].map {|spec| "Build/#{compileTarget}/Tests/#{spec}"}
-    sh "Build/#{compileTarget}/mspec.exe", "--html", "Specs/#{project}.Specs.html", "-x", "example", *(mspec_options + specs)
-    puts "Wrote specs to Specs/#{project}.Specs.html, run 'rake specs:view' to see them"
+    specs = ["Machine.Specifications.Specs.dll", "Machine.Specifications.Reporting.Specs.dll", "Machine.Specifications.ConsoleRunner.Specs.dll"].map {|spec| "#{configatron.outDir}/Tests/#{spec}"}
+    sh "#{configatron.outDir}/mspec.exe", "--html", "Specs/#{configatron.project}.Specs.html", "-x", "example", *(mspec_options + specs)
+    puts "Wrote specs to Specs/#{configatron.project}.Specs.html, run 'rake specs:view' to see them"
   end
 end
 
 namespace :tests do
   task :run do
     puts 'Running NUnit tests...'
-    tests = ["Machine.Specifications.Tests.dll"].map {|test| "Build/#{compileTarget}/Tests/#{test}"}
-    runner = NUnitRunner.new :compilemode => compileTarget, :platform => 'x86', :results => "Specs"
+    tests = ["Machine.Specifications.Tests.dll"].map {|test| "#{configatron.outDir}/Tests/#{test}"}
+    runner = NUnitRunner.new :platform => 'x86', :results => "Specs"
     runner.executeTests tests
 
     puts 'Running Gallio tests...'
-    sh "Tools/Gallio/v3.1.397/Gallio.Echo.exe", "Build/#{compileTarget}/Tests/Gallio/Machine.Specifications.TestGallioAdapter.3.1.Tests.dll", "/plugin-directory:Build/#{compileTarget}", "/r:Local"
+    sh "Tools/Gallio/v3.1.397/Gallio.Echo.exe", "#{configatron.outDir}/Tests/Gallio/Machine.Specifications.TestGallioAdapter.3.1.Tests.dll", "/plugin-directory:#{configatron.outDir}", "/r:Local"
   end
 end
 
 desc "Open solution in VS"
 task :sln do
   Thread.new do
-    system "devenv Source/#{project}.sln"
+    system "devenv Source/#{configatron.project}.sln"
   end
 end
 
 desc "Rebuild"
 task :rebuild => [ :clean ] do
   MSBuild.compile \
-    :project => "Source/#{project}.sln",
-    :version => version,
+    :project => "Source/#{configatron.project}.sln",
+    :version => configatron.version,
     :properties => {
-      :Configuration => compileTarget
+      :Configuration => configatron.compileTarget
     },
     :switches => {
       :target => 'Rebuild'
@@ -72,31 +98,31 @@ end
 desc "Clean"
 task :clean do
   MSBuild.compile \
-    :project => "Source/#{project}.sln",
-    :version => version,
+    :project => "Source/#{configatron.project}.sln",
+    :version => configatron.version,
     :properties => {
-      :Configuration => compileTarget
+      :Configuration => configatron.compileTarget
     },
     :switches => {
       :target => 'Clean'
     }
 
-  rm_f packageName
+  rm_f configatron.packageName
   rm_rf "Build"
 end
 
 desc "Packages the build artifacts"
 task :package => [ "rebuild", "tests:run", "specs:run" ] do
-  rm_f packageName
+  rm_f configatron.packageName
   
-  cp 'License.txt', "Build/#{compileTarget}/"
-  cp_r 'Distribution/Specifications/.', "Build/#{compileTarget}/"
+  cp 'License.txt', configatron.outDir
+  cp_r 'Distribution/Specifications/.', configatron.outDir
   
   sz = SevenZip.new \
     :tool => 'Tools/7-Zip/7za.exe',
-    :zip_name => packageName
+    :zip_name => configatron.packageName
 
-  Dir.chdir("Build/#{compileTarget}") do
+  Dir.chdir(configatron.outDir) do
     sz.zip :files => FileList.new('**/*').exclude('*.InstallLog').exclude('*.InstallState').exclude('Generation').exclude('Tests')
   end
 end
