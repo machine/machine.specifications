@@ -18,4 +18,12 @@ class String
 	def to_absolute()
 		File.expand_path(self)
 	end
+	
+	def slash(path)
+		if self =~ /\/$/
+			return self + path
+		end
+
+		return self + '/' + path
+	end	
 end
