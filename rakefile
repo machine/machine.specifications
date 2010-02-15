@@ -81,10 +81,10 @@ task :package => [ "rebuild", "tests:run", "specs:run" ] do
   end
 end
 
-desc "Teamcity build"
+desc "TeamCity build"
 task :teamcity => [ :teamcity_environment, :package ]
 
-desc "Sets up the Teamcity environment"
+desc "Sets up the TeamCity environment"
 task :teamcity_environment do
   mspec_options.push "--teamcity"
 end
