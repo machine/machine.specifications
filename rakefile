@@ -13,23 +13,11 @@ frameworkDir = File.join(ENV['windir'].dup, 'Microsoft.NET', 'Framework', versio
 msbuild = File.join(frameworkDir, 'msbuild.exe')
 mspec_options = []
 
-task :setup => [ "setup:all" ]
-
-file ".setup-done" => [ "rakefile" ] do
-  Rake::Task["setup:all"].invoke
-end
-
-namespace :setup do
-  task :all do
-    touch ".setup-done"
-  end
-end
-
 desc "Build and run specs"
 task :default => [ "build", "tests:run", "specs:run" ]
 
 desc "Build"
-task :build => [ ".setup-done" ] do
+task :build do
   sh "#{msbuild} Source/#{project}.sln /property:Configuration=#{compileTarget}"
 end
 
@@ -66,7 +54,7 @@ task :sln do
 end
 
 desc "Rebuild"
-task :rebuild => [ ".setup-done", :clean ] do
+task :rebuild => [ :clean ] do
   sh "#{msbuild} Source/#{project}.sln /property:Configuration=#{compileTarget}"
 end
 
