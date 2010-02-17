@@ -253,35 +253,6 @@
             The “common” page in the Languages section, representing the non-per-language but language-related settings.
             </summary>
         </member>
-        <member name="T:JetBrains.ReSharper.Features.Common.Options.EnvironmentPage">
-            <summary>
-            Root options page for the global environment options.
-            </summary>
-        </member>
-        <member name="M:JetBrains.ReSharper.Features.Common.Options.EnvironmentPage.OnOk">
-            <summary>
-            Invoked when OK button in the options dialog is pressed.
-            If the page returns <c>false</c>, the the options dialog won't be closed, and focus will be put into this page.
-            </summary>
-        </member>
-        <member name="M:JetBrains.ReSharper.Features.Common.Options.EnvironmentPage.ValidatePage">
-            <summary>
-            Check if the settings on the page are consistent, and page could be closed.
-            </summary>
-            <returns><c>true</c> if page data is consistent.</returns>
-        </member>
-        <member name="P:JetBrains.ReSharper.Features.Common.Options.EnvironmentPage.Control">
-            <summary>
-            Control to be shown as page.
-            May be <c>Null</c> if the page does not have any UI.
-            </summary>
-        </member>
-        <member name="P:JetBrains.ReSharper.Features.Common.Options.EnvironmentPage.Id">
-            <summary>
-            Gets the ID of this option page.
-            <see cref="T:JetBrains.UI.Options.IOptionsDialog"/> or <see cref="T:JetBrains.UI.Options.OptionsPageDescriptor"/> could be used to retrieve the <see cref="T:JetBrains.UI.Options.OptionsManager"/> out of it.
-            </summary>
-        </member>
         <member name="T:JetBrains.ReSharper.Features.Common.Options.LanguagesPage">
             <summary>
             Root options page for the global per-language options.

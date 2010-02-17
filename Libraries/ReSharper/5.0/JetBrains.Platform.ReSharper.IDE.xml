@@ -10,6 +10,23 @@
             that provides all access to editor control in the center of WindowManager.MainForm
             </summary>
         </member>
+        <member name="M:JetBrains.IDE.EditorManager.OpenProjectFile(JetBrains.ProjectModel.IProjectFile,System.Boolean,JetBrains.IDE.FileView)">
+            <summary>
+            Tries to open a file from solution for editing.
+            </summary>
+            <param name="projectFile">The file to open.</param>
+            <param name="activate">Whether to set focus to the opened file. Otherwise, the previously focused file will remain active.</param>
+            <param name="fileViewPrimary">The preferred view. If failed, this method will fallback to other views.</param>
+            <returns>The text control, if the file was opened successfully and the opened view is a text view for which a text control could be created.</returns>
+        </member>
+        <member name="M:JetBrains.IDE.EditorManager.OpenProjectFile(JetBrains.ProjectModel.IProjectFile,System.Boolean)">
+            <summary>
+            Tries to open a file from solution for editing, preferring a text editor view for which a Text Control could be created. Fallbacks to other views (like designer, Solution Explorer, etc) if that fails.
+            </summary>
+            <param name="projectFile">The file to open.</param>
+            <param name="activate">Whether to set focus to the opened file. Otherwise, the previously focused file will remain active.</param>
+            <returns>The text control, if the file was opened successfully and the opened view is a text view for which a text control could be created.</returns>
+        </member>
         <member name="M:JetBrains.IDE.EditorManager.TryGetTextControl(JetBrains.ProjectModel.IProjectFile)">
             <summary>
             If the project file is currently opened in any text controls, looks up one. Otherwise, <c>Null</c>.

@@ -60,7 +60,8 @@
             Generate asctions - 10
             Default actions - 50   
             Configure actions - 100
-            Disable actions - 500
+            Configure highlighting actions - 500
+            Disable highlighting actions - 510
             </summary>
         </member>
         <member name="M:JetBrains.ReSharper.Feature.Services.Bulbs.IContextActionDataProvider.GetSelectedElement``1(System.Boolean,System.Boolean)">
@@ -314,6 +315,11 @@
             Interface for providing parameter info contexts from lookup lists or other places
             </summary>
         </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Hyperlink.JetBrains.ReSharper.Feature.Services.Hyperlink.HyperlinkManagerOriginal.DoRebuildHyperlink">
+            <summary>
+            Should always be called under readlock and reetrancy guard
+            </summary>
+        </member>
         <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Context.ITemplateContext">
             <summary>
             Context where a template can be executed
@@ -412,6 +418,18 @@
             Gets visual replace range
             </summary>
         </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Navigation.TextNavigationPoint">
+            <summary>
+            Project file's navigation point with cursor positioning
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Navigation.GoToRelated.IRelatedFilesProvider.GetRelatedFiles(JetBrains.ProjectModel.IProjectFile)">
+            <summary>
+            Get all related files to specified file.
+            </summary>
+            <param name="projectFile"></param>
+            <returns>Enumeration of pairs of project file and it's relation type to requested file</returns>
+        </member>
         <member name="T:JetBrains.ReSharper.Feature.Services.Psi.UnresolvedDeclaredType">
             <summary>
             Represents an unresolved type name
@@ -457,6 +475,16 @@
             <param name="declarations">Array with declarations to sort.</param>
             <param name="prefferedDeclaration">Declaration to which you would particulary like to write to. Pass null if you do not care.</param>
             <returns>Non-empty sorted list of declarations. Unwanted, ex. designer file, declarations filtered.</returns>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Util.GoTransparentOnControlKey">
+            <summary>
+            Supports the VS behavior for a window to go transparent when the Control modifier key is down.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Util.GoTransparentOnControlKey.IsCtrlKeyDownNow">
+            <summary>
+            Polls keyboard for the current state.
+            </summary>
         </member>
         <member name="T:JetBrains.ReSharper.Feature.Services.Util.IImplicitReference">
             <summary>
@@ -821,11 +849,6 @@
             Attribute of this highlighting in the markup model
             </summary>
         </member>
-        <member name="T:JetBrains.ReSharper.Daemon.PublicIdAttribute">
-            <summary>
-            Highlighting should be marked by this attribute if it corresponds to compiler warning ID
-            </summary>
-        </member>
         <member name="T:JetBrains.ReSharper.Feature.Services.Generate.IGeneratorContext">
             <summary>
             Context in which generation occures
@@ -1032,9 +1055,46 @@
             <param name="delegateTo">Method, event, property to delegate to</param>
             <returns>Body TextRange</returns>
         </member>
-        <member name="M:JetBrains.ReSharper.Feature.Services.Hyperlink.HyperlinkManager.DoRebuildHyperlink">
+        <member name="F:JetBrains.ReSharper.Feature.Services.Hyperlink.HyperlinkManager.myActiveTextControl">
             <summary>
-            Should always be called under readlock and reetrancy guard
+            Text control in which hyperlinks are currently enabled.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Hyperlink.HyperlinkManager.myClickCommit">
+            <summary>
+            Makes sure we async-run no more than one click.
+            Makes sure we cancel a pending click when we're turned off / closed / etc.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Hyperlink.HyperlinkManager.myDisposablesCurrentState">
+            <summary>
+            Cleared when exiting current state.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Hyperlink.HyperlinkManager.OnHoverDocumentsCommitted">
+            <summary>
+            Async-commit requested by HoverChoosing has completed. Get the actual hyperlink object.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Hyperlink.HyperlinkManager.OnMouseOrKeyboardMove(JetBrains.TextControl.TextControlMouseEventArgs)">
+            <summary>
+            Mouse moved or key state changed.
+            </summary>
+            <param name="args">Params. <c>Null</c> means mouse not in text control.</param>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Hyperlink.HyperlinkManager.TryEnterHoverState(JetBrains.TextControl.TextControlMouseEventArgs)">
+            <summary>
+            Enters the state if there're providers for the current keystate.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Feature.Services.Hyperlink.HyperlinkManager.State.Idle">
+            <summary>
+            Not active. No highlighting.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Hyperlink.HyperlinkManager.StubbornAsyncCommitClient">
+            <summary>
+            Retries async commit on interruption until it completes.
             </summary>
         </member>
         <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.MutliDocumentNameExpression">
@@ -2776,6 +2836,11 @@
         <member name="T:JetBrains.ReSharper.Feature.Services.MatchingBrace.MatchingBraceUtil.BracketMatchStack">
             <summary>
             Stack of different bracket types for finding matched one.
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Feature.Services.Navigation.ProjectFileNavigationPoint">
+            <summary>
+            Project file's navigation point without cursor positioning
             </summary>
         </member>
         <member name="T:JetBrains.ReSharper.Feature.Services.Filtering.FilteringPrefixMatcher">

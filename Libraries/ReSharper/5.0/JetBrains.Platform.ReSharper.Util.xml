@@ -217,6 +217,11 @@
             Index of previous entry in the chain of keys with the same hashcodes (modulo size), -1 means first
             </summary>
         </member>
+        <member name="T:JetBrains.Util.TypeOf">
+            <summary>
+            Caches <see cref="T:System.Type"/> instances for popular types.
+            </summary>
+        </member>
         <member name="T:JetBrains.Concurrency.Fiber">
             <summary>
             Implements the fibers (non-preemptive multitasking).
@@ -1802,6 +1807,11 @@
             </summary>
             <typeparam name="TType">This type is not used for storing data values. It it solely used for distinguishing between typed intrinsics.</typeparam>
         </member>
+        <member name="M:JetBrains.Util.dataStructures.TypedIntrinsics.Int32`1.Limited(JetBrains.Util.dataStructures.TypedIntrinsics.Int32{`0},JetBrains.Util.dataStructures.TypedIntrinsics.Int32{`0})">
+            <summary>
+            Limits the current value. Returns a copy that's guaranteed to be in the <c>[</c><paramref name="minInclusive"/><c>, </c><paramref name="maxExclusive"/><c>)</c> limits.
+            </summary>
+        </member>
         <member name="M:JetBrains.Util.dataStructures.TypedIntrinsics.Int32`1.Minus1">
             <summary>
             Adds one to the current value.
@@ -2906,7 +2916,7 @@
         </member>
         <member name="P:JetBrains.Util.LocalList`1.Count">
             <summary>
-            Gets the approximate number of elements contained in the <see cref="T:JetBrains.Util.LocalList`1"></see>.
+            Gets the number of elements contained in the <see cref="T:JetBrains.Util.LocalList`1"></see>.
             </summary>
         </member>
         <member name="F:JetBrains.Util.WeakToStrongDictionary`2.Entry.HashCode">
@@ -3880,9 +3890,16 @@
             Event.
             </summary>
         </member>
+        <member name="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.PopExecution(System.String)">
+            <summary>
+            Removes a recorded execution from the stack.
+            Home thread only.
+            </summary>
+            <param name="name">Item name.</param>
+        </member>
         <member name="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.PushExecution(System.String)">
             <summary>
-            Records an execution on the stack, removes upon retval disposal.
+            Records an execution on the stack.
             Home thread only.
             </summary>
             <param name="name">Item name.</param>
@@ -3893,6 +3910,7 @@
             Home thread only.
             </summary>
             <param name="name">Item name.</param>
+            <remarks>Note: PushExecution has been broken into Push/Pop to avoid creating the disposable object. A lifting is a much rarer thing, let's keep the safer code here.</remarks>
         </member>
         <member name="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.ToString">
             <summary>
@@ -3932,19 +3950,14 @@
             Fires when an add/remove operation is performed on the storage.
             </summary>
         </member>
-        <member name="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.StackEventsLite`1.PushAdd(`0)">
-            <summary>
-            An <see cref="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.StackEventsLite`1.Add(`0)"/>-<see cref="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.StackEventsLite`1.Remove(`0)"/> pair of actions.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.StackEventsLite`1.TryGetLast">
-            <summary>
-            Peeks the item on top of the stack. <c>Null</c> if empty.
-            </summary>
-        </member>
         <member name="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.StackEventsLite`1.Add(`0)">
             <summary>
             Adds an item to the stack. Updates the properties.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.StackEventsLite`1.PushAdd(`0)">
+            <summary>
+            An <see cref="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.StackEventsLite`1.Add(`0)"/>-<see cref="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.StackEventsLite`1.Remove(`0)"/> pair of actions.
             </summary>
         </member>
         <member name="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.StackEventsLite`1.Remove(`0)">
@@ -3952,6 +3965,11 @@
             Removes an item from the stack. Updates the properties.
             </summary>
             <param name="item">Ensures that we removed exactly the same name we added (valid bracket structure).</param>
+        </member>
+        <member name="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.StackEventsLite`1.TryGetLast">
+            <summary>
+            Peeks the item on top of the stack. <c>Null</c> if empty.
+            </summary>
         </member>
         <member name="M:JetBrains.Threading.ReentrancyGuard.ExecutionStack.StackEventsLite`1.GetEnumerator">
             <summary>
@@ -10343,6 +10361,11 @@
             Interface for a buffer supporting efficient editing of content in arbitrary positions
             </summary>
         </member>
+        <member name="M:JetBrains.Util.WeakHashSet`1.#ctor(System.Collections.Generic.ICollection{`0},System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
         <member name="F:JetBrains.Util.WeakHashSet`1.Entry.HashCode">
             <summary>
             Cached hash code of the key, -1 means entry is free
@@ -10758,6 +10781,12 @@
             Emulates the <c>System.Windows.Threading.Dispatcher</c> class on top of netfx20.
             </summary>
         </member>
+        <member name="F:JetBrains.Threading.JetDispatcher.RunThreadWaitTimeout">
+            <summary>
+            Timeout for <see cref="M:JetBrains.Threading.JetDispatcher.Run"/> method's waiting for messages.
+            If non-infinite, wakes the thread from time to time, which is nice for the tests (but not essential).
+            </summary>
+        </member>
         <member name="F:JetBrains.Threading.JetDispatcher.myControlInstanceForStaticMethods">
             <summary>
             There're static methods that require a control this.
@@ -10774,12 +10803,6 @@
             Syncs write access to <see cref="F:JetBrains.Threading.JetDispatcher.myDispatchers"/>.
             </summary>
         </member>
-        <member name="F:JetBrains.Threading.JetDispatcher.RunThreadWaitTimeout">
-            <summary>
-            Timeout for <see cref="M:JetBrains.Threading.JetDispatcher.Run"/> method's waiting for messages.
-            If non-infinite, wakes the thread from time to time, which is nice for the tests (but not essential).
-            </summary>
-        </member>
         <member name="F:JetBrains.Threading.JetDispatcher.myDontRun">
             <summary>
             Means the <see cref="M:JetBrains.Threading.JetDispatcher.Run"/> method should abort.
@@ -10789,6 +10812,11 @@
             <summary>
             Creates an instance, for use only from <see cref="P:JetBrains.Threading.JetDispatcher.CurrentDispatcher"/>.
             Must be called under the <see cref="F:JetBrains.Threading.JetDispatcher.myDispatchersWriterLock"/>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Threading.JetDispatcher.Thread">
+            <summary>
+            Gets the thread the dispatcher is running on.
             </summary>
         </member>
         <member name="M:JetBrains.Threading.JetDispatcher.AssertFreeThreaded">
@@ -10917,11 +10945,6 @@
         <member name="P:JetBrains.Threading.JetDispatcher.IsShutDown">
             <summary>
             Gets whether this dispatcher has been shut down and will not <see cref="M:JetBrains.Threading.JetDispatcher.Run"/> any more requests.
-            </summary>
-        </member>
-        <member name="P:JetBrains.Threading.JetDispatcher.Thread">
-            <summary>
-            Gets the thread the dispatcher is running on.
             </summary>
         </member>
         <member name="T:JetBrains.Threading.JetDispatcher.Closure">
@@ -11519,6 +11542,221 @@
         <member name="M:JetBrains.Reflection.ReflectionExtensions.ToInvariantString(System.Object)">
             <summary>
             Wraps the <see cref="T:System.ComponentModel.TypeConverter"/>.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.First``1(System.Collections.Generic.IList{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.First(System.String)">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.FirstOrDefault``1(System.Collections.Generic.IList{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.FirstOrDefault(System.String)">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Last``1(System.Collections.Generic.IList{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Last(System.String)">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.LastOrDefault``1(System.Collections.Generic.IList{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.LastOrDefault(System.String)">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.ElementAt``1(System.Collections.Generic.IList{``0},System.Int32)">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.ElementAt(System.String,System.Int32)">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.All``1(System.Collections.Generic.ICollection{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Any``1(System.Collections.Generic.ICollection{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Any(System.String,System.Func{System.Char,System.Boolean})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Count``1(System.Collections.Generic.ICollection{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Count(System.String,System.Func{System.Char,System.Boolean})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Count``1(System.Collections.Generic.ICollection{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Count``1(``0[])">
+            <summary>
+            Static overload to prevent ambiguity between <see cref="M:System.Linq.Enumerable.Count``1(System.Collections.Generic.ICollection{``0})"/> and <see cref="M:System.Linq.Enumerable.Count(System.Array)"/>.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Count(System.Array)">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Count(System.String)">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.LongCount``1(``0[])">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Any``1(System.Collections.Generic.ICollection{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Any(System.String)">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.SequenceEqual``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.ICollection{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.SequenceEqual``1(System.Collections.Generic.ICollection{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.SequenceEqual``1(System.Collections.Generic.ICollection{``0},System.Collections.Generic.ICollection{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.SequenceEqual``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.ICollection{``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.SequenceEqual``1(System.Collections.Generic.ICollection{``0},System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.SequenceEqual``1(System.Collections.Generic.ICollection{``0},System.Collections.Generic.ICollection{``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Distinct``1(System.Collections.Generic.ICollection{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Distinct(System.String)">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Distinct``1(System.Collections.Generic.ICollection{``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Distinct(System.String,System.Collections.Generic.IEqualityComparer{System.Char})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Distinct``1(System.Collections.Generic.HashSet{``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Distinct``1(System.Collections.Generic.HashSet{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Union``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.ICollection{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Union``1(System.Collections.Generic.ICollection{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Union``1(System.Collections.Generic.ICollection{``0},System.Collections.Generic.ICollection{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Take``1(System.Collections.Generic.ICollection{``0},System.Int32)">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.TakeWhile``1(System.Collections.Generic.ICollection{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Collections.Generic.HashSet`1.#ctor(System.Collections.Generic.ICollection{`0},System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Collections.Generic.HashSet`1.SetEquals(System.Collections.Generic.HashSet{`0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Collections.Generic.HashSet`1.IsSupersetOf(System.Collections.Generic.ICollection{`0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Collections.Generic.HashSet`1.IsSupersetOf(System.Collections.Generic.HashSet{`0})">
+            <summary>
+            Static overload to prevent runtime type checks.
             </summary>
         </member>
         <member name="F:System.Collections.Generic.HashSet`1.Entry.HashCode">
@@ -13784,9 +14022,252 @@
             Reuses the single instance of an empty array (one per type).
             </summary>
         </member>
+        <member name="M:JetBrains.Util.CollectionUtil.EqualEnumerables``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.ICollection{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.EqualEnumerables``1(System.Collections.Generic.ICollection{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.EqualEnumerables``1(System.Collections.Generic.ICollection{``0},System.Collections.Generic.ICollection{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.EqualEnumerables``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.ICollection{``0},System.Func{``0,``0,System.Boolean})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.EqualEnumerables``1(System.Collections.Generic.ICollection{``0},System.Collections.Generic.IEnumerable{``0},System.Func{``0,``0,System.Boolean})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.EqualEnumerables``1(System.Collections.Generic.ICollection{``0},System.Collections.Generic.ICollection{``0},System.Func{``0,``0,System.Boolean})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.Then``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Similar to <see cref="M:System.Linq.Enumerable.Concat``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})"/>, but not lazy and returns <see cref="T:System.Collections.Generic.List`1"/>.
+            </summary>
+            <remarks>
+            Allows <c>null</c> as arguments, interprets it as empty sequence.
+            </remarks>
+            <returns>
+            List containing elements of <paramref name="first"/> in order, followed by elements of <paramref name="tail"/> in order.
+            </returns>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.TryGetFastCount``1(System.Collections.Generic.IEnumerable{``0},System.Int32@)">
+            <summary>
+            Tries to determine the number of elements in <paramref name="collection"/> in <c>O(1)</c>.
+            </summary>
+            <returns>
+            <c>true</c> is the method succeeded and the number of elements has been assigned to <paramref name="count"/>, <c>false</c> otherwise.
+            </returns>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.TryGetFastCount``1(System.Collections.Generic.ICollection{``0},System.Int32@)">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.TryGetFastCount(System.Collections.ICollection,System.Int32@)">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.TryGetFastCount(System.String,System.Int32@)">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.CanBeProvenEmptyFast``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns <c>true</c> if length of <paramref name="collection"/> can be checked fast and this check gives <c>0</c>.
+            Otherwise returns <c>false</c> (it does not necessarily mean that <paramref name="collection"/> is not empty)
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.CanBeProvenEmptyFast``1(System.Collections.Generic.ICollection{``0})">
+            <remarks>
+            Static overload to prevent runtime type checks.
+            </remarks>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.CanBeProvenEmptyFast(System.Collections.ICollection)">
+            <remarks>
+            Static overload to prevent runtime type checks.
+            </remarks>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.CanBeProvenEmptyFast(System.String)">
+            <remarks>
+            Static overload to prevent runtime type checks.
+            </remarks>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.CanBeProvenNonEmptyFast``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns <c>true</c> if length of <paramref name="collection"/> can be checked fast and this check does not give <c>0</c>.
+            Otherwise return <c>false</c> (it does not necessarily mean that <paramref name="collection"/> is empty!)
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.CanBeProvenNonEmptyFast``1(System.Collections.Generic.ICollection{``0})">
+            <remarks>
+            Static overload to prevent runtime type checks.
+            </remarks>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.CanBeProvenNonEmptyFast(System.Collections.ICollection)">
+            <remarks>
+            Static overload to prevent runtime type checks.
+            </remarks>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.CanBeProvenNonEmptyFast(System.String)">
+            <remarks>
+            Static overload to prevent runtime type checks.
+            </remarks>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.IsEmpty``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns <c>true</c> if and only if <paramref name="collection"/> is empty (has no elements)
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.IsEmpty``1(System.Collections.Generic.ICollection{``0})">
+            <summary>
+            Returns <c>true</c> if and only if <paramref name="collection"/> is empty (has no elements)
+            </summary>
+            <remarks>
+            Static overload to prevent runtime type checks.
+            </remarks>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.IsSingle``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns <c>true</c> if and only if <paramref name="collection"/> has exactly 1 element.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.IsSingle``1(System.Collections.Generic.ICollection{``0})">
+            <summary>
+            Returns <c>true</c> if and only if <paramref name="collection"/> has exactly 1 element.
+            </summary>
+            <remarks>
+            Static overload to prevent runtime type checks.
+            </remarks>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.IsSingle(System.String)">
+            <summary>
+            Returns <c>true</c> if and only if <paramref name="str"/> has exactly 1 character.
+            </summary>
+            <remarks>
+            Static overload to prevent runtime type checks.
+            </remarks>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.HasAtLeast``1(System.Collections.Generic.IEnumerable{``0},System.Int32)">
+            <summary>
+            Returns <c>true</c> if and only if <paramref name="collection"/> has <paramref name="minimumCount"/> elements or more.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.HasAtLeast``1(System.Collections.Generic.IEnumerable{``0},System.Int64)">
+            <summary>
+            Returns <c>true</c> if and only if <paramref name="collection"/> has <paramref name="minimumCount"/> elements or more.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.HasAtLeast``1(System.Collections.Generic.ICollection{``0},System.Int32)">
+            <summary>
+            Returns <c>true</c> if and only if <paramref name="collection"/> has <paramref name="minimumCount"/> elements or more.
+            </summary>
+            <remarks>
+            Static overload to prevent runtime type checks.
+            </remarks>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.HasAtLeast(System.String,System.Int32)">
+            <summary>
+            Returns <c>true</c> if and only if <paramref name="str"/> has <paramref name="minimumCount"/> characters or more.
+            </summary>
+            <remarks>
+            Static overload to prevent runtime type checks.
+            </remarks>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.HasMultiple``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns <c>true</c> if and only if <paramref name="collection"/> has 2 elements or more.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.HasMultiple``1(System.Collections.Generic.ICollection{``0})">
+            <summary>
+            Returns <c>true</c> if and only if <paramref name="collection"/> has 2 elements or more.
+            </summary>
+            <remarks>
+            Static overload to prevent runtime type checks.
+            </remarks>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.HasMultiple(System.String)">
+            <summary>
+            Returns <c>true</c> if and only if <paramref name="str"/> has 2 characters or more.
+            </summary>
+            <remarks>
+            Static overload to prevent runtime type checks.
+            </remarks>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.HasMoreThan``1(System.Collections.Generic.IEnumerable{``0},System.Int32)">
+            <summary>
+            Returns <c>true</c> if and only if <paramref name="collection"/> has more than <paramref name="exclusiveLowerBound"/> elements.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.HasMoreThan``1(System.Collections.Generic.ICollection{``0},System.Int32)">
+            <summary>
+            Returns <c>true</c> if and only if <paramref name="collection"/> has more than <paramref name="exclusiveLowerBound"/> elements.
+            </summary>
+            <remarks>
+            Static overload to prevent runtime type checks.
+            </remarks>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.HasMoreThan(System.String,System.Int32)">
+            <summary>
+            Returns <c>true</c> if and only if <paramref name="str"/> has more than <paramref name="exclusiveLowerBound"/> characters.
+            </summary>
+            <remarks>
+            Static overload to prevent runtime type checks.
+            </remarks>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.CountIs``1(System.Collections.Generic.ICollection{``0},System.Int32)">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.CountIs(System.String,System.Int32)">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.IsOfSameLengthAs``2(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.ICollection{``1})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.IsOfSameLengthAs``2(System.Collections.Generic.ICollection{``0},System.Collections.Generic.IEnumerable{``1})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.IsOfSameLengthAs``2(System.Collections.Generic.ICollection{``0},System.Collections.Generic.ICollection{``1})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
         <member name="M:JetBrains.Util.CollectionUtil.AddRangeFluent``2(``1,System.Collections.Generic.IEnumerable{``0})">
             <summary>
             Fluent <c>AddRange</c>, returns the collection, can be used in chains and in field initializers.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.AsReadOnly``1(JetBrains.Util.ReadOnlyCollection{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.AsReadOnly``2(JetBrains.Util.ReadOnlyDictionary{``0,``1})">
+            <summary>
+            Static overload to prevent runtime type checks.
             </summary>
         </member>
         <member name="M:JetBrains.Util.CollectionUtil.ConvertAll``2(System.Collections.Generic.IList{``1})">
@@ -13839,7 +14320,7 @@
         </member>
         <member name="M:JetBrains.Util.CollectionUtil.Force``1(System.Collections.Generic.IEnumerable{``0})">
             <summary>
-            Forces evaluation of all <param name="enumerable">enumerable</param> members
+            Forces evaluation of all <paramref name="collection"/> members.
             </summary>
         </member>
         <member name="M:JetBrains.Util.CollectionUtil.TryGetValue``2(System.Collections.Generic.IDictionary{``0,``1},``0)">
@@ -13897,6 +14378,11 @@
             Aggregates a number of items into a single string, using the <see cref="T:System.Text.StringBuilder"/> to avoid creating excessive strings when concatenating. Use its <see cref="M:System.Text.StringBuilder.AppendFormat(System.String,System.Object[])"/> method as appropriate.
             </summary>
         </member>
+        <member name="M:JetBrains.Util.CollectionUtil.AggregateString``1(System.Collections.Generic.IEnumerable{``0},System.String,System.String,System.Action{System.Text.StringBuilder})">
+            <summary>
+            Aggregates a number of items into a single string, using the <see cref="T:System.Text.StringBuilder"/> to avoid creating excessive strings when concatenating. Use its <see cref="M:System.Text.StringBuilder.AppendFormat(System.String,System.Object[])"/> method as appropriate.
+            </summary>
+        </member>
         <member name="M:JetBrains.Util.CollectionUtil.AggregateString``1(System.Collections.Generic.IEnumerable{``0},System.String,System.String,System.Func{System.Text.StringBuilder,``0,System.Text.StringBuilder})">
             <summary>
             Aggregates a number of items into a single string, using the <see cref="T:System.Text.StringBuilder"/>
@@ -13920,7 +14406,7 @@
         </member>
         <member name="M:JetBrains.Util.CollectionUtil.Permute``1(System.Collections.Generic.IList{``0},``0[])">
             <summary>
-            All permutes of collection
+            All permutations of collection.
             </summary>
         </member>
         <member name="M:JetBrains.Util.CollectionUtil.WhereNotNullCore``1(System.Collections.Generic.IEnumerable{``0})">

@@ -266,7 +266,7 @@
             <summary>
             Module name to display in UI
             For regular modules the same as Name
-            Primary for web modules usefull
+            Primary for web modules useful
             </summary>
         </member>
         <member name="T:JetBrains.ReSharper.Psi.EntityKindForm">
@@ -674,6 +674,16 @@
             If flag is <c>true</c> then extensions could be appended to image, and <c>false</c> if image is complete
             </summary>
         </member>
+        <member name="T:JetBrains.ReSharper.Psi.Impl.PsiManagerImpl.DeclaredElementPointer">
+            <summary>
+            Implements element pointer funcitonality
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.Impl.PsiManagerImpl.DeclaredElementPointer.#ctor(JetBrains.ReSharper.Psi.IDeclaredElement)">
+            <summary>
+            Creates new smart element pointing to the specified declared element
+            </summary>
+        </member>
         <member name="T:JetBrains.ReSharper.Psi.Impl.PsiManagerImpl.IRangeTranslator">
             <summary>
             Document range translator
@@ -816,19 +826,19 @@
             Get the language for which this factory works. If it is applicable to many languages, return <see cref="F:JetBrains.ReSharper.Psi.PsiLanguageType.ANY"/>
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.ILanguageSpecificSearcher.ProcessProjectItem(JetBrains.ProjectModel.IProjectFile,JetBrains.ReSharper.Psi.Search.FindResultConsumer)">
+        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.ILanguageSpecificSearcher.ProcessProjectItem``1(JetBrains.ProjectModel.IProjectFile,JetBrains.ReSharper.Psi.Search.IFindResultConsumer{``0})">
             <returns>True if further search is not needed</returns>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.ILanguageSpecificSearcher.ProcessElement(JetBrains.ReSharper.Psi.Tree.IElement,JetBrains.ReSharper.Psi.Search.FindResultConsumer)">
+        <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.ILanguageSpecificSearcher.ProcessElement``1(JetBrains.ReSharper.Psi.Tree.IElement,JetBrains.ReSharper.Psi.Search.IFindResultConsumer{``0})">
             <returns>True if further search is not needed</returns>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.Impl.Search.SearcherBase.ProcessProjectItem(JetBrains.ProjectModel.IProjectFile,JetBrains.ReSharper.Psi.Search.FindResultConsumer)">
+        <member name="M:JetBrains.ReSharper.Psi.Impl.Search.SearcherBase.ProcessProjectItem``1(JetBrains.ProjectModel.IProjectFile,JetBrains.ReSharper.Psi.Search.IFindResultConsumer{``0})">
             <returns>True if further search is not needed</returns>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.Impl.Search.SearcherBase.ProcessElement(JetBrains.ReSharper.Psi.Tree.IElement,JetBrains.ReSharper.Psi.Search.FindResultConsumer)">
+        <member name="M:JetBrains.ReSharper.Psi.Impl.Search.SearcherBase.ProcessElement``1(JetBrains.ReSharper.Psi.Tree.IElement,JetBrains.ReSharper.Psi.Search.IFindResultConsumer{``0})">
             <returns>True if further search is not needed</returns>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.Impl.Search.SearcherBase.ProcessLibraryFile(JetBrains.ReSharper.Psi.Caches.ILibraryFile,JetBrains.ReSharper.Psi.Search.FindResultConsumer)">
+        <member name="M:JetBrains.ReSharper.Psi.Impl.Search.SearcherBase.ProcessLibraryFile``1(JetBrains.ReSharper.Psi.Caches.ILibraryFile,JetBrains.ReSharper.Psi.Search.IFindResultConsumer{``0})">
             <returns>True if further search is not needed</returns>
         </member>
         <member name="M:JetBrains.ReSharper.Psi.Impl.Shared.GeneratedRangeMap`1.Add(JetBrains.Util.TextRange,JetBrains.ReSharper.Psi.Impl.Shared.ElementRange{`0})">
@@ -1784,23 +1794,6 @@
             Tag name in which this reference occurs
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.Caches.Job.Do(JetBrains.Application.Progress.IProgressIndicator)">
-            <summary>
-            Runs the task. The <paramref name="progress"/> should be used only if the task requires additional progress display (like smooth execution progress or more text messages). Normally, for short-time tasks, the executing engine will handle the progress.
-            </summary>
-        </member>
-        <member name="P:JetBrains.ReSharper.Psi.Caches.Job.Description">
-            <summary>
-            The individual description of the job. Not included into the status bar cache notifier.
-            </summary>
-        </member>
-        <member name="P:JetBrains.ReSharper.Psi.Caches.Job.GroupId">
-            <summary>
-            Common ID for the group of jobs.
-            It's the group progress that is displayed in the cache notifier, not jobs'.
-            The group ID is displayed as the cache notifier main text (the only text of the status-bar cache notifier).
-            </summary>
-        </member>
         <member name="T:JetBrains.ReSharper.Psi.Impl.Caches2.CacheWorkItemSubprogress">
             <summary>
             If a cache job wants to display more detailed progress while it's running, it can request a <see cref="T:JetBrains.Application.Progress.IProgressIndicator"/>-based object from the <see cref="T:JetBrains.ReSharper.Psi.Impl.Caches2.CacheUpdateThread"/>.
@@ -1855,6 +1848,23 @@
         <member name="T:JetBrains.ReSharper.Psi.Impl.Caches2.DelegateJob">
             <summary>
             A cache thread work item, implemented by a delegate.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.Caches.Job.Do(JetBrains.Application.Progress.IProgressIndicator)">
+            <summary>
+            Runs the task. The <paramref name="progress"/> should be used only if the task requires additional progress display (like smooth execution progress or more text messages). Normally, for short-time tasks, the executing engine will handle the progress.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Psi.Caches.Job.Description">
+            <summary>
+            The individual description of the job. Not included into the status bar cache notifier.
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Psi.Caches.Job.GroupId">
+            <summary>
+            Common ID for the group of jobs.
+            It's the group progress that is displayed in the cache notifier, not jobs'.
+            The group ID is displayed as the cache notifier main text (the only text of the status-bar cache notifier).
             </summary>
         </member>
         <member name="M:JetBrains.ReSharper.Psi.Impl.Caches2.DelegateJob.#ctor(JetBrains.Util.Runnable,System.String)">
@@ -3056,16 +3066,6 @@
             Returns false if the point is outside modified segment, and <paramref name="segment"/> contains the next segment index
             </summary>
         </member>
-        <member name="T:JetBrains.ReSharper.Psi.Impl.PsiManagerImpl.DeclaredElementPointer">
-            <summary>
-            Implements element pointer funcitonality
-            </summary>
-        </member>
-        <member name="M:JetBrains.ReSharper.Psi.Impl.PsiManagerImpl.DeclaredElementPointer.#ctor(JetBrains.ReSharper.Psi.IDeclaredElement)">
-            <summary>
-            Creates new smart element pointing to the specified declared element
-            </summary>
-        </member>
         <member name="M:JetBrains.ReSharper.Psi.Impl.PsiManagerImpl.TemporaryDocumentsMap.BeforeDocumentChange(JetBrains.DocumentModel.IDocument)">
             <summary>
             Returns temporary document
@@ -3095,11 +3095,6 @@
             Checks if internals from <paramref name="moduleFrom"/> are visible to <paramref name="moduleTo"/>
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.Psi.Impl.Reflection2.Member.Bucket">
-            <summary>
-            Defines bucket for this member, so all members of the same type survive or GC'd together
-            </summary>
-        </member>
         <member name="P:JetBrains.ReSharper.Psi.Impl.Reflection2.Parameter.Next">
             <summary>
             Just for optimization. Parameters in methods are stored as single-linked list
@@ -3120,6 +3115,17 @@
         <member name="M:JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.ResolveUtil.AddDeclarationsForProperDeclaredType(JetBrains.ReSharper.Psi.IDeclaredType,System.Int32,JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.IScope,JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.IWritableSymbolTable,System.Boolean,System.Boolean,JetBrains.ReSharper.Psi.Resolve.SymbolTableMode,System.Collections.Generic.HashSet{JetBrains.ReSharper.Psi.IDeclaredType})">
             <summary>
             "Proper" declared type means that it does not refer to type parameter
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.Search.IFindResultConsumer`1.Build(JetBrains.ReSharper.Psi.Search.FindResult)">
+            <summary>
+            Transforms find result into user data. Can bind to PSI here. Method is unsyncronized.
+            Returns <c>null</c> to skip result
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.Search.IFindResultConsumer`1.Merge(`0)">
+            <summary>
+            Accepts data from <see cref="M:JetBrains.ReSharper.Psi.Search.IFindResultConsumer`1.Build(JetBrains.ReSharper.Psi.Search.FindResult)"/>. Method is syncronized.
             </summary>
         </member>
         <member name="M:JetBrains.ReSharper.Psi.Impl.Search.FinderUtil.CollectAllPossibleNames(JetBrains.ReSharper.Psi.IDeclaredElement)">
@@ -3144,7 +3150,7 @@
             Language-specific searcher factory should be marked by this attribute
             </summary>
         </member>
-        <member name="T:JetBrains.ReSharper.Psi.Impl.Search.OverridableSearchHelper">
+        <member name="T:JetBrains.ReSharper.Psi.Impl.Search.OverridableSearchHelper`1">
             <summary>
             Helper class to search overriding/implementing member
             </summary>

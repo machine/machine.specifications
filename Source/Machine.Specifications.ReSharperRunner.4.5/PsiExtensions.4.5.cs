@@ -28,26 +28,48 @@ namespace Machine.Specifications.ReSharperRunner
         return false;
       }
 
-      var foundInheritedContexts = false;
-
       IFinder finder = clazz.GetManager().Finder;
       var searchDomain = clazz.GetSearchDomain();
 
+      var findResult = new InheritedContextFinder();
+
       finder.FindInheritors(clazz,
                             searchDomain,
-                            result =>
-                            {
-                              FindResultDeclaredElement foundElement = result as FindResultDeclaredElement;
-                              if (foundElement != null)
-                              {
-                                foundInheritedContexts = foundElement.DeclaredElement.IsContext();
-                              }
-
-                              return foundInheritedContexts ? FindExecution.Stop : FindExecution.Continue;
-                            },
+                            findResult.Consumer,
                             NullProgressIndicator.Instance);
 
-      return foundInheritedContexts;
+      return findResult.Found;
+    }
+
+    class InheritedContextFinder
+    {
+      public InheritedContextFinder()
+      {
+        Found = false;
+
+        Consumer = new FindResultConsumer(result =>
+        {
+          FindResultDeclaredElement foundElement = result as FindResultDeclaredElement;
+          if (foundElement != null)
+          {
+            Found = foundElement.DeclaredElement.IsContext();
+          }
+
+          return Found ? FindExecution.Stop : FindExecution.Continue;
+        });
+      }
+
+      public bool Found
+      {
+        get;
+        private set;
+      }
+
+      public FindResultConsumer Consumer
+      {
+        get;
+        private set;
+      }
     }
   }
 }

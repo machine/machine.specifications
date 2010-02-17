@@ -2102,6 +2102,12 @@
             Initialization will be performed in UIThread on <c>IVsShellComponent.OnAfterStartup()</c> call time.
             </summary>
         </member>
+        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator)">
+            <summary>
+            <para>Advances the progress by default fraction (1.0) within the range, as defined by the <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Start(JetBrains.Application.Progress.IProgressIndicator,System.Int32,System.String)"/> call.</para>
+            <para><see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Start(JetBrains.Application.Progress.IProgressIndicator,System.Int32,System.String)"/> MUST be called first.</para>
+            </summary>
+        </member>
         <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator,System.Double,System.Action{JetBrains.Application.Progress.IProgressIndicator})">
             <summary>
             <para>Advances the <paramref name="progressParent"/> by <paramref name="fUnitsInParentIndicator"/> units, while running the <paramref name="funcAdvanceSubprogress"/> task.</para>
@@ -2174,8 +2180,8 @@
         </member>
         <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Start(JetBrains.Application.Progress.IProgressIndicator,System.Int32,System.String)">
             <summary>
-            <para>Starts the progress to run through the [0..totalWorkUnits] range. You MUST call <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> at the end. Use <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator,System.Double,System.Action{JetBrains.Application.Progress.IProgressIndicator})"/> to move the progress across the range.</para>
-            <para>Generally, you SHOULD set the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> to identify the current execution span, once per <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Start(JetBrains.Application.Progress.IProgressIndicator,System.Int32,System.String)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/>, and change the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> when doing <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator,System.Double,System.Action{JetBrains.Application.Progress.IProgressIndicator})"/> to comment on the progress.</para>
+            <para>Starts the progress to run through the [0..totalWorkUnits] range. You MUST call <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> at the end. Use <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator)"/> to move the progress across the range.</para>
+            <para>Generally, you SHOULD set the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> to identify the current execution span, once per <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Start(JetBrains.Application.Progress.IProgressIndicator,System.Int32,System.String)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/>, and change the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> when doing <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator)"/> to comment on the progress.</para>
             <para>If you would like to delegate a sub-range to a nested routine, you SHOULD create a <see cref="T:JetBrains.Application.Progress.SubProgressIndicator"/> and pass the resulting <see cref="T:JetBrains.Application.Progress.IProgressIndicator"/> to the routine, so that it ran a whole range from its point of view, which would then map to a sub-range of this progress indicator.</para>
             </summary>
             <param name="progress">Progress indicator.</param>
@@ -2192,8 +2198,8 @@
         </member>
         <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.StartStop(JetBrains.Application.Progress.IProgressIndicator,System.Int32,System.String,System.Action)">
             <summary>
-            <para>Starts the progress to run through the [0..totalWorkUnits] range, executes <paramref name="action"/>, and then stops the progress. Use <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator,System.Double,System.Action{JetBrains.Application.Progress.IProgressIndicator})"/> to move the progress across the range.</para>
-            <para>Generally, you SHOULD set the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> to identify the current execution span, once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/>, and change the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> when doing <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator,System.Double,System.Action{JetBrains.Application.Progress.IProgressIndicator})"/> to comment on the progress.</para>
+            <para>Starts the progress to run through the [0..totalWorkUnits] range, executes <paramref name="action"/>, and then stops the progress. Use <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator)"/> to move the progress across the range.</para>
+            <para>Generally, you SHOULD set the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> to identify the current execution span, once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/>, and change the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> when doing <see cref="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.Advance(JetBrains.Application.Progress.IProgressIndicator)"/> to comment on the progress.</para>
             <para>If you would like to delegate a sub-range to a nested routine, you SHOULD create a <see cref="T:JetBrains.Application.Progress.SubProgressIndicator"/> and pass the resulting <see cref="T:JetBrains.Application.Progress.IProgressIndicator"/> to the routine, so that it ran a whole range from its point of view, which would then map to a sub-range of this progress indicator.</para>
             </summary>
             <param name="progress">Progress indicator.</param>
@@ -3628,6 +3634,17 @@
             Note that this is not the location of the shell link (.lnk) file itself.
             </summary>
         </member>
+        <member name="M:JetBrains.Application.Threading.InvocatorEx.ExecuteOrQueueWhenNotGuarded(JetBrains.Threading.Invocator,System.String,JetBrains.DataFlow.Disposables,System.Action)">
+            <summary>
+            Executes the activity at the moment when there's no <see cref="T:JetBrains.Threading.ReentrancyGuard"/> running.
+            Limits the queued action lifetime to that of <paramref name="disposables"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Threading.InvocatorEx.ExecuteOrQueueWhenNotGuarded(JetBrains.Threading.Invocator,System.String,System.Action)">
+            <summary>
+            Executes the activity at the moment when there's no <see cref="T:JetBrains.Threading.ReentrancyGuard"/> running.
+            </summary>
+        </member>
         <member name="M:JetBrains.Application.Threading.InvocatorEx.QueueAtShort(JetBrains.Threading.GroupingEventHost,System.String,System.TimeSpan,System.Action)">
             <summary>
             <para>Queues the action to execute once on the <see cref="!:gehost"/>.<see cref="F:JetBrains.Threading.GroupingEventHost.ReentrancyGuard"/>.<see cref="P:JetBrains.Threading.ReentrancyGuard.Dispatcher"/> thread when the timeout elapses.</para>
@@ -4434,7 +4451,7 @@
         </member>
         <member name="F:JetBrains.Application.Progress.ProgressIndicator.myAdvanceFactor">
             <summary>
-            The factor to be applied to the <see cref="!:Advance"/> units to make them <see cref="!:Fraction"/> units.
+            The factor to be applied to the <see cref="!:Advance"/> units to make them <see cref="P:JetBrains.Application.Progress.ProgressIndicator.Fraction"/> units.
             </summary>
         </member>
         <member name="F:JetBrains.Application.Progress.ProgressIndicator.myEpsilon">
@@ -4517,29 +4534,29 @@
             <para>You SHOULD set <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> run, and <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>, if applicable.</para>
             </summary>
         </member>
-        <member name="P:JetBrains.Application.Progress.ProgressIndicator.JetBrains#Application#Progress#IProgressIndicatorModel#Fraction">
+        <member name="P:JetBrains.Application.Progress.ProgressIndicator.Fraction">
             <summary>
             <para>The current position of the progress, in the [0..1] range, inclusive.</para>
             </summary>
         </member>
-        <member name="P:JetBrains.Application.Progress.ProgressIndicator.JetBrains#Application#Progress#IProgressIndicatorModel#IsCanceled">
+        <member name="P:JetBrains.Application.Progress.ProgressIndicator.IsCanceled">
             <summary>
             <para>Whether the activity which the progress is visualizing has been canceled externally. This could be user's clicking on the "Cancel" button of the UI the progress is bound to.</para>
             <para>You should check this property periodically and cut off the remaining activity if <c>True</c>. You MIGHT throw <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> for that, still it's recommended not to use exceptions for flow control, but check <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.IsCanceled"/> on all of the levels of nesting.</para>
             </summary>
         </member>
-        <member name="P:JetBrains.Application.Progress.ProgressIndicator.JetBrains#Application#Progress#IProgressIndicatorModel#IsRunning">
+        <member name="P:JetBrains.Application.Progress.ProgressIndicator.IsRunning">
             <summary>
             Whether the producer thinks it's currently running. <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.Fraction"/> SHOULD be at <c>1</c> when done running.
             </summary>
         </member>
-        <member name="P:JetBrains.Application.Progress.ProgressIndicator.JetBrains#Application#Progress#IProgressIndicatorModel#Name">
+        <member name="P:JetBrains.Application.Progress.ProgressIndicator.Name">
             <summary>
             <para>A title of the whole activity which the progress is visualizing.</para>
             <para>You SHOULD set <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.Name"/> once per <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.IsRunning"/> run, and <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.StepName"/> once per <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.Fraction"/> step, if applicable.</para>
             </summary>
         </member>
-        <member name="P:JetBrains.Application.Progress.ProgressIndicator.JetBrains#Application#Progress#IProgressIndicatorModel#StepName">
+        <member name="P:JetBrains.Application.Progress.ProgressIndicator.StepName">
             <summary>
             <para>A title of the current item being processed by the activity which the progress is visualizing.</para>
             <para>You SHOULD set <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.Name"/> once per <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.IsRunning"/> run, and <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.StepName"/> once per <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.Fraction"/> step, if applicable.</para>
@@ -5041,17 +5058,17 @@
             Gets the reentrancy guard that implements the non-timed actions of this Invocator.
             </summary>
         </member>
-        <member name="F:JetBrains.Application.Threading.MultiCoreFiberStrategy.DISABLE">
+        <member name="F:JetBrains.Application.Threading.MultiCoreFiberStrategy.Disable">
             <summary>
             Do not use multi-core fibers
             </summary>
         </member>
-        <member name="F:JetBrains.Application.Threading.MultiCoreFiberStrategy.NORMAL">
+        <member name="F:JetBrains.Application.Threading.MultiCoreFiberStrategy.Normal">
             <summary>
             Regular fiber usage. Number of fibers equals to processur number
             </summary>
         </member>
-        <member name="F:JetBrains.Application.Threading.MultiCoreFiberStrategy.AGRESSIVE">
+        <member name="F:JetBrains.Application.Threading.MultiCoreFiberStrategy.Agressive">
             <summary>
             Agressive fiber usage. Number od fibers is twice processor count
             </summary>

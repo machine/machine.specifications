@@ -2571,7 +2571,6 @@
             <summary>
             Supports switching to other views of the GotoByName family.
             </summary>
-            <param name="view"></param>
         </member>
         <member name="M:JetBrains.UI.GotoByName.GotoByNameMenu.Init_EditboxColor(JetBrains.DataFlow.IProperty{System.Boolean},JetBrains.DataFlow.IProperty{System.Boolean},JetBrains.DataFlow.IProperty{System.Boolean},JetBrains.UI.PopupMenu.Impl.JetPopupMenuView)">
             <summary>
@@ -2592,6 +2591,18 @@
         <member name="M:JetBrains.UI.GotoByName.GotoByNameMenu.Init_Glyph(JetBrains.UI.GotoByName.GotoByNameModel,JetBrains.UI.PopupMenu.Impl.JetPopupMenuView)">
             <summary>
             Sets up the “busy” glyph.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.GotoByName.GotoByNameMenu.MenuView">
+            <summary>
+            Gets the menu view, when the menu is running onscreen.
+            Otherwise <c>Null</c>.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.GotoByName.GotoByNameMenu.PopupWindow">
+            <summary>
+            Gets the menu popup window, when the menu is running onscreen.
+            Otherwise <c>Null</c>.
             </summary>
         </member>
         <member name="T:JetBrains.UI.GotoByName.GotoByNameModel">
@@ -3036,6 +3047,7 @@
             Gets or sets whether the timer will fire the signal immediately when it gets enabled.
             On <c>False</c>: first fires <see cref="P:System.Windows.Forms.Timer.Interval"/> ms after enabling.
             On <c>True</c>: first fires right when it is enabled.
+            Default is <c>False</c>.
             </summary>
         </member>
         <member name="T:JetBrains.UI.Options.IOptionsDialog">
@@ -3118,6 +3130,63 @@
             <summary>
             Gets or sets the MRU selected page.
             On load, validates that the MRU page still exists and returns the root page instead of an invalid ID.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Options.OptionPages.EnvironmentPage">
+            <summary>
+            Root options page for the global environment options.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Options.OptionPages.EnvironmentPage.OnOk">
+            <summary>
+            Invoked when OK button in the options dialog is pressed.
+            If the page returns <c>false</c>, the the options dialog won't be closed, and focus will be put into this page.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Options.OptionPages.EnvironmentPage.ValidatePage">
+            <summary>
+            Check if the settings on the page are consistent, and page could be closed.
+            </summary>
+            <returns><c>true</c> if page data is consistent.</returns>
+        </member>
+        <member name="P:JetBrains.UI.Options.OptionPages.EnvironmentPage.Control">
+            <summary>
+            Control to be shown as page.
+            May be <c>Null</c> if the page does not have any UI.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.Options.OptionPages.EnvironmentPage.Id">
+            <summary>
+            Gets the ID of this option page.
+            <see cref="T:JetBrains.UI.Options.IOptionsDialog"/> or <see cref="T:JetBrains.UI.Options.OptionsPageDescriptor"/> could be used to retrieve the <see cref="T:JetBrains.UI.Options.OptionsManager"/> out of it.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Options.OptionPages.RootOptionsPage">
+            <summary>
+            Implements the root options page descriptor.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Options.OptionPages.RootOptionsPage.OnOk">
+            <summary>
+            Invoked when OK button in the options dialog is pressed.
+            If the page returns <c>false</c>, the the options dialog won't be closed, and focus will be put into this page.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Options.OptionPages.RootOptionsPage.ValidatePage">
+            <summary>
+            Check if the settings on the page are consistent, and page could be closed.
+            </summary>
+            <returns><c>true</c> if page data is consistent.</returns>
+        </member>
+        <member name="P:JetBrains.UI.Options.OptionPages.RootOptionsPage.Control">
+            <summary>
+            Control to be shown as page.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.Options.OptionPages.RootOptionsPage.Id">
+            <summary>
+            Gets the ID of this option page.
+            <see cref="T:JetBrains.UI.Options.OptionsManager"/> or <see cref="T:JetBrains.UI.Options.IOptionsDialog"/> could be used to retrieve the <see cref="T:JetBrains.UI.Options.OptionsPageDescriptor"/> out of it.
             </summary>
         </member>
         <member name="T:JetBrains.UI.Options.OptionPageViewStore">
@@ -3635,34 +3704,6 @@
             <summary>
             If this is not a root page, points to the parent page in the hierarchy.
             There may be only one root page, <see cref="P:JetBrains.UI.Options.OptionsManager.RootPageDescriptor"/>.
-            </summary>
-        </member>
-        <member name="T:JetBrains.UI.Options.RootOptionsPage">
-            <summary>
-            Implements the root options page descriptor.
-            </summary>
-        </member>
-        <member name="M:JetBrains.UI.Options.RootOptionsPage.OnOk">
-            <summary>
-            Invoked when OK button in the options dialog is pressed.
-            If the page returns <c>false</c>, the the options dialog won't be closed, and focus will be put into this page.
-            </summary>
-        </member>
-        <member name="M:JetBrains.UI.Options.RootOptionsPage.ValidatePage">
-            <summary>
-            Check if the settings on the page are consistent, and page could be closed.
-            </summary>
-            <returns><c>true</c> if page data is consistent.</returns>
-        </member>
-        <member name="P:JetBrains.UI.Options.RootOptionsPage.Control">
-            <summary>
-            Control to be shown as page.
-            </summary>
-        </member>
-        <member name="P:JetBrains.UI.Options.RootOptionsPage.Id">
-            <summary>
-            Gets the ID of this option page.
-            <see cref="T:JetBrains.UI.Options.OptionsManager"/> or <see cref="T:JetBrains.UI.Options.IOptionsDialog"/> could be used to retrieve the <see cref="T:JetBrains.UI.Options.OptionsPageDescriptor"/> out of it.
             </summary>
         </member>
         <member name="T:JetBrains.UI.PersistableDocument.PersistableDocument">
@@ -6131,11 +6172,6 @@
             Margin around the title client content inside the borders.
             </summary>
         </member>
-        <member name="F:JetBrains.UI.PopupMenu.Impl.JetPopupMenuTitleView.Dim.QuickSearchEditboxMarginInline">
-            <summary>
-            A margin around the quick-search editbox in case when it's displayed on a separate line.
-            </summary>
-        </member>
         <member name="F:JetBrains.UI.PopupMenu.Impl.JetPopupMenuTitleView.Dim.QuickSearchEditBoxMin">
             <summary>
             The minimum size of the QuickSearch editbox.
@@ -6278,14 +6314,14 @@
             Gets the toolbar rendering aspects.
             </summary>
         </member>
-        <member name="P:JetBrains.UI.PopupMenu.Impl.JetPopupMenuToolbarView.Items">
-            <summary>
-            Gets the toolbar items.
-            </summary>
-        </member>
         <member name="P:JetBrains.UI.PopupMenu.Impl.JetPopupMenuToolbarView.ItemViews">
             <summary>
             Gets the views for the toolbar items.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.PopupMenu.Impl.JetPopupMenuToolbarView.Items">
+            <summary>
+            Gets the toolbar items.
             </summary>
         </member>
         <member name="P:JetBrains.UI.PopupMenu.Impl.JetPopupMenuToolbarView.MenuView">
@@ -6745,14 +6781,14 @@
             Gets or sets the way keyboard acceleration works for the list.
             </summary>
         </member>
-        <member name="F:JetBrains.UI.PopupMenu.JetPopupMenu.myCaptureMouseInitially">
-            <summary>
-            Means the list should capture mouse input on startup and trigger the action on mouseup, thus assuming the "mouse-down" part of the input already done.
-            </summary>
-        </member>
         <member name="F:JetBrains.UI.PopupMenu.JetPopupMenu.SelectedItemKey">
             <summary>
             Gets the key of the item currently selected in the menu.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.PopupMenu.JetPopupMenu.myCaptureMouseInitially">
+            <summary>
+            Means the list should capture mouse input on startup and trigger the action on mouseup, thus assuming the "mouse-down" part of the input already done.
             </summary>
         </member>
         <member name="M:JetBrains.UI.PopupMenu.JetPopupMenu.CaptureIfMouseDown">
@@ -7438,14 +7474,14 @@
             <see cref="P:JetBrains.UI.PopupWindowManager.PopupFormController.IsDisposed"/>.
             </summary>
         </member>
-        <member name="F:JetBrains.UI.PopupWindowManager.PopupFormController.myLayouter">
-            <summary>
-            Layouts the popup onscreen.
-            </summary>
-        </member>
         <member name="F:JetBrains.UI.PopupWindowManager.PopupFormController.myLayoutMode">
             <summary>
             <see cref="P:JetBrains.UI.PopupWindowManager.PopupFormController.LayoutMode"/>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.PopupWindowManager.PopupFormController.myLayouter">
+            <summary>
+            Layouts the popup onscreen.
             </summary>
         </member>
         <member name="F:JetBrains.UI.PopupWindowManager.PopupFormController.myMutex">
@@ -7618,23 +7654,23 @@
             Represents a view-specific wrapper for handling escape actions in views
             </summary>
         </member>
-        <member name="M:JetBrains.UI.Application.ExceptionReport.ConnectionOptionsPage.Bind(JetBrains.DataFlow.IPropertyBinding)">
+        <member name="M:JetBrains.UI.Application.ExceptionReport.ConnectionSettingsPage.Bind(JetBrains.DataFlow.IPropertyBinding)">
             <summary>
             Adds a one-way binding that is executed backwards on OK.
             </summary>
         </member>
-        <member name="F:JetBrains.UI.Application.ExceptionReport.ConnectionOptionsPage.components">
+        <member name="F:JetBrains.UI.Application.ExceptionReport.ConnectionSettingsPage.components">
             <summary> 
             Required designer variable.
             </summary>
         </member>
-        <member name="M:JetBrains.UI.Application.ExceptionReport.ConnectionOptionsPage.Dispose(System.Boolean)">
+        <member name="M:JetBrains.UI.Application.ExceptionReport.ConnectionSettingsPage.Dispose(System.Boolean)">
             <summary> 
             Clean up any resources being used.
             </summary>
             <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         </member>
-        <member name="M:JetBrains.UI.Application.ExceptionReport.ConnectionOptionsPage.InitializeComponent">
+        <member name="M:JetBrains.UI.Application.ExceptionReport.ConnectionSettingsPage.InitializeComponent">
             <summary> 
             Required method for Designer support - do not modify 
             the contents of this method with the code editor.
