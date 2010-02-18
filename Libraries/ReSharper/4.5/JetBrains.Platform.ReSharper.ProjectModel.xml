@@ -108,6 +108,16 @@
             Gets or sets whether the indicator should be visible. Shows or hides the indicator with a delay, to avoid flickering.
             </summary>
         </member>
+        <member name="M:JetBrains.ProjectModel.Impl.ProjectReferenceExtension.GetReferencedName(JetBrains.ProjectModel.IProjectReference)">
+            <summary>
+            Returns name of the output assembly of a referenced project if is able to fetch. Null otherwise
+            </summary>
+        </member>
+        <member name="M:JetBrains.ProjectModel.Impl.ProjectReferenceExtension.GetReferencedName(JetBrains.ProjectModel.IProject)">
+            <summary>
+            Returns name of the output assembly of a referenced project if is able to fetch. Null otherwise
+            </summary>
+        </member>
         <member name="T:JetBrains.ProjectModel.Impl.Assembly">
             <summary>
             Represents loaded resolved assembly reference.
@@ -268,7 +278,9 @@
             <summary>
             Retrieves module reference by the module name
             </summary>
-            <remarks>It is assumed that the name uniquely identifies the module among referenced modules (both projects and assemblies)</remarks>
+            <remarks>It is assumed that the name uniquely identifies the module among referenced modules (both projects and assemblies)
+            For projects use ProjectReferenceExtension.GetReferencedName
+            </remarks>
         </member>
         <member name="M:JetBrains.ProjectModel.IProject.AddModuleReference(JetBrains.ProjectModel.IModule)">
             <summary>

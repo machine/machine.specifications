@@ -47,7 +47,7 @@
             Looks up the registered assemblies cache by the <see cref="!:name"/>, which could be either a full or a local name.
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.TaskRunnerFramework.AssemblyLoader.ResolveAssemblyFileByName(System.String,System.Boolean)">
+        <member name="M:JetBrains.ReSharper.TaskRunnerFramework.AssemblyLoader.ResolveAssemblyFileByName(System.String,System.String)">
             <summary>
             Looks up the assemblies on disk under the known paths by the <see cref="!:name"/>, which could be either a full or a local name (<paramref name="isFullName"/>).
             </summary>
