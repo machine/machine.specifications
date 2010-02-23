@@ -326,6 +326,40 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
       return arg1;
     }
 
+    public static void ShouldBeCloseTo(this float actual, float expected)
+    {
+      ShouldBeCloseTo(actual, expected, 0.0000001f);
+    }
+
+    public static void ShouldBeCloseTo(this float actual, float expected, float tolerance)
+    {
+      if (Math.Abs(actual - expected) > tolerance)
+      {
+        throw new SpecificationException(string.Format("Should be within {0} of {1} but is {2}", tolerance.ToUsefulString(), expected.ToUsefulString(), actual.ToUsefulString()));
+      }
+    }
+
+    public static void ShouldBeCloseTo(this double actual, double expected)
+    {
+      ShouldBeCloseTo(actual, expected, 0.0000001f);
+    }
+
+    public static void ShouldBeCloseTo(this double actual, double expected, double tolerance)
+    {
+      if (Math.Abs(actual - expected) > tolerance)
+      {
+        throw new SpecificationException(string.Format("Should be within {0} of {1} but is {2}", tolerance.ToUsefulString(), expected.ToUsefulString(), actual.ToUsefulString()));
+      }
+    }
+
+    public static void ShouldBeCloseTo(this TimeSpan actual, TimeSpan expected, TimeSpan tolerance)
+    {
+      if (Math.Abs(actual.Ticks - expected.Ticks) > tolerance.Ticks)
+      {
+        throw new SpecificationException(string.Format("Should be within {0} of {1} but is {2}", tolerance.ToUsefulString(), expected.ToUsefulString(), actual.ToUsefulString()));
+      }
+    }
+
     public static void ShouldBeEmpty(this IEnumerable collection)
     {
       if (collection.Cast<object>().Any())
