@@ -76,18 +76,29 @@ namespace Machine.Specifications.Runner.Impl
       constructorArgs[2] = _options;
       Array.Copy(args, 0, constructorArgs, 3, args.Length);
 
-      try
+      using (new SpecAssemblyResolver(assembly))
       {
-        appDomain.CreateInstanceAndUnwrap(mspecAssemblyName.FullName, "Machine.Specifications.Runner.Impl.AppDomainRunner+" + runMethod + "Runner", false, 0, null, constructorArgs, null, null, null);
-      }
-      catch (Exception err)
-      {
-        Console.Error.WriteLine("Runner failure: " + err);
-        throw;
-      }
-      finally
-      {
-        AppDomain.Unload(appDomain);
+        try
+        {
+          appDomain.CreateInstanceAndUnwrap(mspecAssemblyName.FullName,
+                                            "Machine.Specifications.Runner.Impl.AppDomainRunner+" + runMethod + "Runner",
+                                            false,
+                                            0,
+                                            null,
+                                            constructorArgs,
+                                            null,
+                                            null,
+                                            null);
+        }
+        catch (Exception err)
+        {
+          Console.Error.WriteLine("Runner failure: " + err);
+          throw;
+        }
+        finally
+        {
+          AppDomain.Unload(appDomain);
+        }
       }
     }
 

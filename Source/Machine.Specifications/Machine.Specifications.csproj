@@ -63,6 +63,7 @@
     <Compile Include="Runner\Impl\ContextRunnerFactory.cs" />
     <Compile Include="Runner\Impl\RunListenerBase.cs" />
     <Compile Include="Runner\Impl\ContextRunner.cs" />
+    <Compile Include="Runner\Impl\SpecAssemblyResolver.cs" />
     <Compile Include="Runner\Impl\SpecificationRunner.cs" />
     <Compile Include="Runner\Impl\TimingRunListener.cs" />
     <Compile Include="Utility\ConsoleStreams.cs" />
