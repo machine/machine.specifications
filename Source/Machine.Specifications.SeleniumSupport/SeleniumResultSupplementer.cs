@@ -10,7 +10,8 @@ namespace Machine.Specifications.SeleniumSupport
   public abstract class SeleniumResultSupplementer : ISupplementSpecificationResults
   {
     protected abstract string ImagesPath { get; }
-    protected abstract DefaultSelenium Selenium { get; }
+    protected abstract ISelenium Selenium { get; }
+    protected virtual bool SuppressFullPageScreenshotErrors { get { return false; } }
 
     public Result SupplementResult(Result result)
     {
@@ -31,8 +32,11 @@ namespace Machine.Specifications.SeleniumSupport
       }
       catch (Exception err)
       {
-        Console.Error.WriteLine("Problem capturing Selenium img-full-page-screenshot");
-        Console.Error.WriteLine(err);
+        if (!SuppressFullPageScreenshotErrors)
+        {
+          Console.Error.WriteLine("Problem capturing Selenium img-full-page-screenshot");
+          Console.Error.WriteLine(err);
+        }
       }
 
       try
