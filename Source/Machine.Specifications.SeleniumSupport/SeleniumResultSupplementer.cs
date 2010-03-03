@@ -10,7 +10,7 @@ namespace Machine.Specifications.SeleniumSupport
   public abstract class SeleniumResultSupplementer : ISupplementSpecificationResults
   {
     protected abstract string ImagesPath { get; }
-    protected abstract DefaultSelenium Selenium { get; }
+    protected abstract ISelenium Selenium { get; }
 
     public Result SupplementResult(Result result)
     {
