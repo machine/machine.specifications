@@ -44,11 +44,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\Machine\Machine.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Machine.Testing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\Machine\Machine.Testing.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.4.6.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+    <Reference Include="nunit.framework, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\Testing\nunit.framework.dll</HintPath>
     </Reference>
@@ -74,6 +70,9 @@
     <Compile Include="Explorers\AssemblyExplorerTests.cs" />
     <Compile Include="Factories\SpecificationFactoryTests.cs" />
     <Compile Include="Factories\ContextFactoryTests.cs" />
+    <Compile Include="Machine.Testing\AutoMocking\AutoMockingContainer.cs" />
+    <Compile Include="Machine.Testing\AutoMocking\MockingDependencyResolver.cs" />
+    <Compile Include="Machine.Testing\TestsFor.cs" />
     <Compile Include="Model\SpecificationTests.cs" />
     <Compile Include="Model\ContextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
