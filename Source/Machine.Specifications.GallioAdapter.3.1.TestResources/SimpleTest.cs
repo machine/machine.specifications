@@ -20,7 +20,7 @@ namespace Machine.Specifications.GallioAdapter.TestResources
     /// <summary>
     /// A simple test specification.
     /// </summary>    
-    public class SimpleTest
+    public class simple_test_spec
     {
         /// <summary>
         /// A passing specification.

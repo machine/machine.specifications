@@ -34,8 +34,12 @@ namespace Machine.Specifications.GallioAdapter.Tests
 {
     // Adapted from the Gallio BaseTestFrameworkTest<SimpleTest> Test
     [TestFixture]
-    public class FrameworkTests : BaseTestFrameworkTest<SimpleTest>
+    public class FrameworkTests : BaseTestFrameworkTest<simple_test_spec>
     {
+        const string ParentTestName = "simple test spec";
+        const string PassTestName = "pass";
+        const string FailTestName = "fail";
+
         private void AssertStringContains(string needle, string haystack)
         {
             // HACK: needed a quick string comparison
@@ -56,17 +60,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
             {
                 return TestKinds.Assembly;
             }
-        }
-
-        protected override string PassTestName
-        {
-            get { return "pass"; }
         }        
-
-        protected override string FailTestName
-        {
-            get { return "fail"; }
-        }
 
         [Test]
         public void PopulateTestTree_WhenAssemblyDoesNotReferenceFramework_IsEmpty()
@@ -97,11 +91,11 @@ namespace Machine.Specifications.GallioAdapter.Tests
             Assert.IsFalse(assemblyTest.IsTestCase);
             Assert.GreaterOrEqual(assemblyTest.Children.Count, 1);
 
-            Test fixtureTest = GetDescendantByName(assemblyTest, "SimpleTest");
+            Test fixtureTest = GetDescendantByName(assemblyTest, ParentTestName);
             Assert.AreEqual(TestKinds.Fixture, fixtureTest.Kind);
-            Assert.AreEqual(new CodeReference(SimpleFixtureAssembly.FullName, SimpleFixtureNamespace, SimpleFixtureNamespace + ".SimpleTest", null, null),
+            Assert.AreEqual(new CodeReference(SimpleFixtureAssembly.FullName, SimpleFixtureNamespace, SimpleFixtureNamespace + ".simple_test_spec", null, null),
                 fixtureTest.CodeElement.CodeReference);
-            Assert.AreEqual("SimpleTest", fixtureTest.Name);
+            Assert.AreEqual(ParentTestName, fixtureTest.Name);
             Assert.IsFalse(fixtureTest.IsTestCase);
             Assert.AreEqual(2, fixtureTest.Children.Count);
 
@@ -113,7 +107,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
 
             Assert.AreSame(fixtureTest, passTest.Parent);
             Assert.AreEqual(TestKinds.Test, passTest.Kind);
-            Assert.AreEqual(new CodeReference(SimpleFixtureAssembly.FullName, SimpleFixtureNamespace, SimpleFixtureNamespace + ".SimpleTest", PassTestName, null),
+            Assert.AreEqual(new CodeReference(SimpleFixtureAssembly.FullName, SimpleFixtureNamespace, SimpleFixtureNamespace + ".simple_test_spec", PassTestName, null),
                 passTest.CodeElement.CodeReference);
             Assert.AreEqual(PassTestName, passTest.Name);
             Assert.IsTrue(passTest.IsTestCase);
@@ -121,7 +115,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
 
             Assert.AreSame(fixtureTest, failTest.Parent);
             Assert.AreEqual(TestKinds.Test, failTest.Kind);
-            Assert.AreEqual(new CodeReference(SimpleFixtureAssembly.FullName, SimpleFixtureNamespace, SimpleFixtureNamespace + ".SimpleTest", FailTestName, null),
+            Assert.AreEqual(new CodeReference(SimpleFixtureAssembly.FullName, SimpleFixtureNamespace, SimpleFixtureNamespace + ".simple_test_spec", FailTestName, null),
                 failTest.CodeElement.CodeReference);
             Assert.AreEqual(FailTestName, failTest.Name);
             Assert.IsTrue(failTest.IsTestCase);
@@ -133,7 +127,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
         {
             TestModel testModel = PopulateTestTree();
 
-            Test test = GetDescendantByName(testModel.RootTest, typeof(SimpleTest).Name);
+            Test test = GetDescendantByName(testModel.RootTest, ParentTestName);
             Test passTest = GetDescendantByName(test, PassTestName);
             Test failTest = GetDescendantByName(test, FailTestName);
 

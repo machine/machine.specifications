@@ -29,7 +29,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
         public void ShouldHaveTwoChildren()
         {
             _run.Children.Count().ShouldEqual(2);
-        }
+        }        
     }
 
     [TestFixture]

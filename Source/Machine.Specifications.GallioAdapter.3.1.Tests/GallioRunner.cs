@@ -5,36 +5,50 @@ using System.Text;
 using Gallio.Framework.Utilities;
 using Gallio.Runner.Reports.Schema;
 using Gallio.Common.Reflection;
+using System.Reflection;
 
 namespace Machine.Specifications.GallioAdapter.Tests
 {
     /// <summary>
     /// This is a helper class to wrap the underlying Gallio test runner
     /// </summary>
+    /// <remarks>
+    /// I have opted to add some caching to this class so that tests are only executed by the runner once.
+    /// It will also execute the entire assembly at once which should be acceptable in most cases.
+    /// </remarks>
     public class GallioRunner
     {
-        public static void RunAllSpecsInAssemblyOf<T>()
+        static Dictionary<Assembly, SampleRunner> _runners = new Dictionary<Assembly, SampleRunner>();
+
+        private static SampleRunner Run<T>()
         {            
-            SampleRunner runner = new SampleRunner();
-            runner.AddAssembly(typeof(T).Assembly);
-            
-            SafelyRun(runner);
+            Assembly assembly = typeof(T).Assembly;
+
+            SampleRunner runner;
+            if (!_runners.TryGetValue( assembly, out runner))
+            {
+                runner = new SampleRunner();
+                runner.AddAssembly(assembly);
+
+                if (runner.TestPackage.Files.Count != 0)
+                    runner.Run();
+
+                _runners.Add(assembly, runner);
+            }
+
+            return runner;
+        }
+
+        public static void RunAllSpecsInAssemblyOf<T>()
+        {                       
+            Run<T>();
         }
 
         public static TestStepRun RunAllSpecsFor<T>()
         {
-            SampleRunner runner = new SampleRunner();
-            runner.AddFixture(typeof(T));
-
-            SafelyRun(runner);
+            SampleRunner runner = Run<T>();
 
             return runner.GetPrimaryTestStepRun(CodeReference.CreateFromType(typeof(T)));            
-        }
-
-        private static void SafelyRun(SampleRunner runner)
-        {            
-            if (runner.TestPackage.Files.Count != 0)
-                runner.Run();
-        }
+        }      
     }
 }

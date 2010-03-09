@@ -64,17 +64,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
         protected virtual string AssemblyKind
         {
             get { return TestKinds.Assembly; }
-        }
-
-        protected virtual string PassTestName
-        {
-            get { return "Pass"; }
-        }
-
-        protected virtual string FailTestName
-        {
-            get { return "Fail"; }
-        }
+        }        
 
         protected TestModel PopulateTestTree()
         {
