@@ -52,8 +52,11 @@ namespace Machine.Specifications.GallioAdapter.Tests
 
         void CheckNotImplementedFor(string spec)
         {
-            var log = _run.TestLog.GetStream(MarkupStreamNames.Failures).ToString();
-            log.Contains( string.Format( "{0} (Not Implemented)", spec) ).ShouldBeTrue();
+            var expected = string.Format("{0} (Not Implemented)", spec);
+            var child = _run.Children.Single(x => x.Step.Name == spec);
+            //child.Step.Name.ShouldEqual(expected);            
+            var log = child.TestLog.GetStream(MarkupStreamNames.Failures).ToString();
+            log.Contains( expected ).ShouldBeTrue();            
         }
     }
 }

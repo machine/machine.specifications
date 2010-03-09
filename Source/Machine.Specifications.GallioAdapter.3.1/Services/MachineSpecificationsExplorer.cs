@@ -52,11 +52,6 @@ namespace Machine.Specifications.GallioAdapter.Services
                     ITypeInfo type = ReflectionUtils.GetType(codeElement);
 
                     Test assemblyTest = GetAssemblyTest(assembly, TestModel.RootTest, frameworkVersion, type == null);
-
-                    //if (type != null)
-                    //{
-                    //    TryGetTypeTest(type, assemblyTest);
-                    //}
                 }
             }
         }

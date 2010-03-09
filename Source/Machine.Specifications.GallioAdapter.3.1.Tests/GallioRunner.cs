@@ -17,7 +17,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
         {            
             SampleRunner runner = new SampleRunner();
             runner.AddAssembly(typeof(T).Assembly);
-
+            
             SafelyRun(runner);
         }
 

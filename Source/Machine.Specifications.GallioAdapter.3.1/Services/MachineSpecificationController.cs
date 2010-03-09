@@ -100,7 +100,6 @@ namespace Machine.Specifications.GallioAdapter.Services
             {
                 var childResult = RunTest(child, assemblyContext.TestStep, progressMonitor);
                 passed &= childResult.Outcome.Status == TestStatus.Passed;
-
             }
             
             // Take down
@@ -142,7 +141,18 @@ namespace Machine.Specifications.GallioAdapter.Services
             
             // Get other failed states here
 
-            if (result.Passed)
+            if (result.Status == Status.NotImplemented)
+            {                               
+                var stream = Gallio.Framework.TestLog.Failures;
+                stream.Write(specification.Name);
+                stream.Write(" (");
+                stream.WriteHighlighted("Not Implemented");
+                stream.Write(")");
+                stream.Flush();
+                
+                return testContext.FinishStep(TestOutcome.Failed, new TimeSpan(0));
+            }
+            else if (result.Passed)
             {
                 return testContext.FinishStep(TestOutcome.Passed, null);
             }
