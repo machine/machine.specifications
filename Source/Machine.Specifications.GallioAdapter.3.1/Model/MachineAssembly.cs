@@ -1,4 +1,21 @@
-﻿using System;
+﻿// Copyright 2005-2008 Gallio Project - http://www.gallio.org/
+// Portions Copyright 2000-2004 Jonathan De Halleux, Jamie Cansdale
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+// Modified by and Portions Copyright 2008 Machine Project
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +25,16 @@ using Gallio.Common.Reflection;
 
 namespace Machine.Specifications.GallioAdapter.Model
 {
+    /// <summary>
+    /// Represents an assembly with Machine Specifications
+    /// </summary>
+    /// <remarks>
+    /// Adapted from the MSTests Adaptor of the Gallio Project
+    /// </remarks>
     internal class MachineAssembly : MachineGallioTest
     {
+        public List<IAssemblyContext> Contexts { get; set; }
+
         private readonly Version frameworkVersion;
         /// <summary>
         /// Creates an object to represent an MSpec assembly.
@@ -23,6 +48,7 @@ namespace Machine.Specifications.GallioAdapter.Model
             : base(name, codeElement)
         {
             this.frameworkVersion = frameworkVersion;
+            Contexts = new List<IAssemblyContext>();
         }
 
         /// <summary>

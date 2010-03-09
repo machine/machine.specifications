@@ -23,6 +23,7 @@ using System.Text;
 using Gallio.Model;
 using Gallio.Runtime.ProgressMonitoring;
 using Machine.Specifications.GallioAdapter.Model;
+using Machine.Specifications.Utility;
 using Gallio.Model.Helpers;
 using Gallio.Model.Commands;
 using Gallio.Model.Tree;
@@ -31,23 +32,7 @@ using Gallio.Model.Contexts;
 namespace Machine.Specifications.GallioAdapter.Services
 {
     public class MachineSpecificationController : TestController
-    {        
-        ///// <inheritdoc />
-        //protected override TestResult RunImpl(ITestCommand rootTestCommand, TestStep parentTestStep, TestExecutionOptions options, IProgressMonitor progressMonitor)
-        //{
-        //    using (progressMonitor.BeginTask(Resources.MSTestController_RunningMSTestTests, rootTestCommand.TestCount))
-        //    {
-        //        if (options.SkipTestExecution)
-        //        {
-        //            return SkipAll(rootTestCommand, parentTestStep);
-        //        }
-        //        else
-        //        {
-        //            return RunTest(rootTestCommand, parentTestStep, progressMonitor);
-        //        }
-        //    }
-        //}
-
+    {                        
         protected override TestResult RunImpl(ITestCommand rootTestCommand, TestStep parentTestStep,
                                         TestExecutionOptions options, IProgressMonitor progressMonitor)
         {
@@ -95,11 +80,6 @@ namespace Machine.Specifications.GallioAdapter.Services
             {
                 return RunAssembly(assembly, testCommand, parentTestStep, progressMonitor);
             }
-            //else if (root != null)
-            //{
-            //    ITestContext childContext = testCommand.StartPrimaryChildStep(parentTestStep);                
-            //    return RunTest( testCommand, childContext.TestStep, progressMonitor);
-            //}
             else
             {
                 Debug.WriteLine("Got something weird " + test.GetType().ToString());
@@ -114,6 +94,7 @@ namespace Machine.Specifications.GallioAdapter.Services
             bool passed = true;
             
             // Setup
+            assembly.Contexts.Each(context => context.OnAssemblyStart());
             
             foreach (ITestCommand child in testCommand.Children)
             {
@@ -123,6 +104,7 @@ namespace Machine.Specifications.GallioAdapter.Services
             }
             
             // Take down
+            assembly.Contexts.Each(context => context.OnAssemblyComplete());
 
             return new TestResult(passed ? TestOutcome.Passed : TestOutcome.Failed);
         }

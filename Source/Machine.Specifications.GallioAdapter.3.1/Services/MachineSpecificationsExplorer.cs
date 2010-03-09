@@ -17,16 +17,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
-using Gallio.Model;
 using Gallio.Common.Reflection;
-using Machine.Specifications.Explorers;
-using Machine.Specifications.GallioAdapter.Model;
-using Machine.Specifications.GallioAdapter.Properties;
-using Machine.Specifications.Model;
+using Gallio.Model;
 using Gallio.Model.Helpers;
 using Gallio.Model.Tree;
+using Machine.Specifications.Explorers;
+using Machine.Specifications.GallioAdapter.Model;
 
 namespace Machine.Specifications.GallioAdapter.Services
 {
@@ -34,12 +32,12 @@ namespace Machine.Specifications.GallioAdapter.Services
     {
         private const string MachineSpecificationsAssemblyDisplayName = @"Machine.Specifications";
         
-        public readonly Dictionary<IAssemblyInfo, Test> assemblyTests;
-        public readonly Dictionary<ITypeInfo, Test> typeTests;
+        private readonly Dictionary<IAssemblyInfo, MachineAssembly> assemblyTests;
+        private readonly Dictionary<ITypeInfo, Test> typeTests;
 
         public MachineSpecificationsExplorer()
         {
-            assemblyTests = new Dictionary<IAssemblyInfo, Test>();
+            assemblyTests = new Dictionary<IAssemblyInfo, MachineAssembly>();
             typeTests = new Dictionary<ITypeInfo, Test>();
         }        
 
@@ -71,7 +69,7 @@ namespace Machine.Specifications.GallioAdapter.Services
 
         private Test GetAssemblyTest(IAssemblyInfo assembly, Test parentTest, Version frameworkVersion, bool populateRecursively)
         {
-            Test assemblyTest;
+            MachineAssembly assemblyTest;
             if (!assemblyTests.TryGetValue(assembly, out assemblyTest))
             {
                 assemblyTest = CreateAssemblyTest(assembly, frameworkVersion);
@@ -82,13 +80,16 @@ namespace Machine.Specifications.GallioAdapter.Services
                 assemblyTest.Kind = TestKinds.Assembly;                
 
                 parentTest.AddChild(assemblyTest);
-                assemblyTests.Add(assembly, assemblyTest);                
+                assemblyTests.Add(assembly, assemblyTest);               
             }
 
             if (populateRecursively)
             {
                 AssemblyExplorer explorer = new AssemblyExplorer();
-                var contexts = explorer.FindContextsIn(assembly.Resolve(false));                
+                Assembly resolvedAssembly = assembly.Resolve(false);
+                var contexts = explorer.FindContextsIn(resolvedAssembly);                
+
+                assemblyTest.Contexts = explorer.FindAssemblyContextsIn( resolvedAssembly).ToList();                
 
                 foreach (var context in contexts)
                 {
@@ -109,7 +110,7 @@ namespace Machine.Specifications.GallioAdapter.Services
             return assemblyTest;
         }
 
-        private static Test CreateAssemblyTest(IAssemblyInfo assembly, Version frameworkVersion)
+        private static MachineAssembly CreateAssemblyTest(IAssemblyInfo assembly, Version frameworkVersion)
         {
             MachineAssembly assemblyTest = new MachineAssembly(assembly.Name, assembly, frameworkVersion);
             assemblyTest.Kind = TestKinds.Assembly;
@@ -119,35 +120,6 @@ namespace Machine.Specifications.GallioAdapter.Services
             return assemblyTest;
         }
 
-        private Test TryGetTypeTest(ITypeInfo type, Test assemblyTest)
-        {
-            Test typeTest;
-            if (!typeTests.TryGetValue(type, out typeTest))
-            {
-                try
-                {                    
-                    typeTest = CreateTypeTest(type);                    
-                }
-                catch (Exception ex)
-                {
-                    TestModel.AddAnnotation(new Annotation(AnnotationType.Error, type, "An exception was thrown while exploring an MSTest test type.", ex));
-                }
-
-                if (typeTest != null)
-                {
-                    assemblyTest.AddChild(typeTest);
-                    typeTests.Add(type, typeTest);
-                }
-            }
-
-            return typeTest;
-        }
-
-        private MachineGallioTest CreateTypeTest(ITypeInfo typeInfo)
-        {                        
-            return new MachineSpecificationTest( new Specification("Hello", () => Console.WriteLine("It"), true, null));
-        }
-
         private void AddXmlComment(Test test, ICodeElementInfo element)
         {
             string xml = element.GetXmlDocumentation();
@@ -155,114 +127,6 @@ namespace Machine.Specifications.GallioAdapter.Services
             {
                 test.Metadata.Add(MetadataKeys.XmlDocumentation, xml);
             }
-        }
-
-    //private static MSTest CreateMethodTest(ITypeInfo typeInfo, IMethodInfo methodInfo)
-    //{
-    //    MSTest methodTest = new MSTest(methodInfo.Name, methodInfo);
-    //    methodTest.Kind = TestKinds.Test;
-    //    methodTest.IsTestCase = true;
-
-    //    PopulateTestMethodMetadata(methodInfo, methodTest);
-
-    //    // Add XML documentation.
-    //    string xmlDocumentation = methodInfo.GetXmlDocumentation();
-    //    if (xmlDocumentation != null)
-    //        methodTest.Metadata.SetValue(MetadataKeys.XmlDocumentation, xmlDocumentation);
-
-    //    return methodTest;
-    //}        
-
-        //public override void ExploreAssembly(IAssemblyInfo assembly, Action<Test> consumer)
-        //{
-        //  Version frameworkVersion = GetFrameworkVersion(assembly);
-
-        //  if (frameworkVersion != null)
-        //  {
-        //    Test frameworkTest = GetFrameworkTest(frameworkVersion, TestModel.RootTest);
-        //    Test assemblyTest = GetAssemblyTest(assembly, frameworkTest, true);
-
-        //    if (consumer != null)
-        //      consumer(assemblyTest);
-        //  }
-        //}
-        //private static Version GetFrameworkVersion(IAssemblyInfo assembly)
-        //{
-        //  AssemblyName frameworkAssemblyName = ReflectionUtils.FindAssemblyReference(assembly, MachineSpecificationsAssemblyDisplayName);
-        //  return frameworkAssemblyName != null ? frameworkAssemblyName.Version : null;
-        //}
-
-        //private Test GetFrameworkTest(Version frameworkVersion, Test rootTest)
-        //{
-        //  Test frameworkTest;
-        //  if (!frameworkTests.TryGetValue(frameworkVersion, out frameworkTest))
-        //  {
-        //    frameworkTest = CreateFrameworkTest(frameworkVersion);
-        //    rootTest.AddChild(frameworkTest);
-
-        //    frameworkTests.Add(frameworkVersion, frameworkTest);
-        //  }
-
-        //  return frameworkTest;
-        //}
-
-        //private Test GetAssemblyTest(IAssemblyInfo assembly, Test frameworkTest, bool populateRecursively)
-        //{
-        //  Test assemblyTest;
-        //  if (!assemblyTests.TryGetValue(assembly, out assemblyTest))
-        //  {
-        //    assemblyTest = CreateAssemblyTest(assembly);
-        //    frameworkTest.AddChild(assemblyTest);
-
-        //    assemblyTests.Add(assembly, assemblyTest);
-        //  }
-
-        //  if (populateRecursively)
-        //  {
-        //    PopulateAssemblyTest(assembly, assemblyTest);
-        //  }
-
-        //  return assemblyTest;
-        //}
-
-        //private void PopulateAssemblyTest(IAssemblyInfo assembly, Test assemblyTest)
-        //{
-        //  AssemblyExplorer explorer = new AssemblyExplorer();
-        //  var specifications = explorer.FindContextsIn(assembly.Resolve());
-        //  foreach (var specification in specifications)
-        //  {
-        //    var specificationTest = new MachineContextTest(specification);
-        //    assemblyTest.AddChild(specificationTest);
-
-        //    PopulateSpecificationTest(specification, specificationTest);
-        //  }
-        //}
-
-        //private void PopulateSpecificationTest(Specifications.Model.Context context, MachineContextTest test)
-        //{
-        //  foreach (var specification in context.Specifications)
-        //  {
-        //    test.AddChild(new MachineSpecificationTest(specification));
-        //  }
-        //}
-
-        //private static Test CreateFrameworkTest(Version frameworkVersion)
-        //{
-        //  BaseTest frameworkTest = new BaseTest(String.Format(Resources.MachineSpecificationExplorer_FrameworkNameWithVersionFormat, frameworkVersion), null);
-        //  frameworkTest.BaselineLocalId = Resources.MachineSpecificationFramework_MachineSpecificationFrameworkName;
-        //  frameworkTest.Kind = TestKinds.Framework;
-
-        //  return frameworkTest;
-        //}
-
-        //private static Test CreateAssemblyTest(IAssemblyInfo assembly)
-        //{
-        //  BaseTest assemblyTest = new BaseTest(assembly.Name, assembly);
-        //  assemblyTest.Kind = TestKinds.Assembly;
-
-        //  ModelUtils.PopulateMetadataFromAssembly(assembly, assemblyTest.Metadata);
-
-        //  return assemblyTest;
-        //}
+        }    
     }
 }

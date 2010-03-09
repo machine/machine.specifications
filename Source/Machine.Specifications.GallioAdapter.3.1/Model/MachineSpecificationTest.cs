@@ -11,14 +11,7 @@ namespace Machine.Specifications.GallioAdapter.Model
 {
   public class MachineSpecificationTest : MachineGallioTest
   {
-    private readonly Specification _specification;
-
-    /*
-    public Specification Specification
-    {
-      get { return _specification; }
-    }
-    */
+    private readonly Specification _specification;   
 
     public MachineSpecificationTest(Specification specification) : base(specification.Name, Reflector.Wrap(specification.FieldInfo))
     {
@@ -32,12 +25,7 @@ namespace Machine.Specifications.GallioAdapter.Model
       MachineContextTest parent = this.Parent as MachineContextTest;
       if (parent == null) throw new Exception("Specification has non-Context parent???");
         
-      return _specification.Verify();      
-
-      /*
-      var result = parent.Context.VerifySpecification(_specification);
-      return result;
-      */
+      return _specification.Verify();     
     }
   }
 }

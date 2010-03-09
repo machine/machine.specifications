@@ -43,9 +43,7 @@ namespace Machine.Specifications.GallioAdapter.Services
         protected override TestController CreateTestController()
         {
             return new DelegatingTestController(test =>
-            {
-                //var topTest = test as MSTestAssembly;
-                //return topTest != null ? MSTestController.CreateController(topTest.FrameworkVersion) : null;
+            {                
                 return new Services.MachineSpecificationController();
             });
         }        
