@@ -78,7 +78,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
             Test test = GetDescendantByName(testModel.RootTest.Children[0], "ignored context spec");
             
             Assert.IsNotNull(test);
-            StringAssert.Contains("Attribute", test.Metadata.GetValue(MetadataKeys.IgnoreReason));            
+            AssertStringContains("Attribute", test.Metadata.GetValue(MetadataKeys.IgnoreReason));            
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
             Assert.IsNotNull(spec);
 
             StringAssert.DoesNotContain("Attribute", context.Metadata.GetValue(MetadataKeys.IgnoreReason));
-            StringAssert.Contains("Attribute", spec.Metadata.GetValue(MetadataKeys.IgnoreReason));
+            AssertStringContains("Attribute", spec.Metadata.GetValue(MetadataKeys.IgnoreReason));
         }
 
         [Test]
@@ -106,9 +106,9 @@ namespace Machine.Specifications.GallioAdapter.Tests
 
             Test spec = GetDescendantByName(context, "should");
             Assert.IsNotNull(spec);
-            
-            StringAssert.Contains("Attribute", spec.Metadata.GetValue(MetadataKeys.IgnoreReason));
-            StringAssert.Contains("CONTEXT", spec.Metadata.GetValue(MetadataKeys.IgnoreReason).ToUpper());
+
+            AssertStringContains("Attribute", spec.Metadata.GetValue(MetadataKeys.IgnoreReason));
+            AssertStringContains("Context", spec.Metadata.GetValue(MetadataKeys.IgnoreReason));
         }
 
         [Test]
@@ -121,9 +121,9 @@ namespace Machine.Specifications.GallioAdapter.Tests
             Assert.IsNotNull(test);        
             
             string category = test.Metadata.GetValue(MetadataKeys.Category);
-            
-            StringAssert.Contains( "Testing out the framework", category);
-            StringAssert.Contains("BOOL", category.ToUpper());
+
+            AssertStringContains("Testing out the framework", category);
+            AssertStringContains("bool", category);
         }
 
         [Test]
