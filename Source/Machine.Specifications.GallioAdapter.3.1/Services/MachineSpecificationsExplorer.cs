@@ -24,6 +24,7 @@ using Gallio.Model;
 using Gallio.Model.Helpers;
 using Gallio.Model.Tree;
 using Machine.Specifications.Explorers;
+using Machine.Specifications.Utility;
 using Machine.Specifications.GallioAdapter.Model;
 
 namespace Machine.Specifications.GallioAdapter.Services
@@ -88,22 +89,17 @@ namespace Machine.Specifications.GallioAdapter.Services
 
                 foreach (var context in contexts)
                 {
-                    MachineContextTest contextTest = new MachineContextTest(context);                    
+                    MachineContextTest contextTest = new MachineContextTest(context);
 
-                    foreach (var specification in context.Specifications)
-                    {
-                        MachineSpecificationTest specificationTest = new MachineSpecificationTest(specification);
-                        AddXmlComment(specificationTest, Reflector.Wrap(specification.FieldInfo));
-                        contextTest.AddChild(specificationTest);                                               
-                    }
+                    context.Specifications.Each(spec => AddSpecification(contextTest, spec));
 
-                    AddXmlComment(contextTest, Reflector.Wrap(context.Type));
+                    AddContextMetadata(contextTest, context);                                          
                     assemblyTest.AddChild(contextTest);                                        
                 }                
             }
 
             return assemblyTest;
-        }
+        }        
 
         private static MachineAssembly CreateAssemblyTest(IAssemblyInfo assembly, Version frameworkVersion)
         {
@@ -113,6 +109,35 @@ namespace Machine.Specifications.GallioAdapter.Services
             ModelUtils.PopulateMetadataFromAssembly(assembly, assemblyTest.Metadata);
 
             return assemblyTest;
+        }
+
+        private void AddContextMetadata(MachineContextTest contextTest, Machine.Specifications.Model.Context context)
+        {
+            if (context.Subject != null) 
+                contextTest.Metadata.Add(MetadataKeys.Category, context.Subject.FullConcern);
+            
+            if( context.Tags != null && context.Tags.Any())
+                contextTest.Metadata.Add(SpecificationMetadataKeys.Tags, context.Tags.Select( t => t.Name).ToList());
+
+            if (context.IsIgnored)
+                contextTest.Metadata.Add(MetadataKeys.IgnoreReason, "The context has the IgnoreAttribute");            
+
+            AddXmlComment(contextTest, Reflector.Wrap(context.Type));
+        }
+
+        private void AddSpecification(MachineContextTest parent, Machine.Specifications.Model.Specification specification)
+        {            
+            MachineSpecificationTest specificationTest = new MachineSpecificationTest( specification);
+
+            if (specification.IsIgnored)
+            {
+                string reason = parent.Context.IsIgnored ? "The parent context has the IgnoreAttribute" : "The specification has the IgnoreAttribute";
+                specificationTest.Metadata.Add(MetadataKeys.IgnoreReason, reason);
+            }
+
+            AddXmlComment(specificationTest, Reflector.Wrap(specification.FieldInfo));
+
+            parent.AddChild(specificationTest);
         }
 
         private void AddXmlComment(Test test, ICodeElementInfo element)

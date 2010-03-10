@@ -71,6 +71,92 @@ namespace Machine.Specifications.GallioAdapter.Tests
         }
 
         [Test]
+        public void PopulateTreeTest_IgnoredContextShouldIncludeExtraMetadata()
+        {
+            TestModel testModel = PopulateTestTree();
+
+            Test test = GetDescendantByName(testModel.RootTest.Children[0], "ignored context spec");
+            
+            Assert.IsNotNull(test);
+            StringAssert.Contains("Attribute", test.Metadata.GetValue(MetadataKeys.IgnoreReason));            
+        }
+
+        [Test]
+        public void PopulateTreeTest_IgnoredSpecificationShouldIncludeExtraMetadata()
+        {
+            TestModel testModel = PopulateTestTree();
+
+            Test context = GetDescendantByName(testModel.RootTest.Children[0], "ignored specification spec");
+            Assert.IsNotNull(context);
+
+            Test spec = GetDescendantByName(context, "should");
+            Assert.IsNotNull(spec);
+
+            StringAssert.DoesNotContain("Attribute", context.Metadata.GetValue(MetadataKeys.IgnoreReason));
+            StringAssert.Contains("Attribute", spec.Metadata.GetValue(MetadataKeys.IgnoreReason));
+        }
+
+        [Test]
+        public void PopulateTreeTest_IgnoredSpecificationDueToIgnoredContextShouldIndicateIgnoredDueToParent()
+        {
+            TestModel testModel = PopulateTestTree();
+
+            Test context = GetDescendantByName(testModel.RootTest.Children[0], "ignored context spec");
+            Assert.IsNotNull(context);
+
+            Test spec = GetDescendantByName(context, "should");
+            Assert.IsNotNull(spec);
+            
+            StringAssert.Contains("Attribute", spec.Metadata.GetValue(MetadataKeys.IgnoreReason));
+            StringAssert.Contains("CONTEXT", spec.Metadata.GetValue(MetadataKeys.IgnoreReason).ToUpper());
+        }
+
+        [Test]
+        public void PopulateTreeTest_SubjectShouldBeSavedAsTheCategory()
+        {
+            TestModel testModel = PopulateTestTree();
+
+            Test test = GetDescendantByName(testModel.RootTest.Children[0], "subject spec");
+
+            Assert.IsNotNull(test);        
+            
+            string category = test.Metadata.GetValue(MetadataKeys.Category);
+            
+            StringAssert.Contains( "Testing out the framework", category);
+            StringAssert.Contains("BOOL", category.ToUpper());
+        }
+
+        [Test]
+        public void PopulateTreeTest_TagShouldAddExtraMetaData()
+        {
+            TestModel testModel = PopulateTestTree();
+
+            Test test = GetDescendantByName(testModel.RootTest.Children[0], "tag spec");
+
+            Assert.IsNotNull(test);
+
+            IList<string> tags = test.Metadata[SpecificationMetadataKeys.Tags];
+
+            tags.Contains("tag").ShouldBeTrue();
+        }
+
+        [Test]
+        public void PopulateTreeTest_MultipleTagsShouldContainIndividualEntries()
+        {
+            TestModel testModel = PopulateTestTree();
+
+            Test test = GetDescendantByName(testModel.RootTest.Children[0], "multiple tag spec");
+
+            Assert.IsNotNull(test);
+
+            IList<string> tags = test.Metadata[SpecificationMetadataKeys.Tags];
+
+            tags.Contains("one").ShouldBeTrue();
+            tags.Contains("two").ShouldBeTrue();
+            tags.Contains("three").ShouldBeTrue();
+        }
+
+        [Test]
         public void PopulateTestTree_CapturesTestStructureAndBasicMetadata()
         {
             TestModel testModel = PopulateTestTree();
@@ -134,7 +220,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
             Assert.AreEqual("<summary>\nA simple test specification.\n</summary>", test.Metadata.GetValue(MetadataKeys.XmlDocumentation));
             Assert.AreEqual("<summary>\nA passing specification.\n</summary>", passTest.Metadata.GetValue(MetadataKeys.XmlDocumentation));
             Assert.AreEqual("<summary>\nA failing specification.\n</summary>", failTest.Metadata.GetValue(MetadataKeys.XmlDocumentation));
-        }
+        }        
 
         [Test]
         public void MetadataImport_AssemblyAttributes()

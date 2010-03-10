@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="Model\MachineAssembly.cs" />
     <Compile Include="Model\MachineGallioTest.cs" />
+    <Compile Include="Model\SpecificationMetadataKeys.cs" />
     <Compile Include="Services\MachineSpecificationsDriver.cs" />
     <Compile Include="Services\MachineSpecificationsExplorer.cs" />
     <Compile Include="MachineSpecificationsFramework.cs" />

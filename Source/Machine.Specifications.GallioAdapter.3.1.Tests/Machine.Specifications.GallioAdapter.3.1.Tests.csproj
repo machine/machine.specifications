@@ -79,7 +79,7 @@
     <ProjectReference Include="..\Machine.Specifications.GallioAdapter.3.1.TestResources\Machine.Specifications.GallioAdapter.3.1.TestResources.csproj">
       <Project>{263ABAC8-C6B2-497D-93E3-3773849CEDD3}</Project>
       <Name>Machine.Specifications.GallioAdapter.3.1.TestResources</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\Machine.Specifications.GallioAdapter.3.1\Machine.Specifications.GallioAdapter.3.1.csproj">
       <Project>{D1B0D26E-BEA9-45EF-87C2-0ED5FC9CAC3F}</Project>
