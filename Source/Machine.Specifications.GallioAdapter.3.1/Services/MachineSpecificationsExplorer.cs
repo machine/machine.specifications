@@ -84,7 +84,7 @@ namespace Machine.Specifications.GallioAdapter.Services
                 AssemblyExplorer explorer = new AssemblyExplorer();
                 Assembly resolvedAssembly = assembly.Resolve(false);                
 
-                assemblyTest.Contexts = explorer.FindAssemblyContextsIn( resolvedAssembly).ToList();                
+                assemblyTest.AssemblyContexts = explorer.FindAssemblyContextsIn( resolvedAssembly).ToList();                
                 explorer.FindContextsIn(resolvedAssembly)
                     .Select( context => GetContextTest( context))
                     .Each( test => assemblyTest.AddChild( test));                    

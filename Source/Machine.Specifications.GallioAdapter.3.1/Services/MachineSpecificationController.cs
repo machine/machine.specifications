@@ -91,7 +91,7 @@ namespace Machine.Specifications.GallioAdapter.Services
             TestOutcome outcome = TestOutcome.Passed;
 
             // Setup
-            assembly.Contexts.Each(context => context.OnAssemblyStart());
+            assembly.AssemblyContexts.Each(context => context.OnAssemblyStart());
             
             foreach (ITestCommand child in testCommand.Children)
             {
@@ -100,7 +100,7 @@ namespace Machine.Specifications.GallioAdapter.Services
             }
             
             // Take down
-            assembly.Contexts.Each(context => context.OnAssemblyComplete());
+            assembly.AssemblyContexts.Reverse().Each(context => context.OnAssemblyComplete());
 
             return assemblyContext.FinishStep( outcome, null);
         }
@@ -153,7 +153,7 @@ namespace Machine.Specifications.GallioAdapter.Services
             else if (result.Status == Status.Ignored)
             {
                 return testContext.FinishStep(TestOutcome.Ignored, new TimeSpan(0));
-            }
+            }                
             else if (result.Passed)
             {
                 return testContext.FinishStep(TestOutcome.Passed, null);

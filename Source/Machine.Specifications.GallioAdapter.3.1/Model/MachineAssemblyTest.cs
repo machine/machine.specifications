@@ -33,7 +33,7 @@ namespace Machine.Specifications.GallioAdapter.Model
     /// </remarks>
     internal class MachineAssemblyTest : MachineGallioTest
     {
-        public List<IAssemblyContext> Contexts { get; set; }
+        public IList<IAssemblyContext> AssemblyContexts { get; set; }
 
         private readonly Version frameworkVersion;
         /// <summary>
@@ -48,7 +48,7 @@ namespace Machine.Specifications.GallioAdapter.Model
             : base(name, codeElement)
         {
             this.frameworkVersion = frameworkVersion;
-            Contexts = new List<IAssemblyContext>();
+            AssemblyContexts = new List<IAssemblyContext>();
         }
 
         /// <summary>
