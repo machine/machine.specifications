@@ -1,7 +1,6 @@
 ﻿make sure exceptions thrown from cleanup are handled gracefully
 look into inner class thing for contexts
-figure out how to handle exceptions thrown during befoerall and aftereach
-clean up stack traces
+figure out how to handle exceptions thrown during beforeall and aftereach
 remove dependency on nunit
 incorporate browser links
 

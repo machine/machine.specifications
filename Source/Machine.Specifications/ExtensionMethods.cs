@@ -36,7 +36,69 @@ namespace Machine.Specifications
       StreamingContext context)
       : base(info, context)
     {
-    }    
+    }
+
+    #region Borrowed from XUnit, licened under MS-PL
+
+#if CLEAN_EXCEPTION_STACK_TRACE
+    /// <summary>
+    /// Gets a string representation of the frames on the call stack at the time the current exception was thrown.
+    /// </summary>
+    /// <returns>A string that describes the contents of the call stack, with the most recent method call appearing first.</returns>
+    public override string StackTrace
+    {
+        get { return FilterStackTrace(base.StackTrace); }
+    }
+
+    /// <summary>
+    /// Filters the stack trace to remove all lines that occur within the testing framework.
+    /// </summary>
+    /// <param name="stackTrace">The original stack trace</param>
+    /// <returns>The filtered stack trace</returns>
+    protected static string FilterStackTrace(string stackTrace)
+    {
+        if (stackTrace == null)
+            return null;
+        Console.WriteLine(stackTrace);
+
+        List<string> results = new List<string>();
+
+        foreach (string line in SplitLines(stackTrace))
+        {
+            string trimmedLine = line.TrimStart();
+            if (ShouldKeepStackFrame(trimmedLine))
+                results.Add(line);
+        }
+
+        return string.Join(Environment.NewLine, results.ToArray());
+    }
+
+    private static bool ShouldKeepStackFrame(string trimmedLine)
+    {
+        // Omit anything in the Machine.Specifications namespace
+        return !trimmedLine.StartsWith("at Machine.Specifications.");
+    }
+
+    // Our own custom String.Split because Silverlight/CoreCLR doesn't support the version we were using
+    static IEnumerable<string> SplitLines(string input)
+    {
+        while (true)
+        {
+            int idx = input.IndexOf(Environment.NewLine);
+
+            if (idx < 0)
+            {
+                yield return input;
+                break;
+            }
+
+            yield return input.Substring(0, idx);
+            input = input.Substring(idx + Environment.NewLine.Length);
+        }
+    }
+#endif
+
+    #endregion
   }
 
   public static class ShouldExtensionMethods
