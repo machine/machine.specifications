@@ -36,7 +36,7 @@ namespace Machine.Specifications
       StreamingContext context)
       : base(info, context)
     {
-    }
+    }    
   }
 
   public static class ShouldExtensionMethods
@@ -296,7 +296,7 @@ does not contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), n
 entire list: {1}
 does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), contains.EachToUsefulString()));
       }
-    }
+    }    
 
     private static SpecificationException NewException(string message, params object[] parameters)
     {
@@ -418,6 +418,17 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
       }
     }
 
+    public static void ShouldNotContain(this string actual, string notExpected)
+    {
+        if (notExpected == null) throw new ArgumentNullException("notExpected");
+        if (actual == null) return;
+
+        if (actual.Contains(notExpected))
+        {
+            throw NewException("Should not contain {0} but is {1}", notExpected, actual);
+        }
+    }
+
     public static string ShouldBeEqualIgnoringCase(this string actual, string expected)
     {
       if (expected == null) throw new ArgumentNullException("expected");
@@ -429,7 +440,7 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
       }
 
       return actual;
-    }
+    }    
 
     public static void ShouldStartWith(this string actual, string expected)
     {
