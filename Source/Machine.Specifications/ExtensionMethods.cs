@@ -469,6 +469,23 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
       }
     }
 
+    public static void ShouldMatch(this string actual, string pattern)
+    {
+        if (pattern == null) throw new ArgumentNullException("pattern");
+        if (actual == null) throw NewException("Should match regex {0} but is [null]", pattern);
+
+        ShouldMatch(actual, new System.Text.RegularExpressions.Regex(pattern));
+    }
+
+    public static void ShouldMatch(this string actual, System.Text.RegularExpressions.Regex pattern)
+    {
+        if (pattern == null) throw new ArgumentNullException("pattern");
+        if (actual == null) throw NewException("Should match regex {0} but is [null]", pattern);
+
+        if (!pattern.IsMatch(actual))
+            throw NewException("Should match {0} but is {1}", pattern, actual);        
+    }
+
     public static void ShouldContain(this string actual, string expected)
     {
       if (expected == null) throw new ArgumentNullException("expected");
