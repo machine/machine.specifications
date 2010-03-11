@@ -17,9 +17,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Gallio.Model;
-using Machine.Specifications.GallioAdapter.Services;
 using Gallio.Runtime.Extensibility;
 using Gallio.Runtime.Logging;
 

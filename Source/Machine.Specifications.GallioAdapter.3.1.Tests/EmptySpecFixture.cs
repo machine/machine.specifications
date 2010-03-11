@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Gallio.Framework;
-using NUnit.Framework;
+﻿using System.Linq;
 using Gallio.Common.Markup;
+using NUnit.Framework;
 
 namespace Machine.Specifications.GallioAdapter.Tests
 {
@@ -22,14 +18,14 @@ namespace Machine.Specifications.GallioAdapter.Tests
         [Test]
         public void ShouldHaveFailedTheTest()
         {
-            _run.Result.Outcome.Status.ShouldEqual(Gallio.Model.TestStatus.Failed);
+            _run.Result.Outcome.ShouldEqual( Gallio.Model.TestOutcome.Pending);
         }
 
         [Test]
         public void ShouldHaveFailedAllThreeChildren()
         {
             _run.Children.Count().ShouldEqual(3);
-            _run.Children.All(c => c.Result.Outcome.Status == Gallio.Model.TestStatus.Failed).ShouldBeTrue();
+            _run.Children.All(c => c.Result.Outcome == Gallio.Model.TestOutcome.Pending).ShouldBeTrue();
         }
 
         [Test]
@@ -54,9 +50,12 @@ namespace Machine.Specifications.GallioAdapter.Tests
         {
             var expected = string.Format("{0} (Not Implemented)", spec);
             var child = _run.Children.Single(x => x.Step.Name == spec);
-            //child.Step.Name.ShouldEqual(expected);            
+                        
             var log = child.TestLog.GetStream(MarkupStreamNames.Failures).ToString();
-            log.Contains( expected ).ShouldBeTrue();            
+            log.Contains( expected ).ShouldBeTrue();
+
+            child.Result.Outcome.ShouldEqual( Gallio.Model.TestOutcome.Pending);
+            _run.Result.Outcome.ShouldEqual(Gallio.Model.TestOutcome.Pending);
         }
     }
 }

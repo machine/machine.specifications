@@ -17,36 +17,45 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Gallio.Model;
+using System.IO;
+using System.Reflection;
 using Gallio.Common.Reflection;
-using Machine.Specifications.Example;
-using Machine.Specifications.GallioAdapter.Model;
-using Gallio.Framework.Utilities;
-using NUnit.Framework;
-using Machine.Specifications.GallioAdapter.TestResources;
-using Gallio.Runtime.Extensibility;
-using Gallio.Runtime;
+using Gallio.Framework;
+using Gallio.Model;
+using Gallio.Model.Isolation;
+using Gallio.Model.Messages;
 using Gallio.Model.Tree;
+using Gallio.Runtime;
+using Gallio.Runtime.Extensibility;
+using Gallio.Runtime.Logging;
+using Gallio.Runtime.ProgressMonitoring;
+using Machine.Specifications.GallioAdapter.Model;
+using Machine.Specifications.GallioAdapter.TestResources;
+using NUnit.Framework;
+using Test = Gallio.Model.Tree.Test;
 
 namespace Machine.Specifications.GallioAdapter.Tests
 {
-    // Adapted from the Gallio BaseTestFrameworkTest<SimpleTest> Test
+    // Adapted from the Gallio BaseTestFrameworkTest<TSimpleTest> Test
     [TestFixture]
-    public class FrameworkTests : BaseTestFrameworkTest<simple_test_spec>
+    public class FrameworkTests
     {
         const string ParentTestName = "simple test spec";
         const string PassTestName = "pass";
         const string FailTestName = "fail";
+        readonly string AssemblyKind = TestKinds.Assembly;
+        readonly Assembly SimpleFixtureAssembly = typeof(simple_test_spec).Assembly;
+        readonly Type SimpleFixtureType = typeof(simple_test_spec);
+        readonly string SimpleFixtureNamespace = typeof(simple_test_spec).Namespace;
 
         private void AssertStringContains(string needle, string haystack)
         {
-            // HACK: needed a quick string comparison
+            // HACK: needed a quick string comparison that was not case sensitive
             StringAssert.Contains(needle.ToUpper(), haystack.ToUpper());
         }
 
-        protected override ComponentHandle<ITestFramework, TestFrameworkTraits> TestFrameworkHandle
+        #region Members from the original Gallio class BaseTestFrameworkTest<TSimpleTest>
+        protected ComponentHandle<ITestFramework, TestFrameworkTraits> TestFrameworkHandle
         {
             get
             {
@@ -54,21 +63,62 @@ namespace Machine.Specifications.GallioAdapter.Tests
                     RuntimeAccessor.ServiceLocator.ResolveHandleByComponentId("Machine.Specifications");
             }
         }
-        protected override string AssemblyKind
-        {
-            get
-            {
-                return TestKinds.Assembly;
-            }
-        }        
 
-        [Test]
-        public void PopulateTestTree_WhenAssemblyDoesNotReferenceFramework_IsEmpty()
+        protected TestModel PopulateTestTree()
         {
-            TestModel testModel = PopulateTestTree(typeof(int).Assembly);
-
-            Assert.AreEqual(0, testModel.RootTest.Children.Count);
+            return PopulateTestTree(SimpleFixtureAssembly);
         }
+
+        protected TestModel PopulateTestTree(Assembly assembly)
+        {
+            TestModel testModel = new TestModel();
+
+            var testFrameworkManager = RuntimeAccessor.ServiceLocator.Resolve<ITestFrameworkManager>();
+            var logger = new MarkupStreamLogger(TestLog.Default);
+
+            var testFrameworkSelector = new TestFrameworkSelector()
+            {
+                Filter = testFrameworkHandle => testFrameworkHandle.Id == TestFrameworkHandle.Id,
+                FallbackMode = TestFrameworkFallbackMode.Strict
+            };
+
+            ITestDriver testDriver = testFrameworkManager.GetTestDriver(testFrameworkSelector, logger);
+
+            var testIsolationProvider = (ITestIsolationProvider)RuntimeAccessor.ServiceLocator.ResolveByComponentId("Gallio.LocalTestIsolationProvider");
+            var testIsolationOptions = new TestIsolationOptions();
+            using (ITestIsolationContext testIsolationContext = testIsolationProvider.CreateContext(testIsolationOptions, logger))
+            {
+                var testPackage = new TestPackage();
+                testPackage.AddFile(new FileInfo(AssemblyUtils.GetFriendlyAssemblyCodeBase(assembly)));
+                var testExplorationOptions = new TestExplorationOptions();
+
+                var messageSink = TestModelSerializer.CreateMessageSinkToPopulateTestModel(testModel);
+
+                new LogProgressMonitorProvider(logger).Run(progressMonitor =>
+                {
+                    testDriver.Explore(testIsolationContext, testPackage, testExplorationOptions,
+                        messageSink, progressMonitor);
+                });
+            }
+
+            return testModel;
+        }
+
+        protected Test GetDescendantByName(Test parent, string name)
+        {
+            foreach (Test test in parent.Children)
+            {
+                if (test.Name == name)
+                    return test;
+
+                Test descendant = GetDescendantByName(test, name);
+                if (descendant != null)
+                    return descendant;
+            }
+
+            return null;
+        } 
+        #endregion        
 
         [Test]
         public void PopulateTreeTest_IgnoredContextShouldIncludeExtraMetadata()
@@ -122,8 +172,8 @@ namespace Machine.Specifications.GallioAdapter.Tests
             
             string category = test.Metadata.GetValue(MetadataKeys.Category);
 
-            AssertStringContains("Testing out the framework", category);
-            AssertStringContains("bool", category);
+            AssertStringContains("Testing out the framework", category);    // Make sure the text is there
+            AssertStringContains("bool", category);                         // Make sure the type is there too
         }
 
         [Test]
@@ -154,6 +204,16 @@ namespace Machine.Specifications.GallioAdapter.Tests
             tags.Contains("one").ShouldBeTrue();
             tags.Contains("two").ShouldBeTrue();
             tags.Contains("three").ShouldBeTrue();
+        }
+
+        // These tests are adapted directly from the Gallio MS Test adapter tests
+        
+        [Test]
+        public void PopulateTestTree_WhenAssemblyDoesNotReferenceFramework_IsEmpty()
+        {
+            TestModel testModel = PopulateTestTree(typeof(int).Assembly);
+
+            Assert.AreEqual(0, testModel.RootTest.Children.Count);
         }
 
         [Test]
@@ -207,7 +267,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
             Assert.IsTrue(failTest.IsTestCase);
             Assert.AreEqual(0, failTest.Children.Count);
         }
-
+        
         [Test]
         public void MetadataImport_XmlDocumentation()
         {
@@ -240,91 +300,5 @@ namespace Machine.Specifications.GallioAdapter.Tests
             Assert.IsNotEmpty(assemblyTest.Metadata.GetValue(MetadataKeys.FileVersion));
             Assert.IsNotEmpty(assemblyTest.Metadata.GetValue(MetadataKeys.Version));
         }
-#if FALSE
-        [Test]
-    public void RootTestShouldBeValid()
-    {
-      PopulateTestTree();
-
-      RootTest rootTest = testModel.RootTest;
-      Assert.IsNull(rootTest.Parent);
-      Assert.AreEqual(TestKinds.Root, rootTest.Kind);
-      Assert.IsNull(rootTest.CodeElement);
-      Assert.IsFalse(rootTest.IsTestCase);
-      Assert.AreEqual(1, rootTest.Children.Count);
-    }
-
-    [Test]
-    public void BaseTestShouldBeValid()
-    {
-      PopulateTestTree();
-      RootTest rootTest = testModel.RootTest;
-      Version expectedVersion = typeof(SubjectAttribute).Assembly.GetName().Version;
-      BaseTest frameworkTest = (BaseTest)rootTest.Children[0];
-      Assert.AreSame(testModel.RootTest, frameworkTest.Parent);
-      Assert.AreEqual(TestKinds.Framework, frameworkTest.Kind);
-      Assert.IsNull(frameworkTest.CodeElement);
-      Assert.AreEqual("Machine.Specifications v" + expectedVersion, frameworkTest.Name);
-      Assert.IsFalse(frameworkTest.IsTestCase);
-      Assert.AreEqual(1, frameworkTest.Children.Count);
-    }
-
-    [Test]
-    public void AssemblyTestShouldBeValid()
-    {
-      PopulateTestTree();
-      RootTest rootTest = testModel.RootTest;
-      BaseTest frameworkTest = (BaseTest)rootTest.Children[0];
-      BaseTest assemblyTest = (BaseTest)frameworkTest.Children[0];
-      Assert.AreSame(frameworkTest, assemblyTest.Parent);
-      Assert.AreEqual(TestKinds.Assembly, assemblyTest.Kind);
-      Assert.AreEqual(CodeReference.CreateFromAssembly(sampleAssembly), assemblyTest.CodeElement.CodeReference);
-      Assert.AreEqual(sampleAssembly.GetName().Name, assemblyTest.Name);
-      Assert.IsFalse(assemblyTest.IsTestCase);
-      Assert.GreaterOrEqual(assemblyTest.Children.Count, 1);
-    }
-
-    [Test]
-    public void ContextTestShouldBeValid()
-    {
-      PopulateTestTree();
-      RootTest rootTest = testModel.RootTest;
-      BaseTest frameworkTest = (BaseTest)rootTest.Children[0];
-      BaseTest assemblyTest = (BaseTest)frameworkTest.Children[0];
-      MachineContextTest fixtureTest =
-        (MachineContextTest)
-          GetDescendantByName(assemblyTest, "Transferring between from account and to account");
-      Assert.AreSame(assemblyTest, fixtureTest.Parent);
-      Assert.AreEqual(TestKinds.Fixture, fixtureTest.Kind);
-      Assert.AreEqual(new CodeReference(sampleAssembly.FullName, "Machine.Specifications.Example", "Machine.Specifications.Example.Transferring_between_from_account_and_to_account", null, null),
-          fixtureTest.CodeElement.CodeReference);
-      Assert.AreEqual("Transferring between from account and to account", fixtureTest.Name);
-      Assert.IsFalse(fixtureTest.IsTestCase);
-      Assert.AreEqual(2, fixtureTest.Children.Count);
-    }
-
-    [Test]
-    public void SpecificationTestShouldBeValid()
-    {
-      PopulateTestTree();
-      RootTest rootTest = testModel.RootTest;
-      BaseTest frameworkTest = (BaseTest)rootTest.Children[0];
-      BaseTest assemblyTest = (BaseTest)frameworkTest.Children[0];
-      MachineContextTest fixtureTest =
-        (MachineContextTest)
-          GetDescendantByName(assemblyTest, "Transferring between from account and to account");
-
-      MachineSpecificationTest test = (MachineSpecificationTest) GetDescendantByName(fixtureTest, "should debit the from account by the amount transferred");
-      Assert.AreSame(fixtureTest, test.Parent);
-      Assert.AreEqual(TestKinds.Test, test.Kind);
-      Assert.AreEqual(
-        new CodeReference(sampleAssembly.FullName, "Machine.Specifications.Example",
-          "Machine.Specifications.Example.Transferring_between_from_account_and_to_account", "should_debit_the_from_account_by_the_amount_transferred", null),
-        test.CodeElement.CodeReference);
-      Assert.AreEqual("should debit the from account by the amount transferred", test.Name);
-      Assert.IsTrue(test.IsTestCase);
-      Assert.AreEqual(0, test.Children.Count);
-    }
-#endif
     }
 }

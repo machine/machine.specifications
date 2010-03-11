@@ -16,18 +16,16 @@
 // Modified by and Portions Copyright 2008 Machine Project
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using Gallio.Model;
+using Gallio.Model.Commands;
+using Gallio.Model.Contexts;
+using Gallio.Model.Helpers;
+using Gallio.Model.Tree;
 using Gallio.Runtime.ProgressMonitoring;
 using Machine.Specifications.GallioAdapter.Model;
 using Machine.Specifications.Utility;
-using Gallio.Model.Helpers;
-using Gallio.Model.Commands;
-using Gallio.Model.Tree;
-using Gallio.Model.Contexts;
 
 namespace Machine.Specifications.GallioAdapter.Services
 {
@@ -46,7 +44,6 @@ namespace Machine.Specifications.GallioAdapter.Services
                 }
                 else
                 {
-
                     ITestCommand assemblyCommand = rootTestCommand.Children.SingleOrDefault();
                     if( assemblyCommand == null)
                         return new TestResult( TestOutcome.Error);
@@ -65,7 +62,7 @@ namespace Machine.Specifications.GallioAdapter.Services
 
             MachineSpecificationTest specification = test as MachineSpecificationTest;
             MachineContextTest context = test as MachineContextTest;
-            MachineAssembly assembly = test as MachineAssembly;
+            MachineAssemblyTest assembly = test as MachineAssemblyTest;
             RootTest root = test as RootTest;            
 
             if (specification != null)
@@ -87,25 +84,25 @@ namespace Machine.Specifications.GallioAdapter.Services
             }
         }
 
-        private TestResult RunAssembly(MachineAssembly assembly, ITestCommand testCommand, TestStep parentTestStep, IProgressMonitor progressMonitor)
+        private TestResult RunAssembly(MachineAssemblyTest assembly, ITestCommand testCommand, TestStep parentTestStep, IProgressMonitor progressMonitor)
         {
-            ITestContext assemblyContext = testCommand.StartPrimaryChildStep(parentTestStep);
-            
-            bool passed = true;
-            
+            ITestContext assemblyContext = testCommand.StartPrimaryChildStep(parentTestStep);            
+
+            TestOutcome outcome = TestOutcome.Passed;
+
             // Setup
             assembly.Contexts.Each(context => context.OnAssemblyStart());
             
             foreach (ITestCommand child in testCommand.Children)
             {
                 var childResult = RunTest(child, assemblyContext.TestStep, progressMonitor);
-                passed &= childResult.Outcome.Status == TestStatus.Passed;
+                outcome = outcome.CombineWith(childResult.Outcome);
             }
             
             // Take down
             assembly.Contexts.Each(context => context.OnAssemblyComplete());
 
-            return new TestResult(passed ? TestOutcome.Passed : TestOutcome.Failed);
+            return assemblyContext.FinishStep( outcome, null);
         }
 
         private TestResult RunContextTest(MachineContextTest description, ITestCommand testCommand, TestStep parentTestStep)
@@ -113,7 +110,8 @@ namespace Machine.Specifications.GallioAdapter.Services
             ITestContext testContext = testCommand.StartPrimaryChildStep(parentTestStep);            
             testContext.LifecyclePhase = LifecyclePhases.SetUp;
             description.SetupContext();
-            bool passed = true;
+
+            TestOutcome outcome = TestOutcome.Passed;
 
             foreach (ITestCommand child in testCommand.Children)
             {
@@ -122,14 +120,14 @@ namespace Machine.Specifications.GallioAdapter.Services
                 if (specification != null)
                 {
                     var childResult = RunSpecificationTest(specification, child, testContext.TestStep);
-                    passed &= childResult.Outcome.Status == TestStatus.Passed;                                       
+                    outcome  = outcome.CombineWith( childResult.Outcome);
                 }
             }
 
             testContext.LifecyclePhase = LifecyclePhases.TearDown;
             description.TeardownContext();
 
-            return testContext.FinishStep(passed ? TestOutcome.Passed : TestOutcome.Failed, null);
+            return testContext.FinishStep(outcome, null);
         }
 
         private TestResult RunSpecificationTest(MachineSpecificationTest specification, ITestCommand testCommand, TestStep parentTestStep)
@@ -150,7 +148,11 @@ namespace Machine.Specifications.GallioAdapter.Services
                 stream.Write(")");
                 stream.Flush();
                 
-                return testContext.FinishStep(TestOutcome.Failed, new TimeSpan(0));
+                return testContext.FinishStep(TestOutcome.Pending, new TimeSpan(0));
+            }
+            else if (result.Status == Status.Ignored)
+            {
+                return testContext.FinishStep(TestOutcome.Ignored, new TimeSpan(0));
             }
             else if (result.Passed)
             {

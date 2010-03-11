@@ -15,13 +15,7 @@
 // 
 // Modified by and Portions Copyright 2008 Machine Project
 
-using System;
-using System.Reflection;
-using System.Collections.Generic;
 using Gallio.Model.Helpers;
-using Gallio.Runtime.Hosting;
-using Gallio.Model;
-using Gallio.Common.Reflection;
 
 namespace Machine.Specifications.GallioAdapter.Services
 {

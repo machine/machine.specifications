@@ -29,9 +29,9 @@ namespace Machine.Specifications.GallioAdapter.Model
     /// Represents an assembly with Machine Specifications
     /// </summary>
     /// <remarks>
-    /// Adapted from the MSTests Adaptor of the Gallio Project
+    /// Adapted from the MS Test Adaptor of the Gallio Project
     /// </remarks>
-    internal class MachineAssembly : MachineGallioTest
+    internal class MachineAssemblyTest : MachineGallioTest
     {
         public List<IAssemblyContext> Contexts { get; set; }
 
@@ -44,7 +44,7 @@ namespace Machine.Specifications.GallioAdapter.Model
         /// <param name="frameworkVersion">The version number of the MSpec.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="name"/>, or
         /// <paramref name="frameworkVersion" /> is null.</exception>
-        public MachineAssembly(string name, ICodeElementInfo codeElement, Version frameworkVersion) 
+        public MachineAssemblyTest(string name, ICodeElementInfo codeElement, Version frameworkVersion) 
             : base(name, codeElement)
         {
             this.frameworkVersion = frameworkVersion;

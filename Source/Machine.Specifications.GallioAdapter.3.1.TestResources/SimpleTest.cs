@@ -12,8 +12,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+// 
+// Modified by and Portions Copyright 2008 Machine Project
 
-// This is a simple test adapted from the Gallio framework to make sure that test exploration and execution work
+// This was adapted from the simple test used to validate the MS Test gallio adapter 
+// used to validate test exploration/execution
 
 namespace Machine.Specifications.GallioAdapter.TestResources
 {

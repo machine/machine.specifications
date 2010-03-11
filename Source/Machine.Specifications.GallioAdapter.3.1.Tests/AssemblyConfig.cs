@@ -7,7 +7,9 @@ using Gallio.Runtime;
 
 namespace Machine.Specifications.GallioAdapter.Tests
 {
-    // Required to test the gallio integration using NUnit
+    /// <summary>
+    /// A really easy way to make sure the debugger is attached when tests are running
+    /// </summary>
     [SetUpFixture]
     public class AssemblyConfig
     {

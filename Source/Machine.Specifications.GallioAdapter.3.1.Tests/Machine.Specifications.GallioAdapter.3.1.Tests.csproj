@@ -64,7 +64,6 @@
     <Compile Include="AssemblyConfig.cs" />
     <Compile Include="AssemblyTestsFixture.cs" />
     <Compile Include="BankingSpecFixture.cs" />
-    <Compile Include="BaseTestFrameworkTest.cs" />
     <Compile Include="EmptySpecFixture.cs" />
     <Compile Include="FrameworkTests.cs" />
     <Compile Include="GallioRunner.cs" />
