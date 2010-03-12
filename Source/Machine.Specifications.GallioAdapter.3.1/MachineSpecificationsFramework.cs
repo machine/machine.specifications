@@ -5,7 +5,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 // 
-//     http://www.apache.org/licenses/LICENSE-2.0
+//   http://www.apache.org/licenses/LICENSE-2.0
 // 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,18 +24,18 @@ using Gallio.Runtime.Logging;
 namespace Machine.Specifications.GallioAdapter
 {
   public class MachineSpecificationsFramework : BaseTestFramework
-  {    
+  {  
     public override TestDriverFactory GetTestDriverFactory()
     {
-        return CreateDriver;
+      return CreateDriver;
     }
 
-    private static ITestDriver CreateDriver(
-        IList<ComponentHandle<ITestFramework, TestFrameworkTraits>> testFrameworkHandles,
-        TestFrameworkOptions testFrameworkOptions,
-        ILogger logger)
+    static ITestDriver CreateDriver(
+      IList<ComponentHandle<ITestFramework, TestFrameworkTraits>> testFrameworkHandles,
+      TestFrameworkOptions testFrameworkOptions,
+      ILogger logger)
     {
-        return new Services.MachineSpecificationsDriver();
+      return new Services.MachineSpecificationsDriver();
     }
   }
 }

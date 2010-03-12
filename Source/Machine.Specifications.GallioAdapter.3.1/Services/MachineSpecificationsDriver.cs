@@ -5,7 +5,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 // 
-//     http://www.apache.org/licenses/LICENSE-2.0
+//   http://www.apache.org/licenses/LICENSE-2.0
 // 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,27 +19,21 @@ using Gallio.Model.Helpers;
 
 namespace Machine.Specifications.GallioAdapter.Services
 {
-    /// <summary>
-    /// Test driver for Machine.Specifications.
-    /// </summary>
-    internal class MachineSpecificationsDriver : SimpleTestDriver
+  internal class MachineSpecificationsDriver : SimpleTestDriver
+  {
+    protected override string FrameworkName
     {
-        protected override string FrameworkName
-        {
-            get { return "Machine Specifications"; }
-        }
-
-        protected override TestExplorer CreateTestExplorer()
-        {
-            return new MachineSpecificationsExplorer();
-        }
-
-        protected override TestController CreateTestController()
-        {
-            return new DelegatingTestController(test =>
-            {                
-                return new Services.MachineSpecificationController();
-            });
-        }        
+      get { return "Machine Specifications"; }
     }
+
+    protected override TestExplorer CreateTestExplorer()
+    {
+      return new MachineSpecificationsExplorer();
+    }
+
+    protected override TestController CreateTestController()
+    {
+      return new DelegatingTestController( test => new Services.MachineSpecificationController() );
+    }    
+  }
 }

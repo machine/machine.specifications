@@ -47,7 +47,7 @@ namespace Machine.Specifications
     /// <returns>A string that describes the contents of the call stack, with the most recent method call appearing first.</returns>
     public override string StackTrace
     {
-        get { return FilterStackTrace(base.StackTrace); }
+      get { return FilterStackTrace(base.StackTrace); }
     }
 
     /// <summary>
@@ -57,44 +57,43 @@ namespace Machine.Specifications
     /// <returns>The filtered stack trace</returns>
     protected static string FilterStackTrace(string stackTrace)
     {
-        if (stackTrace == null)
-            return null;
-        Console.WriteLine(stackTrace);
+      if (stackTrace == null)
+        return null;      
 
-        List<string> results = new List<string>();
+      List<string> results = new List<string>();
 
-        foreach (string line in SplitLines(stackTrace))
-        {
-            string trimmedLine = line.TrimStart();
-            if (ShouldKeepStackFrame(trimmedLine))
-                results.Add(line);
-        }
+      foreach (string line in SplitLines(stackTrace))
+      {
+        string trimmedLine = line.TrimStart();
+        if (!IsFrameworkStackFrame(trimmedLine))
+          results.Add(line);
+      }
 
-        return string.Join(Environment.NewLine, results.ToArray());
+      return string.Join(Environment.NewLine, results.ToArray());
     }
 
-    private static bool ShouldKeepStackFrame(string trimmedLine)
+    static bool IsFrameworkStackFrame(string trimmedLine)
     {
-        // Omit anything in the Machine.Specifications namespace
-        return !trimmedLine.StartsWith("at Machine.Specifications.");
+      // Anything in the Machine.Specifications namespace
+      return trimmedLine.StartsWith("at Machine.Specifications.");
     }
 
     // Our own custom String.Split because Silverlight/CoreCLR doesn't support the version we were using
     static IEnumerable<string> SplitLines(string input)
     {
-        while (true)
+      while (true)
+      {
+        int index = input.IndexOf(Environment.NewLine);
+
+        if (index < 0)
         {
-            int idx = input.IndexOf(Environment.NewLine);
-
-            if (idx < 0)
-            {
-                yield return input;
-                break;
-            }
-
-            yield return input.Substring(0, idx);
-            input = input.Substring(idx + Environment.NewLine.Length);
+          yield return input;
+          break;
         }
+
+        yield return input.Substring(0, index);
+        input = input.Substring(index + Environment.NewLine.Length);
+      }
     }
 #endif
 
@@ -471,19 +470,19 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
 
     public static void ShouldMatch(this string actual, string pattern)
     {
-        if (pattern == null) throw new ArgumentNullException("pattern");
-        if (actual == null) throw NewException("Should match regex {0} but is [null]", pattern);
+      if (pattern == null) throw new ArgumentNullException("pattern");
+      if (actual == null) throw NewException("Should match regex {0} but is [null]", pattern);
 
-        ShouldMatch(actual, new System.Text.RegularExpressions.Regex(pattern));
+      ShouldMatch(actual, new System.Text.RegularExpressions.Regex(pattern));
     }
 
     public static void ShouldMatch(this string actual, System.Text.RegularExpressions.Regex pattern)
     {
-        if (pattern == null) throw new ArgumentNullException("pattern");
-        if (actual == null) throw NewException("Should match regex {0} but is [null]", pattern);
+      if (pattern == null) throw new ArgumentNullException("pattern");
+      if (actual == null) throw NewException("Should match regex {0} but is [null]", pattern);
 
-        if (!pattern.IsMatch(actual))
-            throw NewException("Should match {0} but is {1}", pattern, actual);        
+      if (!pattern.IsMatch(actual))
+        throw NewException("Should match {0} but is {1}", pattern, actual);        
     }
 
     public static void ShouldContain(this string actual, string expected)
@@ -499,13 +498,13 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
 
     public static void ShouldNotContain(this string actual, string notExpected)
     {
-        if (notExpected == null) throw new ArgumentNullException("notExpected");
-        if (actual == null) return;
+      if (notExpected == null) throw new ArgumentNullException("notExpected");
+      if (actual == null) return;
 
-        if (actual.Contains(notExpected))
-        {
-            throw NewException("Should not contain {0} but is {1}", notExpected, actual);
-        }
+      if (actual.Contains(notExpected))
+      {
+        throw NewException("Should not contain {0} but is {1}", notExpected, actual);
+      }
     }
 
     public static string ShouldBeEqualIgnoringCase(this string actual, string expected)

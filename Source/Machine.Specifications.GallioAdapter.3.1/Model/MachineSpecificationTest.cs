@@ -9,9 +9,10 @@ namespace Machine.Specifications.GallioAdapter.Model
 {
   public class MachineSpecificationTest : MachineGallioTest
   {
-    private readonly Specification _specification;   
+    readonly Specification _specification;   
 
-    public MachineSpecificationTest(Specification specification) : base(specification.Name, Reflector.Wrap(specification.FieldInfo))
+    public MachineSpecificationTest(Specification specification) 
+      : base(specification.Name, Reflector.Wrap(specification.FieldInfo))
     {
       this.Kind = TestKinds.Test;
       this.IsTestCase = true;
@@ -22,8 +23,8 @@ namespace Machine.Specifications.GallioAdapter.Model
     {
       MachineContextTest parent = this.Parent as MachineContextTest;
       if (parent == null) throw new Exception("Specification has non-Context parent???");
-        
-      return _specification.Verify();     
+      
+      return _specification.Verify();   
     }
   }
 }

@@ -141,17 +141,39 @@ If you're consistently finding that you need to have multiple lines in your `Bec
 
 For Example:
 
+<code>
 public class because_example_goes_here : ExampleSpecs {
 
 }
+</code>
 
 #### It
 
 Simultaneously, your `It` statements should be single-liners and reflect a single assertion. If you're stuffing multiple assertions into a single `It`, considering the wording of that `It` and how you may be able to break it up into two or more specifications, each containing a single statement.
 
+<code>
 public class it_example_goes_here : ExampleSpecs {
 
 }
+</code>
+
+### Testing for exceptions
+
+When testing for exceptions it is recommended that you use the `Catch` class in your `Because` statement then validate the exception in subsequent `It` statements. This ensures that no validation of the `Exception` occurs in the `Because` statement. It is also recommended to include an `It` statement that explicitly determines the type of `Exception` if that is important to you. Doing so will improve the readability of your specifications clarifying how the system is intended to behave. 
+
+<code>
+public class exception_example_goes_here : ExampleSpecs {
+  
+  static Exception exception;
+
+  Because of = () => 
+    exception = Catch.Exception( YourMethodThatThrowsAnException);
+
+  It should_be_an_ArgumentNullException = () => 
+    exception.ShouldBeOfType<ArgumentNullException>();
+
+}
+</code>
 
 ### External links (blog posts, etc?)
 
