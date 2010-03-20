@@ -61,10 +61,11 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AssemblyConfig.cs" />
-    <Compile Include="AssemblyTestsFixture.cs" />
-    <Compile Include="BankingSpecFixture.cs" />
-    <Compile Include="EmptySpecFixture.cs" />
+    <Compile Include="AssemblyConfigFixture.cs" />
+    <Compile Include="IAssemblyContextTests.cs" />
+    <Compile Include="BankingContextTests.cs" />
+    <Compile Include="FailingContextTests.cs" />
+    <Compile Include="EmptySpecTests.cs" />
     <Compile Include="FrameworkTests.cs" />
     <Compile Include="GallioRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

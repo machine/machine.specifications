@@ -27,6 +27,8 @@ using Gallio.Runtime.ProgressMonitoring;
 using Machine.Specifications.GallioAdapter.Model;
 using Machine.Specifications.Utility;
 
+using TestLog = Gallio.Framework.TestLog;
+
 namespace Machine.Specifications.GallioAdapter.Services
 {
   public class MachineSpecificationController : TestController
@@ -136,13 +138,17 @@ namespace Machine.Specifications.GallioAdapter.Services
       var result = specification.Execute();           
 
       if (result.Status == Status.NotImplemented)
-      {
-        LogFailure(specification.Name, "Not Implemented");        
+      {        
+        TestLog.Warnings.WriteLine("{0} ({1})", specification.Name, "NOT IMPLEMENTED");
+        TestLog.Warnings.Flush();
+
         return testContext.FinishStep(TestOutcome.Pending, new TimeSpan(0));
       }
       else if (result.Status == Status.Ignored)
       {
-        LogFailure(specification.Name, "Ignored");
+        TestLog.Warnings.WriteLine("{0} ({1})", specification.Name, "IGNORED");
+        TestLog.Warnings.Flush();
+        
         return testContext.FinishStep(TestOutcome.Ignored, new TimeSpan(0));
       }        
       else if (result.Passed)
@@ -150,19 +156,15 @@ namespace Machine.Specifications.GallioAdapter.Services
         return testContext.FinishStep(TestOutcome.Passed, null);
       }
       else
-      {
+      {        
+        var ex = result.Exception;
+        var data = new Gallio.Common.Diagnostics.ExceptionData(ex.TypeName, ex.Message, ex.StackTrace, null);
+
+        TestLog.Failures.WriteException(data);
+        TestLog.Failures.Flush();
+        
         return testContext.FinishStep(TestOutcome.Failed, null);
       }      
-    }
-
-    void LogFailure(string testName, string reason)
-    {
-      var stream = Gallio.Framework.TestLog.Failures;
-      stream.Write(testName);
-      stream.Write(" (");
-      stream.WriteHighlighted(reason);
-      stream.Write(")");
-      stream.Flush();
     }
   }
 }

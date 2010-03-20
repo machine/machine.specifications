@@ -47,14 +47,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IgnoredSpec.cs" />
-    <Compile Include="SimpleTest.cs" />
+    <Compile Include="FailingContext.cs" />
+    <Compile Include="IgnoredContext.cs" />
+    <Compile Include="SimpleSpec.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="SubjectSpec.cs" />
-    <Compile Include="TagSpecs.cs" />
+    <Compile Include="TagContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj">

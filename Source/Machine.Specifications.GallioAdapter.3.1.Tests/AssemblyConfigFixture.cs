@@ -11,7 +11,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
   /// A really easy way to make sure the debugger is attached when tests are running
   /// </summary>
   [SetUpFixture]
-  public class AssemblyConfig
+  public class AssemblyConfigFixture
   {
     static bool _running = false;
 

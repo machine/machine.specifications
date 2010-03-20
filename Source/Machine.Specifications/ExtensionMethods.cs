@@ -38,7 +38,7 @@ namespace Machine.Specifications
     {
     }
 
-    #region Borrowed from XUnit, licened under MS-PL
+    #region Borrowed from XUnit to clean up the stack trace, licened under MS-PL
 
 #if CLEAN_EXCEPTION_STACK_TRACE
     /// <summary>

@@ -4,12 +4,12 @@ using NUnit.Framework;
 namespace Machine.Specifications.GallioAdapter.Tests
 { 
   [TestFixture]
-  public class AssemblyTestsFixture
+  public class IAssemblyContextTests
   {
     [SetUp]
     public void Setup()
     {
-      GallioRunner.RunAllSpecsInAssemblyOf<TestAssemblyContext>();
+      GallioRunner.RunAssemblyOf<TestAssemblyContext>();
     }
 
     [Test]

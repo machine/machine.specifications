@@ -39,12 +39,12 @@ namespace Machine.Specifications.GallioAdapter.Tests
       return runner;
     }
 
-    public static void RunAllSpecsInAssemblyOf<T>()
+    public static void RunAssemblyOf<T>()
     {             
       Run<T>();
     }
 
-    public static TestStepRun RunAllSpecsFor<T>()
+    public static TestStepRun RunAllSpecificationsFor<T>()
     {
       SampleRunner runner = Run<T>();
       return runner.GetPrimaryTestStepRun(CodeReference.CreateFromType(typeof(T)));      
