@@ -27,7 +27,7 @@ namespace Machine.Specifications
       FullTypeName = exception.GetType().FullName;
       TypeName = exception.GetType().Name;
       Message = exception.Message;
-      StackTrace = exception.StackTrace;
+      StackTrace = FilterStackTrace( exception.StackTrace);
 
       if (exception.InnerException != null)
       {
@@ -41,6 +41,64 @@ namespace Machine.Specifications
     {
       return _toString;
     }
+
+    #region Borrowed from XUnit to clean up the stack trace, licened under MS-PL
+
+#if CLEAN_EXCEPTION_STACK_TRACE
+    /// <summary>
+    /// Filters the stack trace to remove all lines that occur within the testing framework.
+    /// </summary>
+    /// <param name="stackTrace">The original stack trace</param>
+    /// <returns>The filtered stack trace</returns>
+    static string FilterStackTrace(string stackTrace)
+    {
+      if (stackTrace == null)
+        return null;      
+
+      List<string> results = new List<string>();
+
+      foreach (string line in SplitLines(stackTrace))
+      {
+        string trimmedLine = line.TrimStart();
+        if (!IsFrameworkStackFrame(trimmedLine))
+          results.Add(line);
+      }
+
+      return string.Join(Environment.NewLine, results.ToArray());
+    }
+
+    static bool IsFrameworkStackFrame(string trimmedLine)
+    {
+      // Anything in the Machine.Specifications namespace
+      return trimmedLine.StartsWith("at Machine.Specifications.");
+    }
+
+    // Our own custom String.Split because Silverlight/CoreCLR doesn't support the version we were using
+    static IEnumerable<string> SplitLines(string input)
+    {
+      while (true)
+      {
+        int index = input.IndexOf(Environment.NewLine);
+
+        if (index < 0)
+        {
+          yield return input;
+          break;
+        }
+
+        yield return input.Substring(0, index);
+        input = input.Substring(index + Environment.NewLine.Length);
+      }
+    }
+#else
+    // Do not change the line at all if you are not going to clean it
+    static string FilterStackTrace(string stackTrace)
+    {
+      return stackTrace;
+    }
+#endif
+
+    #endregion
   }
 
   [Serializable]
