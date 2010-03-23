@@ -83,7 +83,10 @@ namespace Machine.Specifications.GallioAdapter.Services
         AssemblyExplorer explorer = new AssemblyExplorer();
         Assembly resolvedAssembly = assembly.Resolve(false);        
 
-        assemblyTest.AssemblyContexts = explorer.FindAssemblyContextsIn( resolvedAssembly).ToList();        
+        assemblyTest.AssemblyContexts = explorer.FindAssemblyContextsIn( resolvedAssembly).ToList();
+        assemblyTest.GlobalCleanup = explorer.FindAssemblyWideContextCleanupsIn(resolvedAssembly).ToList();
+        assemblyTest.SpecificationSupplements = explorer.FindSpecificationSupplementsIn(resolvedAssembly).ToList();
+        
         explorer.FindContextsIn(resolvedAssembly)
           .Select( context => GetContextTest( context))
           .Each( test => assemblyTest.AddChild( test));          

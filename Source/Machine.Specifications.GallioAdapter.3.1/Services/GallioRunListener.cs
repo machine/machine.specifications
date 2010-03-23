@@ -45,7 +45,8 @@ namespace Machine.Specifications.GallioAdapter.Services
     public override void OnContextStart(ContextInfo context)
     {
       _listener.OnContextStart(context);
-      _testContext.LifecyclePhase = LifecyclePhases.Starting;      
+      _testContext.LifecyclePhase = LifecyclePhases.Starting;
+      _progressMonitor.SetStatus(context.FullName);   
     }
 
     public override void OnContextEnd(ContextInfo context)

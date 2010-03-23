@@ -36,6 +36,8 @@ namespace Machine.Specifications.GallioAdapter.Model
     readonly Version _frameworkVersion;
 
     public IList<IAssemblyContext> AssemblyContexts { get; set; }
+    public IList<ICleanupAfterEveryContextInAssembly> GlobalCleanup { get; set; }
+    public IList<ISupplementSpecificationResults> SpecificationSupplements { get; set; }           
     
     public string AssemblyFilePath 
     {
