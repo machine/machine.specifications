@@ -49,6 +49,7 @@
     <Compile Include="Model\MachineAssemblyTest.cs" />
     <Compile Include="Model\MachineGallioTest.cs" />
     <Compile Include="Model\SpecificationMetadataKeys.cs" />
+    <Compile Include="Services\GallioRunListener.cs" />
     <Compile Include="Services\MachineSpecificationsDriver.cs" />
     <Compile Include="Services\MachineSpecificationsExplorer.cs" />
     <Compile Include="MachineSpecificationsFramework.cs" />
@@ -83,6 +84,7 @@
   <ItemGroup>
     <Content Include="Readme.txt">
     </Content>
+    <Content Include="TODO.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

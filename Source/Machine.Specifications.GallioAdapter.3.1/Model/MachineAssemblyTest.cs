@@ -45,7 +45,7 @@ namespace Machine.Specifications.GallioAdapter.Model
     public Version FrameworkVersion 
     { 
       get { return _frameworkVersion; } 
-    }
+    }    
 
     /// <summary>
     /// Creates an object to represent an MSpec assembly.

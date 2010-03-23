@@ -1,0 +1,6 @@
+﻿Update the Controller to use the Runners from Machine.Specifications
+The Controller should be able to reuse existing runners based on the options
+Applying filtering to tests to be executed based on tags, classnames and namespaces. Start with what MSpec supports.
+
+Suplimenting Specificaionts
+Global Cleanup

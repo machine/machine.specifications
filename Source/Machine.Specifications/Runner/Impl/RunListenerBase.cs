@@ -39,7 +39,7 @@ namespace Machine.Specifications.Runner.Impl
     {
     }
 
-    public void OnFatalError(ExceptionResult exception)
+    public virtual void OnFatalError(ExceptionResult exception)
     {
     }
   }

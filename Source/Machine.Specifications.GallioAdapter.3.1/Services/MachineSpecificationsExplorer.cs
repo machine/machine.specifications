@@ -39,7 +39,7 @@ namespace Machine.Specifications.GallioAdapter.Services
       new Dictionary<IAssemblyInfo, MachineAssemblyTest>();    
 
     protected override void ExploreImpl(IReflectionPolicy reflectionPolicy, ICodeElementInfo codeElement)
-    {
+    {      
       IAssemblyInfo assembly = ReflectionUtils.GetAssembly(codeElement);
       if (assembly != null)
       {

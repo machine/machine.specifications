@@ -28,14 +28,24 @@ using Machine.Specifications.GallioAdapter.Model;
 using Machine.Specifications.Utility;
 
 using TestLog = Gallio.Framework.TestLog;
+using Machine.Specifications.Runner;
+using Machine.Specifications.Runner.Impl;
 
 namespace Machine.Specifications.GallioAdapter.Services
-{
+{  
   public class MachineSpecificationController : TestController
-  {            
+  {
+    ISpecificationRunListener _listener;
+    RunOptions _options;
+    IProgressMonitor _progressMonitor;
+
     protected override TestResult RunImpl(ITestCommand rootTestCommand, TestStep parentTestStep,
                     TestExecutionOptions options, IProgressMonitor progressMonitor)
     {
+      _listener = new AggregateRunListener(Enumerable.Empty<ISpecificationRunListener>());
+      _options = new RunOptions(Enumerable.Empty<string>(), Enumerable.Empty<string>());
+      _progressMonitor = progressMonitor;
+
       using (progressMonitor)
       {
         progressMonitor.BeginTask("Verifying Specifications", rootTestCommand.TestCount);
@@ -46,88 +56,70 @@ namespace Machine.Specifications.GallioAdapter.Services
         }
         else
         {
-          ITestCommand assemblyCommand = rootTestCommand.Children.SingleOrDefault();
-          if( assemblyCommand == null)
-            return new TestResult( TestOutcome.Error);
+          ITestContext rootContext = rootTestCommand.StartPrimaryChildStep(parentTestStep);
+          TestStep rootStep = rootContext.TestStep;          
+          TestOutcome outcome = TestOutcome.Pending;
 
-          ITestContext rootContext = rootTestCommand.StartPrimaryChildStep( parentTestStep);
+          _listener.OnRunStart();
 
-          return RunTest(assemblyCommand, rootContext.TestStep, progressMonitor);                     
+          foreach (ITestCommand command in rootTestCommand.Children)
+          {
+            MachineAssemblyTest assembly = command.Test as MachineAssemblyTest;
+            if( assembly == null )
+              continue;                        
+
+            var assemblyResult = RunAssembly(assembly, command, rootStep);
+            outcome = outcome.CombineWith( assemblyResult.Outcome);
+          }
+
+          _listener.OnRunEnd();
+
+          return rootContext.FinishStep( outcome, null);
         }
-      }
-    }
-     
-    TestResult RunTest(ITestCommand testCommand, TestStep parentTestStep, IProgressMonitor progressMonitor)
-    {
-      Test test = testCommand.Test;
-      progressMonitor.SetStatus(test.Name);
+      }      
+    }      
 
-      MachineSpecificationTest specification = test as MachineSpecificationTest;
-      MachineContextTest context = test as MachineContextTest;
-      MachineAssemblyTest assembly = test as MachineAssemblyTest;
-      RootTest root = test as RootTest;      
-
-      if (specification != null)
-      {
-        return RunSpecificationTest(specification, testCommand, parentTestStep);
-      }
-      else if (context != null)
-      {
-        return RunContextTest(context, testCommand, parentTestStep);
-      }
-      else if (assembly != null)
-      {
-        return RunAssembly(assembly, testCommand, parentTestStep, progressMonitor);
-      }
-      else
-      {
-        Debug.WriteLine("Got something weird " + test.GetType().ToString());
-        return new TestResult(TestOutcome.Error);
-      }
-    }
-
-    TestResult RunAssembly(MachineAssemblyTest assembly, ITestCommand testCommand, TestStep parentTestStep, IProgressMonitor progressMonitor)
+    TestResult RunAssembly(MachineAssemblyTest assembly, ITestCommand testCommand, TestStep parentTestStep)
     {
       ITestContext assemblyContext = testCommand.StartPrimaryChildStep(parentTestStep);      
 
+      AssemblyInfo assemblyInfo = new AssemblyInfo( assembly.Name);
       TestOutcome outcome = TestOutcome.Passed;
-      
+
+      _listener.OnAssemblyStart(assemblyInfo);
       assembly.AssemblyContexts.Each(context => context.OnAssemblyStart());
       
-      foreach (ITestCommand child in testCommand.Children)
+      foreach (ITestCommand contextCommand in testCommand.Children)
       {
-        var childResult = RunTest(child, assemblyContext.TestStep, progressMonitor);
+        MachineContextTest contextTest = contextCommand.Test as MachineContextTest;
+        if (contextTest == null) 
+          continue;
+
+        var childResult = RunContextTest( contextTest, contextCommand, assemblyContext.TestStep);
         outcome = outcome.CombineWith(childResult.Outcome);
+        assemblyContext.SetInterimOutcome(outcome);
       }
             
       assembly.AssemblyContexts.Reverse().Each(context => context.OnAssemblyComplete());
+      _listener.OnAssemblyEnd(assemblyInfo);
 
       return assemblyContext.FinishStep( outcome, null);
     }
 
-    TestResult RunContextTest(MachineContextTest description, ITestCommand testCommand, TestStep parentTestStep)
+    TestResult RunContextTest(MachineContextTest contextTest, ITestCommand testCommand, TestStep parentTestStep)
     {
       ITestContext testContext = testCommand.StartPrimaryChildStep(parentTestStep);      
       testContext.LifecyclePhase = LifecyclePhases.SetUp;
-      description.SetupContext();
 
-      TestOutcome outcome = TestOutcome.Passed;
+      IContextRunner runner = ContextRunnerFactory.GetContextRunnerFor(contextTest.Context);      
 
-      foreach (ITestCommand child in testCommand.Children)
-      {
-        MachineSpecificationTest specification = child.Test as MachineSpecificationTest;
+      GallioRunListener listener = new GallioRunListener( _listener, _progressMonitor, testContext, testCommand.Children);
+        
+      runner.Run(contextTest.Context, listener, _options, 
+        Enumerable.Empty<ICleanupAfterEveryContextInAssembly>(), 
+        Enumerable.Empty<ISupplementSpecificationResults>());
 
-        if (specification != null)
-        {
-          var childResult = RunSpecificationTest(specification, child, testContext.TestStep);
-          outcome  = outcome.CombineWith( childResult.Outcome);
-        }
-      }
-
-      testContext.LifecyclePhase = LifecyclePhases.TearDown;
-      description.TeardownContext();
-
-      return testContext.FinishStep(outcome, null);
+      return testContext.FinishStep(listener.Outcome, null);
     }
 
     TestResult RunSpecificationTest(MachineSpecificationTest specification, ITestCommand testCommand, TestStep parentTestStep)
@@ -135,7 +127,7 @@ namespace Machine.Specifications.GallioAdapter.Services
       ITestContext testContext = testCommand.StartPrimaryChildStep(parentTestStep);
       testContext.LifecyclePhase = LifecyclePhases.Execute;
 
-      var result = specification.Execute();           
+      var result = Result.Pass();// specification.Execute();           
 
       if (result.Status == Status.NotImplemented)
       {        
