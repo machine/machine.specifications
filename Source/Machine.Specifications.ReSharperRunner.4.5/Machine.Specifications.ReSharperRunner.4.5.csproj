@@ -181,6 +181,9 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\ContextTask.cs">
       <Link>Tasks\ContextTask.cs</Link>
     </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\Task.4.1.cs">
+      <Link>Tasks\Task.4.1.cs</Link>
+    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\Task.cs">
       <Link>Tasks\Task.cs</Link>
     </Compile>

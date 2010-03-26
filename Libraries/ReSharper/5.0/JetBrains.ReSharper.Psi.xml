@@ -772,6 +772,26 @@
             Reference between PSI modules
             </summary>
         </member>
+        <member name="T:JetBrains.ReSharper.Psi.Impl.Types.DynamicTypePointer">
+            <summary>
+            Pointer to the 'dynamic' type. 
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Psi.ITypePointer">
+            <summary>
+            Interface for obtaining a type from some place
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.ITypePointer.FindType">
+            <summary>
+            Resurrects the type being pointed to
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.Psi.ITypePointer.Solution">
+            <summary>
+            Solution in which the pointer was created
+            </summary>
+        </member>
         <member name="M:JetBrains.ReSharper.Psi.Impl.IMiscFilesProjectPsiModuleProvider.GetModules">
             <summary>
             Get provided modules
@@ -2001,6 +2021,11 @@
             This will check possible runtime binding, i.e. 2 type elements from assemblies equals if their FQN equals, and assembly names are the same
             </summary>
         </member>
+        <member name="M:JetBrains.ReSharper.Psi.Impl.TypeElementEqualityComparer.IsEqualEmbeddedComInteropTypes(JetBrains.ReSharper.Psi.ITypeElement,JetBrains.ReSharper.Psi.ITypeElement)">
+            <summary>
+            http://msdn.microsoft.com/en-us/library/dd997297%28VS.100%29.aspx
+            </summary>
+        </member>
         <member name="M:JetBrains.ReSharper.Psi.Naming.Elements.INamedElementsManager.GetAllElementKinds(JetBrains.ReSharper.Psi.PsiLanguageType)">
             <param name="language">'null' for language neutral element kinds</param>
         </member>
@@ -2064,6 +2089,11 @@
               - total cache CRC did not match
               - IO problem occured
             In all these cases it automatically resets the cache on the disk to an empty one.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.Psi.Util.MiscUtil.EnumerateChildNodes(JetBrains.ReSharper.Psi.Tree.IElement)">
+            <summary>
+            enumerates this node and all it's children
             </summary>
         </member>
         <member name="T:JetBrains.ReSharper.Psi.util.StringLiteralConverter">
@@ -3140,7 +3170,7 @@
         </member>
         <member name="M:JetBrains.ReSharper.Psi.Impl.Search.FinderUtil.GetInheritorsClosure(JetBrains.ReSharper.Psi.ITypeElement)">
             <summary>
-            Get all names of the possible inheritos and it's count
+            Get all names of the possible inheritors and it's count
             </summary>
             <param name="typeElement"></param>
             <returns></returns>
@@ -3373,21 +3403,6 @@
         <member name="T:JetBrains.ReSharper.Psi.ITypeDecorator">
             <summary>
             A type pointer which decorates another type pointer
-            </summary>
-        </member>
-        <member name="T:JetBrains.ReSharper.Psi.ITypePointer">
-            <summary>
-            Interface for obtaining a type from some place
-            </summary>
-        </member>
-        <member name="M:JetBrains.ReSharper.Psi.ITypePointer.FindType">
-            <summary>
-            Resurrects the type being pointed to
-            </summary>
-        </member>
-        <member name="P:JetBrains.ReSharper.Psi.ITypePointer.Solution">
-            <summary>
-            Solution in which the pointer was created
             </summary>
         </member>
         <member name="P:JetBrains.ReSharper.Psi.ITypeDecorator.TypePointer">

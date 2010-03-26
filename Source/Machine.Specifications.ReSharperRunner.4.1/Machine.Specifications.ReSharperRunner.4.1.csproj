@@ -135,6 +135,7 @@
     <Compile Include="Presentation\Presenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Presentation\FieldElement.cs" />
+    <Compile Include="Tasks\Task.4.1.cs" />
     <Compile Include="Tasks\Task.cs" />
     <Compile Include="UnitTestElementComparer.cs" />
   </ItemGroup>

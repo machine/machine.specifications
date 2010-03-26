@@ -180,17 +180,24 @@
             <param name="sExceptionMessageAmbiguous">The message for an exception to be thrown if the <paramref name="source"/> contains more than one element.</param>
             <returns>The single element of the input sequence that satisfies a condition.</returns>
         </member>
-        <member name="F:JetBrains.HashMap`2.Entry.HashCode">
+        <member name="T:JetBrains.Util.Collections.HashMap`2">
+            <summary>
+            Reimplementation of Dictionary.
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="F:JetBrains.Util.Collections.HashMap`2.Entry.HashCode">
             <summary>
             Cached hash code of the key, -1 means entry is free
             </summary>
         </member>
-        <member name="F:JetBrains.HashMap`2.Entry.NextEntryIndex">
+        <member name="F:JetBrains.Util.Collections.HashMap`2.Entry.NextEntryIndex">
             <summary>
             Index of next entry in the chain of keys with the same hashcodes (modulo size), -1 means last
             </summary>
         </member>
-        <member name="F:JetBrains.HashMap`2.Entry.PrevEntryIndex">
+        <member name="F:JetBrains.Util.Collections.HashMap`2.Entry.PrevEntryIndex">
             <summary>
             Index of previous entry in the chain of keys with the same hashcodes (modulo size), -1 means first
             </summary>
@@ -201,6 +208,9 @@
             and count of objects in the collection.
             </summary>
             <typeparam name="T">The type of objects to enumerate.</typeparam>
+        </member>
+        <member name="T:JetBrains.Util.DataStructures.ReadOnlyException">
+            <summary>Represents the exception that is thrown when you try to change the value of a read-only entity.</summary>
         </member>
         <member name="F:JetBrains.Util.StrongToWeakDictionary`2.Entry.HashCode">
             <summary>
@@ -1613,6 +1623,53 @@
             When there are no more bytes to read, throws an exception.
             </summary>
         </member>
+        <member name="M:JetBrains.Util.DataStructures.ChunkHashSet`1.#ctor(System.Collections.Generic.ICollection{`0},System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.DataStructures.ChunkHashSet`1.SetEquals(JetBrains.Util.DataStructures.ChunkHashSet{`0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.DataStructures.ChunkHashSet`1.IsSupersetOf(System.Collections.Generic.ICollection{`0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.DataStructures.ChunkHashSet`1.IsSupersetOf(JetBrains.Util.DataStructures.ChunkHashSet{`0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Util.DataStructures.ChunkHashSet`1.Entry.HashCode">
+            <summary>
+            Cached hash code of the key, -1 means entry is free
+            </summary>
+        </member>
+        <member name="F:JetBrains.Util.DataStructures.ChunkHashSet`1.Entry.NextEntryIndex">
+            <summary>
+            Index of next entry in the chain of keys with the same hashcodes (modulo size), -1 means last
+            </summary>
+        </member>
+        <member name="T:JetBrains.Util.DataStructures.ChunkHashMap`2">
+            <summary>
+            Reimplementation of Dictionary.
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="F:JetBrains.Util.DataStructures.ChunkHashMap`2.Entry.HashCode">
+            <summary>
+            Cached hash code of the key, -1 means entry is free
+            </summary>
+        </member>
+        <member name="F:JetBrains.Util.DataStructures.ChunkHashMap`2.Entry.NextEntryIndex">
+            <summary>
+            Index of next entry in the chain of keys with the same hashcodes (modulo size), -1 means last
+            </summary>
+        </member>
         <member name="M:JetBrains.dataStructures.ImmutableArray`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Int32)">
             <summary>
             Sightly optimized version where the count of the data is known before hand
@@ -2110,6 +2167,12 @@
             <summary>
             Opens a stream-writer on this file system path for writing, requesting minimum permissions and trying to be as non-blocking as possible.
             </summary>
+        </member>
+        <member name="M:JetBrains.Util.PermanentUserIdUtil.GetUnuqueUserId">
+            <summary>
+            Returns global unique id of user. The Id is shared among all JetBrainss the applications.
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:JetBrains.UI.Interop.HResultsEx.Assert(JetBrains.Interop.WinApi.HResults)">
             <summary>
@@ -2756,12 +2819,22 @@
             Получить лок для читающего с возможностью апгрейда до пишущего.
             </summary>
         </member>
+        <member name="M:JetBrains.StringEx.ToEnum``1(System.String,System.Boolean)">
+            <summary>
+            Parse string to enum without any checking
+            </summary>
+        </member>
         <member name="M:JetBrains.StringEx.ToEnum``1(System.String)">
             <summary>
             Parse string to enum without any checking
             </summary>
         </member>
         <member name="M:JetBrains.StringEx.ToEnum``1(System.String,``0)">
+            <summary>
+            Parse string to enum with returning specified default value if parameter is null
+            </summary>
+        </member>
+        <member name="M:JetBrains.StringEx.ToEnum``1(System.String,System.Boolean,``0)">
             <summary>
             Parse string to enum with returning specified default value if parameter is null
             </summary>
@@ -2948,6 +3021,13 @@
             <summary>
             Index of previous entry in the chain of keys with the same hashcodes (modulo size), -1 means first
             </summary>
+        </member>
+        <member name="F:JetBrains.Application.CompanyInfo.PlatformProductRegistryKeyName">
+            <summary>
+            <para>In the Registry, name of the key that's shared by all of the Platform-based products (under the company name key).</para>
+            <para>Things like InstanceId that are used by usage statistics of all the products are stored there.</para>
+            </summary>
+            <example><code>HKEY_CURRENT_USER\Software\JetBrains\Platform</code></example>
         </member>
         <member name="T:JetBrains.Comparer`1">
             <summary>
@@ -11624,12 +11704,7 @@
             Static overload to prevent runtime type checks.
             </summary>
         </member>
-        <member name="M:System.Linq.Enumerable.Count``1(``0[])">
-            <summary>
-            Static overload to prevent ambiguity between <see cref="M:System.Linq.Enumerable.Count``1(System.Collections.Generic.ICollection{``0})"/> and <see cref="M:System.Linq.Enumerable.Count(System.Array)"/>.
-            </summary>
-        </member>
-        <member name="M:System.Linq.Enumerable.Count(System.Array)">
+        <member name="M:System.Linq.Enumerable.Count(System.Collections.ICollection)">
             <summary>
             Static overload to prevent runtime type checks.
             </summary>
@@ -11645,6 +11720,21 @@
             </summary>
         </member>
         <member name="M:System.Linq.Enumerable.Any``1(System.Collections.Generic.ICollection{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Any``1(JetBrains.Util.LocalList{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Any``1(System.Collections.Generic.Queue{``0})">
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:System.Linq.Enumerable.Any``1(System.Collections.Generic.Stack{``0})">
             <summary>
             Static overload to prevent runtime type checks.
             </summary>
@@ -11769,9 +11859,9 @@
             Index of next entry in the chain of keys with the same hashcodes (modulo size), -1 means last
             </summary>
         </member>
-        <member name="F:System.Collections.Generic.HashSet`1.Entry.PrevEntryIndex">
+        <member name="F:System.Collections.Generic.HashSet`1.Entry.Element">
             <summary>
-            Index of previous entry in the chain of keys with the same hashcodes (modulo size), -1 means first
+            Element of set
             </summary>
         </member>
         <member name="T:JetBrains.TreeModels.CascadeGroup">
@@ -14130,12 +14220,36 @@
         </member>
         <member name="M:JetBrains.Util.CollectionUtil.IsEmpty``1(System.Collections.Generic.IEnumerable{``0})">
             <summary>
-            Returns <c>true</c> if and only if <paramref name="collection"/> is empty (has no elements)
+            Returns <c>true</c> if and only if <paramref name="collection"/> is empty (has no elements).
             </summary>
         </member>
         <member name="M:JetBrains.Util.CollectionUtil.IsEmpty``1(System.Collections.Generic.ICollection{``0})">
             <summary>
-            Returns <c>true</c> if and only if <paramref name="collection"/> is empty (has no elements)
+            Returns <c>true</c> if and only if <paramref name="collection"/> is empty (has no elements).
+            </summary>
+            <remarks>
+            Static overload to prevent runtime type checks.
+            </remarks>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.IsEmpty``1(JetBrains.Util.LocalList{``0})">
+            <summary>
+            Returns <c>true</c> if and only if <paramref name="collection"/> is empty (has no elements).
+            </summary>
+            <summary>
+            Static overload to prevent runtime type checks.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.IsEmpty``1(System.Collections.Generic.Stack{``0})">
+            <summary>
+            Returns <c>true</c> if and only if <paramref name="collection"/> is empty (has no elements).
+            </summary>
+            <remarks>
+            Static overload to prevent runtime type checks.
+            </remarks>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.IsEmpty``1(System.Collections.Generic.Queue{``0})">
+            <summary>
+            Returns <c>true</c> if and only if <paramref name="collection"/> is empty (has no elements).
             </summary>
             <remarks>
             Static overload to prevent runtime type checks.
@@ -15792,12 +15906,17 @@
             Renders the pointer-sized integer as the appropriate number of hex chars, with leading zeros.
             </summary>
         </member>
+        <member name="M:JetBrains.Util.StringUtil.ToHexString(System.Void*)">
+            <summary>
+            Renders the pointer value as the appropriate number of hex chars, with leading zeros.
+            </summary>
+        </member>
         <member name="M:JetBrains.Util.StringUtil.ToHexString(System.UIntPtr)">
             <summary>
             Renders the pointer-sized integer as the appropriate number of hex chars, with leading zeros.
             </summary>
         </member>
-        <member name="M:JetBrains.Util.StringUtil.ToStringWithLeading(System.Int32,System.Int32)">
+        <member name="M:JetBrains.Util.StringUtil.ToStringWithLeading(System.Int32,System.Int32,System.Globalization.CultureInfo)">
             <summary>
             Formats the <paramref name="value"/> to a string, adding leading zeros so that all of the numbers up to <paramref name="maxvalue"/>, inclusively, had the same number of characters in their string representation when formatted thru this function.
             </summary>

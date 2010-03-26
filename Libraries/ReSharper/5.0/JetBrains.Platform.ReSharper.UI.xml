@@ -2554,10 +2554,16 @@
             Implements the presentation of the Goto By Name functionality that works thru a <see cref="T:JetBrains.UI.PopupMenu.JetPopupMenu"/>.
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "F:JetBrains.UI.GotoByName.GotoByNameMenu.InheritedSearchTextSelection" -->
-        <member name="F:JetBrains.UI.GotoByName.GotoByNameMenu.InheritedSearchTextString">
+        <member name="F:JetBrains.UI.GotoByName.GotoByNameMenu.MenuView">
             <summary>
-            When a new menu is opened in place of an old one, it inherits the search text. This is the value (<c>Null</c> if none).
+            Gets the menu view, when the menu is running onscreen.
+            Otherwise <c>Null</c>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.GotoByName.GotoByNameMenu.PopupWindow">
+            <summary>
+            Gets the menu popup window, when the menu is running onscreen.
+            Otherwise <c>Null</c>.
             </summary>
         </member>
         <member name="M:JetBrains.UI.GotoByName.GotoByNameMenu.GotoByName(JetBrains.UI.GotoByName.GotoByNameModel)">
@@ -2566,11 +2572,6 @@
             Disposes of the model when done.
             </summary>
             <param name="model">Goto-by-name model that provides data for the UI.</param>
-        </member>
-        <member name="M:JetBrains.UI.GotoByName.GotoByNameMenu.Init_KeyboardShortcuts(JetBrains.UI.PopupMenu.Impl.JetPopupMenuView)">
-            <summary>
-            Supports switching to other views of the GotoByName family.
-            </summary>
         </member>
         <member name="M:JetBrains.UI.GotoByName.GotoByNameMenu.Init_EditboxColor(JetBrains.DataFlow.IProperty{System.Boolean},JetBrains.DataFlow.IProperty{System.Boolean},JetBrains.DataFlow.IProperty{System.Boolean},JetBrains.UI.PopupMenu.Impl.JetPopupMenuView)">
             <summary>
@@ -2591,18 +2592,6 @@
         <member name="M:JetBrains.UI.GotoByName.GotoByNameMenu.Init_Glyph(JetBrains.UI.GotoByName.GotoByNameModel,JetBrains.UI.PopupMenu.Impl.JetPopupMenuView)">
             <summary>
             Sets up the “busy” glyph.
-            </summary>
-        </member>
-        <member name="P:JetBrains.UI.GotoByName.GotoByNameMenu.MenuView">
-            <summary>
-            Gets the menu view, when the menu is running onscreen.
-            Otherwise <c>Null</c>.
-            </summary>
-        </member>
-        <member name="P:JetBrains.UI.GotoByName.GotoByNameMenu.PopupWindow">
-            <summary>
-            Gets the menu popup window, when the menu is running onscreen.
-            Otherwise <c>Null</c>.
             </summary>
         </member>
         <member name="T:JetBrains.UI.GotoByName.GotoByNameModel">
@@ -3871,12 +3860,6 @@
             You may turn the sticky dispositions mode (see <see cref="P:JetBrains.UI.DockingLayouter.UseStickyDispositions"/>) on or off.
             </summary>
         </member>
-        <member name="M:JetBrains.UI.DockingLayouter.Dispose">
-            <summary>
-            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            </summary>
-            <filterpriority>2</filterpriority>
-        </member>
         <member name="M:JetBrains.UI.DockingLayouter.GetScreenBounds(System.Drawing.Rectangle)">
             <summary>
             Gets the screen bounds into which the rectangle being laid out should be fit.
@@ -4008,25 +3991,19 @@
             Nests the <paramref name="nested"/> anchoring rect within the <paramref name="outer"/> one, treating the coordinates of the first as client ones within the second.
             </summary>
         </member>
-        <member name="M:JetBrains.UI.NestedAnchoringRect.Dispose">
-            <summary>
-            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            </summary>
-            <filterpriority>2</filterpriority>
-        </member>
-        <member name="M:JetBrains.UI.NestedAnchoringRect.UpdateAnchor">
-            <summary>
-            Updates the anchor based on the two underlying anchors.
-            </summary>
-        </member>
-        <member name="P:JetBrains.UI.NestedAnchoringRect.Nested">
+        <member name="F:JetBrains.UI.NestedAnchoringRect.Nested">
             <summary>
             Gets that of the two anchors that is nested within the other.
             </summary>
         </member>
-        <member name="P:JetBrains.UI.NestedAnchoringRect.Outer">
+        <member name="F:JetBrains.UI.NestedAnchoringRect.Outer">
             <summary>
             Gets that of the two anchors that is the outer one.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.NestedAnchoringRect.UpdateAnchor">
+            <summary>
+            Updates the anchor based on the two underlying anchors.
             </summary>
         </member>
         <member name="T:JetBrains.UI.RectangleDocker">
@@ -4694,6 +4671,13 @@
         <member name="F:JetBrains.UI.PopupMenu.Impl.JetPopupMenuDoc.KeyboardAcceleration">
             <summary>
             Gets or sets the way keyboard acceleration works for the list.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.PopupMenu.Impl.JetPopupMenuDoc.LastSelectedItem">
+            <summary>
+            Gets the most recent non-<c>Null</c> <see cref="F:JetBrains.UI.PopupMenu.Impl.JetPopupMenuDoc.SelectedItem">selected item wrapper object</see>.
+            <c>Null</c> is a legitimate value meaning there weren't ever any selection, or the MRU selected item has been removed from the items list.
+            If not <c>Null</c>, must belong to the <see cref="F:JetBrains.UI.PopupMenu.Impl.JetPopupMenuDoc.CurrentItems"/> collection.
             </summary>
         </member>
         <member name="F:JetBrains.UI.PopupMenu.Impl.JetPopupMenuDoc.Mnemonics">
@@ -8082,6 +8066,14 @@
             Whether the user has canceled the progress dialog. Readonly.
             </summary>
         </member>
+        <member name="M:JetBrains.UI.Application.Progress.JetProgressWnd.WndProc_DontStealFocusFromDialogBoxes(System.Windows.Forms.Message)">
+            <summary>
+            The progress window is shown after a delay.
+            If the task-under-progress shows a dialog box before the delay elapses, the progress would steal focus from that dialog box. Not nice.
+            An example is the checkout dialog box.
+            Make sure we return focus where it belongs.
+            </summary>
+        </member>
         <member name="M:JetBrains.UI.Application.Progress.JetProgressWnd.JetBrains#CommonControls#IConstrainableControl#GetDesiredSize(JetBrains.UI.IGraphicsContainer,System.Drawing.Size)">
             <summary>
             Performs the bottom-up layouting stage, when the control calculates its desired size using the given constraints.
@@ -8180,6 +8172,14 @@
             A handle to the progress window. Readonly.
             </summary>
         </member>
+        <member name="M:JetBrains.UI.Application.Progress.SystemProgressDialog.InitRunning_DontStealFocusFromDialogBoxes(JetBrains.DataFlow.Disposables)">
+            <summary>
+            The progress window is shown after a delay.
+            If the task-under-progress shows a dialog box before the delay elapses, the progress would steal focus from that dialog box. Not nice.
+            An example is the checkout dialog box.
+            Make sure we return focus where it belongs.
+            </summary>
+        </member>
         <member name="M:JetBrains.UI.Application.Progress.SystemProgressDialog.Dispose">
             <summary>
             Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -8236,7 +8236,7 @@
             A special Visual Studio message that sets focus to its window in a deferred manner. Nice to track too.
             </summary>
         </member>
-        <member name="M:JetBrains.UI.Application.Progress.TrackFocus.ReportWindow(System.Void*,System.Text.StringBuilder)">
+        <member name="M:JetBrains.UI.Application.Progress.TrackFocus.ReportFocusedWindow(System.Void*,System.Text.StringBuilder)">
             <summary>
             Adds details about a window, like its depth, title, netfx class, hwnd path from owner.
             </summary>
@@ -8375,9 +8375,14 @@
             Progress UI for the task run, as specified by the owner of this Run object.
             </summary>
         </member>
-        <member name="M:JetBrains.UI.Application.Progress.UITaskExecutorRun.Run_DisableWindows(System.IntPtr)">
+        <member name="M:JetBrains.UI.Application.Progress.UITaskExecutorRun.Run_DisableWindowsButOne(System.IntPtr)">
             <summary>
             Pushes a main-window-disable, to emulate modality.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Application.Progress.UITaskExecutorRun.Run_PushFocusedWindowState">
+            <summary>
+            Stores the focused window, restores in a reliable manner later.
             </summary>
         </member>
         <member name="M:JetBrains.UI.Application.Progress.UITaskExecutorRun.Run_WaitUntilDone">
@@ -8667,6 +8672,16 @@
             <summary>
             Loads the child dialog position from the persisted settings, and applies it to the form.
             The position is stored in a relative form, against the center of the main window.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Application.WindowUtil.PushDisableWindowsButOne(System.IntPtr)">
+            <summary>
+            To enter a modal state for the given window, disables all of the other top-level windows on the same thread, plus the window owner.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Application.WindowUtil.PushFocusedWindowState">
+            <summary>
+            Stores the focused window, restores in a reliable manner later.
             </summary>
         </member>
         <member name="M:JetBrains.UI.Application.WindowUtil.PushModalWindowEnabledState(System.IntPtr)">
@@ -12714,15 +12729,33 @@
             <para>Not guaranteed to fire.</para>
             </summary>
         </member>
+        <member name="F:JetBrains.UI.WindowManagement.WindowFrame.Disposables">
+            <summary>
+            Lifetime control.
+            </summary>
+        </member>
         <member name="F:JetBrains.UI.WindowManagement.WindowFrame.IsVisibleOnScreen">
             <summary>
             <para>Gets whether the frame is currently visible onscreen, which tries to take into account not only the visibility flag of the window, but also whether the window layout allows content control to be visible onscreen.</para>
             <para>This property is <see cref="T:JetBrains.Threading.ReentrancyGuard">guarded</see>, which means that all of the property changes will only occur in the guarded context.</para>
             </summary>
         </member>
+        <member name="F:JetBrains.UI.WindowManagement.WindowFrame.RootParentHwnd">
+            <summary>
+            <para>Gets the root parent HWND for this window frame. This window should be used as owner for window popups over the frame content.</para>
+            <para>The root parent window is the window that has no parent (see <see cref="F:JetBrains.Interop.WinApi.GetAncestorFlags.GA_ROOT"/>) and whose descendant “contains” this frame. For HWND-based UI, it's the top-level window containing the HWND of the frame. For Avalon UI, it's the top-level window containing the HWND presentation source of the UI element (or <c>Null</c>, if the element is not parented by a HWND presentation source).</para>
+            <para>Could be <c>Null</c> if the frame is not hosted on an HWND or the frame implementation cannot provide this value. Could change if the frame is reparented into another top-level window (eg floating a VS10 text view element).</para>
+            </summary>
+        </member>
         <member name="F:JetBrains.UI.WindowManagement.WindowFrame.SwitchToFrameRequested">
             <summary>
             Tries to make <see cref="F:JetBrains.UI.WindowManagement.WindowFrame.IsVisibleOnScreen"/> <c>True</c>. Even if successful, might not apply immediately, as the changes to the <see cref="F:JetBrains.UI.WindowManagement.WindowFrame.IsVisibleOnScreen"/> occur in the reentrancy-guarded context only.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.WindowManagement.WindowFrame.UiElement">
+            <summary>
+            <para>Gets the UI element that represents the window frame, in either UI framework, if exposed by the window frame.</para>
+            <para>For HWND-based UI, query this object for the <see cref="T:System.Windows.Forms.IWin32Window"/> interface. For Avalon UI, try casting to 2D or 3D Avalon elements.</para>
             </summary>
         </member>
         <member name="M:JetBrains.UI.WindowManagement.WindowFrame.CreateDummyFrame">
@@ -12785,6 +12818,18 @@
             <summary>
             Gets the Win32 handle of the window being watched.
             Invalid after the object is disposed.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.WindowManagement.WindowFrameEx.AttachToHwndStatic(JetBrains.UI.WindowManagement.WindowFrame,System.Windows.Forms.IWin32Window)">
+            <summary>
+            Assigns a HWND to the HWND-based window frame.
+            The frame will not listen to changes in parent windows chain or visibility, hence “static”, but it does not leak any system-wide event handlers if not disposed of.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.WindowManagement.WindowFrameEx.AttachToRootParentLive(JetBrains.UI.WindowManagement.WindowFrame,System.Void*)">
+            <summary>
+            Takes a sample HWND from within the frame (or the frame itself, but could be a content window in it), watches changes in its parenting, keeps the <see cref="F:JetBrains.UI.WindowManagement.WindowFrame.RootParentHwnd"/> up to date.
+            Such a frame MUST be disposed of.
             </summary>
         </member>
         <member name="T:JetBrains.UI.testSrc.TestMnemonicStore">

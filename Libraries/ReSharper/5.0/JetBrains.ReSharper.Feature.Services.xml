@@ -73,6 +73,20 @@
             <param name="ignoreSpaces">If spaces should be ignored</param>
             <returns>Element under caret</returns>
         </member>
+        <member name="T:JetBrains.ReSharper.Daemon.IDisableHighlightingActionProvider">
+            <summary>
+            Class should be marked by <see cref="T:JetBrains.ReSharper.Daemon.DisableHighlightingActionProviderAttribute"/> attribute and should implement
+            <see cref="T:JetBrains.ReSharper.Daemon.IDisableHighlightingActionProvider"/> interface to be able to provide custom actions to disable any specific 
+            highlighting
+            </summary>
+        </member>
+        <member name="T:JetBrains.ReSharper.Daemon.DisableHighlightingActionProviderAttribute">
+            <summary>
+            Class should be marked by <see cref="T:JetBrains.ReSharper.Daemon.DisableHighlightingActionProviderAttribute"/> attribute and should implement
+            <see cref="T:JetBrains.ReSharper.Daemon.IDisableHighlightingActionProvider"/> interface to be able to provide custom actions to disable any specific 
+            highlighting
+            </summary>
+        </member>
         <member name="T:JetBrains.ReSharper.Feature.Services.Bulbs.QuickFixAttribute">
             <summary>
             Indicates that the class, marked with this attribute, is a quick-fix. 
@@ -121,20 +135,6 @@
         <member name="P:JetBrains.ReSharper.Feature.Services.Bulbs.IContextActionInfo.ParameterType">
             <summary>
             Type of CA contructor parameter
-            </summary>
-        </member>
-        <member name="T:JetBrains.ReSharper.Daemon.IDisableHighlightingActionProvider">
-            <summary>
-            Class should be marked by <see cref="T:JetBrains.ReSharper.Daemon.DisableHighlightingActionProviderAttribute"/> attribute and should implement
-            <see cref="T:JetBrains.ReSharper.Daemon.IDisableHighlightingActionProvider"/> interface to be able to provide custom actions to disable any specific 
-            highlighting
-            </summary>
-        </member>
-        <member name="T:JetBrains.ReSharper.Daemon.DisableHighlightingActionProviderAttribute">
-            <summary>
-            Class should be marked by <see cref="T:JetBrains.ReSharper.Daemon.DisableHighlightingActionProviderAttribute"/> attribute and should implement
-            <see cref="T:JetBrains.ReSharper.Daemon.IDisableHighlightingActionProvider"/> interface to be able to provide custom actions to disable any specific 
-            highlighting
             </summary>
         </member>
         <member name="M:JetBrains.ReSharper.Daemon.QuickFixTable.DisableWarningActions(JetBrains.ReSharper.Daemon.IHighlighting,JetBrains.DocumentModel.DocumentRange)">
@@ -418,6 +418,30 @@
             Gets visual replace range
             </summary>
         </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Module.IModuleReferencer.CanReferenceModule(JetBrains.ReSharper.Psi.IPsiModule,JetBrains.ReSharper.Psi.IPsiModule)">
+            <summary>
+            Check that module can reference another specified module
+            </summary>
+            <param name="module"></param>
+            <param name="moduleToReference"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JetBrains.ReSharper.Feature.Services.Module.IModuleReferencer.ReferenceModule(JetBrains.ReSharper.Psi.ITypeElement,JetBrains.ReSharper.Psi.IPsiModule,JetBrains.TextControl.ITextControl)">
+            <summary>
+              Return referenced module or null if can't reference it
+            </summary>
+            <param name="element"></param>
+            <param name="module"></param>
+            <param name="textControl"></param>
+            <returns>
+              Referenced IModule and flag indicates to check reference after or not
+            </returns>
+        </member>
+        <member name="P:JetBrains.ReSharper.Feature.Services.Module.ModuleReferencerAttribute.Priority">
+            <summary>
+            Referencer with lower priority executes first
+            </summary>
+        </member>
         <member name="T:JetBrains.ReSharper.Feature.Services.Navigation.TextNavigationPoint">
             <summary>
             Project file's navigation point with cursor positioning
@@ -551,9 +575,15 @@
             and restore comments while uncommenting
             </summary>
         </member>
+        <member name="T:JetBrains.ReSharper.Daemon.DaemonState">
+            <summary>
+            Normal state flow is the following:
+            INVALIDATED->IN_PROGRESS_LOCAL->UP_TO_DATE->IN_PROGRESS_GLOBAL->UP_TO_DATE
+            </summary>
+        </member>
         <member name="F:JetBrains.ReSharper.Daemon.DaemonState.HIDDEN">
             <summary>
-            Daemon doesn't need error stripe for given document
+            Daemon doesn't need error stripe for given document.
             </summary>
         </member>
         <member name="F:JetBrains.ReSharper.Daemon.DaemonState.UNSUPPORTED">
@@ -571,9 +601,14 @@
             Daemon state is not valid for this document (i.e. something changed since last analysis)
             </summary>
         </member>
-        <member name="F:JetBrains.ReSharper.Daemon.DaemonState.IN_PROGRESS">
+        <member name="F:JetBrains.ReSharper.Daemon.DaemonState.IN_PROGRESS_LOCAL">
             <summary>
-            Daemon analysis is currently running
+            Daemon analysis is currently running local stages
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.Daemon.DaemonState.IN_PROGRESS_GLOBAL">
+            <summary>
+            Daemon analysis is currently running global SWA stage
             </summary>
         </member>
         <member name="F:JetBrains.ReSharper.Daemon.DaemonState.UP_TO_DATE">
@@ -612,11 +647,6 @@
             <summary>
             Custom tooltip provider for the error.
             Tooltip provider should be solution-level component and implement <see cref="!:IHighlighterTooltip"/> interface
-            </summary>
-        </member>
-        <member name="T:JetBrains.ReSharper.Daemon.IconGutterMark">
-            <summary>
-            Summary description for ImplementsAndOverridesMarkerPainter.
             </summary>
         </member>
         <member name="T:JetBrains.ReSharper.Daemon.GutterMarkMenuLayouter">
@@ -1495,17 +1525,17 @@
             Gets parameter text
             </summary>
         </member>
-        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.ArrayVariableMacro">
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.ArrayVariableMacro">
             <summary>
             Suggests array variable
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.ArrayVariableMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.ArrayVariableMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="T:JetBrains.ReSharper.LiveTemplates.CSharp.Macros.BindToTypeMacro">
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.BindToTypeMacro">
             <summary>
             Inserts reference bound to type with given CLR name
             </summary>
@@ -1515,377 +1545,377 @@
             Lookup item for type
             </summary>
         </member>
-        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.CapitalizeMacro">
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.CapitalizeMacro">
             <summary>
             A macro which capitalizes its input
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.CapitalizeMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.CapitalizeMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="T:JetBrains.ReSharper.LiveTemplates.ConstantMacroParameter">
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.ConstantMacroParameter">
             <summary>
             A string constant expression
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.ConstantMacroParameter.GetText(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext)">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.ConstantMacroParameter.GetText(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext)">
             <summary>
             Gets parameter text
             </summary>
         </member>
-        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.ContainingTypeMemberNameMacro">
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.ContainingTypeMemberNameMacro">
             <summary>
             Returns the containing type name
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.ContainingTypeMemberNameMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.ContainingTypeMemberNameMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.ContainingTypeNameMacro">
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.ContainingTypeNameMacro">
             <summary>
             Returns the containing type name
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.ContainingTypeNameMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.ContainingTypeNameMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.CurrentDateMacro.GetPlaceholder">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.CurrentDateMacro.GetPlaceholder">
             <summary>
             Gets default value to insert in text where the macro will be evaluated
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.CurrentDateMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.CurrentDateMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates quick macro result
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.CurrentDateMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.CurrentDateMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates list of lookup items
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.CurrentDateMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.CurrentDateMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.CurrentDateTimeMacro.GetPlaceholder">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.CurrentDateTimeMacro.GetPlaceholder">
             <summary>
             Gets default value to insert in text where the macro will be evaluated
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.CurrentDateTimeMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.CurrentDateTimeMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates quick macro result
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.CurrentDateTimeMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.CurrentDateTimeMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates list of lookup items
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.CurrentDateTimeMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.CurrentDateTimeMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.CurrentNamespaceMacro.GetPlaceholder">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.CurrentNamespaceMacro.GetPlaceholder">
             <summary>
             Gets default value to insert in text where the macro will be evaluated
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.CurrentNamespaceMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.CurrentNamespaceMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates quick macro result
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.CurrentNamespaceMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.CurrentNamespaceMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates list of lookup items
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.CurrentNamespaceMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.CurrentNamespaceMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.DecapitalizeMacro">
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.DecapitalizeMacro">
             <summary>
             A macro which capitalizes its input
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.DecapitalizeMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.DecapitalizeMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.DefaultNamespaceMacro.GetPlaceholder">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.DefaultNamespaceMacro.GetPlaceholder">
             <summary>
             Gets default value to insert in text where the macro will be evaluated
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.DefaultNamespaceMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.DefaultNamespaceMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates quick macro result
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.DefaultNamespaceMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.DefaultNamespaceMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates list of lookup items
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.DefaultNamespaceMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.DefaultNamespaceMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FileDefaultNamespaceMacro.GetPlaceholder">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.FileDefaultNamespaceMacro.GetPlaceholder">
             <summary>
             Gets default value to insert in text where the macro will be evaluated
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FileDefaultNamespaceMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.FileDefaultNamespaceMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates quick macro result
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FileDefaultNamespaceMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.FileDefaultNamespaceMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates list of lookup items
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.FileDefaultNamespaceMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.FileDefaultNamespaceMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FileNameMacro.GetPlaceholder">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.FileNameMacro.GetPlaceholder">
             <summary>
             Gets default value to insert in text where the macro will be evaluated
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FileNameMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.FileNameMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates quick macro result
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FileNameMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.FileNameMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates list of lookup items
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.FileNameMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.FileNameMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FileNameWithoutExtensionMacro.GetPlaceholder">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.FileNameWithoutExtensionMacro.GetPlaceholder">
             <summary>
             Gets default value to insert in text where the macro will be evaluated
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FileNameWithoutExtensionMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.FileNameWithoutExtensionMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates quick macro result
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FileNameWithoutExtensionMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.FileNameWithoutExtensionMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates list of lookup items
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.FileNameWithoutExtensionMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.FileNameWithoutExtensionMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FullUserNameMacro.GetPlaceholder">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.FullUserNameMacro.GetPlaceholder">
             <summary>
             Gets default value to insert in text where the macro will be evaluated
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FullUserNameMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.FullUserNameMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates quick macro result
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.FullUserNameMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.FullUserNameMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates list of lookup items
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.FullUserNameMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.FullUserNameMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.GuessElementTypeMacro">
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.GuessElementTypeMacro">
             <summary>
             Guesses element type for a containter
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.TypeSuggestionMacroBase.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.TypeSuggestionMacroBase.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.GuessElementTypeMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.GuessElementTypeMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.GuessKeyTypeMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.GuessKeyTypeMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.GuessValueTypeMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.GuessValueTypeMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.LineNumberMacro">
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.LineNumberMacro">
             <summary>
             A macro which evaluates number of the current line
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.LineNumberMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.LineNumberMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates quick macro result
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.LineNumberMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.LineNumberMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.OutputNameMacro.GetPlaceholder">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.OutputNameMacro.GetPlaceholder">
             <summary>
             Gets default value to insert in text where the macro will be evaluated
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.OutputNameMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.OutputNameMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates quick macro result
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.OutputNameMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.OutputNameMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates list of lookup items
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.OutputNameMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.OutputNameMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.ParameterOfTypeMacro">
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.ParameterOfTypeMacro">
             <summary>
             Suggests IEnumerable variable
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.ParameterOfTypeMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.ParameterOfTypeMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.ProjectNameMacro.GetPlaceholder">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.ProjectNameMacro.GetPlaceholder">
             <summary>
             Gets default value to insert in text where the macro will be evaluated
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.ProjectNameMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.ProjectNameMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates quick macro result
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.ProjectNameMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.ProjectNameMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates list of lookup items
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.ProjectNameMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.ProjectNameMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.SolutionNameMacro.GetPlaceholder">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.SolutionNameMacro.GetPlaceholder">
             <summary>
             Gets default value to insert in text where the macro will be evaluated
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.SolutionNameMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.SolutionNameMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates quick macro result
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.SolutionNameMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.SolutionNameMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates list of lookup items
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.SolutionNameMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.SolutionNameMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.SuggestEnumerableVariableMacro">
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.SuggestEnumerableVariableMacro">
             <summary>
             Suggests IEnumerable variable
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.SuggestEnumerableVariableMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.SuggestEnumerableVariableMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.SuggestIndexVariableNameMacro">
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.SuggestIndexVariableNameMacro">
             <summary>
             Suggests index variable
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.SuggestVariableNameMacroBase.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.SuggestVariableNameMacroBase.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.SuggestVariableNameMacro">
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.SuggestVariableNameMacro">
             <summary>
             Suggests variable name
             </summary>
         </member>
-        <member name="T:JetBrains.ReSharper.LiveTemplates.Macros.SuggestVariableOfTypeMacro">
+        <member name="T:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.SuggestVariableOfTypeMacro">
             <summary>
             Suggests IEnumerable variable
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.SuggestVariableOfTypeMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.SuggestVariableOfTypeMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.UserNameMacro.GetPlaceholder">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.UserNameMacro.GetPlaceholder">
             <summary>
             Gets default value to insert in text where the macro will be evaluated
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.UserNameMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.UserNameMacro.EvaluateQuickResult(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates quick macro result
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.LiveTemplates.Macros.UserNameMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
+        <member name="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.UserNameMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})">
             <summary>
             Evaluates list of lookup items
             </summary>
         </member>
-        <member name="P:JetBrains.ReSharper.LiveTemplates.Macros.UserNameMacro.Parameters">
+        <member name="P:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.UserNameMacro.Parameters">
             <summary>
             Gets array of parameter descriptions
             </summary>

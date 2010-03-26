@@ -257,6 +257,14 @@
             <para>Note: <see cref="T:JetBrains.Application.IApplicationDescriptor"/> is all-static and the same throughout all the product runs, <see cref="T:JetBrains.Application.IShellStarter"/> is bound to the single product run (but multiple shell runs, if needed), so it binds to cmdline and VS version, and the <see cref="T:JetBrains.Application.Shell"/> is for a single Shell run, and its <see cref="P:JetBrains.Application.Shell.AssemblyConfigurations"/> is unique per run.</para>
             </summary>
         </member>
+        <member name="M:JetBrains.Application.IShellStarter.GetProductRegistryKey">
+            <summary>
+            Gets the path to the Registry location where the product Registry is stored.
+            For standalone products, that could be just the Application Registry path.
+            For Visual Studio add-ins, this could be the VS-version-specific location.
+            Note that as Shell Starter is created before Shell, it should not use <see cref="P:JetBrains.Application.Shell.Instance"/>.
+            </summary>
+        </member>
         <member name="M:JetBrains.Application.IShellStarter.StartShell">
             <summary>
             <para>Starts the application shell based on this instance.</para>
@@ -1624,11 +1632,6 @@
             Currently, an assembly must meet all of the configurations to be loaded.
             </summary>
         </member>
-        <member name="P:JetBrains.Application.Shell.BuildDescription">
-            <summary>
-            Gets the plaintext description that identifies the current build.
-            </summary>
-        </member>
         <member name="P:JetBrains.Application.Shell.Components">
             <summary>
             <para>Provides access to the major application-global components and subsystems.</para>
@@ -1645,6 +1648,13 @@
         <member name="P:JetBrains.Application.Shell.InstallDir">
             <summary>
             Gets the directory in which the product assemblies are located.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Shell.UserId">
+            <summary>
+            Gets permanent unique user Id. The Id is saved in Registry under HKLM\Software\JetBrains\Platform section. <br />
+            The Id is used to idendify same user even after ReSharper (or another product) is reinstalled or downgraded.
+            Please note that the Id is shared among all JetBrains applications intalled by the user.
             </summary>
         </member>
         <member name="P:JetBrains.Application.Shell.InstallDirFromRegistry">
@@ -1745,14 +1755,14 @@
             <param name="shellstarter">Process runtime context.</param>
             <param name="assemblyconfigurations">Defines the of assemblies to use for the product.</param>
         </member>
-        <member name="F:JetBrains.Application.ShellBase.ProductRegistryKeyPrefix">
+        <member name="F:JetBrains.Application.ShellBase.ProductRegistryKeyPrefix_Software">
             <summary>
-            Registry prefix before the <see cref="M:JetBrains.Application.ShellBase.GetProductSettingsSuffix_ShellBase(System.String,System.Version)"/>.
+            Registry prefix before the <see cref="M:JetBrains.Application.ShellStarter.GetProductSettingsSuffix_Generic(System.String,System.Version)"/>.
             </summary>
         </member>
         <member name="F:JetBrains.Application.ShellBase.PropExtendBuildDescription">
             <summary>
-            If the <see cref="T:JetBrains.Application.IApplicationDescriptor"/> has this entry in its bag, it will be called to extend the standard <see cref="P:JetBrains.Application.ShellBase.BuildDescription"/>.
+            If the <see cref="T:JetBrains.Application.IApplicationDescriptor"/> has this entry in its bag, it will be called to extend the standard <see cref="!:BuildDescription"/>.
             </summary>
         </member>
         <member name="M:JetBrains.Application.ShellBase.CommandLineInitLogger(JetBrains.Application.ICommandLine)">
@@ -1760,21 +1770,12 @@
             Applies the command line arguments to the logger.
             </summary>
         </member>
-        <member name="M:JetBrains.Application.ShellBase.GetProductSettingsSuffix_ShellBase(JetBrains.Application.IApplicationDescriptor)">
+        <member name="M:JetBrains.Application.ShellBase.FormatBuildDescription(JetBrains.Application.IApplicationDescriptor,System.Collections.Generic.IEnumerable{JetBrains.Application.AssemblyConfiguration})">
             <summary>
-            Gets the suffix that forms the <see cref="P:JetBrains.Application.ShellBase.ProductRegistryKey"/>, <see cref="P:JetBrains.Application.ShellBase.UserSettingsRoamingDir"/>, and <see cref="P:JetBrains.Application.ShellBase.UserSettingsLocalDir"/>.
-            The template must not include location-specific parts (ie “Software” for registry or “AppData” for folder), as they should be concatenated by consumers.
-            There should be no leading or trailing slashes.
-            Note: NOT SUITABLE for calling in VS-BASED PRODUCTS.
+            Gets the plaintext description that identifies the current build.
             </summary>
-        </member>
-        <member name="M:JetBrains.Application.ShellBase.GetProductSettingsSuffix_ShellBase(System.String,System.Version)">
-            <summary>
-            Gets the suffix that forms the <see cref="P:JetBrains.Application.ShellBase.ProductRegistryKey"/>, <see cref="P:JetBrains.Application.ShellBase.UserSettingsRoamingDir"/>, and <see cref="P:JetBrains.Application.ShellBase.UserSettingsLocalDir"/>.
-            The template must not include location-specific parts (ie “Software” for registry or “AppData” for folder), as they should be concatenated by consumers.
-            There should be no leading or trailing slashes.
-            Note: NOT SUITABLE for calling in VS-BASED PRODUCTS.
-            </summary>
+            <param name="descriptor">Application descriptor. Take from <see cref="P:JetBrains.Application.Shell.Descriptor"/> when <see cref="P:JetBrains.Application.Shell.HasInstance"/>. VS Package bootstrapper or exception reporter might have descriptor available from its own sources. If <c>Null</c>, some of the info will be retrieved from <see cref="T:JetBrains.Application.Defines"/> instead.</param>
+            <param name="assemblyconfigurations">Assembly configurations of the currently running Shell. Take from <see cref="P:JetBrains.Application.Shell.AssemblyConfigurations"/> when <see cref="P:JetBrains.Application.Shell.HasInstance"/>. If <c>Null</c>, this information will not be available.</param>
         </member>
         <member name="M:JetBrains.Application.ShellBase.PrependCaptionWithProductName(System.String)">
             <summary>
@@ -1836,11 +1837,6 @@
             Currently, an assembly must meet all of the configurations to be loaded.
             </summary>
         </member>
-        <member name="P:JetBrains.Application.ShellBase.BuildDescription">
-            <summary>
-            Gets the plaintext description that identifies the current build.
-            </summary>
-        </member>
         <member name="P:JetBrains.Application.ShellBase.InstallDir">
             <summary>
             Gets the directory in which the product assemblies are located.
@@ -1871,6 +1867,13 @@
         <member name="P:JetBrains.Application.ShellBase.ProductRegistryKey">
             <summary>
             Gets the path to the product's Registry key.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.ShellBase.UserId">
+            <summary>
+            Gets permanent unique user Id. The Id is saved in Registry under HKLM\Software\JetBrains\Platform section. <br />
+            The Id is used to idendify same user even after ReSharper (or another product) is reinstalled or downgraded.
+            Please note that the Id is shared among all JetBrains applications intalled by the user.
             </summary>
         </member>
         <member name="P:JetBrains.Application.ShellBase.UserSettingsLocalDir">
@@ -2072,22 +2075,9 @@
             gets license expiration date stored in the license code
             occupies 16 bits
         </member>
-        <member name="M:JetBrains.Application.OneTimeInitializationManager.IsInitializationNeeded(System.Boolean)">
-            <summary>
-            Checks if the one-time-init is needed.
-            Optionally, marks it as done in the Registry (write-touches Current User hive only).
-            </summary>
-            <param name="bMarkAsDone">Whether to mark one-time-init as performed for this config.</param>
-            <returns>Whether one-time-init was required.</returns>
-        </member>
-        <member name="M:JetBrains.Application.OneTimeInitializationManager.OnCheckFailed(System.Security.SecurityException)">
+        <member name="M:JetBrains.Application.OneTimeInitializationManager.OnCheckFailed(System.Exception)">
             <summary>
             Invoked when one-time-init fails to read/write the Regsitry. Should report to the user in an app-dependent manner.
-            </summary>
-        </member>
-        <member name="P:JetBrains.Application.OneTimeInitializationManager.ActualIdentity">
-            <summary>
-            If the per-machine one-time-init value is not available, this value is used instead.
             </summary>
         </member>
         <member name="P:JetBrains.Application.OneTimeInitializationManager.IsOneTimeInitAllowed">
@@ -2194,7 +2184,16 @@
             </summary>
             <param name="progress">Progress indicator.</param>
             <param name="totalWorkUnits">The inclusive upper limit of the progress range.</param>
-            <returns>The same instance of IProgressIndicator in order ot use fluent interface.</returns>
+            <returns>The same instance of IProgressIndicator in order to use fluent interface.</returns>
+        </member>
+        <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.StartProgress(JetBrains.Application.Progress.IProgressIndicator,System.Int32,System.String)">
+            <summary>
+            <para>Just call <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> and return the same instance of <see cref="T:JetBrains.Application.Progress.IProgressIndicator"/>. See <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> for details.</para>
+            </summary>
+            <param name="progress">Progress indicator.</param>
+            <param name="taskName">The <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> value to be set for the run. You SHOULD NOT leave it unmodified, unless you are running a subprogress.</param>
+            <param name="totalWorkUnits">The inclusive upper limit of the progress range.</param>
+            <returns>The same instance of IProgressIndicator in order to use fluent interface.</returns>
         </member>
         <member name="M:JetBrains.Application.Progress.ProgressIndicatorExtensions.StartStop(JetBrains.Application.Progress.IProgressIndicator,System.Int32,System.String,System.Action)">
             <summary>
@@ -3128,17 +3127,25 @@
             <see cref="T:JetBrains.Application.IShellStarter"/> basic implementation. Provides well-known assembly configurations based on the Registry and Command Line.
             </summary>
         </member>
+        <member name="M:JetBrains.Application.ShellStarter.GetProductSettingsSuffix_Generic(JetBrains.Application.IApplicationDescriptor)">
+            <summary>
+            Gets the suffix that forms the <see cref="P:JetBrains.Application.ShellBase.ProductRegistryKey"/>, <see cref="P:JetBrains.Application.ShellBase.UserSettingsRoamingDir"/>, and <see cref="P:JetBrains.Application.ShellBase.UserSettingsLocalDir"/>.
+            The template must not include location-specific parts (ie “Software” for registry or “AppData” for folder), as they should be concatenated by consumers.
+            There should be no leading or trailing slashes.
+            Note: NOT SUITABLE for calling in VS-BASED PRODUCTS.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.ShellStarter.GetProductSettingsSuffix_Generic(System.String,System.Version)">
+            <summary>
+            Gets the suffix that forms the <see cref="P:JetBrains.Application.ShellBase.ProductRegistryKey"/>, <see cref="P:JetBrains.Application.ShellBase.UserSettingsRoamingDir"/>, and <see cref="P:JetBrains.Application.ShellBase.UserSettingsLocalDir"/>.
+            The template must not include location-specific parts (ie “Software” for registry or “AppData” for folder), as they should be concatenated by consumers.
+            There should be no leading or trailing slashes.
+            Note: NOT SUITABLE for calling in VS-BASED PRODUCTS.
+            </summary>
+        </member>
         <member name="M:JetBrains.Application.ShellStarter.GetAssemblyConfigurations">
             <summary>
             Calculates the current assembly config (note that it could be unique per shell run, while our object lives thru the process runtime).
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.ShellStarter.GetProductEditionRegistryPath">
-            <summary>
-            Gets the path to the Registry location where the product edition is stored.
-            For standalone products, that could be just the Application Registry path.
-            For Visual Studio add-ins, this could be the VS-version-specific location.
-            Note that as Application Descriptor is all about static product info, it should not use <see cref="P:JetBrains.Application.Shell.Instance"/>.
             </summary>
         </member>
         <member name="M:JetBrains.Application.ShellStarter.GetRegistryProductEdition">
@@ -5253,6 +5260,22 @@
             <summary>
             Stores all of the reported exceptions (with either reporting method) without showing them to the user.
             </summary>
+        </member>
+        <member name="M:JetBrains.Application.OneTimeInitializationChecker.IsInitializationNeeded(System.String,System.Boolean,System.Action{System.Exception})">
+            <summary>
+            Checks if the one-time-init is needed.
+            Optionally, marks it as done in the Registry (write-touches Current User hive only).
+            </summary>
+            <param name="identity">Identity of user</param>
+            <param name="bMarkAsDone">Whether to mark one-time-init as performed for this config.</param>
+            <param name="failed">Action to execute if check failed, or null</param>
+            <returns>Whether one-time-init was required.</returns>
+        </member>
+        <member name="M:JetBrains.Application.OneTimeInitializationChecker.GetActualIdentity(JetBrains.Application.Shell)">
+            <summary>
+            If the per-machine one-time-init value is not available, this value is used instead.
+            </summary>
+            <param name="shellInstance"></param>
         </member>
         <member name="T:JetBrains.Application.Defines">
              <summary>Pre-compile-time defined constants that emulate the C++ #define that has a value.</summary>

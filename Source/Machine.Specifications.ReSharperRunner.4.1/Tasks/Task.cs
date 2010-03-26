@@ -6,7 +6,7 @@ using JetBrains.ReSharper.TaskRunnerFramework;
 namespace Machine.Specifications.ReSharperRunner.Tasks
 {
   [Serializable]
-  internal abstract class Task : RemoteTask, IEquatable<Task>
+  internal abstract partial class Task : RemoteTask, IEquatable<Task>
   {
     readonly string _assemblyLocation;
     readonly string _contextTypeName;
@@ -76,7 +76,7 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
     #region IEquatable<RemoteTask> Members
     public bool Equals(Task other)
     {
-      if (other == null || !base.Equals(other))
+      if (other == null || !BaseEquals(other))
       {
         return false;
       }
