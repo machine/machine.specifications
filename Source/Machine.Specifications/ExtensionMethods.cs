@@ -224,6 +224,21 @@ namespace Machine.Specifications
         throw new SpecificationException(string.Format("Should not be of type {0} but is of type {1}", expected, actual.GetType()));
       }
     }
+    
+    public static void ShouldEachConformTo<T>(this IEnumerable<T> list, Func<T,bool> condition)
+    {
+      var source = new List<T>(list);
+
+      var failingItems = source.Where(x => condition(x) == false);
+
+      if(failingItems.Any())
+      {
+        var message = string.Format(@"The following elements did not conform to the specified condition: {0}", 
+          failingItems.EachToUsefulString());
+
+        throw new SpecificationException(message);
+      }
+    }
 
     public static void ShouldContain(this IEnumerable list, params object[] items)
     {
