@@ -43,6 +43,8 @@ namespace Machine.Specifications.Factories
         throw new SpecificationUsageException("You cannot nest Behaviors. Nested Behaviors found in " + behaviorType.FullName);
       }
 
+      EnsureAllBehaviorFieldsAreInContext(behaviorType, behaviorInstance, context);
+
       var isIgnored = behaviorField.HasAttribute<IgnoreAttribute>() ||
                       behaviorInstance.GetType().HasAttribute<IgnoreAttribute>();
       var behavior = new Behavior(behaviorInstance, context, isIgnored);
@@ -51,6 +53,43 @@ namespace Machine.Specifications.Factories
       CreateBehaviorSpecifications(itFieldInfos, behavior);
 
       return behavior;
+    }
+    
+    void EnsureAllBehaviorFieldsAreInContext(Type behaviorType, object behaviorInstance, Context context)
+    {
+      var behaviorFieldsRequiredInContext = behaviorInstance.GetType().GetStaticProtectedOrInheritedFields().Where(x => !x.IsLiteral);
+      var contextFields = context.Instance.GetType().GetStaticProtectedOrInheritedFields();
+
+      foreach (FieldInfo requiredField in behaviorFieldsRequiredInContext)
+      {
+        string requiredFieldName = requiredField.Name;
+        FieldInfo contextField = contextFields.Where(x => x.Name == requiredFieldName).SingleOrDefault();
+        
+        EnsureContextFieldExists(context, contextField, requiredField, behaviorType);
+        EnsureContextFieldIsCompatibleType(context, contextField, requiredField, behaviorType);
+      }
+    }
+
+    void EnsureContextFieldExists(Context context, FieldInfo contextField, FieldInfo requiredField, Type behaviorType)
+    {
+      if (contextField == null)
+      {
+        string format = "The context {0} behaves like {1} but does not define the behavior required field {2} {3}";
+        string message = String.Format(format, context.Instance.GetType().FullName, behaviorType.FullName,
+                                                requiredField.FieldType.FullName, requiredField.Name);
+        throw new SpecificationUsageException(message);
+      }
+    }
+
+    void EnsureContextFieldIsCompatibleType(Context context, FieldInfo contextField, FieldInfo requiredField, Type behaviorType)
+    {
+      if (!requiredField.FieldType.IsAssignableFrom(contextField.FieldType))
+      {
+        string format = "The context {0} behaves like {1} but defines the behavior field {2} {3} using an incompatible type.";
+        string message = String.Format(format, context.Instance.GetType().FullName, behaviorType.FullName,
+                                                requiredField.FieldType.FullName, requiredField.Name);
+        throw new SpecificationUsageException(message);
+      }
     }
 
     void CreateBehaviorSpecifications(IEnumerable<FieldInfo> itFieldInfos,

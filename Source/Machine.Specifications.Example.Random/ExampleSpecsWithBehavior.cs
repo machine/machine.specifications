@@ -73,7 +73,26 @@ namespace Machine.Specifications.Specs
     It should_run = () => LocalSpecRan = true;
     Behaves_like<BehaviorsWithBecause> behavior_with_because;
   }
-  
+
+  [Tags(tag.example)]
+  public class context_missing_protected_fields_that_are_in_behaviors
+  {
+    public static bool LocalSpecRan;
+    
+    It should_not_run = () => LocalSpecRan = true;
+    Behaves_like<BehaviorsWithProtectedFields> behavior_with_protected_fields;
+  }
+
+  [Tags(tag.example)]
+  public class context_with_protected_fields_having_different_types_than_in_behaviors
+  {
+    public static bool LocalSpecRan;
+    protected static bool fieldThatShouldBeCopiedOverFromContext;
+
+    It should_not_run = () => LocalSpecRan = true;
+    Behaves_like<BehaviorsWithProtectedFields> behavior_with_protected_fields;
+  }
+
   [Behaviors]
   public class Behaviors
   {
@@ -123,5 +142,14 @@ namespace Machine.Specifications.Specs
   public class BehaviorsWithBecause
   {
     Because of;
+  }
+
+  [Behaviors]
+  public class BehaviorsWithProtectedFields
+  {
+    public static bool BehaviorSpecRan;
+    protected static int fieldThatShouldBeCopiedOverFromContext;
+
+    It should_not_run = () => BehaviorSpecRan = true;
   }
 }

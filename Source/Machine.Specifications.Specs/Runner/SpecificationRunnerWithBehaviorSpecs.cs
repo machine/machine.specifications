@@ -117,4 +117,34 @@ namespace Machine.Specifications.Specs.Runner
     It should_print_the_behaviors_with_the_because = () =>
       Exception.Message.ShouldContain(typeof(BehaviorsWithBecause).FullName);
   }
+
+  [Subject("Specification Runner")]
+  public class when_running_a_context_that_does_not_have_all_fields_needed_by_the_behavior
+    : RunnerSpecs
+  {
+    static Exception Exception;
+
+    Because of = () => { Exception = Catch.Exception(Run<context_missing_protected_fields_that_are_in_behaviors>); };
+
+    It should_fail = () => Exception.ShouldBeOfType<SpecificationUsageException>();
+    It should_print_the_behaviors_containing_missing_fields = () =>
+      Exception.Message.ShouldContain(typeof(BehaviorsWithProtectedFields).FullName);
+    It should_print_the_missing_fields = () =>
+      Exception.Message.ShouldContain("fieldThatShouldBeCopiedOverFromContext");
+  }
+
+  [Subject("Specification Runner")]
+  public class when_running_a_context_that_has_fields_typed_differently_than_needed_by_the_behavior
+    : RunnerSpecs
+  {
+    static Exception Exception;
+
+    Because of = () => { Exception = Catch.Exception(Run<context_with_protected_fields_having_different_types_than_in_behaviors>); };
+
+    It should_fail = () => Exception.ShouldBeOfType<SpecificationUsageException>();
+    It should_print_the_behaviors_containing_wrongly_typed_fields = () =>
+      Exception.Message.ShouldContain(typeof(BehaviorsWithProtectedFields).FullName);
+    It should_print_the_wrongly_typed_fields = () =>
+      Exception.Message.ShouldContain("fieldThatShouldBeCopiedOverFromContext");
+  }
 }
