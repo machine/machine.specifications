@@ -62,6 +62,9 @@ namespace :tests do
 	tests = ["Machine.Specifications.Tests.dll"].map {|test| "Build/#{compileTarget}/Tests/#{test}"}
 	runner = NUnitRunner.new :compilemode => compileTarget, :platform => 'x86', :results => "Specs"
 	runner.executeTests tests
+	
+	puts 'Running Gallio tests...'
+	sh "Tools/Gallio/v3.1.397/Gallio.Echo.exe", "Build/#{compileTarget}/Tests/Gallio/Machine.Specifications.TestGallioAdapter.3.1.Tests.dll", "/plugin-directory:Build/#{compileTarget}", "/r:Local"
   end
 end
 
