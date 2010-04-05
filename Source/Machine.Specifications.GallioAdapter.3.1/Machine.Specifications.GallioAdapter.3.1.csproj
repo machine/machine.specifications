@@ -33,7 +33,7 @@
   <ItemGroup>
     <Reference Include="Gallio, Version=3.1.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\Testing\Gallio3.1\Gallio.dll</HintPath>
+      <HintPath>..\..\Libraries\Gallio\3.1\Gallio.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
