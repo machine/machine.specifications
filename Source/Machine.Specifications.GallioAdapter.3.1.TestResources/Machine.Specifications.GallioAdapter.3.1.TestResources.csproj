@@ -17,20 +17,21 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Build\Debug\Gallio3.1\</OutputPath>
+    <OutputPath>..\..\Build\Debug\Tests\Gallio\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Build\Debug\Gallio3.1\Machine.Specifications.TestGallioAdapter.3.1.TestResources.XML</DocumentationFile>
+    <DocumentationFile>..\..\Build\Debug\Tests\Gallio\Machine.Specifications.TestGallioAdapter.3.1.TestResources.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Build\Release\Gallio3.1\</OutputPath>
+    <OutputPath>..\..\Build\Release\Tests\Gallio\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Build\Release\Tests\Gallio\Machine.Specifications.TestGallioAdapter.3.1.TestResources.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
