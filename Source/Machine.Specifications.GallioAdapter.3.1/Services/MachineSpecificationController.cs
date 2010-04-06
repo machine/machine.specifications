@@ -41,11 +41,7 @@ namespace Machine.Specifications.GallioAdapter.Services
 
     protected override TestResult RunImpl(ITestCommand rootTestCommand, TestStep parentTestStep,
                     TestExecutionOptions options, IProgressMonitor progressMonitor)
-    {
-      _listener = new AggregateRunListener(Enumerable.Empty<ISpecificationRunListener>());
-      _options = new RunOptions(Enumerable.Empty<string>(), Enumerable.Empty<string>());
-      _progressMonitor = progressMonitor;
-
+    {      
       using (progressMonitor)
       {
         progressMonitor.BeginTask("Verifying Specifications", rootTestCommand.TestCount);
@@ -55,10 +51,14 @@ namespace Machine.Specifications.GallioAdapter.Services
           return SkipAll(rootTestCommand, parentTestStep);
         }
         else
-        {
+        {         
           ITestContext rootContext = rootTestCommand.StartPrimaryChildStep(parentTestStep);
           TestStep rootStep = rootContext.TestStep;          
           TestOutcome outcome = TestOutcome.Passed;
+                              
+          _progressMonitor = progressMonitor;
+          SetupRunOptions(options);
+          SetupListeners(options);
 
           _listener.OnRunStart();
 
@@ -78,6 +78,32 @@ namespace Machine.Specifications.GallioAdapter.Services
         }
       }      
     }      
+
+    void SetupRunOptions(TestExecutionOptions options)
+    {
+      // Gallio has an extremely flexible mechanism for defining test filters
+      // For now I will just try to pick out tags that should be included or excluded
+      var metaFilters = from filter in options.FilterSet.Rules
+                        let rule = filter.Filter as Gallio.Model.Filters.MetadataFilter<Gallio.Model.Filters.ITestDescriptor>
+                        where rule != null
+                        select new { RuleType = filter.RuleType, Rule = rule };
+      var tagFilters = from meta in metaFilters
+                       let rule = meta.Rule
+                       let value = rule.ValueFilter as Gallio.Model.Filters.EqualityFilter<string>
+                       where value != null && rule.Key == "Tag"
+                       group value.Comparand by meta.RuleType into g
+                       select g;
+
+      var includeTags = tagFilters.SingleOrDefault(g => g.Key == Gallio.Model.Filters.FilterRuleType.Inclusion) ?? Enumerable.Empty<string>();
+      var excludeTags = tagFilters.SingleOrDefault(g => g.Key == Gallio.Model.Filters.FilterRuleType.Exclusion) ?? Enumerable.Empty<string>();
+
+      _options = new RunOptions(includeTags, excludeTags);      
+    }
+
+    void SetupListeners(TestExecutionOptions options)
+    {
+      _listener = new AggregateRunListener(Enumerable.Empty<ISpecificationRunListener>());
+    }    
 
     TestResult RunAssembly(MachineAssemblyTest assemblyTest, ITestCommand command, TestStep parentTestStep)
     {
