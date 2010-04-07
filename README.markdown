@@ -1,19 +1,19 @@
 Machine.Specifications (MSpec)
 ======================================================================
 
-NOTICE: Machine.Specifications.NUNit and Machine.Specifications.XUnit are now deprecated. Please remove them from your projects.
+*NOTE: Machine.Specifications.NUnit and Machine.Specifications.XUnit are now deprecated. Please remove them from your projects.*
 
 Most recent build [available here](http://teamcity.codebetter.com/guestAuth/repository/download/bt44/.lastSuccessful/Machine.Specifications-release.zip)
 
-Machine.Specifications is a Context/Specification framework geared towards removing language noise and simplifying tests. All it asks is that you accept the =()=>.
+Machine.Specifications is a Context/Specification framework geared towards removing language noise and simplifying tests. All it asks is that you accept the `=()=>`.
 
 Below docs are a work in progress:
 
 # Machine.Specifications
 
-Machine.Specifications is a [Context/Specification](http://www.code-magazine.com/article.aspx?quickid=0805061) framework geared towards removing language noise and simplifying tests. All it asks is that you accept the =()=>.
+Machine.Specifications is a [Context/Specification](http://www.code-magazine.com/article.aspx?quickid=0805061) framework geared towards removing language noise and simplifying tests. All it asks is that you accept the `=()=>`.
 
-The source code is available on github at [http://github.com/machine/machine.specifications](http://github.com/machine/machine.specifications). It is released under the terms of the MIT license with some parts MS-PL. Information about this license is contained within the accompanying License.txt file.
+The source code is available on GitHub at [http://github.com/machine/machine.specifications](http://github.com/machine/machine.specifications). It is released under the terms of the MIT license with some parts MS-PL. Information about this license is contained within the accompanying `License.txt` file.
 
 ## Getting started with MSpec
 
@@ -25,9 +25,11 @@ With this in mind, there are two common ways to obtain MSpec: build from source 
 
 #### Build from source
 
-The easiest way to build MSpec from source is to clone the git repository on github and build the MSpec solution. If you do not intend to fork/contribute changes MSpec, you can anonymously clone the github repo with the following command (If terms like "git" and "clone the git repository" are moon language to you, you can learn more [here](http://book.git-scm.com)) .:
+The easiest way to build MSpec from source is to clone the git repository on GitHub and build the MSpec solution. If you do not intend to fork/contribute changes MSpec, you can anonymously clone the GitHub repo with the following command. If terms like "git" and "clone the git repository" are moon language to you, you can learn more [here](http://book.git-scm.com).
 
-git clone git://github.com/machine/machine.specifications.git
+`git clone git://github.com/machine/machine.specifications.git`
+
+Start the build by running `build.cmd` right from the cloned directory.
 
 The solution file is located, relative to the root of the repo, at `Source\Machine.Specifications.sln`.
 
@@ -49,27 +51,29 @@ MSpec, like other testing frameworks, provides a robust command-line runner that
 
 Usage of the command-line runner is as follows (from `mspec.exe --help`):
 
+<pre>
 Usage: mspec-runner.exe [options] <assemblies>
 
 Options:
 
--i, --include Executes all specifications in contexts with these comma delimited tags. Ex. -i "foo,bar,foo_bar"
+-i, --include  Executes all specifications in contexts with these comma delimited tags. Ex. -i "foo,bar,foo_bar"
 
--x, --exclude Exclude specifications in contexts with these comma delimited tags. Ex. -x "foo,bar,foo_bar"
+-x, --exclude  Exclude specifications in contexts with these comma delimited tags. Ex. -x "foo,bar,foo_bar"
 
 -t, --timeinfo Shows time-related information in HTML output
 
--s, --silent Suppress console output
+-s, --silent   Suppress console output
 
---teamcity Reporting for TeamCity CI integration.
+--teamcity     Reporting for TeamCity CI integration.
 
---html <PATH> Outputs an HTML file(s) to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)
+--html &lt;PATH&gt;  Outputs an HTML file(s) to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)
 
---xml <PATH> Outputs an XML file(s) to path
+--xml &lt;PATH&gt;   Outputs an XML file(s) to path
 
--h, --help Shows this help message
+-h, --help     Shows this help message
 
-Usage: mspec-runner.exe [options] <assemblies>
+Usage: mspec-runner.exe [options] &lt;assemblies&gt;
+</pre>
 
 #### Selenium Support in the command-line runner
 
@@ -81,7 +85,7 @@ MSpec provides [TeamCity](http://www.jetbrains.com/teamcity/) integration via sp
 
 #### HTML output from the command-line runner
 
-Using the `--html` option from the commandline runner will cause the runner to output its test results in a "human readable" HTML document. If no file name is provided as an arugment, it will use the name of the tested assembly(s) as the name of the output file (in the case of multiple assemblies, an index.html will be included with links to each assembly-specific html document). If a filename is provided, the output will be place in a file at that name/path, overwriting previous files (if multiple assemblies are being testing, the output for each will be grouped into a single file).
+Using the `--html` option from the command-line runner will cause the runner to output its test results in a "human readable" HTML document. If no file name is provided as an argument, it will use the name of the tested assembly(s) as the name of the output file. In the case of multiple assemblies, an `index.html` will be included with links to each assembly-specific HTML document. If a filename is provided, the output will be place in a file at that name/path, overwriting previous files. If multiple assemblies are being testing, the output for each will be grouped into a single file.
 
 Using this option with a CI server that supports running the command-line runner and capturing the output HTML as an artifact, you can integrate the test results into your build report.
 
@@ -89,7 +93,7 @@ Also, this option is needed if you intend to capture Selenium-specific test info
 
 #### XML output from the command-line runner
 
-XML output can be generated by MSpec's command-line runner for use with external tools that can consume the markup with the `--xml <filename(s)` option.
+XML output can be generated by MSpec's command-line runner for use with external tools that can consume the markup with the `--xml <filename(s)>` option.
 
 This option behaves the same as the `--html` option, in terms of filename behavior and multiple assemblies.
 
@@ -97,13 +101,13 @@ This option behaves the same as the `--html` option, in terms of filename behavi
 
 ##### Using InstallResharperRunner*.bat
 
-MSpec provides a bat file for each of the three versions of ReSharper it supports, 4.1, 4.5, 5.0.
+MSpec provides a batch file for each of the three versions of ReSharper it supports, 4.1, 4.5, 5.0.
 
 #### TestDriven.Net
 
 ##### Using InstallTDNetRunner.bat
 
-*NOTE: if you obtained the latest succesful binaries from CI build as indicated above, the InstallTDNetRunner.bat is already with the binaries and doesn't need to be copied*
+*NOTE: if you obtained the latest succesful binaries from CI build as indicated above, the InstallTDNetRunner.bat is already with the binaries and doesn't need to be copied.*
 
 MSpec provides a `InstallTDNetRunner.bat` file which can be used to add support for MSpec to TestDriven.Net. The file (and another version which runs silently) are available in the `\Distribution\Specifications` directory of the source repository. To add TD.Net support:
 
@@ -115,9 +119,9 @@ After following these steps, MSpec-based Contexts and Specifications can be ran 
 
 ##### Using XCopy deploy in TD.NET 2.24+
 
-TestDriven.Net versions 2.24 and newer support an XCopy deployment model that simplifies the plugin deployment proecess and negates the versioning issues that arise from using the registry-based scheme used in `InstallTDNetRunner.bat`.
+TestDriven.Net versions 2.24 and newer support an XCopy deployment model that simplifies the plugin deployment process and negates the versioning issues that arise from using the registry-based scheme used in `InstallTDNetRunner.bat`.
 
-All that needs to be done is to make sure that the `Machine.Specifications.dll.tdnet` file that is deployed as part of Machine.Specifications.TDNetRunner.csproj is in the same directory as your MSpec binaries.
+All that needs to be done is to make sure that the `Machine.Specifications.dll.tdnet` file that is deployed as part of `Machine.Specifications.TDNetRunner.csproj` is in the same directory as your MSpec binaries.
 
 ## Guidelines
 
@@ -133,47 +137,47 @@ aka helper methods in base classes, fluent-fixture patterns, etc etc ad nauseum.
 
 ### Make your Its/Becauses single-line statements
 
-MSpec is designed to reduce noise in tests. You should generally only have one line in your `It` and `Because` statements. As such, you should probably leave out the {'s and }'s. Context/Specification testing, while a rethinking of "classic" TDD, still abides by the rules of [Arrange-Act-Assert](http://c2.com/cgi/wiki?ArrangeActAssert). As such, it is preferrable to keep the latter two as succinct as possible.
+MSpec is designed to reduce noise in tests. You should generally only have one line in your `It` and `Because` statements. As such, you should probably leave out the `{` and `}`. Context/Specification testing, while a rethinking of "classic" TDD, still abides by the rules of [Arrange-Act-Assert](http://c2.com/cgi/wiki?ArrangeActAssert). As such, it is preferrable to keep the latter two as succinct as possible.
 
 #### Because
 
 If you're consistently finding that you need to have multiple lines in your `Because` statements, that may be a code smell that your Context is "too chunky". You want to be able to verify and "nail down" that the behavior that you're verifying with your `It` statements is because of a *single* action. Of course, most non-trivial contexts require multiple lines of setup to get into the preferred state that you're verifying, but you want to be able to say that there is a particular, final action that makes your specifications pass.
 
-For Example:
+For example:
 
-<code>
+<pre>
 public class because_example_goes_here : ExampleSpecs {
 
 }
-</code>
+</pre>
 
 #### It
 
 Simultaneously, your `It` statements should be single-liners and reflect a single assertion. If you're stuffing multiple assertions into a single `It`, considering the wording of that `It` and how you may be able to break it up into two or more specifications, each containing a single statement.
 
-<code>
+<pre>
 public class it_example_goes_here : ExampleSpecs {
 
 }
-</code>
+</pre>
 
 ### Testing for exceptions
 
 When testing for exceptions it is recommended that you use the `Catch` class in your `Because` statement then validate the exception in subsequent `It` statements. This ensures that no validation of the `Exception` occurs in the `Because` statement. It is also recommended to include an `It` statement that explicitly determines the type of `Exception` if that is important to you. Doing so will improve the readability of your specifications clarifying how the system is intended to behave. 
 
-<code>
-public class exception_example_goes_here : ExampleSpecs {
+<pre>
+public class when_the_user_credentials_cannot_be_verified : ExampleSpecs {
   
-  static Exception exception;
+  static Exception Exception;
 
   Because of = () => 
-    exception = Catch.Exception( YourMethodThatThrowsAnException);
+    Exception = Catch.Exception(() => SecurityService.Authenticate("user", "pass") );
 
-  It should_be_an_ArgumentNullException = () => 
-    exception.ShouldBeOfType<ArgumentNullException>();
+  It should_fail = () => 
+    Exception.ShouldBeOfType&lt;AuthenticationFailedException&gt;();
 
 }
-</code>
+</pre>
 
 ### External links (blog posts, etc?)
 
@@ -182,12 +186,13 @@ public class exception_example_goes_here : ExampleSpecs {
 #### IAssemblyContext
 
 This interface has two methods
-
+<pre>
 void OnAssemblyStart()
 
 void OnAssemblyComplete()
+</pre>
 
-These methods are used by classes that implements IAssemblyContext, to set if an assembly loaded by reflection has started to be checked (explored) or is completed
+These methods are used by classes that implements `IAssemblyContext`, to set if an assembly loaded by reflection has started to be checked (explored) or is completed.
 
 #### ICleanupAfterEveryContextInAssembly
 
