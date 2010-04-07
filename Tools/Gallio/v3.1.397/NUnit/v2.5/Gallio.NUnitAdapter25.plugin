@@ -4,7 +4,7 @@
         xmlns="http://www.gallio.org/">
   <traits>
     <name>NUnit v2.5 Adapter Plugin</name>
-    <version>3.1.0.0</version>
+    <version>0.0.0.0</version>
     <description>Provides support for running NUnit v2.5 tests.</description>
     <icon>plugin://Gallio.NUnitAdapter25/Resources/NUnit.ico</icon>
   </traits>
@@ -30,28 +30,28 @@
   </files>
 
   <assemblies>
-    <assembly fullName="Gallio.NUnitAdapter25, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null"
+    <assembly fullName="Gallio.NUnitAdapter25, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
               codeBase="Gallio.NUnitAdapter25.dll"
               qualifyPartialName="true" />
 
-    <assembly fullName="nunit.core, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77"
+    <assembly fullName="nunit.core, Version=2.5.3.9345, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77"
               codeBase="nunit.core.dll">
       <bindingRedirects>
-        <bindingRedirect oldVersion="2.5.0.0-2.5.2.65535" />
+        <bindingRedirect oldVersion="2.5.0.0-2.5.65535.65535" />
       </bindingRedirects>
     </assembly>
 
-    <assembly fullName="nunit.core.interfaces, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77"
+    <assembly fullName="nunit.core.interfaces, Version=2.5.3.9345, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77"
               codeBase="nunit.core.interfaces.dll">
       <bindingRedirects>
-        <bindingRedirect oldVersion="2.5.0.0-2.5.2.65535" />
+        <bindingRedirect oldVersion="2.5.0.0-2.5.65535.65535" />
       </bindingRedirects>
     </assembly>
 
-    <assembly fullName="nunit.util, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77"
+    <assembly fullName="nunit.util, Version=2.5.3.9345, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77"
               codeBase="nunit.util.dll">
       <bindingRedirects>
-        <bindingRedirect oldVersion="2.5.0.0-2.5.2.65535" />
+        <bindingRedirect oldVersion="2.5.0.0-2.5.65535.65535" />
       </bindingRedirects>
     </assembly>
   </assemblies>
@@ -66,8 +66,8 @@
                componentType="Gallio.NUnitAdapter.Model.NUnitTestFramework, Gallio.NUnitAdapter25">
       <traits>
         <name>NUnit v2.5</name>
-        <frameworkAssemblies>nunit.framework, Version=2.5.0.0-2.5.2.65535</frameworkAssemblies>
-        <version>2.5.2.9222</version>
+        <frameworkAssemblies>nunit.framework, Version=2.5.0.0-2.5.65535.65535</frameworkAssemblies>
+        <version>2.5.3.9345</version>
         <fileTypes>Assembly</fileTypes>
         <icon>plugin://Gallio.NUnitAdapter25/Resources/NUnit.ico</icon>
       </traits>
