@@ -19,14 +19,16 @@ task :configure do
       :project => project,
       :compileTarget => target,
       :outDir => "Build/net-3.5/#{target}/",
-      :packageName => "Distribution/#{project}-net-3.5-#{target}.zip"
+      :packageName => "Distribution/#{project}-net-3.5-#{target}.zip",
+	  :nunit_framework => "net-3.5"
     },
     :net_40 => {
       :version => 'v4\Full',
       :project => "#{project}-2010",
       :compileTarget => "#{target} .NET 4.0".escape,
       :outDir => "Build/net-4.0/#{target}/",
-      :packageName => "Distribution/#{project}-net-4.0-#{target}.zip"
+      :packageName => "Distribution/#{project}-net-4.0-#{target}.zip",
+	  :nunit_framework => "net-4.0.30319"
     }
   }
   
@@ -67,7 +69,7 @@ namespace :tests do
   task :run do
     puts 'Running NUnit tests...'
     tests = ["Machine.Specifications.Tests.dll"].map {|test| "#{configatron.outDir}/Tests/#{test}"}
-    runner = NUnitRunner.new :platform => 'x86', :results => "Specs"
+    runner = NUnitRunner.new :platform => 'x86', :results => "Specs", :clr_version => configatron.nunit_framework
     runner.executeTests tests
 
     puts 'Running Gallio tests...'
