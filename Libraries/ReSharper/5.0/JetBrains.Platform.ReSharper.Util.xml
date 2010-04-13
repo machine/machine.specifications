@@ -618,6 +618,13 @@
             <param name="coll">The collection.</param>
             <param name="handler">The handler that executes the opening bracket and returns an <see cref="T:System.IDisposable"/> that executes the closing bracket when disposed of.</param>
         </member>
+        <member name="M:JetBrains.DataFlow.IPropertyBagEx.LogChanges(JetBrains.DataFlow.IPropertyBag,System.String)">
+            <summary>
+            Logs the changes to the bag property set and the bag property values.
+            </summary>
+            <param name="thіs">The property.</param>
+            <param name="prefix">The optional prefix to be prepended in square brackets to each log message.</param>
+        </member>
         <member name="T:JetBrains.DataFlow.IPropertyEx">
             <summary>
             Extension method helpers for the data flow classes.
@@ -755,6 +762,12 @@
             Its return value is disposed of when the property looses the value for each it were executed.
             </summary>
         </member>
+        <member name="M:JetBrains.DataFlow.IPropertyEx.PushForEachValue_DisposeValue``1(JetBrains.DataFlow.IProperty{``0})">
+            <summary>
+            Makes sure each value of the property is disposed of when it exits the property.
+            Don't forget to dispose of what this method returns (or the property itself in the whole) to also deal correctly with the very last value.
+            </summary>
+        </member>
         <member name="M:JetBrains.DataFlow.IPropertyEx.PushForEachValue_NotNull``1(JetBrains.DataFlow.IProperty{``0},System.Func{``0,System.IDisposable})">
             <summary>
             Executes a pair of actions for each new value of the <paramref name="property"/>.
@@ -858,6 +871,11 @@
         <member name="M:JetBrains.DataFlow.ISignalEx.Advise_Add``1(JetBrains.DataFlow.ISignal{JetBrains.DataFlow.AddRemoveIndexEventArgs{``0}},System.Action{JetBrains.DataFlow.AddRemoveIndexEventArgs{``0}})">
             <summary>
             Sinks the collection's <see cref="F:JetBrains.DataFlow.AddRemove.Add"/> operation selectively.
+            </summary>
+        </member>
+        <member name="M:JetBrains.DataFlow.ISignalEx.Advise_InOut``2(JetBrains.DataFlow.ISignal{JetBrains.DataFlow.InOutEventArgs{``0,``1}},System.Func{``0,``1})">
+            <summary>
+            A helper for sinking IN-OUT events. Gets just the IN-argument for input, returns the OUT-argument.
             </summary>
         </member>
         <member name="M:JetBrains.DataFlow.ISignalEx.Advise_NoAcknowledgement``1(JetBrains.DataFlow.ISignal{JetBrains.DataFlow.BeforeAddRemoveEventArgs{``0}},System.Action{JetBrains.DataFlow.BeforeAddRemoveEventArgs{``0}})">
@@ -2410,57 +2428,57 @@
         </member>
         <member name="T:JetBrains.Util.ElementCreator`2">
             <summary>
-            Делегат для создания элемента кеша.
+            Äåëåãàò äëÿ ñîçäàíèÿ ýëåìåíòà êåøà.
             </summary>
         </member>
         <member name="T:JetBrains.Util.ElementsCache`2">
             <summary>
-            Кеш элементов. Для создания необходим параметр.
+            Êåø ýëåìåíòîâ. Äëÿ ñîçäàíèÿ íåîáõîäèì ïàðàìåòð.
             </summary>
         </member>
         <member name="M:JetBrains.Util.ElementsCache`2.#ctor(JetBrains.Util.ElementCreator{`0,`1})">
             <summary>
-            Инициализирует экземпляр.
+            Èíèöèàëèçèðóåò ýêçåìïëÿð.
             </summary>
         </member>
         <member name="M:JetBrains.Util.ElementsCache`2.Get(`0)">
             <summary>
-            Извлекает элемент из кеша.
+            Èçâëåêàåò ýëåìåíò èç êåøà.
             </summary>
         </member>
         <member name="M:JetBrains.Util.ElementsCache`2.OnAfterElementCreated(`0,`1)">
             <summary>
-            Вызывается после создания нового элемента.
+            Âûçûâàåòñÿ ïîñëå ñîçäàíèÿ íîâîãî ýëåìåíòà.
             </summary>
         </member>
         <member name="M:JetBrains.Util.ElementsCache`2.TryGet(`0,`1@)">
             <summary>
-            Производит попытку извлечения элемента.
+            Ïðîèçâîäèò ïîïûòêó èçâëå÷åíèÿ ýëåìåíòà.
             </summary>
         </member>
         <member name="M:JetBrains.Util.ElementsCache`2.Contains(`0)">
             <summary>
-            Возвращает, содержит ли кеш элемент с указанным ключем.
+            Âîçâðàùàåò, ñîäåðæèò ëè êåø ýëåìåíò ñ óêàçàííûì êëþ÷åì.
             </summary>
         </member>
         <member name="M:JetBrains.Util.ElementsCache`2.Drop(`0)">
             <summary>
-            Удаляет элемент кеша по заданному ключу.
+            Óäàëÿåò ýëåìåíò êåøà ïî çàäàííîìó êëþ÷ó.
             </summary>
         </member>
         <member name="M:JetBrains.Util.ElementsCache`2.Reset">
             <summary>
-            Сбросить кеш.
+            Ñáðîñèòü êåø.
             </summary>
         </member>
         <member name="P:JetBrains.Util.ElementsCache`2.ElementCreator">
             <summary>
-            Создатель элементов.
+            Ñîçäàòåëü ýëåìåíòîâ.
             </summary>
         </member>
         <member name="P:JetBrains.Util.ElementsCache`2.Keys">
             <summary>
-            Коллекция всех ключей.
+            Êîëëåêöèÿ âñåõ êëþ÷åé.
             </summary>
         </member>
         <member name="F:JetBrains.Util.IsDisposedState.Live">
@@ -2483,7 +2501,7 @@
             Universal equality comparer.
             </summary>
         </member>
-        <member name="M:JetBrains.EqualityComparer`1.Equals(`0,`0)">
+        <member name="M:JetBrains.EqualityComparer`1.System#Collections#Generic#IEqualityComparer{T}#Equals(`0,`0)">
             <summary>
             Determines whether the specified objects are equal.
             </summary>
@@ -2493,7 +2511,7 @@
             <param name="x">The first object of type <typeparamref name="T" /> to compare.</param>
             <param name="y">The second object of type <typeparamref name="T" /> to compare.</param>
         </member>
-        <member name="M:JetBrains.EqualityComparer`1.GetHashCode(`0)">
+        <member name="M:JetBrains.EqualityComparer`1.System#Collections#Generic#IEqualityComparer{T}#GetHashCode(`0)">
             <summary>
             Returns a hash code for the specified object.
             </summary>
@@ -12883,14 +12901,14 @@
             Arguments for the <see cref="T:JetBrains.UI.Interop.WindowsMessageHook"/>-emitted messages.
             </summary>
         </member>
-        <member name="F:JetBrains.UI.Interop.WindowsMessageEventArgs.HookManager">
-            <summary>
-            Gets the windows message hooks manager you're subscribed to.
-            </summary>
-        </member>
         <member name="F:JetBrains.UI.Interop.WindowsMessageEventArgs.HWnd">
             <summary>
             Gets the handle to the window that is receiving the message.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Interop.WindowsMessageEventArgs.HookManager">
+            <summary>
+            Gets the windows message hooks manager you're subscribed to.
             </summary>
         </member>
         <member name="F:JetBrains.UI.Interop.WindowsMessageEventArgs.LParam">
@@ -14531,6 +14549,124 @@
         <member name="M:JetBrains.Util.CollectionUtil.Pop``1(System.Collections.Generic.Stack{``0},System.String)">
             <summary>
             Pops the item from the stack (<see cref="M:System.Collections.Generic.Stack`1.Pop"/>), throws the <paramref name="exception">specific message</paramref> if the stack is empty, instead of the generic stack exception.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.ArrayUnion``1(``0[],``0)">
+            <summary>
+            <para>Creates a new array that is the old array plus one new item.</para>
+            <para>If the item is already present in the list, returns the old array.</para>
+            <para>This method is useful for implementing the copy-on-write scenarios a bit more effectively (compared to old.Concat(item).ToArray()).</para>
+            </summary>
+            <typeparam name="TItem">Item type.</typeparam>
+            <param name="thіs">Original array (will not be modified).</param>
+            <param name="item">The item to add.</param>
+            <returns>The new array, if item added; the old array, if no change.</returns>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.ArrayUnion``1(``0[],``0,System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            <para>Creates a new array that is the old array plus one new item.</para>
+            <para>If the item is already present in the list, returns the old array.</para>
+            <para>This method is useful for implementing the copy-on-write scenarios a bit more effectively (compared to old.Concat(item).ToArray()).</para>
+            </summary>
+            <typeparam name="TItem">Item type.</typeparam>
+            <param name="thіs">Original array (will not be modified).</param>
+            <param name="item">The item to add.</param>
+            <param name="comparer">Item equality.</param>
+            <returns>The new array, if item added; the old array, if no change.</returns>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.ArrayExcept``1(``0[],``0)">
+            <summary>
+            <para>Creates a new array that is the old array except the given item.</para>
+            <para>If the item is not on the list, returns the old array.</para>
+            <para>This method is useful for implementing the copy-on-write scenarios a bit more effectively (compared to old.Concat(item).ToArray()).</para>
+            </summary>
+            <typeparam name="TItem">Item type.</typeparam>
+            <param name="thіs">Original array (will not be modified).</param>
+            <param name="item">The item to remove.</param>
+            <returns>The new array, if item removed; the old array, if no change.</returns>
+        </member>
+        <member name="M:JetBrains.Util.CollectionUtil.ArrayExcept``1(``0[],``0,System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            <para>Creates a new array that is the old array except the given item.</para>
+            <para>If the item is not on the list, returns the old array.</para>
+            <para>This method is useful for implementing the copy-on-write scenarios a bit more effectively (compared to old.Concat(item).ToArray()).</para>
+            </summary>
+            <typeparam name="TItem">Item type.</typeparam>
+            <param name="thіs">Original array (will not be modified).</param>
+            <param name="item">The item to remove.</param>
+            <param name="comparer">Item equality.</param>
+            <returns>The new array, if item removed; the old array, if no change.</returns>
+        </member>
+        <member name="P:JetBrains.Util.CollectionUtil.BinarySearchResult`1.IsHit">
+            <summary>
+            Gets whether the search found any results.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Util.CollectionUtil.BinarySearchResult`1.HitIndex">
+            <summary>
+            Gets the index of the search hit, should there be any.
+            In case of a search miss, throws.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Util.CollectionUtil.BinarySearchResult`1.NearestItemNotAboveTarget">
+            <summary>
+            The target, if the search had a hit.
+            Otherwise, the nearest item below the target.
+            If the first item in the list is above the target, throws an exception.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Util.CollectionUtil.BinarySearchResult`1.NearestItemNotBelowTarget">
+            <summary>
+            The target, if the search had a hit.
+            Otherwise, the nearest item above the target.
+            If the last item in the list is below the target, throws an exception.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Util.CollectionUtil.BinarySearchResult`1.NearestItemNotAboveTargetOrFirst">
+            <summary>
+            The target, if the search had a hit.
+            Otherwise, the nearest item below the target.
+            If the first item in the list is above the target, returns that item anyway. Throws on an empty list.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Util.CollectionUtil.BinarySearchResult`1.NearestItemNotBelowTargetOrLast">
+            <summary>
+            The target, if the search had a hit.
+            Otherwise, the nearest item above the target.
+            If the last item in the list is below the target, returns that item anyway. Throws on an empty list.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Util.CollectionUtil.BinarySearchResult`1.NearestIndexNotAboveTarget">
+            <summary>
+            The target, if the search had a hit.
+            Otherwise, the nearest item below the target.
+            If the first item in the list is above the target, throws an exception.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Util.CollectionUtil.BinarySearchResult`1.NearestIndexNotBelowTarget">
+            <summary>
+            The target, if the search had a hit.
+            Otherwise, the nearest item above the target.
+            If the last item in the list is below the target, throws an exception.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Util.CollectionUtil.BinarySearchResult`1.NearestIndexNotAboveTargetOrFirst">
+            <summary>
+            The target, if the search had a hit.
+            Otherwise, the nearest item below the target.
+            If the first item in the list is above the target, returns that item anyway. Throws on an empty list.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Util.CollectionUtil.BinarySearchResult`1.NearestIndexNotBelowTargetOrLast">
+            <summary>
+            The target, if the search had a hit.
+            Otherwise, the nearest item above the target.
+            If the last item in the list is below the target, returns that item anyway. Throws on an empty list.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Util.CollectionUtil.BinarySearchResult`1.HitItem">
+            <summary>
+            If the search found an item, returns that item. Otherwise, throws.
             </summary>
         </member>
         <member name="T:JetBrains.Util.Console.MyConsole">

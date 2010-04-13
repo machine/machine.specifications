@@ -600,22 +600,32 @@
             
             </summary>
         </member>
+        <member name="T:JetBrains.UI.CommonControls.GoTransparentOnControlKey">
+            <summary>
+            Supports the VS behavior for a window to go transparent when the Control modifier key is down.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.CommonControls.GoTransparentOnControlKey.IsCtrlKeyDownNow">
+            <summary>
+            Polls keyboard for the current state.
+            </summary>
+        </member>
         <member name="T:JetBrains.UI.CommonControls.LinkLabel">
             <summary>
             A customized link label that natively supports URIs for opening in the Web browser and copying to clipboard.
             </summary>
         </member>
-        <member name="T:JetBrains.CommonControls.ITooltipProvider">
+        <member name="T:JetBrains.UI.Tooltips.ITooltipProvider">
             <summary>
-            Any window that implements this interface will be queried for the tooltip info and, should the retval be non-<c>Null</c>, the tooltip will be displayed for this window.
+            Any HWND-based WinForms <see cref="T:System.Windows.Forms.Control"/> (or <see cref="T:System.Windows.Forms.NativeWindow"/>) that implements this interface will be queried for the tooltip info and, should the retval be non-<c>Null</c>, the tooltip will be displayed for this window.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.ITooltipProvider.GetTooltip(System.Drawing.Point)">
+        <member name="M:JetBrains.UI.Tooltips.ITooltipProvider.GetTooltip(System.Drawing.Point)">
             <summary>
             Called by tooltip manager, if the tooltip is to be displayed
             </summary>
             <param name="point">Point in control's coordinates</param>
-            <returns><see cref="T:JetBrains.CommonControls.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
+            <returns><see cref="T:JetBrains.UI.Tooltips.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
         </member>
         <member name="M:JetBrains.UI.CommonControls.LinkLabel.#ctor(System.String,System.Uri)">
             <summary>
@@ -648,7 +658,7 @@
             Called by tooltip manager, if the tooltip is to be displayed
             </summary>
             <param name="point">Point in control's coordinates</param>
-            <returns><see cref="T:JetBrains.CommonControls.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
+            <returns><see cref="T:JetBrains.UI.Tooltips.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
         </member>
         <member name="T:JetBrains.UI.CommonControls.Spacer">
             <summary>
@@ -808,7 +818,7 @@
             Called by tooltip manager, if the tooltip is to be displayed
             </summary>
             <param name="point">Point in control's coordinates</param>
-            <returns><see cref="T:JetBrains.CommonControls.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
+            <returns><see cref="T:JetBrains.UI.Tooltips.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
         </member>
         <member name="M:JetBrains.UI.CommonControls.StatusBarProgressIndicator.GetDesiredSize(JetBrains.UI.IGraphicsContainer,System.Drawing.Size)">
             <summary>
@@ -1010,7 +1020,7 @@
             Called by tooltip manager, if the tooltip is to be displayed
             </summary>
             <param name="point">Point in control's coordinates</param>
-            <returns><see cref="T:JetBrains.CommonControls.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
+            <returns><see cref="T:JetBrains.UI.Tooltips.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
         </member>
         <member name="P:JetBrains.UI.CommonControls.EditboxGlyph.Glyph">
             <summary>
@@ -6260,7 +6270,7 @@
             Called by tooltip manager, if the tooltip is to be displayed
             </summary>
             <param name="point">Point in control's coordinates</param>
-            <returns><see cref="T:JetBrains.CommonControls.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
+            <returns><see cref="T:JetBrains.UI.Tooltips.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
         </member>
         <member name="M:JetBrains.UI.PopupMenu.Impl.JetPopupMenuToolbarView.GetDesiredSize(JetBrains.UI.IGraphicsContainer,System.Drawing.Size)">
             <summary>
@@ -6374,7 +6384,7 @@
             Called by tooltip manager, if the tooltip is to be displayed
             </summary>
             <param name="point">Point in control's coordinates</param>
-            <returns><see cref="T:JetBrains.CommonControls.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
+            <returns><see cref="T:JetBrains.UI.Tooltips.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
         </member>
         <member name="M:JetBrains.UI.PopupMenu.Impl.JetPopupMenuToolbarItemView.GetDesiredSize(JetBrains.UI.IGraphicsContainer,System.Drawing.Size)">
             <summary>
@@ -8743,12 +8753,12 @@
             </summary>
             <filterpriority>2</filterpriority>
         </member>
-        <member name="M:JetBrains.UI.StatusBar.Indicators.MemoryUsageIndicator.JetBrains#CommonControls#ITooltipProvider#GetTooltip(System.Drawing.Point)">
+        <member name="M:JetBrains.UI.StatusBar.Indicators.MemoryUsageIndicator.JetBrains#UI#Tooltips#ITooltipProvider#GetTooltip(System.Drawing.Point)">
             <summary>
             Called by tooltip manager, if the tooltip is to be displayed
             </summary>
             <param name="point">Point in control's coordinates</param>
-            <returns><see cref="T:JetBrains.CommonControls.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
+            <returns><see cref="T:JetBrains.UI.Tooltips.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
         </member>
         <member name="P:JetBrains.UI.StatusBar.Indicators.MemoryUsageIndicator.Presentation">
             <summary>
@@ -9039,7 +9049,7 @@
             Called by tooltip manager, if the tooltip is to be displayed
             </summary>
             <param name="point">Point in control's coordinates</param>
-            <returns><see cref="T:JetBrains.CommonControls.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
+            <returns><see cref="T:JetBrains.UI.Tooltips.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
         </member>
         <member name="P:JetBrains.UI.StatusBar.JetStatusBarIndicatorView.Bounds">
             <summary>
@@ -9251,7 +9261,7 @@
             Called by tooltip manager, if the tooltip is to be displayed
             </summary>
             <param name="point">Point in control's coordinates</param>
-            <returns><see cref="T:JetBrains.CommonControls.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
+            <returns><see cref="T:JetBrains.UI.Tooltips.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
         </member>
         <member name="M:JetBrains.UI.StatusBar.Indicators.TrefoilIndicator.GetDesiredSize(JetBrains.UI.IGraphicsContainer,System.Drawing.Size)">
             <summary>
@@ -10428,51 +10438,114 @@
             The string that appears on the button.
             </summary>
         </member>
-        <member name="T:JetBrains.CommonControls.ITooltipInfo">
+        <member name="T:JetBrains.UI.Tooltips.ExportFindTooltipElementsAtCursorAttruibute">
+            <summary>
+            Attribute for <see cref="T:JetBrains.UI.Tooltips.IFindTooltipElementsAtCursor"/> impls.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Tooltips.ExportFindTooltipElementsAtCursorAttruibute.Priority">
+            <summary>
+            The higher the priority, the sooner the finder is asked (and can promote its own result in precedence of the others).
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Tooltips.FindWinFormsTooltipElementsAtCursor">
+            <summary>
+            Classic tooltip provider.
+            Finds tooltips over WinForms controls that implement <see cref="T:JetBrains.UI.Tooltips.ITooltipProvider"/>.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Tooltips.IFindTooltipElementsAtCursor">
+            <summary>
+            An entity to look for any <see cref="T:JetBrains.UI.Tooltips.ITooltipElement"/>s under the current cursor position (given by a <see cref="T:JetBrains.Interop.WinApi.MOUSEHOOKSTRUCT"/> from a mouse hook).
+            </summary>
+            <seealso cref="T:JetBrains.UI.Tooltips.ExportFindTooltipElementsAtCursorAttruibute"/>.
+        </member>
+        <member name="M:JetBrains.UI.Tooltips.IFindTooltipElementsAtCursor.TryFindElementUnderCursor(JetBrains.Interop.WinApi.MOUSEHOOKSTRUCT*)">
+            <summary>
+            Looks for any elements with tooltips under cursor.
+            </summary>
+            <param name="pMouseHook">Mouse cursor position data.</param>
+            <returns>The element found, or <c>Null</c> otherwise.</returns>
+        </member>
+        <member name="M:JetBrains.UI.Tooltips.FindWinFormsTooltipElementsAtCursor.TryGetWinFormsTooltipProvider(JetBrains.Interop.WinApi.MOUSEHOOKSTRUCT*)">
+            <summary>
+            WinForms controls register by implementing an <see cref="T:JetBrains.UI.Tooltips.ITooltipProvider"/>. Try getting one here.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Tooltips.ITooltipElement">
+            <summary>
+            A generic element over which tooltips could be shown.
+            The classic version is an HWND window, but now we need to add Avalon support.
+            This object binds to the specific point and the specific tooltip text to be shown over that point.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Tooltips.ITooltipElement.AddExceptionData(System.Exception)">
+            <summary>
+            Adds data to the exception to report this element.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Tooltips.ITooltipElement.IsValid">
+            <summary>
+            Checks whether the element is still alive. If not, the tooltip will be dismissed.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Tooltips.ITooltipElement.ScreenToClient(System.Drawing.Point)">
+            <summary>
+            Converts a point from screen (mouse native) coordinates to the local client coordinates of the element.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.Tooltips.ITooltipElement.OriginalPointClient">
+            <summary>
+            The point for which the element were originally created.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.Tooltips.ITooltipElement.OriginalPointScreen">
+            <summary>
+            The point for which the element were originally created.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.Tooltips.ITooltipElement.TooltipInfo">
+            <summary>
+            The tooltip info at the point for which the element were requested.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Tooltips.ITooltipInfo">
             <summary>
             Describes a tooltip on screen and provides the means for positioning it onscreen and controlling its lifetime.
             Don't dispose of tooltip infos until you're done with using their members, eg painters and layouters.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.ITooltipInfo.HitTestToolArea(System.Drawing.Point)">
+        <member name="M:JetBrains.UI.Tooltips.ITooltipInfo.HitTestToolArea(System.Drawing.Point)">
             <summary>
             Checks whether the given point falls within the tool area of this tooltip. The tooltip is displayed while mouse pointer is within the tool area. One window may have more than one tooltip for different tool areas.
             </summary>
             <param name="pt">Point, in the client coordinates, to be tested for falling within the area.</param>
             <returns><c>True</c> if point is within the area, <c>False</c> otherwise.</returns>
         </member>
-        <member name="P:JetBrains.CommonControls.ITooltipInfo.Layouter">
+        <member name="P:JetBrains.UI.Tooltips.ITooltipInfo.Layouter">
             <summary>
             Gets the layouter that positions the tooltip onscreen.
             <c>Null</c> means the default layouter will be used, one that positions the tooltip against the mouse pointer.
             </summary>
         </member>
-        <member name="P:JetBrains.CommonControls.ITooltipInfo.Painter">
+        <member name="P:JetBrains.UI.Tooltips.ITooltipInfo.Painter">
             <summary>
             Gets the painter for the tooltip.
             Must be implemented. Must not be <c>Null</c>.
             </summary>
         </member>
-        <member name="P:JetBrains.CommonControls.ITooltipInfo.PopupWindowContext">
+        <member name="P:JetBrains.UI.Tooltips.ITooltipInfo.PopupWindowContext">
             <summary>
             Gets the popup window context that fires the actions upon which the tooltip is dismissed.
             <c>Null</c> means the default popup window context will be used.
             </summary>
         </member>
-        <member name="T:JetBrains.CommonControls.ITooltipManager">
+        <member name="T:JetBrains.UI.Tooltips.ITooltipManager">
             <summary>
             An interface for the tooltip manager component.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.ITooltipManager.RefreshTooltip(JetBrains.CommonControls.ITooltipProvider)">
-            <summary>
-            Updates the tooltip onscreen.
-            If there's a tooltip from the <paramref name="provider"/> currently displayed onscreen, the <paramref name="provider"/> is queried for the new <see cref="T:JetBrains.CommonControls.ITooltipInfo"/> and updates the tooltip content.
-            If there's no tooltip displayed currently, or it's from another provider, nothing happens.
-            </summary>
-            <param name="provider">The provider whose tooltip should be updated.</param>
-        </member>
-        <member name="M:JetBrains.CommonControls.ITooltipManager.Show(JetBrains.CommonControls.IWindowlessControl,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext,JetBrains.UI.PopupWindowManager.HideFlags,System.Int32)">
+        <member name="M:JetBrains.UI.Tooltips.ITooltipManager.Show(JetBrains.CommonControls.IWindowlessControl,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext,JetBrains.UI.PopupWindowManager.HideFlags,System.Int32)">
             <summary>
             Displays a tooltip using the given content and position, until user discards it with the action specified, or the timeout expires.
             </summary>
@@ -10480,10 +10553,10 @@
             <param name="layouter">Layouter for the tooltip popup window.</param>
             <param name="context">Parent context for the tooltip popup window.</param>
             <param name="hideflags">The list of actions that discard the tooltip (app deactivation is implied).</param>
-            <param name="timeout">Time interval to display the tooltip for. If positive, specifies the number of milliseconds to show the tooltip for. If <c>-1</c>, uses the default timeout from <see cref="P:JetBrains.CommonControls.TipControlView.DefaultTimeout"/>.</param>
-            <returns>The popup window that controls the tooltip, or <c>Null</c> if the tooltip has failed to show (eg tooltips are not allowed at the moment, see <see cref="P:JetBrains.CommonControls.TipControlView.CanShowTooltips"/>).</returns>
+            <param name="timeout">Time interval to display the tooltip for. If positive, specifies the number of milliseconds to show the tooltip for. If <c>-1</c>, uses the default timeout from <see cref="P:JetBrains.UI.Tooltips.TipControlView.DefaultTimeout"/>.</param>
+            <returns>The popup window that controls the tooltip, or <c>Null</c> if the tooltip has failed to show (eg tooltips are not allowed at the moment, see <see cref="P:JetBrains.UI.Tooltips.TipControlView.CanShowTooltips"/>).</returns>
         </member>
-        <member name="M:JetBrains.CommonControls.ITooltipManager.Show(JetBrains.CommonControls.IWindowlessControl,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
+        <member name="M:JetBrains.UI.Tooltips.ITooltipManager.Show(JetBrains.CommonControls.IWindowlessControl,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
             <summary>
             Displays a tooltip using the given content and position, until user discards it with the action specified, or the timeout expires.
             </summary>
@@ -10491,7 +10564,7 @@
             <param name="layouter">Layouter for the tooltip popup window.</param>
             <param name="context">Parent context for the tooltip popup window.</param>
         </member>
-        <member name="M:JetBrains.CommonControls.ITooltipManager.Show(System.String,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
+        <member name="M:JetBrains.UI.Tooltips.ITooltipManager.Show(System.String,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
             <summary>
             Displays a tooltip using the given content and position, until user discards it with the action specified, or the timeout expires.
             </summary>
@@ -10499,7 +10572,7 @@
             <param name="layouter">Layouter for the tooltip popup window.</param>
             <param name="context">Parent context for the tooltip popup window.</param>
         </member>
-        <member name="M:JetBrains.CommonControls.ITooltipManager.Show(System.String,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
+        <member name="M:JetBrains.UI.Tooltips.ITooltipManager.Show(System.String,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
             <summary>
             Displays a tooltip using the given content and position, until user discards it with the action specified, or the timeout expires.
             Uses the default layouter for the context provided.
@@ -10507,7 +10580,7 @@
             <param name="text">Text to be displayed in the tooltip window.</param>
             <param name="context">Parent context for the tooltip popup window.</param>
         </member>
-        <member name="M:JetBrains.CommonControls.ITooltipManager.Show(JetBrains.UI.RichText.RichText,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
+        <member name="M:JetBrains.UI.Tooltips.ITooltipManager.Show(JetBrains.UI.RichText.RichText,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
             <summary>
             Displays a tooltip using the given content and position, until user discards it with the action specified, or the timeout expires.
             </summary>
@@ -10515,7 +10588,7 @@
             <param name="layouter">Layouter for the tooltip popup window.</param>
             <param name="context">Parent context for the tooltip popup window.</param>
         </member>
-        <member name="M:JetBrains.CommonControls.ITooltipManager.Show(JetBrains.UI.RichText.RichText,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
+        <member name="M:JetBrains.UI.Tooltips.ITooltipManager.Show(JetBrains.UI.RichText.RichText,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
             <summary>
             Displays a tooltip using the given content and position, until user discards it with the action specified, or the timeout expires.
             Uses the default layouter for the context provided.
@@ -10523,7 +10596,7 @@
             <param name="text">Rich text to be displayed in the tooltip window.</param>
             <param name="context">Parent context for the tooltip popup window.</param>
         </member>
-        <member name="M:JetBrains.CommonControls.ITooltipManager.Show(JetBrains.UI.RichText.RichTextBlock,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
+        <member name="M:JetBrains.UI.Tooltips.ITooltipManager.Show(JetBrains.UI.RichText.RichTextBlock,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
             <summary>
             Displays a tooltip using the given content and position, until user discards it with the action specified, or the timeout expires.
             </summary>
@@ -10531,7 +10604,7 @@
             <param name="layouter">Layouter for the tooltip popup window.</param>
             <param name="context">Parent context for the tooltip popup window.</param>
         </member>
-        <member name="M:JetBrains.CommonControls.ITooltipManager.Show(JetBrains.UI.RichText.RichTextBlock,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
+        <member name="M:JetBrains.UI.Tooltips.ITooltipManager.Show(JetBrains.UI.RichText.RichTextBlock,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
             <summary>
             Displays a tooltip using the given content and position, until user discards it with the action specified, or the timeout expires.
             Uses the default layouter for the context provided.
@@ -10539,117 +10612,117 @@
             <param name="text">Multiline rich text to be displayed in the tooltip window.</param>
             <param name="context">Parent context for the tooltip popup window.</param>
         </member>
-        <member name="P:JetBrains.CommonControls.ITooltipManager.ContentMargin">
+        <member name="P:JetBrains.UI.Tooltips.ITooltipManager.ContentMargin">
             <summary>
             Gets the margin that separates the content rendered within the tooltip from the tooltip window edge.
             Also, this is the offset from the tip control location to the tip text location, which is useful for precise positioning of the text.
             </summary>
         </member>
-        <member name="P:JetBrains.CommonControls.ITooltipManager.HoverDelay">
+        <member name="P:JetBrains.UI.Tooltips.ITooltipManager.HoverDelay">
             <summary>
             Gets the standard hover delay, a period of time between the mouse-over and tooltip display, in milliseconds.
             </summary>
         </member>
-        <member name="P:JetBrains.CommonControls.ITooltipManager.PopupWindowMutex">
+        <member name="P:JetBrains.UI.Tooltips.ITooltipManager.PopupWindowMutex">
             <summary>
             Gets the popup window mutex that defines the default identity for the tooltips, and thus prevents from showing more than one at a time.
             </summary>
         </member>
-        <member name="P:JetBrains.CommonControls.ITooltipManager.RenderParams">
+        <member name="P:JetBrains.UI.Tooltips.ITooltipManager.RenderParams">
             <summary>
             Gets the default rendering parameters for a tooltip.
             Do not modify this instance.
             </summary>
         </member>
-        <member name="T:JetBrains.CommonControls.TipControlView">
+        <member name="T:JetBrains.UI.Tooltips.TipControlView">
             <summary>
             A control that implements the tooltip window.
-            Don't use this class directly if you need to show a tooltip. Instead, either use the TipControl static class for one-time tooltips, or implement the <see cref="T:JetBrains.CommonControls.ITooltipProvider"/> interface on your window.
+            Don't use this class directly if you need to show a tooltip. Instead, either use the TipControl static class for one-time tooltips, or implement the <see cref="T:JetBrains.UI.Tooltips.ITooltipProvider"/> interface on your window.
             </summary>
         </member>
-        <member name="F:JetBrains.CommonControls.TipControlView.myDefaultTimeout">
+        <member name="F:JetBrains.UI.Tooltips.TipControlView.myDefaultTimeout">
             <summary>
-            <see cref="P:JetBrains.CommonControls.TipControlView.DefaultTimeout"/>.
+            <see cref="P:JetBrains.UI.Tooltips.TipControlView.DefaultTimeout"/>.
             </summary>
         </member>
-        <member name="F:JetBrains.CommonControls.TipControlView.myRenderParams">
+        <member name="F:JetBrains.UI.Tooltips.TipControlView.myRenderParams">
             <summary>
-            <see cref="P:JetBrains.CommonControls.TipControlView.RenderParams"/>, lazy-init.
+            <see cref="P:JetBrains.UI.Tooltips.TipControlView.RenderParams"/>, lazy-init.
             </summary>
         </member>
-        <member name="F:JetBrains.CommonControls.TipControlView.myAutoActivate">
+        <member name="F:JetBrains.UI.Tooltips.TipControlView.myAutoActivate">
             <summary>
             <see cref="T:JetBrains.CommonControls.IConstrainableControl"/> worker field.
             </summary>
         </member>
-        <member name="F:JetBrains.CommonControls.TipControlView.myPainter">
+        <member name="F:JetBrains.UI.Tooltips.TipControlView.myPainter">
             <summary>
             Tip painter, as a windowless conrtol.
             </summary>
         </member>
-        <member name="F:JetBrains.CommonControls.TipControlView.myTimeout">
+        <member name="F:JetBrains.UI.Tooltips.TipControlView.myTimeout">
             <summary>
-            <see cref="P:JetBrains.CommonControls.TipControlView.Timeout"/>.
+            <see cref="P:JetBrains.UI.Tooltips.TipControlView.Timeout"/>.
             </summary>
         </member>
-        <member name="F:JetBrains.CommonControls.TipControlView.myTimerTimeout">
+        <member name="F:JetBrains.UI.Tooltips.TipControlView.myTimerTimeout">
             <summary>
             Waits for the tooltip to hide.
             </summary>
         </member>
-        <member name="F:JetBrains.CommonControls.TipControlView.myWantsResize">
+        <member name="F:JetBrains.UI.Tooltips.TipControlView.myWantsResize">
             <summary>
             Fires when the control would like to be reasked of its desired size.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.TipControlView.#ctor(JetBrains.CommonControls.IWindowlessControl)">
+        <member name="M:JetBrains.UI.Tooltips.TipControlView.#ctor(JetBrains.CommonControls.IWindowlessControl)">
             <summary>
             Creates a tip control with the given painter inside.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.TipControlView.Dispose(System.Boolean)">
+        <member name="M:JetBrains.UI.Tooltips.TipControlView.Dispose(System.Boolean)">
             <summary>
             Clean up any resources being used.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.TipControlView.OnLayout(System.Windows.Forms.LayoutEventArgs)">
+        <member name="M:JetBrains.UI.Tooltips.TipControlView.OnLayout(System.Windows.Forms.LayoutEventArgs)">
             <summary>
             Raises the <see cref="E:System.Windows.Forms.Control.Layout"></see> event.
             </summary>
             
             <param name="levent">A <see cref="T:System.Windows.Forms.LayoutEventArgs"></see> that contains the event data. </param>
         </member>
-        <member name="M:JetBrains.CommonControls.TipControlView.OnVisibleChanged(System.EventArgs)">
+        <member name="M:JetBrains.UI.Tooltips.TipControlView.OnVisibleChanged(System.EventArgs)">
             <summary>
             Raises the <see cref="E:System.Windows.Forms.Control.VisibleChanged"></see> event.
             </summary>
             
             <param name="e">The <see cref="T:System.EventArgs"></see> that contains the event data. </param>
         </member>
-        <member name="P:JetBrains.CommonControls.TipControlView.CanShowTooltips">
+        <member name="P:JetBrains.UI.Tooltips.TipControlView.CanShowTooltips">
             <summary>
             Gets whether any tooltips are allowed to be shown at the moment.
-            <see cref="T:JetBrains.CommonControls.TipControlView"/> won't check this, it will show anyway, so it's the caller's duty.
+            <see cref="T:JetBrains.UI.Tooltips.TipControlView"/> won't check this, it will show anyway, so it's the caller's duty.
             </summary>
         </member>
-        <member name="P:JetBrains.CommonControls.TipControlView.DefaultTimeout">
+        <member name="P:JetBrains.UI.Tooltips.TipControlView.DefaultTimeout">
             <summary>
             The default timeout, the maximum time span for which the tooltip is visible, in milliseconds.
             </summary>
         </member>
-        <member name="P:JetBrains.CommonControls.TipControlView.RenderParams">
+        <member name="P:JetBrains.UI.Tooltips.TipControlView.RenderParams">
             <summary>
             Gets the default rendering parameters for a tooltip.
             Do not modify this instance.
             </summary>
         </member>
-        <member name="P:JetBrains.CommonControls.TipControlView.Timeout">
+        <member name="P:JetBrains.UI.Tooltips.TipControlView.Timeout">
             <summary>
             The default timeout, the maximum time span for which the tooltip is visible, in milliseconds.
-            Initially set to <see cref="P:JetBrains.CommonControls.TipControlView.DefaultTimeout"/>.
+            Initially set to <see cref="P:JetBrains.UI.Tooltips.TipControlView.DefaultTimeout"/>.
             </summary>
         </member>
-        <member name="P:JetBrains.CommonControls.TipControlView.ShowWithoutActivation">
+        <member name="P:JetBrains.UI.Tooltips.TipControlView.ShowWithoutActivation">
             <summary>
             Gets a value indicating whether the window will be activated when it is shown.
             </summary>
@@ -10659,253 +10732,191 @@
             </returns>
             
         </member>
-        <member name="P:JetBrains.CommonControls.TipControlView.AutoActivate">
+        <member name="P:JetBrains.UI.Tooltips.TipControlView.AutoActivate">
             <summary>
             Gets or sets whether the control should be activated initially when it's shown.
             The typical implementation for a form is to return a negative of this value from the <see cref="P:System.Windows.Forms.Form.ShowWithoutActivation"/> override.
             </summary>
         </member>
-        <member name="P:JetBrains.CommonControls.TipControlView.WantsResize">
+        <member name="P:JetBrains.UI.Tooltips.TipControlView.WantsResize">
             <summary>
             Fires when the control would like to be reasked of its desired size.
             </summary>
         </member>
-        <member name="T:JetBrains.CommonControls.TipControlView.Dim">
+        <member name="T:JetBrains.UI.Tooltips.TipControlView.Dim">
             <summary>
             Dimension constants for the tooltip control.
             </summary>
         </member>
-        <member name="F:JetBrains.CommonControls.TipControlView.Dim.Border">
+        <member name="F:JetBrains.UI.Tooltips.TipControlView.Dim.Border">
             <summary>
             Width and height of the horizontal and vertical border sides.
             </summary>
         </member>
-        <member name="F:JetBrains.CommonControls.TipControlView.Dim.Padding">
+        <member name="F:JetBrains.UI.Tooltips.TipControlView.Dim.Padding">
             <summary>
             Padding between the border and tooltip's inner content.
             </summary>
         </member>
-        <member name="T:JetBrains.CommonControls.TooltipInfo">
+        <member name="T:JetBrains.UI.Tooltips.TooltipElement">
             <summary>
-            The standard implementation of the <see cref="T:JetBrains.CommonControls.ITooltipInfo"/> interface.
+            Base impl.
+            </summary>
+        </member>
+        <member name="T:JetBrains.UI.Tooltips.TooltipInfo">
+            <summary>
+            The standard implementation of the <see cref="T:JetBrains.UI.Tooltips.ITooltipInfo"/> interface.
             Don't dispose of this instance until you're done with using its members, eg painters and layouters.
             </summary>
         </member>
-        <member name="F:JetBrains.CommonControls.TooltipInfo.myLayouter">
+        <member name="F:JetBrains.UI.Tooltips.TooltipInfo.myLayouter">
             <summary>
-            <see cref="P:JetBrains.CommonControls.TooltipInfo.Layouter"/>.
+            <see cref="P:JetBrains.UI.Tooltips.TooltipInfo.Layouter"/>.
             </summary>
         </member>
-        <member name="F:JetBrains.CommonControls.TooltipInfo.myPopupWindowContext">
+        <member name="F:JetBrains.UI.Tooltips.TooltipInfo.myPopupWindowContext">
             <summary>
-            <see cref="P:JetBrains.CommonControls.TooltipInfo.PopupWindowContext"/>.
+            <see cref="P:JetBrains.UI.Tooltips.TooltipInfo.PopupWindowContext"/>.
             </summary>
         </member>
-        <member name="F:JetBrains.CommonControls.TooltipInfo.myTipPainter">
+        <member name="F:JetBrains.UI.Tooltips.TooltipInfo.myTipPainter">
             <summary>
-            <see cref="P:JetBrains.CommonControls.TooltipInfo.Painter"/>.
+            <see cref="P:JetBrains.UI.Tooltips.TooltipInfo.Painter"/>.
             </summary>
         </member>
-        <member name="F:JetBrains.CommonControls.TooltipInfo.myToolArea">
+        <member name="F:JetBrains.UI.Tooltips.TooltipInfo.myToolArea">
             <summary>
-            <see cref="P:JetBrains.CommonControls.TooltipInfo.ToolArea"/>, used by <see cref="M:JetBrains.CommonControls.TooltipInfo.HitTestToolArea(System.Drawing.Point)"/>.
+            <see cref="P:JetBrains.UI.Tooltips.TooltipInfo.ToolArea"/>, used by <see cref="M:JetBrains.UI.Tooltips.TooltipInfo.HitTestToolArea(System.Drawing.Point)"/>.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipInfo.#ctor(JetBrains.CommonControls.IWindowlessControl,System.Drawing.Rectangle)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipInfo.#ctor(JetBrains.CommonControls.IWindowlessControl,System.Drawing.Rectangle)">
             <summary>
             Creates a tooltip info from the raw parameters.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipInfo.#ctor(JetBrains.UI.RichText.RichText,System.Drawing.Rectangle)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipInfo.#ctor(JetBrains.UI.RichText.RichText,System.Drawing.Rectangle)">
             <summary>
             Creates a tooltip info upon the supplied text and with the specified tool area, in client coordinates.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipInfo.#ctor(JetBrains.UI.RichText.RichText,System.Windows.Forms.Control)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipInfo.#ctor(JetBrains.UI.RichText.RichText,System.Windows.Forms.Control)">
             <summary>
             Creates a tooltip info upon the supplied text, acquiring the tool area from the given control's client rectangle.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipInfo.#ctor(JetBrains.UI.RichText.RichTextBlock,System.Windows.Forms.Control)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipInfo.#ctor(JetBrains.UI.RichText.RichTextBlock,System.Windows.Forms.Control)">
             <summary>
             Creates a tooltip info upon the supplied text, acquiring the tool area from the given control's client rectangle.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipInfo.#ctor(JetBrains.UI.RichText.RichTextBlock,System.Drawing.Rectangle)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipInfo.#ctor(JetBrains.UI.RichText.RichTextBlock,System.Drawing.Rectangle)">
             <summary>
             Creates a tooltip info upon the supplied text and with the specified tool area, in client coordinates.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipInfo.GetTextPainter(System.String)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipInfo.GetTextPainter(System.String)">
             <summary>
             Creates a tip-painter for the given piece of text.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipInfo.HitTestToolArea(System.Drawing.Point)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipInfo.HitTestToolArea(System.Drawing.Point)">
             <summary>
             Checks whether the given point falls within the tool area of this tooltip. The tooltip is displayed while mouse pointer is within the tool area. One window may have more than one tooltip for different tool areas.
             </summary>
             <param name="pt">Point, in the client coordinates, to be tested for falling within the area.</param>
             <returns><c>True</c> if point is within the area, <c>False</c> otherwise.</returns>
         </member>
-        <member name="P:JetBrains.CommonControls.TooltipInfo.ToolArea">
+        <member name="P:JetBrains.UI.Tooltips.TooltipInfo.ToolArea">
             <summary>
             Gets the tool area of this tooltip, in client coordinates.
             An empty rectangle means “no constraints”.
             </summary>
         </member>
-        <member name="P:JetBrains.CommonControls.TooltipInfo.Layouter">
+        <member name="P:JetBrains.UI.Tooltips.TooltipInfo.Layouter">
             <summary>
             Gets or sets the layouter that positions the tooltip onscreen.
             <c>Null</c> means the default layouter will be used, one that positions the tooltip against the mouse pointer.
             </summary>
         </member>
-        <member name="P:JetBrains.CommonControls.TooltipInfo.Painter">
+        <member name="P:JetBrains.UI.Tooltips.TooltipInfo.Painter">
             <summary>
             Gets the painter for the tooltip.
             Must be implemented. Must not be <c>Null</c>.
             </summary>
         </member>
-        <member name="P:JetBrains.CommonControls.TooltipInfo.PopupWindowContext">
+        <member name="P:JetBrains.UI.Tooltips.TooltipInfo.PopupWindowContext">
             <summary>
             Gets or sets the popup window context that fires the actions upon which the tooltip is dismissed.
             <c>Null</c> means the default popup window context will be used.
             </summary>
         </member>
-        <member name="T:JetBrains.CommonControls.TooltipManagerComponent">
+        <member name="T:JetBrains.UI.Tooltips.TooltipManagerComponent">
             <summary>
-            An implementation for the <see cref="T:JetBrains.CommonControls.ITooltipManager"/>.
+            An implementation for the <see cref="T:JetBrains.UI.Tooltips.ITooltipManager"/>.
             </summary>
         </member>
-        <member name="F:JetBrains.CommonControls.TooltipManagerComponent.myContentMarging">
+        <member name="F:JetBrains.UI.Tooltips.TooltipManagerComponent.myContentMarging">
             <summary>
             Back-end for <see cref="!:ContentMargin"/>.
             </summary>
         </member>
-        <member name="F:JetBrains.CommonControls.TooltipManagerComponent.myAlarmTooltipDelay">
+        <member name="F:JetBrains.UI.Tooltips.TooltipManagerComponent.myCurrentElement">
+            <summary>
+            The element (HWND in classic case) that owns the currently displayed tooltip, or the tooltip that is about to be shown after a delay.
+            <c>Null</c> if not displaying or awaiting the tooltip.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Tooltips.TooltipManagerComponent.myQueuedAction">
             <summary>
             An alarm that implements a tooltip delay between the moment the tooltip is intended for display and the moment it appears onscreen.
             </summary>
         </member>
-        <member name="F:JetBrains.CommonControls.TooltipManagerComponent.myCurrentHwnd">
+        <member name="F:JetBrains.UI.Tooltips.TooltipManagerComponent.myScreenCursorPositionWhenDismissedWithEsc">
             <summary>
-            Handle to the window that owns the currently displayed tooltip.
-            <c>Null</c> if not displaying the tooltip.
+            When user hits ESC to dismiss the tooltip, gets the prev cursor position to avoid re-showing the tooltip immediately over the same element.
             </summary>
         </member>
-        <member name="F:JetBrains.CommonControls.TooltipManagerComponent.myEscapedHWnd">
-            <summary>
-            After <see cref="F:JetBrains.CommonControls.TooltipManagerComponent.myCurrentHwnd"/> becomes <c>Null</c>, holds its old value.
-            </summary>
-        </member>
-        <member name="F:JetBrains.CommonControls.TooltipManagerComponent.myKeyboardHook">
-            <summary>
-            Keyboard hook that captures all the keyboard events.
-            </summary>
-        </member>
-        <member name="F:JetBrains.CommonControls.TooltipManagerComponent.myLastHoveredHwnd">
-            <summary>
-            Remembers the last window checked for a tooltip on mouse-move or set-cursor messages.
-            As the latter occurs very frequently, prevents the tooltip provdier for being asked all the time with the same arguments.
-            Works together with <see cref="F:JetBrains.CommonControls.TooltipManagerComponent.myLastHoveredPoint"/>.
-            </summary>
-        </member>
-        <member name="F:JetBrains.CommonControls.TooltipManagerComponent.myLastHoveredPoint">
-            <summary>
-            Remembers the last point checked for a tooltip on mouse-move or set-cursor messages.
-            As the latter occurs very frequently, prevents the tooltip provdier for being asked all the time with the same arguments.
-            Works together with <see cref="F:JetBrains.CommonControls.TooltipManagerComponent.myLastHoveredHwnd"/>.
-            </summary>
-        </member>
-        <member name="F:JetBrains.CommonControls.TooltipManagerComponent.myMouseHook">
-            <summary>
-            Mouse hook that captures all the mouse events.
-            </summary>
-        </member>
-        <member name="F:JetBrains.CommonControls.TooltipManagerComponent.myProviders">
-            <summary>
-            Tooltip providers that are not collected automatically when mouse hovers a <see cref="T:JetBrains.CommonControls.ITooltipProvider"/>-enabled window, but registered explicitly with this manager.
-            Updated by <see cref="!:RegisterTooltipProvider"/>, <see cref="!:UnregisterTooltipProvider"/>.
-            </summary>
-        </member>
-        <member name="F:JetBrains.CommonControls.TooltipManagerComponent.myTooltipInfo">
-            <summary>
-            Describes the tooltip we're currently displaying.
-            <c>Null</c> if not displaying a tooltip.
-            Must be disposed of when <c>Null</c>ing.
-            </summary>
-        </member>
-        <member name="F:JetBrains.CommonControls.TooltipManagerComponent.myTooltipView">
+        <member name="F:JetBrains.UI.Tooltips.TooltipManagerComponent.myTooltipView">
             <summary>
             The control that renders the tooltip.
             <c>Null</c> if not displaying a tooltip.
             Check this field for <c>Null</c> to determine whether the tooltip is currently visible.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.IsValidHwnd(System.Void*)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipManagerComponent.CreateTooltip">
             <summary>
-            Checks whether the HWND belongs to a still-living .NET control or a good window.
+            Creates and immediately displays the tooltip, as described by <see cref="F:JetBrains.UI.Tooltips.TooltipManagerComponent.myCurrentElement"/>.
+            To schedule display on hover, fill the data fields and wind up this method on a timer.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.CreateTooltip">
-            <summary>
-            Creates and immediately displays the tooltip, as described by <see cref="F:JetBrains.CommonControls.TooltipManagerComponent.myCurrentHwnd"/> and <see cref="F:JetBrains.CommonControls.TooltipManagerComponent.myTooltipInfo"/>.
-            To schedule display on hover, fill the data fields and wind up the alarm.
-            </summary>
-        </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.DestroyTooltip">
+        <member name="M:JetBrains.UI.Tooltips.TooltipManagerComponent.DestroyTooltip">
             <summary>
             Destroys the currently visible tooltip and cleans up its data fields.
             Does nothing if no tooltip is currently visible.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.GetTooltipInfo(System.Void*,System.Drawing.Point)">
-            <summary>
-            Tries to lookup some tooltip info for the given <paramref name="hWnd"/>.
-            Returns <c>Null</c> if either there's no provider for the window or no tooltip info is returned by the provider.
-            </summary>
-        </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.GetTooltipProvider(System.Void*)">
-            <summary>
-            Looks up a tooltip provdier for the given window both in the registered providers list and by checking the window for implementing <see cref="T:JetBrains.CommonControls.ITooltipProvider"/>.
-            <c>Null</c> if no provider registered.
-            </summary>
-        </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.OnKeyboardAction(System.Object,JetBrains.UI.Interop.HookEventArgs)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipManagerComponent.OnKeyboardAction(System.Object,JetBrains.UI.Interop.HookEventArgs)">
             <summary>
             Keyboard hook. Non-UI-thread messages ignored.
             Closes the tooltip on ESC, avoids displaying it again for the same control for a while.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.OnMouseAction(System.Object,JetBrains.UI.Interop.HookEventArgs)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipManagerComponent.OnMouseAction(System.Object,JetBrains.UI.Interop.HookEventArgs)">
             <summary>
             Mouse hook. Any thread but UI will be ignored.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.OnMouseMove(System.Void*,System.Drawing.Point)">
-            <summary>
-            A mouse has made a movement that can potentially show a tooltip.
-            </summary>
-        </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.OnMouseMove_CheckCreate(System.Void*,System.Drawing.Point)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipManagerComponent.OnMouseMove_CheckCreate(JetBrains.UI.Tooltips.ITooltipElement)">
             <summary>
             Show the new tooltip for the hovered area (only if we're not displaying a tooltip).
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.OnMouseMove_CheckDestroy(System.Void*,System.Drawing.Point)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipManagerComponent.OnMouseMove_CheckDestroy(System.Drawing.Point)">
             <summary>
             Remove tooltip if we've exited its tool area.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.RefreshTooltip(JetBrains.CommonControls.ITooltipProvider)">
-            <summary>
-            Updates the tooltip onscreen.
-            If there's a tooltip from the <paramref name="provider"/> currently displayed onscreen, the <paramref name="provider"/> is queried for the new <see cref="T:JetBrains.CommonControls.ITooltipInfo"/> and updates the tooltip content.
-            If there's no tooltip displayed currently, or it's from another provider, nothing happens.
-            </summary>
-            <param name="provider">The provider whose tooltip should be updated.</param>
-        </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.Show(JetBrains.CommonControls.IWindowlessControl,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext,JetBrains.UI.PopupWindowManager.HideFlags,System.Int32)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipManagerComponent.Show(JetBrains.CommonControls.IWindowlessControl,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext,JetBrains.UI.PopupWindowManager.HideFlags,System.Int32)">
             <summary>
             Displays a tooltip using the given content and position, until user discards it with the action specified, or the timeout expires.
             </summary>
@@ -10913,24 +10924,16 @@
             <param name="layouter">Layouter for the tooltip popup window.</param>
             <param name="context">Parent context for the tooltip popup window.</param>
             <param name="hideflags">The list of actions that discard the tooltip (app deactivation is implied).</param>
-            <param name="timeout">Time interval to display the tooltip for. If positive, specifies the number of milliseconds to show the tooltip for. If <c>-1</c>, uses the default timeout from <see cref="P:JetBrains.CommonControls.TipControlView.DefaultTimeout"/>.</param>
-            <returns>The popup window that controls the tooltip, or <c>Null</c> if the tooltip has failed to show (eg tooltips are not allowed at the moment, see <see cref="P:JetBrains.CommonControls.TipControlView.CanShowTooltips"/>).</returns>
+            <param name="timeout">Time interval to display the tooltip for. If positive, specifies the number of milliseconds to show the tooltip for. If <c>-1</c>, uses the default timeout from <see cref="P:JetBrains.UI.Tooltips.TipControlView.DefaultTimeout"/>.</param>
+            <returns>The popup window that controls the tooltip, or <c>Null</c> if the tooltip has failed to show (eg tooltips are not allowed at the moment, see <see cref="P:JetBrains.UI.Tooltips.TipControlView.CanShowTooltips"/>).</returns>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.System#IDisposable#Dispose">
+        <member name="M:JetBrains.UI.Tooltips.TooltipManagerComponent.System#IDisposable#Dispose">
             <summary>
             Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             </summary>
             <filterpriority>2</filterpriority>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.JetBrains#CommonControls#ITooltipManager#RefreshTooltip(JetBrains.CommonControls.ITooltipProvider)">
-            <summary>
-            Updates the tooltip onscreen.
-            If there's a tooltip from the <paramref name="provider"/> currently displayed onscreen, the <paramref name="provider"/> is queried for the new <see cref="T:JetBrains.CommonControls.ITooltipInfo"/> and updates the tooltip content.
-            If there's no tooltip displayed currently, or it's from another provider, nothing happens.
-            </summary>
-            <param name="provider">The provider whose tooltip should be updated.</param>
-        </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.JetBrains#CommonControls#ITooltipManager#Show(JetBrains.CommonControls.IWindowlessControl,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext,JetBrains.UI.PopupWindowManager.HideFlags,System.Int32)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipManagerComponent.JetBrains#UI#Tooltips#ITooltipManager#Show(JetBrains.CommonControls.IWindowlessControl,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext,JetBrains.UI.PopupWindowManager.HideFlags,System.Int32)">
             <summary>
             Displays a tooltip using the given content and position, until user discards it with the action specified, or the timeout expires.
             </summary>
@@ -10938,10 +10941,10 @@
             <param name="layouter">Layouter for the tooltip popup window.</param>
             <param name="context">Parent context for the tooltip popup window.</param>
             <param name="hideflags">The list of actions that discard the tooltip (app deactivation is implied).</param>
-            <param name="timeout">Time interval to display the tooltip for. If positive, specifies the number of milliseconds to show the tooltip for. If <c>-1</c>, uses the default timeout from <see cref="P:JetBrains.CommonControls.TipControlView.DefaultTimeout"/>.</param>
-            <returns>The popup window that controls the tooltip, or <c>Null</c> if the tooltip has failed to show (eg tooltips are not allowed at the moment, see <see cref="P:JetBrains.CommonControls.TipControlView.CanShowTooltips"/>).</returns>
+            <param name="timeout">Time interval to display the tooltip for. If positive, specifies the number of milliseconds to show the tooltip for. If <c>-1</c>, uses the default timeout from <see cref="P:JetBrains.UI.Tooltips.TipControlView.DefaultTimeout"/>.</param>
+            <returns>The popup window that controls the tooltip, or <c>Null</c> if the tooltip has failed to show (eg tooltips are not allowed at the moment, see <see cref="P:JetBrains.UI.Tooltips.TipControlView.CanShowTooltips"/>).</returns>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.JetBrains#CommonControls#ITooltipManager#Show(JetBrains.CommonControls.IWindowlessControl,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipManagerComponent.JetBrains#UI#Tooltips#ITooltipManager#Show(JetBrains.CommonControls.IWindowlessControl,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
             <summary>
             Displays a tooltip using the given content and position, until user discards it with the action specified, or the timeout expires.
             </summary>
@@ -10949,7 +10952,7 @@
             <param name="layouter">Layouter for the tooltip popup window.</param>
             <param name="context">Parent context for the tooltip popup window.</param>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.JetBrains#CommonControls#ITooltipManager#Show(System.String,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipManagerComponent.JetBrains#UI#Tooltips#ITooltipManager#Show(System.String,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
             <summary>
             Displays a tooltip using the given content and position, until user discards it with the action specified, or the timeout expires.
             </summary>
@@ -10957,7 +10960,7 @@
             <param name="layouter">Layouter for the tooltip popup window.</param>
             <param name="context">Parent context for the tooltip popup window.</param>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.JetBrains#CommonControls#ITooltipManager#Show(System.String,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipManagerComponent.JetBrains#UI#Tooltips#ITooltipManager#Show(System.String,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
             <summary>
             Displays a tooltip using the given content and position, until user discards it with the action specified, or the timeout expires.
             Uses the default layouter for the context provided.
@@ -10965,7 +10968,7 @@
             <param name="text">Text to be displayed in the tooltip window.</param>
             <param name="context">Parent context for the tooltip popup window.</param>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.JetBrains#CommonControls#ITooltipManager#Show(JetBrains.UI.RichText.RichText,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipManagerComponent.JetBrains#UI#Tooltips#ITooltipManager#Show(JetBrains.UI.RichText.RichText,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
             <summary>
             Displays a tooltip using the given content and position, until user discards it with the action specified, or the timeout expires.
             </summary>
@@ -10973,7 +10976,7 @@
             <param name="layouter">Layouter for the tooltip popup window.</param>
             <param name="context">Parent context for the tooltip popup window.</param>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.JetBrains#CommonControls#ITooltipManager#Show(JetBrains.UI.RichText.RichText,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipManagerComponent.JetBrains#UI#Tooltips#ITooltipManager#Show(JetBrains.UI.RichText.RichText,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
             <summary>
             Displays a tooltip using the given content and position, until user discards it with the action specified, or the timeout expires.
             Uses the default layouter for the context provided.
@@ -10981,7 +10984,7 @@
             <param name="text">Rich text to be displayed in the tooltip window.</param>
             <param name="context">Parent context for the tooltip popup window.</param>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.JetBrains#CommonControls#ITooltipManager#Show(JetBrains.UI.RichText.RichTextBlock,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipManagerComponent.JetBrains#UI#Tooltips#ITooltipManager#Show(JetBrains.UI.RichText.RichTextBlock,JetBrains.UI.IPopupLayouter,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
             <summary>
             Displays a tooltip using the given content and position, until user discards it with the action specified, or the timeout expires.
             </summary>
@@ -10989,7 +10992,7 @@
             <param name="layouter">Layouter for the tooltip popup window.</param>
             <param name="context">Parent context for the tooltip popup window.</param>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipManagerComponent.JetBrains#CommonControls#ITooltipManager#Show(JetBrains.UI.RichText.RichTextBlock,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
+        <member name="M:JetBrains.UI.Tooltips.TooltipManagerComponent.JetBrains#UI#Tooltips#ITooltipManager#Show(JetBrains.UI.RichText.RichTextBlock,JetBrains.UI.PopupWindowManager.IPopupWindowContext)">
             <summary>
             Displays a tooltip using the given content and position, until user discards it with the action specified, or the timeout expires.
             Uses the default layouter for the context provided.
@@ -10997,55 +11000,70 @@
             <param name="text">Multiline rich text to be displayed in the tooltip window.</param>
             <param name="context">Parent context for the tooltip popup window.</param>
         </member>
-        <member name="P:JetBrains.CommonControls.TooltipManagerComponent.PopupWindowMutex">
-            <summary>
-            Gets the popup window mutex that defines the default identity for the tooltips, and thus prevents from showing more than one at a time.
-            </summary>
-        </member>
-        <member name="P:JetBrains.CommonControls.TooltipManagerComponent.JetBrains#CommonControls#ITooltipManager#ContentMargin">
+        <member name="P:JetBrains.UI.Tooltips.TooltipManagerComponent.JetBrains#UI#Tooltips#ITooltipManager#ContentMargin">
             <summary>
             Gets the margin that separates the content rendered within the tooltip from the tooltip window edge.
             Also, this is the offset from the tip control location to the tip text location, which is useful for precise positioning of the text.
             </summary>
         </member>
-        <member name="P:JetBrains.CommonControls.TooltipManagerComponent.JetBrains#CommonControls#ITooltipManager#HoverDelay">
+        <member name="P:JetBrains.UI.Tooltips.TooltipManagerComponent.JetBrains#UI#Tooltips#ITooltipManager#HoverDelay">
             <summary>
             Gets the standard hover delay, a period of time between the mouse-over and tooltip display, in milliseconds.
             </summary>
         </member>
-        <member name="P:JetBrains.CommonControls.TooltipManagerComponent.JetBrains#CommonControls#ITooltipManager#RenderParams">
+        <member name="P:JetBrains.UI.Tooltips.TooltipManagerComponent.JetBrains#UI#Tooltips#ITooltipManager#PopupWindowMutex">
+            <summary>
+            Gets the popup window mutex that defines the default identity for the tooltips, and thus prevents from showing more than one at a time.
+            </summary>
+        </member>
+        <member name="P:JetBrains.UI.Tooltips.TooltipManagerComponent.JetBrains#UI#Tooltips#ITooltipManager#RenderParams">
             <summary>
             Gets the default rendering parameters for a tooltip.
             Do not modify this instance.
             </summary>
         </member>
-        <member name="T:JetBrains.CommonControls.TooltipProvider">
+        <member name="T:JetBrains.UI.Tooltips.TooltipProvider">
             <summary>
             A simple tooltip provider implementation for the cases when the tooltip provider is external to the window it's requested on.
-            If you're implementing the tooltip-providing window class, implement the <see cref="T:JetBrains.CommonControls.ITooltipProvider"/> interface instead.
+            If you're implementing the tooltip-providing window class, implement the <see cref="T:JetBrains.UI.Tooltips.ITooltipProvider"/> interface instead.
             </summary>
         </member>
-        <member name="F:JetBrains.CommonControls.TooltipProvider.TooltipRequested">
+        <member name="M:JetBrains.UI.Tooltips.TooltipProvider.#ctor">
             <summary>
-            Fires when the tooltip is requested by the caller.
+            Creates a tooltip provider without a tooltip yet, sink the <see cref="F:JetBrains.UI.Tooltips.TooltipProvider.TooltipRequested"/> event.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipProvider.#ctor">
-            <summary>
-            Creates a tooltip provider without a tooltip yet, sink the <see cref="F:JetBrains.CommonControls.TooltipProvider.TooltipRequested"/> event.
-            </summary>
-        </member>
-        <member name="M:JetBrains.CommonControls.TooltipProvider.#ctor(System.Action{JetBrains.DataFlow.InOutEventArgs{System.Drawing.Point,JetBrains.CommonControls.ITooltipInfo}})">
+        <member name="M:JetBrains.UI.Tooltips.TooltipProvider.#ctor(System.Action{JetBrains.DataFlow.InOutEventArgs{System.Drawing.Point,JetBrains.UI.Tooltips.ITooltipInfo}})">
             <summary>
             Creates a tooltip provider with one handler.
             </summary>
         </member>
-        <member name="M:JetBrains.CommonControls.TooltipProvider.GetTooltip(System.Drawing.Point)">
+        <member name="F:JetBrains.UI.Tooltips.TooltipProvider.TooltipRequested">
+            <summary>
+            Fires when the tooltip is requested by the caller.
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Tooltips.TooltipProvider.GetTooltip(System.Drawing.Point)">
             <summary>
             Called by tooltip manager, if the tooltip is to be displayed
             </summary>
             <param name="point">Point in control's coordinates</param>
-            <returns><see cref="T:JetBrains.CommonControls.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
+            <returns><see cref="T:JetBrains.UI.Tooltips.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
+        </member>
+        <member name="T:JetBrains.UI.Tooltips.WinFormsTooltipElement">
+            <summary>
+            Tooltips over WinForms controls that implement <see cref="T:JetBrains.UI.Tooltips.ITooltipProvider"/>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.UI.Tooltips.WinFormsTooltipElement.TooltipProvider">
+            <summary>
+            Optional. The tooltip provider on the element (if applicable to the origin of the tooltip element, as is in the case of WinForms elements; used for exception diag mostly).
+            </summary>
+        </member>
+        <member name="M:JetBrains.UI.Tooltips.WinFormsTooltipElement.IsValid">
+            <summary>
+            Checks whether the HWND belongs to a still-living .NET control or a good window.
+            </summary>
         </member>
         <member name="T:JetBrains.UI.TreeControl.TreeControlNodeAnchoringRect">
             <summary>
@@ -12434,7 +12452,7 @@
             Called by tooltip manager, if the tooltip is to be displayed
             </summary>
             <param name="point">Point in control's coordinates</param>
-            <returns><see cref="T:JetBrains.CommonControls.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
+            <returns><see cref="T:JetBrains.UI.Tooltips.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
         </member>
         <member name="T:JetBrains.CommonControls.Validation.IValidatorProvider">
             <summary>
@@ -12630,7 +12648,7 @@
             Called by tooltip manager, if the tooltip is to be displayed
             </summary>
             <param name="point">Point in control's coordinates</param>
-            <returns><see cref="T:JetBrains.CommonControls.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
+            <returns><see cref="T:JetBrains.UI.Tooltips.ITooltipInfo"/>, or <c>Null</c> if no tooltip should be displayed.</returns>
         </member>
         <member name="P:JetBrains.CommonControls.Validation.WindowlessControlView.TooltipProvider">
             <summary>

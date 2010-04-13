@@ -61,7 +61,7 @@
             Format the whole file
             </summary>
         </member>
-        <member name="M:JetBrains.ReSharper.Psi.CodeStyle.ICodeFormatter.FormatFile(JetBrains.ReSharper.Psi.Tree.IFile,JetBrains.ReSharper.Psi.CodeStyle.CodeStyleSettings,JetBrains.ReSharper.Psi.CodeStyle.CodeFormatProfile,JetBrains.Application.Progress.IProgressIndicator)">
+        <member name="M:JetBrains.ReSharper.Psi.CodeStyle.ICodeFormatter.FormatFile(JetBrains.ReSharper.Psi.Tree.IFileNode,JetBrains.ReSharper.Psi.CodeStyle.CodeStyleSettings,JetBrains.ReSharper.Psi.CodeStyle.CodeFormatProfile,JetBrains.Application.Progress.IProgressIndicator)">
             <summary>
             Format the whole file
             </summary>

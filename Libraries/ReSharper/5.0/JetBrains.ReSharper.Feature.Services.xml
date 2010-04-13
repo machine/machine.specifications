@@ -500,16 +500,6 @@
             <param name="prefferedDeclaration">Declaration to which you would particulary like to write to. Pass null if you do not care.</param>
             <returns>Non-empty sorted list of declarations. Unwanted, ex. designer file, declarations filtered.</returns>
         </member>
-        <member name="T:JetBrains.ReSharper.Feature.Services.Util.GoTransparentOnControlKey">
-            <summary>
-            Supports the VS behavior for a window to go transparent when the Control modifier key is down.
-            </summary>
-        </member>
-        <member name="M:JetBrains.ReSharper.Feature.Services.Util.GoTransparentOnControlKey.IsCtrlKeyDownNow">
-            <summary>
-            Polls keyboard for the current state.
-            </summary>
-        </member>
         <member name="T:JetBrains.ReSharper.Feature.Services.Util.IImplicitReference">
             <summary>
             Implicit references, which target determined by context (not always in this file), not owner itself

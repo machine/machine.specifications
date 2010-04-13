@@ -2233,7 +2233,7 @@
         </member>
         <member name="M:JetBrains.Application.InterruptableReadActivity.Finish">
             <summary>
-            Override this method with activity that will happen in primary thread after worker thread finishesю
+            Override this method with activity that will happen in primary thread after worker thread finishesþ
             </summary>
         </member>
         <member name="M:JetBrains.Application.InterruptableReadActivity.OnInterrupt">
@@ -4363,7 +4363,7 @@
         </member>
         <member name="M:JetBrains.Application.InterruptableReadActivityThe.Finish">
             <summary>
-            Override this method with activity that will happen in primary thread after worker thread finishesю
+            Override this method with activity that will happen in primary thread after worker thread finishesþ
             </summary>
         </member>
         <member name="M:JetBrains.Application.InterruptableReadActivityThe.OnInterrupt">
@@ -5292,7 +5292,7 @@
         <member name="F:JetBrains.Application.Defines.IsModeAssert">
              <summary>
               <para>
-                <c>#define IsModeAssert True</c>
+                <c>#define IsModeAssert False</c>
               </para>
               <para>Whether debug asserts should be active and throw runtime exceptions.</para>
               <para>Default is ON. OFF for production builds.</para>
@@ -5310,7 +5310,7 @@
         <member name="F:JetBrains.Application.Defines.IsMsiIncludePdb">
              <summary>
               <para>
-                <c>#define IsMsiIncludePdb True</c>
+                <c>#define IsMsiIncludePdb False</c>
               </para>
               <para>Whether PDBs for product binaries should be packed into the Setup.</para>
               <para>If True, it is an error if a PDB is missing.</para>
@@ -5336,7 +5336,7 @@
         <member name="F:JetBrains.Application.Defines.IsProductionBuild">
              <summary>
               <para>
-                <c>#define IsProductionBuild False</c>
+                <c>#define IsProductionBuild True</c>
               </para>
               <para>Defines whether this is the Production Build — that is, production license should be used instead of the EAP license, and any optional checks should be deactivated.</para>
             </summary>
@@ -5406,7 +5406,7 @@
         <member name="F:JetBrains.Application.Defines.Const.IsModeAssert">
              <summary>
               <para>
-                <c>#define IsModeAssert True</c>
+                <c>#define IsModeAssert False</c>
               </para>
               <para>Whether debug asserts should be active and throw runtime exceptions.</para>
               <para>Default is ON. OFF for production builds.</para>
@@ -5426,7 +5426,7 @@
         <member name="F:JetBrains.Application.Defines.Const.IsMsiIncludePdb">
              <summary>
               <para>
-                <c>#define IsMsiIncludePdb True</c>
+                <c>#define IsMsiIncludePdb False</c>
               </para>
               <para>Whether PDBs for product binaries should be packed into the Setup.</para>
               <para>If True, it is an error if a PDB is missing.</para>
@@ -5455,7 +5455,7 @@
         <member name="F:JetBrains.Application.Defines.Const.IsProductionBuild">
              <summary>
               <para>
-                <c>#define IsProductionBuild False</c>
+                <c>#define IsProductionBuild True</c>
               </para>
               <para>Defines whether this is the Production Build — that is, production license should be used instead of the EAP license, and any optional checks should be deactivated.</para>
               <para>Use this const field only where use of a constant is mandatory. Otherwise use the static readonly field in the outer class, which stands better in the compiled assembly.</para>
