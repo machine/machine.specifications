@@ -3,7 +3,7 @@ Machine.Specifications (MSpec)
 
 *NOTE: Machine.Specifications.NUnit and Machine.Specifications.XUnit are now deprecated. Please remove them from your projects.*
 
-Most recent build [available here](http://teamcity.codebetter.com/guestAuth/repository/download/bt44/.lastSuccessful/Machine.Specifications-release.zip)
+Most recent build [available here](http://teamcity.codebetter.com/guestAuth/repository/download/bt44/.lastSuccessful/Machine.Specifications-release.zip).
 
 Machine.Specifications is a Context/Specification framework geared towards removing language noise and simplifying tests. All it asks is that you accept the `=()=>`.
 
@@ -107,7 +107,7 @@ MSpec provides a batch file for each of the three versions of ReSharper it suppo
 
 ##### Using InstallTDNetRunner.bat
 
-*NOTE: if you obtained the latest succesful binaries from CI build as indicated above, the InstallTDNetRunner.bat is already with the binaries and doesn't need to be copied.*
+*NOTE: If you obtained the latest successful binaries from CI build as indicated above, the InstallTDNetRunner.bat is already with the binaries and doesn't need to be copied.*
 
 MSpec provides a `InstallTDNetRunner.bat` file which can be used to add support for MSpec to TestDriven.Net. The file (and another version which runs silently) are available in the `\Distribution\Specifications` directory of the source repository. To add TD.Net support:
 
