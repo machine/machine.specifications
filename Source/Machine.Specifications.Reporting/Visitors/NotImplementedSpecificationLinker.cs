@@ -39,7 +39,7 @@ namespace Machine.Specifications.Reporting.Visitors
 
     public void Visit(Specification specification)
     {
-      if (IsNotImplemented(specification))
+      if (IsImplemented(specification))
       {
         return;
       }
@@ -56,7 +56,7 @@ namespace Machine.Specifications.Reporting.Visitors
       }
     }
 
-    static bool IsNotImplemented(Specification specification)
+    static bool IsImplemented(Specification specification)
     {
       return specification.Status != Status.NotImplemented;
     }

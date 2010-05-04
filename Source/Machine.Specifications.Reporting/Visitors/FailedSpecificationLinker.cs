@@ -39,7 +39,7 @@ namespace Machine.Specifications.Reporting.Visitors
 
     public void Visit(Specification specification)
     {
-      if (IsFailing(specification))
+      if (IsSuccessful(specification))
       {
         return;
       }
@@ -48,7 +48,7 @@ namespace Machine.Specifications.Reporting.Visitors
       SetFirstFailure(specification);
     }
 
-    static bool IsFailing(Specification specification)
+    static bool IsSuccessful(Specification specification)
     {
       return specification.Status != Status.Failing;
     }
