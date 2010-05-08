@@ -100,7 +100,7 @@ task :rebuild => [ :clean, :build ]
 
 namespace :specs do
   task :view => :run do
-    system "start Specs/#{project}.Specs.html"
+    system "start Specs/#{configatron.project}.Specs.html"
   end
 
   task :run do
