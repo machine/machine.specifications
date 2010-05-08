@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security;
 
 namespace Machine.Specifications.Runner.Impl
 {
@@ -55,6 +56,7 @@ namespace Machine.Specifications.Runner.Impl
       _listener.OnFatalError(exception);
     }
 
+    [SecurityCritical]
     public override object InitializeLifetimeService()
     {
       return null;

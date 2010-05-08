@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Security;
 
 namespace Machine.Specifications.Runner.Impl
 {
@@ -7,12 +8,14 @@ namespace Machine.Specifications.Runner.Impl
   {
     readonly Assembly _assembly;
 
+    [SecuritySafeCritical]
     public SpecAssemblyResolver(Assembly assembly)
     {
       _assembly = assembly;
       AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
     }
 
+    [SecuritySafeCritical]
     public void Dispose()
     {
       AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
