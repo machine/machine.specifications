@@ -15,6 +15,7 @@ task :configure do
   
   build_config = {
     :net_35 => {
+      :friendly_name => 'net-3.5',
       :version => 'v3.5',
       :project => project,
       :compileTarget => target,
@@ -23,19 +24,13 @@ task :configure do
       :nunit_framework => "net-3.5"
     },
     :net_40 => {
+      :friendly_name => 'net-4.0',
       :version => 'v4\Full',
       :project => "#{project}-2010",
       :compileTarget => "#{target} .NET 4.0".escape,
       :outDir => "Build/net-4.0/#{target}/",
       :packageName => "Distribution/#{project}-net-4.0-#{target}.zip",
-      :nunit_framework => "net-4.0.30319",
-      :other_clr_projects => {
-        :version => 'v3.5',
-        :target => target,
-        :outDir => "Build/net-3.5/#{target}/",
-        :projects => [ 'Machine.Specifications.Reporting.Specs', 'Machine.Specifications.ReSharperRunner.5.0' ],
-        :artifacts => [ '**/Machine.Specifications.Reporting.Templates.dll', 'Machine.Specifications.ReSharperRunner.5.0.*' ]
-        }
+      :nunit_framework => "net-4.0.30319"
     }
   }
 
@@ -73,26 +68,6 @@ task :build do
     :properties => {
       :Configuration => configatron.compileTarget
     }
-
-  if configatron.exists?(:other_clr_projects)
-    # Compile some projects for another CLR and pull their artifacts.
-    configatron.other_clr_projects.projects.each do |project|
-      MSBuild.compile \
-        :project => "Source/#{project}/#{project}.csproj",
-        :version => configatron.other_clr_projects.version,
-        :properties => {
-          :Configuration => configatron.other_clr_projects.target
-        }
-    end
-
-    configatron.other_clr_projects.artifacts.each do |artifact|
-      FileList \
-        .new(File.join(configatron.other_clr_projects.outDir, artifact)) \
-        .copy_hierarchy \
-          :source_dir => configatron.other_clr_projects.outDir,
-          :target_dir => configatron.outDir
-    end
-  end
 end
 
 desc "Rebuild"
@@ -120,11 +95,6 @@ namespace :tests do
     tests = ["Machine.Specifications.Tests.dll"].map {|test| "#{configatron.outDir}/Tests/#{test}"}
     runner = NUnitRunner.new :platform => 'x86', :results => "Specs", :clr_version => configatron.nunit_framework
     runner.executeTests tests
-
-    if File.exists? "#{configatron.outDir}/Tests/Gallio/Machine.Specifications.TestGallioAdapter.3.1.Tests.dll"
-		puts 'Running Gallio tests...'
-		sh "Tools/Gallio/v3.1.397/Gallio.Echo.exe", "#{configatron.outDir}/Tests/Gallio/Machine.Specifications.TestGallioAdapter.3.1.Tests.dll", "/plugin-directory:#{configatron.outDir}", "/r:Local"
-	end
   end
 end
 
@@ -158,3 +128,5 @@ desc "Sets up the TeamCity environment"
 task :teamcity_environment do
   mspec_options.push "--teamcity"
 end
+
+require "rakefile.#{configatron.friendly_name}.rb" if File.exists? "rakefile.#{configatron.friendly_name}.rb"
