@@ -15,3 +15,5 @@ NDependOut
 /Distribution/Machine.Specifications-*.zip
 
 /Specs/*.xml
+
+/Tools/NUnit/nunit-console-x86.exe.config
