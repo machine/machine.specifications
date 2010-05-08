@@ -20,7 +20,7 @@ task :configure do
       :compileTarget => target,
       :outDir => "Build/net-3.5/#{target}/",
       :packageName => "Distribution/#{project}-net-3.5-#{target}.zip",
-	  :nunit_framework => "net-3.5"
+      :nunit_framework => "net-3.5"
     },
     :net_40 => {
       :version => 'v4\Full',
@@ -28,10 +28,17 @@ task :configure do
       :compileTarget => "#{target} .NET 4.0".escape,
       :outDir => "Build/net-4.0/#{target}/",
       :packageName => "Distribution/#{project}-net-4.0-#{target}.zip",
-	  :nunit_framework => "net-4.0.30319"
+      :nunit_framework => "net-4.0.30319",
+      :other_clr_projects => {
+        :version => 'v3.5',
+        :target => target,
+        :outDir => "Build/net-3.5/#{target}/",
+        :projects => [ 'Machine.Specifications.Reporting.Specs', 'Machine.Specifications.ReSharperRunner.5.0' ],
+        :artifacts => [ '**/Machine.Specifications.Reporting.Templates.dll', 'Machine.Specifications.ReSharperRunner.5.0.*' ]
+        }
     }
   }
-  
+
   configatron.configure_from_hash build_config[version]
   configatron.protect_all!
   puts configatron.inspect
@@ -42,6 +49,22 @@ Rake::Task["configure"].invoke
 desc "Build and run specs"
 task :default => [ "build", "tests:run", "specs:run" ]
 
+desc "Clean"
+task :clean do
+  MSBuild.compile \
+    :project => "Source/#{configatron.project}.sln",
+    :version => configatron.version,
+    :properties => {
+      :Configuration => configatron.compileTarget
+    },
+    :switches => {
+      :target => 'Clean'
+    }
+
+  rm_f configatron.packageName
+  rm_rf "Build"
+end
+
 desc "Build"
 task :build do
   MSBuild.compile \
@@ -50,7 +73,30 @@ task :build do
     :properties => {
       :Configuration => configatron.compileTarget
     }
+
+  if configatron.exists?(:other_clr_projects)
+    # Compile some projects for another CLR and pull their artifacts.
+    configatron.other_clr_projects.projects.each do |project|
+      MSBuild.compile \
+        :project => "Source/#{project}/#{project}.csproj",
+        :version => configatron.other_clr_projects.version,
+        :properties => {
+          :Configuration => configatron.other_clr_projects.target
+        }
+    end
+
+    configatron.other_clr_projects.artifacts.each do |artifact|
+      FileList \
+        .new(File.join(configatron.other_clr_projects.outDir, artifact)) \
+        .copy_hierarchy \
+          :source_dir => configatron.other_clr_projects.outDir,
+          :target_dir => configatron.outDir
+    end
+  end
 end
+
+desc "Rebuild"
+task :rebuild => [ :clean, :build ]
 
 namespace :specs do
   task :view => :run do
@@ -87,35 +133,6 @@ task :sln do
   Thread.new do
     system "devenv Source/#{configatron.project}.sln"
   end
-end
-
-desc "Rebuild"
-task :rebuild => [ :clean ] do
-  MSBuild.compile \
-    :project => "Source/#{configatron.project}.sln",
-    :version => configatron.version,
-    :properties => {
-      :Configuration => configatron.compileTarget
-    },
-    :switches => {
-      :target => 'Rebuild'
-    }
-end
-
-desc "Clean"
-task :clean do
-  MSBuild.compile \
-    :project => "Source/#{configatron.project}.sln",
-    :version => configatron.version,
-    :properties => {
-      :Configuration => configatron.compileTarget
-    },
-    :switches => {
-      :target => 'Clean'
-    }
-
-  rm_f configatron.packageName
-  rm_rf "Build"
 end
 
 desc "Packages the build artifacts"
