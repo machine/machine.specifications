@@ -75,8 +75,10 @@ namespace :tests do
     runner = NUnitRunner.new :platform => 'x86', :results => "Specs", :clr_version => configatron.nunit_framework
     runner.executeTests tests
 
-    puts 'Running Gallio tests...'
-    sh "Tools/Gallio/v3.1.397/Gallio.Echo.exe", "#{configatron.outDir}/Tests/Gallio/Machine.Specifications.TestGallioAdapter.3.1.Tests.dll", "/plugin-directory:#{configatron.outDir}", "/r:Local"
+    if File.exists? "#{configatron.outDir}/Tests/Gallio/Machine.Specifications.TestGallioAdapter.3.1.Tests.dll"
+		puts 'Running Gallio tests...'
+		sh "Tools/Gallio/v3.1.397/Gallio.Echo.exe", "#{configatron.outDir}/Tests/Gallio/Machine.Specifications.TestGallioAdapter.3.1.Tests.dll", "/plugin-directory:#{configatron.outDir}", "/r:Local"
+	end
   end
 end
 
