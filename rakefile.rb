@@ -89,7 +89,7 @@ end
 namespace :tests do
   task :run do
     # As a temporary fix until NUnit /really/ supports running on the CLR 4, copy the config file for the selected framework.
-	cp "Tools/NUnit/nunit-console-x86.exe.config.#{configatron.nunit_framework}", "Tools/NUnit/nunit-console-x86.exe.config"
+	cp "Tools/NUnit/nunit-console-x86.exe.config.#{configatron.friendly_name}", "Tools/NUnit/nunit-console-x86.exe.config"
 	
 	puts 'Running NUnit tests...'
     tests = ["Machine.Specifications.Tests.dll"].map {|test| "#{configatron.outDir}/Tests/#{test}"}
