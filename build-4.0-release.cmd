@@ -1,1 +1,1 @@
-@build.cmd version=net_40 target=Release
+@build.cmd version=net_40 target=Release %*

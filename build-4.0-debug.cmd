@@ -1,1 +1,1 @@
-@build.cmd version=net_40 target=Debug
+@build.cmd version=net_40 target=Debug %*
