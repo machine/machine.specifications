@@ -5,8 +5,8 @@ task :build do
   
   projects_built_with_3_5 = {
     :version => 'v3.5',
-    :target => "Debug",
-    :outDir => "Build/net-3.5/Debug/",
+    :target => configatron.target,
+    :outDir => "Build/net-3.5/#{configatron.target}/",
     :projects => [ 'Machine.Specifications.Reporting.Specs', 'Machine.Specifications.ReSharperRunner.5.0' ],
     :artifacts => [ '**/Machine.Specifications.Reporting.Templates.dll', 'Machine.Specifications.ReSharperRunner.5.0.*' ]
     }
