@@ -20,9 +20,9 @@ task :configure do
       :project => project,
       :solution => project,
       :target => target,
-      :compileTarget => target,
-      :outDir => "Build/net-3.5/#{target}/",
-      :packageName => "Distribution/#{project}-net-3.5-#{target}.zip",
+      :compile_target => target,
+      :out_dir => "Build/net-3.5/#{target}/",
+      :package_name => "Distribution/#{project}-net-3.5-#{target}.zip",
       :nunit_framework => "net-3.5"
     },
     :net_40 => {
@@ -31,9 +31,9 @@ task :configure do
       :project => project,
       :solution => "#{project}-2010",
       :target => target,
-      :compileTarget => "#{target} .NET 4.0".escape,
-      :outDir => "Build/net-4.0/#{target}/",
-      :packageName => "Distribution/#{project}-net-4.0-#{target}.zip",
+      :compile_target => "#{target} .NET 4.0".escape,
+      :out_dir => "Build/net-4.0/#{target}/",
+      :package_name => "Distribution/#{project}-net-4.0-#{target}.zip",
       :nunit_framework => "net-4.0.30319",
       :exclude_from_package => "InstallResharperRunner.4*.*"
     }
@@ -55,13 +55,13 @@ task :clean do
     :project => "Source/#{configatron.solution}.sln",
     :version => configatron.version,
     :properties => {
-      :Configuration => configatron.compileTarget
+      :Configuration => configatron.compile_target
     },
     :switches => {
       :target => 'Clean'
     }
 
-  rm_f configatron.packageName
+  rm_f configatron.package_name
   rm_rf "Build"
 end
 
@@ -71,7 +71,7 @@ task :build do
     :project => "Source/#{configatron.solution}.sln",
     :version => configatron.version,
     :properties => {
-      :Configuration => configatron.compileTarget
+      :Configuration => configatron.compile_target
     }
 end
 
@@ -85,8 +85,8 @@ namespace :specs do
 
   task :run do
     puts 'Running Specs...'
-    specs = ["Machine.Specifications.Specs.dll", "Machine.Specifications.Reporting.Specs.dll", "Machine.Specifications.ConsoleRunner.Specs.dll"].map {|spec| "#{configatron.outDir}/Tests/#{spec}"}
-    sh "#{configatron.outDir}/mspec.exe", "--html", "Specs/#{configatron.project}.Specs.html", "-x", "example", *(mspec_options + specs)
+    specs = ["Machine.Specifications.Specs.dll", "Machine.Specifications.Reporting.Specs.dll", "Machine.Specifications.ConsoleRunner.Specs.dll"].map {|spec| "#{configatron.out_dir}/Tests/#{spec}"}
+    sh "#{configatron.out_dir}/mspec.exe", "--html", "Specs/#{configatron.project}.Specs.html", "-x", "example", *(mspec_options + specs)
     puts "Wrote specs to Specs/#{configatron.project}.Specs.html, run 'rake specs:view' to see them"
   end
 end
@@ -97,7 +97,7 @@ namespace :tests do
 	cp "Tools/NUnit/nunit-console-x86.exe.config.#{configatron.friendly_name}", "Tools/NUnit/nunit-console-x86.exe.config"
 	
 	puts 'Running NUnit tests...'
-    tests = ["Machine.Specifications.Tests.dll"].map {|test| "#{configatron.outDir}/Tests/#{test}"}
+    tests = ["Machine.Specifications.Tests.dll"].map {|test| "#{configatron.out_dir}/Tests/#{test}"}
     runner = NUnitRunner.new :platform => 'x86', :results => "Specs", :clr_version => configatron.nunit_framework
     runner.executeTests tests
   end
@@ -112,14 +112,14 @@ end
 
 desc "Packages the build artifacts"
 task :package => [ "rebuild", "tests:run", "specs:run" ] do
-  rm_f configatron.packageName
+  rm_f configatron.package_name
   
-  cp 'License.txt', configatron.outDir
-  cp_r 'Distribution/Specifications/.', configatron.outDir
+  cp 'License.txt', configatron.out_dir
+  cp_r 'Distribution/Specifications/.', configatron.out_dir
   
   sz = SevenZip.new \
     :tool => 'Tools/7-Zip/7za.exe',
-    :zip_name => configatron.packageName
+    :zip_name => configatron.package_name
 
   files = FileList.new('**/*') \
       .exclude('*.InstallLog') \
@@ -129,7 +129,7 @@ task :package => [ "rebuild", "tests:run", "specs:run" ] do
   
   files.exclude(configatron.exclude_from_package) if configatron.exists?(:exclude_from_package)
 
-  Dir.chdir(configatron.outDir) do
+  Dir.chdir(configatron.out_dir) do
     sz.zip :files => files
   end
 end
