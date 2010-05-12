@@ -21,7 +21,7 @@ task :configure do
       :solution => project,
       :target => target,
       :compile_target => target,
-      :out_dir => "Build/net-3.5/#{target}/",
+      :out_dir => "Build/#{target}/",
       :package_name => "Distribution/#{project}-net-3.5-#{target}.zip",
       :nunit_framework => "net-3.5"
     },
@@ -32,10 +32,11 @@ task :configure do
       :solution => "#{project}-2010",
       :target => target,
       :compile_target => "#{target} .NET 4.0".escape,
-      :out_dir => "Build/net-4.0/#{target}/",
+      :out_dir => "Build/#{target}/",
       :package_name => "Distribution/#{project}-net-4.0-#{target}.zip",
-      :nunit_framework => "net-4.0.30319",
-      :exclude_from_package => "InstallResharperRunner.4*.*"
+      :nunit_framework => "net-3.5",
+      :exclude_from_package => "InstallResharperRunner.4*.*",
+      :additional_specs => ["Machine.Specifications.Example.Clr4.dll"],
     }
   }
 
@@ -85,7 +86,9 @@ namespace :specs do
 
   task :run do
     puts 'Running Specs...'
-    specs = ["Machine.Specifications.Specs.dll", "Machine.Specifications.Reporting.Specs.dll", "Machine.Specifications.ConsoleRunner.Specs.dll"].map {|spec| "#{configatron.out_dir}/Tests/#{spec}"}
+    specs = ["Machine.Specifications.Specs.dll", "Machine.Specifications.Reporting.Specs.dll", "Machine.Specifications.ConsoleRunner.Specs.dll"]
+    specs = specs | configatron.additional_specs if configatron.exists?(:additional_specs)
+    specs.map! {|spec| "#{configatron.out_dir}/Tests/#{spec}"}
     sh "#{configatron.out_dir}/mspec.exe", "--html", "Specs/#{configatron.project}.Specs.html", "-x", "example", *(mspec_options + specs)
     puts "Wrote specs to Specs/#{configatron.project}.Specs.html, run 'rake specs:view' to see them"
   end
@@ -93,10 +96,7 @@ end
 
 namespace :tests do
   task :run do
-    # As a temporary fix until NUnit /really/ supports running on the CLR 4, copy the config file for the selected framework.
-	cp "Tools/NUnit/nunit-console-x86.exe.config.#{configatron.friendly_name}", "Tools/NUnit/nunit-console-x86.exe.config"
-	
-	puts 'Running NUnit tests...'
+    puts 'Running NUnit tests...'
     tests = ["Machine.Specifications.Tests.dll"].map {|test| "#{configatron.out_dir}/Tests/#{test}"}
     runner = NUnitRunner.new :platform => 'x86', :results => "Specs", :clr_version => configatron.nunit_framework
     runner.executeTests tests
