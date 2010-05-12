@@ -18,6 +18,7 @@ task :configure do
       :friendly_name => 'net-3.5',
       :version => 'v3.5',
       :project => project,
+      :solution => project,
       :target => target,
       :compileTarget => target,
       :outDir => "Build/net-3.5/#{target}/",
@@ -27,7 +28,8 @@ task :configure do
     :net_40 => {
       :friendly_name => 'net-4.0',
       :version => 'v4\Full',
-      :project => "#{project}-2010",
+      :project => project,
+      :solution => "#{project}-2010",
       :target => target,
       :compileTarget => "#{target} .NET 4.0".escape,
       :outDir => "Build/net-4.0/#{target}/",
@@ -49,7 +51,7 @@ task :default => [ "build", "tests:run", "specs:run" ]
 desc "Clean"
 task :clean do
   MSBuild.compile \
-    :project => "Source/#{configatron.project}.sln",
+    :project => "Source/#{configatron.solution}.sln",
     :version => configatron.version,
     :properties => {
       :Configuration => configatron.compileTarget
@@ -65,7 +67,7 @@ end
 desc "Build"
 task :build do
   MSBuild.compile \
-    :project => "Source/#{configatron.project}.sln",
+    :project => "Source/#{configatron.solution}.sln",
     :version => configatron.version,
     :properties => {
       :Configuration => configatron.compileTarget
@@ -103,7 +105,7 @@ end
 desc "Open solution in VS"
 task :sln do
   Thread.new do
-    system "devenv Source/#{configatron.project}.sln"
+    system "devenv Source/#{configatron.solution}.sln"
   end
 end
 
