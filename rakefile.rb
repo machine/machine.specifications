@@ -34,7 +34,8 @@ task :configure do
       :compileTarget => "#{target} .NET 4.0".escape,
       :outDir => "Build/net-4.0/#{target}/",
       :packageName => "Distribution/#{project}-net-4.0-#{target}.zip",
-      :nunit_framework => "net-4.0.30319"
+      :nunit_framework => "net-4.0.30319",
+      :exclude_from_package => "InstallResharperRunner.4*.*"
     }
   }
 
@@ -120,8 +121,16 @@ task :package => [ "rebuild", "tests:run", "specs:run" ] do
     :tool => 'Tools/7-Zip/7za.exe',
     :zip_name => configatron.packageName
 
+  files = FileList.new('**/*') \
+      .exclude('*.InstallLog') \
+      .exclude('*.InstallState') \
+      .exclude('Generation') \
+      .exclude('Tests') \
+  
+  files.exclude(configatron.exclude_from_package) if configatron.exists?(:exclude_from_package)
+
   Dir.chdir(configatron.outDir) do
-    sz.zip :files => FileList.new('**/*').exclude('*.InstallLog').exclude('*.InstallState').exclude('Generation').exclude('Tests')
+    sz.zip :files => files
   end
 end
 
