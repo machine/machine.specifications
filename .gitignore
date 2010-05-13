@@ -8,10 +8,8 @@ _ReSharper.*
 *.cache
 *~
 *.swp
-/Build
 NDependOut
 
-.setup-done
-/Distribution/Machine.Specifications-*.zip
-
+/Build
+/Distribution
 /Specs/*.xml
