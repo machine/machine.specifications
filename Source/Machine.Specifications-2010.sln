@@ -31,6 +31,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Reporting.Specs", "Machine.Specifications.Reporting.Specs\Machine.Specifications.Reporting.Specs.csproj", "{97BD55A5-03CA-4E8E-8AE0-55722C39E0AF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Specs", "Machine.Specifications.Specs\Machine.Specifications.Specs.csproj", "{15FCDD3C-6C0E-4516-90D8-A1D82DC4C4F9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A635BD1C-DA89-4FC7-8434-5DAB1A09A18D} = {A635BD1C-DA89-4FC7-8434-5DAB1A09A18D}
+		{2C33D385-9024-4346-8839-93CFF1AF227C} = {2C33D385-9024-4346-8839-93CFF1AF227C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.BindingFailure", "Machine.Specifications.Example.BindingFailure\Machine.Specifications.Example.BindingFailure.csproj", "{A635BD1C-DA89-4FC7-8434-5DAB1A09A18D}"
 EndProject

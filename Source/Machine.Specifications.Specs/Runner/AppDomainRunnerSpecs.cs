@@ -33,6 +33,7 @@ namespace Machine.Specifications.Specs.Runner
   public class when_running_specs_in_an_assembly_with_a_reference_that_cannot_be_bound : running_specs
   {
     static Exception Exception;
+    readonly static string SpecAssembly = GetPath("Machine.Specifications.Example.BindingFailure.dll");
     readonly static string ReferencedAssembly = GetPath("Machine.Specifications.Example.BindingFailure.Ref.dll");
 
     Establish context = () =>
@@ -44,13 +45,13 @@ namespace Machine.Specifications.Specs.Runner
     };
 
     Because of = () =>
-      runner.RunAssembly(Assembly.LoadFrom(GetPath("Machine.Specifications.Example.BindingFailure.dll")));
+	  runner.RunAssembly(Assembly.LoadFrom(SpecAssembly));
 
     It should_fail = () =>
       listener.LastFatalError.ShouldNotBeNull();
     //Exception.ShouldBeOfType<TargetInvocationException>();
 
-    protected static string GetPath(string path)
+    static string GetPath(string path)
     {
       return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), path);
     }
