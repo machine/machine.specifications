@@ -1,8 +1,12 @@
 using System;
 
+using Machine.Specifications.Annotations;
+using Machine.Specifications.Utility;
+
 namespace Machine.Specifications
 {
   [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+  [MeansImplicitUse(ImplicitUseTargetFlags.WithMembers)]
   public class SubjectAttribute : Attribute
   {
     readonly Type _subjectType;
