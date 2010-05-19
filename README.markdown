@@ -107,6 +107,15 @@ This option behaves the same as the `--html` option, in terms of filename behavi
 
 MSpec provides a batch file for each of the four versions of ReSharper it supports, 4.1, 4.5, 5.0 and 5.1.
 
+##### Preventing ReSharper from marking specifications as unused
+
+By default, ReSharper will think that specification classes (those marked with the [Subject] attribute), and their internals are unused.  To change this behavior in Visual Studio:
+
+1. Open the ReSharper Options (ReSharper -> Options...)
+2. Select "Code Annotations"
+3. Ensure that the namespace "Machine.Specifications.Annotations" is checked
+4. Click "OK"
+
 #### TestDriven.Net
 
 ##### Using InstallTDNetRunner.bat
