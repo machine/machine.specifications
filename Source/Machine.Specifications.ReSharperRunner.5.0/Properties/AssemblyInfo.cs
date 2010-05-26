@@ -7,10 +7,10 @@ using JetBrains.UI.Application.PluginSupport;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("Machine.Specifications.ReSharperRunner")]
+[assembly: AssemblyTitle("Machine.Specifications.ReSharperRunner.5.0")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyProduct("Machine.Specifications.ReSharperRunner")]
+[assembly: AssemblyProduct("Machine.Specifications")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
