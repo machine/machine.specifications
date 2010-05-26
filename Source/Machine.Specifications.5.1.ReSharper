@@ -1,0 +1,14 @@
+<Configuration>
+  <NonLocalizable>
+    <Method TypeName="System.Web.UI.TemplateControl" Name="GetLocalResourceObject" Arguments="" />
+    <Method TypeName="System.Web.UI.TemplateControl" Name="GetGlobalResourceObject" Arguments="" />
+    <Method TypeName="System.Web.HttpContext" Name="GetLocalResourceObject" Arguments="" />
+    <Method TypeName="System.Web.HttpContext" Name="GetGlobalResourceObject" Arguments="" />
+    <Method TypeName="System.Resources.ResourceManager" Name="GetString" Arguments="name" />
+    <Method TypeName="System.Resources.ResourceManager" Name="GetStream" Arguments="name" />
+    <Method TypeName="System.Resources.ResourceManager" Name="GetObject" Arguments="name" />
+    <Constructor TypeName="System.ArgumentException" Arguments="paramName" />
+    <Constructor TypeName="System.ArgumentNullException" Arguments="paramName" />
+    <Constructor TypeName="System.ArgumentOutOfRangeException" Arguments="paramName" />
+  </NonLocalizable>
+</Configuration>
