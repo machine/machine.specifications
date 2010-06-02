@@ -9,7 +9,6 @@ using System.Security;
 [assembly : AssemblyTitle("Machine.Specifications")]
 [assembly : AssemblyDescription("")]
 [assembly : AssemblyConfiguration("")]
-[assembly : AssemblyProduct("Machine.Specifications")]
 [assembly : AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

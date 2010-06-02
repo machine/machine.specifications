@@ -1,8 +1,9 @@
 using System.Reflection;
 
-[assembly : AssemblyCompany("Machine Project")]
-[assembly : AssemblyCopyright("Copyright © Machine Project 2008, 2009, 2010")]
-[assembly : AssemblyTrademark("")]
+[assembly: AssemblyCompany("Machine Project")]
+[assembly: AssemblyProduct("Machine.Specifications")]
+[assembly: AssemblyCopyright("Copyright © Machine Project 2008, 2009, 2010")]
+[assembly: AssemblyTrademark("")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -15,5 +16,5 @@ using System.Reflection;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly : AssemblyVersion("0.3.0.0")]
-[assembly : AssemblyFileVersion("0.3.0.0")]
+[assembly: AssemblyVersion("0.3.0.0")]
+[assembly: AssemblyFileVersion("0.3.0.0")]

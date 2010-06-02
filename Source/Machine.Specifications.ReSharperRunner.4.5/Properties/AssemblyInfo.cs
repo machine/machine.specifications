@@ -10,7 +10,6 @@ using JetBrains.UI.Application.PluginSupport;
 [assembly: AssemblyTitle("Machine.Specifications.ReSharperRunner.4.5")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyProduct("Machine.Specifications")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

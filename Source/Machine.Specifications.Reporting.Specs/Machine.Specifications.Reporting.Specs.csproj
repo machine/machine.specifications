@@ -72,7 +72,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release .NET 4.0|AnyCPU'">
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-	<OutputPath>..\..\Build\Release\Tests\</OutputPath>
+    <OutputPath>..\..\Build\Release\Tests\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -99,6 +99,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Generation\Spark\GenerateSparkHtmlReportRunListenerSpecs.cs" />
     <Compile Include="ReportSpecs.cs" />
     <Compile Include="Generation\Spark\SparkRendererSpecs.cs" />
