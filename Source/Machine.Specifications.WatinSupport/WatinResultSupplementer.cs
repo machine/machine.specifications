@@ -8,7 +8,7 @@ using WatiN.Core.UtilityClasses;
 namespace Machine.Specifications.WatinSupport
 {
   /// <summary>
-  /// Watin result supplementer loging browser snapshot and page html in files.
+  /// Watin result supplementer logging browser snapshot and page html in files.
   /// </summary>
   public abstract class WatinResultSupplementer : ISupplementSpecificationResults
   {
