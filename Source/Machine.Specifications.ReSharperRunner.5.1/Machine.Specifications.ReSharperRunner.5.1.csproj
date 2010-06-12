@@ -223,6 +223,9 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Presentation\FieldElement.cs">
       <Link>Presentation\FieldElement.cs</Link>
     </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Tasks\ContextTask.5.0.cs">
+      <Link>Tasks\ContextTask.5.0.cs</Link>
+    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Tasks\Task.5.0.cs">
       <Link>Tasks\Task.5.0.cs</Link>
     </Compile>

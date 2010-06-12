@@ -4,7 +4,7 @@ using System.Xml;
 namespace Machine.Specifications.ReSharperRunner.Tasks
 {
   [Serializable]
-  internal class ContextTask : Task, IEquatable<ContextTask>
+  internal partial class ContextTask : Task, IEquatable<ContextTask>
   {
     public ContextTask(XmlElement element) : base(element)
     {
