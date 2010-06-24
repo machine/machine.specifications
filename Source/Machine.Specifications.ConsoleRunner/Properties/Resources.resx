@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="FailingSpecificationError" xml:space="preserve">
     <value>Failed Specification: {0} in assembly {1}</value>
@@ -124,6 +124,6 @@
     <value>Missing Assembly: {0}</value>
   </data>
   <data name="UsageStatement" xml:space="preserve">
-    <value>Usage: mspec-runner.exe [options] &lt;assemblies&gt;</value>
+    <value>Usage: mspec.exe [options] &lt;assemblies&gt;</value>
   </data>
 </root>
