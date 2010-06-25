@@ -518,6 +518,14 @@
             Returns null when no value is associated.
             </summary>
         </member>
+        <member name="M:JetBrains.ProjectModel.SolutionManager.ShowInSolutionExplorer(JetBrains.ProjectModel.IProjectItem,System.Boolean)">
+            <summary>
+            Shows the Solution Explorer and sets selection to <paramref name="projectItem"/>, if defined.
+            </summary>
+            <param name="projectItem">A valid project item to select in Solution Explorer, or <c>Null</c> to just activate the Solution Explorer window (if <paramref name="activate"/>).</param>
+            <param name="activate">Whether to activate the Solution Explorer window.</param>
+            <returns>Success flag.</returns>
+        </member>
         <member name="M:JetBrains.ProjectModel.Impl.SolutionManagerBase.HandleCreateFile(JetBrains.ProjectModel.Impl.ProjectFolderImpl,JetBrains.Util.FileSystemPath,JetBrains.ProjectModel.IProjectFile@)">
             <summary>
             Implementing these functions gets manager a chance to control file behavior. 

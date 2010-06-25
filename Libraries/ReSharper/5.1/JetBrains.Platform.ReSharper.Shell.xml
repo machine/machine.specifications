@@ -4,6 +4,110 @@
         <name>JetBrains.Platform.ReSharper.Shell</name>
     </assembly>
     <members>
+        <member name="T:JetBrains.Build.AllAssemblies.AssemblyKind">
+            <summary>
+            Kind of <see cref="T:JetBrains.Build.AllAssemblies.InstalledAssemblyXml"/>s.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AssemblyKind.AllInstallableKinds(JetBrains.Application.Install.Installer)">
+            <summary>
+            Gets all the assembly kinds that are shipped with the product.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AssemblyKind.AllInstallableKinds(JetBrains.Build.AllAssemblies.AllAssembliesXml)">
+            <summary>
+            Gets all the assembly kinds that are shipped with the product.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AssemblyKind.AllKinds(JetBrains.Build.AllAssemblies.AllAssembliesXml)">
+            <summary>
+            Gets all the assembly kinds.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AssemblyKind.AllPlatformReferences(JetBrains.Build.AllAssemblies.AllAssembliesXml)">
+            <summary>
+            Gets the list of all kinds for platform references (for all the platform names).
+            </summary>
+        </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AssemblyKind.FindAssemblyFile(System.String,System.Func{JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot,JetBrains.Util.FileSystemPath})">
+            <summary>
+            Gets the assembly file.
+            </summary>
+            <param name="sAssemblyName">Assembly name, as in AllAssembliesXml.</param>
+            <param name="FResolveRoot">Resolves the source root dirs in the project. Get from <see cref="T:JetBrains.Application.Install.Installer"/> or elsewhere.</param>
+        </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AssemblyKind.GetAssembliesInConfiguration(JetBrains.Application.Install.Installer)">
+            <summary>
+            Returns all the assemblies that fit into the assembly configuration config and belong to the group of the given kind (product/platform binaries/references).
+            </summary>
+        </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AssemblyKind.GetAssembliesInConfiguration(JetBrains.Application.IApplicationDescriptor,System.Collections.Generic.IList{JetBrains.Application.AssemblyConfiguration})">
+            <summary>
+            Returns all the assemblies that fit into the assembly configuration config and belong to the group of the given kind (product/platform binaries/references).
+            </summary>
+        </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AssemblyKind.GetAssembliesInConfiguration(JetBrains.Application.IApplicationDescriptor,System.Collections.Generic.HashSet{System.String})">
+            <summary>
+            Returns all the assemblies that fit into the assembly configuration config and belong to the group of the given kind (product/platform binaries/references).
+            </summary>
+        </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AssemblyKind.ResolveFolder(JetBrains.Application.Install.Installer)">
+            <summary>
+            Gets the folder where the assemblies of this kind reside.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AssemblyKind.ResolveFolder(System.Func{JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot,JetBrains.Util.FileSystemPath})">
+            <summary>
+            Gets the folder where the assemblies of this kind reside.
+            </summary>
+            <param name="FResolveRoot">Resolves the source root dirs in the project. Get from <see cref="T:JetBrains.Application.Install.Installer"/> or elsewhere.</param>
+        </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AssemblyKind.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+            </returns>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. </param><exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AssemblyKind.GetHashCode">
+            <summary>
+            Serves as a hash function for a particular type. 
+            </summary>
+            <returns>
+            A hash code for the current <see cref="T:System.Object"/>.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AssemblyKind.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AssemblyKind.Equals(JetBrains.Build.AllAssemblies.AssemblyKind)">
+            <summary>
+            Indicates whether the current object is equal to another object of the same type.
+            </summary>
+            <returns>
+            true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            </returns>
+            <param name="other">An object to compare with this object.</param>
+        </member>
+        <member name="T:JetBrains.Build.AllAssemblies.AssemblyKind.AssemblyKindConverter">
+            <summary>
+            Knows how to switch between <see cref="T:JetBrains.Build.AllAssemblies.AssemblyKind"/>s and <see cref="T:System.String"/>s.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Build.AllAssemblies.AssemblyKind.KindBase">
+            <summary>
+            Kind of <see cref="T:JetBrains.Build.AllAssemblies.InstalledAssemblyXml"/>s.
+            </summary>
+        </member>
         <member name="F:JetBrains.Util.UnguardedAlarm.ourRequests">
             <summary>
             Maps requests to invocation times
@@ -1722,6 +1826,16 @@
             <see cref="P:JetBrains.Application.ShellBase.Invocator"/>.
             </summary>
         </member>
+        <member name="F:JetBrains.Application.ShellBase.myUserSettingsText">
+            <summary>
+            Caches the initial content of the User Settings file, to check for modifications before overwriting the file on exit or explicit save (eg Options::OK).
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.ShellBase.myUserSettingsTimestamp">
+            <summary>
+            Timestamp of the file loaded as user settings, to check for external modifications when we're about to save the file on exit or explicit save (eg Options::OK).
+            </summary>
+        </member>
         <member name="F:JetBrains.Application.ShellBase.myPrimaryDispatcher">
             <summary>
             Specifies the dispatcher on the UI thread.
@@ -1762,7 +1876,14 @@
         </member>
         <member name="F:JetBrains.Application.ShellBase.PropExtendBuildDescription">
             <summary>
-            If the <see cref="T:JetBrains.Application.IApplicationDescriptor"/> has this entry in its bag, it will be called to extend the standard <see cref="!:BuildDescription"/>.
+            If the <see cref="T:JetBrains.Application.IApplicationDescriptor"/> has this entry in its bag, it will be called to extend the standard <see cref="M:JetBrains.Application.ShellBase.FormatBuildDescription(JetBrains.Application.IApplicationDescriptor,System.Collections.Generic.IEnumerable{JetBrains.Application.AssemblyConfiguration})"/>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.ShellBase.PropGetLegacySettingsFiles">
+            <summary>
+            A property that <see cref="T:JetBrains.Application.IApplicationDescriptor"/>s could put into their <see cref="P:JetBrains.Application.IApplicationDescriptor.Bag"/>s to look for older-version settings in non-standard folders when there are no up-to-date-version settings found and we would like to upgrade from an older version.
+            The strings are file path names.
+            The versions are versions of the product to which the settings supposedly belong.
             </summary>
         </member>
         <member name="M:JetBrains.Application.ShellBase.CommandLineInitLogger(JetBrains.Application.ICommandLine)">
@@ -1799,14 +1920,47 @@
             <param name="descriptor">The Application Descriptor describing the new shell. Used mostly for diagnostics.</param>
             <param name="FDoStart">Actually starts the shell. The added value of this method is that it shuts down the old shell first and waits before starting a new one.</param>
         </member>
+        <member name="M:JetBrains.Application.ShellBase.GetUserSettingsDocument">
+            <summary>
+            Tries to load the XML Document for <see cref="F:JetBrains.ComponentModel.XmlExternalizationScope.UserSettings"/> (either from current version location, or any of the legacy dirs for an upgrade).
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.ShellBase.GetUserSettingsLastWriteTime">
+            <summary>
+            Save reader of the <see cref="F:JetBrains.ComponentModel.XmlExternalizationScope.UserSettings"/> XML file (current version only) modification timestamp.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.ShellBase.GetWorkspaceDocument">
+            <summary>
+            Tries to load the XML Document for <see cref="F:JetBrains.ComponentModel.XmlExternalizationScope.UserSettings"/> (either from current version location, or any of the legacy dirs for an upgrade).
+            </summary>
+        </member>
         <member name="M:JetBrains.Application.ShellBase.InitializeComponents">
             <summary>
             Initializes the Shell components.
             </summary>
         </member>
+        <member name="M:JetBrains.Application.ShellBase.QueryOverwriteUserSettingsFile">
+            <summary>
+            Determines if the <see cref="F:JetBrains.ComponentModel.XmlExternalizationScope.UserSettings"/> file should be overwritten.
+            Called if the file has been changed since loading, and there were external changes to the settings file on part of some other process at the same time.
+            For example, the UI Shell implementation is to show a Message Box prompt.
+            The default implementation would always overwrite the settings file.
+            </summary>
+        </member>
         <member name="M:JetBrains.Application.ShellBase.GetUserSettingsAnyDir(System.Environment.SpecialFolder)">
             <summary>
             Backend for “UserSettings…”  funcs.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.ShellBase.GetUserSettingsDocument_CurrentVersion">
+            <summary>
+            Looks for just the current version. Also saves initial content and timestamp to check for overwrites.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.ShellBase.GetUserSettingsDocument_LegacyVersion">
+            <summary>
+            Settings from prev versions for upgrade. Initial-content/timestamp not saved in this branch.
             </summary>
         </member>
         <member name="M:JetBrains.Application.ShellBase.Init_GuardInvocatorLocks">
@@ -1829,6 +1983,18 @@
         <member name="M:JetBrains.Application.ShellBase.PushTypeLoadingHandler(JetBrains.Application.ITypeLoadingHandler)">
             <summary>
             Registers the type loading handler and returns a token for unregistering it.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.ShellBase.UserSettingsXmlPath">
+            <summary>
+            Full path to the User Settings (<see cref="F:JetBrains.ComponentModel.XmlExternalizationScope.UserSettings"/>) XML file we save.
+            Overridden in some of the DotTrace subproducts.
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.ShellBase.WorkspaceXmlPath">
+            <summary>
+            Full path to the Workspace Settings (<see cref="F:JetBrains.ComponentModel.XmlExternalizationScope.WorkspaceSettings"/>) XML file we save.
+            Overridden in some of the DotTrace subproducts.
             </summary>
         </member>
         <member name="P:JetBrains.Application.ShellBase.AssemblyConfigurations">
@@ -1906,6 +2072,13 @@
             <para>Invoked by the base implementation when it's time to save the XML Settings Bag to the permanent storage. Typically, in response to <see cref="M:JetBrains.ComponentModel.XmlExternalizableComponentContainer.SaveSettings"/> after the components are serialized into the bag.</para>
             <para>This logic (like, choosing the file) must be implemented by the inheritor.</para>
             <para>Call <see paramref="funcSerializeXmlBag"/> to get the settings for a particular scope in XML representation (see <see cref="M:JetBrains.ComponentModel.XmlExternalizableComponentContainer.SerializeXmlBag(System.Xml.XmlDocument,JetBrains.ComponentModel.XmlExternalizationScope)"/> for details).</para>
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Install.InstallerShell.QueryOverwriteUserSettingsFile">
+            <summary>
+            Determines if the <see cref="F:JetBrains.ComponentModel.XmlExternalizationScope.UserSettings"/> file should be overwritten.
+            Called if the file has been changed since loading, and there were external changes to the settings file on part of some other process at the same time.
+            The UI Shell implementation is to show a Message Box prompt.
             </summary>
         </member>
         <member name="T:JetBrains.Application.Install.RegistrationStage">
@@ -2243,63 +2416,6 @@
             If this method is invoked, <cref>Finish</cref> will NOT be called.
             
         </member>
-        <member name="T:JetBrains.Application.Progress.IProgressIndicator">
-            <summary>
-            <para>Given to a lengthy task that knows its progress, used to enable the UI indications of the task progress.</para>
-            <para>You should read all of the member summaries before using this class.</para>
-            </summary>
-            <seealso cref="T:JetBrains.Application.Progress.IProgressIndicatorModel"/>
-        </member>
-        <member name="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)">
-            <summary>
-            <para>Advances the progress within the range, as defined by the <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> call.</para>
-            <para><see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> MUST be called first.</para>
-            </summary>
-            <param name="units">A whole or fractional number of units from the [0..totalWorkUnits] range, as defined by the <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> method.</param>
-        </member>
-        <member name="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)">
-            <summary>
-            <para>Starts the progress to run through the [0..totalWorkUnits] range. You MUST call <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> at the end. Use <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/> to move the progress across the range.</para>
-            <para>Generally, you SHOULD set the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> to identify the current execution span, once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/>, and change the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> when doing <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/> to comment on the progress.</para>
-            <para>If you would like to delegate a sub-range to a nested routine, you SHOULD create a <see cref="T:JetBrains.Application.Progress.SubProgressIndicator"/> and pass the resulting <see cref="T:JetBrains.Application.Progress.IProgressIndicator"/> to the routine, so that it ran a whole range from its point of view, which would then map to a sub-range of this progress indicator.</para>
-            </summary>
-            <param name="totalWorkUnits">The inclusive upper limit of the progress range.</param>
-        </member>
-        <member name="M:JetBrains.Application.Progress.IProgressIndicator.Stop">
-            <summary>
-            <para>Completes the progress run. You MUST call <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> if you previously called <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>.</para>
-            <para>Generally, you SHOULD always call the <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> pair on the given indicator, even if gotten no items to process, so that a <see cref="T:JetBrains.Application.Progress.SubProgressIndicator"/> could use up the parent range consistently.</para>
-            </summary>
-        </member>
-        <member name="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText">
-            <summary>
-            <para>A title of the current item being processed by the activity which the progress is visualizing.</para>
-            <para>You SHOULD set <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> run, and <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>, if applicable.</para>
-            </summary>
-        </member>
-        <member name="P:JetBrains.Application.Progress.IProgressIndicator.IsCanceled">
-            <summary>
-            <para>Whether the activity which the progress is visualizing has been canceled externally. This could be user's clicking on the "Cancel" button of the UI the progress is bound to.</para>
-            <para>You should check this property periodically and cut off the remaining activity if <c>True</c>. You MIGHT throw <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> for that, still it's recommended not to use exceptions for flow control, but check <see cref="P:JetBrains.Application.Progress.IProgressIndicator.IsCanceled"/> on all of the levels of nesting.</para>
-            </summary>
-        </member>
-        <member name="P:JetBrains.Application.Progress.IProgressIndicator.TaskName">
-            <summary>
-            <para>A title of the whole activity which the progress is visualizing.</para>
-            <para>You SHOULD set <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> run, and <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>, if applicable.</para>
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.Progress.ProgressIndicatorBase.Dispose">
-            <summary>
-            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            </summary>
-            <filterpriority>2</filterpriority>
-        </member>
-        <member name="P:JetBrains.Application.Progress.ProgressIndicatorBase.Fraction">
-            <summary>
-            Gives out the progress value as a floating point number in the [0…1] range.
-            </summary>
-        </member>
         <member name="M:JetBrains.Application.Progress.CommandLineProgressIndicator.Render">
             <summary>
               Renders current state of Console progress
@@ -2434,6 +2550,13 @@
             Checks whether the test shell instance can be reused by the test with the given parameters.
             </summary>
         </member>
+        <member name="M:JetBrains.Application.Test.TestShell.QueryOverwriteUserSettingsFile">
+            <summary>
+            Determines if the <see cref="F:JetBrains.ComponentModel.XmlExternalizationScope.UserSettings"/> file should be overwritten.
+            Called if the file has been changed since loading, and there were external changes to the settings file on part of some other process at the same time.
+            The UI Shell implementation is to show a Message Box prompt.
+            </summary>
+        </member>
         <member name="P:JetBrains.Application.Test.TestShell.HasInstance">
             <summary>
             Tells whether the <see cref="P:JetBrains.Application.Test.TestShell.Instance"/> is available, and the property could be read.
@@ -2462,29 +2585,9 @@
         <member name="T:JetBrains.Build.AllAssemblies.AllAssembliesXml">
             <remarks/>
         </member>
-        <member name="F:JetBrains.Build.AllAssemblies.AllAssembliesXml.myKnownAssemblyConfigurations">
-            <summary>
-            Lists the assembly configurations from <see cref="P:JetBrains.Build.AllAssemblies.AllAssembliesXml.KnownConfigurations"/>. Maps to usage data (<c>True</c> means there's at least one assembly using this config).
-            </summary>
-        </member>
         <member name="F:JetBrains.Build.AllAssemblies.AllAssembliesXml.myAssemblyConfigurationAliases">
             <summary>
             Lists the assembly configuration aliases. Maps them to the the expression defined by the alias.
-            </summary>
-        </member>
-        <member name="F:JetBrains.Build.AllAssemblies.AllAssembliesXml.myMapProductAssemblies">
-            <summary>
-            Allows to learn quickly if the assembly is a product assembly or not.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.Load(System.IO.Stream)">
-            <summary>
-            Loads and validates the All Assemblies schema.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.LoadCore_CacheProductEditions">
-            <summary>
-            Uses <see cref="P:JetBrains.Build.AllAssemblies.AllAssembliesXml.ProductEditions"/> to fill the caching structures like <see cref="F:JetBrains.Build.AllAssemblies.AllAssembliesXml.myMapProductEditionToAssemblyConfigurations"/>, <see cref="F:JetBrains.Build.AllAssemblies.AllAssembliesXml.myHashProductEditionAssemblyConfigurations"/>, <see cref="F:JetBrains.Build.AllAssemblies.AllAssembliesXml.myMapAssemblyConfigurationsToProductEdition"/>.
             </summary>
         </member>
         <member name="F:JetBrains.Build.AllAssemblies.AllAssembliesXml.myHashProductEditionAssemblyConfigurations">
@@ -2492,9 +2595,19 @@
             All assembly configurations that could be attributed to product editions. Lazy-filled by <see cref="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.LoadCore_CacheProductEditions"/>.
             </summary>
         </member>
+        <member name="F:JetBrains.Build.AllAssemblies.AllAssembliesXml.myKnownAssemblyConfigurations">
+            <summary>
+            Lists the assembly configurations from <see cref="P:JetBrains.Build.AllAssemblies.AllAssembliesXml.KnownConfigurations"/>. Maps to usage data (<c>True</c> means there's at least one assembly using this config).
+            </summary>
+        </member>
         <member name="F:JetBrains.Build.AllAssemblies.AllAssembliesXml.myMapAssemblyConfigurationsToProductEdition">
             <summary>
             Mapping for product edition translations, lazy-filled by <see cref="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.LoadCore_CacheProductEditions"/>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Build.AllAssemblies.AllAssembliesXml.myMapProductAssemblies">
+            <summary>
+            Allows to learn quickly if the assembly is a product assembly or not.
             </summary>
         </member>
         <member name="F:JetBrains.Build.AllAssemblies.AllAssembliesXml.myMapProductEditionToAssemblyConfigurations">
@@ -2502,42 +2615,19 @@
             Mapping for product edition translations, lazy-filled by <see cref="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.LoadCore_CacheProductEditions"/>.
             </summary>
         </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.GetOrphanedConfigs">
+        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.Load(System.IO.Stream)">
             <summary>
-            Gets the list of known configurations that were defined but are not used by any of the assembiles or aliases.
+            Loads and validates the All Assemblies schema.
             </summary>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.LoadCore_ResolveAssemblyConfigs">
-            <summary>
-            (1) Calls resolve on config string of all the configurable assemblies.
-            (2) Maintains the list of unused configs.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.EnumAllPossibleAssemblies">
-            <summary>
-            Enums all the assemblies in the list (not only product assemblies, but also product/platform/gac refs).
-            </summary>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.ResolveConfigurations(System.String)">
-            <summary>
-            Resolves a space-separated list of assembly configurations or configuration aliases into the list of actual configurations.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.ResolveConfigurationsCore(System.String,System.Boolean)">
-            <summary>
-            Impl for <see cref="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.ResolveConfigurations(System.String)"/>.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.TryGetProductAssembly(System.String)">
-            <summary>
-            Allows to quickly check if an assembly is a product assembly or not.
-            </summary>
-            <param name="name">Assembly name.</param>
-            <returns>Product assembly descriptor, if found.</returns>
         </member>
         <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.ExecuteConfigurationExpression(System.String,System.Collections.Generic.HashSet{System.String})">
             <summary>
             Executes the configurations logical expression from <paramref name="expression"/> that could contain configuration names, aliases, and logical operations. <paramref name="activeconfigs"/> gives the list of configurations that are considered active.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.GetOrphanedConfigs">
+            <summary>
+            Gets the list of known configurations that were defined but are not used by any of the assembiles or aliases.
             </summary>
         </member>
         <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.ParseAssemblyConfiguration(System.String)">
@@ -2572,6 +2662,39 @@
             <param name="FOnError">Called when an error is encountered. Throw the exception to have a never-returning-Null function, or pass in <see cref="M:JetBrains.Util.Logger.LogException(System.Exception)"/> to handle failures softly.</param>
             <returns>Product edition assembly configurations on success, an empty collection in case of a failure or for a product that does not support product editions.</returns>
         </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.ResolveConfigurations(System.String)">
+            <summary>
+            Resolves a space-separated list of assembly configurations or configuration aliases into the list of actual configurations.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.TryGetProductAssembly(System.String)">
+            <summary>
+            Allows to quickly check if an assembly is a product assembly or not.
+            </summary>
+            <param name="name">Assembly name.</param>
+            <returns>Product assembly descriptor, if found.</returns>
+        </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.EnumAllPossibleAssemblies">
+            <summary>
+            Enums all the assemblies in the list (not only product assemblies, but also product/platform/gac refs).
+            </summary>
+        </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.LoadCore_CacheProductEditions">
+            <summary>
+            Uses <see cref="P:JetBrains.Build.AllAssemblies.AllAssembliesXml.ProductEditions"/> to fill the caching structures like <see cref="F:JetBrains.Build.AllAssemblies.AllAssembliesXml.myMapProductEditionToAssemblyConfigurations"/>, <see cref="F:JetBrains.Build.AllAssemblies.AllAssembliesXml.myHashProductEditionAssemblyConfigurations"/>, <see cref="F:JetBrains.Build.AllAssemblies.AllAssembliesXml.myMapAssemblyConfigurationsToProductEdition"/>.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.LoadCore_ResolveAssemblyConfigs">
+            <summary>
+            (1) Calls resolve on config string of all the configurable assemblies.
+            (2) Maintains the list of unused configs.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.ResolveConfigurationsCore(System.String,System.Boolean)">
+            <summary>
+            Impl for <see cref="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.ResolveConfigurations(System.String)"/>.
+            </summary>
+        </member>
         <member name="P:JetBrains.Build.AllAssemblies.AllAssembliesXml.KnownConfigurations">
             <remarks/>
         </member>
@@ -2605,105 +2728,6 @@
             <summary>
             Gets the default product edition.
             For a product that does not support editions, returns a <see cref="P:JetBrains.Application.KnownValue.UniversalValue"/> value.
-            </summary>
-        </member>
-        <member name="T:JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind">
-            <summary>
-            Kind of <see cref="T:JetBrains.Build.AllAssemblies.InstalledAssemblyXml"/>s.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind.ResolveFolder(JetBrains.Application.Install.Installer)">
-            <summary>
-            Gets the folder where the assemblies of this kind reside.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind.ResolveFolder(System.Func{JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot,JetBrains.Util.FileSystemPath})">
-            <summary>
-            Gets the folder where the assemblies of this kind reside.
-            </summary>
-            <param name="FResolveRoot">Resolves the source root dirs in the project. Get from <see cref="T:JetBrains.Application.Install.Installer"/> or elsewhere.</param>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind.FindAssemblyFile(System.String,System.Func{JetBrains.Application.Install.InstallationData.InstallationSourceDirRoot,JetBrains.Util.FileSystemPath})">
-            <summary>
-            Gets the assembly file.
-            </summary>
-            <param name="sAssemblyName">Assembly name, as in AllAssembliesXml.</param>
-            <param name="FResolveRoot">Resolves the source root dirs in the project. Get from <see cref="T:JetBrains.Application.Install.Installer"/> or elsewhere.</param>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind.Equals(JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind)">
-            <summary>
-            Indicates whether the current object is equal to another object of the same type.
-            </summary>
-            <returns>
-            true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-            </returns>
-            <param name="other">An object to compare with this object.</param>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind.Equals(System.Object)">
-            <summary>
-            Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-            </summary>
-            <returns>
-            true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
-            </returns>
-            <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. </param><exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception><filterpriority>2</filterpriority>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind.GetHashCode">
-            <summary>
-            Serves as a hash function for a particular type. 
-            </summary>
-            <returns>
-            A hash code for the current <see cref="T:System.Object"/>.
-            </returns>
-            <filterpriority>2</filterpriority>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind.AllPlatformReferences(JetBrains.Build.AllAssemblies.AllAssembliesXml)">
-            <summary>
-            Gets the list of all kinds for platform references (for all the platform names).
-            </summary>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind.AllInstallableKinds(JetBrains.Application.Install.Installer)">
-            <summary>
-            Gets all the assembly kinds that are shipped with the product.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind.AllInstallableKinds(JetBrains.Build.AllAssemblies.AllAssembliesXml)">
-            <summary>
-            Gets all the assembly kinds that are shipped with the product.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind.AllKinds(JetBrains.Build.AllAssemblies.AllAssembliesXml)">
-            <summary>
-            Gets all the assembly kinds.
-            </summary>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind.GetAssembliesInConfiguration(JetBrains.Application.Install.Installer)">
-            <summary>
-            Returns all the assemblies that fit into the assembly configuration config and belong to the group of the given kind (product/platform binaries/references).
-            </summary>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind.GetAssembliesInConfiguration(JetBrains.Application.IApplicationDescriptor,System.Collections.Generic.IList{JetBrains.Application.AssemblyConfiguration})">
-            <summary>
-            Returns all the assemblies that fit into the assembly configuration config and belong to the group of the given kind (product/platform binaries/references).
-            </summary>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind.GetAssembliesInConfiguration(JetBrains.Application.IApplicationDescriptor,System.Collections.Generic.HashSet{System.String})">
-            <summary>
-            Returns all the assemblies that fit into the assembly configuration config and belong to the group of the given kind (product/platform binaries/references).
-            </summary>
-        </member>
-        <member name="M:JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind.ToString">
-            <summary>
-            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-            </summary>
-            <returns>
-            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-            </returns>
-            <filterpriority>2</filterpriority>
-        </member>
-        <member name="T:JetBrains.Build.AllAssemblies.AllAssembliesXml.AssemblyKind.KindBase">
-            <summary>
-            Kind of <see cref="T:JetBrains.Build.AllAssemblies.InstalledAssemblyXml"/>s.
             </summary>
         </member>
         <member name="T:JetBrains.Build.AllAssemblies.KnownValueXml">
@@ -4595,20 +4619,6 @@
             Throws the <see cref="T:JetBrains.Application.Progress.ProcessCancelledException"/> on <see cref="P:JetBrains.Application.Progress.IProgressIndicatorModel.IsCanceled"/>.
             This is the simple non-UI implementation. UI-related implementations should use a similar method from the <c>UITaskExecutorRun</c>.
             </summary>
-        </member>
-        <member name="T:JetBrains.Application.Progress.SubProgressIndicator">
-            <summary>
-            <para>Allows for a few tasks to share the full progress range without knowing that they're using it together, each one running the whole length of its subprogress.</para>
-            <para>See <see cref="!:.ctor"/> for details.</para>
-            </summary>
-        </member>
-        <member name="M:JetBrains.Application.Progress.SubProgressIndicator.#ctor(JetBrains.Application.Progress.IProgressIndicator,System.Double)">
-            <summary>
-            <para>A sub-routine runs the whole <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> run on the subprogress, with units of its own choice in <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> and <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/> on the subprogress, which uses up only <paramref name="fUnitsInParentIndicator"/> in the parent <paramref name="progressParent"/>, in terms of its parent <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>.</para>
-            <para>This way, a few tasks could share the full progress range without knowing that they're using it together, each one running the whole length of its subprogress.</para>
-            </summary>
-            <param name="progressParent">The parent progress.</param>
-            <param name="fUnitsInParentIndicator">The number of units used up from the <paramref name="progressParent"/>, in terms of its parent <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>, when you do <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> on this subprogress with any units of your liking.</param>
         </member>
         <member name="T:JetBrains.Application.Progress.TaskCancelable">
             <summary>

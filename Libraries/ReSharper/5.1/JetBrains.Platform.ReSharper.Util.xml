@@ -2191,6 +2191,52 @@
             Opens a stream-writer on this file system path for writing, requesting minimum permissions and trying to be as non-blocking as possible.
             </summary>
         </member>
+        <member name="T:JetBrains.Application.Progress.IProgressIndicator">
+            <summary>
+            <para>Given to a lengthy task that knows its progress, used to enable the UI indications of the task progress.</para>
+            <para>You should read all of the member summaries before using this class.</para>
+            </summary>
+            <seealso cref="!:IProgressIndicatorModel"/>
+        </member>
+        <member name="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)">
+            <summary>
+            <para>Advances the progress within the range, as defined by the <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> call.</para>
+            <para><see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> MUST be called first.</para>
+            </summary>
+            <param name="units">A whole or fractional number of units from the [0..totalWorkUnits] range, as defined by the <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> method.</param>
+        </member>
+        <member name="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)">
+            <summary>
+            <para>Starts the progress to run through the [0..totalWorkUnits] range. You MUST call <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> at the end. Use <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/> to move the progress across the range.</para>
+            <para>Generally, you SHOULD set the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> to identify the current execution span, once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/>, and change the <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> when doing <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/> to comment on the progress.</para>
+            <para>If you would like to delegate a sub-range to a nested routine, you SHOULD create a <see cref="T:JetBrains.Application.Progress.SubProgressIndicator"/> and pass the resulting <see cref="T:JetBrains.Application.Progress.IProgressIndicator"/> to the routine, so that it ran a whole range from its point of view, which would then map to a sub-range of this progress indicator.</para>
+            </summary>
+            <param name="totalWorkUnits">The inclusive upper limit of the progress range.</param>
+        </member>
+        <member name="M:JetBrains.Application.Progress.IProgressIndicator.Stop">
+            <summary>
+            <para>Completes the progress run. You MUST call <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> if you previously called <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>.</para>
+            <para>Generally, you SHOULD always call the <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> pair on the given indicator, even if gotten no items to process, so that a <see cref="T:JetBrains.Application.Progress.SubProgressIndicator"/> could use up the parent range consistently.</para>
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText">
+            <summary>
+            <para>A title of the current item being processed by the activity which the progress is visualizing.</para>
+            <para>You SHOULD set <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> run, and <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>, if applicable.</para>
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Progress.IProgressIndicator.IsCanceled">
+            <summary>
+            <para>Whether the activity which the progress is visualizing has been canceled externally. This could be user's clicking on the "Cancel" button of the UI the progress is bound to.</para>
+            <para>You should check this property periodically and cut off the remaining activity if <c>True</c>. You MIGHT throw <see cref="!:ProcessCancelledException"/> for that, still it's recommended not to use exceptions for flow control, but check <see cref="P:JetBrains.Application.Progress.IProgressIndicator.IsCanceled"/> on all of the levels of nesting.</para>
+            </summary>
+        </member>
+        <member name="P:JetBrains.Application.Progress.IProgressIndicator.TaskName">
+            <summary>
+            <para>A title of the whole activity which the progress is visualizing.</para>
+            <para>You SHOULD set <see cref="P:JetBrains.Application.Progress.IProgressIndicator.TaskName"/> once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> run, and <see cref="P:JetBrains.Application.Progress.IProgressIndicator.CurrentItemText"/> once per <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>, if applicable.</para>
+            </summary>
+        </member>
         <member name="M:JetBrains.Util.PermanentUserIdUtil.GetUnuqueUserId">
             <summary>
             Returns global unique id of user. The Id is shared among all JetBrainss the applications.
@@ -2392,6 +2438,22 @@
                 return null;	// Executes in [CanBeNull] case
             }
             </code>
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Progress.ProgressIndicatorBase.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="P:JetBrains.Application.Progress.ProgressIndicatorBase.Fraction">
+            <summary>
+            Gives out the progress value as a floating point number in the [0…1] range.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Util.Reflection.TypeConverterBase`1">
+            <summary>
+            A base class for quickly implementing a <see cref="T:System.ComponentModel.TypeConverter"/> for some class <typeparamref name="T"/> (attached thru <see cref="T:System.ComponentModel.TypeConverterAttribute"/>).
             </summary>
         </member>
         <member name="T:JetBrains.Util.PathSearchFlags">
@@ -2886,6 +2948,20 @@
             <summary>
             Parse string to nullable enum with returning specified default value if parameter is null or invalid
             </summary>
+        </member>
+        <member name="T:JetBrains.Application.Progress.SubProgressIndicator">
+            <summary>
+            <para>Allows for a few tasks to share the full progress range without knowing that they're using it together, each one running the whole length of its subprogress.</para>
+            <para>See <see cref="!:.ctor"/> for details.</para>
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Progress.SubProgressIndicator.#ctor(JetBrains.Application.Progress.IProgressIndicator,System.Double)">
+            <summary>
+            <para>A sub-routine runs the whole <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> run on the subprogress, with units of its own choice in <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/> and <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/> on the subprogress, which uses up only <paramref name="fUnitsInParentIndicator"/> in the parent <paramref name="progressParent"/>, in terms of its parent <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>.</para>
+            <para>This way, a few tasks could share the full progress range without knowing that they're using it together, each one running the whole length of its subprogress.</para>
+            </summary>
+            <param name="progressParent">The parent progress.</param>
+            <param name="fUnitsInParentIndicator">The number of units used up from the <paramref name="progressParent"/>, in terms of its parent <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Advance(System.Double)"/>, when you do <see cref="M:JetBrains.Application.Progress.IProgressIndicator.Start(System.Int32)"/>-<see cref="M:JetBrains.Application.Progress.IProgressIndicator.Stop"/> on this subprogress with any units of your liking.</param>
         </member>
         <member name="T:JetBrains.Util.CollectionAdapter`1">
             <summary>
@@ -11156,6 +11232,14 @@
             </summary>
             <param name="text">Message body text.</param>
             <param name="caption">Not recommended. Text to append to the default caption, which is the product name. In most cases, keep empty to have just the product name.</param>
+        </member>
+        <member name="M:JetBrains.Util.MessageBox.ShowExclamation(System.String,System.String,System.IntPtr)">
+            <summary>
+            Shows a message box with an exclamation message.
+            </summary>
+            <param name="text">Message body text.</param>
+            <param name="caption">Not recommended. Text to append to the default caption, which is the product name. In most cases, keep empty to have just the product name.</param>
+            <param name="window">Not recommended. Owner window for the message box. Use only in dialogs when the default (app main window) couldis inappropriate.</param>
         </member>
         <member name="M:JetBrains.Util.MessageBox.ShowInfo(System.String)">
             <summary>
