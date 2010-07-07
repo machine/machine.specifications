@@ -4,6 +4,16 @@
         <name>JetBrains.Platform.ReSharper.Util</name>
     </assembly>
     <members>
+        <member name="T:JetBrains.DataFlow.NullProperty`1">
+            <summary>
+            The single instance of a <see cref="T:JetBrains.DataFlow.IProperty`1">Property</see> whose value is always <c>Null</c>.
+            </summary>
+        </member>
+        <member name="F:JetBrains.DataFlow.NullProperty`1.Instance">
+            <summary>
+            The single instance of a <see cref="T:JetBrains.DataFlow.IProperty`1">Property</see> whose value is always <c>Null</c>.
+            </summary>
+        </member>
         <member name="T:JetBrains.UI.Anchoring">
             <summary>
             Linear anchoring constants.
@@ -6934,6 +6944,11 @@
             <param name="target">The target collection.</param>
             <param name="funcConverter">If the collection types differ and are unrelated, a converter that produces items for the second collection from the items of the first collection. Note that the converter is only used for the <see cref="F:JetBrains.DataFlow.AddRemove.Add"/> operation, and there are no limitations on <see cref="M:System.Object.Equals(System.Object,System.Object)"/> of the conversion products. May be <c>Null</c> if the types could be converted by a simple cast.</param>
             <param name="cookie">An optional cookie for the modifiction operation on the <paramref name="target"/> collection.</param>
+        </member>
+        <member name="M:JetBrains.DataFlow.PropertyBinding.Null``1">
+            <summary>
+            Gets the single instance of a <see cref="T:JetBrains.DataFlow.IProperty`1">Property</see> whose value is always <c>Null</c>.
+            </summary>
         </member>
         <member name="T:JetBrains.DataFlow.PropertyBindingDeferred`1">
             <summary>

@@ -797,6 +797,11 @@
             Solution in which the pointer was created
             </summary>
         </member>
+        <member name="T:JetBrains.ReSharper.Psi.Impl.UnsupportedProjectPsiModuleProviderFactory">
+            <summary>
+            PSI module provider for regular projects
+            </summary>
+        </member>
         <member name="M:JetBrains.ReSharper.Psi.Impl.IMiscFilesProjectPsiModuleProvider.GetModules">
             <summary>
             Get provided modules
