@@ -25,7 +25,6 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     {
     }
 
-    #region Overrides of RemoteTaskRunner
     public override TaskResult Start(TaskExecutionNode node)
     {
       ContextTask task = (ContextTask) node.RemoteTask;
@@ -65,7 +64,6 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
       return TaskResult.Success;
     }
-    #endregion
 
     public override void ExecuteRecursive(TaskExecutionNode node)
     {

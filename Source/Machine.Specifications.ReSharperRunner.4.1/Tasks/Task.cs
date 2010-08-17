@@ -73,7 +73,6 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
       }
     }
 
-    #region IEquatable<RemoteTask> Members
     public bool Equals(Task other)
     {
       if (other == null || !BaseEquals(other))
@@ -85,6 +84,5 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
               Equals(ContextTypeName, other.ContextTypeName) &&
               RunExplicitly == other.RunExplicitly);
     }
-    #endregion
   }
 }

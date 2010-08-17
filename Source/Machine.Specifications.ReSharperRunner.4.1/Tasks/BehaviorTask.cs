@@ -50,7 +50,6 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
       }
     }
 
-    #region IEquatable<BehaviorTask> Members
     public bool Equals(BehaviorTask other)
     {
       if (other == null || !base.Equals(other))
@@ -60,6 +59,5 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
 
       return Equals(BehaviorFieldName, other.BehaviorFieldName);
     }
-    #endregion
   }
 }

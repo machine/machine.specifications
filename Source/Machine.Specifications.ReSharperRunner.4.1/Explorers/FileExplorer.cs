@@ -57,7 +57,6 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
                          };
     }
 
-    #region Implementation of IRecursiveElementProcessor
     public bool InteriorShouldBeProcessed(IElement element)
     {
       if (element is ITypeMemberDeclaration)
@@ -101,6 +100,5 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
         return false;
       }
     }
-    #endregion
   }
 }

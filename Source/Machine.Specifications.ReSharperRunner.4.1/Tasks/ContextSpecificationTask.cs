@@ -50,7 +50,6 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
       }
     }
 
-    #region IEquatable<ContextSpecificationTask> Members
     public bool Equals(ContextSpecificationTask other)
     {
       if (other == null || !base.Equals(other))
@@ -60,6 +59,5 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
 
       return Equals(SpecificationFieldName, other.SpecificationFieldName);
     }
-    #endregion
   }
 }

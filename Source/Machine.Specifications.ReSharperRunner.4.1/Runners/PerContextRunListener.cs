@@ -19,7 +19,6 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       _contextTask = contextNode;
     }
 
-    #region Implementation of ISpecificationRunListener
     public void OnAssemblyStart(AssemblyInfo assembly)
     {
     }
@@ -100,7 +99,6 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       _server.TaskException(_contextTask, ExceptionResultConverter.ConvertExceptions(exception, out message));
       _server.TaskFinished(_contextTask, message, TaskResult.Exception);
     }
-    #endregion
 
     internal void RegisterTaskNotification(RemoteTaskNotification notification)
     {
@@ -124,8 +122,6 @@ namespace Machine.Specifications.ReSharperRunner.Runners
         };
     }
 
-    #region Nested type: Action
     delegate void Action<T>(T arg);
-    #endregion
   }
 }

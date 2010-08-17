@@ -34,7 +34,6 @@ namespace Machine.Specifications.ReSharperRunner
       Debug.Listeners.Add(new DefaultTraceListener());
     }
 
-    #region Implementation of IUnitTestProvider
     public string ID
     {
       get { return ProviderId; }
@@ -154,6 +153,5 @@ namespace Machine.Specifications.ReSharperRunner
     {
       return element.IsContext() || element.IsSpecification();
     }
-    #endregion
   }
 }

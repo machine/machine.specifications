@@ -20,7 +20,6 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
       _contextSpecificationFactory = contextSpecificationFactory;
     }
 
-    #region Implementation of IElementHandler
     public bool Accepts(IElement element)
     {
       IDeclaration declaration = element as IDeclaration;
@@ -48,6 +47,5 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
                                                   declaration.GetNavigationRange().TextRange,
                                                   declaration.GetDocumentRange().TextRange);
     }
-    #endregion
   }
 }

@@ -23,7 +23,6 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
       _behaviorSpecificationFactory = behaviorSpecificationFactory;
     }
 
-    #region Implementation of IElementHandler
     public bool Accepts(IElement element)
     {
       IDeclaration declaration = element as IDeclaration;
@@ -60,6 +59,5 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
                                                     behaviorSpecificationElement);
       }
     }
-    #endregion
   }
 }
