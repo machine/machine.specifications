@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Reflection;
 using Machine.Specifications.ConsoleRunner.Properties;
@@ -114,6 +115,38 @@ namespace Machine.Specifications.ConsoleRunner.Specs
 
     It should_not_execute_specs_that_are_not_included = () =>
       console.ShouldNotContainLineWith("Account Funds transfer, when transferring between two accounts");
+  }
+
+  [Subject("Console runner")]
+  public class when_running_from_directory_different_from_assembly_location : ConsoleRunnerSpecs
+  {
+    static string originalDirectory;
+
+    Establish context = ChangeCurrentDirectory;
+
+    Cleanup after = RestoreOriginalDirectory;
+
+    Because of = () =>
+      program.Run(new[] { GetPath("Machine.Specifications.Example.UsingExternalFile.dll") });
+
+    It should_pass_the_specification_which_depends_on_external_file = () =>
+      console.Lines.ShouldContain(
+        "External resources usage, when using file copied to assembly output directory", 
+        "» should be able to locate it by relative path");
+
+    It should_pass_all_specifications = () =>
+      console.ShouldNotContainLineWith("failed");
+
+    static void ChangeCurrentDirectory()
+    {
+      originalDirectory = Environment.CurrentDirectory;
+      Environment.CurrentDirectory = Path.GetTempPath();
+    }
+
+    static void RestoreOriginalDirectory()
+    {
+      Environment.CurrentDirectory = originalDirectory;
+    }
   }
 
   public class ConsoleRunnerSpecs
