@@ -46,6 +46,7 @@ namespace Machine.Specifications.ConsoleRunner
 
       var timingListener = new TimingRunListener();
       listeners.Add(timingListener);
+      listeners.Add(new AssemblyLocationAwareListener());
 
       ISpecificationRunListener mainListener;
       if (options.TeamCityIntegration)

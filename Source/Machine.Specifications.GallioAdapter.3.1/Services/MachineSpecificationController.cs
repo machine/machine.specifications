@@ -107,9 +107,9 @@ namespace Machine.Specifications.GallioAdapter.Services
 
     TestResult RunAssembly(MachineAssemblyTest assemblyTest, ITestCommand command, TestStep parentTestStep)
     {
-      ITestContext assemblyContext = command.StartPrimaryChildStep(parentTestStep);      
+      ITestContext assemblyContext = command.StartPrimaryChildStep(parentTestStep);
 
-      AssemblyInfo assemblyInfo = new AssemblyInfo( assemblyTest.Name);
+      AssemblyInfo assemblyInfo = new AssemblyInfo(assemblyTest.Name, assemblyTest.AssemblyFilePath);
       TestOutcome outcome = TestOutcome.Passed;
 
       _listener.OnAssemblyStart(assemblyInfo);

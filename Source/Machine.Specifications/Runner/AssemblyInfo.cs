@@ -10,9 +10,12 @@ namespace Machine.Specifications.Runner
   {
     public string Name { get; private set; }
 
-    public AssemblyInfo(string name)
+    public string Location { get; private set; }
+
+    public AssemblyInfo(string name, string location)
     {
-      Name = name;
+      this.Name = name;
+      this.Location = location;
     }
   }
 }
