@@ -111,6 +111,7 @@
     <Compile Include="Visitors\FailedSpecificationLinkerSpecs.cs" />
     <Compile Include="Visitors\FileBasedResultSupplementPreparationSpecs.cs" />
     <Compile Include="Visitors\NotImplementedSpecificationLinkerSpecs.cs" />
+    <Compile Include="Visitors\IgnoredSpecificationLinkerSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications.Example\Machine.Specifications.Example.csproj">

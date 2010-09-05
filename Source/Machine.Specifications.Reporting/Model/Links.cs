@@ -37,4 +37,19 @@
       set;
     }
   }
+  
+  public interface ILinkToIgnored
+  {
+    ILinkTarget NextIgnored
+    {
+      get;
+      set;
+    }
+
+    ILinkTarget PreviousIgnored
+    {
+      get;
+      set;
+    }
+  }
 }
