@@ -108,10 +108,6 @@
       <Project>{CFF4B323-24C1-4B19-98CA-7DF92755458E}</Project>
       <Name>Machine.Specifications.ConsoleRunner</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Machine.Specifications.Example.UsingExternalFile\Machine.Specifications.Example.UsingExternalFile.csproj">
-      <Project>{A6B234F5-5D96-4809-BD25-86F6544BF838}</Project>
-      <Name>Machine.Specifications.Example.UsingExternalFile</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Machine.Specifications.Example\Machine.Specifications.Example.csproj">
       <Project>{2C28C643-31A2-44CA-B762-953A963F6F61}</Project>
       <Name>Machine.Specifications.Example</Name>

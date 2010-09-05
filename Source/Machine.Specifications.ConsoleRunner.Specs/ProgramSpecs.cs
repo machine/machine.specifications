@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Reflection;
 using Machine.Specifications.ConsoleRunner.Properties;
@@ -120,14 +119,8 @@ namespace Machine.Specifications.ConsoleRunner.Specs
   [Subject("Console runner")]
   public class when_running_from_directory_different_from_assembly_location : ConsoleRunnerSpecs
   {
-    static string originalDirectory;
-
-    Establish context = ChangeCurrentDirectory;
-
-    Cleanup after = RestoreOriginalDirectory;
-
     Because of = () =>
-      program.Run(new[] { GetPath("Machine.Specifications.Example.UsingExternalFile.dll") });
+      program.Run(new[] { GetPath(@"ExternalFile\Machine.Specifications.Example.UsingExternalFile.dll") });
 
     It should_pass_the_specification_which_depends_on_external_file = () =>
       console.Lines.ShouldContain(
@@ -136,17 +129,6 @@ namespace Machine.Specifications.ConsoleRunner.Specs
 
     It should_pass_all_specifications = () =>
       console.ShouldNotContainLineWith("failed");
-
-    static void ChangeCurrentDirectory()
-    {
-      originalDirectory = Environment.CurrentDirectory;
-      Environment.CurrentDirectory = Path.GetTempPath();
-    }
-
-    static void RestoreOriginalDirectory()
-    {
-      Environment.CurrentDirectory = originalDirectory;
-    }
   }
 
   public class ConsoleRunnerSpecs
