@@ -13,4 +13,7 @@
   <if condition="assembly.NotImplementedSpecifications > 0">,
     <span class="notimplemented">${assembly.NotImplementedSpecifications} ${Pluralize("not implemented spec", assembly.NotImplementedSpecifications)}</span>
   </if>
+  <if condition="assembly.IgnoredSpecifications > 0">,
+    <span class="ignored">${assembly.IgnoredSpecifications} ${Pluralize("ignored spec", assembly.IgnoredSpecifications)}</span>
+  </if>
 </h2>

@@ -24,6 +24,17 @@ namespace Machine.Specifications.Reporting.Visitors
       }
 
       return specification;
+    } 
+    
+    public static Specification LinkIgnoredTo(this Specification specification, Specification linkTo)
+    {
+      if (linkTo != null)
+      {
+        specification.PreviousIgnored = linkTo;
+        linkTo.NextIgnored = specification;
+      }
+
+      return specification;
     }
   }
 }

@@ -34,6 +34,23 @@
   </ul>
 </div>
 
+<div if="spec.Status == Status.Ignored"
+     class="ignored">
+  &lArr; IGNORED
+  <ul class="prev-next">
+    <li class="prev ignored">
+      <a if="spec.PreviousIgnored != null"
+         href="#${spec.PreviousIgnored.Id}"
+         title="Go to previous ignored specification">&uArr;</a>
+    </li>
+    <li class="next ignored">
+      <a if="spec.NextIgnored != null"
+         href="#${spec.NextIgnored.Id}"
+         title="Go to next ignored specification">&dArr;</a>
+    </li>
+  </ul>
+</div>
+
 <for each="var supplement in spec.Supplements">
   <for each="var item in supplement.Value">
     <if condition='item.Key.StartsWith("img-")'>

@@ -137,6 +137,7 @@
     <Compile Include="Visitors\FileBasedResultSupplementPreparation.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Visitors\IgnoredSpecificationLinker.cs" />
     <Compile Include="Visitors\LinkerExtensions.cs" />
     <Compile Include="Visitors\NotImplementedSpecificationLinker.cs" />
   </ItemGroup>

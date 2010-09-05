@@ -48,19 +48,22 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
     It should_assign_a__next__link_to_the_report =
       () => Report.NextNotImplemented.ShouldEqual(First);
 
-    It should_not_assign_a__previous__link_to_the_first_failed_spec =
+    It should_assign_a__next__link_to_the_first_not_implemented_spec =
+      () => First.NextNotImplemented.ShouldEqual(Second);
+
+    It should_not_assign_a__previous__link_to_the_first_not_implemented_spec =
       () => First.PreviousNotImplemented.ShouldBeNull();
 
-    It should_assign_a__next__link_to_the_second_failed_spec =
+    It should_assign_a__next__link_to_the_second_not_implemented_spec =
       () => Second.NextNotImplemented.ShouldEqual(Last);
 
-    It should_assign_a__previous__link_to_the_second_failed_spec =
+    It should_assign_a__previous__link_to_the_second_not_implemented_spec =
       () => Second.PreviousNotImplemented.ShouldEqual(First);
 
-    It should_not_assign_a__next__link_to_the_last_failed_spec =
+    It should_not_assign_a__next__link_to_the_last_not_implemented_spec =
       () => Last.NextNotImplemented.ShouldBeNull();
 
-    It should_assign_a__previous__link_to_the_last_failed_spec =
+    It should_assign_a__previous__link_to_the_last_not_implemented_spec =
       () => Last.PreviousNotImplemented.ShouldEqual(Second);
   }
 }

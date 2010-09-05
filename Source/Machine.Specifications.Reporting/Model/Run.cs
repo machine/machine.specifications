@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Machine.Specifications.Reporting.Model
 {
-  public class Run : SpecificationContainer, ISpecificationNode, ILinkToCanFail, ILinkToNotImplemented
+  public class Run : SpecificationContainer, ISpecificationNode, ILinkToCanFail, ILinkToNotImplemented, ILinkToIgnored
   {
     readonly IEnumerable<Assembly> _assemblies;
     readonly int _totalAssemblies;
@@ -78,6 +78,18 @@ namespace Machine.Specifications.Reporting.Model
     }
 
     public ILinkTarget NextNotImplemented
+    {
+      get;
+      set;
+    }
+    
+    public ILinkTarget PreviousIgnored
+    {
+      get;
+      set;
+    }
+
+    public ILinkTarget NextIgnored
     {
       get;
       set;

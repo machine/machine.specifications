@@ -28,6 +28,7 @@ namespace Machine.Specifications.Reporting.Generation.Spark
              {
                new FailedSpecificationLinker(),
                new NotImplementedSpecificationLinker(),
+               new IgnoredSpecificationLinker(),
                new FileBasedResultSupplementPreparation()
              })
     {
