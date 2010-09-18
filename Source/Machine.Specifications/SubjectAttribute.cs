@@ -5,7 +5,7 @@ using Machine.Specifications.Utility;
 
 namespace Machine.Specifications
 {
-  [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
   [MeansImplicitUse(ImplicitUseTargetFlags.WithMembers)]
   public class SubjectAttribute : Attribute
   {
