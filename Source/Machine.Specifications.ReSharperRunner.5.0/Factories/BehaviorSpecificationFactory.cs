@@ -26,7 +26,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       return new BehaviorSpecificationElement(_provider,
                                               behavior,
                                               _projectEnvoy,
-                                              behaviorSpecification.DeclaringType.FullyQualifiedName,
+                                              behaviorSpecification.DeclaringType.FullyQualifiedNameWithGenericArguments(),
                                               behaviorSpecification.Name,
                                               behaviorSpecification.IsIgnored());
     }
