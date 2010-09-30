@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Text;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ReSharper.Psi;
 
@@ -138,6 +138,24 @@ namespace Machine.Specifications.ReSharperRunner
         .Where(x => x.Type is IMetadataClassType)
         .Where(x => new CLRTypeName(((IMetadataClassType) x.Type).Type.FullyQualifiedName) ==
                     new CLRTypeName(fieldType.FullName));
+    }
+
+    public static string FullyQualifiedNameWithGenericArguments(this IMetadataTypeInfo type)
+    {
+        var nameBuilder = new StringBuilder();
+        nameBuilder.Append(type.FullyQualifiedName);
+#if RESHARPER_5
+        if (type.GenericParameters.Length > 0)
+        {
+            nameBuilder.Append("[");
+            nameBuilder.Append(type.Assembly);
+            //nameBuilder.Append(String.Join(",",
+            //                               type.GenericParameters.Select(
+            //                                   x => x.TypeOwner.FullyQualifiedNameWithGenericArguments()).ToArray()));
+            nameBuilder.Append("]");
+        }
+#endif
+        return nameBuilder.ToString();
     }
   }
 }
