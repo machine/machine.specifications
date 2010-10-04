@@ -4,6 +4,7 @@ using System.Collections;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Linq;
+using Machine.Specifications.Annotations;
 
 namespace Machine.Specifications
 {
@@ -129,13 +130,15 @@ namespace Machine.Specifications
       return comparer.Compare(left, right) == 0;
     }
 
-    public static void ShouldBeFalse(this bool condition)
+    [AssertionMethod]
+    public static void ShouldBeFalse([AssertionCondition(AssertionConditionType.IS_FALSE)] this bool condition)
     {
       if (condition)
         throw new SpecificationException("Should be [false] but is [true]");
     }
 
-    public static void ShouldBeTrue(this bool condition)
+    [AssertionMethod]
+    public static void ShouldBeTrue([AssertionCondition(AssertionConditionType.IS_TRUE)] this bool condition)
     {
       if (!condition)
         throw new SpecificationException("Should be [true] but is [false]");
@@ -161,7 +164,8 @@ namespace Machine.Specifications
       return actual;
     }
 
-    public static void ShouldBeNull(this object anObject)
+    [AssertionMethod]
+    public static void ShouldBeNull([AssertionCondition(AssertionConditionType.IS_NULL)] this object anObject)
     {
       if (anObject != null)
       {
@@ -169,7 +173,8 @@ namespace Machine.Specifications
       }
     }
 
-    public static void ShouldNotBeNull(this object anObject)
+    [AssertionMethod]
+    public static void ShouldNotBeNull([AssertionCondition(AssertionConditionType.IS_NOT_NULL)] this object anObject)
     {
       if (anObject == null)
       {
