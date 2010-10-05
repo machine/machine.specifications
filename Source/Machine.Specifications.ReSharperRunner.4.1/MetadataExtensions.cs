@@ -35,7 +35,11 @@ namespace Machine.Specifications.ReSharperRunner
       IEnumerable<IMetadataField> behaviorFields = type.GetPrivateFieldsWith(typeof(Behaves_like<>));
       foreach (IMetadataField field in behaviorFields)
       {
-        if (field.GetFirstGenericArgument().HasCustomAttribute(typeof(BehaviorsAttribute).FullName))
+        if (field.GetFirstGenericArgument().HasCustomAttribute(typeof(BehaviorsAttribute).FullName)
+#if !RESHARPER_5
+            && field.GetFirstGenericArgument().GenericParameters.Length == 0      
+#endif
+            )
         {
           yield return field;
         }
@@ -102,6 +106,12 @@ namespace Machine.Specifications.ReSharperRunner
       return ((IMetadataClassType) genericArgument).Type;
     }
 
+    public static IMetadataClassType FirstGenericArgumentClass(this IMetadataField genericField)
+    {
+        var genericArgument = ((IMetadataClassType)genericField.Type).Arguments.First();
+        return genericArgument as IMetadataClassType;
+    }
+
     public static bool IsIgnored(this IMetadataEntity type)
     {
       return type.HasCustomAttribute(typeof(IgnoreAttribute).FullName);
@@ -138,24 +148,6 @@ namespace Machine.Specifications.ReSharperRunner
         .Where(x => x.Type is IMetadataClassType)
         .Where(x => new CLRTypeName(((IMetadataClassType) x.Type).Type.FullyQualifiedName) ==
                     new CLRTypeName(fieldType.FullName));
-    }
-
-    public static string FullyQualifiedNameWithGenericArguments(this IMetadataTypeInfo type)
-    {
-        var nameBuilder = new StringBuilder();
-        nameBuilder.Append(type.FullyQualifiedName);
-#if RESHARPER_5
-        if (type.GenericParameters.Length > 0)
-        {
-            nameBuilder.Append("[");
-            nameBuilder.Append(type.Assembly);
-            //nameBuilder.Append(String.Join(",",
-            //                               type.GenericParameters.Select(
-            //                                   x => x.TypeOwner.FullyQualifiedNameWithGenericArguments()).ToArray()));
-            nameBuilder.Append("]");
-        }
-#endif
-        return nameBuilder.ToString();
     }
   }
 }

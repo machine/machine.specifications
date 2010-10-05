@@ -23,12 +23,17 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     BehaviorSpecificationElement CreateBehaviorSpecification(BehaviorElement behavior,
                                                              IMetadataField behaviorSpecification)
     {
-      return new BehaviorSpecificationElement(_provider,
-                                              behavior,
-                                              _projectEnvoy,
-                                              behaviorSpecification.DeclaringType.FullyQualifiedNameWithGenericArguments(),
-                                              behaviorSpecification.Name,
-                                              behaviorSpecification.IsIgnored());
+        return new BehaviorSpecificationElement(_provider,
+                                                behavior,
+                                                _projectEnvoy,
+#if RESHARPER_5
+                                                behavior.FullyQualifiedTypeName,
+#else
+                                                behaviorSpecification.DeclaringType.FullyQualifiedName,
+#endif
+                                                
+                                                behaviorSpecification.Name,
+                                                behaviorSpecification.IsIgnored());
     }
 
     public IEnumerable<BehaviorSpecificationElement> CreateBehaviorSpecificationsFromBehavior(
