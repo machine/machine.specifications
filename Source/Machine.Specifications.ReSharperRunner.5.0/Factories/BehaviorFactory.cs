@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
@@ -35,12 +36,25 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         return null;
       }
 
+      string fullyQualifiedTypeName = "";
+
+#if RESHARPER_5
+      if (field is ITypeOwner)
+      {
+        fullyQualifiedTypeName = ((ITypeOwner) field).Type.ToString();
+        fullyQualifiedTypeName = fullyQualifiedTypeName.Substring(fullyQualifiedTypeName.IndexOf("-> ") + 3);
+        fullyQualifiedTypeName = fullyQualifiedTypeName.Remove(fullyQualifiedTypeName.Length - 1);
+        fullyQualifiedTypeName = Regex.Replace(fullyQualifiedTypeName, @"\[.*->\s", "[");
+      }
+#endif
+
       return new BehaviorElement(_provider,
                                  context,
                                  _projectEnvoy,
                                  clazz.CLRName,
                                  field.ShortName,
-                                 field.IsIgnored());
+                                 field.IsIgnored(),
+                                 fullyQualifiedTypeName);
     }
 
     public BehaviorElement CreateBehavior(ContextElement context, IMetadataField behavior)
@@ -52,7 +66,12 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                  _projectEnvoy,
                                  behavior.DeclaringType.FullyQualifiedName,
                                  behavior.Name,
-                                 behavior.IsIgnored() || typeContainingBehaviorSpecifications.IsIgnored());
+                                 behavior.IsIgnored() || typeContainingBehaviorSpecifications.IsIgnored(),
+#if RESHARPER_5
+                                 behavior.FirstGenericArgumentClass().FullName);
+#else
+                                 "");
+#endif
     }
   }
 }
