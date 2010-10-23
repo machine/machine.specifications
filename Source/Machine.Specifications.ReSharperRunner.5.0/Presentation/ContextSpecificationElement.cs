@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.UnitTestFramework;
 
@@ -12,9 +14,14 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                                        ProjectModelElementEnvoy project,
                                        string declaringTypeName,
                                        string fieldName,
+                                       ICollection<string> tags,
                                        bool isIgnored)
       : base(provider, context, project, declaringTypeName, fieldName, isIgnored || context.IsExplicit)
     {
+        if (tags != null)
+        {
+            AssignCategories(tags);
+        }
     }
 
     public ContextElement Context

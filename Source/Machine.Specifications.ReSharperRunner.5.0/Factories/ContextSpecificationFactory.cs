@@ -40,6 +40,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                              _projectEnvoy,
                                              clazz.CLRName,
                                              field.ShortName,
+                                             clazz.GetTags(),
                                              field.IsIgnored());
     }
 
@@ -50,6 +51,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                              _projectEnvoy,
                                              specification.DeclaringType.FullyQualifiedName,
                                              specification.Name,
+                                             specification.DeclaringType.GetTags(),
                                              specification.IsIgnored());
     }
   }
