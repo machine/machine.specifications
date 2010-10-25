@@ -1,3 +1,6 @@
+#if RESHARPER_5
+using System.Collections.Generic;
+#endif
 using System.Text.RegularExpressions;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
@@ -13,6 +16,9 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     readonly ProjectModelElementEnvoy _projectEnvoy;
     readonly IUnitTestProvider _provider;
     readonly ContextCache _cache;
+#if RESHARPER_5
+    static readonly IDictionary<string, BehaviorElement> TypeCache = new Dictionary<string, BehaviorElement>();
+#endif
 
     public BehaviorFactory(IUnitTestProvider provider, ProjectModelElementEnvoy projectEnvoy, ContextCache cache)
     {
@@ -36,15 +42,18 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         return null;
       }
 
-      string fullyQualifiedTypeName = "";
-
 #if RESHARPER_5
       if (field is ITypeOwner)
       {
-        fullyQualifiedTypeName = ((ITypeOwner) field).Type.ToString();
-        fullyQualifiedTypeName = fullyQualifiedTypeName.Substring(fullyQualifiedTypeName.IndexOf("-> ") + 3);
-        fullyQualifiedTypeName = fullyQualifiedTypeName.Remove(fullyQualifiedTypeName.Length - 1);
-        fullyQualifiedTypeName = Regex.Replace(fullyQualifiedTypeName, @"\[.*->\s", "[");
+        // Work around the difference in how the MetaData API and Psi API return different type strings for generics.
+        string typeName = ((ITypeOwner) field).Type.ToString();
+        typeName = typeName.Substring(typeName.IndexOf("-> ") + 3);
+        typeName = typeName.Remove(typeName.Length - 1);
+        typeName = Regex.Replace(typeName, @"\[.*->\s", "[");
+
+        BehaviorElement behaviorElement;
+        if (TypeCache.TryGetValue(typeName, out behaviorElement))
+          return behaviorElement;
       }
 #endif
 
@@ -54,24 +63,35 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                  clazz.CLRName,
                                  field.ShortName,
                                  field.IsIgnored(),
-                                 fullyQualifiedTypeName);
+                                 "");
     }
 
     public BehaviorElement CreateBehavior(ContextElement context, IMetadataField behavior)
     {
       IMetadataTypeInfo typeContainingBehaviorSpecifications = behavior.GetFirstGenericArgument();
 
-      return new BehaviorElement(_provider,
+      string fullyQualifiedTypeName = "";
+        
+#if RESHARPER_5
+      fullyQualifiedTypeName = behavior.FirstGenericArgumentClass().FullName;
+      string typeName = Regex.Replace(fullyQualifiedTypeName, @"\,.+]", "]");
+      typeName = Regex.Replace(typeName, @"\[\[", "[");
+#endif
+
+      var behaviorElement = new BehaviorElement(_provider,
                                  context,
                                  _projectEnvoy,
                                  behavior.DeclaringType.FullyQualifiedName,
                                  behavior.Name,
                                  behavior.IsIgnored() || typeContainingBehaviorSpecifications.IsIgnored(),
+                                 fullyQualifiedTypeName);
+
 #if RESHARPER_5
-                                 behavior.FirstGenericArgumentClass().FullName);
-#else
-                                 "");
+      if (!TypeCache.ContainsKey(typeName))
+        TypeCache.Add(typeName, behaviorElement);
 #endif
+
+      return behaviorElement;
     }
   }
 }
