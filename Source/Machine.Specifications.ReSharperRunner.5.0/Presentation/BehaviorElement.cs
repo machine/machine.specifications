@@ -5,9 +5,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 {
   internal class BehaviorElement : FieldElement
   {
-      private readonly string _fullyQualifiedTypeName;
-
-      public BehaviorElement(IUnitTestProvider provider,
+    public BehaviorElement(IUnitTestProvider provider,
                            // ReSharper disable SuggestBaseTypeForParameter
                            ContextElement context,
                            // ReSharper restore SuggestBaseTypeForParameter
@@ -18,15 +16,15 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                            string fullyQualifiedTypeName)
       : base(provider, context, projectEnvoy, declaringTypeName, fieldName, isIgnored || context.IsExplicit)
     {
-        _fullyQualifiedTypeName = fullyQualifiedTypeName;
+      FullyQualifiedTypeName = fullyQualifiedTypeName;
     }
 
-      public ContextElement Context
+    public ContextElement Context
     {
       get { return (ContextElement)Parent; }
     }
 
-    public string FullyQualifiedTypeName { get { return _fullyQualifiedTypeName; } }
+    public string FullyQualifiedTypeName { get; private set; }
 
     public override string GetTitlePrefix()
     {
