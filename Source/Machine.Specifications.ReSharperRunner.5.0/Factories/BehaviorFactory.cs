@@ -1,7 +1,7 @@
 #if RESHARPER_5
 using System.Collections.Generic;
-#endif
 using System.Text.RegularExpressions;
+#endif
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;

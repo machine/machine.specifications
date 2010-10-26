@@ -23,15 +23,12 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     BehaviorSpecificationElement CreateBehaviorSpecification(BehaviorElement behavior,
                                                              IMetadataField behaviorSpecification)
     {
-        return new BehaviorSpecificationElement(_provider,
-                                                behavior,
-                                                _projectEnvoy,
-#if RESHARPER_5
-                                                behavior.FullyQualifiedTypeName ??
-#endif
-                                                behaviorSpecification.DeclaringType.FullyQualifiedName,
-                                                behaviorSpecification.Name,
-                                                behaviorSpecification.IsIgnored());
+      return new BehaviorSpecificationElement(_provider,
+                                              behavior,
+                                              _projectEnvoy,
+                                              behavior.FullyQualifiedTypeName ?? behaviorSpecification.DeclaringType.FullyQualifiedName,
+                                              behaviorSpecification.Name,
+                                              behaviorSpecification.IsIgnored());
     }
 
     public IEnumerable<BehaviorSpecificationElement> CreateBehaviorSpecificationsFromBehavior(
@@ -64,10 +61,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       return new BehaviorSpecificationElement(_provider,
                                               behavior,
                                               _projectEnvoy,
-#if RESHARPER_5
-                                              behavior.FullyQualifiedTypeName ??
-#endif
-                                              behaviorSpecification.GetContainingType().CLRName,
+                                              behavior.FullyQualifiedTypeName ?? behaviorSpecification.GetContainingType().CLRName,
                                               behaviorSpecification.ShortName,
                                               behaviorSpecification.IsIgnored());
     }
