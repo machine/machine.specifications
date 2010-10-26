@@ -63,14 +63,14 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                  clazz.CLRName,
                                  field.ShortName,
                                  field.IsIgnored(),
-                                 "");
+                                 null);
     }
 
     public BehaviorElement CreateBehavior(ContextElement context, IMetadataField behavior)
     {
       IMetadataTypeInfo typeContainingBehaviorSpecifications = behavior.GetFirstGenericArgument();
 
-      string fullyQualifiedTypeName = "";
+      string fullyQualifiedTypeName = null;
         
 #if RESHARPER_5
       fullyQualifiedTypeName = behavior.FirstGenericArgumentClass().FullyQualifiedName();
