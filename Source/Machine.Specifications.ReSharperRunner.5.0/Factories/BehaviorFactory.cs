@@ -73,7 +73,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       string fullyQualifiedTypeName = "";
         
 #if RESHARPER_5
-      fullyQualifiedTypeName = behavior.FirstGenericArgumentClass().FullName;
+      fullyQualifiedTypeName = behavior.FirstGenericArgumentClass().FullyQualifiedName();
       string typeName = Regex.Replace(fullyQualifiedTypeName, @"\,.+]", "]");
       typeName = Regex.Replace(typeName, @"\[\[", "[");
 #endif
