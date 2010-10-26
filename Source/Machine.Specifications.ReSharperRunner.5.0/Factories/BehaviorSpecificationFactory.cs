@@ -27,11 +27,9 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                 behavior,
                                                 _projectEnvoy,
 #if RESHARPER_5
-                                                behavior.FullyQualifiedTypeName,
-#else
-                                                behaviorSpecification.DeclaringType.FullyQualifiedName,
+                                                behavior.FullyQualifiedTypeName ??
 #endif
-                                                
+                                                behaviorSpecification.DeclaringType.FullyQualifiedName,
                                                 behaviorSpecification.Name,
                                                 behaviorSpecification.IsIgnored());
     }
@@ -67,10 +65,9 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                               behavior,
                                               _projectEnvoy,
 #if RESHARPER_5
-                                              behavior.FullyQualifiedTypeName,
-#else
-                                              behaviorSpecification.GetContainingType().CLRName,
+                                              behavior.FullyQualifiedTypeName ??
 #endif
+                                              behaviorSpecification.GetContainingType().CLRName,
                                               behaviorSpecification.ShortName,
                                               behaviorSpecification.IsIgnored());
     }
