@@ -17,7 +17,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     readonly IUnitTestProvider _provider;
     readonly ContextCache _cache;
 #if RESHARPER_5
-    static readonly IDictionary<string, BehaviorElement> TypeCache = new Dictionary<string, BehaviorElement>();
+    static readonly IDictionary<string, string> TypeNameCache = new Dictionary<string, string>();
 #endif
 
     public BehaviorFactory(IUnitTestProvider provider, ProjectModelElementEnvoy projectEnvoy, ContextCache cache)
@@ -42,18 +42,13 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         return null;
       }
 
+        string fullyQualifiedTypeName = null;
+
 #if RESHARPER_5
       if (field is ITypeOwner)
       {
-        // Work around the difference in how the MetaData API and Psi API return different type strings for generics.
-        string typeName = ((ITypeOwner) field).Type.ToString();
-        typeName = typeName.Substring(typeName.IndexOf("-> ") + 3);
-        typeName = typeName.Remove(typeName.Length - 1);
-        typeName = Regex.Replace(typeName, @"\[.*->\s", "[");
-
-        BehaviorElement behaviorElement;
-        if (TypeCache.TryGetValue(typeName, out behaviorElement))
-          return behaviorElement;
+          // Work around the difference in how the MetaData API and Psi API return different type strings for generics.
+          TypeNameCache.TryGetValue(GetFirstGenericNormalizedTypeName(field), out fullyQualifiedTypeName);
       }
 #endif
 
@@ -63,8 +58,19 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                  clazz.CLRName,
                                  field.ShortName,
                                  field.IsIgnored(),
-                                 null);
+                                 fullyQualifiedTypeName);
     }
+      
+#if RESHARPER_5
+    private static string GetFirstGenericNormalizedTypeName(IDeclaredElement field)
+    {
+      string typeName = ((ITypeOwner) field).Type.ToString();
+      typeName = typeName.Substring(typeName.IndexOf("-> ") + 3);
+      typeName = typeName.Remove(typeName.Length - 1);
+      typeName = Regex.Replace(typeName, @"\[.*->\s", "[");
+      return typeName;
+    }
+#endif
 
     public BehaviorElement CreateBehavior(ContextElement context, IMetadataField behavior)
     {
@@ -74,8 +80,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         
 #if RESHARPER_5
       fullyQualifiedTypeName = behavior.FirstGenericArgumentClass().FullyQualifiedName();
-      string typeName = Regex.Replace(fullyQualifiedTypeName, @"\,.+]", "]");
-      typeName = Regex.Replace(typeName, @"\[\[", "[");
+      string typeName = GetNormalizedTypeName(fullyQualifiedTypeName);
 #endif
 
       var behaviorElement = new BehaviorElement(_provider,
@@ -87,11 +92,20 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                  fullyQualifiedTypeName);
 
 #if RESHARPER_5
-      if (!TypeCache.ContainsKey(typeName))
-        TypeCache.Add(typeName, behaviorElement);
+      if (!TypeNameCache.ContainsKey(typeName))
+        TypeNameCache.Add(typeName, fullyQualifiedTypeName);
 #endif
 
       return behaviorElement;
     }
+
+#if RESHARPER_5
+    private static string GetNormalizedTypeName(string fullyQualifiedTypeName)
+    {
+      string typeName = Regex.Replace(fullyQualifiedTypeName, @"\,.+]", "]");
+      typeName = Regex.Replace(typeName, @"\[\[", "[");
+      return typeName;
+    }
+#endif
   }
 }
