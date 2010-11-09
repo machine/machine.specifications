@@ -18,7 +18,7 @@ task :configure do
       :friendly_name => 'net-3.5',
       :version => 'v3.5',
       :project => project,
-      :solution => project,
+      :solution => "#{project}-2010",
       :target => target,
       :compile_target => target,
       :out_dir => "Build/#{target}/",
