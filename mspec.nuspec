@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>mspec</id>
+    <version>0.3.0</version>
+	<title>Machine.Specifications</title>
+    <authors>Aaron Jensen, Alexander Groß</authors>
+	<summary>Machine.Specifications Context/Specification framework</summary>
+    <description>Machine.Specifications is a Context/Specification framework geared towards removing language noise and simplifying tests.</description>
+    <language>en-US</language>
+	<projectUrl>http://github.com/machine/machine.specifications</projectUrl>
+  </metadata>
+  <files>
+    <file src="**\*.*" target="lib" />
+  </files>
+</package>

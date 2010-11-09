@@ -128,6 +128,20 @@ task :package => [ "rebuild", "tests:run", "specs:run" ] do
   end
 end
 
+desc "Packages the build artifacts as a NuGet"
+task :nuget do
+  FileList.new("#{configatron.package_name.dirname}/*-Release.zip").each do |f|
+	version = f.split("-").values_at(1, 2).join.delete(".")
+
+	SevenZip.unzip \
+	  :tool => 'Tools/7-Zip/7za.exe',
+	  :zip_name => f,
+	  :destination => "Build/NuGet/#{version}".gsub(/\//, '\\')
+  end
+
+  sh "Tools/NUGet/NuGet.exe", "pack", "mspec.nuspec", "-BasePath", "Build/NuGet", "-OutputDirectory", "Distribution"
+end
+
 desc "TeamCity build"
 task :teamcity => [ :teamcity_environment, :package ]
 
