@@ -71,6 +71,24 @@ namespace Machine.Specifications.Specs
     It should_be_ignored = () =>
       IgnoredSpecRan = true;
   }
+  
+  [Ignore("just because")]
+  public class context_with_ignore_and_reason : context_with_no_specs
+  {
+    public static bool IgnoredSpecRan;
+
+    It should_be_ignored = () =>
+      IgnoredSpecRan = true;
+  }
+
+  public class context_with_ignore_and_reason_on_one_spec : context_with_no_specs
+  {
+    public static bool IgnoredSpecRan;
+
+    [Ignore("just because")]
+    It should_be_ignored = () =>
+      IgnoredSpecRan = true;
+  }
 
   [Tags(tag.example)]
   public class context_with_no_specs
