@@ -54,7 +54,7 @@ namespace Machine.Specifications.ConsoleRunner
     {
       StringBuilder sb = new StringBuilder();
       sb.AppendLine("Machine.Specifications");
-      sb.AppendLine("Copyright (C) 2007, 2008, 2009");
+      sb.AppendLine("Copyright (C) 2007 - 2011");
       sb.AppendLine("");
       sb.AppendLine(Resources.UsageStatement);
       sb.AppendLine("Options:");
@@ -62,7 +62,7 @@ namespace Machine.Specifications.ConsoleRunner
       sb.AppendLine("  -x, --exclude     Exclude specifications in contexts with these comma delimited tags. Ex. -x \"foo,bar,foo_bar\"");
       sb.AppendLine("  -t, --timeinfo    Shows time-related information in HTML output");
       sb.AppendLine("  -s, --silent      Suppress console output");
-      sb.AppendLine("  --teamcity        Reporting for TeamCity CI integration.");
+      sb.AppendLine("  --teamcity        Reporting for TeamCity CI integration");
       sb.AppendLine("  --html <PATH>     Outputs an HTML file(s) to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)");
       sb.AppendLine("  --xml <PATH>      Outputs an XML file(s) to path");
       sb.AppendLine("  -h, --help        Shows this help message");
