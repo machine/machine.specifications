@@ -11,17 +11,17 @@ namespace Machine.Specifications.ConsoleRunner
 {
   public class Options
   {
-    [Option("xml", "xml", HelpText = "Outputs XML")]
+    [Option("xml", "xml", HelpText = "Outputs an XML file(s) to path")]
     public string XmlPath = string.Empty;
 
     [Option(null,
       "html",
-      HelpText = "Ouputs HTML (one-per-assembly) at the specified path.")] 
+      HelpText = "Outputs an HTML file(s) to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)")] 
     public string HtmlPath = string.Empty;
 
     [Option("s",
       "silent",
-      HelpText = "Suppresses all console output.")]
+      HelpText = "Suppress console output")]
     public bool Silent = false;
 
     [Option("t",
@@ -30,13 +30,13 @@ namespace Machine.Specifications.ConsoleRunner
     public bool ShowTimeInformation = false;
 
     [Option(null, 
-      "teamcity", 
-      HelpText = "Replaces the standard build reporting with TeamCity test reporting.")]
+      "teamcity",
+      HelpText = "Reporting for TeamCity CI integration")]
     public bool TeamCityIntegration = false;
 
     [OptionList("i",
       "include",
-      HelpText = "Executes all specifications in contexts with these comma delimited tags. Ex. -i \"foo,bar,foo_bar\"",
+      HelpText = "Execute all specifications in contexts with these comma delimited tags. Ex. -i \"foo,bar,foo_bar\"",
       Separator = ',')] 
     public IList<string> IncludeTags = null;
 
@@ -58,7 +58,7 @@ namespace Machine.Specifications.ConsoleRunner
       sb.AppendLine("");
       sb.AppendLine(Resources.UsageStatement);
       sb.AppendLine("Options:");
-      sb.AppendLine("  -i, --include     Executes all specifications in contexts with these comma delimited tags. Ex. -i \"foo,bar,foo_bar\"");
+      sb.AppendLine("  -i, --include     Execute all specifications in contexts with these comma delimited tags. Ex. -i \"foo,bar,foo_bar\"");
       sb.AppendLine("  -x, --exclude     Exclude specifications in contexts with these comma delimited tags. Ex. -x \"foo,bar,foo_bar\"");
       sb.AppendLine("  -t, --timeinfo    Shows time-related information in HTML output");
       sb.AppendLine("  -s, --silent      Suppress console output");

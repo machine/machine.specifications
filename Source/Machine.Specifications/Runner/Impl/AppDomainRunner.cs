@@ -145,7 +145,7 @@ namespace Machine.Specifications.Runner.Impl
         }
       }
 
-		[SecurityCritical]
+      [SecurityCritical]
       public override object InitializeLifetimeService()
       {
         return null;
@@ -167,7 +167,7 @@ namespace Machine.Specifications.Runner.Impl
         }
       }
 
-		[SecurityCritical]
+      [SecurityCritical]
       public override object InitializeLifetimeService()
       {
         return null;
@@ -189,7 +189,7 @@ namespace Machine.Specifications.Runner.Impl
         }
       }
 
-		[SecurityCritical]
+      [SecurityCritical]
       public override object InitializeLifetimeService()
       {
         return null;
