@@ -97,7 +97,7 @@ namespace Machine.Specifications.GallioAdapter.Services
       var includeTags = tagFilters.SingleOrDefault(g => g.Key == Gallio.Model.Filters.FilterRuleType.Inclusion) ?? Enumerable.Empty<string>();
       var excludeTags = tagFilters.SingleOrDefault(g => g.Key == Gallio.Model.Filters.FilterRuleType.Exclusion) ?? Enumerable.Empty<string>();
 
-      _options = new RunOptions(includeTags, excludeTags);      
+      _options = new RunOptions(includeTags, excludeTags, new string[0]);
     }
 
     void SetupListeners(TestExecutionOptions options)

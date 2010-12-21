@@ -116,30 +116,16 @@ namespace Machine.Specifications.Runner.Impl
 
   public static class TagFilteringExtensions
   {
-    public static IEnumerable<T> FilteredBy<T>(this IEnumerable<T> objects, RunOptions options)
-    {
-      var results = objects;
-      var tagExtractor = new AttributeTagExtractor();
-      
-      if (options.IncludeTags.Any())
-      {
-        var includeTags = options.IncludeTags.Select(tag => new Tag(tag));
-
-        results = results.Where(x => tagExtractor.ExtractTags(x.GetType()).Intersect(includeTags).Any());
-      }
-
-      if (options.ExcludeTags.Any())
-      {
-        var excludeTags = options.ExcludeTags.Select(tag => new Tag(tag));
-        results = results.Where(x => !tagExtractor.ExtractTags(x.GetType()).Intersect(excludeTags).Any());
-      }
-
-      return results;
-    }
-
     public static IEnumerable<Context> FilteredBy(this IEnumerable<Context> contexts, RunOptions options)
     {
       var results = contexts;
+
+      if (options.Filters.Any())
+      {
+        var includeFilters = options.Filters;
+
+        results = results.Where(x => includeFilters.Any(filter => StringComparer.OrdinalIgnoreCase.Equals(filter, x.Type.FullName)));
+      }
 
       if (options.IncludeTags.Any())
       {

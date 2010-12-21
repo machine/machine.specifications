@@ -184,7 +184,7 @@ namespace Machine.Specifications.Specs.Runner
     {
       TestAssemblyContext.OnAssemblyStartRun = false;
       TestAssemblyContext.OnAssemblyCompleteRun = false;
-      runner = new DefaultRunner(new TestListener(), new RunOptions(new[] { "asdfasdf" }, new string[0]));
+      runner = new DefaultRunner(new TestListener(), new RunOptions(new[] { "asdfasdf" }, new string[0], new string[0]));
     };
 
     Because of = () =>
@@ -277,7 +277,7 @@ namespace Machine.Specifications.Specs.Runner
       UntaggedResultSupplementer.Reset();
 
       testListener = new TestListener();
-      var options = new RunOptions(new string[] {"foobar"}, new string[] {});
+      var options = new RunOptions(new string[] { "foobar" }, new string[] { }, new string[0]);
 
       runner = new DefaultRunner(testListener, options);
     };
@@ -309,6 +309,90 @@ namespace Machine.Specifications.Specs.Runner
 
     It should_run_untagged_result_supplementer = () =>
       UntaggedResultSupplementer.SupplementResultRun.ShouldBeTrue();
+
+    static DefaultRunner runner;
+    static TestListener testListener;
+  }
+  
+  [Subject("Specification Runner")]
+  public class when_running_with_empty_filters
+  {
+    Establish context = () =>
+    {
+      testListener = new TestListener();
+      var options = new RunOptions(new string[] { }, new string[] { }, new string[0]);
+
+      runner = new DefaultRunner(testListener, options);
+    };
+
+    Because of = () =>
+      {
+        runner.RunMember(typeof(context_with_multiple_specifications).Assembly,
+                         typeof(context_with_multiple_specifications));
+        runner.RunMember(typeof(context_with_duplicate_tags).Assembly,
+                         typeof(context_with_duplicate_tags));
+      };
+
+    It should_run_everything = () =>
+      testListener.SpecCount.ShouldEqual(3);
+
+    static DefaultRunner runner;
+    static TestListener testListener;
+  }
+  
+  [Subject("Specification Runner")]
+  public class when_running_with_context_filters
+  {
+    Establish context = () =>
+    {
+      testListener = new TestListener();
+      var options = new RunOptions(new string[] {}, new string[] {}, new []{ "Machine.Specifications.Specs.context_with_multiple_specifications" });
+
+      runner = new DefaultRunner(testListener, options);
+    };
+
+    Because of = () =>
+      {
+        runner.RunMember(typeof(context_with_multiple_specifications).Assembly,
+                         typeof(context_with_multiple_specifications));
+        runner.RunMember(typeof(context_with_duplicate_tags).Assembly,
+                         typeof(context_with_duplicate_tags));
+      };
+
+    It should_run_included_contexts_only = () =>
+      testListener.SpecCount.ShouldEqual(2);
+
+    static DefaultRunner runner;
+    static TestListener testListener;
+  }
+  
+  [Subject("Specification Runner")]
+  public class when_running_with_specification_filters
+  {
+    Establish context = () =>
+    {
+      testListener = new TestListener();
+      var options = new RunOptions(new string[] { },
+                                   new string[] { },
+                                   new[]
+                                   {
+                                     "Machine.Specifications.Specs.context_with_multiple_specifications",
+                                     "Machine.Specifications.Specs.context_with_duplicate_tags"
+                                   });
+
+      runner = new DefaultRunner(testListener, options);
+    };
+
+    Because of = () =>
+      {
+        runner.RunMember(typeof(context_with_multiple_specifications).Assembly,
+                         typeof(context_with_multiple_specifications));
+        runner.RunMember(typeof(context_with_duplicate_tags).Assembly,
+                         typeof(context_with_duplicate_tags));
+      };
+
+    It should_run_included_specifications_only = () =>
+      testListener.SpecCount.ShouldEqual(3);
 
     static DefaultRunner runner;
     static TestListener testListener;

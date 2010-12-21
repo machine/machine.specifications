@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using CommandLine;
@@ -18,6 +19,11 @@ namespace Machine.Specifications.ConsoleRunner
       "html",
       HelpText = "Outputs an HTML file(s) to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)")] 
     public string HtmlPath = string.Empty;
+    
+    [Option("f",
+      "filter",
+      HelpText = "Filter file specifying contexts to execute (full type name, one per line). Takes precedence over tags")] 
+    public string FilterFile = string.Empty;
 
     [Option("s",
       "silent",
@@ -77,8 +83,13 @@ namespace Machine.Specifications.ConsoleRunner
 
     public virtual RunOptions GetRunOptions()
     {
-      return new RunOptions(IncludeTags ?? new string[0], ExcludeTags ?? new string[0]);
-    }
+      var filters = new string[0];
+      if (!String.IsNullOrEmpty(FilterFile))
+      {
+        filters = File.ReadAllLines(FilterFile, Encoding.UTF8);
+      }
 
+      return new RunOptions(IncludeTags ?? new string[0], ExcludeTags ?? new string[0], filters);
+    }
   }
 }
