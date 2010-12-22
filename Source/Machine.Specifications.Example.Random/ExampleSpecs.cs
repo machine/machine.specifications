@@ -54,6 +54,11 @@ namespace Machine.Specifications.Specs
     It bla_bla = () => { };
   }
 
+  public class context_with_unimplemented_specs
+  {
+    It should_be_unimplemented;
+  }
+  
   [Ignore]
   public class context_with_ignore : context_with_no_specs
   {
