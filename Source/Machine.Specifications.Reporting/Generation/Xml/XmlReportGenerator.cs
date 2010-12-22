@@ -11,11 +11,10 @@ namespace Machine.Specifications.Reporting.Generation.Xml
   public class XmlReportGenerator
   {
     private readonly string _path;
-    private readonly Dictionary<string, List<ContextInfo>> _contextsByAssembly;
+    private readonly Dictionary<AssemblyInfo, List<ContextInfo>> _contextsByAssembly;
     private readonly Dictionary<ContextInfo, List<SpecificationInfo>> _specificationsByContext;
     private readonly Dictionary<SpecificationInfo, Result> _resultsBySpecification;
     private readonly bool _showTimeInfo;
-    private const string noContextKey = "none";
 
     public XmlReportGenerator()
     {
@@ -27,7 +26,7 @@ namespace Machine.Specifications.Reporting.Generation.Xml
       _path = path;
     }
 
-    public XmlReportGenerator(string path, Dictionary<string, List<ContextInfo>> contextsByAssembly,
+    public XmlReportGenerator(string path, Dictionary<AssemblyInfo, List<ContextInfo>> contextsByAssembly,
                               Dictionary<ContextInfo, List<SpecificationInfo>> specificationsByContext,
                               Dictionary<SpecificationInfo, Result> resultsBySpecification, bool showTimeInfo)
     {
@@ -72,7 +71,7 @@ namespace Machine.Specifications.Reporting.Generation.Xml
       return false;
     }
 
-    public void Render(XmlWriter reportBuilder, Dictionary<string, List<ContextInfo>> contextsByAssembly)
+    public void Render(XmlWriter reportBuilder, Dictionary<AssemblyInfo, List<ContextInfo>> contextsByAssembly)
     {
       reportBuilder.WriteStartDocument();
       reportBuilder.WriteStartElement("MSpec");
@@ -97,12 +96,13 @@ namespace Machine.Specifications.Reporting.Generation.Xml
       reportBuilder.WriteEndElement();
     }
 
-    private void RenderAssemblies(XmlWriter reportBuilder, Dictionary<string, List<ContextInfo>> contextsByAssembly)
+    private void RenderAssemblies(XmlWriter reportBuilder, Dictionary<AssemblyInfo, List<ContextInfo>> contextsByAssembly)
     {
       contextsByAssembly.Keys.ToList().ForEach(assembly =>
         {
           reportBuilder.WriteStartElement("assembly");
-          reportBuilder.WriteAttributeString("name", assembly);
+          reportBuilder.WriteAttributeString("name", assembly.Name);
+          reportBuilder.WriteAttributeString("location", assembly.Location);
           RenderConcerns(reportBuilder, contextsByAssembly[assembly]);
           reportBuilder.WriteEndElement();
         });
@@ -143,6 +143,7 @@ namespace Machine.Specifications.Reporting.Generation.Xml
       {
         reportBuilder.WriteStartElement("context");
         reportBuilder.WriteAttributeString("name", context.Name);
+        reportBuilder.WriteAttributeString("type-name", context.TypeName);
         RenderSpecifications(reportBuilder, context);
         reportBuilder.WriteEndElement();
       }
@@ -181,6 +182,7 @@ namespace Machine.Specifications.Reporting.Generation.Xml
         }
         reportBuilder.WriteStartElement("specification");
         reportBuilder.WriteAttributeString("name", specification.Name);
+        reportBuilder.WriteAttributeString("field-name", specification.FieldName);
         reportBuilder.WriteAttributeString("status", status);
         reportBuilder.WriteEndElement();
       }

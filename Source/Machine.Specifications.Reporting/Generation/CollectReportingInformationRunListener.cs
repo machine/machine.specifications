@@ -6,17 +6,17 @@ namespace Machine.Specifications.Reporting.Generation
 {
   public class CollectReportingInformationRunListener : ISpecificationRunListener
   {
-    string _currentAssemblyName;
+    AssemblyInfo _currentAssembly;
     ContextInfo _currentContext;
-    readonly Dictionary<string, List<ContextInfo>> _contextsByAssembly;
+    readonly Dictionary<AssemblyInfo, List<ContextInfo>> _contextsByAssembly;
     readonly Dictionary<ContextInfo, List<SpecificationInfo>> _specificationsByContext;
     readonly Dictionary<SpecificationInfo, Result> _resultsBySpecification;
 
     public CollectReportingInformationRunListener()
     {
-      _currentAssemblyName = "";
+      _currentAssembly = null;
       _currentContext = null;
-      _contextsByAssembly = new Dictionary<string, List<ContextInfo>>();
+      _contextsByAssembly = new Dictionary<AssemblyInfo, List<ContextInfo>>();
       _specificationsByContext = new Dictionary<ContextInfo, List<SpecificationInfo>>();
       _resultsBySpecification = new Dictionary<SpecificationInfo, Result>();
     }
@@ -31,15 +31,15 @@ namespace Machine.Specifications.Reporting.Generation
       get { return _specificationsByContext; }
     }
 
-    public Dictionary<string, List<ContextInfo>> ContextsByAssembly
+    public Dictionary<AssemblyInfo, List<ContextInfo>> ContextsByAssembly
     {
       get { return _contextsByAssembly; }
     }
 
     public virtual void OnAssemblyStart(AssemblyInfo assembly)
     {
-      _currentAssemblyName = assembly.Name;
-      _contextsByAssembly.Add(_currentAssemblyName, new List<ContextInfo>());
+      _currentAssembly = assembly;
+      _contextsByAssembly.Add(_currentAssembly, new List<ContextInfo>());
     }
 
     public virtual void OnAssemblyEnd(AssemblyInfo assembly)
@@ -56,7 +56,7 @@ namespace Machine.Specifications.Reporting.Generation
 
     public virtual void OnContextStart(ContextInfo context)
     {
-      _contextsByAssembly[_currentAssemblyName].Add(context);
+      _contextsByAssembly[_currentAssembly].Add(context);
       _currentContext = context;
       _specificationsByContext.Add(_currentContext, new List<SpecificationInfo>());
     }

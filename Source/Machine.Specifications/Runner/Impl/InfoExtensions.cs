@@ -23,7 +23,7 @@ namespace Machine.Specifications.Runner.Impl
 
     public static SpecificationInfo GetInfo(this Specification specification)
     {
-      return new SpecificationInfo(specification.Name, specification.FieldInfo.DeclaringType.FullName);
+      return new SpecificationInfo(specification.Name, specification.FieldInfo.DeclaringType.FullName, specification.FieldInfo.Name);
     }
   }
 }
