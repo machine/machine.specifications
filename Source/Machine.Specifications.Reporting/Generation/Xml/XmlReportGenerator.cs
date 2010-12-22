@@ -184,8 +184,29 @@ namespace Machine.Specifications.Reporting.Generation.Xml
         reportBuilder.WriteAttributeString("name", specification.Name);
         reportBuilder.WriteAttributeString("field-name", specification.FieldName);
         reportBuilder.WriteAttributeString("status", status);
+        RenderError(reportBuilder, result.Exception);
         reportBuilder.WriteEndElement();
       }
+    }
+
+    static void RenderError(XmlWriter reportBuilder, ExceptionResult exception)
+    {
+      if (exception == null)
+      {
+        return;
+      }
+
+      reportBuilder.WriteStartElement("error");
+      
+      reportBuilder.WriteStartElement("message");
+      reportBuilder.WriteCData(exception.Message);
+      reportBuilder.WriteEndElement();
+      
+      reportBuilder.WriteStartElement("stack-trace");
+      reportBuilder.WriteCData(exception.StackTrace);
+      reportBuilder.WriteEndElement();
+
+      reportBuilder.WriteEndElement();
     }
   }
 }
