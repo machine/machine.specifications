@@ -10,24 +10,25 @@ namespace Machine.Specifications.ConsoleRunner
     readonly IConsole _console;
     readonly bool _silent;
     readonly TimingRunListener _timer;
-    string _currentAssemblyName;
     int _contextCount;
+    string _currentAssemblyName;
     int _specificationCount;
-    int _failedSpecificationCount;
-    int _unimplementedSpecificationCount;
-    int _ignoredSpecificationCount;
     int _passedSpecificationCount;
-
-    public bool FailureOccurred
-    {
-      get; private set;
-    }
+    int _failedSpecificationCount;
+    bool _failureOccurred;
+    int _ignoredSpecificationCount;
+    int _unimplementedSpecificationCount;
 
     public RunListener(IConsole console, bool silent, TimingRunListener timer)
     {
       _console = console;
       _silent = silent;
       _timer = timer;
+    }
+
+    public bool FailureOccurred
+    {
+      get { return _failureOccurred || _failedSpecificationCount > 0; }
     }
 
     public void OnAssemblyStart(AssemblyInfo assembly)
@@ -58,10 +59,10 @@ namespace Machine.Specifications.ConsoleRunner
                                _contextCount,
                                _specificationCount,
                                FormattableTimeSpan(_timer.GetRunTime()));
-      
+
       if (_failedSpecificationCount > 0 || _unimplementedSpecificationCount > 0)
       {
-        line += String.Format("\n  {0} passed, {1} failed", _passedSpecificationCount,_failedSpecificationCount);
+        line += String.Format("\n  {0} passed, {1} failed", _passedSpecificationCount, _failedSpecificationCount);
         if (_unimplementedSpecificationCount > 0)
         {
           line += String.Format(", {0} not implemented", _unimplementedSpecificationCount);
@@ -72,12 +73,12 @@ namespace Machine.Specifications.ConsoleRunner
         }
       }
 
-      _console.WriteLine(line);
-    }
+      if (_failureOccurred)
+      {
+        line += "\n\nGeneric failure occurred, no idea what this is";
+      }
 
-    static DateTime FormattableTimeSpan(long milliseconds)
-    {
-      return DateTime.MinValue + TimeSpan.FromMilliseconds(milliseconds);
+      _console.WriteLine(line);
     }
 
     public void OnContextStart(ContextInfo context)
@@ -99,7 +100,7 @@ namespace Machine.Specifications.ConsoleRunner
     public void OnSpecificationEnd(SpecificationInfo specification, Result result)
     {
       _specificationCount += 1;
-      switch(result.Status)
+      switch (result.Status)
       {
         case Status.Passing:
           _passedSpecificationCount += 1;
@@ -115,7 +116,6 @@ namespace Machine.Specifications.ConsoleRunner
           break;
         default:
           _failedSpecificationCount += 1;
-          FailureOccurred = true;
           WriteLineVerbose(" (FAIL)");
           WriteLineVerbose(result.Exception.ToString());
           break;
@@ -124,20 +124,31 @@ namespace Machine.Specifications.ConsoleRunner
 
     public void OnFatalError(ExceptionResult exception)
     {
-      FailureOccurred = true;
+      _failureOccurred = true;
       _console.WriteLine("Fatal Error");
       _console.WriteLine(exception.ToString());
       _console.WriteLine("");
     }
 
+    static DateTime FormattableTimeSpan(long milliseconds)
+    {
+      return DateTime.MinValue + TimeSpan.FromMilliseconds(milliseconds);
+    }
+
     void WriteVerbose(string str)
     {
-      if (!_silent) _console.Write(str);
+      if (!_silent)
+      {
+        _console.Write(str);
+      }
     }
 
     void WriteLineVerbose(string str)
     {
-      if (!_silent) _console.WriteLine(str);
+      if (!_silent)
+      {
+        _console.WriteLine(str);
+      }
     }
   }
 }
