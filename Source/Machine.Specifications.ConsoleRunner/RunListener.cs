@@ -20,7 +20,7 @@ namespace Machine.Specifications.ConsoleRunner
     int _ignoredSpecificationCount;
     int _passedSpecificationCount;
 
-    public bool FailureOccured
+    public bool FailureOccurred
     {
       get; private set;
     }
@@ -107,7 +107,7 @@ namespace Machine.Specifications.ConsoleRunner
           break;
         default:
           _failedSpecificationCount += 1;
-          FailureOccured = true;
+          FailureOccurred = true;
           WriteLineVerbose(" (FAIL)");
           WriteLineVerbose(result.Exception.ToString());
           break;
@@ -116,7 +116,7 @@ namespace Machine.Specifications.ConsoleRunner
 
     public void OnFatalError(ExceptionResult exception)
     {
-      FailureOccured = true;
+      FailureOccurred = true;
       _console.WriteLine("Fatal Error");
       _console.WriteLine(exception.ToString());
     }

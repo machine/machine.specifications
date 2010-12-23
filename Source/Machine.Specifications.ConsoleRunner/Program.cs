@@ -124,7 +124,7 @@ namespace Machine.Specifications.ConsoleRunner
       if (mainListener is ISpecificationResultProvider)
       {
         var errorProvider = (ISpecificationResultProvider)mainListener;
-        if (errorProvider.FailureOccured)
+        if (errorProvider.FailureOccurred)
         {
           Console.WriteLine("Generic failure occurred, no idea what this is");
           return ExitCode.Failure;

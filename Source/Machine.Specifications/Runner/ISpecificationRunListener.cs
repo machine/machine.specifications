@@ -17,6 +17,6 @@ namespace Machine.Specifications.Runner
 
   public interface ISpecificationResultProvider
   {
-    bool FailureOccured { get; }
+    bool FailureOccurred { get; }
   }
 }

@@ -13,13 +13,13 @@ namespace Machine.Specifications.Reporting.Integration
     string _currentAssembly;
     string _currentContext;
     string _currentNamespace;
-    bool _failureOccured;
+    bool _failureOccurred;
     //string _failures;
 
     public TeamCityReporter(Action<string> writer, TimingRunListener listener)
     {
       _timingListener = listener;
-      _failureOccured = false;
+      _failureOccurred = false;
       _writer = new TeamCityServiceMessageWriter(writer);
     }
 
@@ -100,7 +100,7 @@ namespace Machine.Specifications.Reporting.Integration
           {
             _writer.WriteTestFailed(GetSpecificationName(specification), "FAIL", "");
           }
-          _failureOccured = true;
+          _failureOccurred = true;
           break;
       }
       var duration = TimeSpan.FromMilliseconds(_timingListener.GetSpecificationTime(specification));
@@ -111,12 +111,12 @@ namespace Machine.Specifications.Reporting.Integration
     public void OnFatalError(ExceptionResult exception)
     {
       _writer.WriteError(exception.Message, exception.ToString());
-      _failureOccured = true;
+      _failureOccurred = true;
     }
 
-    public bool FailureOccured
+    public bool FailureOccurred
     {
-      get { return _failureOccured; }
+      get { return _failureOccurred; }
     }
   }
 }
