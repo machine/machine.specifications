@@ -127,6 +127,7 @@ namespace Machine.Specifications.ConsoleRunner
       FailureOccurred = true;
       _console.WriteLine("Fatal Error");
       _console.WriteLine(exception.ToString());
+      _console.WriteLine("");
     }
 
     void WriteVerbose(string str)
