@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Reflection;
 
-using Machine.Specifications.ConsoleRunner.Properties;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
 
@@ -12,6 +9,7 @@ namespace Machine.Specifications.ConsoleRunner
   {
     readonly IConsole _console;
     readonly bool _silent;
+    readonly TimingRunListener _timer;
     string _currentAssemblyName;
     int _contextCount;
     int _specificationCount;
@@ -25,10 +23,11 @@ namespace Machine.Specifications.ConsoleRunner
       get; private set;
     }
 
-    public RunListener(IConsole console, bool silent, TimingRunListener listener)
+    public RunListener(IConsole console, bool silent, TimingRunListener timer)
     {
       _console = console;
       _silent = silent;
+      _timer = timer;
     }
 
     public void OnAssemblyStart(AssemblyInfo assembly)
@@ -55,7 +54,10 @@ namespace Machine.Specifications.ConsoleRunner
 
     public void OnRunEnd()
     {
-      var line = String.Format("Contexts: {0}, Specifications: {1}", _contextCount, _specificationCount);
+      var line = String.Format("Contexts: {0}, Specifications: {1}, Time: {2:s\\.ff} seconds",
+                               _contextCount,
+                               _specificationCount,
+                               FormattableTimeSpan(_timer.GetRunTime()));
       
       if (_failedSpecificationCount > 0 || _unimplementedSpecificationCount > 0)
       {
@@ -69,7 +71,13 @@ namespace Machine.Specifications.ConsoleRunner
           line += String.Format(", {0} ignored", _ignoredSpecificationCount);
         }
       }
+
       _console.WriteLine(line);
+    }
+
+    static DateTime FormattableTimeSpan(long milliseconds)
+    {
+      return DateTime.MinValue + TimeSpan.FromMilliseconds(milliseconds);
     }
 
     public void OnContextStart(ContextInfo context)

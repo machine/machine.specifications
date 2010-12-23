@@ -46,6 +46,9 @@ namespace Machine.Specifications.ConsoleRunner.Specs
 
     It should_write_the_count_of_specifications = ()=>
       console.ShouldContainLineWith("Specifications: 6");
+    
+    It should_write_the_run_time = ()=>
+      console.ShouldContainLineWith("Time: ");
   }
 
   [Subject("Console runner")]
