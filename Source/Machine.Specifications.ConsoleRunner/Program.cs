@@ -80,7 +80,7 @@ namespace Machine.Specifications.ConsoleRunner
         {
           if (IsHtmlPathValid(options.XmlPath))
           {
-            listeners.Add(GetXmlReportListener(options));
+            listeners.Add(GetXmlReportListener(options, timingListener));
           }
           else
           {
@@ -132,9 +132,9 @@ namespace Machine.Specifications.ConsoleRunner
       return ExitCode.Success;
     }
 
-    private static ISpecificationRunListener GetXmlReportListener(Options options)
+    private static ISpecificationRunListener GetXmlReportListener(Options options, TimingRunListener timer)
     {
-      var listener = new GenerateXmlReportListener(options.XmlPath, options.ShowTimeInformation);
+      var listener = new GenerateXmlReportListener(options.XmlPath, timer, options.ShowTimeInformation);
 
       return listener;
     }

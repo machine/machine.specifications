@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;
 
 using Machine.Specifications.Runner;
+using Machine.Specifications.Runner.Impl;
 
 namespace Machine.Specifications.Reporting.Generation.Xml
 {
@@ -14,6 +16,7 @@ namespace Machine.Specifications.Reporting.Generation.Xml
     private readonly Dictionary<AssemblyInfo, List<ContextInfo>> _contextsByAssembly;
     private readonly Dictionary<ContextInfo, List<SpecificationInfo>> _specificationsByContext;
     private readonly Dictionary<SpecificationInfo, Result> _resultsBySpecification;
+    readonly TimingRunListener _timer;
     private readonly bool _showTimeInfo;
 
     public XmlReportGenerator()
@@ -26,14 +29,18 @@ namespace Machine.Specifications.Reporting.Generation.Xml
       _path = path;
     }
 
-    public XmlReportGenerator(string path, Dictionary<AssemblyInfo, List<ContextInfo>> contextsByAssembly,
+    public XmlReportGenerator(string path,
+                              Dictionary<AssemblyInfo, List<ContextInfo>> contextsByAssembly,
                               Dictionary<ContextInfo, List<SpecificationInfo>> specificationsByContext,
-                              Dictionary<SpecificationInfo, Result> resultsBySpecification, bool showTimeInfo)
+                              Dictionary<SpecificationInfo, Result> resultsBySpecification,
+                              TimingRunListener timer,
+                              bool showTimeInfo)
     {
       _path = path;
       _contextsByAssembly = contextsByAssembly;
       _specificationsByContext = specificationsByContext;
       _resultsBySpecification = resultsBySpecification;
+      _timer = timer;
       _showTimeInfo = showTimeInfo;
     }
 
@@ -81,6 +88,7 @@ namespace Machine.Specifications.Reporting.Generation.Xml
         RenderTimeStamp(reportBuilder);
       }
 
+      RenderRun(reportBuilder);
       RenderAssemblies(reportBuilder, contextsByAssembly);
 
       reportBuilder.WriteEndElement();
@@ -96,6 +104,13 @@ namespace Machine.Specifications.Reporting.Generation.Xml
       reportBuilder.WriteEndElement();
     }
 
+    void RenderRun(XmlWriter reportBuilder)
+    {
+      reportBuilder.WriteStartElement("run");
+      reportBuilder.WriteAttributeString("time", _timer.GetRunTime().ToString(CultureInfo.InvariantCulture));
+      reportBuilder.WriteEndElement();
+    }
+
     private void RenderAssemblies(XmlWriter reportBuilder, Dictionary<AssemblyInfo, List<ContextInfo>> contextsByAssembly)
     {
       contextsByAssembly.Keys.ToList().ForEach(assembly =>
@@ -103,6 +118,7 @@ namespace Machine.Specifications.Reporting.Generation.Xml
           reportBuilder.WriteStartElement("assembly");
           reportBuilder.WriteAttributeString("name", assembly.Name);
           reportBuilder.WriteAttributeString("location", assembly.Location);
+          reportBuilder.WriteAttributeString("time", _timer.GetAssemblyTime(assembly).ToString(CultureInfo.InvariantCulture));
           RenderConcerns(reportBuilder, contextsByAssembly[assembly]);
           reportBuilder.WriteEndElement();
         });

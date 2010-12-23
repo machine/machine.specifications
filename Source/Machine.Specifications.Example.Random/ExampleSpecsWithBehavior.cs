@@ -1,11 +1,17 @@
 namespace Machine.Specifications.Specs
 {
-  [Tags(tag.example)]
+  [Tags(tag.example, "behavior usage")]
   public class context_with_behaviors
   {
     public static bool LocalSpecRan;
 
     It should_run = () => LocalSpecRan = true;
+    Behaves_like<Behaviors> behavior;
+  }
+
+  [Tags(tag.example, "behavior usage")]
+  public class second_context_with_behaviors
+  {
     Behaves_like<Behaviors> behavior;
   }
 

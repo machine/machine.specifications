@@ -102,6 +102,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="CollectReportingInformationRunListenerSpecs.cs" />
     <Compile Include="Generation\Spark\GenerateSparkHtmlReportRunListenerSpecs.cs" />
     <Compile Include="ReportSpecs.cs" />
     <Compile Include="Generation\Spark\SparkRendererSpecs.cs" />
@@ -114,6 +115,10 @@
     <Compile Include="Visitors\IgnoredSpecificationLinkerSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Machine.Specifications.Example.Random\Machine.Specifications.Example.Random.csproj">
+      <Project>{1295C389-FCE4-4425-93E4-E4AE239B3E35}</Project>
+      <Name>Machine.Specifications.Example.Random</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Machine.Specifications.Example\Machine.Specifications.Example.csproj">
       <Project>{2C28C643-31A2-44CA-B762-953A963F6F61}</Project>
       <Name>Machine.Specifications.Example</Name>
