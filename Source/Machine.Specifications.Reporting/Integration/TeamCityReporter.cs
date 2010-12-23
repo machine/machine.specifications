@@ -1,20 +1,18 @@
 using System;
+
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
 
 namespace Machine.Specifications.Reporting.Integration
 {
-
   public class TeamCityReporter : ISpecificationRunListener, ISpecificationResultProvider
   {
     readonly TimingRunListener _timingListener;
 
     readonly TeamCityServiceMessageWriter _writer;
-    string _currentAssembly;
     string _currentContext;
     string _currentNamespace;
     bool _failureOccurred;
-    //string _failures;
 
     public TeamCityReporter(Action<string> writer, TimingRunListener listener)
     {
@@ -23,14 +21,13 @@ namespace Machine.Specifications.Reporting.Integration
       _writer = new TeamCityServiceMessageWriter(writer);
     }
 
-    protected string GetSpecificationName(SpecificationInfo specification)
+    public bool FailureOccurred
     {
-      return _currentContext + " > " + specification.Name;
+      get { return _failureOccurred; }
     }
 
     public void OnAssemblyStart(AssemblyInfo assembly)
     {
-      _currentAssembly = assembly.Name;
       _writer.WriteProgressStart("Running specifications in " + assembly.Name);
     }
 
@@ -41,7 +38,6 @@ namespace Machine.Specifications.Reporting.Integration
         _writer.WriteTestSuiteFinished(_currentNamespace);
       }
       _writer.WriteProgressFinish("Running specifications in " + assembly.Name);
-      _currentAssembly = "";
     }
 
     public void OnRunStart()
@@ -93,8 +89,9 @@ namespace Machine.Specifications.Reporting.Integration
         default:
           if (result.Exception != null)
           {
-            _writer.WriteTestFailed(GetSpecificationName(specification), 
-             result.Exception.Message, result.Exception.ToString());
+            _writer.WriteTestFailed(GetSpecificationName(specification),
+                                    result.Exception.Message,
+                                    result.Exception.ToString());
           }
           else
           {
@@ -114,9 +111,9 @@ namespace Machine.Specifications.Reporting.Integration
       _failureOccurred = true;
     }
 
-    public bool FailureOccurred
+    protected string GetSpecificationName(SpecificationInfo specification)
     {
-      get { return _failureOccurred; }
+      return _currentContext + " > " + specification.Name;
     }
   }
 }
