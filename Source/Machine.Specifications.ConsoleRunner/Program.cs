@@ -13,7 +13,7 @@ namespace Machine.Specifications.ConsoleRunner
 {
   public class Program
   {
-
+    [LoaderOptimization(LoaderOptimization.MultiDomainHost)]
     [STAThread]
     public static void Main(string[] args)
     {
