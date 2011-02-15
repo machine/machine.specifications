@@ -255,6 +255,11 @@ namespace Machine.Specifications
 
     public static void ShouldContain<T>(this IEnumerable<T> list, params T[] items)
     {
+        list.ShouldContain((IEnumerable<T>)items);
+    }
+
+    public static void ShouldContain<T>(this IEnumerable<T> list, IEnumerable<T> items)
+    {
       var noContain = new List<T>();
       var comparer = new AssertComparer<T>();
 
@@ -283,6 +288,11 @@ does not contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), n
     }
 
     public static void ShouldNotContain<T>(this IEnumerable<T> list, params T[] items)
+    {
+        list.ShouldNotContain((IEnumerable<T>)items);
+    }
+
+    public static void ShouldNotContain<T>(this IEnumerable<T> list, IEnumerable<T> items)
     {
       var contains = new List<T>();
       var comparer = new AssertComparer<T>();
@@ -400,6 +410,15 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
       {
         throw new SpecificationException(string.Format("Should be within {0} of {1} but is {2}", tolerance.ToUsefulString(), expected.ToUsefulString(), actual.ToUsefulString()));
       }
+    }
+
+    public static void ShouldBeCloseTo(this DateTime actual, DateTime expected, TimeSpan tolerance)
+    {
+        TimeSpan difference = expected - actual;
+        if (Math.Abs(difference.Ticks) > tolerance.Ticks)
+        {
+            throw new SpecificationException(string.Format("Should be within {0} of {1} but is {2}", tolerance.ToUsefulString(), expected.ToUsefulString(), actual.ToUsefulString()));
+        }
     }
 
     public static void ShouldBeEmpty(this IEnumerable collection)
