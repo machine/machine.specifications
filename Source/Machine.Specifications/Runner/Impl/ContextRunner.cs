@@ -98,6 +98,10 @@ namespace Machine.Specifications.Runner.Impl
           var runner = new SpecificationRunner(listener, options, resultSupplementers);
           result = runner.Run(specification);
         }
+        else
+        {
+            results = FailSpecification(listener, specification, result);
+        }
 
         if (specification.IsExecutable)
         {
@@ -121,5 +125,12 @@ namespace Machine.Specifications.Runner.Impl
 
       return results;
     }
+
+      private static List<Result> FailSpecification(ISpecificationRunListener listener, Specification specification, Result result)
+      {
+          listener.OnSpecificationStart(specification.GetInfo());
+          listener.OnSpecificationEnd(specification.GetInfo(), result);
+          return new List<Result> { result };
+      }
   }
 }
