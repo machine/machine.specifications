@@ -126,11 +126,11 @@ namespace Machine.Specifications.Runner.Impl
       return results;
     }
 
-      private static List<Result> FailSpecification(ISpecificationRunListener listener, Specification specification, Result result)
-      {
-          listener.OnSpecificationStart(specification.GetInfo());
-          listener.OnSpecificationEnd(specification.GetInfo(), result);
-          return new List<Result> { result };
-      }
+    static List<Result> FailSpecification(ISpecificationRunListener listener, Specification specification, Result result)
+    {
+      listener.OnSpecificationStart(specification.GetInfo());
+      listener.OnSpecificationEnd(specification.GetInfo(), result);
+      return new List<Result> { result };
+    }
   }
 }
