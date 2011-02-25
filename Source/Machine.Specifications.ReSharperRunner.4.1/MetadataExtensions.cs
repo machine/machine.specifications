@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ReSharper.Psi;
 
 namespace Machine.Specifications.ReSharperRunner
 {
-  internal static class MetadataExtensions
+  internal static partial class MetadataExtensions
   {
     public static bool IsContext(this IMetadataTypeInfo type)
     {
@@ -111,35 +111,6 @@ namespace Machine.Specifications.ReSharperRunner
       var genericArgument = ((IMetadataClassType)genericField.Type).Arguments.First();
       return genericArgument as IMetadataClassType;
     }
-
-#if RESHARPER_5
-    public static string FullyQualifiedName(this IMetadataClassType classType)
-    {
-      return FullyQualifiedName(classType, false);
-    }
-
-    private static string FullyQualifiedName(this IMetadataClassType classType, bool appendAssembly)
-    {
-      var fullyQualifiedName = new StringBuilder();
-        
-      fullyQualifiedName.Append(classType.Type.FullyQualifiedName);
-
-      if (classType.Arguments.Length > 0)
-      {
-        fullyQualifiedName.Append("[");
-          fullyQualifiedName.Append(
-              String.Join(",",
-                          classType.Arguments.Select(x => x as IMetadataClassType).Where(x => x != null).Select(
-                              x => "[" + x.FullyQualifiedName(true) + "]").ToArray()));
-        fullyQualifiedName.Append("]");
-      }
-
-      if (appendAssembly)
-        fullyQualifiedName.Append(classType.AssemblyQualification);
-
-      return fullyQualifiedName.ToString();
-    }
-#endif
 
     public static bool IsIgnored(this IMetadataEntity type)
     {
