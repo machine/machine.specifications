@@ -64,6 +64,9 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="Annotations\ReSharperAttributes.cs" />
     <Compile Include="AssertComparer.cs" />
     <Compile Include="BehaviorsAttribute.cs" />

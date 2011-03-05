@@ -72,6 +72,9 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="Generation\Spark\GenerateSparkHtmlReportRunListener.cs" />
     <Compile Include="FileSystem.cs" />
     <Compile Include="Generation\Spark\SparkRenderer.cs" />

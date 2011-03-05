@@ -78,6 +78,9 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="ExampleSpecifications.cs" />
     <Compile Include="Explorers\AssemblyExplorerTests.cs" />
     <Compile Include="Factories\SpecificationFactoryTests.cs" />

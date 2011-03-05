@@ -63,6 +63,9 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="FakeConsole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProgramSpecs.cs" />

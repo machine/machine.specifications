@@ -187,6 +187,9 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="Explorers\AssemblyExplorer.cs" />
     <Compile Include="Explorers\FileExplorer.cs" />
     <Compile Include="Factories\BehaviorFactory.cs" />

@@ -65,6 +65,9 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="Factories\ContextFactorySpecs.cs" />
     <Compile Include="Utility\NamingSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

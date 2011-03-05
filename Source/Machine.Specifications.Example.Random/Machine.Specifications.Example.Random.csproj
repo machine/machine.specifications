@@ -62,6 +62,9 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="ExampleSpecs.cs" />
     <Compile Include="ExampleSpecsWithBehavior.cs" />
     <Compile Include="ExampleSpecsWithInheritance.cs" />
