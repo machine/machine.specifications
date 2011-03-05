@@ -42,7 +42,8 @@ task :build do
       :version => 'v4\Full',
       :switches => { :verbosity => :minimal, :target => :Build },
       :properties => {
-        :Configuration => configatron.target
+        :Configuration => configatron.target,
+        :TrackFileAccess => false
       }
     }
     
