@@ -34,7 +34,8 @@ CLEAN.clear
 CLEAN.include('teamcity-info.xml')
 CLEAN.include('Source/**/obj')
 CLEAN.include('Build')
-CLEAN.include(configatron.package_name)
+CLEAN.include('Distribution')
+CLEAN.include('Specs')
 
 desc "Build"
 task :build do
