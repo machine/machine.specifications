@@ -5,21 +5,24 @@ class NUnitRunner
 
 	def initialize(paths)
 		@resultsDir = paths.fetch(:results, 'results')
-		@compilePlatform = paths.fetch(:platform, 'x86')
+		@platform = paths.fetch(:platform, 'x86')
 		@clrVersion = paths.fetch(:clr_version, 'net-3.5')
 		
-		if ENV["teamcity.dotnet.nunitlauncher"] # check if we are running in TeamCity
-			# We are not using the TeamCity nunit launcher. We use NUnit with the TeamCity NUnit Addin which needs to be copied to our NUnit addins folder
+		# Check if we are running in TeamCity and somebody supplies us with the addin path.
+    rm_rf 'Tools/NUnit/addins'
+    if ENV["teamcity.dotnet.nunitaddin"]
+			# We are not using the TeamCity NUnit launcher. We use NUnit with the TeamCity NUnit Addin which needs to be 
+      # copied to our NUnit addins folder
 			# http://blogs.jetbrains.com/teamcity/2008/07/28/unfolding-teamcity-addin-for-nunit-secrets/
-			# The teamcity.dotnet.nunitaddin environment variable is not available until TeamCity 4.0, so we hardcode it for now
-			@teamCityAddinPath = ENV["teamcity.dotnet.nunitaddin"] ? ENV["teamcity.dotnet.nunitaddin"] : 'c:/TeamCity/buildAgent/plugins/dotnetPlugin/bin/JetBrains.TeamCity.NUnitAddin-NUnit'
-			cp @teamCityAddinPath + '-2.4.7.dll', 'tools/nunit/addins'
+			teamCityAddinPath = ENV["teamcity.dotnet.nunitaddin"]
+      mkdir_p 'Tools/NUnit/addins'
+      cp Dir.glob("#{teamCityAddinPath.gsub("\\", "/")}-2.5.4.*"), 'Tools/NUnit/addins'
 		end
 	
-		@nunitExe = File.join('tools', 'nunit', "nunit-console#{(@compilePlatform.nil? ? '' : "-#{@compilePlatform}")}.exe") 
+		@nunitExe = File.join('tools', 'nunit', "nunit-console#{(@platform.nil? ? '' : "-#{@platform}")}.exe") 
 	end
 	
-	def executeTests(assemblies)
+	def execute(assemblies)
 		Dir.mkdir @resultsDir unless exists?(@resultsDir)
 		
 		assemblies.each do |assem|
