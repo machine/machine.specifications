@@ -12,6 +12,11 @@ task :configure do
   target = ENV['target'] || 'Debug'
   
   build_config = {
+    :build => {
+      :base => "0.4",
+      :number => ENV['BUILD_NUMBER'],
+      :sha => ENV['BUILD_VCS_NUMBER'] || 'no SHA',
+    },
     :project => project,
     :target => target,
     :out_dir => "Build/#{target}/",
@@ -19,6 +24,13 @@ task :configure do
     :nunit_framework => "net-3.5",
     :mspec_options => []
   }
+  
+  configatron.version.full  = Configatron::Delayed.new do
+    "#{configatron.build.base}.#{configatron.build.number || '0'}-#{configatron.build.sha[0..6]}"
+  end
+  configatron.version.compatible   = Configatron::Delayed.new do
+    "#{configatron.build.base}.#{configatron.build.number || '0'}.0"
+  end
 
   configatron.configure_from_hash build_config
   configatron.protect_all!
@@ -37,8 +49,22 @@ CLEAN.include('Build')
 CLEAN.include('Distribution')
 CLEAN.include('Specs')
 
+task :version do
+  next if configatron.build.number.nil?
+  
+  puts "##teamcity[buildNumber '#{configatron.version.full}']"
+
+  asmInfo = AssemblyInfoBuilder.new({
+    :AssemblyFileVersion => configatron.version.compatible,
+    :AssemblyVersion => configatron.version.compatible,
+    :AssemblyInformationalVersion => configatron.version.full
+  })
+
+  asmInfo.write 'Source/VersionInfo.cs'
+end
+
 desc "Build"
-task :build do
+task :build => :version do
   opts = {
       :version => 'v4\Full',
       :switches => { :verbosity => :minimal, :target => :Build },

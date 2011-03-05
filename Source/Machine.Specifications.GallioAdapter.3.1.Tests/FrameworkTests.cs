@@ -296,7 +296,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
       Assert.AreEqual("Machine.Specifications", assemblyTest.Metadata.GetValue(MetadataKeys.Product));
       Assert.AreEqual("Machine.Specifications.Adapter.TestResources", assemblyTest.Metadata.GetValue(MetadataKeys.Title));
 
-      Assert.AreEqual("1.2.3.4", assemblyTest.Metadata.GetValue(MetadataKeys.InformationalVersion));
+      Assert.IsNotEmpty(assemblyTest.Metadata.GetValue(MetadataKeys.InformationalVersion));
       Assert.IsNotEmpty(assemblyTest.Metadata.GetValue(MetadataKeys.FileVersion));
       Assert.IsNotEmpty(assemblyTest.Metadata.GetValue(MetadataKeys.Version));
     }
