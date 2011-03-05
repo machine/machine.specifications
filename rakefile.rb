@@ -8,7 +8,7 @@ end
 include FileUtils
 
 task :configure do
-  project = "Machine.Specifications"
+  project = "Machine.Specifications#{"-Testing" if ENV.include? 'FAKE_VERSION'}"
   target = ENV['target'] || 'Debug'
   
   build_config = {
@@ -20,16 +20,24 @@ task :configure do
     :project => project,
     :target => target,
     :out_dir => "Build/#{target}/",
-    :package_name => "Distribution/#{project}-#{target}.zip",
     :nunit_framework => "net-3.5",
-    :mspec_options => []
+    :mspec_options => (["--teamcity"] if ENV.include?('TEAMCITY_PROJECT_NAME')) || []
   }
-  
+
+  configatron.nuget.key = Configatron::Dynamic.new do
+    ENV['NUGET_KEY']
+  end
+  configatron.nuget.package = Configatron::Delayed.new do
+    "Distribution/#{configatron.project}.#{configatron.version.compatible}.nupkg"
+  end
+  configatron.zip.package = Configatron::Delayed.new do
+    "Distribution/#{configatron.project}-#{configatron.target}-#{configatron.version.full}.zip"
+  end
   configatron.version.full  = Configatron::Delayed.new do
-    "#{configatron.build.base}.#{configatron.build.number || '0'}-#{configatron.build.sha[0..6]}"
+    ENV['FAKE_VERSION'] || "#{configatron.build.base}.#{configatron.build.number || '0'}-#{configatron.build.sha[0..6]}"
   end
   configatron.version.compatible   = Configatron::Delayed.new do
-    "#{configatron.build.base}.#{configatron.build.number || '0'}.0"
+    ENV['FAKE_VERSION'] || "#{configatron.build.base}.#{configatron.build.number || '0'}.0"
   end
 
   configatron.configure_from_hash build_config
@@ -37,10 +45,10 @@ task :configure do
   puts configatron.inspect
 end
 
-Rake::Task["configure"].invoke
+Rake::Task['configure'].invoke
 
 desc "Build and run specs"
-task :default => [ "build", "tests:run", "specs:run" ]
+task :default => ['build:compile', 'tests:run', 'specs:run']
 
 CLEAN.clear
 CLEAN.include('teamcity-info.xml')
@@ -49,72 +57,78 @@ CLEAN.include('Build')
 CLEAN.include('Distribution')
 CLEAN.include('Specs')
 
-task :version do
-  next if configatron.build.number.nil?
-  
-  puts "##teamcity[buildNumber '#{configatron.version.full}']"
+namespace :generate do
+  desc "Generate embeddable version information"
+  task :version do
+    next if configatron.build.number.nil?
+    
+    puts "##teamcity[buildNumber '#{configatron.version.full}']"
 
-  asmInfo = AssemblyInfoBuilder.new({
-    :AssemblyFileVersion => configatron.version.compatible,
-    :AssemblyVersion => configatron.version.compatible,
-    :AssemblyInformationalVersion => configatron.version.full
-  })
+    asmInfo = AssemblyInfoBuilder.new({
+      :AssemblyFileVersion => configatron.version.compatible,
+      :AssemblyVersion => configatron.version.compatible,
+      :AssemblyInformationalVersion => configatron.version.full
+    })
 
-  asmInfo.write 'Source/VersionInfo.cs'
+    asmInfo.write 'Source/VersionInfo.cs'
+  end
 end
 
-desc "Build"
-task :build => :version do
-  opts = {
-      :version => 'v4\Full',
-      :switches => { :verbosity => :minimal, :target => :Build },
-      :properties => {
-        :Configuration => configatron.target,
-        :TrackFileAccess => false
+namespace :build do
+  desc "Compile everything"
+  task :compile => 'generate:version' do
+    opts = {
+        :version => 'v4\Full',
+        :switches => { :verbosity => :minimal, :target => :Build },
+        :properties => {
+          :Configuration => configatron.target,
+          :TrackFileAccess => false
+        }
       }
-    }
-    
-  FileList.new('Source/**/*.csproj').each do |project|
-    MSBuild.compile opts.merge({ :project => project })
-  end
+      
+    FileList.new('Source/**/*.csproj').each do |project|
+      MSBuild.compile opts.merge({ :project => project })
+    end
 
-  def build (msbuild_options, config)
-    project = msbuild_options[:project]
-    
-    xml = File.read project
-    config.each do |element, value|
-      xml.gsub! /<#{element}>.*?<\/#{element}>/, "<#{element}>#{value}</#{element}>"
+    def build (msbuild_options, config)
+      project = msbuild_options[:project]
+      
+      xml = File.read project
+      config.each do |element, value|
+        xml.gsub! /<#{element}>.*?<\/#{element}>/, "<#{element}>#{value}</#{element}>"
+      end
+      
+      patched_project = project + config.hash.to_s
+      File.open(patched_project, "w") { |file| file.puts xml }
+      
+      MSBuild.compile msbuild_options.merge({ :project => patched_project })
+      
+      rm patched_project
     end
     
-    patched_project = project + config.hash.to_s
-    File.open(patched_project, "w") { |file| file.puts xml }
+    console_runner = {
+      :x86         => { :TargetFrameworkVersion => 'v3.5', :PlatformTarget => 'x86',    :AssemblyName => 'mspec-x86' },
+      :AnyCPU      => { :TargetFrameworkVersion => 'v3.5', :PlatformTarget => 'AnyCPU', :AssemblyName => 'mspec' },
+      :clr4_x86    => { :TargetFrameworkVersion => 'v4.0', :PlatformTarget => 'x86',    :AssemblyName => 'mspec-x86-clr4' },
+      :clr4_AnyCPU => { :TargetFrameworkVersion => 'v4.0', :PlatformTarget => 'AnyCPU', :AssemblyName => 'mspec-clr4' }
+    }
     
-    MSBuild.compile msbuild_options.merge({ :project => patched_project })
-    
-    rm patched_project
+    console_runner.values.each do |config|
+      project = 'Source/Machine.Specifications.ConsoleRunner/Machine.Specifications.ConsoleRunner.csproj'
+      build opts.merge({ :project => project }), config
+    end
   end
-  
-  console_runner = {
-    :x86         => { :TargetFrameworkVersion => 'v3.5', :PlatformTarget => 'x86',    :AssemblyName => 'mspec-x86' },
-    :AnyCPU      => { :TargetFrameworkVersion => 'v3.5', :PlatformTarget => 'AnyCPU', :AssemblyName => 'mspec' },
-    :clr4_x86    => { :TargetFrameworkVersion => 'v4.0', :PlatformTarget => 'x86',    :AssemblyName => 'mspec-x86-clr4' },
-    :clr4_AnyCPU => { :TargetFrameworkVersion => 'v4.0', :PlatformTarget => 'AnyCPU', :AssemblyName => 'mspec-clr4' }
-  }
-  
-  console_runner.values.each do |config|
-    project = 'Source/Machine.Specifications.ConsoleRunner/Machine.Specifications.ConsoleRunner.csproj'
-    build opts.merge({ :project => project }), config
-  end
-end
 
-desc "Rebuild"
-task :rebuild => [ :clean, :build ]
+  desc "Rebuild everything"
+  task :rebuild => [ :clean, :compile ]
+end
 
 namespace :specs do
   task :view => :run do
     system "start Specs/#{configatron.project}.Specs.html"
   end
 
+  desc "Run specifications"
   task :run do
     puts 'Running Specs...'
     
@@ -129,6 +143,7 @@ namespace :specs do
 end
 
 namespace :tests do
+  desc "Run unit tests"
   task :run do
     puts 'Running NUnit tests...'
     
@@ -144,43 +159,57 @@ namespace :tests do
   end
 end
 
-desc "Packages the build artifacts"
-task :package => [ "rebuild", "tests:run", "specs:run" ] do
-  rm_f configatron.package_name
-  
-  cp 'License.txt', configatron.out_dir
-  
-  sz = SevenZip.new \
-    :tool => 'Tools/7-Zip/7za.exe',
-    :zip_name => configatron.package_name
+namespace :package do
+  desc "Package build artifacts as a zip file"
+  task :zip => [ 'build:rebuild', 'tests:run', 'specs:run' ] do
+    rm_f configatron.zip.package
+    
+    cp 'License.txt', configatron.out_dir
+    
+    sz = SevenZip.new \
+      :tool => 'Tools/7-Zip/7za.exe',
+      :zip_name => configatron.zip.package
 
-  Dir.chdir(configatron.out_dir) do
-    sz.zip :files => FileList.new('**/*') \
-      .exclude('*.InstallLog') \
-      .exclude('*.InstallState') \
-      .exclude('Generation') \
-      .exclude('Tests')
-  end
-end
-
-desc "Packages the build artifacts as a NuGet"
-task :nuget do
-  FileList.new("#{configatron.package_name.dirname}/*-Release.zip").each do |f|
-	version = f.split("-").values_at(1, 2).join.delete(".")
-
-	SevenZip.unzip \
-	  :tool => 'Tools/7-Zip/7za.exe',
-	  :zip_name => f,
-	  :destination => "Build/NuGet/#{version}".gsub(/\//, '\\')
+    Dir.chdir(configatron.out_dir) do
+      sz.zip :files => FileList.new('**/*') \
+        .exclude('*.InstallLog') \
+        .exclude('*.InstallState') \
+        .exclude('Generation') \
+        .exclude('Tests') \
+        .exclude('NuGet')
+    end
   end
 
-  sh "Tools/NUGet/NuGet.exe", "pack", "mspec.nuspec", "-BasePath", "Build/NuGet", "-OutputDirectory", "Distribution"
-end
+  namespace :nuget do
+    desc "Package build artifacts as a NuGet package"
+    task :create => :zip do
+      SevenZip.unzip \
+        :tool => 'Tools/7-Zip/7za.exe',
+        :zip_name => configatron.zip.package,
+        :destination => "#{configatron.out_dir}/NuGet".gsub(/\//, '\\')
 
-desc "TeamCity build"
-task :teamcity => [ :teamcity_environment, :package ]
+      QuickTemplate.new('mspec.nuspec.template').exec configatron
 
-desc "Sets up the TeamCity environment"
-task :teamcity_environment do
-  configatron.mspec_options.push "--teamcity"
+      opts = ["pack", "mspec.nuspec",
+        "-BasePath", "#{configatron.out_dir}/NuGet",
+        "-OutputDirectory", configatron.nuget.package.dirname]
+
+      sh "Tools/NUGet/NuGet.exe", *(opts)
+    end
+    
+    desc "Publishes the NuGet package"
+    task :publish do
+      raise "NuGet access key is missing, cannot publish" if configatron.nuget.key.nil?
+
+      opts = ["push",
+        "-source", "http://packages.nuget.org/v1/",
+        configatron.nuget.package,
+        configatron.nuget.key,
+        { :verbose => false }]
+
+      sh "Tools/NuGet/NuGet.exe", *(opts) do |ok, status|
+        ok or fail "Command failed with status (#{status.exitstatus})"
+      end
+    end
+  end
 end
