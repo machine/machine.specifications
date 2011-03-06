@@ -8,7 +8,7 @@ end
 include FileUtils
 
 task :configure do
-  project = "Machine.Specifications#{"-Testing" if ENV.include? 'FAKE_VERSION'}"
+  project = "Machine.Specifications"
   target = ENV['target'] || 'Debug'
   
   build_config = {
@@ -28,7 +28,7 @@ task :configure do
     ENV['NUGET_KEY']
   end
   configatron.project = Configatron::Delayed.new do
-    "#{project}#{'-Signed' if configatron.sign_assembly}"
+    "#{project}#{"-Testing" if ENV.include? 'VERSION'}#{'-Signed' if configatron.sign_assembly}"
   end
   configatron.nuget.package = Configatron::Delayed.new do
     "Distribution/#{configatron.project}.#{configatron.version.compatible}.nupkg"
@@ -37,10 +37,10 @@ task :configure do
     "Distribution/#{configatron.project}-#{configatron.target}.zip"
   end
   configatron.version.full  = Configatron::Delayed.new do
-    ENV['FAKE_VERSION'] || "#{configatron.build.base}.#{configatron.build.number || '0'}-#{configatron.build.sha[0..6]}"
+    ENV['VERSION'] || "#{configatron.build.base}.#{configatron.build.number || '0'}-#{configatron.build.sha[0..6]}"
   end
   configatron.version.compatible   = Configatron::Delayed.new do
-    ENV['FAKE_VERSION'] || "#{configatron.build.base}.#{configatron.build.number || '0'}.0"
+    ENV['VERSION'] || "#{configatron.build.base}.#{configatron.build.number || '0'}.0"
   end
 
   configatron.configure_from_hash build_config
@@ -69,7 +69,7 @@ end
 namespace :generate do
   desc "Generate embeddable version information"
   task :version do
-    next if configatron.build.number.nil?
+    next if configatron.build.number.nil? && !ENV.include?('VERSION')
     
     puts "##teamcity[buildNumber '#{configatron.version.full}']"
 
