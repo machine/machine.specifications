@@ -52,6 +52,7 @@ task :default => ['build:compile', 'tests:run', 'specs:run']
 
 CLEAN.clear
 CLEAN.include('teamcity-info.xml')
+CLEAN.include('mspec.nuspec')
 CLEAN.include('Source/**/obj')
 CLEAN.include('Build')
 CLEAN.include('Distribution')
