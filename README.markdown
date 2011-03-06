@@ -1,8 +1,15 @@
 Machine.Specifications (MSpec)
 ======================================================================
 
-The [most recent build](http://teamcity.codebetter.com/guestAuth/repository/download/bt44/.lastSuccessful/Machine.Specifications-Release.zip)
-is available at [CodeBetter's TeamCity server](http://teamcity.codebetter.com/project.html?projectId=project27).
+The most recent release is available at [CodeBetter's TeamCity server](http://teamcity.codebetter.com/project.html?projectId=project27):
+
+  * Recommended: [Unsigned release](http://teamcity.codebetter.com/guestAuth/repository/download/bt342/.lastSuccessful/Machine.Specifications-Release.zip),
+  * [Signed release](http://teamcity.codebetter.com/guestAuth/repository/download/bt345/.lastSuccessful/Machine.Specifications-Signed-Release.zip).
+
+On top of that we provide downloads for the latest successful build (possibly more current than the releases above):
+
+  * [Unsigned build](http://teamcity.codebetter.com/guestAuth/repository/download/bt44/.lastSuccessful/Machine.Specifications-Release.zip),
+  * [Signed build](http://teamcity.codebetter.com/guestAuth/repository/download/bt344/.lastSuccessful/Machine.Specifications-Signed-Release.zip).
 
 Machine.Specifications is a Context/Specification framework geared towards removing language noise and simplifying tests. All it asks is that you accept the `=()=>`.
 
@@ -36,9 +43,10 @@ The solution file is located, relative to the root of the repo, at `Source\Machi
 
 MSpec has a Continuous Integration setup, provided by [CodeBetter](http://www.codebetter.com) and running on TeamCity.
 
-If you'd like to skip the above steps and just want the binaries for MSpec, get the zip of the latest successful CI build for
-[.NET 3.5](http://teamcity.codebetter.com/guestAuth/repository/download/bt44/.lastSuccessful/Machine.Specifications-net-3.5-Release.zip)
-and [.NET 4.0](http://teamcity.codebetter.com/guestAuth/repository/download/bt188/.lastSuccessful/Machine.Specifications-net-4.0-Release.zip).
+If you'd like to skip the above steps and just want the binaries for MSpec, get the zip of the latest release
+
+  * (Recommended) [Unsigned release](http://teamcity.codebetter.com/guestAuth/repository/download/bt342/.lastSuccessful/Machine.Specifications-Release.zip),
+  * [Signed release](http://teamcity.codebetter.com/guestAuth/repository/download/bt345/.lastSuccessful/Machine.Specifications-Signed-Release.zip).
 
 ### How stuff works
 
