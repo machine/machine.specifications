@@ -51,7 +51,7 @@ MSpec has a Continuous Integration setup, provided by [CodeBetter](http://www.co
 
 If you'd like to skip the above steps and just want the binaries for MSpec, get the zip of the latest release
 
-  * (Recommended) [Unsigned release](http://teamcity.codebetter.com/guestAuth/repository/download/bt342/.lastSuccessful/Machine.Specifications-Release.zip),
+  * Recommended: [Unsigned release](http://teamcity.codebetter.com/guestAuth/repository/download/bt342/.lastSuccessful/Machine.Specifications-Release.zip),
   * [Signed release](http://teamcity.codebetter.com/guestAuth/repository/download/bt345/.lastSuccessful/Machine.Specifications-Signed-Release.zip).
 
 ### How stuff works
