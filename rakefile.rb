@@ -34,7 +34,7 @@ task :configure do
     "Distribution/#{configatron.project}.#{configatron.version.compatible}.nupkg"
   end
   configatron.zip.package = Configatron::Delayed.new do
-    "Distribution/#{configatron.project}-#{configatron.target}-#{configatron.version.full}.zip"
+    "Distribution/#{configatron.project}-#{configatron.target}.zip"
   end
   configatron.version.full  = Configatron::Delayed.new do
     ENV['FAKE_VERSION'] || "#{configatron.build.base}.#{configatron.build.number || '0'}-#{configatron.build.sha[0..6]}"
