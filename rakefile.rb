@@ -52,11 +52,16 @@ task :default => ['build:compile', 'tests:run', 'specs:run']
 
 CLEAN.clear
 CLEAN.include('teamcity-info.xml')
-CLEAN.include('mspec.nuspec')
 CLEAN.include('Source/**/obj')
 CLEAN.include('Build')
 CLEAN.include('Distribution')
 CLEAN.include('Specs')
+CLEAN.include('**/*.template')
+# Clean template results.
+CLEAN.map! do |f|
+  next f.ext if f.pathmap('%x') == '.template'
+  f
+end
 
 namespace :generate do
   desc "Generate embeddable version information"
@@ -73,11 +78,18 @@ namespace :generate do
 
     asmInfo.write 'Source/VersionInfo.cs'
   end
+  
+  desc 'Update the configuration files for the build'
+  task :config do
+    FileList.new('**/*.template').each do |template|
+      QuickTemplate.new(template).exec(configatron)
+    end
+  end
 end
 
 namespace :build do
   desc "Compile everything"
-  task :compile => 'generate:version' do
+  task :compile => ['generate:version', 'generate:config'] do
     opts = {
         :version => 'v4\Full',
         :switches => { :verbosity => :minimal, :target => :Build },
@@ -190,8 +202,6 @@ namespace :package do
         :destination => "#{configatron.out_dir}/NuGet".gsub(/\//, '\\')
 
       cp 'install.ps1', "#{configatron.out_dir}/NuGet"
-
-      QuickTemplate.new('mspec.nuspec.template').exec configatron
 
       opts = ["pack", "mspec.nuspec",
         "-BasePath", "#{configatron.out_dir}/NuGet",

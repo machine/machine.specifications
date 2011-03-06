@@ -90,6 +90,7 @@
     <None Include="Machine.Specifications.dll.tdnet">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Machine.Specifications.dll.tdnet.template" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -109,6 +110,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>if "$(BuildRunner)" NEQ "Rake" (
+	"$(SolutionDir)..\tools\Rake\bin\ruby.exe" "$(SolutionDir)..\tools\Rake\bin\rake" generate:config
+)</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
