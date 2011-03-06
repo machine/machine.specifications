@@ -25,7 +25,7 @@ task :configure do
   }
 
   configatron.nuget.key = Configatron::Dynamic.new do
-    ENV['NUGET_KEY']
+    next File.read('NUGET_KEY') if File.readable?('NUGET_KEY')
   end
   configatron.project = Configatron::Delayed.new do
     "#{project}#{"-Testing" if ENV.include? 'VERSION'}#{'-Signed' if configatron.sign_assembly}"
