@@ -17,8 +17,8 @@ task :configure do
       :number => ENV['BUILD_NUMBER'],
       :sha => ENV['BUILD_VCS_NUMBER'] || 'no SHA',
     },
-    :project => project,
     :target => target,
+    :sign_assembly => (ENV['SIGN_ASSEMBLY'] =~ /true/i and true or false),
     :out_dir => "Build/#{target}/",
     :nunit_framework => "net-3.5",
     :mspec_options => (["--teamcity"] if ENV.include?('TEAMCITY_PROJECT_NAME')) || []
@@ -26,6 +26,9 @@ task :configure do
 
   configatron.nuget.key = Configatron::Dynamic.new do
     ENV['NUGET_KEY']
+  end
+  configatron.project = Configatron::Delayed.new do
+    "#{project}#{'-Signed' if configatron.sign_assembly}"
   end
   configatron.nuget.package = Configatron::Delayed.new do
     "Distribution/#{configatron.project}.#{configatron.version.compatible}.nupkg"
@@ -99,26 +102,29 @@ namespace :build do
         }
       }
       
-    FileList.new('Source/**/*.csproj').each do |project|
-      MSBuild.compile opts.merge({ :project => project })
-    end
-
     def build (msbuild_options, config)
       project = msbuild_options[:project]
-      
-      xml = File.read project
-      config.each do |element, value|
-        xml.gsub! /<#{element}>.*?<\/#{element}>/, "<#{element}>#{value}</#{element}>"
+
+      unless config.nil?
+        xml = File.read project
+        config.each do |element, value|
+          xml.gsub! /<#{element}>.*?<\/#{element}>/, "<#{element}>#{value}</#{element}>"
+        end
+
+        project += config.hash.to_s
+        File.open(project, "w") { |file| file.puts xml }
       end
-      
-      patched_project = project + config.hash.to_s
-      File.open(patched_project, "w") { |file| file.puts xml }
-      
-      MSBuild.compile msbuild_options.merge({ :project => patched_project })
-      
-      rm patched_project
+
+      MSBuild.compile msbuild_options.merge({ :project => project })
+
+      rm project unless config.nil?
     end
-    
+
+    FileList.new('Source/**/*.csproj').each do |project|
+      config = { :SignAssembly => false } unless configatron.sign_assembly
+      build opts.merge({ :project => project }), config
+    end
+
     console_runner = {
       :x86         => { :TargetFrameworkVersion => 'v3.5', :PlatformTarget => 'x86',    :AssemblyName => 'mspec-x86' },
       :AnyCPU      => { :TargetFrameworkVersion => 'v3.5', :PlatformTarget => 'AnyCPU', :AssemblyName => 'mspec' },
