@@ -16,7 +16,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       program.Run(new string[] {});
 
     It should_print_usage_statement = ()=>
-      console.Lines.ShouldContain(Resources.UsageStatement);
+      console.Lines.ShouldContain(Options.Usage());
   }
 
   [Subject("Console runner")]

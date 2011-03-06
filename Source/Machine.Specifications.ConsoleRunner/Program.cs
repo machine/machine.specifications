@@ -37,7 +37,7 @@ namespace Machine.Specifications.ConsoleRunner
       Options options = new Options();
       if (!options.ParseArguments(arguments))
       {
-        _console.WriteLine(Resources.UsageStatement);
+        _console.WriteLine(Options.Usage());
         return ExitCode.Failure;
       }
 
@@ -69,7 +69,7 @@ namespace Machine.Specifications.ConsoleRunner
           else
           {
             _console.WriteLine("Invalid html path:" + options.HtmlPath);
-            _console.WriteLine(Resources.UsageStatement);
+            _console.WriteLine(Options.Usage());
             return ExitCode.Failure;
           }
 
@@ -84,7 +84,7 @@ namespace Machine.Specifications.ConsoleRunner
           else
           {
             _console.WriteLine("Invalid xml path:" + options.XmlPath);
-            _console.WriteLine(Resources.UsageStatement);
+            _console.WriteLine(Options.Usage());
             return ExitCode.Failure;
           }
         }
@@ -93,7 +93,7 @@ namespace Machine.Specifications.ConsoleRunner
 
         if (options.AssemblyFiles.Count == 0)
         {
-          _console.WriteLine(Resources.UsageStatement);
+          _console.WriteLine(Options.Usage());
           return ExitCode.Failure;
         }
 

@@ -62,12 +62,17 @@ Subject/It/Because of/Establish context/Cleanup after
 
 #### Command line
 
-MSpec, like other testing frameworks, provides a robust command-line runner that can be used to execute specs in one or more assemblies and allows a number of output formats to suit your needs.
+MSpec, like other testing frameworks, provides a robust command-line runner that can be used to execute specs in one or more assemblies and allows a number of output formats to suit your needs. The runner comes in different flavors:
+
+  * `mspec.exe`, AnyCPU, runs on the CLR 2.0
+  * `mspec-x86.exe`, x86, runs on the CLR 2.0
+  * `mspec-clr4.exe`, AnyCPU, runs on the CLR 4.0
+  * `mspec-x86-clr4.exe`, x86, runs on the CLR 4.0
 
 Usage of the command-line runner is as follows (from `mspec.exe --help`):
 
 <pre>
-Usage: mspec-runner.exe [options] <assemblies>
+Usage: mspec.exe [options] <assemblies>
 
 Options:
 
@@ -87,7 +92,7 @@ Options:
 
 -h, --help     Shows this help message
 
-Usage: mspec-runner.exe [options] &lt;assemblies&gt;
+Usage: mspec.exe [options] &lt;assemblies&gt;
 </pre>
 
 #### Selenium Support in the command-line runner
