@@ -5,6 +5,12 @@ The most recent release is available at [CodeBetter's TeamCity server](http://te
 
   * Recommended: [Unsigned release](http://teamcity.codebetter.com/guestAuth/repository/download/bt342/.lastSuccessful/Machine.Specifications-Release.zip),
   * [Signed release](http://teamcity.codebetter.com/guestAuth/repository/download/bt345/.lastSuccessful/Machine.Specifications-Signed-Release.zip).
+  
+You can also install these using [NuGet](http://nuget.org/Packages/Search?packageType=Packages&searchCategory=All+Categories&searchTerm=machine.specifications):
+<pre>
+  PM> Install-Package Machine.Specifications
+  PM> Install-Package Machine.Specifications-Signed
+</pre>
 
 On top of that we provide downloads for the latest successful build (possibly more current than the releases above):
 
