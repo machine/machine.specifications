@@ -188,6 +188,8 @@ namespace :package do
         :zip_name => configatron.zip.package,
         :destination => "#{configatron.out_dir}/NuGet".gsub(/\//, '\\')
 
+      cp 'install.ps1', "#{configatron.out_dir}/NuGet"
+
       QuickTemplate.new('mspec.nuspec.template').exec configatron
 
       opts = ["pack", "mspec.nuspec",

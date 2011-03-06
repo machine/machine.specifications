@@ -17,6 +17,9 @@
   <files>
     <file src="**\Machine.Specifications.dll" target="lib" />
     <file src="**\Machine.Specifications.pdb" target="lib" />
+    <file src="**\Machine.Specifications.dll.tdnet" target="lib" />
+    <file src="**\Machine.Specifications.TDNetRunner.dll" target="lib" />
+    <file src="**\Machine.Specifications.TDNetRunner.pdb" target="lib" />
     <file src="**\*.*" target="tools" />
   </files>
 </package>
