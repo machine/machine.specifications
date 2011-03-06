@@ -105,24 +105,21 @@ namespace :build do
     def build (msbuild_options, config)
       project = msbuild_options[:project]
 
-      unless config.nil?
-        xml = File.read project
-        config.each do |element, value|
-          xml.gsub! /<#{element}>.*?<\/#{element}>/, "<#{element}>#{value}</#{element}>"
-        end
-
-        project += config.hash.to_s
-        File.open(project, "w") { |file| file.puts xml }
+      xml = File.read project
+      config.each do |element, value|
+        xml.gsub! /<#{element}>.*?<\/#{element}>/, "<#{element}>#{value}</#{element}>"
       end
+
+      project += config.hash.to_s
+      File.open(project, "w") { |file| file.puts xml }
 
       MSBuild.compile msbuild_options.merge({ :project => project })
 
-      rm project unless config.nil?
+      rm project
     end
 
     FileList.new('Source/**/*.csproj').each do |project|
-      config = { :SignAssembly => false } unless configatron.sign_assembly
-      build opts.merge({ :project => project }), config
+      build opts.merge({ :project => project }), { :SignAssembly => configatron.sign_assembly }
     end
 
     console_runner = {
