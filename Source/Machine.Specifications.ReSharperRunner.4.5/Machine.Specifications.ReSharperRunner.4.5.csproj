@@ -176,6 +176,9 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\RecursiveMSpecTaskRunner.cs">
       <Link>Runners\RecursiveMSpecTaskRunner.cs</Link>
     </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\VersionCompatibilityChecker.cs">
+      <Link>Runners\VersionCompatibilityChecker.cs</Link>
+    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\BehaviorSpecificationTask.cs">
       <Link>Tasks\BehaviorSpecificationTask.cs</Link>
     </Compile>

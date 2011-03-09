@@ -135,6 +135,7 @@
     <Compile Include="Runners\Notifications\RemoteTaskNotification.cs" />
     <Compile Include="Runners\PerContextRunListener.cs" />
     <Compile Include="Runners\Notifications\RemoteTaskNotificationFactory.cs" />
+    <Compile Include="Runners\VersionCompatibilityChecker.cs" />
     <Compile Include="Tasks\BehaviorSpecificationTask.cs" />
     <Compile Include="Tasks\BehaviorTask.cs" />
     <Compile Include="Tasks\ContextTask.cs" />
