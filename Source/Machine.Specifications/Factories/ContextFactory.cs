@@ -14,7 +14,6 @@ namespace Machine.Specifications.Factories
     readonly SpecificationFactory _specificationFactory;
     static int _allowedNumberOfBecauseBlocks = 1;
 
-
     public ContextFactory()
     {
       _specificationFactory = new SpecificationFactory();
@@ -180,11 +179,9 @@ namespace Machine.Specifications.Factories
       return delegates;
     }
 
-      public static void ChangeAllowedNumberOfBecauseBlocksTo(int newValue)
-      {
-          _allowedNumberOfBecauseBlocks = newValue;
-      }
-
-      
+    public static void ChangeAllowedNumberOfBecauseBlocksTo(int newValue)
+    {
+      _allowedNumberOfBecauseBlocks = newValue;
+    }
   }
 }
