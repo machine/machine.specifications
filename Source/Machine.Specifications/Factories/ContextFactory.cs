@@ -55,6 +55,7 @@ namespace Machine.Specifications.Factories
       var cleanupClauses = ExtractPrivateFieldValues<Cleanup>(instance);
 
       var becauses = ExtractPrivateFieldValues<Because>(instance);
+      becauses.Reverse();
 
       if (becauses.Count > _allowedNumberOfBecauseBlocks)
       {
@@ -69,7 +70,7 @@ namespace Machine.Specifications.Factories
       var context = new Context(type,
                                 instance,
                                 contextClauses,
-                                becauses.FirstOrDefault(),
+                                becauses,
                                 cleanupClauses,
                                 concern,
                                 isIgnored,

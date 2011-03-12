@@ -6,7 +6,11 @@ namespace Machine.Specifications.Factories
   [TestFixture]
   public class ContextFactoryTests : With<ContextWithSingleSpecification>
   {
-    [Test]
+      public ContextFactoryTests()
+      {
+      }
+
+      [Test]
     public void ShouldSetType()
     {
       context.Type.Name.ShouldEqual("ContextWithSingleSpecification");
