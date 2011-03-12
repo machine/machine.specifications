@@ -5,41 +5,45 @@ using System.Reflection;
 
 namespace Machine.Specifications.Utility
 {
-  public static class RandomExtensionMethods
-  {
-    public static void Each<T>(this IEnumerable<T> enumerable, Action<T> action)
+    public static class RandomExtensionMethods
     {
-      foreach (var t in enumerable)
-      {
-        action(t);
-      }
-    }
+        public static void Each<T>(this IEnumerable<T> enumerable, Action<T> action)
+        {
+            foreach (var t in enumerable)
+            {
+                action(t);
+            }
+        }
 
-    public static void InvokeIfNotNull(this Because because)
-    {
-      if (because != null)
-        because.Invoke();
-    }
 
-    public static void InvokeAll(this IEnumerable<Establish> contextActions)
-    {
-      foreach (Establish contextAction in contextActions)
-      {
-        contextAction();
-      }
-    }
+        public static void InvokeAll(this IEnumerable<Establish> contextActions)
+        {
+            contextActions.AllNonNull().Select<Establish,Action>(x => x.Invoke).InvokeAll();
+        }
 
-    public static void InvokeAll(this IEnumerable<Cleanup> contextActions)
-    {
-      foreach (Cleanup contextAction in contextActions)
-      {
-        contextAction();
-      }
-    }
+        static IEnumerable<T> AllNonNull<T>(this IEnumerable<T> elements) where T : class
+        {
+            return elements.Where(x => x != null);
+        }
 
-    public static bool HasAttribute<TAttribute>(this ICustomAttributeProvider attributeProvider)
-    {
-      return attributeProvider.GetCustomAttributes(typeof(TAttribute), true).Any();
+        static void InvokeAll(this IEnumerable<Action> actions)
+        {
+            foreach (Action action in actions) action();
+        }
+
+        public static void InvokeAll(this IEnumerable<Because> becauseActions)
+        {
+            becauseActions.AllNonNull().Select<Because,Action>(x => x.Invoke).InvokeAll();
+        }
+
+        public static void InvokeAll(this IEnumerable<Cleanup> contextActions)
+        {
+            contextActions.AllNonNull().Select<Cleanup,Action>(x => x.Invoke).InvokeAll();
+        }
+
+        public static bool HasAttribute<TAttribute>(this ICustomAttributeProvider attributeProvider)
+        {
+            return attributeProvider.GetCustomAttributes(typeof(TAttribute), true).Any();
+        }
     }
-  }
 }
