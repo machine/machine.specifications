@@ -59,7 +59,7 @@ namespace Machine.Specifications
       return sb.ToString();
     }
 
-    private static string EachToUsefulString<T>(this IEnumerable<T> enumerable)
+    public static string EachToUsefulString<T>(this IEnumerable<T> enumerable)
     {
       var sb = new StringBuilder();
       sb.AppendLine("{");
