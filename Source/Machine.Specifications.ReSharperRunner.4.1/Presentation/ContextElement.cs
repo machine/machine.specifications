@@ -10,6 +10,7 @@ using JetBrains.ReSharper.UnitTestExplorer;
 
 using Machine.Specifications.Model;
 using Machine.Specifications.Utility;
+using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {

@@ -84,7 +84,6 @@
     <Compile Include="Runner\Impl\SpecAssemblyResolver.cs" />
     <Compile Include="Runner\Impl\SpecificationRunner.cs" />
     <Compile Include="Runner\Impl\TimingRunListener.cs" />
-    <Compile Include="Utility\ConsoleStreams.cs" />
     <Compile Include="Model\Tag.cs" />
     <Compile Include="Runner\RunOptions.cs" />
     <Compile Include="SetupForEachSpecification.cs" />
@@ -111,10 +110,11 @@
     <Compile Include="Runner\Impl\DefaultRunner.cs" />
     <Compile Include="TagsAttribute.cs" />
     <Compile Include="Utility\ConsoleRedirection.cs" />
-    <Compile Include="Utility\Naming.cs" />
+    <Compile Include="Utility\ConsoleStreams.cs" />
+    <Compile Include="Utility\Internal\Naming.cs" />
+    <Compile Include="Utility\Internal\PrettyPrintingExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Framework.cs" />
-    <Compile Include="Utility\PrettyPrintingExtensions.cs" />
     <Compile Include="Utility\RandomExtensionMethods.cs" />
     <Compile Include="Utility\ReflectionHelper.cs" />
     <Compile Include="SpecificationExceptions.cs" />

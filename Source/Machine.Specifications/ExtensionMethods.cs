@@ -6,6 +6,7 @@ using System.Text;
 using System.Linq;
 using Machine.Specifications.Annotations;
 using Machine.Specifications.Utility;
+using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications
 {
