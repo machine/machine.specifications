@@ -12,6 +12,8 @@ namespace Machine.Specifications.Factories
   {
     readonly BehaviorFactory _behaviorFactory;
     readonly SpecificationFactory _specificationFactory;
+    static int _allowedNumberOfBecauseBlocks = 1;
+
 
     public ContextFactory()
     {
@@ -54,7 +56,7 @@ namespace Machine.Specifications.Factories
 
       var becauses = ExtractPrivateFieldValues<Because>(instance);
 
-      if (becauses.Count > 1)
+      if (becauses.Count > _allowedNumberOfBecauseBlocks)
       {
         throw new SpecificationUsageException("There can only be one Because clause.");
       }
@@ -176,5 +178,12 @@ namespace Machine.Specifications.Factories
 
       return delegates;
     }
+
+      public static void ChangeAllowedNumberOfBecauseBlocksTo(int newValue)
+      {
+          _allowedNumberOfBecauseBlocks = newValue;
+      }
+
+      
   }
 }
