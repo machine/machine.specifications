@@ -1,6 +1,6 @@
 using Machine.Specifications.Utility.Internal;
 
-namespace Machine.Specifications.Specs.Utility
+namespace Machine.Specifications.Specs.Utility.Internal
 {
   [Subject(typeof(Naming))]
   public class when_formatting_specification_elements_with_underscores

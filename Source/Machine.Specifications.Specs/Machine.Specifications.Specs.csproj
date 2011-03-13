@@ -69,7 +69,7 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Factories\ContextFactorySpecs.cs" />
-    <Compile Include="Utility\NamingSpecs.cs" />
+    <Compile Include="Utility\Internal\NamingSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runner\AppDomainRunnerSpecs.cs">
       <SubType>Code</SubType>
