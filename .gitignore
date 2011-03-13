@@ -1,9 +1,7 @@
 /Source/*/obj
 /Source/*/bin
 _ReSharper.*
-*.csproj.user
-*.[Rr]e[Ss]harper.user
-*.resharper
+*.user
 *.suo
 *.cache
 *~
