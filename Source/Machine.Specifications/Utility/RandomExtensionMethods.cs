@@ -27,10 +27,7 @@ namespace Machine.Specifications.Utility
 
     static void InvokeAll(this IEnumerable<Action> actions)
     {
-      foreach (Action action in actions)
-      {
-        action();
-      }
+      actions.Each(x => x());
     }
 
     internal static void InvokeAll(this IEnumerable<Because> becauseActions)

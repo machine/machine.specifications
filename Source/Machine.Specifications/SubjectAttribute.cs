@@ -1,7 +1,7 @@
 using System;
 
 using Machine.Specifications.Annotations;
-using Machine.Specifications.Utility;
+using Machine.Specifications.Model;
 
 namespace Machine.Specifications
 {
@@ -11,16 +11,6 @@ namespace Machine.Specifications
   {
     readonly Type _subjectType;
     readonly string _subject;
-
-    public Type SubjectType
-    {
-      get { return _subjectType; }
-    }
-
-    public string SubjectText
-    {
-      get { return _subject; }
-    }
 
     public SubjectAttribute(Type subjectType)
     {
@@ -36,6 +26,11 @@ namespace Machine.Specifications
     public SubjectAttribute(string subject)
     {
       _subject = subject;
+    }
+
+    public Subject CreateSubject()
+    {
+      return new Subject(_subjectType,_subject);
     }
   }
 }

@@ -124,7 +124,7 @@ namespace Machine.Specifications.Factories
 
       var attribute = (SubjectAttribute) attributes[0];
 
-      return new Subject(attribute.SubjectType, attribute.SubjectText);
+      return attribute.CreateSubject();
     }
 
     void CreateSpecifications(IEnumerable<FieldInfo> itFieldInfos, Context context)
