@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Collections;
-using System.Runtime.Serialization;
-using System.Text;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 using Machine.Specifications.Annotations;
-using Machine.Specifications.Utility;
 using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications
@@ -39,13 +38,12 @@ namespace Machine.Specifications
       StreamingContext context)
       : base(info, context)
     {
-    }    
+    }
   }
 
   public static class ShouldExtensionMethods
   {
-
-    private static bool SafeEquals<T>(this T left, T right)
+    static bool SafeEquals<T>(this T left, T right)
     {
       var comparer = new AssertComparer<T>();
 
@@ -70,7 +68,8 @@ namespace Machine.Specifications
     {
       if (!actual.SafeEquals(expected))
       {
-        throw new SpecificationException(string.Format("Should equal {0} but is {1}", expected.ToUsefulString(), actual.ToUsefulString()));
+        throw new SpecificationException(string.Format("Should equal {0} but is {1}", expected.ToUsefulString(),
+                                                       actual.ToUsefulString()));
       }
 
       return actual;
@@ -80,7 +79,8 @@ namespace Machine.Specifications
     {
       if (actual.SafeEquals(expected))
       {
-        throw new SpecificationException(string.Format("Should not equal {0} but does: {1}", expected.ToUsefulString(), actual.ToUsefulString()));
+        throw new SpecificationException(string.Format("Should not equal {0} but does: {1}", expected.ToUsefulString(),
+                                                       actual.ToUsefulString()));
       }
 
       return actual;
@@ -106,7 +106,7 @@ namespace Machine.Specifications
 
     public static object ShouldBeTheSameAs(this object actual, object expected)
     {
-      if (!Object.ReferenceEquals(actual, expected))
+      if (!ReferenceEquals(actual, expected))
       {
         throw new SpecificationException(string.Format("Should be the same as {0} but is {1}", expected, actual));
       }
@@ -116,21 +116,22 @@ namespace Machine.Specifications
 
     public static object ShouldNotBeTheSameAs(this object actual, object expected)
     {
-      if (Object.ReferenceEquals(actual, expected))
+      if (ReferenceEquals(actual, expected))
       {
         throw new SpecificationException(string.Format("Should not be the same as {0} but is {1}", expected, actual));
       }
 
       return expected;
-
     }
 
     public static void ShouldBeOfType(this object actual, Type expected)
     {
-      if (actual == null) throw new SpecificationException(string.Format("Should be of type {0} but is [null]", expected.GetType()));
+      if (actual == null)
+        throw new SpecificationException(string.Format("Should be of type {0} but is [null]", expected.GetType()));
       if (!expected.IsAssignableFrom(actual.GetType()))
       {
-        throw new SpecificationException(string.Format("Should be of type {0} but is of type {1}", expected, actual.GetType()));
+        throw new SpecificationException(string.Format("Should be of type {0} but is of type {1}", expected,
+                                                       actual.GetType()));
       }
     }
 
@@ -148,20 +149,21 @@ namespace Machine.Specifications
     {
       if (actual.GetType() == expected)
       {
-        throw new SpecificationException(string.Format("Should not be of type {0} but is of type {1}", expected, actual.GetType()));
+        throw new SpecificationException(string.Format("Should not be of type {0} but is of type {1}", expected,
+                                                       actual.GetType()));
       }
     }
-    
-    public static void ShouldEachConformTo<T>(this IEnumerable<T> list, Func<T,bool> condition)
+
+    public static void ShouldEachConformTo<T>(this IEnumerable<T> list, Func<T, bool> condition)
     {
       var source = new List<T>(list);
 
       var failingItems = source.Where(x => condition(x) == false);
 
-      if(failingItems.Any())
+      if (failingItems.Any())
       {
-        var message = string.Format(@"The following elements did not conform to the specified condition: {0}", 
-          failingItems.EachToUsefulString());
+        var message = string.Format(@"The following elements did not conform to the specified condition: {0}",
+                                    failingItems.EachToUsefulString());
 
         throw new SpecificationException(message);
       }
@@ -177,7 +179,7 @@ namespace Machine.Specifications
 
     public static void ShouldContain<T>(this IEnumerable<T> list, params T[] items)
     {
-        list.ShouldContain((IEnumerable<T>)items);
+      list.ShouldContain((IEnumerable<T>) items);
     }
 
     public static void ShouldContain<T>(this IEnumerable<T> list, IEnumerable<T> items)
@@ -195,9 +197,11 @@ namespace Machine.Specifications
 
       if (noContain.Any())
       {
-        throw new SpecificationException(string.Format(@"Should contain: {0} 
+        throw new SpecificationException(string.Format(
+          @"Should contain: {0} 
 entire list: {1}
-does not contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), noContain.EachToUsefulString()));
+does not contain: {2}", items.EachToUsefulString(),
+          list.EachToUsefulString(), noContain.EachToUsefulString()));
       }
     }
 
@@ -211,7 +215,7 @@ does not contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), n
 
     public static void ShouldNotContain<T>(this IEnumerable<T> list, params T[] items)
     {
-        list.ShouldNotContain((IEnumerable<T>)items);
+      list.ShouldNotContain((IEnumerable<T>) items);
     }
 
     public static void ShouldNotContain<T>(this IEnumerable<T> list, IEnumerable<T> items)
@@ -229,17 +233,21 @@ does not contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), n
 
       if (contains.Any())
       {
-        throw new SpecificationException(string.Format(@"Should not contain: {0} 
+        throw new SpecificationException(string.Format(
+          @"Should not contain: {0} 
 entire list: {1}
-does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), contains.EachToUsefulString()));
+does contain: {2}", items.EachToUsefulString(),
+          list.EachToUsefulString(), contains.EachToUsefulString()));
       }
-    }    
+    }
 
-    private static SpecificationException NewException(string message, params object[] parameters)
+    static SpecificationException NewException(string message, params object[] parameters)
     {
       if (parameters.Any())
       {
-        return new SpecificationException(string.Format(message, parameters.Select(x => x.ToUsefulString()).Cast<object>().ToArray() ));
+        return
+          new SpecificationException(string.Format(message,
+                                                   parameters.Select(x => x.ToUsefulString()).Cast<object>().ToArray()));
       }
       return new SpecificationException(message);
     }
@@ -251,7 +259,7 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
 
       if (arg1.CompareTo(arg2.TryToChangeType(arg1.GetType())) <= 0)
         throw NewException("Should be greater than {0} but is {1}", arg2, arg1);
-        
+
       return arg1;
     }
 
@@ -266,13 +274,13 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
       return arg1;
     }
 
-    private static object TryToChangeType(this object original, Type type)
+    static object TryToChangeType(this object original, Type type)
     {
       try
       {
         return Convert.ChangeType(original, type);
       }
-      catch 
+      catch
       {
         return original;
       }
@@ -285,7 +293,7 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
 
       if (arg1.CompareTo(arg2.TryToChangeType(arg1.GetType())) >= 0)
         throw NewException("Should be less than {0} but is {1}", arg2, arg1);
-        
+
       return arg1;
     }
 
@@ -309,7 +317,9 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
     {
       if (Math.Abs(actual - expected) > tolerance)
       {
-        throw new SpecificationException(string.Format("Should be within {0} of {1} but is {2}", tolerance.ToUsefulString(), expected.ToUsefulString(), actual.ToUsefulString()));
+        throw new SpecificationException(string.Format("Should be within {0} of {1} but is {2}",
+                                                       tolerance.ToUsefulString(), expected.ToUsefulString(),
+                                                       actual.ToUsefulString()));
       }
     }
 
@@ -322,7 +332,9 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
     {
       if (Math.Abs(actual - expected) > tolerance)
       {
-        throw new SpecificationException(string.Format("Should be within {0} of {1} but is {2}", tolerance.ToUsefulString(), expected.ToUsefulString(), actual.ToUsefulString()));
+        throw new SpecificationException(string.Format("Should be within {0} of {1} but is {2}",
+                                                       tolerance.ToUsefulString(), expected.ToUsefulString(),
+                                                       actual.ToUsefulString()));
       }
     }
 
@@ -330,17 +342,21 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
     {
       if (Math.Abs(actual.Ticks - expected.Ticks) > tolerance.Ticks)
       {
-        throw new SpecificationException(string.Format("Should be within {0} of {1} but is {2}", tolerance.ToUsefulString(), expected.ToUsefulString(), actual.ToUsefulString()));
+        throw new SpecificationException(string.Format("Should be within {0} of {1} but is {2}",
+                                                       tolerance.ToUsefulString(), expected.ToUsefulString(),
+                                                       actual.ToUsefulString()));
       }
     }
 
     public static void ShouldBeCloseTo(this DateTime actual, DateTime expected, TimeSpan tolerance)
     {
-        TimeSpan difference = expected - actual;
-        if (Math.Abs(difference.Ticks) > tolerance.Ticks)
-        {
-            throw new SpecificationException(string.Format("Should be within {0} of {1} but is {2}", tolerance.ToUsefulString(), expected.ToUsefulString(), actual.ToUsefulString()));
-        }
+      var difference = expected - actual;
+      if (Math.Abs(difference.Ticks) > tolerance.Ticks)
+      {
+        throw new SpecificationException(string.Format("Should be within {0} of {1} but is {2}",
+                                                       tolerance.ToUsefulString(), expected.ToUsefulString(),
+                                                       actual.ToUsefulString()));
+      }
     }
 
     public static void ShouldBeEmpty(this IEnumerable collection)
@@ -380,16 +396,16 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
       if (pattern == null) throw new ArgumentNullException("pattern");
       if (actual == null) throw NewException("Should match regex {0} but is [null]", pattern);
 
-      ShouldMatch(actual, new System.Text.RegularExpressions.Regex(pattern));
+      ShouldMatch(actual, new Regex(pattern));
     }
 
-    public static void ShouldMatch(this string actual, System.Text.RegularExpressions.Regex pattern)
+    public static void ShouldMatch(this string actual, Regex pattern)
     {
       if (pattern == null) throw new ArgumentNullException("pattern");
       if (actual == null) throw NewException("Should match regex {0} but is [null]", pattern);
 
       if (!pattern.IsMatch(actual))
-        throw NewException("Should match {0} but is {1}", pattern, actual);        
+        throw NewException("Should match {0} but is {1}", pattern, actual);
     }
 
     public static void ShouldContain(this string actual, string expected)
@@ -425,7 +441,7 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
       }
 
       return actual;
-    }    
+    }
 
     public static void ShouldStartWith(this string actual, string expected)
     {
@@ -450,7 +466,7 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
     }
 
     public static void ShouldBeSurroundedWith(this string actual, string expectedStartDelimiter,
-      string expectedEndDelimiter)
+                                              string expectedEndDelimiter)
     {
       actual.ShouldStartWith(expectedStartDelimiter);
       actual.ShouldEndWith(expectedEndDelimiter);
@@ -469,7 +485,7 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
 
     public static void ShouldContainOnly<T>(this IEnumerable<T> list, params T[] items)
     {
-      list.ShouldContainOnly((IEnumerable<T>)items);
+      list.ShouldContainOnly((IEnumerable<T>) items);
     }
 
     public static void ShouldContainOnly<T>(this IEnumerable<T> list, IEnumerable<T> items)
@@ -492,8 +508,9 @@ does contain: {2}", items.EachToUsefulString(), list.EachToUsefulString(), conta
 
       if (noContain.Any() || source.Any())
       {
-        string message = string.Format(@"Should contain only: {0} 
-entire list: {1}", items.EachToUsefulString(), list.EachToUsefulString());
+        var message = string.Format(@"Should contain only: {0} 
+entire list: {1}", items.EachToUsefulString(),
+                                    list.EachToUsefulString());
         if (noContain.Any())
         {
           message += "\ndoes not contain: " + noContain.EachToUsefulString();
@@ -509,7 +526,7 @@ entire list: {1}", items.EachToUsefulString(), list.EachToUsefulString());
 
     public static Exception ShouldBeThrownBy(this Type exceptionType, Action method)
     {
-      Exception exception = Catch.Exception(method);
+      var exception = Catch.Exception(method);
 
       exception.ShouldNotBeNull();
       exception.ShouldBeOfType(exceptionType);
