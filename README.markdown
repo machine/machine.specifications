@@ -190,8 +190,77 @@ public class it_example_goes_here : ExampleSpecs {
 }
 </pre>
 
-### Testing for exceptions
+# Brief code documentation
 
+## Definitions
+* Specification (spec) - expected behavior of a class under specific context.
+	* It is also sometimes known as exemplar.
+* Specification class - executable examples of the specification.
+* Observation - expected result of the class method described by the specification.
+
+## Conventions
+* One class per specification
+* *Class name* - in lower case with underscore separating each word: `when_first_created`. Often starts with *when* to better describe condition/context under which specification applies (under which class is being tested).
+* *Element names* - lower case with underscore separator, same as Class name: `should_do_stuff`
+* *Observation name* - always begins with '*should*' to explicitly remind that this code describes the **expected** behavior.
+	* An alternative naming convention is to drop shoulds, but the language then begins to appear like you're static facts, not theories of behavior: *System should say 'Hello'* vs. *System says 'Hello'*. Choose the language that works better for you. If in doubt, stick with *should* is recommended..
+* *Code placement* - in Mspec all specification elements are C# delegates. Use Lamba expression to define code for each specification element: `It should_do_stuff =()=> stuff.DoIt();`
+* Single `Establish context` and `Because of` per class
+* Single line per `Because of` and `It should_...`
+
+## Attributes
+* `[Subject( [type], ["subject"] )]` Attribute - decorates every specification class. `type` or `subject` can be omitted, but not both.
+* `[SetupForEachSpecification]` - forces the context to be re-established for each observation (It clause). However it is recommended for observation not to modify the state (thus by default a context needs to be established only once). Try to fix your code to work this way instead of overriding default behavior.
+* `[Tags( "tag", ["optional tag"] ]` - adds tags to the specification class.
+* `[Ignore( "reason", ["reason"] )]` - ignores class or observation.
+* `[Behaviors]` - marks class as a shared behaviors group that can be included in other specification classes.
+	* Use `Behaves_like<TBehavior>` in a specification class to include shared behaviors group.
+
+## Class elements
+All specification elements are delegates for code to run specific portion of the spec.  
+Everything except `It` is optional.
+
+* `Establish context` - initialization and set up.
+* `Because of` - the operation specification describes. This is where method under test is executed.
+* `It should_...` - observation. Operation (`Because of`) results are tested here.
+	* Use `Should` extension methods to test assertions. For example: `someResult.ShouldBeFalse()`
+* `Behaves_like<TBehavior> ...` - points to the group of shared behaviors. All observations from `TBehavior` class will be tested in the current class.
+	* `TBehavior` class needs to be decorated with `[Behaviors]` attribute.
+* `Cleanup after` - code to clean up afterwards.
+
+## Special interfaces
+* `IAssemblyContext` - implement to set up before or clean up things after all specs in the assembly are executed.
+	* `OnAssemblyStart` - setup stuff before specs are run.
+	* `OnAssemblyComplete` - clean up afterwards.
+* `ICleanupAfterEveryContextInAssembly` - implement to do common clean up after every spec run in the assembly (database clean up, system clock reset, etc.)
+	* `AfterContextCleanup` - clean up after every spec.
+* `ISupplementSpecificationResults` - ??
+
+## Shoulds (Assertions)
+MSpec provides assertions methods to test that observations are correct. There's no need to use 3rd party TDD library (like xUnit or NUnit).
+
+The main difference is, again, in the language. Instead of having static Assert methods you're provided with extension Should methods. For example: `Assert.True( someData );` becomes `someData.ShouldBeTrue()`.
+
+List of *shoulds* (grouped by related input type):
+
+* `ShouldBeFalse` & `ShouldBeTrue`
+* `ShouldEqual` & `ShouldNotEqual` - compares using Equals methods.
+* `ShouldBeNull` & `ShouldNotBeNull`
+* `ShouldBeTheSameAs` & `ShouldNotBeTheSameAs` - compares references.
+* `ShouldBeOfType`, S`houldBe` & `ShouldNotBeOfType`- confirms object is of specific type (or not). `ShouldBe` is the same as `ShouldBeOfType`.
+* `ShouldEachConformTo` - confirms all items in collection confirm to the provided condition.
+* `ShouldContain` & `ShouldNotContain` - confirms collection contains (or not) specified items. Can also confirm that string contains another string.
+* `ShouldContainOnly` - confirms collections contains only provided items.
+* `ShouldBeGreaterThan`, `ShouldBeGreaterThanOrEqualTo`, `ShouldBeLessThan` &  `ShouldBeLessThanOrEqualTo` - `IComparable.CompareTo` method is compare two objects.
+* `ShouldBeCloseTo` - confirms two numbers or dates are within specified tolerance.
+* `ShouldBeEmpty` & `ShouldNotBeEmpty` - confirms collection is empty (or not).
+* `ShouldMatch` - confirms string matches provided pattern.
+* `ShouldBeEqualIgnoringCase` - compares strings ignoring case.
+* `ShouldStartWith`, `ShouldEndWith` & `ShouldBeSurroundedWith` - confirms provided string is before, after, or at both before and after of the tested string.
+* `ShouldContainErrorMessage` - confirms exception contains provided message.
+* `ShouldBeThrownBy` - confirms exception of specific type is thrown by provided action.
+
+## Exceptions
 When testing for exceptions it is recommended that you use the `Catch` class in your `Because` statement then validate the exception in subsequent `It` statements. This ensures that no validation of the `Exception` occurs in the `Because` statement. It is also recommended to include an `It` statement that explicitly determines the type of `Exception` if that is important to you. Doing so will improve the readability of your specifications clarifying how the system is intended to behave. 
 
 <pre>
@@ -208,22 +277,35 @@ public class when_the_user_credentials_cannot_be_verified : ExampleSpecs {
 }
 </pre>
 
-### External links (blog posts, etc?)
+## Reuse
+If you're reusing behaviors, use *shared behaviors group*. If you're reusing context setup use *inheritance*.
 
-## Framework Features
+### Shared behaviors group
+Shared behaviors group allows reuse of expected behavior between different specifications. It's purpose is to confirm that in related specifications with similar contexts some of the behavior will be similar, but some of it will be different.
 
-#### IAssemblyContext
+* Add `[Behaviors]` attribute to the class which contains shared behaviors.
+* In each specification class where you want to reuse behaviors add (appropriately named) `Behaves_like<TBehavior>` member. `TBehavior` is your shared behaviors class.
 
-This interface has two methods
+### Inheritance 
+Regular inheritance makes it much easier to reuse common context set up. `Establish context` from both base class and current class will be invoked.
+
+NOTE: Observations in the base class won't be tested (run).
+
+## Empty specs
+Creating a specification class with empty `It` delegates helps to fully capture spec and expectations before writing the actual code.
+
+All observations will show up as "unimplemented" in reports.
+
 <pre>
-void OnAssemblyStart()
-
-void OnAssemblyComplete()
+[Subject("Recent Account Activity Summary page")]
+public class when_a_customer_first_views_the_account_summary_page
+{
+	It should_display_all_account_transactions_for_the_past_thirty_days;
+	It should_display_debit_amounts_in_red_text;
+	It should_display_deposit_amounts_in_black_text;
+}
 </pre>
 
-These methods are used by classes that implements `IAssemblyContext`, to set if an assembly loaded by reflection has started to be checked (explored) or is completed.
-
-#### ICleanupAfterEveryContextInAssembly
-
-#### [SetupForEachSpecification]  
-
+## Additional Links
+* [MVC extensions](https://github.com/jamesbroome/Machine.Specifications.Mvc)
+* [Automocking](https://github.com/jamesbroome/Machine.Specifications.AutoMocking)
