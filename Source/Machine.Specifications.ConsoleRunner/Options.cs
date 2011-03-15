@@ -12,12 +12,12 @@ namespace Machine.Specifications.ConsoleRunner
 {
   public class Options
   {
-    [Option("xml", "xml", HelpText = "Outputs an XML file(s) to path")]
+    [Option("xml", "xml", HelpText = "Outputs the XML report to the file referenced by the path")]
     public string XmlPath = string.Empty;
 
     [Option(null,
       "html",
-      HelpText = "Outputs an HTML file(s) to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)")] 
+      HelpText = "Outputs the HTML report to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)")]
     public string HtmlPath = string.Empty;
     
     [Option("f",
@@ -69,8 +69,8 @@ namespace Machine.Specifications.ConsoleRunner
       sb.AppendLine("  -t, --timeinfo    Shows time-related information in HTML output");
       sb.AppendLine("  -s, --silent      Suppress console output");
       sb.AppendLine("  --teamcity        Reporting for TeamCity CI integration");
-      sb.AppendLine("  --html <PATH>     Outputs an HTML file(s) to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)");
-      sb.AppendLine("  --xml <PATH>      Outputs an XML file(s) to path");
+      sb.AppendLine("  --html <PATH>     Outputs the HTML report to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)");
+      sb.AppendLine("  --xml <PATH>      Outputs the XML report to the file referenced by the path");
       sb.AppendLine("  -h, --help        Shows this help message");
 
       return sb.ToString();
