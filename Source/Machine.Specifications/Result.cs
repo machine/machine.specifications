@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Machine.Specifications
 {
@@ -27,7 +28,7 @@ namespace Machine.Specifications
       FullTypeName = exception.GetType().FullName;
       TypeName = exception.GetType().Name;
       Message = exception.Message;
-      StackTrace = FilterStackTrace( exception.StackTrace);
+      StackTrace = FilterStackTrace(exception.StackTrace);
 
       if (exception.InnerException != null)
       {
@@ -45,6 +46,20 @@ namespace Machine.Specifications
     #region Borrowed from XUnit to clean up the stack trace, licened under MS-PL
 
 #if CLEAN_EXCEPTION_STACK_TRACE
+    /// <summary>
+    ///  A description of the regular expression:
+    ///
+    ///  \w+\sMachine\.Specifications
+    ///      Alphanumeric, one or more repetitions
+    ///      Whitespace
+    ///      Machine
+    ///      Literal .
+    ///      Specifications
+    ///      Literal .
+    /// </summary>
+    static Regex FrameworkStackLine = new Regex("\\w+\\sMachine\\.Specifications\\.",
+      RegexOptions.CultureInvariant | RegexOptions.Compiled);
+
     /// <summary>
     /// Filters the stack trace to remove all lines that occur within the testing framework.
     /// </summary>
@@ -70,7 +85,7 @@ namespace Machine.Specifications
     static bool IsFrameworkStackFrame(string trimmedLine)
     {
       // Anything in the Machine.Specifications namespace
-      return trimmedLine.StartsWith("at Machine.Specifications.");
+      return FrameworkStackLine.IsMatch(trimmedLine);
     }
 
     // Our own custom String.Split because Silverlight/CoreCLR doesn't support the version we were using

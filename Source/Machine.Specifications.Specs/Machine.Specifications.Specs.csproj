@@ -49,7 +49,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Build\Release\Tests\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;CLEAN_EXCEPTION_STACK_TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>169</NoWarn>
@@ -68,6 +68,7 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="ExceptionResultSpecs.cs" />
     <Compile Include="Factories\ContextFactorySpecs.cs" />
     <Compile Include="Utility\Internal\ErrorMessageSpecs.cs" />
     <Compile Include="Utility\Internal\NamingSpecs.cs" />
