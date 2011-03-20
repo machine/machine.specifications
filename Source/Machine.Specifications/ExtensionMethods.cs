@@ -70,7 +70,7 @@ namespace Machine.Specifications
     {
       if (!actual.SafeEquals(expected))
       {
-        throw new SpecificationException(string.Format("Should equal {0} but is {1}", expected.ToUsefulString(), actual.ToUsefulString()));
+        throw new SpecificationException(PrettyPrintingExtensions.FormatErrorMessage(actual, expected));
       }
 
       return actual;
