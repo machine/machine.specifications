@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Machine.Specifications.Specs
 {
@@ -66,5 +67,50 @@ namespace Machine.Specifications.Specs
 
     It should_print_the_elements_that_did_not_match =
       () => Exception.Message.ShouldMatch(@"the following items did not meet the condition: {\s+\[1\],\s+\[3\]\s+}");
+  }
+
+  public class when_a_list_contains_an_element_of_another_list
+  {
+    static Exception SpecException;
+    static List<string> AList;
+    static List<string> AnotherList;
+    static string Element;
+
+    Establish context = () =>
+    {
+      Element = "An Element";
+      AList = new List<string> { Element };
+      AnotherList = new List<string>(AList);
+    };
+
+    Because of =
+      () => SpecException = Catch.Exception(() => AList.ShouldContain(AnotherList));
+
+    It should_pass_the__ShouldContains__assertion =
+      () => SpecException.ShouldBeNull();
+  }
+
+  public class when_a_list_not_contains_an_element_of_another_list
+  {
+    static Exception SpecException;
+    static List<string> AList;
+    static List<string> AnotherList;
+    static string Element;
+    static string AnotherElement;
+
+    Establish context = () =>
+    {
+      Element = "An Element";
+      AList = new List<string> { Element };
+
+      AnotherElement = "Another Element";
+      AnotherList = new List<string> { AnotherElement };
+    };
+
+    Because of =
+      () => SpecException = Catch.Exception(() => AList.ShouldContain(AnotherList));
+
+    It should_fail_the__ShouldContains__assertion =
+      () => SpecException.ShouldBeOfType<SpecificationException>();
   }
 }
