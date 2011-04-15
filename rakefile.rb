@@ -175,6 +175,29 @@ namespace :tests do
 end
 
 namespace :package do
+  def framework_files(root = '.')
+    FileList.new("#{root}/Machine.Specifications.dll") \
+      .include("#{root}/Machine.Specifications.pdb") \
+      .include("#{root}/Machine.Specifications.dll.tdnet") \
+      .include("#{root}/Machine.Specifications.TDNetRunner.*")
+  end
+
+  def source_files(root = '.')
+    FileList.new("#{root}/**/*.cs") \
+      .exclude('**/*Example*') \
+      .exclude('**/*.Specs/') \
+      .exclude('**/*.Test*/')
+  end
+
+  def packaged_files(root = '.')
+    FileList.new("#{root}/**/*") \
+      .exclude("#{root}/**/*.InstallLog") \
+      .exclude("#{root}/**/*.InstallState") \
+      .exclude("#{root}/Generation") \
+      .exclude("#{root}/Tests") \
+      .exclude("#{root}/NuGet")
+  end
+
   desc "Package build artifacts as a zip file"
   task :zip => [ 'build:rebuild', 'tests:run', 'specs:run' ] do
     rm_f configatron.zip.package
@@ -184,32 +207,42 @@ namespace :package do
     sz = SevenZip.new \
       :tool => 'Tools/7-Zip/7za.exe',
       :zip_name => configatron.zip.package
-
+    
     Dir.chdir(configatron.out_dir) do
-      sz.zip :files => FileList.new('**/*') \
-        .exclude('*.InstallLog') \
-        .exclude('*.InstallState') \
-        .exclude('Generation') \
-        .exclude('Tests') \
-        .exclude('NuGet')
+      sz.zip :files => packaged_files
     end
+  end
+  
+  def create_package
+    opts = ["pack", "mspec.nuspec",
+      "-BasePath", "#{configatron.out_dir}NuGet".gsub(/\//, '\\'),
+      "-OutputDirectory", configatron.nuget.package.dirname]
+
+    sh "Tools/NuGet/NuGet.exe", *(opts)
   end
 
   namespace :nuget do
-    desc "Package build artifacts as a NuGet package"
+    desc "Package build artifacts as a NuGet package and a symbols package"
     task :create => :zip do
-      SevenZip.unzip \
-        :tool => 'Tools/7-Zip/7za.exe',
-        :zip_name => configatron.zip.package,
-        :destination => "#{configatron.out_dir}/NuGet".gsub(/\//, '\\')
+      framework_files(configatron.out_dir).copy_hierarchy \
+        :source_dir => configatron.out_dir,
+        :target_dir => "#{configatron.out_dir}NuGet/lib/"
 
-      cp 'install.ps1', "#{configatron.out_dir}/NuGet"
+      source_files('Source').copy_hierarchy \
+        :source_dir => 'Source',
+        :target_dir => "#{configatron.out_dir}NuGet/src/"
 
-      opts = ["pack", "mspec.nuspec",
-        "-BasePath", "#{configatron.out_dir}/NuGet",
-        "-OutputDirectory", configatron.nuget.package.dirname]
+      packaged_files(configatron.out_dir).copy_hierarchy \
+        :source_dir => configatron.out_dir,
+        :target_dir => "#{configatron.out_dir}NuGet/tools/"
 
-      sh "Tools/NUGet/NuGet.exe", *(opts)
+      cp 'install.ps1', "#{configatron.out_dir}NuGet/tools/"
+
+      create_package
+      mv configatron.nuget.package, configatron.nuget.package.pathmap('%X.symbols%x')
+
+      FileList["#{configatron.out_dir}NuGet/src/", "#{configatron.out_dir}NuGet/**/*.pdb"].each { |f| rm_rf f }
+      create_package
     end
     
     desc "Publishes the NuGet package"
@@ -217,7 +250,6 @@ namespace :package do
       raise "NuGet access key is missing, cannot publish" if configatron.nuget.key.nil?
 
       opts = ["push",
-        "-source", "http://packages.nuget.org/v1/",
         configatron.nuget.package,
         configatron.nuget.key,
         { :verbose => false }]
