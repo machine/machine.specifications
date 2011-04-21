@@ -1,0 +1,437 @@
+<Configuration>
+  <CodeAnnotations>
+    <Namespace>JetBrains.Annotations</Namespace>
+    <Namespace>Machine.Specifications.Annotations</Namespace>
+    <DefaultNamespace>JetBrains.Annotations</DefaultNamespace>
+  </CodeAnnotations>
+  <CodeStyleSettings>
+    <ExternalPath IsNull="False">
+    </ExternalPath>
+    <Sharing>SOLUTION</Sharing>
+    <CSS>
+      <FormatSettings />
+      <Naming2 />
+    </CSS>
+    <CSharp>
+      <FormatSettings>
+        <ALIGN_FIRST_ARG_BY_PAREN>True</ALIGN_FIRST_ARG_BY_PAREN>
+        <ANONYMOUS_METHOD_DECLARATION_BRACES>NEXT_LINE</ANONYMOUS_METHOD_DECLARATION_BRACES>
+        <BLANK_LINES_BETWEEN_USING_GROUPS>1</BLANK_LINES_BETWEEN_USING_GROUPS>
+        <BLANK_LINES_INSIDE_REGION>0</BLANK_LINES_INSIDE_REGION>
+        <CASE_BLOCK_BRACES>NEXT_LINE</CASE_BLOCK_BRACES>
+        <EXPLICIT_INTERNAL_MODIFIER>False</EXPLICIT_INTERNAL_MODIFIER>
+        <EXPLICIT_PRIVATE_MODIFIER>False</EXPLICIT_PRIVATE_MODIFIER>
+        <FORCE_ATTRIBUTE_STYLE>SEPARATE</FORCE_ATTRIBUTE_STYLE>
+        <FORCE_FIXED_BRACES_STYLE>ALWAYS_ADD</FORCE_FIXED_BRACES_STYLE>
+        <FORCE_FOR_BRACES_STYLE>ALWAYS_ADD</FORCE_FOR_BRACES_STYLE>
+        <FORCE_FOREACH_BRACES_STYLE>ALWAYS_ADD</FORCE_FOREACH_BRACES_STYLE>
+        <FORCE_IFELSE_BRACES_STYLE>ALWAYS_ADD</FORCE_IFELSE_BRACES_STYLE>
+        <FORCE_USING_BRACES_STYLE>ALWAYS_ADD</FORCE_USING_BRACES_STYLE>
+        <FORCE_WHILE_BRACES_STYLE>ALWAYS_ADD</FORCE_WHILE_BRACES_STYLE>
+        <INDENT_ANONYMOUS_METHOD_BLOCK>False</INDENT_ANONYMOUS_METHOD_BLOCK>
+        <INDENT_NESTED_FIXED_STMT>True</INDENT_NESTED_FIXED_STMT>
+        <INDENT_NESTED_USINGS_STMT>True</INDENT_NESTED_USINGS_STMT>
+        <INITIALIZER_BRACES>NEXT_LINE</INITIALIZER_BRACES>
+        <KEEP_BLANK_LINES_IN_CODE>1</KEEP_BLANK_LINES_IN_CODE>
+        <KEEP_BLANK_LINES_IN_DECLARATIONS>1</KEEP_BLANK_LINES_IN_DECLARATIONS>
+        <MODIFIERS_ORDER IsNull="False">
+          <Item>public</Item>
+          <Item>protected</Item>
+          <Item>internal</Item>
+          <Item>private</Item>
+          <Item>new</Item>
+          <Item>abstract</Item>
+          <Item>virtual</Item>
+          <Item>override</Item>
+          <Item>sealed</Item>
+          <Item>static</Item>
+          <Item>readonly</Item>
+          <Item>extern</Item>
+          <Item>unsafe</Item>
+          <Item>volatile</Item>
+        </MODIFIERS_ORDER>
+        <PLACE_FIELD_ATTRIBUTE_ON_SAME_LINE>False</PLACE_FIELD_ATTRIBUTE_ON_SAME_LINE>
+        <PLACE_SIMPLE_LINQ_ON_SINGLE_LINE>False</PLACE_SIMPLE_LINQ_ON_SINGLE_LINE>
+        <PLACE_WHILE_ON_NEW_LINE>True</PLACE_WHILE_ON_NEW_LINE>
+        <SIMPLE_EMBEDDED_STATEMENT_STYLE>LINE_BREAK</SIMPLE_EMBEDDED_STATEMENT_STYLE>
+        <SPACE_AROUND_MULTIPLICATIVE_OP>True</SPACE_AROUND_MULTIPLICATIVE_OP>
+        <SPACE_BEFORE_SIZEOF_PARENTHESES>False</SPACE_BEFORE_SIZEOF_PARENTHESES>
+        <SPACE_BEFORE_TYPEOF_PARENTHESES>False</SPACE_BEFORE_TYPEOF_PARENTHESES>
+        <STICK_COMMENT>False</STICK_COMMENT>
+        <WRAP_ARGUMENTS_STYLE>CHOP_IF_LONG</WRAP_ARGUMENTS_STYLE>
+        <WRAP_EXTENDS_LIST_STYLE>CHOP_IF_LONG</WRAP_EXTENDS_LIST_STYLE>
+        <WRAP_PARAMETERS_STYLE>CHOP_IF_LONG</WRAP_PARAMETERS_STYLE>
+      </FormatSettings>
+      <UsingsSettings />
+      <Naming2>
+        <EventHandlerPatternLong>$object$_On$event$</EventHandlerPatternLong>
+        <EventHandlerPatternShort>$event$Handler</EventHandlerPatternShort>
+        <ExceptionName IsNull="False">
+        </ExceptionName>
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="TypesAndNamespaces" />
+        <PredefinedRule Inspect="True" Prefix="I" Suffix="" Style="AaBb" ElementKind="Interfaces" />
+        <PredefinedRule Inspect="True" Prefix="T" Suffix="" Style="AaBb" ElementKind="TypeParameters" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="MethodPropertyEvent" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="Locals" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="LocalConstants" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="Parameters" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PublicFields" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="Constants" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="StaticReadonly" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="EnumMember" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="Other" />
+        <PredefinedRule Inspect="True" Prefix="_" Suffix="" Style="aaBb" ElementKind="PrivateInstanceFields" />
+        <PredefinedRule Inspect="True" Prefix="_" Suffix="" Style="aaBb" ElementKind="PrivateStaticFields" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PrivateConstants" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PrivateStaticReadonly" />
+      </Naming2>
+      <CustomMemberReorderingPatterns><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+
+<!--
+I. Overall
+
+I.1 Each pattern can have <Match>....</Match> element. For the given type declaration, the pattern with the match, evaluated to 'true' with the largest weight, will be used 
+I.2 Each pattern consists of the sequence of <Entry>...</Entry> elements. Type member declarations are distributed between entries
+I.3 If pattern has RemoveAllRegions="true" attribute, then all regions will be cleared prior to reordering. Otherwise, only auto-generated regions will be cleared
+I.4 The contents of each entry is sorted by given keys (First key is primary,  next key is secondary, etc). Then the declarations are grouped and en-regioned by given property
+
+II. Available match operands
+
+Each operand may have Weight="..." attribute. This weight will be added to the match weight if the operand is evaluated to 'true'.
+The default weight is 1
+
+II.1 Boolean functions:
+II.1.1 <And>....</And>
+II.1.2 <Or>....</Or>
+II.1.3 <Not>....</Not>
+
+II.2 Operands
+II.2.1 <Kind Is="..."/>. Kinds are: class, struct, interface, enum, delegate, type, constructor, destructor, property, indexer, method, operator, field, constant, event, member
+II.2.2 <Name Is="..." [IgnoreCase="true/false"] />. The 'Is' attribute contains regular expression
+II.2.3 <HasAttribute CLRName="..." [Inherit="true/false"] />. The 'CLRName' attribute contains regular expression
+II.2.4 <Access Is="..."/>. The 'Is' values are: public, protected, internal, protected internal, private
+II.2.5 <Static/>
+II.2.6 <Abstract/>
+II.2.7 <Virtual/>
+II.2.8 <Override/>
+II.2.9 <Sealed/>
+II.2.10 <Readonly/>
+II.2.11 <ImplementsInterface CLRName="..."/>. The 'CLRName' attribute contains regular expression
+II.2.12 <HandlesEvent />
+-->
+
+<Patterns xmlns="urn:shemas-jetbrains-com:member-reordering-patterns">
+
+	<!-- Order Machine.Specifications methods: static fields, Establish, Cleanup, Because, It, behaviors, everything else -->
+	<Pattern>
+		<Match>
+			<And Weight="100">
+				<Kind Is="class"/>
+				<Or>
+					<HasAttribute CLRName="Machine.Specifications.SubjectAttribute"
+								  Inherit="true"/>
+					<Name Is="^when_.+"
+						  IgnoreCase="true" />
+				</Or>
+			</And>
+		</Match>
+		<Entry>
+			<Match>
+				<And>
+					<Kind Is="field"/>
+					<Or>
+						<Access Is="protected"/>
+						<Static/>
+					</Or>
+				</And>
+			</Match>
+		</Entry>
+		<Entry>
+			<Match>
+				<And>
+					<Kind Is="field"/>
+					<Name Is="^context(_once)?$"
+						  IgnoreCase="true"/>
+				</And>
+			</Match>
+		</Entry>
+		<Entry>
+			<Match>
+				<And>
+					<Kind Is="field"/>
+					<Name Is="^of$"
+						  IgnoreCase="true"/>
+				</And>
+			</Match>
+		</Entry>
+		<Entry>
+			<Match>
+				<And>
+					<Kind Is="field"/>
+					<Name Is="^after(_all)?$"
+						  IgnoreCase="true"/>
+				</And>
+			</Match>
+		</Entry>
+		<Entry>
+			<Match>
+				<And>
+					<Kind Is="field"/>
+					<Name Is="^should_.*$"
+						  IgnoreCase="true"/>
+				</And>
+			</Match>
+		</Entry>
+		<Entry>
+			<Match>
+				<And>
+					<Kind Is="field"/>
+					<Not>
+						<Static/>
+					</Not>
+				</And>
+			</Match>
+		</Entry>
+		<!-- All other members -->
+		<Entry/>
+	</Pattern>
+
+	<!--Do not reorder COM interfaces and structs marked by StructLayout attribute-->
+	<Pattern>
+		<Match>
+			<Or Weight="100">
+				<And>
+					<Kind Is="interface"/>
+					<HasAttribute CLRName="System.Runtime.InteropServices.InterfaceTypeAttribute"/>
+				</And>
+				<HasAttribute CLRName="System.Runtime.InteropServices.StructLayoutAttribute"/>
+			</Or>
+		</Match>
+	</Pattern>
+
+	<!--Special formatting of NUnit test fixture-->
+	<Pattern RemoveAllRegions="true">
+		<Match>
+			<And Weight="100">
+				<Kind Is="class"/>
+				<HasAttribute CLRName="NUnit.Framework.TestFixtureAttribute"
+							  Inherit="true"/>
+			</And>
+		</Match>
+
+		<!--Setup/Teardow-->
+		<Entry>
+			<Match>
+				<And>
+					<Kind Is="method"/>
+					<Or>
+						<HasAttribute CLRName="NUnit.Framework.SetUpAttribute"
+									  Inherit="true"/>
+						<HasAttribute CLRName="NUnit.Framework.TearDownAttribute"
+									  Inherit="true"/>
+						<HasAttribute CLRName="NUnit.Framework.FixtureSetUpAttribute"
+									  Inherit="true"/>
+						<HasAttribute CLRName="NUnit.Framework.FixtureTearDownAttribute"
+									  Inherit="true"/>
+					</Or>
+				</And>
+			</Match>
+			<Group Region="Setup/Teardown"/>
+		</Entry>
+
+		<!--All other members-->
+		<Entry/>
+
+		<!--Test methods-->
+		<Entry>
+			<Match>
+				<And Weight="100">
+					<Kind Is="method"/>
+					<HasAttribute CLRName="NUnit.Framework.TestAttribute"
+								  Inherit="false"/>
+				</And>
+			</Match>
+			<Sort>
+				<Name/>
+			</Sort>
+		</Entry>
+	</Pattern>
+
+	<!--Default pattern-->
+	<Pattern>
+
+		<!--public delegate-->
+		<Entry>
+			<Match>
+				<And Weight="100">
+					<Access Is="public"/>
+					<Kind Is="delegate"/>
+				</And>
+			</Match>
+			<Sort>
+				<Name/>
+			</Sort>
+			<Group Region="Delegates"/>
+		</Entry>
+
+		<!--public enum-->
+		<Entry>
+			<Match>
+				<And Weight="100">
+					<Access Is="public"/>
+					<Kind Is="enum"/>
+				</And>
+			</Match>
+			<Sort>
+				<Name/>
+			</Sort>
+			<Group>
+				<Name Region="${Name} enum"/>
+			</Group>
+		</Entry>
+
+		<!--fields and constants-->
+		<Entry>
+			<Match>
+				<Or>
+					<Kind Is="constant"/>
+					<Kind Is="field"/>
+				</Or>
+			</Match>
+			<Sort>
+				<Kind Order="constant field"/>
+				<Static/>
+				<Readonly/>
+				<Name/>
+			</Sort>
+		</Entry>
+
+		<!--Constructors. Place static one first-->
+		<Entry>
+			<Match>
+				<Kind Is="constructor"/>
+			</Match>
+			<Sort>
+				<Static/>
+			</Sort>
+		</Entry>
+
+		<!--properties, indexers-->
+		<Entry>
+			<Match>
+				<Or>
+					<Kind Is="property"/>
+					<Kind Is="indexer"/>
+				</Or>
+			</Match>
+		</Entry>
+
+		<!--interface implementations-->
+		<Entry>
+			<Match>
+				<And Weight="100">
+					<Kind Is="member"/>
+					<ImplementsInterface/>
+				</And>
+			</Match>
+			<Sort>
+				<ImplementsInterface Immediate="true"/>
+			</Sort>
+<!--			<Group>
+				<ImplementsInterface Immediate="true"
+									 Region="${ImplementsInterface} Members"/>
+			</Group>-->
+		</Entry>
+
+		<!--all other members-->
+		<Entry/>
+
+		<!--nested types-->
+		<Entry>
+			<Match>
+				<Kind Is="type"/>
+			</Match>
+			<Sort>
+				<Name/>
+			</Sort>
+<!--			<Group>
+				<Name Region="Nested type: ${Name}"/>
+			</Group>-->
+		</Entry>
+	</Pattern>
+
+</Patterns>
+]]></CustomMemberReorderingPatterns>
+    </CSharp>
+    <JavaScript>
+      <FormatSettings />
+      <Naming2 />
+    </JavaScript>
+    <VB>
+      <FormatSettings>
+        <BLANK_LINES_INSIDE_REGION>0</BLANK_LINES_INSIDE_REGION>
+        <KEEP_BLANK_LINES_IN_CODE>1</KEEP_BLANK_LINES_IN_CODE>
+        <KEEP_BLANK_LINES_IN_DECLARATIONS>1</KEEP_BLANK_LINES_IN_DECLARATIONS>
+        <KEEP_USER_LINEBREAKS>False</KEEP_USER_LINEBREAKS>
+        <PLACE_FIELD_ATTRIBUTE_ON_SAME_LINE>False</PLACE_FIELD_ATTRIBUTE_ON_SAME_LINE>
+        <STICK_COMMENT>False</STICK_COMMENT>
+        <WRAP_ARGUMENTS_STYLE>CHOP_IF_LONG</WRAP_ARGUMENTS_STYLE>
+        <WRAP_EXTENDS_LIST_STYLE>CHOP_IF_LONG</WRAP_EXTENDS_LIST_STYLE>
+        <WRAP_PARAMETERS_STYLE>CHOP_IF_LONG</WRAP_PARAMETERS_STYLE>
+      </FormatSettings>
+      <ImportsSettings />
+      <Naming2>
+        <EventHandlerPatternLong>$object$_On$event$</EventHandlerPatternLong>
+        <EventHandlerPatternShort>$event$Handler</EventHandlerPatternShort>
+      </Naming2>
+    </VB>
+    <Web>
+      <Naming2 />
+    </Web>
+    <XML>
+      <FormatSettings>
+        <ProcessingInstructionAttributesFormat>FirstAttributeOnSingleLine</ProcessingInstructionAttributesFormat>
+        <TagAttributesFormat>FirstAttributeOnSingleLine</TagAttributesFormat>
+      </FormatSettings>
+    </XML>
+    <Xaml>
+      <Naming2>
+        <UserRule Name="XAML_FIELD" Inspect="True" Prefix="_" Suffix="" Style="aaBb" />
+        <UserRule Name="NAMESPACE_ALIAS" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
+        <UserRule Name="XAML_RESOURCE" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
+      </Naming2>
+    </Xaml>
+    <GenerateMemberBody />
+    <Naming2>
+      <EventHandlerPatternLong>$object$_On$event$</EventHandlerPatternLong>
+      <EventHandlerPatternShort>$event$Handler</EventHandlerPatternShort>
+      <ExceptionName IsNull="False">
+      </ExceptionName>
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="TypesAndNamespaces" />
+      <PredefinedRule Inspect="True" Prefix="I" Suffix="" Style="AaBb" ElementKind="Interfaces" />
+      <PredefinedRule Inspect="True" Prefix="T" Suffix="" Style="AaBb" ElementKind="TypeParameters" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="MethodPropertyEvent" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="Locals" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="LocalConstants" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="Parameters" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PublicFields" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="Constants" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="StaticReadonly" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="EnumMember" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="Other" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PrivateStaticFields" />
+      <PredefinedRule Inspect="True" Prefix="_" Suffix="" Style="aaBb" ElementKind="PrivateInstanceFields" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PrivateConstants" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PrivateStaticReadonly" />
+      <UserRule Inspect="True" Prefix="" Suffix="" Style="aa_bb" StaticnessKind="Static, Instance" AccessRight="Public" Description="MSpec contexts">
+        <ElementKinds />
+      </UserRule>
+      <UserRule Inspect="True" Prefix="" Suffix="" Style="aa_bb" StaticnessKind="Instance" AccessRight="Private, Protected, ProtectedInternal, Internal, Public" Description="MSpec supporting fields">
+        <ElementKinds />
+      </UserRule>
+      <UserRule Inspect="True" Prefix="should_" Suffix="" Style="aa_bb" StaticnessKind="Instance" AccessRight="Private, Protected, ProtectedInternal, Internal, Public" Description="MSpec specifications">
+        <ElementKinds />
+      </UserRule>
+    </Naming2>
+  </CodeStyleSettings>
+</Configuration>

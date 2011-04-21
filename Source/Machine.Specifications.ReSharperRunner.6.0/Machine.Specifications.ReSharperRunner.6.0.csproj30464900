@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5ED0B02E-7E2D-413D-ABE9-6DB07116E2CE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Machine.Specifications.ReSharperRunner</RootNamespace>
+    <AssemblyName>Machine.Specifications.ReSharperRunner.6.0</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <AddAdditionalExplicitAssemblyReferences>False</AddAdditionalExplicitAssemblyReferences>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Build\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;RESHARPER_5</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Build\Release\</OutputPath>
+    <DefineConstants>TRACE;RESHARPER_5</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="JetBrains.Platform.ReSharper.ComponentModel">
+      <HintPath>..\..\Libraries\ReSharper\6.0\JetBrains.Platform.ReSharper.ComponentModel.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.DocumentManager">
+      <HintPath>..\..\Libraries\ReSharper\6.0\JetBrains.Platform.ReSharper.DocumentManager.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.IDE">
+      <HintPath>..\..\Libraries\ReSharper\6.0\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.Metadata">
+      <HintPath>..\..\Libraries\ReSharper\6.0\JetBrains.Platform.ReSharper.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.ProjectModel">
+      <HintPath>..\..\Libraries\ReSharper\6.0\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.Shell">
+      <HintPath>..\..\Libraries\ReSharper\6.0\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.UI">
+      <HintPath>..\..\Libraries\ReSharper\6.0\JetBrains.Platform.ReSharper.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.Util">
+      <HintPath>..\..\Libraries\ReSharper\6.0\JetBrains.Platform.ReSharper.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Feature.Services">
+      <HintPath>..\..\Libraries\ReSharper\6.0\JetBrains.ReSharper.Feature.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Features.Common">
+      <HintPath>..\..\Libraries\ReSharper\6.0\JetBrains.ReSharper.Features.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Psi">
+      <HintPath>..\..\Libraries\ReSharper\6.0\JetBrains.ReSharper.Psi.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.TaskRunnerFramework">
+      <HintPath>..\..\Libraries\ReSharper\6.0\JetBrains.ReSharper.TaskRunnerFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.UnitTestExplorer">
+      <HintPath>..\..\Libraries\ReSharper\6.0\JetBrains.ReSharper.UnitTestExplorer.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.UnitTestFramework">
+      <HintPath>..\..\Libraries\ReSharper\6.0\JetBrains.ReSharper.UnitTestFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\ElementHandlers\BehaviorElementHandler.cs">
+      <Link>Explorers\ElementHandlers\BehaviorElementHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\ElementHandlers\ContextElementHandler.cs">
+      <Link>Explorers\ElementHandlers\ContextElementHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\ElementHandlers\ContextSpecificationElementHandler.cs">
+      <Link>Explorers\ElementHandlers\ContextSpecificationElementHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\ElementHandlers\IElementHandler.cs">
+      <Link>Explorers\ElementHandlers\IElementHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\ContextCache.cs">
+      <Link>Factories\ContextCache.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\UnitTestTaskFactory.cs">
+      <Link>Factories\UnitTestTaskFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\MetadataExtensions.cs">
+      <Link>MetadataExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\PsiExtensions.cs">
+      <Link>PsiExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\machine.specifications.resharperrunner.4.1\runners\notifications\BehaviorSpecificationRemoteTaskNotification.cs">
+      <Link>Runners\Notifications\BehaviorSpecificationRemoteTaskNotification.cs</Link>
+    </Compile>
+    <Compile Include="..\machine.specifications.resharperrunner.4.1\runners\notifications\ContextSpecificationRemoteTaskNotification.cs">
+      <Link>Runners\Notifications\ContextSpecificationRemoteTaskNotification.cs</Link>
+    </Compile>
+    <Compile Include="..\machine.specifications.resharperrunner.4.1\runners\notifications\RemoteTaskNotification.cs">
+      <Link>Runners\Notifications\RemoteTaskNotification.cs</Link>
+    </Compile>
+    <Compile Include="..\machine.specifications.resharperrunner.4.1\runners\notifications\RemoteTaskNotificationFactory.cs">
+      <Link>Runners\Notifications\RemoteTaskNotificationFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\Notifications\SilentRemoteTaskNotification.cs">
+      <Link>Runners\Notifications\SilentRemoteTaskNotification.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\PerContextRunListener.cs">
+      <Link>Runners\PerContextRunListener.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\RecursiveMSpecTaskRunner.cs">
+      <Link>Runners\RecursiveMSpecTaskRunner.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\VersionCompatibilityChecker.cs">
+      <Link>Runners\VersionCompatibilityChecker.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\BehaviorSpecificationTask.cs">
+      <Link>Tasks\BehaviorSpecificationTask.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\BehaviorTask.cs">
+      <Link>Tasks\BehaviorTask.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\ContextSpecificationTask.cs">
+      <Link>Tasks\ContextSpecificationTask.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\ContextTask.cs">
+      <Link>Tasks\ContextTask.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\Task.cs">
+      <Link>Tasks\Task.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\UnitTestElementComparer.cs">
+      <Link>UnitTestElementComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.5\MSpecElementNaming.cs">
+      <Link>MSpecElementNaming.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.5\Presentation\Presenter.cs">
+      <Link>Presentation\Presenter.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.5\PsiExtensions.4.5.cs">
+      <Link>PsiExtensions.4.5.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.5\Runners\ExceptionResultConverter.cs">
+      <Link>Runners\ExceptionResultConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Explorers\AssemblyExplorer.cs">
+      <Link>Explorers\AssemblyExplorer.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Explorers\FileExplorer.cs">
+      <Link>Explorers\FileExplorer.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Factories\BehaviorFactory.cs">
+      <Link>Factories\BehaviorFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Factories\BehaviorSpecificationFactory.cs">
+      <Link>Factories\BehaviorSpecificationFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Factories\ContextFactory.cs">
+      <Link>Factories\ContextFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Factories\ContextSpecificationFactory.cs">
+      <Link>Factories\ContextSpecificationFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\MetadataExtensions.5.0.cs">
+      <Link>MetadataExtensions.5.0.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\MSpecUnitTestProvider.cs">
+      <Link>MSpecUnitTestProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Presentation\BehaviorElement.cs">
+      <Link>Presentation\BehaviorElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Presentation\BehaviorSpecificationElement.cs">
+      <Link>Presentation\BehaviorSpecificationElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Presentation\ContextElement.cs">
+      <Link>Presentation\ContextElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Presentation\ContextSpecificationElement.cs">
+      <Link>Presentation\ContextSpecificationElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Presentation\Element.cs">
+      <Link>Presentation\Element.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Presentation\FieldElement.cs">
+      <Link>Presentation\FieldElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Tasks\Task.5.0.cs">
+      <Link>Tasks\Task.5.0.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj">
+      <Project>{CCD02629-1262-4F78-9E9F-AC97B942D0E7}</Project>
+      <Name>Machine.Specifications</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="InstallResharperRunner.5.1 - VS2008.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="InstallResharperRunner.5.1 - VS2010.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

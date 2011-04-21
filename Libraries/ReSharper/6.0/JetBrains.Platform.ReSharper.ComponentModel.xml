@@ -1,0 +1,178 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JetBrains.Platform.ReSharper.ComponentModel</name>
+    </assembly>
+    <members>
+        <member name="T:JetBrains.Application.Components.ComponentContainer">
+            <summary>
+            Base class for component containers. Provides storage for components and initialization services
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.Components.IComponentContainer">
+            <summary>
+            Interface for abstract component container
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Components.ComponentContainer.myInterfaceMap">
+            <summary>
+            Looks up implementation type by interface type
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Components.ComponentContainer.myId">
+            <summary>
+            Container ID for diagnostics
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Components.ComponentContainer.myLifetime">
+            <summary>
+            Lifetime of this container
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Components.ComponentContainer.myChainedContainers">
+            <summary>
+            Containers to chain to
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Components.ComponentContainer.myDispatcher">
+            <summary>
+            Marks the container's thread affinity.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Components.ComponentContainer.myState">
+            <summary>
+            Current livetime state for this container
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Components.ComponentContainer.Compose">
+            <summary>
+            Initializes the components in the container.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Components.ComponentContainer.LazyDescriptor.TryExtractTypeUnderLazy(System.Type)">
+            <summary>
+            If <paramref name="typePossiblyLazy"/> is a lazy type, extracts the type it lazily creates (its generic parameterization type).
+            In case it looks like lazy but is not lazy (e.g. from newer system libs), issues an exception.
+            If it's just clearly a non-Lazy type, yields NULL.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Components.CatalogueComponentContainer.myCatalogueSet">
+            <summary>
+            Catalogue set used to retrieve parts from
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Components.CatalogueComponentContainer.mySelector">
+            <summary>
+            Selects subset of parts to instantiate, e.g. handles parts overrides
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Components.CatalogueComponentContainer.myPartsFilter">
+            <summary>
+            Filter applied to select parts for this component container
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Components.CatalogueComponentContainer.AttachParts(JetBrains.DataFlow.Lifetime,System.Collections.Generic.IEnumerable{JetBrains.Application.Parts.PartCatalogueType})">
+            <summary>
+            The sink sees new items in the collection view.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Components.ComponentState.Null">
+            <summary>
+            The component has just been created, it has not been initialized yet.
+            Cannot be returned from GetComponent in this state.
+            If queried from the Primary thread, initializes the component; on other threads, fails.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Components.ComponentState.Initializing">
+            <summary>
+            We're currently initializing the component.
+            Can be queried on the Primary thread only if there're no nested component initializations (because such a condition means a circular dependency); on other threads, fails.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Components.ComponentState.Initialized">
+            <summary>
+            The component has been initialized and its instance is accessible from any thread.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Components.ComponentState.Corrupted">
+            <summary>
+            We attempted to init the component, but it has failed to complete its Init.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Components.ComponentState.Disposing">
+            <summary>
+            The component is currently being disposed
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Components.ComponentState.Disposed">
+            <summary>
+            The component was disposed and no longer accessible 
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Components.FactoryComponentContainer.CreateInstance``1(JetBrains.DataFlow.Lifetime,JetBrains.Application.Components.IComponentContainer,System.Object[])">
+            <summary>
+            Creates an object instance of type <typeparamref name="TInstance"/>, injecting it with custom <paramref name="args">arguments</paramref> and components from the <paramref name="parent">parent container</paramref>.
+            </summary>
+            <typeparam name="TInstance">Type of the object to create.</typeparam>
+            <param name="lifetime">Defines the lifetime for the object that will be created. The object gets it in the constructor.</param>
+            <param name="parent">The parent component container to define the set of components that could be imported in the object constructor.</param>
+            <param name="args">Additional custom actual parameters to be passed to the object constructor. These take precedence over parent container components. Note that currently there is no indication of unused parameters.</param>
+            <returns>The new instance.</returns>
+        </member>
+        <member name="M:JetBrains.Application.Components.FactoryComponentContainer.CreateInstance(JetBrains.DataFlow.Lifetime,System.Type,JetBrains.Application.Components.IComponentContainer,System.Object[])">
+            <summary>
+            Creates an object instance of type <paramref name="objecttype"/>, injecting it with custom <paramref name="args">arguments</paramref> and components from the <paramref name="parent">parent container</paramref>.
+            </summary>
+            <param name="lifetime">Defines the lifetime for the object that will be created. The object gets it in the constructor.</param>
+            <param name="objecttype">Type of the object to create.</param>
+            <param name="parent">The parent component container to define the set of components that could be imported in the object constructor.</param>
+            <param name="args">Additional custom actual parameters to be passed to the object constructor. These take precedence over parent container components. Note that currently there is no indication of unused parameters.</param>
+            <returns>The new instance.</returns>
+        </member>
+        <member name="T:JetBrains.Application.Components.DeferredComponentDescriptor">
+            <summary>
+            Defers evaluation of the component instance until it's resolved.
+            Could be used e.g. for deferring VS service query (and loading corresponding VS packages) until we actually need the service.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Components.ComponentContainerEx.TryGetComponent``1(JetBrains.Application.Components.IComponentContainer)">
+            <summary>
+            Gets the component whose interface type is <typeparamref name="TInterface"/>.
+            Returns <c>Null</c> if there is no such component, or there are multiple components
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Components.ComponentContainerState.Initial">
+            <summary>
+            The container has just been created and is not ready for creating the components yet. Call <see cref="M:JetBrains.Application.Components.ComponentContainer.Compose"/> to proceed.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Components.ComponentContainerState.Initialized">
+            <summary>
+            The container is running. The first pack of components has been created.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Components.ComponentContainerState.Disposing">
+            <summary>
+            <see cref="M:System.IDisposable.Dispose"/> has been called on the container, and it's currently in the process of tearing down the components.
+            </summary>
+        </member>
+        <member name="F:JetBrains.Application.Components.ComponentContainerState.Disposed">
+            <summary>
+            The container has destroyed all of the components and is functional no more.
+            </summary>
+        </member>
+        <member name="T:JetBrains.Application.Components.IComponent">
+            <summary>
+            Base component interface.
+            </summary>
+        </member>
+        <member name="M:JetBrains.Application.Components.IComponent.Init">
+            <summary>
+            <para>Initializes the component. Called by the component container after the component is created.</para>
+            <para><see cref="M:System.IDisposable.Dispose"/> is the pairing method that's guaranteed to be called by the component container to tear down your component.</para>
+            <para>You must not access other components before your <see cref="M:JetBrains.Application.Components.IComponent.Init"/> method is called.</para>
+            <para>All of the components that you access from <see cref="M:JetBrains.Application.Components.IComponent.Init"/> are guaranteed to exist when your <see cref="M:System.IDisposable.Dispose"/> is called. Any other component might be missing by that time, and trying to get it will throw an exception.</para>
+            </summary>
+        </member>
+    </members>
+</doc>

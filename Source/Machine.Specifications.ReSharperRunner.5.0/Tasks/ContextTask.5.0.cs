@@ -4,7 +4,7 @@ using JetBrains.ReSharper.TaskRunnerFramework;
 
 namespace Machine.Specifications.ReSharperRunner.Tasks
 {
-	internal partial class ContextTask : IUnitTestRemoteTask
+	internal partial class ContextTask : IUnitTestRemoteTask 
 	{
 		public string TypeName
 		{

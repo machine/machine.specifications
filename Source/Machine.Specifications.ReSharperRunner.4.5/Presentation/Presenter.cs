@@ -8,6 +8,10 @@ using JetBrains.ReSharper.UnitTestFramework.UI;
 #else
 using JetBrains.ReSharper.UnitTestExplorer;
 #endif
+#if RESHARPER_6
+using JetBrains.ReSharper.UnitTestFramework;
+using JetBrains.ReSharper.UnitTestFramework.UI;
+#endif
 using JetBrains.TreeModels;
 using JetBrains.UI.TreeView;
 

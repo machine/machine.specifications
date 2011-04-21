@@ -1,14 +1,12 @@
 using System;
 using System.Linq;
-
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Util;
-using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.Text;
-
 using Machine.Specifications.Utility;
 using Machine.Specifications.Utility.Internal;
+using JetBrains.ReSharper.UnitTestFramework;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {

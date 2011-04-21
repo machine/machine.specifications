@@ -4,6 +4,9 @@ using System.Linq;
 using JetBrains.Application;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
+#if RESHARPER_6
+using JetBrains.ReSharper.TaskRunnerFramework.UnitTesting;
+#endif
 using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.Util;
 

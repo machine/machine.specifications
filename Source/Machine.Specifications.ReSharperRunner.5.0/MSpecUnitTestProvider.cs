@@ -10,6 +10,11 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.TaskRunnerFramework;
+#if RESHARPER_6
+using JetBrains.ReSharper.TaskRunnerFramework.UnitTesting;
+using JetBrains.ReSharper.UnitTestExplorer;
+using System.Xml;
+#endif
 using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.ReSharper.UnitTestFramework.UI;
 using JetBrains.ReSharper.UnitTestExplorer;
@@ -53,12 +58,20 @@ namespace Machine.Specifications.ReSharperRunner
       get { return Resources.Logo; }
     }
 
+#if RESHARPER_6
+    public string Serialize(XmlElement element)
+#else
     public string Serialize(UnitTestElement element)
+#endif
     {
       return null;
     }
 
+#if RESHARPER_6
+    public XmlElement Deserialize(ISolution solution, string elementString)
+#else
     public UnitTestElement Deserialize(ISolution solution, string elementString)
+#endif
     {
       return null;
     }

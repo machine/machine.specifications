@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
 using JetBrains.ReSharper.Psi.Tree;
-#if RESHARPER_5
+#if RESHARPER_5 || RESHARPER_6
 using JetBrains.ReSharper.UnitTestFramework;
 #else
 using JetBrains.ReSharper.UnitTestExplorer;
@@ -20,7 +20,11 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
       _contextSpecificationFactory = contextSpecificationFactory;
     }
 
+#if RESHARPER_6
+    public bool Accepts(ITreeNode element)
+#else
     public bool Accepts(IElement element)
+#endif
     {
       IDeclaration declaration = element as IDeclaration;
       if (declaration == null)
@@ -31,7 +35,11 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
       return declaration.DeclaredElement.IsSpecification();
     }
 
+#if RESHARPER_6
+    public IEnumerable<UnitTestElementDisposition> AcceptElement(ITreeNode element, IFile file)
+#else
     public IEnumerable<UnitTestElementDisposition> AcceptElement(IElement element, IFile file)
+#endif 
     {
       IDeclaration declaration = (IDeclaration)element;
       var contextSpecificationElement =

@@ -6,28 +6,27 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.UnitTestExplorer;
 using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.Util;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
-
   internal abstract class Element : UnitTestElement
   {
     readonly string _declaringTypeName;
     readonly ProjectModelElementEnvoy _projectEnvoy;
 
     protected Element(IUnitTestProvider provider,
-
                       UnitTestElement parent,
-                      ProjectModelElementEnvoy projectEnvoy,
+                      IProjectModelElement project,
                       string declaringTypeName,
                       bool isIgnored)
       : base(provider, parent)
     {
-      if (projectEnvoy == null && !Shell.Instance.IsTestShell)
+      if (project == null && !Shell.Instance.IsTestShell)
       {
-        throw new ArgumentNullException("projectEnvoy");
+        throw new ArgumentNullException("project");
       }
 
       if (declaringTypeName == null)
@@ -35,7 +34,11 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
         throw new ArgumentNullException("declaringTypeName");
       }
 
-      _projectEnvoy = projectEnvoy;
+      if (project != null)
+      {
+        _projectEnvoy = new ProjectModelElementEnvoy(project);
+      }
+
       _declaringTypeName = declaringTypeName;
 
       if (isIgnored)
@@ -64,7 +67,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
       using (ReadLockCookie.Create())
       {
-        IDeclarationsScope scope = DeclarationsScopeFactory.SolutionScope(solution, false);
+        DeclarationsCacheScope scope = DeclarationsCacheScope.SolutionScope(solution, false);
         IDeclarationsCache cache = PsiManager.GetInstance(solution).GetDeclarationsCache(scope, true);
         return cache.GetTypeElementByCLRName(_declaringTypeName);
       }
@@ -96,7 +99,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       IDeclaredElement element = GetDeclaredElement();
       if (element == null || !element.IsValid())
       {
-        return UnitTestElementDisposition.InvalidDisposition;
+        return UnitTestElementDisposition.ourInvalidDisposition;
       }
 
       var locations = new List<UnitTestElementLocation>();
@@ -106,7 +109,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
           if (file != null)
           {
             locations.Add(new UnitTestElementLocation(file.ProjectFile,
-                                                      declaration.GetNavigationRange().TextRange,
+                                                      declaration.GetNameRange(),
                                                       declaration.GetDocumentRange().TextRange));
           }
         });

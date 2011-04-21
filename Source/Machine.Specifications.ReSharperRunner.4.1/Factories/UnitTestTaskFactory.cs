@@ -5,6 +5,10 @@ using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.ReSharper.UnitTestExplorer;
 #endif
 
+#if RESHARPER_6
+using JetBrains.ReSharper.TaskRunnerFramework.UnitTesting;
+#endif
+
 using Machine.Specifications.ReSharperRunner.Presentation;
 using Machine.Specifications.ReSharperRunner.Tasks;
 
