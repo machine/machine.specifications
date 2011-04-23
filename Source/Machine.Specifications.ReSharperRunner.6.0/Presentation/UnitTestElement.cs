@@ -40,11 +40,6 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
             // TODO: HADI
             var unitTestTasks = new List<UnitTestTask>();
 
-            //                        {
-            //                            new UnitTestTask(null, new XunitTestAssemblyTask(AssemblyLocation)),
-            //                            new UnitTestTask(this, new XunitTestClassTask(AssemblyLocation, TypeName, Explicit))
-            //                        };
-            //
             return unitTestTasks;
         }
 
