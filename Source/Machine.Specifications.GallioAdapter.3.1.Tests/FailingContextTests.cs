@@ -85,7 +85,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
       stream.ShouldNotBeNull();
       string content = stream.ToString();      
 
-      content.ShouldContain("Should");
+      content.ShouldContain("Expected");
       content.ShouldContain("1");
       content.ShouldContain("2");
     }

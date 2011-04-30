@@ -15,12 +15,4 @@
     <iconUrl>http://github.com/machine/machine.specifications/raw/master/Misc/Machine.Specifications-32x32.png</iconUrl>
     <tags>test unit testing context specification bdd tdd</tags>
   </metadata>
-  <files>
-    <file src="**\Machine.Specifications.dll" target="lib" />
-    <file src="**\Machine.Specifications.pdb" target="lib" />
-    <file src="**\Machine.Specifications.dll.tdnet" target="lib" />
-    <file src="**\Machine.Specifications.TDNetRunner.dll" target="lib" />
-    <file src="**\Machine.Specifications.TDNetRunner.pdb" target="lib" />
-    <file src="**\*.*" target="tools" />
-  </files>
 </package>

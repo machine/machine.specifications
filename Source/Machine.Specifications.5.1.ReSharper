@@ -1,0 +1,1429 @@
+<Configuration>
+  <CodeAnnotations>
+    <Namespace>JetBrains.Annotations</Namespace>
+    <Namespace>Machine.Specifications.Annotations</Namespace>
+    <DefaultNamespace>JetBrains.Annotations</DefaultNamespace>
+  </CodeAnnotations>
+  <CodeStyleSettings>
+    <ExternalPath IsNull="False">
+    </ExternalPath>
+    <Sharing>SOLUTION</Sharing>
+    <AgentSmithCSharpStyleSettings version="1">
+      <CodeStyleSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <CustomDictionaries>
+          <Dictionaries />
+        </CustomDictionaries>
+        <StringsDictionary>en-US</StringsDictionary>
+        <IdentifierDictionary>en-US</IdentifierDictionary>
+        <LastSelectedCustomDictionary>en-US</LastSelectedCustomDictionary>
+        <CommentsSettings>
+          <DictionaryName>en-US</DictionaryName>
+          <CommentMatch>
+            <Match>
+              <AccessLevel>Public Protected ProtectedInternal</AccessLevel>
+              <Declaration>Any</Declaration>
+              <IsReadOnly>Maybe</IsReadOnly>
+              <IsStatic>Maybe</IsStatic>
+              <ParamDirection>Any</ParamDirection>
+            </Match>
+          </CommentMatch>
+          <SuppressIfBaseHasComment>false</SuppressIfBaseHasComment>
+          <MaxLineLength>80</MaxLineLength>
+        </CommentsSettings>
+        <NamingConventionSettings>
+          <Rules>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Namespace</Declaration>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Namespaces should be in Pascal.</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes>
+                <string>_</string>
+              </MustNotHavePrefixes>
+              <Rule>Pascal</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Class</Declaration>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Enum</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Delegate</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Enum</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Struct</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Class</Declaration>
+                  <InheritedFrom />
+                  <MarkedWithAttribute>Machine.Specifications.SubjectAttribute</MarkedWithAttribute>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                  <Namespace />
+                </Match>
+              </NotMatches>
+              <Description>Types should be in Pascal.</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes>
+                <string>_</string>
+              </MustNotHavePrefixes>
+              <Rule>Pascal</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Interface</Declaration>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Interfaces should be in Pascal and start with "I".</Description>
+              <MustHavePrefixes>
+                <string>I</string>
+              </MustHavePrefixes>
+              <MustNotHavePrefixes />
+              <Rule>Pascal</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Property</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <IsOfType />
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Method</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Event</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <IsOfType />
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches>
+                <Match>
+                  <AccessLevel>Protected</AccessLevel>
+                  <Declaration>Method</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </NotMatches>
+              <Description>Properties, methods and events should be in Pascal.</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes>
+                <string>_</string>
+              </MustNotHavePrefixes>
+              <Rule>Pascal</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Field</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>True</IsStatic>
+                  <IsOfType />
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Property</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>True</IsStatic>
+                  <IsOfType />
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Static fields and properties should be in Pascal.</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>Pascal</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>true</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Constant</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <IsOfType />
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Constants should be in Pascal.</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes>
+                <string>_</string>
+              </MustNotHavePrefixes>
+              <Rule>Pascal</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Private Internal Protected ProtectedInternal</AccessLevel>
+                  <Declaration>Field</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <IsOfType />
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Field</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>True</IsStatic>
+                  <IsOfType />
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Field</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <IsOfType>Machine.Specifications.It</IsOfType>
+                  <ParamDirection>Any</ParamDirection>
+                  <Namespace />
+                </Match>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Field</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <IsOfType>Machine.Specifications.Establish</IsOfType>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Field</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <IsOfType>Machine.Specifications.Because</IsOfType>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Field</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <IsOfType>Machine.Specifications.Cleanup</IsOfType>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </NotMatches>
+              <Description>Fields should be underscore Camel.</Description>
+              <MustHavePrefixes>
+                <string>_</string>
+              </MustHavePrefixes>
+              <MustNotHavePrefixes />
+              <Rule>Camel</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Public</AccessLevel>
+                  <Declaration>Field</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <IsOfType />
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Public fields should be in Pascal.</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes>
+                <string>_</string>
+              </MustNotHavePrefixes>
+              <Rule>Pascal</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Variable</Declaration>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Variables should be in Camel.</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes>
+                <string>_</string>
+              </MustNotHavePrefixes>
+              <Rule>Camel</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Parameter</Declaration>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Parameters should be in Camel.</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes>
+                <string>_</string>
+              </MustNotHavePrefixes>
+              <Rule>Camel</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Any</Declaration>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Acronyms should not have more than 2 characters.</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>MatchesRegex</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes />
+              <Regex>^(?&gt;([A-Z]{0,2})([A-Z][^A-Z]|$)|[^A-Z]+)*$</Regex>
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Event</Declaration>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Events should not have "Before" or "After" prefix.</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes>
+                <string>Before</string>
+                <string>After</string>
+              </MustNotHavePrefixes>
+              <Rule>None</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Event</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <IsOfType />
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Events should not have "Pre" or "Post" prefix.</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes>
+                <string>Pre</string>
+                <string>Post</string>
+              </MustNotHavePrefixes>
+              <Rule>None</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Enum</Declaration>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Enumerations should not end with "Enum".</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>None</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes>
+                <string>Enum</string>
+              </MustNotHaveSuffixes>
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Enum</Declaration>
+                  <MarkedWithAttribute>System.FlagsAttribute</MarkedWithAttribute>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Flags enums should have plural names.</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>None</Rule>
+              <MustHaveSuffixes>
+                <string>s</string>
+              </MustHaveSuffixes>
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Enum</Declaration>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Enum</Declaration>
+                  <MarkedWithAttribute>System.FlagsAttribute</MarkedWithAttribute>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </NotMatches>
+              <Description>Enums that are not flags should not have plural names.</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>None</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes>
+                <string>s</string>
+              </MustNotHaveSuffixes>
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>EnumerationMember</Declaration>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Do not name enumerations "reserved".</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>NotMatchesRegex</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes />
+              <Regex>(?&lt;remove&gt;(reserved|Reserved))</Regex>
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>EnumerationMember</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Enumeration member should be in Pascal.</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>Pascal</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Class</Declaration>
+                  <InheritedFrom>System.Attribute</InheritedFrom>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Attribute should end with "Attribute".</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>None</Rule>
+              <MustHaveSuffixes>
+                <string>Attribute</string>
+              </MustHaveSuffixes>
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Class</Declaration>
+                  <InheritedFrom>System.EventArgs</InheritedFrom>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>EventArgs should end with "EventArgs".</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>None</Rule>
+              <MustHaveSuffixes>
+                <string>EventArgs</string>
+              </MustHaveSuffixes>
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Class</Declaration>
+                  <InheritedFrom>System.Exception</InheritedFrom>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Exceptions should end with "Exception".</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>None</Rule>
+              <MustHaveSuffixes>
+                <string>Exception</string>
+              </MustHaveSuffixes>
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Class</Declaration>
+                  <InheritedFrom>System.Collections.Stack</InheritedFrom>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Class</Declaration>
+                  <InheritedFrom>System.Collections.Generic.Stack</InheritedFrom>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Stacks should end with "Collection" or "Stack".</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>None</Rule>
+              <MustHaveSuffixes>
+                <string>Collection</string>
+                <string>Stack</string>
+              </MustHaveSuffixes>
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Class</Declaration>
+                  <InheritedFrom>System.Collections.Queue</InheritedFrom>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Queues should end with "Collection" or "Queue".</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>None</Rule>
+              <MustHaveSuffixes>
+                <string>Collection</string>
+                <string>Queue</string>
+              </MustHaveSuffixes>
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>true</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Class</Declaration>
+                  <InheritedFrom>System.Collections.ICollection</InheritedFrom>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Class</Declaration>
+                  <InheritedFrom>System.Collections.IEnumerable</InheritedFrom>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Class</Declaration>
+                  <InheritedFrom>System.Collections.Generic.ICollection</InheritedFrom>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Class</Declaration>
+                  <InheritedFrom>System.Collections.Stack</InheritedFrom>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Class</Declaration>
+                  <InheritedFrom>System.Collections.Queue</InheritedFrom>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Class</Declaration>
+                  <InheritedFrom>System.Collections.Generic.Stack</InheritedFrom>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </NotMatches>
+              <Description>Collections should end with "Collection".</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>None</Rule>
+              <MustHaveSuffixes>
+                <string>Collection</string>
+              </MustHaveSuffixes>
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>true</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Class</Declaration>
+                  <InheritedFrom>System.Collections.IDictionary</InheritedFrom>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Class</Declaration>
+                  <InheritedFrom>System.Collections.Generic.IDictionary</InheritedFrom>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Dictionaries should end with "Dictionary".</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>None</Rule>
+              <MustHaveSuffixes>
+                <string>Dictionary</string>
+              </MustHaveSuffixes>
+              <MustNotHaveSuffixes />
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Class</Declaration>
+                  <InheritedFrom />
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Interface</Declaration>
+                  <InheritedFrom />
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Delegate</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Consider another name replacing "Manager".</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>None</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes>
+                <string>Manager</string>
+              </MustNotHaveSuffixes>
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Class</Declaration>
+                  <InheritedFrom />
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Classes should not end with "Class".</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>None</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes>
+                <string>Class</string>
+              </MustNotHaveSuffixes>
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Struct</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Structs should not end with "Struct"</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>None</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes>
+                <string>Struct</string>
+              </MustNotHaveSuffixes>
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Delegate</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>Delegates should not end with "Delegate".</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>None</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes>
+                <string>Delegate</string>
+              </MustNotHaveSuffixes>
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>true</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Any</Declaration>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                  <Namespace />
+                </Match>
+              </Matches>
+              <NotMatches>
+                <Match>
+                  <AccessLevel>None</AccessLevel>
+                  <Declaration>Namespace</Declaration>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Private Internal Protected ProtectedInternal</AccessLevel>
+                  <Declaration>Field</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <IsOfType />
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Private Internal Protected ProtectedInternal</AccessLevel>
+                  <Declaration>Method</Declaration>
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Class</Declaration>
+                  <InheritedFrom />
+                  <MarkedWithAttribute>Machine.Specifications.SubjectAttribute</MarkedWithAttribute>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                  <Namespace />
+                </Match>
+              </NotMatches>
+              <Description>Names should not contain the underscore character.</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>NotMatchesRegex</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes />
+              <Regex>(?&lt;remove&gt;_)</Regex>
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Any</Declaration>
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Interface</Declaration>
+                  <InheritedFrom />
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </NotMatches>
+              <Description>"ID" should be spelled "Id".</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>NotMatchesRegex</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes />
+              <Regex>ID</Regex>
+            </NamingConventionRule>
+            <NamingConventionRule>
+              <IsDisabled>false</IsDisabled>
+              <Matches>
+                <Match>
+                  <AccessLevel>Any</AccessLevel>
+                  <Declaration>Interface</Declaration>
+                  <InheritedFrom />
+                  <MarkedWithAttribute />
+                  <IsReadOnly>Maybe</IsReadOnly>
+                  <IsStatic>Maybe</IsStatic>
+                  <ParamDirection>Any</ParamDirection>
+                </Match>
+              </Matches>
+              <NotMatches />
+              <Description>"ID" should be spelled "Id".</Description>
+              <MustHavePrefixes />
+              <MustNotHavePrefixes />
+              <Rule>NotMatchesRegex</Rule>
+              <MustHaveSuffixes />
+              <MustNotHaveSuffixes />
+              <Regex>I.*ID</Regex>
+            </NamingConventionRule>
+          </Rules>
+          <Exclusions />
+        </NamingConventionSettings>
+        <IdentifiersToSpellCheck>
+          <Match>
+            <AccessLevel>Public Protected ProtectedInternal</AccessLevel>
+            <Declaration>Any</Declaration>
+            <IsReadOnly>Maybe</IsReadOnly>
+            <IsStatic>Maybe</IsStatic>
+            <ParamDirection>Any</ParamDirection>
+          </Match>
+        </IdentifiersToSpellCheck>
+        <PatternsToIgnore>
+          <string>(?#email)\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*</string>
+          <string>(?#url)http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&amp;=]*)?</string>
+        </PatternsToIgnore>
+      </CodeStyleSettings>
+    </AgentSmithCSharpStyleSettings>
+    <CSharp>
+      <FormatSettings>
+        <ALIGN_FIRST_ARG_BY_PAREN>True</ALIGN_FIRST_ARG_BY_PAREN>
+        <ANONYMOUS_METHOD_DECLARATION_BRACES>NEXT_LINE</ANONYMOUS_METHOD_DECLARATION_BRACES>
+        <BLANK_LINES_BETWEEN_USING_GROUPS>1</BLANK_LINES_BETWEEN_USING_GROUPS>
+        <BLANK_LINES_INSIDE_REGION>0</BLANK_LINES_INSIDE_REGION>
+        <CASE_BLOCK_BRACES>NEXT_LINE</CASE_BLOCK_BRACES>
+        <EXPLICIT_INTERNAL_MODIFIER>False</EXPLICIT_INTERNAL_MODIFIER>
+        <EXPLICIT_PRIVATE_MODIFIER>False</EXPLICIT_PRIVATE_MODIFIER>
+        <FORCE_ATTRIBUTE_STYLE>SEPARATE</FORCE_ATTRIBUTE_STYLE>
+        <FORCE_FIXED_BRACES_STYLE>ALWAYS_ADD</FORCE_FIXED_BRACES_STYLE>
+        <FORCE_FOR_BRACES_STYLE>ALWAYS_ADD</FORCE_FOR_BRACES_STYLE>
+        <FORCE_FOREACH_BRACES_STYLE>ALWAYS_ADD</FORCE_FOREACH_BRACES_STYLE>
+        <FORCE_IFELSE_BRACES_STYLE>ALWAYS_ADD</FORCE_IFELSE_BRACES_STYLE>
+        <FORCE_USING_BRACES_STYLE>ALWAYS_ADD</FORCE_USING_BRACES_STYLE>
+        <FORCE_WHILE_BRACES_STYLE>ALWAYS_ADD</FORCE_WHILE_BRACES_STYLE>
+        <INDENT_ANONYMOUS_METHOD_BLOCK>False</INDENT_ANONYMOUS_METHOD_BLOCK>
+        <INDENT_NESTED_FIXED_STMT>True</INDENT_NESTED_FIXED_STMT>
+        <INDENT_NESTED_USINGS_STMT>True</INDENT_NESTED_USINGS_STMT>
+        <INITIALIZER_BRACES>NEXT_LINE</INITIALIZER_BRACES>
+        <KEEP_BLANK_LINES_IN_CODE>1</KEEP_BLANK_LINES_IN_CODE>
+        <KEEP_BLANK_LINES_IN_DECLARATIONS>1</KEEP_BLANK_LINES_IN_DECLARATIONS>
+        <MODIFIERS_ORDER IsNull="False">
+          <Item>public</Item>
+          <Item>protected</Item>
+          <Item>internal</Item>
+          <Item>private</Item>
+          <Item>new</Item>
+          <Item>abstract</Item>
+          <Item>virtual</Item>
+          <Item>override</Item>
+          <Item>sealed</Item>
+          <Item>static</Item>
+          <Item>readonly</Item>
+          <Item>extern</Item>
+          <Item>unsafe</Item>
+          <Item>volatile</Item>
+        </MODIFIERS_ORDER>
+        <PLACE_FIELD_ATTRIBUTE_ON_SAME_LINE>False</PLACE_FIELD_ATTRIBUTE_ON_SAME_LINE>
+        <PLACE_SIMPLE_LINQ_ON_SINGLE_LINE>False</PLACE_SIMPLE_LINQ_ON_SINGLE_LINE>
+        <PLACE_WHILE_ON_NEW_LINE>True</PLACE_WHILE_ON_NEW_LINE>
+        <SIMPLE_EMBEDDED_STATEMENT_STYLE>LINE_BREAK</SIMPLE_EMBEDDED_STATEMENT_STYLE>
+        <SPACE_AROUND_MULTIPLICATIVE_OP>True</SPACE_AROUND_MULTIPLICATIVE_OP>
+        <SPACE_BEFORE_SIZEOF_PARENTHESES>False</SPACE_BEFORE_SIZEOF_PARENTHESES>
+        <SPACE_BEFORE_TYPEOF_PARENTHESES>False</SPACE_BEFORE_TYPEOF_PARENTHESES>
+        <STICK_COMMENT>False</STICK_COMMENT>
+        <WRAP_ARGUMENTS_STYLE>CHOP_IF_LONG</WRAP_ARGUMENTS_STYLE>
+        <WRAP_EXTENDS_LIST_STYLE>CHOP_IF_LONG</WRAP_EXTENDS_LIST_STYLE>
+        <WRAP_PARAMETERS_STYLE>CHOP_IF_LONG</WRAP_PARAMETERS_STYLE>
+      </FormatSettings>
+      <UsingsSettings />
+      <Naming2>
+        <EventHandlerPatternLong>$object$_On$event$</EventHandlerPatternLong>
+        <EventHandlerPatternShort>$event$Handler</EventHandlerPatternShort>
+        <ExceptionName IsNull="False">
+        </ExceptionName>
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="TypesAndNamespaces" />
+        <PredefinedRule Inspect="True" Prefix="I" Suffix="" Style="AaBb" ElementKind="Interfaces" />
+        <PredefinedRule Inspect="True" Prefix="T" Suffix="" Style="AaBb" ElementKind="TypeParameters" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="MethodPropertyEvent" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="Locals" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="LocalConstants" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="Parameters" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PublicFields" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="Constants" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="StaticReadonly" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="EnumMember" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="Other" />
+        <PredefinedRule Inspect="True" Prefix="_" Suffix="" Style="aaBb" ElementKind="PrivateInstanceFields" />
+        <PredefinedRule Inspect="True" Prefix="_" Suffix="" Style="aaBb" ElementKind="PrivateStaticFields" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PrivateConstants" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PrivateStaticReadonly" />
+      </Naming2>
+      <CustomMemberReorderingPatterns><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+
+<!--
+I. Overall
+
+I.1 Each pattern can have <Match>....</Match> element. For the given type declaration, the pattern with the match, evaluated to 'true' with the largest weight, will be used 
+I.2 Each pattern consists of the sequence of <Entry>...</Entry> elements. Type member declarations are distributed between entries
+I.3 If pattern has RemoveAllRegions="true" attribute, then all regions will be cleared prior to reordering. Otherwise, only auto-generated regions will be cleared
+I.4 The contents of each entry is sorted by given keys (First key is primary,  next key is secondary, etc). Then the declarations are grouped and en-regioned by given property
+
+II. Available match operands
+
+Each operand may have Weight="..." attribute. This weight will be added to the match weight if the operand is evaluated to 'true'.
+The default weight is 1
+
+II.1 Boolean functions:
+II.1.1 <And>....</And>
+II.1.2 <Or>....</Or>
+II.1.3 <Not>....</Not>
+
+II.2 Operands
+II.2.1 <Kind Is="..."/>. Kinds are: class, struct, interface, enum, delegate, type, constructor, destructor, property, indexer, method, operator, field, constant, event, member
+II.2.2 <Name Is="..." [IgnoreCase="true/false"] />. The 'Is' attribute contains regular expression
+II.2.3 <HasAttribute CLRName="..." [Inherit="true/false"] />. The 'CLRName' attribute contains regular expression
+II.2.4 <Access Is="..."/>. The 'Is' values are: public, protected, internal, protected internal, private
+II.2.5 <Static/>
+II.2.6 <Abstract/>
+II.2.7 <Virtual/>
+II.2.8 <Override/>
+II.2.9 <Sealed/>
+II.2.10 <Readonly/>
+II.2.11 <ImplementsInterface CLRName="..."/>. The 'CLRName' attribute contains regular expression
+II.2.12 <HandlesEvent />
+-->
+
+<Patterns xmlns="urn:shemas-jetbrains-com:member-reordering-patterns">
+
+	<!-- Order Machine.Specifications methods: static fields, Establish, Cleanup, Because, It, behaviors, everything else -->
+	<Pattern>
+		<Match>
+			<And Weight="100">
+				<Kind Is="class"/>
+				<Or>
+					<HasAttribute CLRName="Machine.Specifications.SubjectAttribute"
+								  Inherit="true"/>
+					<Name Is="^when_.+"
+						  IgnoreCase="true" />
+				</Or>
+			</And>
+		</Match>
+		<Entry>
+			<Match>
+				<And>
+					<Kind Is="field"/>
+					<Or>
+						<Access Is="protected"/>
+						<Static/>
+					</Or>
+				</And>
+			</Match>
+		</Entry>
+		<Entry>
+			<Match>
+				<And>
+					<Kind Is="field"/>
+					<Name Is="^context(_once)?$"
+						  IgnoreCase="true"/>
+				</And>
+			</Match>
+		</Entry>
+		<Entry>
+			<Match>
+				<And>
+					<Kind Is="field"/>
+					<Name Is="^of$"
+						  IgnoreCase="true"/>
+				</And>
+			</Match>
+		</Entry>
+		<Entry>
+			<Match>
+				<And>
+					<Kind Is="field"/>
+					<Name Is="^after(_all)?$"
+						  IgnoreCase="true"/>
+				</And>
+			</Match>
+		</Entry>
+		<Entry>
+			<Match>
+				<And>
+					<Kind Is="field"/>
+					<Name Is="^should_.*$"
+						  IgnoreCase="true"/>
+				</And>
+			</Match>
+		</Entry>
+		<Entry>
+			<Match>
+				<And>
+					<Kind Is="field"/>
+					<Not>
+						<Static/>
+					</Not>
+				</And>
+			</Match>
+		</Entry>
+		<!-- All other members -->
+		<Entry/>
+	</Pattern>
+
+	<!--Do not reorder COM interfaces and structs marked by StructLayout attribute-->
+	<Pattern>
+		<Match>
+			<Or Weight="100">
+				<And>
+					<Kind Is="interface"/>
+					<HasAttribute CLRName="System.Runtime.InteropServices.InterfaceTypeAttribute"/>
+				</And>
+				<HasAttribute CLRName="System.Runtime.InteropServices.StructLayoutAttribute"/>
+			</Or>
+		</Match>
+	</Pattern>
+
+	<!--Special formatting of NUnit test fixture-->
+	<Pattern RemoveAllRegions="true">
+		<Match>
+			<And Weight="100">
+				<Kind Is="class"/>
+				<HasAttribute CLRName="NUnit.Framework.TestFixtureAttribute"
+							  Inherit="true"/>
+			</And>
+		</Match>
+
+		<!--Setup/Teardow-->
+		<Entry>
+			<Match>
+				<And>
+					<Kind Is="method"/>
+					<Or>
+						<HasAttribute CLRName="NUnit.Framework.SetUpAttribute"
+									  Inherit="true"/>
+						<HasAttribute CLRName="NUnit.Framework.TearDownAttribute"
+									  Inherit="true"/>
+						<HasAttribute CLRName="NUnit.Framework.FixtureSetUpAttribute"
+									  Inherit="true"/>
+						<HasAttribute CLRName="NUnit.Framework.FixtureTearDownAttribute"
+									  Inherit="true"/>
+					</Or>
+				</And>
+			</Match>
+			<Group Region="Setup/Teardown"/>
+		</Entry>
+
+		<!--All other members-->
+		<Entry/>
+
+		<!--Test methods-->
+		<Entry>
+			<Match>
+				<And Weight="100">
+					<Kind Is="method"/>
+					<HasAttribute CLRName="NUnit.Framework.TestAttribute"
+								  Inherit="false"/>
+				</And>
+			</Match>
+			<Sort>
+				<Name/>
+			</Sort>
+		</Entry>
+	</Pattern>
+
+	<!--Default pattern-->
+	<Pattern>
+
+		<!--public delegate-->
+		<Entry>
+			<Match>
+				<And Weight="100">
+					<Access Is="public"/>
+					<Kind Is="delegate"/>
+				</And>
+			</Match>
+			<Sort>
+				<Name/>
+			</Sort>
+			<Group Region="Delegates"/>
+		</Entry>
+
+		<!--public enum-->
+		<Entry>
+			<Match>
+				<And Weight="100">
+					<Access Is="public"/>
+					<Kind Is="enum"/>
+				</And>
+			</Match>
+			<Sort>
+				<Name/>
+			</Sort>
+			<Group>
+				<Name Region="${Name} enum"/>
+			</Group>
+		</Entry>
+
+		<!--fields and constants-->
+		<Entry>
+			<Match>
+				<Or>
+					<Kind Is="constant"/>
+					<Kind Is="field"/>
+				</Or>
+			</Match>
+			<Sort>
+				<Kind Order="constant field"/>
+				<Static/>
+				<Readonly/>
+				<Name/>
+			</Sort>
+		</Entry>
+
+		<!--Constructors. Place static one first-->
+		<Entry>
+			<Match>
+				<Kind Is="constructor"/>
+			</Match>
+			<Sort>
+				<Static/>
+			</Sort>
+		</Entry>
+
+		<!--properties, indexers-->
+		<Entry>
+			<Match>
+				<Or>
+					<Kind Is="property"/>
+					<Kind Is="indexer"/>
+				</Or>
+			</Match>
+		</Entry>
+
+		<!--interface implementations-->
+		<Entry>
+			<Match>
+				<And Weight="100">
+					<Kind Is="member"/>
+					<ImplementsInterface/>
+				</And>
+			</Match>
+			<Sort>
+				<ImplementsInterface Immediate="true"/>
+			</Sort>
+<!--			<Group>
+				<ImplementsInterface Immediate="true"
+									 Region="${ImplementsInterface} Members"/>
+			</Group>-->
+		</Entry>
+
+		<!--all other members-->
+		<Entry/>
+
+		<!--nested types-->
+		<Entry>
+			<Match>
+				<Kind Is="type"/>
+			</Match>
+			<Sort>
+				<Name/>
+			</Sort>
+<!--			<Group>
+				<Name Region="Nested type: ${Name}"/>
+			</Group>-->
+		</Entry>
+	</Pattern>
+
+</Patterns>
+]]></CustomMemberReorderingPatterns>
+    </CSharp>
+    <VB>
+      <FormatSettings>
+        <BLANK_LINES_INSIDE_REGION>0</BLANK_LINES_INSIDE_REGION>
+        <KEEP_BLANK_LINES_IN_CODE>1</KEEP_BLANK_LINES_IN_CODE>
+        <KEEP_BLANK_LINES_IN_DECLARATIONS>1</KEEP_BLANK_LINES_IN_DECLARATIONS>
+        <KEEP_USER_LINEBREAKS>False</KEEP_USER_LINEBREAKS>
+        <PLACE_FIELD_ATTRIBUTE_ON_SAME_LINE>False</PLACE_FIELD_ATTRIBUTE_ON_SAME_LINE>
+        <STICK_COMMENT>False</STICK_COMMENT>
+        <WRAP_ARGUMENTS_STYLE>CHOP_IF_LONG</WRAP_ARGUMENTS_STYLE>
+        <WRAP_EXTENDS_LIST_STYLE>CHOP_IF_LONG</WRAP_EXTENDS_LIST_STYLE>
+        <WRAP_PARAMETERS_STYLE>CHOP_IF_LONG</WRAP_PARAMETERS_STYLE>
+      </FormatSettings>
+      <ImportsSettings />
+      <Naming2>
+        <EventHandlerPatternLong>$object$_On$event$</EventHandlerPatternLong>
+        <EventHandlerPatternShort>$event$Handler</EventHandlerPatternShort>
+      </Naming2>
+    </VB>
+    <Web>
+      <Naming2 />
+    </Web>
+    <Xaml>
+      <Naming2>
+        <UserRule Name="XAML_FIELD" Inspect="True" Prefix="_" Suffix="" Style="aaBb" />
+        <UserRule Name="NAMESPACE_ALIAS" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
+        <UserRule Name="XAML_RESOURCE" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
+      </Naming2>
+    </Xaml>
+    <XML>
+      <FormatSettings>
+        <ProcessingInstructionAttributesFormat>FirstAttributeOnSingleLine</ProcessingInstructionAttributesFormat>
+        <TagAttributesFormat>FirstAttributeOnSingleLine</TagAttributesFormat>
+      </FormatSettings>
+    </XML>
+    <GenerateMemberBody />
+    <Naming2>
+      <EventHandlerPatternLong>$object$_On$event$</EventHandlerPatternLong>
+      <EventHandlerPatternShort>$event$Handler</EventHandlerPatternShort>
+      <ExceptionName IsNull="False">
+      </ExceptionName>
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="TypesAndNamespaces" />
+      <PredefinedRule Inspect="True" Prefix="I" Suffix="" Style="AaBb" ElementKind="Interfaces" />
+      <PredefinedRule Inspect="True" Prefix="T" Suffix="" Style="AaBb" ElementKind="TypeParameters" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="MethodPropertyEvent" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="Locals" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="LocalConstants" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="Parameters" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PublicFields" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="Constants" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="StaticReadonly" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="EnumMember" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="Other" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PrivateStaticFields" />
+      <PredefinedRule Inspect="True" Prefix="_" Suffix="" Style="aaBb" ElementKind="PrivateInstanceFields" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PrivateConstants" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PrivateStaticReadonly" />
+      <UserRule Inspect="True" Prefix="" Suffix="" Style="aa_bb" StaticnessKind="Static, Instance" AccessRight="Public" Description="MSpec contexts">
+        <ElementKinds>
+          <Kind Name="Machine.Specifications_Context" />
+        </ElementKinds>
+      </UserRule>
+      <UserRule Inspect="True" Prefix="" Suffix="" Style="aa_bb" StaticnessKind="Instance" AccessRight="Private, Protected, ProtectedInternal, Internal, Public" Description="MSpec supporting fields">
+        <ElementKinds>
+          <Kind Name="Machine.Specifications_SupportingField" />
+        </ElementKinds>
+      </UserRule>
+      <UserRule Inspect="True" Prefix="should_" Suffix="" Style="aa_bb" StaticnessKind="Instance" AccessRight="Private, Protected, ProtectedInternal, Internal, Public" Description="MSpec specifications">
+        <ElementKinds>
+          <Kind Name="Machine.Specifications_Specification" />
+        </ElementKinds>
+      </UserRule>
+    </Naming2>
+  </CodeStyleSettings>
+</Configuration>
