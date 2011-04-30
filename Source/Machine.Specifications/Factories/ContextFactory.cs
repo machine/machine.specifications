@@ -24,12 +24,9 @@ namespace Machine.Specifications.Factories
     {
       if (fieldInfo.FieldType == typeof(It))
       {
-        return CreateContextFrom(instance, new[] { fieldInfo });
+        return CreateContextFrom(instance, new[] {fieldInfo});
       }
-      else
-      {
-        return CreateContextFrom(instance);
-      }
+      return CreateContextFrom(instance);
     }
 
     public Context CreateContextFrom(object instance)
@@ -45,8 +42,8 @@ namespace Machine.Specifications.Factories
     {
       var type = instance.GetType();
       var fieldInfos = type.GetPrivateFields();
-      List<FieldInfo> itFieldInfos = new List<FieldInfo>();
-      List<FieldInfo> itShouldBehaveLikeFieldInfos = new List<FieldInfo>();
+      var itFieldInfos = new List<FieldInfo>();
+      var itShouldBehaveLikeFieldInfos = new List<FieldInfo>();
 
       var contextClauses = ExtractPrivateFieldValues<Establish>(instance);
       contextClauses.Reverse();
@@ -76,7 +73,7 @@ namespace Machine.Specifications.Factories
                                 tags,
                                 isSetupForEachSpec);
 
-      foreach (FieldInfo info in fieldInfos)
+      foreach (var info in fieldInfos)
       {
         if (acceptedSpecificationFields.Contains(info) &&
             info.FieldType == typeof(It))
@@ -131,7 +128,7 @@ namespace Machine.Specifications.Factories
     {
       foreach (var itFieldInfo in itFieldInfos)
       {
-        Specification specification = _specificationFactory.CreateSpecification(context, itFieldInfo);
+        var specification = _specificationFactory.CreateSpecification(context, itFieldInfo);
         context.AddSpecification(specification);
       }
     }
@@ -141,7 +138,7 @@ namespace Machine.Specifications.Factories
     {
       foreach (var itShouldBehaveLikeFieldInfo in itShouldBehaveLikeFieldInfos)
       {
-        Behavior behavior = _behaviorFactory.CreateBehaviorFrom(itShouldBehaveLikeFieldInfo, context);
+        var behavior = _behaviorFactory.CreateBehaviorFrom(itShouldBehaveLikeFieldInfo, context);
 
         foreach (var specification in behavior.Specifications)
         {
@@ -150,31 +147,42 @@ namespace Machine.Specifications.Factories
       }
     }
 
+    static void CollectDetailsOf<T>(Type target, Func<object> instanceResolver, ICollection<T> items)
+    {
+      if (target == typeof(Object) || target == null)
+      {
+        return;
+      }
+      var instance = instanceResolver();
+      if (instance == null)
+      {
+        return;
+      }
+
+      var fields = target.GetPrivateFieldsWith(typeof(T));
+
+      if (fields.Count() > 1)
+      {
+        throw new SpecificationUsageException(String.Format("You cannot have more than one {0} clause in {1}",
+                                                            typeof(T).Name,
+                                                            target.FullName));
+      }
+      var field = fields.FirstOrDefault();
+
+      if (field != null)
+      {
+        var val = (T) field.GetValue(instance);
+        items.Add(val);
+      }
+      CollectDetailsOf(target.BaseType, () => instance, items);
+      CollectDetailsOf(target.DeclaringType, () => Activator.CreateInstance(target.DeclaringType), items);
+    }
+
     static List<T> ExtractPrivateFieldValues<T>(object instance)
     {
       var delegates = new List<T>();
       var type = instance.GetType();
-      while (type != null)
-      {
-        var fields = type.GetPrivateFieldsWith(typeof(T));
-
-        if (fields.Count() > 1)
-        {
-          throw new SpecificationUsageException(String.Format("You cannot have more than one {0} clause in {1}",
-                                                              typeof(T).Name,
-                                                              type.FullName));
-        }
-
-        var field = fields.FirstOrDefault();
-
-        if (field != null)
-        {
-          T val = (T) field.GetValue(instance);
-          delegates.Add(val);
-        }
-
-        type = type.BaseType;
-      }
+      CollectDetailsOf(type, () => instance, delegates);
 
       return delegates;
     }
