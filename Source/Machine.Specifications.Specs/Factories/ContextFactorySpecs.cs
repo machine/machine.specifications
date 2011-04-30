@@ -23,6 +23,21 @@ namespace Machine.Specifications.Specs.Factories
   }
 
   [Subject(typeof(ContextFactory))]
+  public class when_creating_a_context_with_a_base_concern_that_has_a_subject_attribute_on_it
+  {
+    static Context newContext;
+
+    Establish context = () =>
+    {
+      var factory = new ContextFactory();
+      newContext = factory.CreateContextFrom(new context_with_parent_with_subject());
+    };
+
+    It should_capture_the_base_concerns_subject_details = () =>
+      newContext.Subject.Type.ShouldEqual(typeof(int));
+  }
+
+  [Subject(typeof(ContextFactory))]
   public class when_creating_a_context_with_tags
   {
     static Context newContext;
