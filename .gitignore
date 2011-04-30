@@ -3,6 +3,7 @@
 _ReSharper.*
 *.user
 *.suo
+*.csproj[1-9]*
 *.cache
 *~
 *.swp

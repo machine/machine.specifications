@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Machine.Specifications;
 
 namespace Machine.Specifications.Specs
 {
@@ -120,6 +121,19 @@ namespace Machine.Specifications.Specs
 
   public class context_with_parent_with_subject : context_with_subject
   {
+  }
+
+  public class parent_context
+  {
+    It should_be_able_to_assert_something = () =>
+      true.ShouldBeTrue();
+
+    public class nested_context
+    {
+      It should_be_able_to_assert_something_else = () =>
+        false.ShouldBeFalse();
+
+    }    
   }
 
   [Tags(tag.example)]
