@@ -118,6 +118,10 @@ namespace Machine.Specifications.Specs
   {
   }
 
+  public class context_with_parent_with_subject : context_with_subject
+  {
+  }
+
   [Tags(tag.example)]
   public class context_with_failing_specs
   {
