@@ -10,14 +10,15 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Machine.Specifications.NAntTask</RootNamespace>
     <AssemblyName>Machine.Specifications.NAntTask</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\Build\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,7 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\Build\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -35,22 +36,13 @@
       <HintPath>..\..\Libraries\NAnt\NAnt.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NAntConsole.cs" />
     <Compile Include="NAntMSpecRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunner.csproj">
-      <Project>{CFF4B323-24C1-4B19-98CA-7DF92755458E}</Project>
-      <Name>Machine.Specifications.ConsoleRunner</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Machine.Specifications.Reporting\Machine.Specifications.Reporting.csproj">
       <Project>{490496AF-BEA5-4454-88B0-F73C62C22987}</Project>
       <Name>Machine.Specifications.Reporting</Name>

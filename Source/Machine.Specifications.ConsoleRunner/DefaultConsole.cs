@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Machine.Specifications.Runner;
+
 namespace Machine.Specifications.ConsoleRunner
 {
   public class DefaultConsole : IConsole

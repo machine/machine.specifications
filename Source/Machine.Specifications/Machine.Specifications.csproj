@@ -87,8 +87,10 @@
     <Compile Include="Model\BehaviorSpecification.cs" />
     <Compile Include="ComparerStrategies\NoResult.cs" />
     <Compile Include="ComparerStrategies\ObjectExtension.cs" />
+    <Compile Include="Runner\IConsole.cs" />
     <Compile Include="Runner\Impl\AssemblyRunner.cs" />
     <Compile Include="Runner\Impl\ContextRunnerFactory.cs" />
+    <Compile Include="Runner\Impl\RunListener.cs" />
     <Compile Include="Runner\Impl\RunListenerBase.cs" />
     <Compile Include="Runner\Impl\ContextRunner.cs" />
     <Compile Include="Runner\Impl\SpecAssemblyResolver.cs" />
