@@ -7,8 +7,12 @@ http://www.therightstuff.de/2008/09/16/ReSharper-Type-Members-Layout-For-MSpec-0
   <Match>
     <And Weight="100">
       <Kind Is="class"/>
-      <HasAttribute CLRName="Machine.Specifications.SubjectAttribute"
-                    Inherit="true"/>
+      <Or>
+        <HasAttribute CLRName="Machine.Specifications.SubjectAttribute"
+                Inherit="true"/>
+        <Name Is="^when_.+"
+            IgnoreCase="true" />
+      </Or>
     </And>
   </Match>
   <Entry>
@@ -35,8 +39,8 @@ http://www.therightstuff.de/2008/09/16/ReSharper-Type-Members-Layout-For-MSpec-0
     <Match>
       <And>
         <Kind Is="field"/>
-        <Name Is="^after(_all)?$"
-              IgnoreCase="true"/>
+        <Name Is="^of$"
+            IgnoreCase="true"/>
       </And>
     </Match>
   </Entry>
@@ -44,8 +48,8 @@ http://www.therightstuff.de/2008/09/16/ReSharper-Type-Members-Layout-For-MSpec-0
     <Match>
       <And>
         <Kind Is="field"/>
-        <Name Is="^of$"
-              IgnoreCase="true"/>
+        <Name Is="^after(_all)?$"
+            IgnoreCase="true"/>
       </And>
     </Match>
   </Entry>
