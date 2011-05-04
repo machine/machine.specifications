@@ -96,7 +96,9 @@
     <Content Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Machine.Specifications.GallioAdapter.plugin.template" />
+    <None Include="Machine.Specifications.GallioAdapter.plugin.template">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

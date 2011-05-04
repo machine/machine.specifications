@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4C8FE3F2-66D6-4717-8FFD-EEBB2B606E88}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Machine.Specifications.GallioAdapter</RootNamespace>
+    <AssemblyName>Machine.Specifications.GallioAdapter323</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Gallio, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\Gallio\3.2.3\Gallio.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Machine.Specifications.GallioAdapter.3.1\MachineSpecificationsFramework.cs">
+      <Link>MachineSpecificationsFramework.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.GallioAdapter.3.1\Model\MachineAssemblyTest.cs">
+      <Link>Model\MachineAssemblyTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.GallioAdapter.3.1\Model\MachineContextTest.cs">
+      <Link>Model\MachineContextTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.GallioAdapter.3.1\Model\MachineGallioTest.cs">
+      <Link>Model\MachineGallioTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.GallioAdapter.3.1\Model\MachineSpecificationTest.cs">
+      <Link>Model\MachineSpecificationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.GallioAdapter.3.1\Model\SpecificationMetadataKeys.cs">
+      <Link>Model\SpecificationMetadataKeys.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.GallioAdapter.3.1\Services\MachineSpecificationController.cs">
+      <Link>Services\MachineSpecificationController.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.GallioAdapter.3.1\Services\MachineSpecificationsDriver.cs">
+      <Link>Services\MachineSpecificationsDriver.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.GallioAdapter.3.1\Services\MachineSpecificationsExplorer.cs">
+      <Link>Services\MachineSpecificationsExplorer.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\GallioRunListener.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Machine.Specifications.GallioAdapter323.plugin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj">
+      <Project>{CCD02629-1262-4F78-9E9F-AC97B942D0E7}</Project>
+      <Name>Machine.Specifications</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
