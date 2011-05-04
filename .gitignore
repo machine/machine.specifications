@@ -3,6 +3,7 @@
 _ReSharper.*
 *.user
 *.suo
+*.csproj[1-9]*
 *.cache
 *~
 *.swp
@@ -15,3 +16,6 @@ install.ps1
 mspec.nuspec
 Source/Machine.Specifications.GallioAdapter.3.1/Machine.Specifications.GallioAdapter.plugin
 Source/Machine.Specifications.TDNetRunner/Machine.Specifications.dll.tdnet
+*.LOCAL.*
+*.REMOTE.*
+*.BASE.*
