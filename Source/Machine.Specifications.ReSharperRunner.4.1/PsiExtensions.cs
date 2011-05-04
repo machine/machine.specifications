@@ -135,7 +135,13 @@ namespace Machine.Specifications.ReSharperRunner
 
       if (attribute == null)
       {
-        return null;
+        var containingType = type.GetContainingType();
+        if (containingType == null)
+        {
+          return null;
+        }
+
+        return containingType.GetSubjectString();
       }
 
       if (attribute.PositionParameters().Any(x => x.IsBadValue))

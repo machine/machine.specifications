@@ -46,15 +46,21 @@ namespace Machine.Specifications.ReSharperRunner
       }
     }
 
-    public static string GetSubjectString(this IMetadataEntity type)
+    public static string GetSubjectString(this IMetadataTypeInfo type)
     {
-      var attributes = type.GetCustomAttributes(typeof(SubjectAttribute).FullName);
-      if (attributes.Count != 1)
-      {
-        return null;
-      }
+      var attribute = type.AndAllBaseTypes()
+        .SelectMany(x => x.GetCustomAttributes(typeof(SubjectAttribute).FullName))
+        .FirstOrDefault();
 
-      var attribute = attributes.First();
+      if (attribute == null)
+      {
+        if (type.DeclaringType == null)
+        {
+          return null;
+        }
+
+        return type.DeclaringType.GetSubjectString();
+      }
 
       var parameters = attribute.ConstructorArguments.Select(x =>
                                     {
