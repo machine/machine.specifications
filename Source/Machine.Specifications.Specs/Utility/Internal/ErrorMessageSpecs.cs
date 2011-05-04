@@ -163,4 +163,20 @@ namespace Machine.Specifications.Specs.Utility.Internal
 		const string Expected =
 			"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt";
 	}
+
+  public class when_comparing_two_strings_with_different_lengths
+  {
+    static readonly string ExpectedMessage =
+      "  Expected string length 3 but was 4. Strings differ at index 3." + Environment.NewLine +
+      "  Expected: \"1.0\"" + Environment.NewLine +
+      "  But was:  \"1.00\"" + Environment.NewLine +
+      "  --------------^";
+
+    static Exception Exception;
+
+    Because of = () =>  { Exception = Catch.Exception(() => "1.00".ShouldEqual("1.0")); };
+
+    It should_report_a_styled_exception_message =
+      () => Exception.Message.ShouldEqual(ExpectedMessage);
+  }
 }
