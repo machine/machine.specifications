@@ -116,7 +116,12 @@ namespace Machine.Specifications.Factories
 
       if (attributes.Length == 0)
       {
-        return null;
+        if (type.DeclaringType == null)
+        {
+          return null;
+        }
+
+        return ExtractSubject(type.DeclaringType);
       }
 
       var attribute = (SubjectAttribute) attributes[0];

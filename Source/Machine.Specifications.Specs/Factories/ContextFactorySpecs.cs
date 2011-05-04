@@ -66,6 +66,54 @@ namespace Machine.Specifications.Specs.Factories
     It should_contain_the_details_created_by_the_context_detail_factory =
       () => new_context.Specifications.Count().ShouldEqual(1);
 
+    It should_take_the_subject_from_the_outer_class =
+      () => new_context.Subject.FullConcern.ShouldEqual("Int32 Parent description");
+
+    static Context new_context;
+  }
+  
+  [Subject(typeof(ContextFactory))]
+  public class when_creating_a_context_that_is_contained_within_another_context_class_and_inherits_a_concern
+  {
+    Establish context = () =>
+    {
+      var factory = new ContextFactory();
+      new_context = factory.CreateContextFrom(new parent_context.nested_context_inheriting_another_concern());
+    };
+
+    It should_take_the_subject_from_the_inherited_concern =
+      () => new_context.Subject.FullConcern.ShouldEqual("Int32 Some description");
+
+    static Context new_context;
+  }
+  
+  [Subject(typeof(ContextFactory))]
+  public class when_creating_a_context_that_is_contained_within_another_context_class_and_owns_a_concern
+  {
+    Establish context = () =>
+    {
+      var factory = new ContextFactory();
+      new_context = factory.CreateContextFrom(new parent_context.nested_context_inheriting_and_owning_a_concern());
+    };
+
+    It should_take_the_owned_concern =
+      () => new_context.Subject.FullConcern.ShouldEqual("Int32 Nested description");
+
+    static Context new_context;
+  }
+  
+  [Subject(typeof(ContextFactory))]
+  public class when_creating_a_context_that_is_contained_within_another_context_class_without_concern
+  {
+    Establish context = () =>
+    {
+      var factory = new ContextFactory();
+      new_context = factory.CreateContextFrom(new parent_context_without_concern.nested_context());
+    };
+
+    It should_have_no_concern =
+      () => new_context.Subject.ShouldBeNull();
+
     static Context new_context;
   }
 
