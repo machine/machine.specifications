@@ -109,7 +109,7 @@ namespace Machine.Specifications.Utility.Internal
     {
       for (var i = 0; i < actual.Length; i++)
       {
-        if (expected.Length < i || expected[i] != actual[i])
+        if (expected.Length <= i || expected[i] != actual[i])
         {
           return i;
         }
