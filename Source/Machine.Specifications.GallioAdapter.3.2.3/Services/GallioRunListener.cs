@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+using Gallio.Common.Collections;
+
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
 using Machine.Specifications.GallioAdapter.Model;
@@ -122,7 +125,7 @@ namespace Machine.Specifications.GallioAdapter.Services
         return null;
 
       Gallio.Common.Diagnostics.ExceptionData inner = Convert(result.InnerExceptionResult);
-      return new Gallio.Common.Diagnostics.ExceptionData(result.TypeName, result.Message, result.StackTrace, null, inner);
+      return new Gallio.Common.Diagnostics.ExceptionData(result.TypeName, result.Message, result.StackTrace, new PropertySet(), inner);
     }
   }
 }
