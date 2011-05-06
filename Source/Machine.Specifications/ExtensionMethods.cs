@@ -211,6 +211,17 @@ does not contain: {2}",
       }
     }
 
+    public static void ShouldContain<T>(this IEnumerable<T> list, Func<T, bool> condition)
+    {
+      if (!list.Any(condition))
+      {
+        throw new SpecificationException(string.Format(
+          @"Should contain elements conforming to the specified condition: 
+entire list: {0}",
+          list.EachToUsefulString()));
+      }
+    }
+
     public static void ShouldNotContain(this IEnumerable list, params object[] items)
     {
       var actualList = list.Cast<object>();
@@ -244,6 +255,21 @@ does not contain: {2}",
 entire list: {1}
 does contain: {2}",
           items.EachToUsefulString(),
+          list.EachToUsefulString(),
+          contains.EachToUsefulString()));
+      }
+    }
+
+    public static void ShouldNotContain<T>(this IEnumerable<T> list, Func<T, bool> condition)
+    {
+      var contains = list.Where(x => condition(x) == true);
+
+      if (contains.Any())
+      {
+        throw new SpecificationException(string.Format(
+          @"No elements should conform to the specified condition: 
+entire list: {0}
+does contain: {1}",
           list.EachToUsefulString(),
           contains.EachToUsefulString()));
       }
