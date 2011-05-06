@@ -9,6 +9,7 @@ using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.Text;
 
 using Machine.Specifications.Utility;
+using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {

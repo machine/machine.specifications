@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Reflection;
 using System.Text;
 using CommandLine;
-using CommandLine.Text;
+
 using Machine.Specifications.ConsoleRunner.Properties;
 using Machine.Specifications.Runner;
 
@@ -12,12 +12,12 @@ namespace Machine.Specifications.ConsoleRunner
 {
   public class Options
   {
-    [Option("xml", "xml", HelpText = "Outputs an XML file(s) to path")]
+    [Option("xml", "xml", HelpText = "Outputs the XML report to the file referenced by the path")]
     public string XmlPath = string.Empty;
 
     [Option(null,
       "html",
-      HelpText = "Outputs an HTML file(s) to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)")] 
+      HelpText = "Outputs the HTML report to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)")]
     public string HtmlPath = string.Empty;
     
     [Option("f",
@@ -62,18 +62,24 @@ namespace Machine.Specifications.ConsoleRunner
       sb.AppendLine("Machine.Specifications");
       sb.AppendLine("Copyright (C) 2007 - 2011");
       sb.AppendLine("");
-      sb.AppendLine(Resources.UsageStatement);
+      sb.AppendLine(Usage());
       sb.AppendLine("Options:");
       sb.AppendLine("  -i, --include     Execute all specifications in contexts with these comma delimited tags. Ex. -i \"foo,bar,foo_bar\"");
       sb.AppendLine("  -x, --exclude     Exclude specifications in contexts with these comma delimited tags. Ex. -x \"foo,bar,foo_bar\"");
       sb.AppendLine("  -t, --timeinfo    Shows time-related information in HTML output");
       sb.AppendLine("  -s, --silent      Suppress console output");
       sb.AppendLine("  --teamcity        Reporting for TeamCity CI integration");
-      sb.AppendLine("  --html <PATH>     Outputs an HTML file(s) to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)");
-      sb.AppendLine("  --xml <PATH>      Outputs an XML file(s) to path");
+      sb.AppendLine("  --html <PATH>     Outputs the HTML report to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)");
+      sb.AppendLine("  --xml <PATH>      Outputs the XML report to the file referenced by the path");
       sb.AppendLine("  -h, --help        Shows this help message");
 
       return sb.ToString();
+    }
+
+    public static string Usage()
+    {
+      var runnerExe = Assembly.GetEntryAssembly();
+      return String.Format(Resources.UsageStatement, Path.GetFileName(runnerExe != null ? runnerExe.Location : "mspec.exe"));
     }
 
     public virtual bool ParseArguments(string[] args)

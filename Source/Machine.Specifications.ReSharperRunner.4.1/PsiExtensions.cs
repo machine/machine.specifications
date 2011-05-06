@@ -41,6 +41,9 @@ namespace Machine.Specifications.ReSharperRunner
       return clazz.IsValid() &&
              !clazz.IsAbstract &&
              clazz.HasAttributeInstance(new CLRTypeName(typeof(BehaviorsAttribute).FullName), false) &&
+#if !RESHARPER_5
+             clazz.GetFirstGenericArgument() == null &&
+#endif
              clazz.Fields.Any(IsSpecification);
     }
 
@@ -76,6 +79,9 @@ namespace Machine.Specifications.ReSharperRunner
     {
       return element.IsValidFieldOfType(typeof(Behaves_like<>)) &&
              element.GetFirstGenericArgument() != null &&
+#if !RESHARPER_5
+             element.GetFirstGenericArgument().GetFirstGenericArgument() == null &&
+#endif
              element.GetFirstGenericArgument().HasAttributeInstance(
                new CLRTypeName(typeof(BehaviorsAttribute).FullName), false);
     }
@@ -129,7 +135,13 @@ namespace Machine.Specifications.ReSharperRunner
 
       if (attribute == null)
       {
-        return null;
+        var containingType = type.GetContainingType();
+        if (containingType == null)
+        {
+          return null;
+        }
+
+        return containingType.GetSubjectString();
       }
 
       if (attribute.PositionParameters().Any(x => x.IsBadValue))

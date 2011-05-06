@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace Machine.Specifications.Specs
 {
@@ -116,6 +113,48 @@ namespace Machine.Specifications.Specs
   [Tags(tag.example)]
   public class context_with_subject
   {
+  }
+
+  public class context_with_parent_with_subject : context_with_subject
+  {
+  }
+
+  [Subject(typeof(int), "Parent description")]
+  public class parent_context
+  {
+    It should_be_able_to_assert_something = () =>
+      true.ShouldBeTrue();
+
+    public class nested_context
+    {
+      It should_be_able_to_assert_something_else = () =>
+        false.ShouldBeFalse();
+    }
+
+    public class nested_context_inheriting_another_concern : context_with_subject
+    {
+      It should_be_able_to_assert_something_else = () =>
+        false.ShouldBeFalse();
+    }
+
+    [Subject(typeof(int), "Nested description")]
+    public class nested_context_inheriting_and_owning_a_concern : context_with_subject
+    {
+      It should_be_able_to_assert_something_else = () =>
+        false.ShouldBeFalse();
+    }
+  }
+
+  public class parent_context_without_concern
+  {
+    It should_be_able_to_assert_something = () =>
+      true.ShouldBeTrue();
+
+    public class nested_context
+    {
+      It should_be_able_to_assert_something_else = () =>
+        false.ShouldBeFalse();
+    }
   }
 
   [Tags(tag.example)]

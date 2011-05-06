@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Machine.Specifications.Utility
+namespace Machine.Specifications.Utility.Internal
 {
   public static class Naming
   {

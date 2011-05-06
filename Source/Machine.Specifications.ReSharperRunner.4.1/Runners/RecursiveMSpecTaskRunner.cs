@@ -27,18 +27,27 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
     public override TaskResult Start(TaskExecutionNode node)
     {
-      ContextTask task = (ContextTask) node.RemoteTask;
-      
+      var task = (ContextTask) node.RemoteTask;
+
       _contextAssembly = LoadContextAssembly(task);
       if (_contextAssembly == null)
       {
         return TaskResult.Error;
       }
 
+      var result = VersionCompatibilityChecker.Check(_contextAssembly);
+      if (!result.Success)
+      {
+        Server.TaskExplain(task, result.Explanation);
+        Server.TaskError(task, result.ErrorMessage);
+
+        return TaskResult.Error;
+      }
+
       _contextClass = _contextAssembly.GetType(task.ContextTypeName);
       if (_contextClass == null)
       {
-        Server.TaskExplain(node.RemoteTask,
+        Server.TaskExplain(task,
                            String.Format("Could not load type '{0}' from assembly {1}.",
                                          task.ContextTypeName,
                                          task.AssemblyLocation));

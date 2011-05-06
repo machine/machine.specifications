@@ -15,29 +15,32 @@ namespace Machine.Specifications.Utility
       }
     }
 
-    public static void InvokeIfNotNull(this Because because)
+    internal static void InvokeAll(this IEnumerable<Establish> contextActions)
     {
-      if (because != null)
-        because.Invoke();
+      contextActions.AllNonNull().Select<Establish, Action>(x => x.Invoke).InvokeAll();
     }
 
-    public static void InvokeAll(this IEnumerable<Establish> contextActions)
+    static IEnumerable<T> AllNonNull<T>(this IEnumerable<T> elements) where T : class
     {
-      foreach (Establish contextAction in contextActions)
-      {
-        contextAction();
-      }
+      return elements.Where(x => x != null);
     }
 
-    public static void InvokeAll(this IEnumerable<Cleanup> contextActions)
+    static void InvokeAll(this IEnumerable<Action> actions)
     {
-      foreach (Cleanup contextAction in contextActions)
-      {
-        contextAction();
-      }
+      actions.Each(x => x());
     }
 
-    public static bool HasAttribute<TAttribute>(this ICustomAttributeProvider attributeProvider)
+    internal static void InvokeAll(this IEnumerable<Because> becauseActions)
+    {
+      becauseActions.AllNonNull().Select<Because, Action>(x => x.Invoke).InvokeAll();
+    }
+
+    internal static void InvokeAll(this IEnumerable<Cleanup> contextActions)
+    {
+      contextActions.AllNonNull().Select<Cleanup, Action>(x => x.Invoke).InvokeAll();
+    }
+
+    internal static bool HasAttribute<TAttribute>(this ICustomAttributeProvider attributeProvider)
     {
       return attributeProvider.GetCustomAttributes(typeof(TAttribute), true).Any();
     }

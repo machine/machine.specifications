@@ -26,7 +26,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       return new BehaviorSpecificationElement(_provider,
                                               behavior,
                                               _projectEnvoy,
-                                              behaviorSpecification.DeclaringType.FullyQualifiedName,
+                                              behavior.FullyQualifiedTypeName ?? behaviorSpecification.DeclaringType.FullyQualifiedName,
                                               behaviorSpecification.Name,
                                               behaviorSpecification.IsIgnored());
     }
@@ -61,7 +61,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       return new BehaviorSpecificationElement(_provider,
                                               behavior,
                                               _projectEnvoy,
-                                              behaviorSpecification.GetContainingType().CLRName,
+                                              behavior.FullyQualifiedTypeName ?? behaviorSpecification.GetContainingType().CLRName,
                                               behaviorSpecification.ShortName,
                                               behaviorSpecification.IsIgnored());
     }

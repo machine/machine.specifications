@@ -4,8 +4,8 @@
         xmlns="http://www.gallio.org/">
   <traits>
     <name>Machine Specifications Adapter Plugin</name>
-    <version>0.3.0.0</version>
-    <description>Provides support for running MSpec within gallio.  Requires the assemblies from MSpec.</description>
+    <version>@configatron.version.compatible@</version>
+    <description>Provides support for running MSpec within Gallio. Requires the assemblies from MSpec.</description>
   </traits>
 
   <dependencies>
@@ -20,11 +20,11 @@
   </files>
 
   <assemblies>
-    <assembly fullName="Machine.Specifications.GallioAdapter.3.1, Version=0.3.0.0, Culture=neutral, PublicKeyToken=null"
+    <assembly fullName="Machine.Specifications.GallioAdapter.3.1, Version=@configatron.version.compatible@, Culture=neutral, PublicKeyToken=null"
               codeBase="Machine.Specifications.GallioAdapter.3.1.dll"
               qualifyPartialName="true" />
 
-    <assembly fullName="Machine.Specifications, Version=0.3.0.0, Culture=neutral, PublicKeyToken=5c474de7a495cff1"
+    <assembly fullName="Machine.Specifications, Version=@configatron.version.compatible@, Culture=neutral, PublicKeyToken=5c474de7a495cff1"
               codeBase="Machine.Specifications.dll" />      
   </assemblies>
   
@@ -34,8 +34,8 @@
                componentType="Machine.Specifications.GallioAdapter.MachineSpecificationsFramework, Machine.Specifications.GallioAdapter.3.1">
       <traits>
         <name>Machine Specifications</name>        
-        <frameworkAssemblies>Machine.Specifications, Version=0.3.0.0</frameworkAssemblies>
-        <version>0.3.0.0</version>
+        <frameworkAssemblies>Machine.Specifications, Version=@configatron.version.compatible@</frameworkAssemblies>
+        <version>@configatron.version.compatible@</version>
         <fileTypes>Assembly</fileTypes>
       </traits>
     </component>

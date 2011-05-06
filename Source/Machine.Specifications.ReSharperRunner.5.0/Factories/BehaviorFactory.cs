@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
@@ -12,6 +15,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     readonly ProjectModelElementEnvoy _projectEnvoy;
     readonly IUnitTestProvider _provider;
     readonly ContextCache _cache;
+    static readonly IDictionary<string, string> TypeNameCache = new Dictionary<string, string>();
 
     public BehaviorFactory(IUnitTestProvider provider, ProjectModelElementEnvoy projectEnvoy, ContextCache cache)
     {
@@ -35,24 +39,59 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         return null;
       }
 
+      string fullyQualifiedTypeName = null;
+      if (field is ITypeOwner)
+      {
+          // Work around the difference in how the MetaData API and Psi API return different type strings for generics.
+          TypeNameCache.TryGetValue(GetFirstGenericNormalizedTypeName(field), out fullyQualifiedTypeName);
+      }
+
       return new BehaviorElement(_provider,
                                  context,
                                  _projectEnvoy,
                                  clazz.CLRName,
                                  field.ShortName,
-                                 field.IsIgnored());
+                                 field.IsIgnored(),
+                                 fullyQualifiedTypeName);
     }
 
     public BehaviorElement CreateBehavior(ContextElement context, IMetadataField behavior)
     {
-      IMetadataTypeInfo typeContainingBehaviorSpecifications = behavior.GetFirstGenericArgument();
+      var typeContainingBehaviorSpecifications = behavior.GetFirstGenericArgument();
 
-      return new BehaviorElement(_provider,
+      var fullyQualifiedTypeName = behavior.FirstGenericArgumentClass().FullyQualifiedName();
+      var typeName = GetNormalizedTypeName(fullyQualifiedTypeName);
+
+      var behaviorElement = new BehaviorElement(_provider,
                                  context,
                                  _projectEnvoy,
                                  behavior.DeclaringType.FullyQualifiedName,
                                  behavior.Name,
-                                 behavior.IsIgnored() || typeContainingBehaviorSpecifications.IsIgnored());
+                                 behavior.IsIgnored() || typeContainingBehaviorSpecifications.IsIgnored(),
+                                 fullyQualifiedTypeName);
+
+      if (!TypeNameCache.ContainsKey(typeName))
+      {
+        TypeNameCache.Add(typeName, fullyQualifiedTypeName);
+      }
+
+      return behaviorElement;
+    }
+
+    static string GetFirstGenericNormalizedTypeName(IDeclaredElement field)
+    {
+      var typeName = ((ITypeOwner) field).Type.ToString();
+      typeName = typeName.Substring(typeName.IndexOf("-> ") + 3);
+      typeName = typeName.Remove(typeName.Length - 1);
+      typeName = Regex.Replace(typeName, @"\[.*->\s", "[");
+      return typeName;
+    }
+
+    static string GetNormalizedTypeName(string fullyQualifiedTypeName)
+    {
+      var typeName = Regex.Replace(fullyQualifiedTypeName, @"\,.+]", "]");
+      typeName = Regex.Replace(typeName, @"\[\[", "[");
+      return typeName;
     }
   }
 }

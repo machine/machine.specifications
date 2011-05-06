@@ -48,8 +48,12 @@ class Configatron
     @_store.delete(@_namespace.pop)
   end
   
-  undef :inspect # :nodoc:
-  undef :nil? # :nodoc:
-  undef :test # :nodoc:
+  begin
+    undef :inspect # :nodoc:
+    undef :nil? # :nodoc:
+    undef :test # :nodoc:
+  rescue Exception => e
+  end
+
   
 end

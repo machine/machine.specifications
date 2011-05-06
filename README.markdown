@@ -1,11 +1,21 @@
 Machine.Specifications (MSpec)
 ======================================================================
 
-*NOTE: Machine.Specifications.NUnit and Machine.Specifications.XUnit are now deprecated. Please remove them from your projects.*
+The most recent release is available at [CodeBetter's TeamCity server](http://teamcity.codebetter.com/project.html?projectId=project27):
 
-The most recent build for [.NET 3.5](http://teamcity.codebetter.com/guestAuth/repository/download/bt44/.lastSuccessful/Machine.Specifications-net-3.5-Release.zip)
-and [.NET 4.0](http://teamcity.codebetter.com/guestAuth/repository/download/bt188/.lastSuccessful/Machine.Specifications-net-4.0-Release.zip)
-is available at [CodeBetter](http://teamcity.codebetter.com/project.html?projectId=project27).
+  * Recommended: [Unsigned release](http://teamcity.codebetter.com/guestAuth/repository/download/bt342/.lastSuccessful/Machine.Specifications-Release.zip),
+  * [Signed release](http://teamcity.codebetter.com/guestAuth/repository/download/bt345/.lastSuccessful/Machine.Specifications-Signed-Release.zip).
+  
+You can also install these using [NuGet](http://nuget.org/Packages/Search?packageType=Packages&searchCategory=All+Categories&searchTerm=machine.specifications):
+<pre>
+  PM> Install-Package Machine.Specifications
+  PM> Install-Package Machine.Specifications-Signed
+</pre>
+
+On top of that we provide downloads for the latest successful build (possibly more current than the releases above):
+
+  * [Unsigned build](http://teamcity.codebetter.com/guestAuth/repository/download/bt44/.lastSuccessful/Machine.Specifications-Release.zip),
+  * [Signed build](http://teamcity.codebetter.com/guestAuth/repository/download/bt344/.lastSuccessful/Machine.Specifications-Signed-Release.zip).
 
 Machine.Specifications is a Context/Specification framework geared towards removing language noise and simplifying tests. All it asks is that you accept the `=()=>`.
 
@@ -39,9 +49,10 @@ The solution file is located, relative to the root of the repo, at `Source\Machi
 
 MSpec has a Continuous Integration setup, provided by [CodeBetter](http://www.codebetter.com) and running on TeamCity.
 
-If you'd like to skip the above steps and just want the binaries for MSpec, get the zip of the latest successful CI build for
-[.NET 3.5](http://teamcity.codebetter.com/guestAuth/repository/download/bt44/.lastSuccessful/Machine.Specifications-net-3.5-Release.zip)
-and [.NET 4.0](http://teamcity.codebetter.com/guestAuth/repository/download/bt188/.lastSuccessful/Machine.Specifications-net-4.0-Release.zip).
+If you'd like to skip the above steps and just want the binaries for MSpec, get the zip of the latest release
+
+  * Recommended: [Unsigned release](http://teamcity.codebetter.com/guestAuth/repository/download/bt342/.lastSuccessful/Machine.Specifications-Release.zip),
+  * [Signed release](http://teamcity.codebetter.com/guestAuth/repository/download/bt345/.lastSuccessful/Machine.Specifications-Signed-Release.zip).
 
 ### How stuff works
 
@@ -51,32 +62,27 @@ Subject/It/Because of/Establish context/Cleanup after
 
 #### Command line
 
-MSpec, like other testing frameworks, provides a robust command-line runner that can be used to execute specs in one or more assemblies and allows a number of output formats to suit your needs.
+MSpec, like other testing frameworks, provides a robust command-line runner that can be used to execute specs in one or more assemblies and allows a number of output formats to suit your needs. The runner comes in different flavors:
+
+  * `mspec.exe`, AnyCPU, runs on the CLR 2.0
+  * `mspec-x86.exe`, x86, runs on the CLR 2.0
+  * `mspec-clr4.exe`, AnyCPU, runs on the CLR 4.0
+  * `mspec-x86-clr4.exe`, x86, runs on the CLR 4.0
 
 Usage of the command-line runner is as follows (from `mspec.exe --help`):
 
 <pre>
-Usage: mspec-runner.exe [options] <assemblies>
-
+Usage: mspec.exe [options] &lt;assemblies&gt;
 Options:
-
 -i, --include  Executes all specifications in contexts with these comma delimited tags. Ex. -i "foo,bar,foo_bar"
-
 -x, --exclude  Exclude specifications in contexts with these comma delimited tags. Ex. -x "foo,bar,foo_bar"
-
 -t, --timeinfo Shows time-related information in HTML output
-
 -s, --silent   Suppress console output
-
 --teamcity     Reporting for TeamCity CI integration.
-
---html &lt;PATH&gt;  Outputs an HTML file(s) to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)
-
---xml &lt;PATH&gt;   Outputs an XML file(s) to path
-
+--html &lt;PATH&gt;  Outputs the HTML report to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)
+--xml &lt;PATH&gt;   Outputs the XML report to the file referenced by the path
 -h, --help     Shows this help message
-
-Usage: mspec-runner.exe [options] &lt;assemblies&gt;
+Usage: mspec.exe [options] &lt;assemblies&gt;
 </pre>
 
 #### Selenium Support in the command-line runner

@@ -106,6 +106,9 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="PsiExtensions.4.1.cs" />
     <Compile Include="Explorers\AssemblyExplorer.cs" />
     <Compile Include="Explorers\ElementHandlers\BehaviorElementHandler.cs" />
@@ -132,6 +135,7 @@
     <Compile Include="Runners\Notifications\RemoteTaskNotification.cs" />
     <Compile Include="Runners\PerContextRunListener.cs" />
     <Compile Include="Runners\Notifications\RemoteTaskNotificationFactory.cs" />
+    <Compile Include="Runners\VersionCompatibilityChecker.cs" />
     <Compile Include="Tasks\BehaviorSpecificationTask.cs" />
     <Compile Include="Tasks\BehaviorTask.cs" />
     <Compile Include="Tasks\ContextTask.cs" />

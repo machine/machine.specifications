@@ -7,7 +7,7 @@ using JetBrains.ReSharper.Psi;
 
 namespace Machine.Specifications.ReSharperRunner
 {
-  internal static class MetadataExtensions
+  internal static partial class MetadataExtensions
   {
     public static bool IsContext(this IMetadataTypeInfo type)
     {
@@ -35,22 +35,32 @@ namespace Machine.Specifications.ReSharperRunner
       IEnumerable<IMetadataField> behaviorFields = type.GetPrivateFieldsWith(typeof(Behaves_like<>));
       foreach (IMetadataField field in behaviorFields)
       {
-        if (field.GetFirstGenericArgument().HasCustomAttribute(typeof(BehaviorsAttribute).FullName))
+        if (field.GetFirstGenericArgument().HasCustomAttribute(typeof(BehaviorsAttribute).FullName)
+#if !RESHARPER_5
+            && field.GetFirstGenericArgument().GenericParameters.Length == 0      
+#endif
+            )
         {
           yield return field;
         }
       }
     }
 
-    public static string GetSubjectString(this IMetadataEntity type)
+    public static string GetSubjectString(this IMetadataTypeInfo type)
     {
-      var attributes = type.GetCustomAttributes(typeof(SubjectAttribute).FullName);
-      if (attributes.Count != 1)
-      {
-        return null;
-      }
+      var attribute = type.AndAllBaseTypes()
+        .SelectMany(x => x.GetCustomAttributes(typeof(SubjectAttribute).FullName))
+        .FirstOrDefault();
 
-      var attribute = attributes.First();
+      if (attribute == null)
+      {
+        if (type.DeclaringType == null)
+        {
+          return null;
+        }
+
+        return type.DeclaringType.GetSubjectString();
+      }
 
       var parameters = attribute.ConstructorArguments.Select(x =>
                                     {
@@ -100,6 +110,12 @@ namespace Machine.Specifications.ReSharperRunner
     {
       var genericArgument = ((IMetadataClassType) genericField.Type).Arguments.First();
       return ((IMetadataClassType) genericArgument).Type;
+    }
+
+    public static IMetadataClassType FirstGenericArgumentClass(this IMetadataField genericField)
+    {
+      var genericArgument = ((IMetadataClassType)genericField.Type).Arguments.First();
+      return genericArgument as IMetadataClassType;
     }
 
     public static bool IsIgnored(this IMetadataEntity type)

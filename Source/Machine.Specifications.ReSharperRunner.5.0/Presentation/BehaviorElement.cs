@@ -12,15 +12,19 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                            ProjectModelElementEnvoy projectEnvoy,
                            string declaringTypeName,
                            string fieldName,
-                           bool isIgnored)
+                           bool isIgnored,
+                           string fullyQualifiedTypeName)
       : base(provider, context, projectEnvoy, declaringTypeName, fieldName, isIgnored || context.IsExplicit)
     {
+      FullyQualifiedTypeName = fullyQualifiedTypeName;
     }
 
     public ContextElement Context
     {
       get { return (ContextElement)Parent; }
     }
+
+    public string FullyQualifiedTypeName { get; private set; }
 
     public override string GetTitlePrefix()
     {

@@ -5,5 +5,9 @@ class Object # :nodoc:
     [methods].flatten.each {|m| obj = obj.send(m, *args)}
     obj
   end
-  
+
+  def blank? # ported ActiveSupport method
+    respond_to?(:empty?) ? empty? : !self
+  end
+
 end
