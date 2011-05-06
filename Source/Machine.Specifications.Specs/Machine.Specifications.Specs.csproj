@@ -68,6 +68,7 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="AssertionSpecs.cs" />
     <Compile Include="ExceptionResultSpecs.cs" />
     <Compile Include="Factories\ContextFactorySpecs.cs" />
     <Compile Include="Utility\Internal\ErrorMessageSpecs.cs" />

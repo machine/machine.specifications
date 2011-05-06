@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using Machine.Specifications.Annotations;
@@ -158,18 +159,20 @@ namespace Machine.Specifications
       }
     }
 
-    public static void ShouldEachConformTo<T>(this IEnumerable<T> list, Func<T, bool> condition)
+    public static void ShouldEachConformTo<T>(this IEnumerable<T> list, Expression<Func<T, bool>> condition)
     {
       var source = new List<T>(list);
+      var func = condition.Compile();
 
-      var failingItems = source.Where(x => condition(x) == false);
+      var failingItems = source.Where(x => func(x) == false);
 
       if (failingItems.Any())
       {
-        var message = string.Format(@"The following elements did not conform to the specified condition: {0}",
-                                    failingItems.EachToUsefulString());
-
-        throw new SpecificationException(message);
+        throw new SpecificationException(string.Format(
+          @"Should contain only elements conforming to: {0}
+the following items did not meet the condition: {1}",
+          condition,
+          failingItems.EachToUsefulString()));
       }
     }
 
@@ -211,13 +214,16 @@ does not contain: {2}",
       }
     }
 
-    public static void ShouldContain<T>(this IEnumerable<T> list, Func<T, bool> condition)
+    public static void ShouldContain<T>(this IEnumerable<T> list, Expression<Func<T, bool>> condition)
     {
-      if (!list.Any(condition))
+      var func = condition.Compile();
+
+      if (!list.Any(func))
       {
         throw new SpecificationException(string.Format(
-          @"Should contain elements conforming to the specified condition: 
-entire list: {0}",
+          @"Should contain elements conforming to: {0}
+entire list: {1}",
+          condition,
           list.EachToUsefulString()));
       }
     }
@@ -260,16 +266,19 @@ does contain: {2}",
       }
     }
 
-    public static void ShouldNotContain<T>(this IEnumerable<T> list, Func<T, bool> condition)
+    public static void ShouldNotContain<T>(this IEnumerable<T> list, Expression<Func<T, bool>> condition)
     {
-      var contains = list.Where(x => condition(x) == true);
+      var func = condition.Compile();
+
+      var contains = list.Where(func);
 
       if (contains.Any())
       {
         throw new SpecificationException(string.Format(
-          @"No elements should conform to the specified condition: 
-entire list: {0}
-does contain: {1}",
+          @"No elements should conform to: {0}
+entire list: {1}
+does contain: {2}",
+          condition,
           list.EachToUsefulString(),
           contains.EachToUsefulString()));
       }
