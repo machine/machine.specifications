@@ -5,6 +5,10 @@ using System.Linq;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 
+#if RESHARPER_6
+using CLRTypeName = JetBrains.ReSharper.Psi.ClrTypeName;
+#endif
+
 namespace Machine.Specifications.ReSharperRunner
 {
   internal static partial class PsiExtensions
@@ -165,7 +169,11 @@ namespace Machine.Specifications.ReSharperRunner
                                       if (x.IsType)
                                       {
                                         var declaredType = (IDeclaredType) x.TypeValue;
+#if RESHARPER_6
+                                        return declaredType.GetClrName().ShortName;
+#else
                                         return new CLRTypeName(declaredType.GetCLRName()).ShortName;
+#endif
                                       }
 
                                       return (string) x.ConstantValue.Value;
@@ -196,7 +204,11 @@ namespace Machine.Specifications.ReSharperRunner
         return false;
       }
 
+#if RESHARPER_6
+      return new CLRTypeName(fieldType.GetClrName().FullName) == new CLRTypeName(type.FullName);
+#else
       return new CLRTypeName(fieldType.GetCLRName()) == new CLRTypeName(type.FullName);
+#endif
     }
 
     static IDeclaredType GetValidatedFieldType(this IDeclaredElement element)

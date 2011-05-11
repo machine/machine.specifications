@@ -28,7 +28,11 @@ namespace Machine.Specifications.ReSharperRunner
         return false;
       }
 
+#if RESHARPER_6
+      IFinder finder = clazz.GetSolution().GetPsiServices().Finder;
+#else
       IFinder finder = clazz.GetManager().Finder;
+#endif
       var searchDomain = clazz.GetSearchDomain();
 
       var findResult = new InheritedContextFinder();

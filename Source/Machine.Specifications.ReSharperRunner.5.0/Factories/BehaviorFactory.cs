@@ -49,7 +49,11 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       return new BehaviorElement(_provider,
                                  context,
                                  _projectEnvoy,
+#if RESHARPER_6
+                                 clazz.GetClrName().FullName,
+#else
                                  clazz.CLRName,
+#endif
                                  field.ShortName,
                                  field.IsIgnored(),
                                  fullyQualifiedTypeName);

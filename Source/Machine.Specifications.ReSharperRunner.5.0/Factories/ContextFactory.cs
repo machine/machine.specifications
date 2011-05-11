@@ -32,7 +32,11 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
       ContextElement context = new ContextElement(_provider,
                                                   _projectEnvoy,
+#if RESHARPER_6
+                                                  type.GetClrName().FullName,
+#else
                                                   type.CLRName,
+#endif
                                                   _assemblyPath,
                                                   type.GetSubjectString(),
                                                   type.GetTags(),

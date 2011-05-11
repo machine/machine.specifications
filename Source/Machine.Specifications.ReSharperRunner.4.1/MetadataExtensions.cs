@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 
 using JetBrains.Metadata.Reader.API;
+#if RESHARPER_6
+using CLRTypeName = JetBrains.ReSharper.Psi.ClrTypeName;
+#else
 using JetBrains.ReSharper.Psi;
+#endif
 
 namespace Machine.Specifications.ReSharperRunner
 {
