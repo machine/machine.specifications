@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+
 using Machine.Specifications.Factories;
 using Machine.Specifications.Model;
 
@@ -42,7 +43,7 @@ namespace Machine.Specifications.Specs.Factories
   {
     Establish context = () =>
     {
-        outerContextRan = true;
+      outerContextRan = true;
     };
 
     public class and_the_parent_context_has_context_blocks
@@ -71,7 +72,7 @@ namespace Machine.Specifications.Specs.Factories
 
     static Context new_context;
   }
-  
+
   [Subject(typeof(ContextFactory))]
   public class when_creating_a_context_that_is_contained_within_another_context_class_and_inherits_a_concern
   {
@@ -86,7 +87,7 @@ namespace Machine.Specifications.Specs.Factories
 
     static Context new_context;
   }
-  
+
   [Subject(typeof(ContextFactory))]
   public class when_creating_a_context_that_is_contained_within_another_context_class_and_owns_a_concern
   {
@@ -101,7 +102,26 @@ namespace Machine.Specifications.Specs.Factories
 
     static Context new_context;
   }
-  
+
+  [Subject(typeof(ContextFactory))]
+  public class
+    when_creating_a_nested_context_that_has_its_own_because_block_and_its_outer_class_also_has_its_own_because_block
+  {
+    Establish context = () =>
+    {
+      ContextFactory.ChangeAllowedNumberOfBecauseBlocksTo(2);
+
+      var factory = new ContextFactory();
+      new_context = factory.CreateContextFrom(new parent_context_that_has_its_own_because_block
+                                                  .nested_context_that_has_a_because_block_which());
+    };
+
+    It should_be_able_to_be_created_successfully_if_a_testing_tool_has_specified_to_override_the_allowed_number_of_because_blocks = 
+      () => new_context.ShouldNotBeNull();
+
+    static Context new_context;
+  }
+
   [Subject(typeof(ContextFactory))]
   public class when_creating_a_context_that_is_contained_within_another_context_class_without_concern
   {
@@ -122,7 +142,7 @@ namespace Machine.Specifications.Specs.Factories
   {
     static Context newContext;
 
-    Establish context = ()=>
+    Establish context = () =>
     {
       var factory = new ContextFactory();
       newContext = factory.CreateContextFrom(new context_with_tags());

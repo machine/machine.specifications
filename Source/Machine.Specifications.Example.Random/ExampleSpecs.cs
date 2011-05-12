@@ -157,6 +157,20 @@ namespace Machine.Specifications.Specs
     }
   }
 
+  public class parent_context_that_has_its_own_because_block
+  {
+    Because of = () =>
+    {
+    };
+
+    public class nested_context_that_has_a_because_block_which
+    {
+      Because of = () =>
+      {
+      };
+    }
+  }
+
   [Tags(tag.example)]
   public class context_with_failing_specs
   {
