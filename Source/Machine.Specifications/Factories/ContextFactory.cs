@@ -45,12 +45,12 @@ namespace Machine.Specifications.Factories
       var itFieldInfos = new List<FieldInfo>();
       var itShouldBehaveLikeFieldInfos = new List<FieldInfo>();
 
-      var contextClauses = ExtractPrivateFieldValues<Establish>(instance);
+      var contextClauses = ExtractPrivateFieldValues<Establish>(instance,true);
       contextClauses.Reverse();
 
-      var cleanupClauses = ExtractPrivateFieldValues<Cleanup>(instance);
+      var cleanupClauses = ExtractPrivateFieldValues<Cleanup>(instance,true);
 
-      var becauses = ExtractPrivateFieldValues<Because>(instance);
+      var becauses = ExtractPrivateFieldValues<Because>(instance,false);
       becauses.Reverse();
 
       if (becauses.Count > _allowedNumberOfBecauseBlocks)
@@ -152,7 +152,7 @@ namespace Machine.Specifications.Factories
       }
     }
 
-    static void CollectDetailsOf<T>(Type target, Func<object> instanceResolver, ICollection<T> items)
+    static void CollectDetailsOf<T>(Type target, Func<object> instanceResolver, ICollection<T> items,bool ensureMaximumOfOne)
     {
       if (target == typeof(Object) || target == null)
       {
@@ -166,7 +166,7 @@ namespace Machine.Specifications.Factories
 
       var fields = target.GetPrivateFieldsWith(typeof(T));
 
-      if (fields.Count() > 1)
+      if (ensureMaximumOfOne && fields.Count() > 1)
       {
         throw new SpecificationUsageException(String.Format("You cannot have more than one {0} clause in {1}",
                                                             typeof(T).Name,
@@ -179,15 +179,15 @@ namespace Machine.Specifications.Factories
         var val = (T) field.GetValue(instance);
         items.Add(val);
       }
-      CollectDetailsOf(target.BaseType, () => instance, items);
-      CollectDetailsOf(target.DeclaringType, () => Activator.CreateInstance(target.DeclaringType), items);
+      CollectDetailsOf(target.BaseType, () => instance, items,ensureMaximumOfOne);
+      CollectDetailsOf(target.DeclaringType, () => Activator.CreateInstance(target.DeclaringType), items,ensureMaximumOfOne);
     }
 
-    static List<T> ExtractPrivateFieldValues<T>(object instance)
+    static List<T> ExtractPrivateFieldValues<T>(object instance,bool ensureMaximumOfOne)
     {
       var delegates = new List<T>();
       var type = instance.GetType();
-      CollectDetailsOf(type, () => instance, delegates);
+      CollectDetailsOf(type, () => instance, delegates,ensureMaximumOfOne);
 
       return delegates;
     }
