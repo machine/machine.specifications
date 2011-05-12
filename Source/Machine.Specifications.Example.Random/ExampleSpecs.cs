@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Reflection;
 
+using Machine.Specifications.Factories;
+
 namespace Machine.Specifications.Specs
 {
   public static class tag
@@ -156,6 +158,24 @@ namespace Machine.Specifications.Specs
         false.ShouldBeFalse();
     }
   }
+
+
+  public class parent_context_that_has_its_own_because_block
+  {
+    Because b = () =>
+    {
+
+    };
+
+    public class nested_context_that_has_a_because_block_which
+    {
+      Because b = () =>
+      {
+      };
+
+    }
+  }
+
 
   [Tags(tag.example)]
   public class context_with_failing_specs
