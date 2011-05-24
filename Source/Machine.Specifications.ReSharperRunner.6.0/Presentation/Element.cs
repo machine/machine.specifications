@@ -4,25 +4,23 @@ using System.Collections.Generic;
 using JetBrains.Application;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.UnitTestExplorer;
 using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.Util;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
-  internal abstract class Element : UnitTestElement
+  internal abstract class Element : IUnitTestElement
   {
+    readonly MSpecUnitTestProvider _provider;
     readonly string _declaringTypeName;
     readonly ProjectModelElementEnvoy _projectEnvoy;
 
-    protected Element(IUnitTestProvider provider,
-                      UnitTestElement parent,
+    protected Element(MSpecUnitTestProvider provider,
+                      Element parent,
                       IProjectModelElement project,
                       string declaringTypeName,
                       bool isIgnored)
-      : base(provider, parent)
     {
       if (project == null && !Shell.Instance.IsTestShell)
       {
@@ -39,51 +37,82 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
         _projectEnvoy = new ProjectModelElementEnvoy(project);
       }
 
+      _provider = provider;
       _declaringTypeName = declaringTypeName;
 
       if (isIgnored)
       {
-        SetExplicit("Ignored");
+        ExplicitReason = "Ignored";
       }
+
+      TypeName = declaringTypeName;
+      ShortName = shortName;
+      AssemblyLocation = assemblyLocation;
+      Parent = parent;
+
+      Children = new List<IUnitTestElement>();
+      State = UnitTestElementState.Valid;
     }
+
+    public string TypeName { get; protected set; }
+    public string AssemblyLocation { get; private set; }
+    public abstract string Kind { get; }
+    public abstract IEnumerable<UnitTestElementCategory> Categories { get; }
+    public string ExplicitReason { get; private set; }
+
+    public string Id
+    {
+      get { return TypeName; }
+    }
+
+    public IUnitTestProvider Provider { get { return _provider; } }
+    public IUnitTestElement Parent { get; set; }
+    public ICollection<IUnitTestElement> Children { get; private set; }
+    public string ShortName { get; private set; }
+
+    public bool Explicit
+    {
+      get { return false; }
+    }
+
+    public UnitTestElementState State { get; set; }
 
     public virtual string GetTitlePrefix()
     {
       return String.Empty;
     }
 
-    public override IProject GetProject()
+    public IProject GetProject()
     {
       return _projectEnvoy.GetValidProjectElement() as IProject;
     }
 
     protected ITypeElement GetDeclaredType()
     {
-      ISolution solution = GetSolution();
-      if (solution == null)
-      {
+      var project = GetProject();
+      if (project == null)
         return null;
-      }
 
-      using (ReadLockCookie.Create())
-      {
-        DeclarationsCacheScope scope = DeclarationsCacheScope.SolutionScope(solution, false);
-        IDeclarationsCache cache = PsiManager.GetInstance(solution).GetDeclarationsCache(scope, true);
-        return cache.GetTypeElementByCLRName(_declaringTypeName);
-      }
+      var psiModule = _provider.PsiModuleManager.GetPrimaryPsiModule(project);
+      if (psiModule == null)
+        return null;
+
+      var declarationsCache = _provider.CacheManager.GetDeclarationsCache(psiModule, true, true);
+      return declarationsCache.GetTypeElementByCLRName(_declaringTypeName);
     }
 
-    public override string GetTypeClrName()
+    public string GetTypeClrName()
     {
       return _declaringTypeName;
     }
 
-    public override UnitTestNamespace GetNamespace()
+    public UnitTestNamespace GetNamespace()
     {
-      return new UnitTestNamespace(new CLRTypeName(_declaringTypeName).NamespaceName);
+      return new UnitTestNamespace(new ClrTypeName(_declaringTypeName).GetNamespaceName());
     }
 
-    public override IList<IProjectFile> GetProjectFiles()
+/*
+    public IList<IProjectFile> GetProjectFiles()
     {
       ITypeElement declaredType = GetDeclaredType();
       if (declaredType == null)
@@ -93,13 +122,14 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
       return declaredType.GetProjectFiles();
     }
+ */
 
-    public override UnitTestElementDisposition GetDisposition()
+    public UnitTestElementDisposition GetDisposition()
     {
       IDeclaredElement element = GetDeclaredElement();
       if (element == null || !element.IsValid())
       {
-        return UnitTestElementDisposition.ourInvalidDisposition;
+        return UnitTestElementDisposition.InvalidDisposition;
       }
 
       var locations = new List<UnitTestElementLocation>();
@@ -108,8 +138,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
           IFile file = declaration.GetContainingFile();
           if (file != null)
           {
-            locations.Add(new UnitTestElementLocation(file.ProjectFile,
-                                                      declaration.GetNameRange(),
+            locations.Add(new UnitTestElementLocation(file.GetSourceFile().ToProjectFile(),
+                                                      declaration.GetNameDocumentRange().TextRange,
                                                       declaration.GetDocumentRange().TextRange));
           }
         });
@@ -119,21 +149,41 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public override bool Equals(object obj)
     {
-      if (base.Equals(obj))
-      {
         Element other = (Element)obj;
         return Equals(other._projectEnvoy, _projectEnvoy) && other._declaringTypeName == _declaringTypeName;
-      }
-
-      return false;
     }
 
     public override int GetHashCode()
     {
-      int result = base.GetHashCode();
+      int result = 0;
       result = 29 * result + _projectEnvoy.GetHashCode();
       result = 29 * result + _declaringTypeName.GetHashCode();
       return result;
+    }
+
+    public bool Equals(IUnitTestElement other)
+    {
+      if (ReferenceEquals(this, other))
+        return true;
+
+      if (other.GetType() == GetType())
+      {
+        var element = (Element)other;
+        return other.ShortName == ShortName && other.Provider == Provider
+               && element.AssemblyLocation == AssemblyLocation;
+      }
+      return false;
+    }
+
+    public abstract string GetPresentation();
+    public abstract IDeclaredElement GetDeclaredElement();
+
+    public IList<UnitTestTask> GetTaskSequence(IEnumerable<IUnitTestElement> explicitElements)
+    {
+      // TODO: HADI
+      var unitTestTasks = new List<UnitTestTask>();
+
+      return unitTestTasks;
     }
   }
 }
