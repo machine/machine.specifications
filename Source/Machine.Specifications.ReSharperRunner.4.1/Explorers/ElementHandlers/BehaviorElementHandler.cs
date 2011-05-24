@@ -9,6 +9,8 @@ using JetBrains.ReSharper.UnitTestExplorer;
 
 using Machine.Specifications.ReSharperRunner.Factories;
 
+using JetBrains.ReSharper.Psi;
+
 namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
 {
   internal class BehaviorElementHandler : IElementHandler
@@ -53,7 +55,11 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
       }
 
       yield return new UnitTestElementDisposition(behaviorElement,
+#if RESHARPER_6
+                                                  file.GetSourceFile().ToProjectFile(),
+#else
                                                   file.ProjectFile,
+#endif
                                                   declaration.GetNavigationRange().TextRange,
                                                   declaration.GetDocumentRange().TextRange);
 

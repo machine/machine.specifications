@@ -34,7 +34,11 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
         var projectEnvoy = new ProjectModelElementEnvoy(project);
 
         var cache = new ContextCache();
+#if RESHARPER_6
+        _contextFactory = new ContextFactory(provider, projectEnvoy, _assembly.Location.FullPath, cache);
+#else
         _contextFactory = new ContextFactory(provider, projectEnvoy, _assembly.Location, cache);
+#endif
         _contextSpecificationFactory = new ContextSpecificationFactory(provider, projectEnvoy, cache);
         _behaviorFactory = new BehaviorFactory(provider, projectEnvoy, cache);
         _behaviorSpecificationFactory = new BehaviorSpecificationFactory(provider, projectEnvoy);
