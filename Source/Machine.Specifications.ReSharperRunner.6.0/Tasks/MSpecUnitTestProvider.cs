@@ -11,7 +11,6 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.TaskRunnerFramework;
-using JetBrains.ReSharper.TaskRunnerFramework.UnitTesting;
 using JetBrains.ReSharper.UnitTestExplorer;
 using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.TreeModels;
@@ -25,7 +24,7 @@ using Machine.Specifications.ReSharperRunner.Runners;
 
 using IUnitTestProvider = JetBrains.ReSharper.UnitTestFramework.IUnitTestProvider;
 using UnitTestElement = Machine.Specifications.ReSharperRunner.Presentation.UnitTestElement;
-using UnitTestElementConsumer = JetBrains.ReSharper.TaskRunnerFramework.UnitTesting.UnitTestElementConsumer;
+//using UnitTestElementConsumer = JetBrains.ReSharper.TaskRunnerFramework.UnitTestElementConsumer;
 using UnitTestElementLocationConsumer = JetBrains.ReSharper.UnitTestFramework.UnitTestElementLocationConsumer;
 
 namespace Machine.Specifications.ReSharperRunner
@@ -34,7 +33,6 @@ namespace Machine.Specifications.ReSharperRunner
     internal class MSpecUnitTestProvider : IUnitTestProvider
     {
         const string ProviderId = "Machine.Specifications";
-        static readonly Presenter Presenter = new Presenter();
         readonly UnitTestTaskFactory _taskFactory = new UnitTestTaskFactory(ProviderId);
         readonly UnitTestElementComparer _unitTestElementComparer = new UnitTestElementComparer();
 
@@ -53,7 +51,7 @@ namespace Machine.Specifications.ReSharperRunner
             get { return ID; }
         }
 
-        public IUnitTestViewElement DeserializeElement(XmlElement parent, IUnitTestViewElement parentElement)
+        public IUnitTestElement DeserializeElement(XmlElement parent, IUnitTestElement parentElement)
         {
             throw new NotImplementedException();
         }
@@ -190,11 +188,6 @@ namespace Machine.Specifications.ReSharperRunner
             return false;
         }
 
-        public void Present(UnitTestElement element, IPresentableItem item, TreeModelNode node, PresentationState state)
-        {
-            Presenter.UpdateItem(element, node, item, state);
-        }
-
         public bool IsElementOfKind(IDeclaredElement declaredElement, UnitTestElementKind elementKind)
         {
             switch (elementKind)
@@ -213,7 +206,12 @@ namespace Machine.Specifications.ReSharperRunner
             throw new NotImplementedException();
         }
 
-        public int CompareUnitTestElements(IUnitTestElement x, IUnitTestElement y)
+      public bool IsSupported(IHostProvider hostProvider)
+      {
+        return true;
+      }
+
+      public int CompareUnitTestElements(IUnitTestElement x, IUnitTestElement y)
         {
             throw new NotImplementedException();
         }

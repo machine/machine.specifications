@@ -6,7 +6,7 @@ using JetBrains.ReSharper.UnitTestExplorer;
 #endif
 
 #if RESHARPER_6
-using JetBrains.ReSharper.TaskRunnerFramework.UnitTesting;
+using JetBrains.ReSharper.UnitTestFramework;
 #endif
 
 using Machine.Specifications.ReSharperRunner.Presentation;

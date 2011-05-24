@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using JetBrains.ReSharper.TaskRunnerFramework.UnitTesting;
+using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.UnitTestFramework;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
-    internal class UnitTestElement: IUnitTestElement
+    internal abstract class UnitTestElement: IUnitTestElement
     {
         public string TypeName { get; protected set; }
         public string AssemblyLocation { get; private set; }
 
-        public UnitTestElement(IUnitTestRunnerProvider provider, string typeName, string shortName, string assemblyLocation)
+        public UnitTestElement(IUnitTestProvider provider, string typeName, string shortName, string assemblyLocation)
         {
             Provider = provider;
             TypeName = typeName;
@@ -35,7 +37,13 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
             return false;
         }
 
-        public IList<UnitTestTask> GetTaskSequence(IEnumerable<IUnitTestElement> explicitElements)
+      public abstract IProject GetProject();
+      public abstract string GetPresentation();
+      public abstract UnitTestNamespace GetNamespace();
+      public abstract UnitTestElementDisposition GetDisposition();
+      public abstract IDeclaredElement GetDeclaredElement();
+
+      public IList<UnitTestTask> GetTaskSequence(IEnumerable<IUnitTestElement> explicitElements)
         {
             // TODO: HADI
             var unitTestTasks = new List<UnitTestTask>();
@@ -43,12 +51,16 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
             return unitTestTasks;
         }
 
-        public string Id
+      public abstract string Kind { get; }
+      public abstract IEnumerable<UnitTestElementCategory> Categories { get; }
+      public abstract string ExplicitReason { get; }
+
+      public string Id
         {
             get { return TypeName; }
         }
 
-        public IUnitTestRunnerProvider Provider { get; private set; }
+        public IUnitTestProvider Provider { get; private set; }
         public IUnitTestElement Parent { get; set; }
         public ICollection<IUnitTestElement> Children { get; private set; }
         public string ShortName { get; private set; }
