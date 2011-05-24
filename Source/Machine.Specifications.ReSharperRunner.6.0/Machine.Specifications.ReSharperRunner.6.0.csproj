@@ -217,14 +217,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="InstallResharperRunner.5.1 - VS2008.bat">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="InstallResharperRunner.5.1 - VS2010.bat">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
