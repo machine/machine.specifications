@@ -22,7 +22,11 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
     public ContextSpecificationElement CreateContextSpecification(IDeclaredElement field)
     {
+#if RESHARPER_6
+      IClass clazz = ((ITypeMember)field).GetContainingType() as IClass;
+#else
       IClass clazz = field.GetContainingType() as IClass;
+#endif
       if (clazz == null)
       {
         return null;
@@ -38,7 +42,11 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       return new ContextSpecificationElement(_provider,
                                              context,
                                              _projectEnvoy,
+#if RESHARPER_6
+                                             clazz.GetClrName().FullName,
+#else
                                              clazz.CLRName,
+#endif
                                              field.ShortName,
                                              clazz.GetTags(),
                                              field.IsIgnored());

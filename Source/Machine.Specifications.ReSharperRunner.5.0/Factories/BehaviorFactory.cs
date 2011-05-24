@@ -13,7 +13,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
   internal class BehaviorFactory
   {
     readonly ProjectModelElementEnvoy _projectEnvoy;
-    readonly IUnitTestProvider _provider;
+    readonly MSpecUnitTestProvider _provider;
     readonly ContextCache _cache;
     static readonly IDictionary<string, string> TypeNameCache = new Dictionary<string, string>();
 
@@ -26,7 +26,11 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
     public BehaviorElement CreateBehavior(IDeclaredElement field)
     {
+#if RESHARPER_6
+      IClass clazz = ((ITypeMember)field).GetContainingType() as IClass;
+#else
       IClass clazz = field.GetContainingType() as IClass;
+#endif
       if (clazz == null)
       {
         return null;

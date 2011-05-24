@@ -60,8 +60,12 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       return new BehaviorSpecificationElement(_provider,
                                               behavior,
                                               _projectEnvoy,
+#if RESHARPER_6
+                                              behavior.FullyQualifiedTypeName ?? ((ITypeMember)behaviorSpecification).GetContainingType().GetClrName().FullName,
+#else
                                               behavior.FullyQualifiedTypeName ?? behaviorSpecification.GetContainingType().CLRName,
-                                              behaviorSpecification.ShortName,
+#endif
+ behaviorSpecification.ShortName,
                                               behaviorSpecification.IsIgnored());
     }
   }

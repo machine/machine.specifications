@@ -47,7 +47,12 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
 
     public void Explore()
     {
-      if (!_assembly.ReferencedAssembliesNames.Any(x => String.Equals(x.AssemblyName.Name,
+      if (!_assembly.ReferencedAssembliesNames.Any(x => String.Equals(
+#if RESHARPER_6
+                                                                      x.Name,
+#else
+                                                                      x.AssemblyName.Name,
+#endif
                                                                       typeof(It).Assembly.GetName().Name,
                                                                       StringComparison.InvariantCultureIgnoreCase)))
       {
