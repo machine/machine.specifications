@@ -12,10 +12,10 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     readonly string _assemblyPath;
 
     readonly ProjectModelElementEnvoy _projectEnvoy;
-    readonly IUnitTestProvider _provider;
+    readonly MSpecUnitTestProvider _provider;
     readonly ContextCache _cache;
 
-    public ContextFactory(IUnitTestProvider provider, ProjectModelElementEnvoy projectEnvoy, string assemblyPath, ContextCache cache)
+    public ContextFactory(MSpecUnitTestProvider provider, ProjectModelElementEnvoy projectEnvoy, string assemblyPath, ContextCache cache)
     {
       _provider = provider;
       _cache = cache;

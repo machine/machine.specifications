@@ -21,7 +21,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
     readonly IFile _file;
     readonly CheckForInterrupt _interrupted;
 
-    public FileExplorer(IUnitTestProvider provider,
+    public FileExplorer(MSpecUnitTestProvider provider,
                         UnitTestElementLocationConsumer consumer,
                         IFile file,
                         CheckForInterrupt interrupted)

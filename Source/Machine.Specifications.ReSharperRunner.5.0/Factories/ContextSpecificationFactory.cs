@@ -10,10 +10,10 @@ namespace Machine.Specifications.ReSharperRunner.Factories
   internal class ContextSpecificationFactory
   {
     readonly ProjectModelElementEnvoy _projectEnvoy;
-    readonly IUnitTestProvider _provider;
+    readonly MSpecUnitTestProvider _provider;
     readonly ContextCache _cache;
 
-    public ContextSpecificationFactory(IUnitTestProvider provider, ProjectModelElementEnvoy projectEnvoy, ContextCache cache)
+    public ContextSpecificationFactory(MSpecUnitTestProvider provider, ProjectModelElementEnvoy projectEnvoy, ContextCache cache)
     {
       _provider = provider;
       _cache = cache;

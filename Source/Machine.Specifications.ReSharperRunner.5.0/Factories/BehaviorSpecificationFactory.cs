@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.UnitTestFramework;
 
 using Machine.Specifications.ReSharperRunner.Presentation;
 
@@ -12,9 +11,9 @@ namespace Machine.Specifications.ReSharperRunner.Factories
   internal class BehaviorSpecificationFactory
   {
     readonly ProjectModelElementEnvoy _projectEnvoy;
-    readonly IUnitTestProvider _provider;
+    readonly MSpecUnitTestProvider _provider;
 
-    public BehaviorSpecificationFactory(IUnitTestProvider provider, ProjectModelElementEnvoy projectEnvoy)
+    public BehaviorSpecificationFactory(MSpecUnitTestProvider provider, ProjectModelElementEnvoy projectEnvoy)
     {
       _provider = provider;
       _projectEnvoy = projectEnvoy;

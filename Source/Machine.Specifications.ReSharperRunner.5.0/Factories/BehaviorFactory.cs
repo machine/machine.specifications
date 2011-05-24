@@ -17,7 +17,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     readonly ContextCache _cache;
     static readonly IDictionary<string, string> TypeNameCache = new Dictionary<string, string>();
 
-    public BehaviorFactory(IUnitTestProvider provider, ProjectModelElementEnvoy projectEnvoy, ContextCache cache)
+    public BehaviorFactory(MSpecUnitTestProvider provider, ProjectModelElementEnvoy projectEnvoy, ContextCache cache)
     {
       _provider = provider;
       _cache = cache;
