@@ -51,7 +51,11 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
       }
 
       yield return new UnitTestElementDisposition(contextElement,
+#if RESHARPER_6
+                                                  file.GetSourceFile().ToProjectFile(),
+#else
                                                   file.ProjectFile,
+#endif
                                                   declaration.GetNavigationRange().TextRange,
                                                   declaration.GetDocumentRange().TextRange);
     }

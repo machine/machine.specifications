@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 
+using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 #if RESHARPER_5 || RESHARPER_6
 using JetBrains.ReSharper.UnitTestFramework;
@@ -51,7 +52,11 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
       }
 
       yield return new UnitTestElementDisposition(contextSpecificationElement,
+#if RESHARPER_6
+                                                  file.GetSourceFile().ToProjectFile(),
+#else
                                                   file.ProjectFile,
+#endif
                                                   declaration.GetNavigationRange().TextRange,
                                                   declaration.GetDocumentRange().TextRange);
     }
