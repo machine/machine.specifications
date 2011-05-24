@@ -18,11 +18,11 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     protected Element(MSpecUnitTestProvider provider,
                       Element parent,
-                      IProjectModelElement project,
+                      ProjectModelElementEnvoy projectEnvoy,
                       string declaringTypeName,
                       bool isIgnored)
     {
-      if (project == null && !Shell.Instance.IsTestShell)
+      if (projectEnvoy == null && !Shell.Instance.IsTestShell)
       {
         throw new ArgumentNullException("project");
       }
@@ -32,9 +32,9 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
         throw new ArgumentNullException("declaringTypeName");
       }
 
-      if (project != null)
+      if (projectEnvoy != null)
       {
-        _projectEnvoy = new ProjectModelElementEnvoy(project);
+        _projectEnvoy = projectEnvoy;
       }
 
       _provider = provider;
@@ -46,8 +46,6 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       }
 
       TypeName = declaringTypeName;
-      ShortName = shortName;
-      AssemblyLocation = assemblyLocation;
       Parent = parent;
 
       Children = new List<IUnitTestElement>();
@@ -55,7 +53,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     }
 
     public string TypeName { get; protected set; }
-    public string AssemblyLocation { get; private set; }
+    public abstract string AssemblyLocation { get; }
     public abstract string Kind { get; }
     public abstract IEnumerable<UnitTestElementCategory> Categories { get; }
     public string ExplicitReason { get; private set; }
@@ -68,7 +66,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     public IUnitTestProvider Provider { get { return _provider; } }
     public IUnitTestElement Parent { get; set; }
     public ICollection<IUnitTestElement> Children { get; private set; }
-    public string ShortName { get; private set; }
+    public abstract string ShortName { get; }
 
     public bool Explicit
     {
