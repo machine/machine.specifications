@@ -38,7 +38,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       get { return Kind; }
     }
 
-    public override string AssemblyLocation
+    public string AssemblyLocation
     {
       get { return _assemblyLocation; }
     }
