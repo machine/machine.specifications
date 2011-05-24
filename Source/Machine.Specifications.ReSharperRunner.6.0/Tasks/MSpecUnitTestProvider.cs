@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Xml;
 
 using JetBrains.Application;
-using JetBrains.CommonControls;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.TaskRunnerFramework;
 using JetBrains.ReSharper.UnitTestExplorer;
 using JetBrains.ReSharper.UnitTestFramework;
-using JetBrains.TreeModels;
-using JetBrains.UI.TreeView;
 
 using Machine.Specifications.ReSharperRunner.Explorers;
 using Machine.Specifications.ReSharperRunner.Factories;
@@ -23,25 +20,25 @@ using Machine.Specifications.ReSharperRunner.Properties;
 using Machine.Specifications.ReSharperRunner.Runners;
 
 using IUnitTestProvider = JetBrains.ReSharper.UnitTestFramework.IUnitTestProvider;
-using UnitTestElement = Machine.Specifications.ReSharperRunner.Presentation.UnitTestElement;
-//using UnitTestElementConsumer = JetBrains.ReSharper.TaskRunnerFramework.UnitTestElementConsumer;
 using UnitTestElementLocationConsumer = JetBrains.ReSharper.UnitTestFramework.UnitTestElementLocationConsumer;
 
 namespace Machine.Specifications.ReSharperRunner
 {
-    [JetBrains.ReSharper.UnitTestFramework.UnitTestProvider]
+    [UnitTestProvider]
     internal class MSpecUnitTestProvider : IUnitTestProvider
     {
-        const string ProviderId = "Machine.Specifications";
+      const string ProviderId = "Machine.Specifications";
         readonly UnitTestTaskFactory _taskFactory = new UnitTestTaskFactory(ProviderId);
         readonly UnitTestElementComparer _unitTestElementComparer = new UnitTestElementComparer();
 
-        public MSpecUnitTestProvider()
+        public MSpecUnitTestProvider(PsiModuleManager psiModuleManager, CacheManager cacheManager)
         {
-            Debug.Listeners.Add(new DefaultTraceListener());
+          PsiModuleManager = psiModuleManager;
+          CacheManager = cacheManager;
+          Debug.Listeners.Add(new DefaultTraceListener());
         }
 
-        public string ID
+      public string ID
         {
             get { return ProviderId; }
         }
@@ -66,19 +63,8 @@ namespace Machine.Specifications.ReSharperRunner
             get { throw new NotImplementedException(); }
         }
 
-        public string Serialize(UnitTestElement element)
-        {
-            return null;
-        }
-
-        public UnitTestElement Deserialize(ISolution solution, string elementString)
-        {
-            return null;
-        }
-
-        public void ProfferConfiguration(TaskExecutorConfiguration configuration, UnitTestSession session)
-        {
-        }
+        public PsiModuleManager PsiModuleManager { get; private set; }
+        public CacheManager CacheManager { get; private set; }
 
         public void ExploreSolution(ISolution solution, UnitTestElementConsumer consumer)
         {
@@ -170,12 +156,12 @@ namespace Machine.Specifications.ReSharperRunner
         //    throw new ArgumentException(String.Format("Element is not a Machine.Specifications element: '{0}'", element));
         //}
 
-        public int CompareUnitTestElements(UnitTestElement x, UnitTestElement y)
+        public int CompareUnitTestElements(IUnitTestElement x, IUnitTestElement y)
         {
             return _unitTestElementComparer.Compare(x, y);
         }
 
-        public bool IsElementOfKind(UnitTestElement element, UnitTestElementKind elementKind)
+        public bool IsElementOfKind(IUnitTestElement element, UnitTestElementKind elementKind)
         {
             switch (elementKind)
             {
@@ -201,20 +187,10 @@ namespace Machine.Specifications.ReSharperRunner
             return false;
         }
 
-        public bool IsElementOfKind(IUnitTestElement element, UnitTestElementKind elementKind)
-        {
-            throw new NotImplementedException();
-        }
-
       public bool IsSupported(IHostProvider hostProvider)
       {
         return true;
       }
-
-      public int CompareUnitTestElements(IUnitTestElement x, IUnitTestElement y)
-        {
-            throw new NotImplementedException();
-        }
 
         public void SerializeElement(XmlElement parent, IUnitTestElement element)
         {
