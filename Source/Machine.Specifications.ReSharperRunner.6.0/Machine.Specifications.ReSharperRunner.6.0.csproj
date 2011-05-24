@@ -44,6 +44,9 @@
     <Reference Include="JetBrains.Platform.ReSharper.DocumentManager">
       <HintPath>..\..\Libraries\ReSharper\6.0\JetBrains.Platform.ReSharper.DocumentManager.dll</HintPath>
     </Reference>
+    <Reference Include="JetBrains.Platform.ReSharper.DocumentModel">
+      <HintPath>..\..\Libraries\ReSharper\6.0\JetBrains.Platform.ReSharper.DocumentModel.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.IDE">
       <HintPath>..\..\Libraries\ReSharper\6.0\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
     </Reference>
@@ -70,6 +73,9 @@
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi">
       <HintPath>..\..\Libraries\ReSharper\6.0\JetBrains.ReSharper.Psi.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Resources">
+      <HintPath>..\..\Libraries\ReSharper\6.0\JetBrains.ReSharper.Resources.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.ReSharper.TaskRunnerFramework">
       <HintPath>..\..\Libraries\ReSharper\6.0\JetBrains.ReSharper.TaskRunnerFramework.dll</HintPath>
@@ -206,7 +212,6 @@
     </Compile>
     <Compile Include="Presentation\Element.cs" />
     <Compile Include="Presentation\FieldElement.cs" />
-    <Compile Include="Presentation\UnitTestElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
