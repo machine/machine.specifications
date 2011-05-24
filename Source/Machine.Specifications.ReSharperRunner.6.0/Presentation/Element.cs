@@ -53,7 +53,6 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     }
 
     public string TypeName { get; protected set; }
-    public abstract string AssemblyLocation { get; }
     public abstract string Kind { get; }
     public abstract IEnumerable<UnitTestElementCategory> Categories { get; }
     public string ExplicitReason { get; private set; }
@@ -168,7 +167,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       {
         var element = (Element)other;
         return other.ShortName == ShortName && other.Provider == Provider
-               && element.AssemblyLocation == AssemblyLocation;
+               && Equals(element._projectEnvoy, _projectEnvoy) && element._declaringTypeName == _declaringTypeName;
       }
       return false;
     }

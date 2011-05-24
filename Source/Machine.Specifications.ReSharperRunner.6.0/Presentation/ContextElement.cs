@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using JetBrains.Application;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.UnitTestFramework;
-using JetBrains.Text;
 
-using Machine.Specifications.Utility;
 using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
@@ -17,14 +13,14 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
   {
     readonly string _assemblyLocation;
     readonly string _subject;
-    IEnumerable<UnitTestElementCategory> _categories;
+    readonly IEnumerable<UnitTestElementCategory> _categories;
 
     public ContextElement(MSpecUnitTestProvider provider,
                           ProjectModelElementEnvoy projectEnvoy,
                           string typeName,
                           string assemblyLocation,
                           string subject,
-                          ICollection<string> tags,
+                          IEnumerable<string> tags,
                           bool isIgnored)
       : base(provider, null, projectEnvoy, typeName, isIgnored)
     {
