@@ -111,9 +111,6 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\UnitTestTaskFactory.cs">
       <Link>Factories\UnitTestTaskFactory.cs</Link>
     </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\MetadataExtensions.cs">
-      <Link>MetadataExtensions.cs</Link>
-    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\PsiExtensions.cs">
       <Link>PsiExtensions.cs</Link>
     </Compile>
@@ -189,18 +186,6 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\MetadataExtensions.5.0.cs">
       <Link>MetadataExtensions.5.0.cs</Link>
     </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Presentation\BehaviorElement.cs">
-      <Link>Presentation\BehaviorElement.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Presentation\BehaviorSpecificationElement.cs">
-      <Link>Presentation\BehaviorSpecificationElement.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Presentation\ContextElement.cs">
-      <Link>Presentation\ContextElement.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Presentation\ContextSpecificationElement.cs">
-      <Link>Presentation\ContextSpecificationElement.cs</Link>
-    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Tasks\Task.5.0.cs">
       <Link>Tasks\Task.5.0.cs</Link>
     </Compile>
@@ -210,6 +195,11 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="MetadataExtensions.cs" />
+    <Compile Include="Presentation\BehaviorElement.cs" />
+    <Compile Include="Presentation\BehaviorSpecificationElement.cs" />
+    <Compile Include="Presentation\ContextElement.cs" />
+    <Compile Include="Presentation\ContextSpecificationElement.cs" />
     <Compile Include="Presentation\Element.cs" />
     <Compile Include="Presentation\FieldElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
