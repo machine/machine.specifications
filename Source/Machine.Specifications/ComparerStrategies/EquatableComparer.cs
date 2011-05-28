@@ -2,16 +2,18 @@
 
 namespace Machine.Specifications.ComparerStrategies
 {
-    class EquatableComparer<T> : IComparerStrategy<T>
+  class EquatableComparer<T> : IComparerStrategy<T>
+  {
+    public ComparisionResult Compare(T x, T y)
     {
-        public ComparisionResult Compare(T x, T y)
-        {
-            // Implements IEquatable<T>?
-            var equatable = x as IEquatable<T>;
+      var equatable = x as IEquatable<T>;
 
-            if (equatable != null)
-                return new ComparisionResult(equatable.Equals(y) ? 0 : -1);
-            return new NoResult();
-        }
+      if (equatable == null)
+      {
+        return new NoResult();
+      }
+
+      return new ComparisionResult(equatable.Equals(y) ? 0 : -1);
     }
+  }
 }

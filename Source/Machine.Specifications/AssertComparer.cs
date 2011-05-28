@@ -1,40 +1,35 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Machine.Specifications.ComparerStrategies;
 
 namespace Machine.Specifications
 {
-    class AssertComparer<T> : IComparer<T>, IEqualityComparer<T>
+  class AssertComparer<T> : IComparer<T>, IEqualityComparer<T>
+  {
+    public int Compare(T x, T y)
     {
-        public int Compare(T x,
-                           T y)
+      var comparers = ComparerFactory.GetComparers<T>();
+
+      foreach (var comparer in comparers)
+      {
+        var comparisionResult = comparer.Compare(x, y);
+        if (comparisionResult.FoundResult)
         {
- 
-            var comparers = ComparerFactory.GetComparers<T>();
-
-            foreach (var comparer in comparers)
-            {
-                var comparisionResult = comparer.Compare(x,y);
-                if (comparisionResult.FoundResult)
-                    return comparisionResult.Result;
-            }
-
-            return ComparerFactory.GetDefaultComparer<T>().Compare(x, y);
-
+          return comparisionResult.Result;
         }
+      }
 
-        public bool Equals(T x, T y)
-        {
-            return Compare(x, y) == 0;
-        }
-
-        public int GetHashCode(T obj)
-        {
-            return obj.GetHashCode();
-        }
+      return ComparerFactory.GetDefaultComparer<T>().Compare(x, y);
     }
 
-    // Borrowed from XUnit, licened under MS-PL
+    public bool Equals(T x, T y)
+    {
+      return Compare(x, y) == 0;
+    }
+
+    public int GetHashCode(T obj)
+    {
+      return obj.GetHashCode();
+    }
+  }
 }

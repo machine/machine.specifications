@@ -2,11 +2,11 @@
 
 namespace Machine.Specifications.ComparerStrategies
 {
-    public static class TypeExtension
+  static class TypeExtension
+  {
+    public static bool IsNullable(this Type type)
     {
-        public static bool IsNullable(this Type type)
-        {
-            return type.GetGenericTypeDefinition().IsAssignableFrom(typeof(Nullable<>));
-        }
+      return type.GetGenericTypeDefinition().IsAssignableFrom(typeof(Nullable<>));
     }
+  }
 }
