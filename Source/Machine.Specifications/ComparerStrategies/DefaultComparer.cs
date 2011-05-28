@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Machine.Specifications
+namespace Machine.Specifications.ComparerStrategies
 {
     class DefaultComparer<T> : IComparer<T>
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Machine.Specifications
+namespace Machine.Specifications.ComparerStrategies
 {
     class EnumerableComparer<T> : IComparerStrategy<T>
     {

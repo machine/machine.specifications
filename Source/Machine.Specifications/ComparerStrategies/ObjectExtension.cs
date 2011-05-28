@@ -1,4 +1,4 @@
-﻿namespace Machine.Specifications
+﻿namespace Machine.Specifications.ComparerStrategies
 {
     public static class ObjectExtension
     {

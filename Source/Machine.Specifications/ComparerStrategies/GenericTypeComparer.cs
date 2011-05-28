@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Machine.Specifications
+namespace Machine.Specifications.ComparerStrategies
 {
     class GenericTypeComparer<T> : IComparerStrategy<T>
     {

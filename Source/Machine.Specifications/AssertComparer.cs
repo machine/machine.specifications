@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Text;
 
+using Machine.Specifications.ComparerStrategies;
+
 namespace Machine.Specifications
 {
     class AssertComparer<T> : IComparer<T>, IEqualityComparer<T>

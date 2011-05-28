@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Machine.Specifications
+namespace Machine.Specifications.ComparerStrategies
 {
     public class ComparerFactory
     {
