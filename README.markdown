@@ -78,7 +78,7 @@ Options:
 -x, --exclude  Exclude specifications in contexts with these comma delimited tags. Ex. -x "foo,bar,foo_bar"
 -t, --timeinfo Shows time-related information in HTML output
 -s, --silent   Suppress console output
---teamcity     Reporting for TeamCity CI integration.
+--teamcity     Reporting for TeamCity CI integration (auto-detected)
 --html &lt;PATH&gt;  Outputs the HTML report to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)
 --xml &lt;PATH&gt;   Outputs the XML report to the file referenced by the path
 -h, --help     Shows this help message
@@ -91,7 +91,7 @@ The command-line runner provides support for [Selenium](http://seleniumhq.org/) 
 
 #### TeamCity support from the command-line runner
 
-MSpec provides [TeamCity](http://www.jetbrains.com/teamcity/) integration via specialized output from the command-line runner to provide information and updates on overall test run status while the specs are running. This functionality can be enabled by passing the `--teamcity` option to the command-line runner.
+MSpec provides [TeamCity](http://www.jetbrains.com/teamcity/) integration via specialized output from the command-line runner to provide information and updates on overall test run status while the specs are running. This functionality can be enabled by passing the `--teamcity` option to the command-line runner. The runner will auto-detect TeamCity if the option is not passed.
 
 #### HTML output from the command-line runner
 

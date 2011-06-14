@@ -37,7 +37,7 @@ namespace Machine.Specifications.ConsoleRunner
 
     [Option(null, 
       "teamcity",
-      HelpText = "Reporting for TeamCity CI integration")]
+      HelpText = "Reporting for TeamCity CI integration (auto-detected)")]
     public bool TeamCityIntegration = false;
 
     [OptionList("i",
