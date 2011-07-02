@@ -363,6 +363,9 @@ II.2.12 <HandlesEvent />
 </Patterns>
 ]]></CustomMemberReorderingPatterns>
     </CSharp>
+    <HTML>
+      <FormatSettings />
+    </HTML>
     <JavaScript>
       <FormatSettings />
       <Naming2 />
