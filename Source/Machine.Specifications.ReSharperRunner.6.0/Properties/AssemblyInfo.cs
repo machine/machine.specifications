@@ -23,5 +23,5 @@ using JetBrains.UI.Application.PluginSupport;
 
 [assembly: Guid("a0468d17-75ce-44fd-a346-534cacd98ecc")]
 [assembly: PluginTitle("Machine.Specifications Runner for ReSharper 6.0")]
-[assembly: PluginDescription("Allows ReSharper 5.1 to run Machine.Specifications as unit tests")]
+[assembly: PluginDescription("Allows ReSharper 6.0 to run Machine.Specifications as unit tests")]
 [assembly: PluginVendor("Machine")]

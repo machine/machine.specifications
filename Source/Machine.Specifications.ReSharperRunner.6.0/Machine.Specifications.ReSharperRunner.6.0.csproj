@@ -195,20 +195,24 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Explorers\MspecTestFileExplorer.cs" />
+    <Compile Include="Explorers\MSpecTestMetadataExplorer.cs" />
     <Compile Include="MetadataExtensions.cs" />
+    <Compile Include="MSpecUnitTestPresenter.cs" />
+    <Compile Include="MSpecUnitTestProvider.cs" />
     <Compile Include="Presentation\BehaviorElement.cs" />
     <Compile Include="Presentation\BehaviorSpecificationElement.cs" />
     <Compile Include="Presentation\ContextElement.cs" />
     <Compile Include="Presentation\ContextSpecificationElement.cs" />
     <Compile Include="Presentation\Element.cs" />
     <Compile Include="Presentation\FieldElement.cs" />
+    <Compile Include="Presentation\Presenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Tasks\MSpecUnitTestProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj">
