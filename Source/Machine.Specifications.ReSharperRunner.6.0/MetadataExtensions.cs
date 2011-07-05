@@ -22,15 +22,20 @@ namespace Machine.Specifications.ReSharperRunner
 
     static bool IsStruct(this IMetadataTypeInfo type)
     {
-      return type.Base.Type.FullyQualifiedName == typeof(ValueType).FullName;
+      if (type.Base != null)
+      {
+        return type.Base.Type.FullyQualifiedName == typeof(ValueType).FullName;
+      }
+      return false;
     }
 
     public static IEnumerable<IMetadataField> GetSpecifications(this IMetadataTypeInfo type)
     {
-      return type.GetPrivateFieldsOfType<It>();
+        var privateFieldsOfType = type.GetPrivateFieldsOfType<It>();
+        return privateFieldsOfType;
     }
 
-    public static IEnumerable<IMetadataField> GetBehaviors(this IMetadataTypeInfo type)
+      public static IEnumerable<IMetadataField> GetBehaviors(this IMetadataTypeInfo type)
     {
       IEnumerable<IMetadataField> behaviorFields = type.GetPrivateFieldsWith(typeof(Behaves_like<>));
       foreach (IMetadataField field in behaviorFields)
@@ -144,10 +149,12 @@ namespace Machine.Specifications.ReSharperRunner
 
     static IEnumerable<IMetadataField> GetPrivateFieldsWith(this IMetadataTypeInfo type, Type fieldType)
     {
-      return type.GetPrivateFields()
-        .Where(x => x.Type is IMetadataClassType)
-        .Where(x => new ClrTypeName(((IMetadataClassType)x.Type).Type.FullyQualifiedName) ==
-                    new ClrTypeName(fieldType.FullName));
+        var metadataFields = type.GetPrivateFields();
+        var fields = metadataFields.Where(x => x.Type is IMetadataClassType);
+        return fields.Where(x =>
+        {
+            return x.Type.FullName == fieldType.FullName;
+        });
     }
   }
 }
