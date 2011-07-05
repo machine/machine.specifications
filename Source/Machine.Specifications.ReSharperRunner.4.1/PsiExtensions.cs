@@ -205,7 +205,7 @@ namespace Machine.Specifications.ReSharperRunner
       }
 
 #if RESHARPER_6
-      return new CLRTypeName(fieldType.GetClrName().FullName) == new CLRTypeName(type.FullName);
+      return fieldType.GetClrName().FullName == type.FullName;
 #else
       return new CLRTypeName(fieldType.GetCLRName()) == new CLRTypeName(type.FullName);
 #endif

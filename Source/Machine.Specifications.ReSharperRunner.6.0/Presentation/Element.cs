@@ -14,7 +14,7 @@ using Machine.Specifications.ReSharperRunner.Factories;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
-  abstract class Element : IUnitTestElement
+  public abstract class Element : IUnitTestElement
   {
     readonly string _declaringTypeName;
     readonly ProjectModelElementEnvoy _projectEnvoy;
@@ -233,8 +233,10 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public override bool Equals(object obj)
     {
-      var other = (Element) obj;
-      return Equals(other._projectEnvoy, _projectEnvoy) && other._declaringTypeName == _declaringTypeName;
+      var other = obj as Element;
+      if (other != null)
+          return Equals(other._projectEnvoy, _projectEnvoy) && other._declaringTypeName == _declaringTypeName;
+      return false;
     }
 
     public override int GetHashCode()

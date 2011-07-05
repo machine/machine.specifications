@@ -5,7 +5,7 @@ using JetBrains.ReSharper.UnitTestFramework;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
-  internal class BehaviorElement : FieldElement
+  public class BehaviorElement : FieldElement
   {
     public BehaviorElement(MSpecUnitTestProvider provider,
       // ReSharper disable SuggestBaseTypeForParameter

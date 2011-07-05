@@ -9,7 +9,7 @@ using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
-  internal class ContextElement : Element
+  public class ContextElement : Element
   {
     readonly string _assemblyLocation;
     readonly string _subject;
@@ -77,8 +77,9 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     {
       if (base.Equals(obj))
       {
-        ContextElement other = (ContextElement)obj;
-        return Equals(AssemblyLocation, other.AssemblyLocation);
+        var other = obj as ContextElement;
+        if (other != null)
+            return Equals(AssemblyLocation, other.AssemblyLocation);
       }
 
       return false;
