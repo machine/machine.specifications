@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 using JetBrains.Application;
@@ -65,7 +66,10 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public string Id
     {
-      get { return TypeName; }
+      get
+      {
+          return TypeName;
+      }
     }
 
     public IUnitTestProvider Provider

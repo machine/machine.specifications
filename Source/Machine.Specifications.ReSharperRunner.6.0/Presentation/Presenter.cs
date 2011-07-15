@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 using JetBrains.CommonControls;
 using JetBrains.ReSharper.Features.Common.TreePsiBrowser;
@@ -57,7 +58,6 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       item.RichText = element.GetPresentation();
 
       SetTextColor(item, element);
-      SetImage(item, state, type);
     }
 
     static void SetTextColor(IPresentableItem item, Element element)
@@ -70,20 +70,6 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       item.RichText.SetForeColor(SystemColors.GrayText, 0, element.GetTitlePrefix().Length);
     }
 
-    static void SetImage(IPresentableItem item, PresentationState state, UnitTestElementImage imageType)
-    {
-      Image stateImage = UnitTestIconManager.GetStateImage(state);
-      Image typeImage = UnitTestIconManager.GetStandardImage(imageType);
-
-      if (stateImage != null)
-      {
-        item.Images.Add(stateImage);
-      }
-      else if (typeImage != null)
-      {
-        item.Images.Add(typeImage);
-      }
-    }
 
     protected override bool IsNaturalParent(object parentValue, object childValue)
     {

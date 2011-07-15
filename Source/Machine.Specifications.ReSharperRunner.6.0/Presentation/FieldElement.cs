@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 using JetBrains.ProjectModel;
@@ -21,6 +22,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                            bool isIgnored)
       : base(provider, parent, projectEnvoy, declaringTypeName, isIgnored || parent.Explicit)
     {
+      
       _fieldName = fieldName;
     }
 

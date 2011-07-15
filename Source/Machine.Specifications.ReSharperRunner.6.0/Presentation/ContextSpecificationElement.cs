@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.UnitTestFramework;
 
@@ -20,6 +19,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                                        bool isIgnored)
       : base(provider, context, project, declaringTypeName, fieldName, isIgnored || context.Explicit)
     {
+
       if (tags != null)
       {
         _categories = UnitTestElementCategory.Create(tags);
@@ -33,7 +33,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public override string Kind
     {
-      get { return "Specification"; }
+
+        get {  return "Specification"; }
     }
 
     public override IEnumerable<UnitTestElementCategory> Categories

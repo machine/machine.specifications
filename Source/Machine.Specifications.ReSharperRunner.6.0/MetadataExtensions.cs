@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ReSharper.Psi;
+using JetBrains.Util;
 
 namespace Machine.Specifications.ReSharperRunner
 {
@@ -40,10 +42,7 @@ namespace Machine.Specifications.ReSharperRunner
       IEnumerable<IMetadataField> behaviorFields = type.GetPrivateFieldsWith(typeof(Behaves_like<>));
       foreach (IMetadataField field in behaviorFields)
       {
-        if (field.GetFirstGenericArgument().HasCustomAttribute(typeof(BehaviorsAttribute).FullName)
-#if !RESHARPER_5
- && field.GetFirstGenericArgument().GenericParameters.Length == 0
-#endif
+        if (field.GetFirstGenericArgument().HasCustomAttribute(typeof(BehaviorsAttribute).FullName) && field.GetFirstGenericArgument().GenericParameters.Length == 0
 )
         {
           yield return field;
@@ -77,17 +76,18 @@ namespace Machine.Specifications.ReSharperRunner
     }
 
     public static ICollection<string> GetTags(this IMetadataEntity type)
-    {
-      return type.AndAllBaseTypes()
-        .SelectMany(x => x.GetCustomAttributes(typeof(TagsAttribute).FullName))
-        .Select(x => x.ConstructorArguments)
-        .Flatten(tag => tag.FirstOrDefault().Value as string,
-                 tag => tag.Skip(1).FirstOrDefault().Value as IEnumerable<string>)
-        .Distinct()
-        .ToList();
+    { 
+
+        return type.AndAllBaseTypes()
+                .SelectMany(x => x.GetCustomAttributes(typeof(TagsAttribute).FullName))
+                .Select(x => x.ConstructorArguments)
+                .Flatten(tag => tag.FirstOrDefault().Value as string,
+                tag => tag.Skip(1).FirstOrDefault().Value as IEnumerable<string>)
+                .Distinct()
+                .ToList();
     }
 
-    static IEnumerable<IMetadataTypeInfo> AndAllBaseTypes(this IMetadataEntity type)
+      static IEnumerable<IMetadataTypeInfo> AndAllBaseTypes(this IMetadataEntity type)
     {
       var typeInfo = type as IMetadataTypeInfo;
       if (typeInfo == null)
@@ -129,11 +129,10 @@ namespace Machine.Specifications.ReSharperRunner
       foreach (var s in source)
       {
         yield return singleResultSelector(s);
-
-        foreach (var coll in collectionResultSelector(s))
-        {
-          yield return coll;
-        }
+           foreach (var coll in collectionResultSelector(s))
+            {
+                yield return coll;
+            }
       }
     }
 
