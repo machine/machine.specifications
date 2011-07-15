@@ -105,6 +105,7 @@ namespace Machine.Specifications.ReSharperRunner
 
     public void SerializeElement(XmlElement parent, IUnitTestElement element)
     {
+        // TODO: Hadi
       throw new NotImplementedException();
     }
   }

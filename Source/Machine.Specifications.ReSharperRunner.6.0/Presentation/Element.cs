@@ -21,8 +21,9 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     readonly ProjectModelElementEnvoy _projectEnvoy;
     readonly MSpecUnitTestProvider _provider;
     readonly UnitTestTaskFactory _taskFactory;
+    Element _parent;
 
-    protected Element(MSpecUnitTestProvider provider,
+      protected Element(MSpecUnitTestProvider provider,
                       Element parent,
                       ProjectModelElementEnvoy projectEnvoy,
                       string declaringTypeName,
@@ -64,7 +65,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     public abstract IEnumerable<UnitTestElementCategory> Categories { get; }
     public string ExplicitReason { get; private set; }
 
-    public string Id
+    public virtual string Id
     {
       get
       {
@@ -77,7 +78,21 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       get { return _provider; }
     }
 
-    public IUnitTestElement Parent { get; set; }
+    public IUnitTestElement Parent
+    {
+        get { return _parent;  }
+        set
+        {
+            if (_parent == value)
+                return;
+
+            if (_parent != null)
+                _parent.RemoveChild(this);
+            _parent = (Element)value;
+            if (_parent != null)
+                _parent.AddChild(this);
+        }
+    }
     public ICollection<IUnitTestElement> Children { get; private set; }
     public abstract string ShortName { get; }
 
@@ -250,5 +265,17 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       result = 29 * result + _declaringTypeName.GetHashCode();
       return result;
     }
+
+    public void AddChild(Element behaviorElement)
+    {
+        Children.Add(behaviorElement);
+    }
+
+    public void RemoveChild(Element behaviorElement)
+    {
+        Children.Remove(behaviorElement);
+    }
+
+
   }
 }

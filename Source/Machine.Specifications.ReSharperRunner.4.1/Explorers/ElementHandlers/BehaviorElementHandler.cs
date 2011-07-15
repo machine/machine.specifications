@@ -48,7 +48,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
     {
       IDeclaration declaration = (IDeclaration)element;
       var behaviorElement = _behaviorFactory.CreateBehavior(declaration.DeclaredElement);
-
+      
       if (behaviorElement == null)
       {
         yield break;

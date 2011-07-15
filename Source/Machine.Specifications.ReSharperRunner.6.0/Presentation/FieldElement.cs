@@ -26,7 +26,12 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       _fieldName = fieldName;
     }
 
-    public override string ShortName
+      public override string Id
+      {
+          get { return string.Format("{0}.{1}", TypeName, FieldName); }
+      }
+
+      public override string ShortName
     {
       get { return FieldName; }
     }
