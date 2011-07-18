@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Xml;
 
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Util;
+using JetBrains.ReSharper.UnitTestFramework;
 
 using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
-  public abstract class FieldElement : Element
+  public abstract class FieldElement : Element, ISerializableUnitTestElement
   {
     readonly string _fieldName;
 
@@ -81,5 +83,19 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       result = 29 * result + FieldName.GetHashCode();
       return result;
     }
+
+      public void WriteToXml(XmlElement parent)
+      {
+        parent.SetAttribute("projectId", GetProject().GetPersistentID());
+        parent.SetAttribute("typeName", TypeName);
+        parent.SetAttribute("methodName", FieldName);
+        parent.SetAttribute("skipReason", ExplicitReason);         
+
+      }
+
+      public IUnitTestElement ReadFromXml(XmlElement parent, IUnitTestElement parentElement, MSpecUnitTestProvider provider)
+      {
+            throw new NotImplementedException("Oh uh");
+      }
   }
 }

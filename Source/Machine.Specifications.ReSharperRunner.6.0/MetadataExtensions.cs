@@ -129,6 +129,11 @@ namespace Machine.Specifications.ReSharperRunner
       foreach (var s in source)
       {
         yield return singleResultSelector(s);
+          var resultSelector = collectionResultSelector(s);
+          if (resultSelector == null)
+          {
+              yield break;
+          }
            foreach (var coll in collectionResultSelector(s))
             {
                 yield return coll;

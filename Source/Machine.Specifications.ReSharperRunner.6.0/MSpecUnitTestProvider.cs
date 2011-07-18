@@ -42,9 +42,18 @@ namespace Machine.Specifications.ReSharperRunner
       get { return ID; }
     }
 
+    public void SerializeElement(XmlElement parent, IUnitTestElement element)
+    {
+        parent.SetAttribute("type", element.GetType().Name);
+
+        var writableUnitTestElement = (ISerializableUnitTestElement)element;
+        writableUnitTestElement.WriteToXml(parent);
+
+    }
+
     public IUnitTestElement DeserializeElement(XmlElement parent, IUnitTestElement parentElement)
     {
-      throw new NotImplementedException();
+        throw new NotImplementedException("DeseralizeElement");
     }
 
     public Image Icon
@@ -103,10 +112,6 @@ namespace Machine.Specifications.ReSharperRunner
       return true;
     }
 
-    public void SerializeElement(XmlElement parent, IUnitTestElement element)
-    {
-        // TODO: Hadi
-      throw new NotImplementedException();
-    }
+     
   }
 }

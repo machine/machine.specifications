@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Xml;
 
 using JetBrains.Application;
 using JetBrains.ProjectModel;
@@ -266,7 +267,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       return result;
     }
 
-    public void AddChild(Element behaviorElement)
+
+      public void AddChild(Element behaviorElement)
     {
         Children.Add(behaviorElement);
     }
