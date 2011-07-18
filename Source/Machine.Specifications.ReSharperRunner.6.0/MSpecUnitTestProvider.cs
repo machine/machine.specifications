@@ -42,19 +42,7 @@ namespace Machine.Specifications.ReSharperRunner
       get { return ID; }
     }
 
-    public void SerializeElement(XmlElement parent, IUnitTestElement element)
-    {
-        parent.SetAttribute("type", element.GetType().Name);
 
-        var writableUnitTestElement = (ISerializableUnitTestElement)element;
-        writableUnitTestElement.WriteToXml(parent);
-
-    }
-
-    public IUnitTestElement DeserializeElement(XmlElement parent, IUnitTestElement parentElement)
-    {
-        throw new NotImplementedException("DeseralizeElement");
-    }
 
     public Image Icon
     {
@@ -71,7 +59,12 @@ namespace Machine.Specifications.ReSharperRunner
     {
     }
 
-    public RemoteTaskRunnerInfo GetTaskRunnerInfo()
+    public IUnitTestElement DeserializeElement(XmlElement parent, IUnitTestElement parentElement)
+    {
+        throw new NotImplementedException();
+    }
+
+      public RemoteTaskRunnerInfo GetTaskRunnerInfo()
     {
       return new RemoteTaskRunnerInfo(typeof(RecursiveMSpecTaskRunner));
     }
@@ -79,6 +72,11 @@ namespace Machine.Specifications.ReSharperRunner
     public int CompareUnitTestElements(IUnitTestElement x, IUnitTestElement y)
     {
       return _unitTestElementComparer.Compare(x, y);
+    }
+
+    public void SerializeElement(XmlElement parent, IUnitTestElement element)
+    {
+        throw new NotImplementedException();
     }
 
     public bool IsElementOfKind(IUnitTestElement element, UnitTestElementKind elementKind)
