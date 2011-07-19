@@ -62,15 +62,14 @@ namespace Machine.Specifications.ReSharperRunner
 
       var parameters = attribute.ConstructorArguments.Select(x =>
       {
-        var typeArgument = x.Type as IMetadataClassType;
+        var typeArgument = x.Value as IMetadataClassType;
         if (typeArgument != null)
         {
           return new ClrTypeName(typeArgument.Type.FullyQualifiedName).ShortName;
         }
 
         return (string)x.Value;
-      })
-                                  .ToArray();
+      }).ToArray();
 
       return String.Join(" ", parameters);
     }
