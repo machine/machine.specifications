@@ -82,7 +82,7 @@ namespace Machine.Specifications.ReSharperRunner
                 .SelectMany(x => x.GetCustomAttributes(typeof(TagsAttribute).FullName))
                 .Select(x => x.ConstructorArguments)
                 .Flatten(tag => tag.FirstOrDefault().Value as string,
-                tag => tag.Skip(1).FirstOrDefault().Value as IEnumerable<string>)
+                tag => tag.Skip(1).FirstOrDefault().ValuesArray.Select(v => v.Value as string))
                 .Distinct()
                 .ToList();
     }
