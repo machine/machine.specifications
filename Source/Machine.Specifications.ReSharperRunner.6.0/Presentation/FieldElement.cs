@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Xml;
 
@@ -12,7 +11,7 @@ using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
-  public abstract class FieldElement : Element
+  public abstract class FieldElement : Element, ISerializableElement
   {
     readonly string _fieldName;
 
@@ -24,16 +23,16 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                            bool isIgnored)
       : base(provider, parent, projectEnvoy, declaringTypeName, isIgnored || parent.Explicit)
     {
-      
+
       _fieldName = fieldName;
     }
 
-      public override string Id
-      {
-          get { return string.Format("{0}.{1}", TypeName, FieldName); }
-      }
+    public override string Id
+    {
+      get { return string.Format("{0}.{1}", TypeName, FieldName); }
+    }
 
-      public override string ShortName
+    public override string ShortName
     {
       get { return FieldName; }
     }
@@ -84,18 +83,12 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       return result;
     }
 
-      public void WriteToXml(XmlElement parent)
-      {
-        parent.SetAttribute("projectId", GetProject().GetPersistentID());
-        parent.SetAttribute("typeName", TypeName);
-        parent.SetAttribute("methodName", FieldName);
-        parent.SetAttribute("skipReason", ExplicitReason);         
-
-      }
-
-      public IUnitTestElement ReadFromXml(XmlElement parent, IUnitTestElement parentElement, MSpecUnitTestProvider provider)
-      {
-            throw new NotImplementedException("Oh uh");
-      }
+    public virtual void WriteToXml(XmlElement parent)
+    {
+      parent.SetAttribute("projectId", GetProject().GetPersistentID());
+      parent.SetAttribute("typeName", TypeName);
+      parent.SetAttribute("methodName", FieldName);
+      parent.SetAttribute("isIgnored", Explicit.ToString());
+    }
   }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Xml;
 
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.UnitTestFramework;
@@ -41,6 +42,31 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     public override IEnumerable<UnitTestElementCategory> Categories
     {
       get { return UnitTestElementCategory.Uncategorized; }
+    }
+
+    public override void WriteToXml(XmlElement parent)
+    {
+      base.WriteToXml(parent);
+      parent.SetAttribute("typeFQN", FullyQualifiedTypeName);
+    }
+
+    public static IUnitTestElement ReadFromXml(XmlElement parent, IUnitTestElement parentElement, MSpecUnitTestProvider provider)
+    {
+      var projectId = parent.GetAttribute("projectId");
+      var project = ProjectUtil.FindProjectElementByPersistentID(provider.Solution, projectId) as IProject;
+      if (project == null)
+        return null;
+
+      var context = parentElement as ContextElement;
+      if (context == null)
+        return null;
+
+      var typeName = parent.GetAttribute("typeName");
+      var methodName = parent.GetAttribute("methodName");
+      var isIgnored = bool.Parse(parent.GetAttribute("isIgnored"));
+      var fullyQualifiedTypeName = parent.GetAttribute("typeFQN");
+
+      return new BehaviorElement(provider, context, ProjectModelElementEnvoy.Create(project), typeName, methodName, isIgnored, fullyQualifiedTypeName);
     }
   }
 }

@@ -61,7 +61,18 @@ namespace Machine.Specifications.ReSharperRunner
 
     public IUnitTestElement DeserializeElement(XmlElement parent, IUnitTestElement parentElement)
     {
-        throw new NotImplementedException();
+      var typeName = parent.GetAttribute("elemenType");
+
+      if (Equals(typeName, "ContextElement"))
+        return ContextElement.ReadFromXml(parent, parentElement, this);
+      if (Equals(typeName, "BehaviorElement"))
+        return BehaviorElement.ReadFromXml(parent, parentElement, this);
+      if (Equals(typeName, "BehaviorSpecificationElement"))
+        return BehaviorSpecificationElement.ReadFromXml(parent, parentElement, this);
+      if (Equals(typeName, "ContextSpecificationElement"))
+        return ContextSpecificationElement.ReadFromXml(parent, parentElement, this);
+
+      return null;
     }
 
       public RemoteTaskRunnerInfo GetTaskRunnerInfo()
@@ -76,7 +87,12 @@ namespace Machine.Specifications.ReSharperRunner
 
     public void SerializeElement(XmlElement parent, IUnitTestElement element)
     {
-        throw new NotImplementedException();
+      var e = element as ISerializableElement;
+      if (e != null)
+      {
+        e.WriteToXml(parent);
+        parent.SetAttribute("elementType", e.GetType().Name);
+      }
     }
 
     public bool IsElementOfKind(IUnitTestElement element, UnitTestElementKind elementKind)

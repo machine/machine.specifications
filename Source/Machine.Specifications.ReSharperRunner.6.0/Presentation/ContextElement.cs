@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
 
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
@@ -9,7 +11,7 @@ using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
-  public class ContextElement : Element
+  public class ContextElement : Element, ISerializableElement
   {
     readonly string _assemblyLocation;
     readonly string _subject;
@@ -90,6 +92,29 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       int result = base.GetHashCode();
       result = 29 * result + AssemblyLocation.GetHashCode();
       return result;
+    }
+
+    public void WriteToXml(XmlElement parent)
+    {
+      parent.SetAttribute("typeName", TypeName);
+      parent.GetAttribute("assemblyLocation", AssemblyLocation);
+      parent.SetAttribute("isIgnored", Explicit.ToString());
+      parent.GetAttribute("subject", GetSubject());
+    }
+
+    public static IUnitTestElement ReadFromXml(XmlElement parent, IUnitTestElement parentElement, MSpecUnitTestProvider provider)
+    {
+      var projectId = parent.GetAttribute("projectId");
+      var project = ProjectUtil.FindProjectElementByPersistentID(provider.Solution, projectId) as IProject;
+      if (project == null)
+        return null;
+
+      var typeName = parent.GetAttribute("typeName");
+      var assemblyLocation = parent.GetAttribute("assemblyLocation");
+      var isIgnored = bool.Parse(parent.GetAttribute("isIgnored"));
+      var subject = parent.GetAttribute("subject");
+
+      return new ContextElement(provider, ProjectModelElementEnvoy.Create(project), typeName, assemblyLocation, subject, Enumerable.Empty<string>(), isIgnored);
     }
   }
 }

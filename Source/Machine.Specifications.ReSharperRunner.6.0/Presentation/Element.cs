@@ -277,7 +277,5 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     {
         Children.Remove(behaviorElement);
     }
-
-
   }
 }
