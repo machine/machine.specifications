@@ -197,7 +197,6 @@
     </Compile>
     <Compile Include="Explorers\MspecTestFileExplorer.cs" />
     <Compile Include="Explorers\MSpecTestMetadataExplorer.cs" />
-    <Compile Include="Interface1.cs" />
     <Compile Include="MetadataExtensions.cs" />
     <Compile Include="MSpecUnitTestPresenter.cs" />
     <Compile Include="MSpecUnitTestProvider.cs" />

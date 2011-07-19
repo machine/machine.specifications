@@ -12,7 +12,7 @@ using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
-  public abstract class FieldElement : Element, ISerializableUnitTestElement
+  public abstract class FieldElement : Element
   {
     readonly string _fieldName;
 
