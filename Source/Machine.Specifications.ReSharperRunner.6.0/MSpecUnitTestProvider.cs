@@ -100,7 +100,7 @@ namespace Machine.Specifications.ReSharperRunner
       switch (elementKind)
       {
         case UnitTestElementKind.Test:
-          return element is ContextSpecificationElement;
+          return element is ContextSpecificationElement || element is BehaviorSpecificationElement;
         case UnitTestElementKind.TestContainer:
           return element is ContextElement || element is BehaviorElement;
       }
