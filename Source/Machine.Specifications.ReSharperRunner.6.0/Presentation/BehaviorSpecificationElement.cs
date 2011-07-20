@@ -20,6 +20,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     {
     }
 
+    public override string Id { get { return Behavior.Id + base.Id; } }
+
     public BehaviorElement Behavior
     {
       get { return (BehaviorElement)Parent; }

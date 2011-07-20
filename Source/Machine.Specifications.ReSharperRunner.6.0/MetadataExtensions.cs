@@ -42,8 +42,7 @@ namespace Machine.Specifications.ReSharperRunner
       IEnumerable<IMetadataField> behaviorFields = type.GetPrivateFieldsWith(typeof(Behaves_like<>));
       foreach (IMetadataField field in behaviorFields)
       {
-        if (field.GetFirstGenericArgument().HasCustomAttribute(typeof(BehaviorsAttribute).FullName) && field.GetFirstGenericArgument().GenericParameters.Length == 0
-)
+        if (field.GetFirstGenericArgument().HasCustomAttribute(typeof(BehaviorsAttribute).FullName))
         {
           yield return field;
         }
@@ -154,10 +153,7 @@ namespace Machine.Specifications.ReSharperRunner
     {
         var metadataFields = type.GetPrivateFields();
         var fields = metadataFields.Where(x => x.Type is IMetadataClassType);
-        return fields.Where(x =>
-        {
-            return x.Type.FullName == fieldType.FullName;
-        });
+        return fields.Where(x => (((IMetadataClassType)x.Type).Type.FullyQualifiedName == fieldType.FullName));
     }
   }
 }
