@@ -8,6 +8,7 @@ _ReSharper.*
 *~
 *.swp
 NDependOut
+*mm_cache.bin
 
 /Build
 /Distribution
