@@ -65,14 +65,18 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public override bool Equals(object obj)
     {
-      if (base.Equals(obj))
+      if (!base.Equals(obj))
       {
-        var other = obj as FieldElement;
-        if (other != null)
-          return Equals(Parent, other.Parent) && FieldName == other.FieldName;
+        return false;
       }
 
-      return false;
+      var other = obj as FieldElement;
+      if (other == null)
+      {
+        return false;
+      }
+
+      return Equals(Parent, other.Parent) && FieldName == other.FieldName;
     }
 
     public override int GetHashCode()

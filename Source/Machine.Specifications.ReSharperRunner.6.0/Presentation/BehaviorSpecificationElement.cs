@@ -42,11 +42,15 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       var projectId = parent.GetAttribute("projectId");
       var project = ProjectUtil.FindProjectElementByPersistentID(provider.Solution, projectId) as IProject;
       if (project == null)
+      {
         return null;
+      }
 
       var behavior = parentElement as BehaviorElement;
       if (behavior == null)
+      {
         return null;
+      }
 
       var typeName = parent.GetAttribute("typeName");
       var methodName = parent.GetAttribute("methodName");

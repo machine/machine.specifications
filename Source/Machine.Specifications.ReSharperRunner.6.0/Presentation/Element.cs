@@ -24,7 +24,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     readonly UnitTestTaskFactory _taskFactory;
     Element _parent;
 
-      protected Element(MSpecUnitTestProvider provider,
+    protected Element(MSpecUnitTestProvider provider,
                       Element parent,
                       ProjectModelElementEnvoy projectEnvoy,
                       string declaringTypeName,
@@ -70,7 +70,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     {
       get
       {
-          return TypeName;
+        return TypeName;
       }
     }
 
@@ -84,14 +84,21 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
         get { return _parent;  }
         set
         {
-            if (_parent == value)
-                return;
+          if (_parent == value)
+          {
+            return;
+          }
 
-            if (_parent != null)
-                _parent.RemoveChild(this);
-            _parent = (Element)value;
-            if (_parent != null)
-                _parent.AddChild(this);
+          if (_parent != null)
+          {
+            _parent.RemoveChild(this);
+          }
+
+          _parent = (Element)value;
+          if (_parent != null)
+          {
+            _parent.AddChild(this);
+          }
         }
     }
     public ICollection<IUnitTestElement> Children { get; private set; }
@@ -147,9 +154,10 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       if (other.GetType() == GetType())
       {
         var element = (Element) other;
-        return other.ShortName == ShortName && other.Provider == Provider
-               && Equals(element._projectEnvoy, _projectEnvoy) &&
-               element._declaringTypeName == _declaringTypeName;
+        return other.ShortName == ShortName
+               && other.Provider == Provider
+               && Equals(element._projectEnvoy, _projectEnvoy)
+               && element._declaringTypeName == _declaringTypeName;
       }
       return false;
     }
@@ -254,9 +262,12 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     public override bool Equals(object obj)
     {
       var other = obj as Element;
-      if (other != null)
-          return Equals(other._projectEnvoy, _projectEnvoy) && other._declaringTypeName == _declaringTypeName;
-      return false;
+      if (other == null)
+      {
+        return false;
+      }
+
+      return Equals(other._projectEnvoy, _projectEnvoy) && other._declaringTypeName == _declaringTypeName;
     }
 
     public override int GetHashCode()
@@ -267,15 +278,14 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       return result;
     }
 
-
-      public void AddChild(Element behaviorElement)
+    void AddChild(Element behaviorElement)
     {
-        Children.Add(behaviorElement);
+      Children.Add(behaviorElement);
     }
 
-    public void RemoveChild(Element behaviorElement)
+    void RemoveChild(Element behaviorElement)
     {
-        Children.Remove(behaviorElement);
+      Children.Remove(behaviorElement);
     }
   }
 }

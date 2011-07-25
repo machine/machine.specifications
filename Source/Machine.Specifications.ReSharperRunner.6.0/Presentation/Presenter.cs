@@ -70,7 +70,6 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       item.RichText.SetForeColor(SystemColors.GrayText, 0, element.GetTitlePrefix().Length);
     }
 
-
     protected override bool IsNaturalParent(object parentValue, object childValue)
     {
       var @namespace = parentValue as UnitTestNamespace;
