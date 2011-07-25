@@ -60,5 +60,11 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
                                                   declaration.GetNavigationRange().TextRange,
                                                   declaration.GetDocumentRange().TextRange);
     }
+
+#if RESHARPER_6
+    public void Cleanup(ITreeNode element)
+    {
+    }
+#endif
   }
 }

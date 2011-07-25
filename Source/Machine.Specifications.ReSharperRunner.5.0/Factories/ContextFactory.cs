@@ -1,3 +1,5 @@
+using System.Linq;
+
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
@@ -41,6 +43,14 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                   type.GetSubjectString(),
                                                   type.GetTags(),
                                                   type.IsIgnored());
+
+#if RESHARPER_6
+      foreach (var child in context.Children)
+      {
+        child.State = UnitTestElementState.Pending;
+      }
+#endif
+
       _cache.Classes.Add(type, context);
       return context;
     }
@@ -55,5 +65,21 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                 type.GetTags(),
                                 type.IsIgnored());
     }
+
+#if RESHARPER_6
+    public void UpdateChildState(ITypeElement type)
+    {
+      ContextElement element;
+      if (!_cache.Classes.TryGetValue(type, out element))
+      {
+        return;
+      }
+
+      foreach (var unitTestElement in element.Children.Where(x => x.State == UnitTestElementState.Pending))
+      {
+        unitTestElement.State = UnitTestElementState.Invalid;
+      }
+    }
+#endif
   }
 }

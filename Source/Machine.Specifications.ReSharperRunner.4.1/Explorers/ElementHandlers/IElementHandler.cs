@@ -14,6 +14,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
 #if RESHARPER_6
     bool Accepts(ITreeNode element);
     IEnumerable<UnitTestElementDisposition> AcceptElement(ITreeNode element, IFile file);
+    void Cleanup(ITreeNode element);
 #else
     bool Accepts(IElement element);
     IEnumerable<UnitTestElementDisposition> AcceptElement(IElement element, IFile file);

@@ -22,7 +22,6 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                                        bool isIgnored)
       : base(provider, context, project, declaringTypeName, fieldName, isIgnored || context.Explicit)
     {
-
       if (tags != null)
       {
         _categories = UnitTestElementCategory.Create(tags);

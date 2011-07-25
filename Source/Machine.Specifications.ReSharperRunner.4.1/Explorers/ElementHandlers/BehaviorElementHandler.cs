@@ -73,5 +73,11 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
                                                     behaviorSpecificationElement);
       }
     }
+
+#if RESHARPER_6
+    public void Cleanup(ITreeNode element)
+    {
+    }
+#endif
   }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 using JetBrains.Application;
@@ -11,6 +12,7 @@ using JetBrains.ReSharper.UnitTestFramework;
 
 using Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers;
 using Machine.Specifications.ReSharperRunner.Factories;
+using Machine.Specifications.ReSharperRunner.Presentation;
 
 namespace Machine.Specifications.ReSharperRunner.Explorers
 {
@@ -99,11 +101,17 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
 
 #if RESHARPER_6
     public void ProcessAfterInterior(ITreeNode element)
+    {
+      _elementHandlers
+        .Where(x => x.Accepts(element))
+        .ToList()
+        .ForEach(x => x.Cleanup(element));
+    }
 #else
     public void ProcessAfterInterior(IElement element)
-#endif
     {
     }
+#endif
 
     public bool ProcessingIsFinished
     {

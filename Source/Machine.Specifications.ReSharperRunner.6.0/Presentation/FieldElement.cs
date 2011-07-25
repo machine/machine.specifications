@@ -23,8 +23,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                            bool isIgnored)
       : base(provider, parent, projectEnvoy, declaringTypeName, isIgnored || parent.Explicit)
     {
-
       _fieldName = fieldName;
+      State = UnitTestElementState.Valid;
     }
 
     public override string Id

@@ -57,7 +57,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       Parent = parent;
 
       Children = new List<IUnitTestElement>();
-      State = UnitTestElementState.Valid;
+      State = UnitTestElementState.Pending;
       _taskFactory = new UnitTestTaskFactory(_provider.ID);
     }
 
