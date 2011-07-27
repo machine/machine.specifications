@@ -6,7 +6,9 @@ using System.Xml;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.UnitTestFramework;
+using JetBrains.Util;
 
+using Machine.Specifications.Factories;
 using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
@@ -116,7 +118,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       var isIgnored = bool.Parse(parent.GetAttribute("isIgnored"));
       var subject = parent.GetAttribute("subject");
 
-      return new ContextElement(provider, ProjectModelElementEnvoy.Create(project), typeName, assemblyLocation, subject, Enumerable.Empty<string>(), isIgnored);
+      return Factories.ContextFactory.GetOrCreateContextElement(provider, project, ProjectModelElementEnvoy.Create(project), typeName, assemblyLocation, subject, EmptyArray<string>.Instance, isIgnored);
     }
   }
 }

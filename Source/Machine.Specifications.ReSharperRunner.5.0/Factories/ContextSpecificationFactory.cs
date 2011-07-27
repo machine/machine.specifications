@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
@@ -12,11 +14,13 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     readonly ProjectModelElementEnvoy _projectEnvoy;
     readonly MSpecUnitTestProvider _provider;
     readonly ContextCache _cache;
+    readonly IProject _project;
 
-    public ContextSpecificationFactory(MSpecUnitTestProvider provider, ProjectModelElementEnvoy projectEnvoy, ContextCache cache)
+    public ContextSpecificationFactory(MSpecUnitTestProvider provider, IProject project, ProjectModelElementEnvoy projectEnvoy, ContextCache cache)
     {
       _provider = provider;
       _cache = cache;
+      _project = project;
       _projectEnvoy = projectEnvoy;
     }
 
@@ -39,7 +43,8 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         return null;
       }
 
-      return new ContextSpecificationElement(_provider,
+      return GetOrCreateContextSpecification(_provider,
+                                             _project,
                                              context,
                                              _projectEnvoy,
 #if RESHARPER_6
@@ -54,13 +59,36 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
     public ContextSpecificationElement CreateContextSpecification(ContextElement context, IMetadataField specification)
     {
-      return new ContextSpecificationElement(_provider,
+      return GetOrCreateContextSpecification(_provider,
+                                             _project,
                                              context,
                                              _projectEnvoy,
                                              specification.DeclaringType.FullyQualifiedName,
                                              specification.Name,
                                              specification.DeclaringType.GetTags(),
                                              specification.IsIgnored());
+    }
+
+    public static ContextSpecificationElement GetOrCreateContextSpecification(MSpecUnitTestProvider provider, IProject project, ContextElement context, ProjectModelElementEnvoy projectEnvoy, string declaringTypeName, string fieldName, ICollection<string> tags, bool isIgnored)
+    {
+#if RESHARPER_6
+      var id = string.Format("{0}.{1}", declaringTypeName, fieldName);
+      var contextSpecification = provider.UnitTestManager.GetElementById(project, id) as ContextSpecificationElement;
+      if (contextSpecification != null)
+      {
+        contextSpecification.Parent = context;
+        contextSpecification.State = UnitTestElementState.Valid;
+        return contextSpecification;
+      }
+#endif
+
+      return new ContextSpecificationElement(provider,
+                                        context,
+                                        projectEnvoy,
+                                        declaringTypeName,
+                                        fieldName,
+                                        tags,
+                                        isIgnored);
     }
   }
 }

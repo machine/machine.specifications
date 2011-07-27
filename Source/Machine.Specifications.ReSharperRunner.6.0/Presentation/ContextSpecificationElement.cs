@@ -4,6 +4,9 @@ using System.Xml;
 
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.UnitTestFramework;
+using JetBrains.Util;
+
+using Machine.Specifications.ReSharperRunner.Factories;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
@@ -62,7 +65,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       var methodName = parent.GetAttribute("methodName");
       var isIgnored = bool.Parse(parent.GetAttribute("isIgnored"));
 
-      return new ContextSpecificationElement(provider, context, ProjectModelElementEnvoy.Create(project), typeName, methodName, Enumerable.Empty<string>(), isIgnored);
+      return ContextSpecificationFactory.GetOrCreateContextSpecification(provider, project, context, ProjectModelElementEnvoy.Create(project), typeName, methodName, EmptyArray<string>.Instance, isIgnored);
     }
   }
 }

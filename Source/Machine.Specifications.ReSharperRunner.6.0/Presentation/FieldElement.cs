@@ -82,7 +82,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     public override int GetHashCode()
     {
       int result = base.GetHashCode();
-      result = 29 * result + Parent.GetHashCode();
+      result = 29 * result + TypeName.GetHashCode();
       result = 29 * result + FieldName.GetHashCode();
       return result;
     }

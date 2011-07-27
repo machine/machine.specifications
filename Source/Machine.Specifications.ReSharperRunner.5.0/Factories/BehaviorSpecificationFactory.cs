@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.UnitTestFramework;
 
 using Machine.Specifications.ReSharperRunner.Presentation;
 
@@ -12,17 +13,20 @@ namespace Machine.Specifications.ReSharperRunner.Factories
   {
     readonly ProjectModelElementEnvoy _projectEnvoy;
     readonly MSpecUnitTestProvider _provider;
+    readonly IProject _project;
 
-    public BehaviorSpecificationFactory(MSpecUnitTestProvider provider, ProjectModelElementEnvoy projectEnvoy)
+    public BehaviorSpecificationFactory(MSpecUnitTestProvider provider, IProject project, ProjectModelElementEnvoy projectEnvoy)
     {
       _provider = provider;
+      _project = project;
       _projectEnvoy = projectEnvoy;
     }
 
     BehaviorSpecificationElement CreateBehaviorSpecification(BehaviorElement behavior,
                                                              IMetadataField behaviorSpecification)
     {
-      return new BehaviorSpecificationElement(_provider,
+      return GetOrCreateBehaviorSpecification(_provider,
+                                              _project,
                                               behavior,
                                               _projectEnvoy,
                                               behavior.FullyQualifiedTypeName ?? behaviorSpecification.DeclaringType.FullyQualifiedName,
@@ -57,7 +61,8 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     BehaviorSpecificationElement CreateBehaviorSpecification(BehaviorElement behavior,
                                                              IDeclaredElement behaviorSpecification)
     {
-      return new BehaviorSpecificationElement(_provider,
+      return GetOrCreateBehaviorSpecification(_provider,
+                                              _project,
                                               behavior,
                                               _projectEnvoy,
 #if RESHARPER_6
@@ -67,6 +72,27 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 #endif
  behaviorSpecification.ShortName,
                                               behaviorSpecification.IsIgnored());
+    }
+
+    public static BehaviorSpecificationElement GetOrCreateBehaviorSpecification(MSpecUnitTestProvider provider, IProject project, BehaviorElement behavior, ProjectModelElementEnvoy projectEnvoy, string declaringTypeName, string fieldName, bool isIgnored)
+    {
+#if RESHARPER_6
+      var id = string.Format("{0}{1}.{2}", behavior.Id, declaringTypeName, fieldName);
+      var behaviorSpecification = provider.UnitTestManager.GetElementById(project, id) as BehaviorSpecificationElement;
+      if (behaviorSpecification != null)
+      {
+        behaviorSpecification.Parent = behavior;
+        behaviorSpecification.State = UnitTestElementState.Valid;
+        return behaviorSpecification;
+      }
+#endif
+
+      return new BehaviorSpecificationElement(provider,
+                                        behavior,
+                                        projectEnvoy,
+                                        declaringTypeName,
+                                        fieldName,
+                                        isIgnored);
     }
   }
 }

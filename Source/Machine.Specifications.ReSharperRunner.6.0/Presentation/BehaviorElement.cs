@@ -4,6 +4,8 @@ using System.Xml;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.UnitTestFramework;
 
+using Machine.Specifications.Factories;
+
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
   public class BehaviorElement : FieldElement
@@ -70,7 +72,14 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       var isIgnored = bool.Parse(parent.GetAttribute("isIgnored"));
       var fullyQualifiedTypeName = parent.GetAttribute("typeFQN");
 
-      return new BehaviorElement(provider, context, ProjectModelElementEnvoy.Create(project), typeName, methodName, isIgnored, fullyQualifiedTypeName);
+      return Factories.BehaviorFactory.GetOrCreateBehavior(provider,
+                                                           project,
+                                                           ProjectModelElementEnvoy.Create(project),
+                                                           context,
+                                                           typeName,
+                                                           methodName,
+                                                           isIgnored,
+                                                           fullyQualifiedTypeName);
     }
   }
 }

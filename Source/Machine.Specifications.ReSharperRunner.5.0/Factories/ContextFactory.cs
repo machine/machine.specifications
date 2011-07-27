@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 
 using JetBrains.Metadata.Reader.API;
@@ -16,11 +17,13 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     readonly ProjectModelElementEnvoy _projectEnvoy;
     readonly MSpecUnitTestProvider _provider;
     readonly ContextCache _cache;
+    readonly IProject _project;
 
-    public ContextFactory(MSpecUnitTestProvider provider, ProjectModelElementEnvoy projectEnvoy, string assemblyPath, ContextCache cache)
+    public ContextFactory(MSpecUnitTestProvider provider, IProject project, ProjectModelElementEnvoy projectEnvoy, string assemblyPath, ContextCache cache)
     {
       _provider = provider;
       _cache = cache;
+      _project = project;
       _projectEnvoy = projectEnvoy;
       _assemblyPath = assemblyPath;
     }
@@ -32,7 +35,8 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         return _cache.Classes[type];
       }
 
-      ContextElement context = new ContextElement(_provider,
+      ContextElement context = GetOrCreateContextElement(_provider,
+                                                  _project,
                                                   _projectEnvoy,
 #if RESHARPER_6
                                                   type.GetClrName().FullName,
@@ -57,13 +61,34 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
     public ContextElement CreateContext(IMetadataTypeInfo type)
     {
-      return new ContextElement(_provider,
+      return GetOrCreateContextElement(_provider,
+                                _project,
                                 _projectEnvoy,
                                 type.FullyQualifiedName,
                                 _assemblyPath,
                                 type.GetSubjectString(),
                                 type.GetTags(),
                                 type.IsIgnored());
+    }
+
+    public static ContextElement GetOrCreateContextElement(MSpecUnitTestProvider provider, IProject project, ProjectModelElementEnvoy projectEnvoy, string typeName, string assemblyLocation, string subject, ICollection<string> tags, bool isIgnored)
+    {
+#if RESHARPER_6
+      var contextElement = provider.UnitTestManager.GetElementById(project, typeName) as ContextElement;
+      if (contextElement != null)
+      {
+        contextElement.State = UnitTestElementState.Valid;
+        return contextElement;
+      }
+#endif
+
+      return new ContextElement(provider,
+                                projectEnvoy,
+                                typeName,
+                                assemblyLocation,
+                                subject,
+                                tags,
+                                isIgnored);
     }
 
 #if RESHARPER_6

@@ -4,6 +4,8 @@ using System.Xml;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.UnitTestFramework;
 
+using Machine.Specifications.ReSharperRunner.Factories;
+
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
   public class BehaviorSpecificationElement : FieldElement
@@ -56,7 +58,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       var methodName = parent.GetAttribute("methodName");
       var isIgnored = bool.Parse(parent.GetAttribute("isIgnored"));
 
-      return new BehaviorSpecificationElement(provider, behavior, ProjectModelElementEnvoy.Create(project), typeName, methodName, isIgnored);
+      return BehaviorSpecificationFactory.GetOrCreateBehaviorSpecification(provider, project, behavior, ProjectModelElementEnvoy.Create(project), typeName, methodName, isIgnored);
     }
   }
 }

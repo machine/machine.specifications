@@ -16,11 +16,13 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     readonly MSpecUnitTestProvider _provider;
     readonly ContextCache _cache;
     static readonly IDictionary<string, string> TypeNameCache = new Dictionary<string, string>();
+    readonly IProject _project;
 
-    public BehaviorFactory(MSpecUnitTestProvider provider, ProjectModelElementEnvoy projectEnvoy, ContextCache cache)
+    public BehaviorFactory(MSpecUnitTestProvider provider, IProject project, ProjectModelElementEnvoy projectEnvoy, ContextCache cache)
     {
       _provider = provider;
       _cache = cache;
+      _project = project;
       _projectEnvoy = projectEnvoy;
     }
 
@@ -50,9 +52,10 @@ namespace Machine.Specifications.ReSharperRunner.Factories
           TypeNameCache.TryGetValue(GetFirstGenericNormalizedTypeName(field), out fullyQualifiedTypeName);
       }
 
-      return new BehaviorElement(_provider,
-                                 context,
+      return GetOrCreateBehavior(_provider,
+                                 _project,
                                  _projectEnvoy,
+                                 context,
 #if RESHARPER_6
                                  clazz.GetClrName().FullName,
 #else
@@ -63,6 +66,27 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                  fullyQualifiedTypeName);
     }
 
+    public static BehaviorElement GetOrCreateBehavior(MSpecUnitTestProvider provider, IProject project, ProjectModelElementEnvoy projectEnvoy, ContextElement context, string declaringTypeName, string fieldName, bool isIgnored, string fullyQualifiedTypeName)
+    {
+#if RESHARPER_6
+      var behavior = provider.UnitTestManager.GetElementById(project, string.Format("{0}.{1}", declaringTypeName, fieldName)) as BehaviorElement;
+      if (behavior != null)
+      {
+        behavior.Parent = context;
+        behavior.State = UnitTestElementState.Valid;
+        return behavior;
+      }
+#endif
+
+      return new BehaviorElement(provider,
+                                 context,
+                                 projectEnvoy,
+                                 declaringTypeName,
+                                 fieldName,
+                                 isIgnored,
+                                 fullyQualifiedTypeName);
+    }
+
     public BehaviorElement CreateBehavior(ContextElement context, IMetadataField behavior)
     {
       var typeContainingBehaviorSpecifications = behavior.GetFirstGenericArgument();
@@ -70,9 +94,10 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       var fullyQualifiedTypeName = behavior.FirstGenericArgumentClass().FullyQualifiedName();
       var typeName = GetNormalizedTypeName(fullyQualifiedTypeName);
 
-      var behaviorElement = new BehaviorElement(_provider,
-                                 context,
+      var behaviorElement = GetOrCreateBehavior(_provider,
+                                 _project,
                                  _projectEnvoy,
+                                 context,
                                  behavior.DeclaringType.FullyQualifiedName,
                                  behavior.Name,
                                  behavior.IsIgnored() || typeContainingBehaviorSpecifications.IsIgnored(),

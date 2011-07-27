@@ -20,6 +20,7 @@ namespace Machine.Specifications.ReSharperRunner
   {
     const string ProviderId = "Machine.Specifications";
     readonly UnitTestElementComparer _unitTestElementComparer = new UnitTestElementComparer();
+    private UnitTestManager _unitTestManager;
 
     public MSpecUnitTestProvider(ISolution solution, PsiModuleManager psiModuleManager, CacheManager cacheManager)
     {
@@ -31,6 +32,10 @@ namespace Machine.Specifications.ReSharperRunner
 
     public PsiModuleManager PsiModuleManager { get; private set; }
     public CacheManager CacheManager { get; private set; }
+    public UnitTestManager UnitTestManager
+    {
+      get { return _unitTestManager ?? (_unitTestManager = Solution.GetComponent<UnitTestManager>());  }
+    }
 
     public string ID
     {
