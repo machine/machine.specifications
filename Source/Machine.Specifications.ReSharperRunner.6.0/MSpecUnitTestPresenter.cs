@@ -16,7 +16,10 @@ namespace Machine.Specifications.ReSharperRunner
       
     public void Present(IUnitTestElement element, IPresentableItem item, TreeModelNode node, PresentationState state)
     {
-      _presenter.UpdateItem(element, node, item, state);
+      if (element is Element)
+      {
+        _presenter.UpdateItem(element, node, item, state);
+      }
     }
   }
 }
