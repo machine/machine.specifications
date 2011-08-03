@@ -1,4 +1,6 @@
-﻿namespace Machine.Specifications.Reporting.Model
+﻿using System;
+
+namespace Machine.Specifications.Reporting.Model
 {
   public interface ISpecificationVisitor
   {
@@ -12,7 +14,7 @@
 
   public class VisitorContext
   {
-    public string ResourcePath
+    public Func<string> ResourcePathCreator
     {
       get;
       set;

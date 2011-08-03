@@ -5,12 +5,43 @@ using System.Linq;
 
 using Machine.Specifications.Reporting.Generation.Spark;
 using Machine.Specifications.Reporting.Model;
+using Machine.Specifications.Reporting.Visitors;
 using Machine.Specifications.Utility;
 
 using Rhino.Mocks;
 
 namespace Machine.Specifications.Reporting.Specs.Generation.Spark
 {
+  class CreateResourceDirectoryForTesting : ISpecificationVisitor
+  {
+    Func<string> _resourcePathCreator;
+
+    public void Initialize(VisitorContext context)
+    {
+      context.ResourcePathCreator();
+    }
+
+    public void Visit(Run run)
+    {
+    }
+
+    public void Visit(Assembly assembly)
+    {
+    }
+
+    public void Visit(Concern concern)
+    {
+    }
+
+    public void Visit(Context context)
+    {
+    }
+
+    public void Visit(Specification specification)
+    {
+    }
+  }
+
   [Subject(typeof(SparkHtmlReportGenerator))]
   public class when_reporting_to_a_file
   {
@@ -46,7 +77,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
                                                      ReportPathUsed = p;
                                                      return new StringWriter();
                                                    },
-                                                 new ISpecificationVisitor[] { });
+                                                 new ISpecificationVisitor[] { new CreateResourceDirectoryForTesting() });
 
         Run = new Run(new[]
                       {
@@ -112,7 +143,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
                                                      ReportPathsUsed.Add(p);
                                                      return new StringWriter();
                                                    },
-                                                 new ISpecificationVisitor[] { });
+                                                 new ISpecificationVisitor[] { new CreateResourceDirectoryForTesting() });
 
         Run = new Run(new[]
                       {

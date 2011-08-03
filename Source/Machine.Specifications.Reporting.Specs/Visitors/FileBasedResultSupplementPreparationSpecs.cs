@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,6 +11,35 @@ using Rhino.Mocks;
 namespace Machine.Specifications.Reporting.Specs.Visitors
 {
   [Subject(typeof(FileBasedResultSupplementPreparation))]
+  public class when_no_supplements_need_to_be_prepared_for_the_html_report : ReportSpecs
+  {
+    static FileBasedResultSupplementPreparation Preparation;
+    static Run Report;
+    static Func<string> ResourcePathCreator;
+
+    Establish context = () =>
+    {
+      ResourcePathCreator = MockRepository.GenerateStub<Func<string>>();
+
+      Preparation = new FileBasedResultSupplementPreparation(MockRepository.GenerateStub<IFileSystem>());
+      Preparation.Initialize(new VisitorContext { ResourcePathCreator = ResourcePathCreator });
+
+      Report = Run(Assembly("assembly 1",
+                            Concern("a 1 concern 1",
+                                    Context("a 1 c 1 context 1",
+                                            Spec("a 1 c 1 c 1 specification 2", Result.Pass())
+                                      )
+                              )
+                     ));
+    };
+
+    Because of = () => Preparation.Visit(Report);
+
+    It should_not_create_the_folder_for_supplements =
+      () => ResourcePathCreator.AssertWasNotCalled(x => x());
+  }
+
+  [Subject(typeof(FileBasedResultSupplementPreparation))]
   public class when_file_based_result_supplements_are_prepared_for_the_html_report : ReportSpecs
   {
     static FileBasedResultSupplementPreparation Preparation;
@@ -21,7 +51,7 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
     Establish context = () =>
       {
         Preparation = new FileBasedResultSupplementPreparation(MockRepository.GenerateStub<IFileSystem>());
-        Preparation.Initialize(new VisitorContext { ResourcePath = @"C:\report\resources" });
+        Preparation.Initialize(new VisitorContext { ResourcePathCreator = () => @"C:\report\resources" });
 
         Images = Spec("a 1 c 1 c 1 specification 1",
                       Result.Supplement(Result.Pass(),
@@ -96,7 +126,7 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
           .Throw(PrepareException());
 
         Preparation = new FileBasedResultSupplementPreparation(fileSystem);
-        Preparation.Initialize(new VisitorContext { ResourcePath = @"C:\report\resources" });
+        Preparation.Initialize(new VisitorContext { ResourcePathCreator = () => @"C:\report\resources" });
 
         Failing = Spec("a 1 c 1 c 1 specification 1",
                        Result.Supplement(Result.Pass(),
@@ -154,7 +184,7 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
           .Throw(PrepareException());
 
         Preparation = new FileBasedResultSupplementPreparation(fileSystem);
-        Preparation.Initialize(new VisitorContext { ResourcePath = @"C:\report\resources" });
+        Preparation.Initialize(new VisitorContext { ResourcePathCreator = () => @"C:\report\resources" });
 
         Failing = Spec("a 1 c 1 c 1 specification 1",
                        Result.Supplement(Result.Pass(),

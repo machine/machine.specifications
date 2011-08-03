@@ -16,7 +16,7 @@ namespace Machine.Specifications.Reporting.Generation.Spark
     readonly bool _showTimeInfo;
     readonly ISpecificationVisitor[] _specificationVisitors;
     readonly Func<string, TextWriter> _streamFactory;
-    string _resources;
+    Func<string> _resourcePathCreator;
 
     public SparkHtmlReportGenerator(string path, bool showTimeInfo)
       : this(path,
@@ -67,7 +67,7 @@ namespace Machine.Specifications.Reporting.Generation.Spark
         writeReport = r => WriteReportToFile(r, _path);
       }
 
-      _resources = resourcePathCreator(_path);
+      _resourcePathCreator = () => resourcePathCreator(_path);
       writeReport(run);
     }
 
@@ -107,7 +107,7 @@ namespace Machine.Specifications.Reporting.Generation.Spark
 
     void WriteReport(string path, Run run, Action<ISparkRenderer, TextWriter, Run> renderAction)
     {
-      _specificationVisitors.Each(x => x.Initialize(new VisitorContext { ResourcePath = _resources }));
+      _specificationVisitors.Each(x => x.Initialize(new VisitorContext { ResourcePathCreator = _resourcePathCreator }));
       _specificationVisitors.Each(x => x.Visit(run));
 
       _fileSystem.DeleteIfFileExists(path);

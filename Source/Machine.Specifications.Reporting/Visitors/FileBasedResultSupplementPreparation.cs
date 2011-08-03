@@ -14,7 +14,8 @@ namespace Machine.Specifications.Reporting.Visitors
     const string ImageSupplementPrefix = "img-";
     const string TextSupplementPrefix = "text-";
     readonly IFileSystem _fileSystem;
-    string _resourcePath = String.Empty;
+    Func<string> _resourcePathCreator = () => String.Empty;
+    string _resourcePath;
 
     public FileBasedResultSupplementPreparation() : this(new FileSystem())
     {
@@ -27,7 +28,7 @@ namespace Machine.Specifications.Reporting.Visitors
 
     public void Initialize(VisitorContext context)
     {
-      _resourcePath = context.ResourcePath;
+      _resourcePathCreator = context.ResourcePathCreator;
     }
 
     public void Visit(Run run)
@@ -56,6 +57,8 @@ namespace Machine.Specifications.Reporting.Visitors
       {
         return;
       }
+
+      CreatePathForResources();
 
       var images = ImageSupplementsOf(specification);
       var html = HtmlSupplementsOf(specification);
@@ -91,6 +94,11 @@ namespace Machine.Specifications.Reporting.Visitors
 
           specification.Supplements[x.Name][x.UpdatedItemKey] = x.UpdatedItemValue;
         });
+    }
+
+    void CreatePathForResources()
+    {
+      _resourcePath = _resourcePathCreator();
     }
 
     string CopySupplementToResources(string file)
