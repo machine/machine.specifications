@@ -17,6 +17,11 @@
     {
       base.OnRunEnd();
 
+      if(Run.TotalContexts == 0)
+      {
+        return;
+      }
+
       ReportGenerator.GenerateReport(Run);
     }
   }

@@ -28,10 +28,10 @@ namespace Machine.Specifications.Reporting.Generation
   public class SpecificationTreeListener : ISpecificationRunListener
   {
     Run _run;
-    List<Assembly> _assemblies;
-    Dictionary<string, List<Context>> _concernsToContexts;
-    List<Specification> _specifications;
     int _nextId;
+    readonly List<Assembly> _assemblies = new List<Assembly>();
+    Dictionary<string, List<Context>> _concernsToContexts = new Dictionary<string, List<Context>>();
+    List<Specification> _specifications = new List<Specification>();
 
     public Run Run
     {
@@ -41,7 +41,6 @@ namespace Machine.Specifications.Reporting.Generation
     public void OnRunStart()
     {
       _nextId = 1;
-      _assemblies = new List<Assembly>();
     }
 
     public virtual void OnRunEnd()
