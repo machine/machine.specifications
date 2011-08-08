@@ -12,7 +12,7 @@ namespace Machine.Specifications.ConsoleRunner
 {
   public class Options
   {
-    [Option("xml", "xml", HelpText = "Outputs the XML report to the file referenced by the path")]
+    [Option(null, "xml", HelpText = "Outputs the XML report to the file referenced by the path")]
     public string XmlPath = string.Empty;
 
     [Option(null,
@@ -84,7 +84,7 @@ namespace Machine.Specifications.ConsoleRunner
 
     public virtual bool ParseArguments(string[] args)
     {
-      return Parser.ParseArguments(args, this, Console.Out);
+      return new CommandLineParser().ParseArguments(args, this, Console.Out);
     }
 
     public virtual RunOptions GetRunOptions()

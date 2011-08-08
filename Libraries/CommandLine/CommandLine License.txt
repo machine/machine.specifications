@@ -1,9 +1,9 @@
 Command Line Parser Library
 
 Author:
-  Giacomo Stelluti Scala (giacomo.stelluti@gmail.com)
+  Giacomo Stelluti Scala (gsscoder@ymail.com)
 
-Copyright (c) 2005 - 2008 Giacomo Stelluti Scala
+Copyright (c) 2005 - 2010 Giacomo Stelluti Scala
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
