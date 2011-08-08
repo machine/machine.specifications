@@ -164,7 +164,7 @@ namespace :tests do
     puts 'Running NUnit tests...'
     
     tests = FileList.new("#{configatron.out_dir}/Tests/*.Tests.dll").to_a
-    runner = NUnitRunner.new :platform => 'x86', :results => "Specs", :clr_version => configatron.nunit_framework
+    runner = NUnitRunner.new :tool => 'packages/NUnit.2.5.10.11092/tools/nunit-console-x86.exe', :results => "Specs", :clr_version => configatron.nunit_framework
     runner.execute tests
   end
   

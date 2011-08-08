@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using Gallio.Model;
+
+using TestStatus = Gallio.Model.TestStatus;
 
 namespace Machine.Specifications.GallioAdapter.Tests
 {
