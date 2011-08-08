@@ -1,11 +1,11 @@
 <Configuration>
-  <SnapshotDialog>
-    <InitialDirectory>X:\Libraries\machine.specifications\Source</InitialDirectory>
-  </SnapshotDialog>
   <CoverageFilters>
     <IncludeFilters>
       <Filter ModuleMask="*" ClassMask="*" FunctionMask="*" />
     </IncludeFilters>
     <ExcludeFilters />
   </CoverageFilters>
+  <SnapshotDialog>
+    <InitialDirectory>D:\Users\agross\Coding\.NET\Machine.Specifications</InitialDirectory>
+  </SnapshotDialog>
 </Configuration>

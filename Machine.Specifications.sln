@@ -7,66 +7,66 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runners", "Runners", "{3D47
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reporting", "Reporting", "{1F11BF5C-810C-4FC8-AFF4-7E416A867F39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications", "Machine.Specifications\Machine.Specifications.csproj", "{CCD02629-1262-4F78-9E9F-AC97B942D0E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications", "Source\Machine.Specifications\Machine.Specifications.csproj", "{CCD02629-1262-4F78-9E9F-AC97B942D0E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example", "Machine.Specifications.Example\Machine.Specifications.Example.csproj", "{2C28C643-31A2-44CA-B762-953A963F6F61}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example", "Source\Machine.Specifications.Example\Machine.Specifications.Example.csproj", "{2C28C643-31A2-44CA-B762-953A963F6F61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Tests", "Machine.Specifications.Tests\Machine.Specifications.Tests.csproj", "{FE10826D-F2C7-4FF3-A135-9EA9EF2C9CB4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Tests", "Source\Machine.Specifications.Tests\Machine.Specifications.Tests.csproj", "{FE10826D-F2C7-4FF3-A135-9EA9EF2C9CB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.TDNetRunner", "Machine.Specifications.TDNetRunner\Machine.Specifications.TDNetRunner.csproj", "{E57865B9-C7EF-4340-8AF2-5D85F2545EC6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.TDNetRunner", "Source\Machine.Specifications.TDNetRunner\Machine.Specifications.TDNetRunner.csproj", "{E57865B9-C7EF-4340-8AF2-5D85F2545EC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ConsoleRunner", "Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunner.csproj", "{CFF4B323-24C1-4B19-98CA-7DF92755458E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ConsoleRunner", "Source\Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunner.csproj", "{CFF4B323-24C1-4B19-98CA-7DF92755458E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ConsoleRunner.Specs", "Machine.Specifications.ConsoleRunner.Specs\Machine.Specifications.ConsoleRunner.Specs.csproj", "{F25C7917-4ED6-4261-B262-43C56D0CD37F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ConsoleRunner.Specs", "Source\Machine.Specifications.ConsoleRunner.Specs\Machine.Specifications.ConsoleRunner.Specs.csproj", "{F25C7917-4ED6-4261-B262-43C56D0CD37F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{89ECD0D1-6CC4-4319-B1B2-389E0B48F40D} = {89ECD0D1-6CC4-4319-B1B2-389E0B48F40D}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.FailingExample", "Machine.Specifications.FailingExample\Machine.Specifications.FailingExample.csproj", "{89ECD0D1-6CC4-4319-B1B2-389E0B48F40D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.FailingExample", "Source\Machine.Specifications.FailingExample\Machine.Specifications.FailingExample.csproj", "{89ECD0D1-6CC4-4319-B1B2-389E0B48F40D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Reporting", "Machine.Specifications.Reporting\Machine.Specifications.Reporting.csproj", "{490496AF-BEA5-4454-88B0-F73C62C22987}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Reporting", "Source\Machine.Specifications.Reporting\Machine.Specifications.Reporting.csproj", "{490496AF-BEA5-4454-88B0-F73C62C22987}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Reporting.Specs", "Machine.Specifications.Reporting.Specs\Machine.Specifications.Reporting.Specs.csproj", "{97BD55A5-03CA-4E8E-8AE0-55722C39E0AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Reporting.Specs", "Source\Machine.Specifications.Reporting.Specs\Machine.Specifications.Reporting.Specs.csproj", "{97BD55A5-03CA-4E8E-8AE0-55722C39E0AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Specs", "Machine.Specifications.Specs\Machine.Specifications.Specs.csproj", "{15FCDD3C-6C0E-4516-90D8-A1D82DC4C4F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Specs", "Source\Machine.Specifications.Specs\Machine.Specifications.Specs.csproj", "{15FCDD3C-6C0E-4516-90D8-A1D82DC4C4F9}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A635BD1C-DA89-4FC7-8434-5DAB1A09A18D} = {A635BD1C-DA89-4FC7-8434-5DAB1A09A18D}
 		{2C33D385-9024-4346-8839-93CFF1AF227C} = {2C33D385-9024-4346-8839-93CFF1AF227C}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.BindingFailure", "Machine.Specifications.Example.BindingFailure\Machine.Specifications.Example.BindingFailure.csproj", "{A635BD1C-DA89-4FC7-8434-5DAB1A09A18D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.BindingFailure", "Source\Machine.Specifications.Example.BindingFailure\Machine.Specifications.Example.BindingFailure.csproj", "{A635BD1C-DA89-4FC7-8434-5DAB1A09A18D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.BindingFailure.Ref", "Machine.Specifications.Example.BindingFailure.Ref\Machine.Specifications.Example.BindingFailure.Ref.csproj", "{2C33D385-9024-4346-8839-93CFF1AF227C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.BindingFailure.Ref", "Source\Machine.Specifications.Example.BindingFailure.Ref\Machine.Specifications.Example.BindingFailure.Ref.csproj", "{2C33D385-9024-4346-8839-93CFF1AF227C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.WithBehavior", "Machine.Specifications.Example.WithBehavior\Machine.Specifications.Example.WithBehavior.csproj", "{42E05EB9-FC41-4198-B8D2-BAE2417DC7FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.WithBehavior", "Source\Machine.Specifications.Example.WithBehavior\Machine.Specifications.Example.WithBehavior.csproj", "{42E05EB9-FC41-4198-B8D2-BAE2417DC7FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.CleanupFailure", "Machine.Specifications.Example.CleanupFailure\Machine.Specifications.Example.CleanupFailure.csproj", "{0C0F5B79-50B7-4B6E-9EAB-9A7DC70F92AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.CleanupFailure", "Source\Machine.Specifications.Example.CleanupFailure\Machine.Specifications.Example.CleanupFailure.csproj", "{0C0F5B79-50B7-4B6E-9EAB-9A7DC70F92AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.Random", "Machine.Specifications.Example.Random\Machine.Specifications.Example.Random.csproj", "{1295C389-FCE4-4425-93E4-E4AE239B3E35}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.Random", "Source\Machine.Specifications.Example.Random\Machine.Specifications.Example.Random.csproj", "{1295C389-FCE4-4425-93E4-E4AE239B3E35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.SeleniumSupport", "Machine.Specifications.SeleniumSupport\Machine.Specifications.SeleniumSupport.csproj", "{50E85B88-7E0C-4CE7-BD8D-BA9C618A6844}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.SeleniumSupport", "Source\Machine.Specifications.SeleniumSupport\Machine.Specifications.SeleniumSupport.csproj", "{50E85B88-7E0C-4CE7-BD8D-BA9C618A6844}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.4.1", "Machine.Specifications.ReSharperRunner.4.1\Machine.Specifications.ReSharperRunner.4.1.csproj", "{EA52971B-2916-4A32-8F1E-57CDA9CE8EB3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.4.1", "Source\Machine.Specifications.ReSharperRunner.4.1\Machine.Specifications.ReSharperRunner.4.1.csproj", "{EA52971B-2916-4A32-8F1E-57CDA9CE8EB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.4.5", "Machine.Specifications.ReSharperRunner.4.5\Machine.Specifications.ReSharperRunner.4.5.csproj", "{F06E1AB8-7F34-4C32-BC4D-558CAA94DB7C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.4.5", "Source\Machine.Specifications.ReSharperRunner.4.5\Machine.Specifications.ReSharperRunner.4.5.csproj", "{F06E1AB8-7F34-4C32-BC4D-558CAA94DB7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.5.0", "Machine.Specifications.ReSharperRunner.5.0\Machine.Specifications.ReSharperRunner.5.0.csproj", "{F78E1AB8-7F34-4C32-BC4D-558CAA94DB7C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.5.0", "Source\Machine.Specifications.ReSharperRunner.5.0\Machine.Specifications.ReSharperRunner.5.0.csproj", "{F78E1AB8-7F34-4C32-BC4D-558CAA94DB7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.3.1", "Machine.Specifications.GallioAdapter.3.1\Machine.Specifications.GallioAdapter.3.1.csproj", "{D1B0D26E-BEA9-45EF-87C2-0ED5FC9CAC3F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.3.1", "Source\Machine.Specifications.GallioAdapter.3.1\Machine.Specifications.GallioAdapter.3.1.csproj", "{D1B0D26E-BEA9-45EF-87C2-0ED5FC9CAC3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.3.1.TestResources", "Machine.Specifications.GallioAdapter.3.1.TestResources\Machine.Specifications.GallioAdapter.3.1.TestResources.csproj", "{263ABAC8-C6B2-497D-93E3-3773849CEDD3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.3.1.TestResources", "Source\Machine.Specifications.GallioAdapter.3.1.TestResources\Machine.Specifications.GallioAdapter.3.1.TestResources.csproj", "{263ABAC8-C6B2-497D-93E3-3773849CEDD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.3.1.Tests", "Machine.Specifications.GallioAdapter.3.1.Tests\Machine.Specifications.GallioAdapter.3.1.Tests.csproj", "{9C3D968A-AA2C-4612-94E8-C3FD16BFEEED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.3.1.Tests", "Source\Machine.Specifications.GallioAdapter.3.1.Tests\Machine.Specifications.GallioAdapter.3.1.Tests.csproj", "{9C3D968A-AA2C-4612-94E8-C3FD16BFEEED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.Clr4", "Machine.Specifications.Example.Clr4\Machine.Specifications.Example.Clr4.csproj", "{0CE411DF-CFC3-45E3-96AD-2F872D99E1B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.Clr4", "Source\Machine.Specifications.Example.Clr4\Machine.Specifications.Example.Clr4.csproj", "{0CE411DF-CFC3-45E3-96AD-2F872D99E1B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.5.1", "Machine.Specifications.ReSharperRunner.5.1\Machine.Specifications.ReSharperRunner.5.1.csproj", "{C47B3023-AC8D-4DFD-AAC2-006C4772B699}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.5.1", "Source\Machine.Specifications.ReSharperRunner.5.1\Machine.Specifications.ReSharperRunner.5.1.csproj", "{C47B3023-AC8D-4DFD-AAC2-006C4772B699}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.WatinSupport", "Machine.Specifications.WatinSupport\Machine.Specifications.WatinSupport.csproj", "{9EF302BE-21F7-4443-B871-534DA3BEDD59}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.WatinSupport", "Source\Machine.Specifications.WatinSupport\Machine.Specifications.WatinSupport.csproj", "{9EF302BE-21F7-4443-B871-534DA3BEDD59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.UsingExternalFile", "Machine.Specifications.Example.UsingExternalFile\Machine.Specifications.Example.UsingExternalFile.csproj", "{A6B234F5-5D96-4809-BD25-86F6544BF838}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.UsingExternalFile", "Source\Machine.Specifications.Example.UsingExternalFile\Machine.Specifications.Example.UsingExternalFile.csproj", "{A6B234F5-5D96-4809-BD25-86F6544BF838}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.6.0", "Machine.Specifications.ReSharperRunner.6.0\Machine.Specifications.ReSharperRunner.6.0.csproj", "{5ED0B02E-7E2D-413D-ABE9-6DB07116E2CE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.6.0", "Source\Machine.Specifications.ReSharperRunner.6.0\Machine.Specifications.ReSharperRunner.6.0.csproj", "{5ED0B02E-7E2D-413D-ABE9-6DB07116E2CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
