@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Newtonsoft.Json;
-
 namespace Machine.Specifications.Reporting.Model
 {
   public class Run : SpecificationContainer, ISpecificationNode, ILinkToCanFail, ILinkToNotImplemented, ILinkToIgnored
@@ -53,7 +51,6 @@ namespace Machine.Specifications.Reporting.Model
       visitor.Visit(this);
     }
 
-    [JsonIgnore]
     public IEnumerable<ISpecificationNode> Children
     {
       get { return _assemblies.Cast<ISpecificationNode>(); }

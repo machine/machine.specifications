@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 
-using Newtonsoft.Json;
-
 namespace Machine.Specifications.Reporting.Model
 {
   public class Specification : ISpecificationNode, ILinkTarget, ILinkToCanFail, ILinkToNotImplemented, ILinkToIgnored
@@ -50,7 +48,6 @@ namespace Machine.Specifications.Reporting.Model
       visitor.Visit(this);
     }
 
-    [JsonIgnore]
     public IEnumerable<ISpecificationNode> Children
     {
       get { yield break; }
