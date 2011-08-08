@@ -7,9 +7,9 @@
 </head>
 <body>
   <Assembly assembly="_assembly" each="var _assembly in Model.Assemblies">
-    <section name="assembly-name">
+    <segment name="assembly-name">
       <a href="${assembly.Name}.html">${assembly.Name}</a>
-    </section>
+    </segment>
   </Assembly>
   
   <em if="Model.Meta.ShouldGenerateTimeInfo">Generated on ${Model.Meta.GeneratedAt.ToLongDateString()} at ${Model.Meta.GeneratedAt.ToLongTimeString()}.</em>

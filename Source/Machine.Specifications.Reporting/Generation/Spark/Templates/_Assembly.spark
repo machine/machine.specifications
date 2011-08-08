@@ -1,5 +1,5 @@
 ﻿<h1>
-  <render section="assembly-name">
+  <render segment="assembly-name">
     ${assembly.Name}
   </render>
 </h1>
