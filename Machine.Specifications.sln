@@ -68,7 +68,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Exam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.6.0", "Source\Machine.Specifications.ReSharperRunner.6.0\Machine.Specifications.ReSharperRunner.6.0.csproj", "{5ED0B02E-7E2D-413D-ABE9-6DB07116E2CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.NAntTask", "Machine.Specifications.NAntTask\Machine.Specifications.NAntTask.csproj", "{6A3E8E78-5CDE-4648-A412-B45A823BB002}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.NAntTask", "Source\Machine.Specifications.NAntTask\Machine.Specifications.NAntTask.csproj", "{6A3E8E78-5CDE-4648-A412-B45A823BB002}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
