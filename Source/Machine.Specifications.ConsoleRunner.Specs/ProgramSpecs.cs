@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Reflection;
 using Machine.Specifications.ConsoleRunner.Properties;
@@ -136,13 +137,27 @@ namespace Machine.Specifications.ConsoleRunner.Specs
 
   public class ConsoleRunnerSpecs
   {
+    const string TeamCityIndicator = "TEAMCITY_PROJECT_NAME";
+    static string TeamCityEnvironment;
+
     public static Program program;
     public static FakeConsole console;
 
-    Establish context = ()=>
+    Establish context = () =>
     {
       console = new FakeConsole();
       program = new Program(console);
+
+      TeamCityEnvironment = Environment.GetEnvironmentVariable(TeamCityIndicator);
+      Environment.SetEnvironmentVariable(TeamCityIndicator, String.Empty);
+    };
+
+    Cleanup after = () =>
+    {
+      if (TeamCityEnvironment != null)
+      {
+        Environment.SetEnvironmentVariable(TeamCityIndicator, TeamCityEnvironment);
+      }
     };
 
     protected static string GetPath(string path)
