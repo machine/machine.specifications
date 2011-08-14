@@ -13,6 +13,6 @@
     <licenseUrl>http://github.com/machine/machine.specifications/blob/master/License.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <iconUrl>http://github.com/machine/machine.specifications/raw/master/Misc/Machine.Specifications-32x32.png</iconUrl>
-    <tags>test unit testing context specification bdd tdd</tags>
+    <tags>test unit testing context specification bdd tdd mspec</tags>
   </metadata>
 </package>
