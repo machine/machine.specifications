@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 
@@ -66,6 +67,18 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       var isIgnored = bool.Parse(parent.GetAttribute("isIgnored"));
 
       return ContextSpecificationFactory.GetOrCreateContextSpecification(provider, project, context, ProjectModelElementEnvoy.Create(project), typeName, methodName, EmptyArray<string>.Instance, isIgnored);
+    }
+
+    public override string Id
+    {
+      get { return CreateId(Context, FieldName); }
+    }
+
+    public static string CreateId(ContextElement parent, string fieldName)
+    {
+      var id = String.Format("{0}.{1}", parent.Id, fieldName);
+      System.Diagnostics.Debug.WriteLine("CSE " + id);
+      return id;
     }
   }
 }

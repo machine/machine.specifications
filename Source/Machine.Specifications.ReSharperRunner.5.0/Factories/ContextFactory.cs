@@ -35,18 +35,18 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         return _cache.Classes[type];
       }
 
-      ContextElement context = GetOrCreateContextElement(_provider,
-                                                  _project,
-                                                  _projectEnvoy,
+      var context = GetOrCreateContextElement(_provider,
+                                              _project,
+                                              _projectEnvoy,
 #if RESHARPER_6
-                                                  type.GetClrName().FullName,
+                                              type.GetClrName().FullName,
 #else
-                                                  type.CLRName,
+                                              type.CLRName,
 #endif
-                                                  _assemblyPath,
-                                                  type.GetSubjectString(),
-                                                  type.GetTags(),
-                                                  type.IsIgnored());
+                                              _assemblyPath,
+                                              type.GetSubjectString(),
+                                              type.GetTags(),
+                                              type.IsIgnored());
 
 #if RESHARPER_6
       foreach (var child in context.Children)
@@ -62,19 +62,27 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     public ContextElement CreateContext(IMetadataTypeInfo type)
     {
       return GetOrCreateContextElement(_provider,
-                                _project,
-                                _projectEnvoy,
-                                type.FullyQualifiedName,
-                                _assemblyPath,
-                                type.GetSubjectString(),
-                                type.GetTags(),
-                                type.IsIgnored());
+                                       _project,
+                                       _projectEnvoy,
+                                       type.FullyQualifiedName,
+                                       _assemblyPath,
+                                       type.GetSubjectString(),
+                                       type.GetTags(),
+                                       type.IsIgnored());
     }
 
-    public static ContextElement GetOrCreateContextElement(MSpecUnitTestProvider provider, IProject project, ProjectModelElementEnvoy projectEnvoy, string typeName, string assemblyLocation, string subject, ICollection<string> tags, bool isIgnored)
+    public static ContextElement GetOrCreateContextElement(MSpecUnitTestProvider provider,
+                                                           IProject project,
+                                                           ProjectModelElementEnvoy projectEnvoy,
+                                                           string typeName,
+                                                           string assemblyLocation,
+                                                           string subject,
+                                                           ICollection<string> tags,
+                                                           bool isIgnored)
     {
 #if RESHARPER_6
-      var contextElement = provider.UnitTestManager.GetElementById(project, typeName) as ContextElement;
+      var id = ContextElement.CreateId(subject, typeName);
+      var contextElement = provider.UnitTestManager.GetElementById(project, id) as ContextElement;
       if (contextElement != null)
       {
         contextElement.State = UnitTestElementState.Valid;

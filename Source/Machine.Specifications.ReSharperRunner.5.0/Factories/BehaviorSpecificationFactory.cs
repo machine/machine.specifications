@@ -47,8 +47,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     }
 
     public IEnumerable<BehaviorSpecificationElement> CreateBehaviorSpecificationsFromBehavior(BehaviorElement behavior,
-                                                                                              IDeclaredElement
-                                                                                                behaviorSpecification)
+                                                                                              IDeclaredElement behaviorSpecification)
     {
       IClass typeContainingBehaviorSpecifications = behaviorSpecification.GetFirstGenericArgument();
 
@@ -77,7 +76,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     public static BehaviorSpecificationElement GetOrCreateBehaviorSpecification(MSpecUnitTestProvider provider, IProject project, BehaviorElement behavior, ProjectModelElementEnvoy projectEnvoy, string declaringTypeName, string fieldName, bool isIgnored)
     {
 #if RESHARPER_6
-      var id = string.Format("{0}{1}.{2}", behavior.Id, declaringTypeName, fieldName);
+      var id = BehaviorSpecificationElement.CreateId(behavior, fieldName);
       var behaviorSpecification = provider.UnitTestManager.GetElementById(project, id) as BehaviorSpecificationElement;
       if (behaviorSpecification != null)
       {
@@ -88,11 +87,11 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 #endif
 
       return new BehaviorSpecificationElement(provider,
-                                        behavior,
-                                        projectEnvoy,
-                                        declaringTypeName,
-                                        fieldName,
-                                        isIgnored);
+                                              behavior,
+                                              projectEnvoy,
+                                              declaringTypeName,
+                                              fieldName,
+                                              isIgnored);
     }
   }
 }

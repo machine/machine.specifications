@@ -69,10 +69,17 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                              specification.IsIgnored());
     }
 
-    public static ContextSpecificationElement GetOrCreateContextSpecification(MSpecUnitTestProvider provider, IProject project, ContextElement context, ProjectModelElementEnvoy projectEnvoy, string declaringTypeName, string fieldName, ICollection<string> tags, bool isIgnored)
+    public static ContextSpecificationElement GetOrCreateContextSpecification(MSpecUnitTestProvider provider,
+                                                                              IProject project,
+                                                                              ContextElement context,
+                                                                              ProjectModelElementEnvoy projectEnvoy,
+                                                                              string declaringTypeName,
+                                                                              string fieldName,
+                                                                              ICollection<string> tags,
+                                                                              bool isIgnored)
     {
 #if RESHARPER_6
-      var id = string.Format("{0}.{1}", declaringTypeName, fieldName);
+      var id = ContextSpecificationElement.CreateId(context, fieldName);
       var contextSpecification = provider.UnitTestManager.GetElementById(project, id) as ContextSpecificationElement;
       if (contextSpecification != null)
       {
@@ -83,12 +90,12 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 #endif
 
       return new ContextSpecificationElement(provider,
-                                        context,
-                                        projectEnvoy,
-                                        declaringTypeName,
-                                        fieldName,
-                                        tags,
-                                        isIgnored);
+                                             context,
+                                             projectEnvoy,
+                                             declaringTypeName,
+                                             fieldName,
+                                             tags,
+                                             isIgnored);
     }
   }
 }

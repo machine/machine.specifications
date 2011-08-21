@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml;
 
 using JetBrains.ProjectModel;
@@ -21,8 +22,6 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       : base(provider, behavior, projectEnvoy, declaringTypeName, fieldName, isIgnored || behavior.Explicit)
     {
     }
-
-    public override string Id { get { return Behavior.Id + base.Id; } }
 
     public BehaviorElement Behavior
     {
@@ -59,6 +58,18 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       var isIgnored = bool.Parse(parent.GetAttribute("isIgnored"));
 
       return BehaviorSpecificationFactory.GetOrCreateBehaviorSpecification(provider, project, behavior, ProjectModelElementEnvoy.Create(project), typeName, methodName, isIgnored);
+    }
+
+    public override string Id
+    {
+      get { return CreateId(Behavior, FieldName); }
+    }
+
+    public static string CreateId(BehaviorElement parent, string fieldName)
+    {
+      var id = String.Format("{0}.{1}", parent.Id, fieldName);
+      System.Diagnostics.Debug.WriteLine("BSE " + id);
+      return id;
     }
   }
 }

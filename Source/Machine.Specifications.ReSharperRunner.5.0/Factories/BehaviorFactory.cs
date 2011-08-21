@@ -66,10 +66,18 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                  fullyQualifiedTypeName);
     }
 
-    public static BehaviorElement GetOrCreateBehavior(MSpecUnitTestProvider provider, IProject project, ProjectModelElementEnvoy projectEnvoy, ContextElement context, string declaringTypeName, string fieldName, bool isIgnored, string fullyQualifiedTypeName)
+    public static BehaviorElement GetOrCreateBehavior(MSpecUnitTestProvider provider,
+                                                      IProject project,
+                                                      ProjectModelElementEnvoy projectEnvoy,
+                                                      ContextElement context,
+                                                      string declaringTypeName,
+                                                      string fieldName,
+                                                      bool isIgnored,
+                                                      string fullyQualifiedTypeName)
     {
 #if RESHARPER_6
-      var behavior = provider.UnitTestManager.GetElementById(project, string.Format("{0}.{1}", declaringTypeName, fieldName)) as BehaviorElement;
+      var id = BehaviorElement.CreateId(context, fieldName);
+      var behavior = provider.UnitTestManager.GetElementById(project, id) as BehaviorElement;
       if (behavior != null)
       {
         behavior.Parent = context;
@@ -95,13 +103,13 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       var typeName = GetNormalizedTypeName(fullyQualifiedTypeName);
 
       var behaviorElement = GetOrCreateBehavior(_provider,
-                                 _project,
-                                 _projectEnvoy,
-                                 context,
-                                 behavior.DeclaringType.FullyQualifiedName,
-                                 behavior.Name,
-                                 behavior.IsIgnored() || typeContainingBehaviorSpecifications.IsIgnored(),
-                                 fullyQualifiedTypeName);
+                                                _project,
+                                                _projectEnvoy,
+                                                context,
+                                                behavior.DeclaringType.FullyQualifiedName,
+                                                behavior.Name,
+                                                behavior.IsIgnored() || typeContainingBehaviorSpecifications.IsIgnored(),
+                                                fullyQualifiedTypeName);
 
       if (!TypeNameCache.ContainsKey(typeName))
       {

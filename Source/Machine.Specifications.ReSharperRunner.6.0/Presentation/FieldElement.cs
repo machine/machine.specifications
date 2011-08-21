@@ -27,11 +27,6 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       State = UnitTestElementState.Valid;
     }
 
-    public override string Id
-    {
-      get { return string.Format("{0}.{1}", TypeName, FieldName); }
-    }
-
     public override string ShortName
     {
       get { return FieldName; }
@@ -61,30 +56,6 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       return declaredType.EnumerateMembers(FieldName, false)
         .Where(member => member as IField != null)
         .FirstOrDefault();
-    }
-
-    public override bool Equals(object obj)
-    {
-      if (!base.Equals(obj))
-      {
-        return false;
-      }
-
-      var other = obj as FieldElement;
-      if (other == null)
-      {
-        return false;
-      }
-
-      return Equals(Parent, other.Parent) && FieldName == other.FieldName;
-    }
-
-    public override int GetHashCode()
-    {
-      int result = base.GetHashCode();
-      result = 29 * result + TypeName.GetHashCode();
-      result = 29 * result + FieldName.GetHashCode();
-      return result;
     }
 
     public virtual void WriteToXml(XmlElement parent)

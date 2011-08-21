@@ -66,12 +66,9 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     public abstract IEnumerable<UnitTestElementCategory> Categories { get; }
     public string ExplicitReason { get; private set; }
 
-    public virtual string Id
+    public abstract string Id
     {
-      get
-      {
-        return TypeName;
-      }
+      get;
     }
 
     public IUnitTestProvider Provider
@@ -267,14 +264,14 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
         return false;
       }
 
-      return Equals(other._projectEnvoy, _projectEnvoy) && other._declaringTypeName == _declaringTypeName;
+      return Equals(other._projectEnvoy, _projectEnvoy) && other.Id == Id;
     }
 
     public override int GetHashCode()
     {
       int result = 0;
       result = 29 * result + _projectEnvoy.GetHashCode();
-      result = 29 * result + _declaringTypeName.GetHashCode();
+      result = 29 * result + Id.GetHashCode();
       return result;
     }
 

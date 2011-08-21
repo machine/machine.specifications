@@ -47,8 +47,6 @@ namespace Machine.Specifications.ReSharperRunner
       get { return ID; }
     }
 
-
-
     public Image Icon
     {
       get { return Resources.Logo; }
@@ -130,7 +128,5 @@ namespace Machine.Specifications.ReSharperRunner
     {
       return true;
     }
-
-     
   }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml;
 
 using JetBrains.ProjectModel;
@@ -80,6 +81,18 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                                                            methodName,
                                                            isIgnored,
                                                            fullyQualifiedTypeName);
+    }
+
+    public override string Id
+    {
+      get { return CreateId(Context, FieldName); }
+    }
+
+    public static string CreateId(ContextElement parent, string fieldName)
+    {
+      var id = String.Format("{0}.{1}", parent.Id, fieldName);
+      System.Diagnostics.Debug.WriteLine("BE  " + id);
+      return id;
     }
   }
 }

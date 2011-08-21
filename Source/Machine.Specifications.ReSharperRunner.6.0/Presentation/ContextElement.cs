@@ -11,6 +11,8 @@ using JetBrains.Util;
 using Machine.Specifications.Factories;
 using Machine.Specifications.Utility.Internal;
 
+using ContextFactory = Machine.Specifications.ReSharperRunner.Factories.ContextFactory;
+
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
   public class ContextElement : Element, ISerializableElement
@@ -77,23 +79,9 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       get { return _categories; }
     }
 
-    public override bool Equals(object obj)
+    public override string Id
     {
-      if (base.Equals(obj))
-      {
-        var other = obj as ContextElement;
-        if (other != null)
-            return Equals(AssemblyLocation, other.AssemblyLocation);
-      }
-
-      return false;
-    }
-
-    public override int GetHashCode()
-    {
-      int result = base.GetHashCode();
-      result = 29 * result + AssemblyLocation.GetHashCode();
-      return result;
+      get { return CreateId(_subject, TypeName); }
     }
 
     public void WriteToXml(XmlElement parent)
@@ -118,7 +106,21 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       var isIgnored = bool.Parse(parent.GetAttribute("isIgnored"));
       var subject = parent.GetAttribute("subject");
 
-      return Factories.ContextFactory.GetOrCreateContextElement(provider, project, ProjectModelElementEnvoy.Create(project), typeName, assemblyLocation, subject, EmptyArray<string>.Instance, isIgnored);
+      return ContextFactory.GetOrCreateContextElement(provider,
+                                                      project,
+                                                      ProjectModelElementEnvoy.Create(project),
+                                                      typeName,
+                                                      assemblyLocation,
+                                                      subject,
+                                                      EmptyArray<string>.Instance,
+                                                      isIgnored);
+    }
+
+    public static string CreateId(string subject, string typeName)
+    {
+      var id = String.Format("{0}.{1}", subject, typeName);
+      System.Diagnostics.Debug.WriteLine("CE  " + id);
+      return id;
     }
   }
 }
