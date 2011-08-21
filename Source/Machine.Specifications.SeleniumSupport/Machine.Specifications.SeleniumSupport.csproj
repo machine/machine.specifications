@@ -56,9 +56,9 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="ThoughtWorks.Selenium.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=1c2bd1631853048f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Selenium.RC.2.3.0\lib\ThoughtWorks.Selenium.Core.dll</HintPath>
+    <Reference Include="System.Drawing" />
+    <Reference Include="ThoughtWorks.Selenium.Core">
+      <HintPath>..\..\packages\Selenium.RC.2.4.1\lib\ThoughtWorks.Selenium.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
