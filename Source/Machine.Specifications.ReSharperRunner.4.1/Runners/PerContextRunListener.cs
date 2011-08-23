@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 using JetBrains.ReSharper.TaskRunnerFramework;
 
@@ -113,6 +116,11 @@ namespace Machine.Specifications.ReSharperRunner.Runners
           {
             if (notification.Matches(specification))
             {
+              Debug.WriteLine(String.Format("Notifcation for {0} {1}, with {2} remote tasks",
+                                            specification.ContainingType,
+                                            specification.FieldName,
+                                            notification.RemoteTasks.Count()));
+
               foreach (var task in notification.RemoteTasks)
               {
                 actionToBePerformedForEachTask(task);

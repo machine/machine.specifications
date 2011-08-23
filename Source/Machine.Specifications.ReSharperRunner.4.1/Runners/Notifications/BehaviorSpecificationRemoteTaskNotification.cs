@@ -34,7 +34,6 @@ namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
       get
       {
         yield return _node.RemoteTask;
-        yield return _node.Parent.RemoteTask;
       }
     }
   }
