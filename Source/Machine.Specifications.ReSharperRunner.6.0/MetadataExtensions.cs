@@ -15,7 +15,6 @@ namespace Machine.Specifications.ReSharperRunner
     {
       return !type.IsAbstract &&
              !type.IsStruct() &&
-             (type.IsPublic || type.IsNestedPublic) &&
              type.GenericParameters.Length == 0 &&
              !type.HasCustomAttribute(typeof(BehaviorsAttribute).FullName) &&
              (type.GetSpecifications().Any() ||
@@ -75,7 +74,6 @@ namespace Machine.Specifications.ReSharperRunner
 
     public static ICollection<string> GetTags(this IMetadataEntity type)
     { 
-
         return type.AndAllBaseTypes()
                 .SelectMany(x => x.GetCustomAttributes(typeof(TagsAttribute).FullName))
                 .Select(x => x.ConstructorArguments)
@@ -85,7 +83,7 @@ namespace Machine.Specifications.ReSharperRunner
                 .ToList();
     }
 
-      static IEnumerable<IMetadataTypeInfo> AndAllBaseTypes(this IMetadataEntity type)
+    static IEnumerable<IMetadataTypeInfo> AndAllBaseTypes(this IMetadataEntity type)
     {
       var typeInfo = type as IMetadataTypeInfo;
       if (typeInfo == null)

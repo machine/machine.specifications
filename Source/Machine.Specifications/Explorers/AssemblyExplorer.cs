@@ -80,7 +80,7 @@ namespace Machine.Specifications.Explorers
 
     static IEnumerable<Type> EnumerateContextsIn(Assembly assembly)
     {
-      return assembly.GetExportedTypes().Where(IsContext)
+      return assembly.GetTypes().Where(IsContext)
         .OrderBy(t => t.Namespace);
     }
 

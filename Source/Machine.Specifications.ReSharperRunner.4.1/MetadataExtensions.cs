@@ -17,7 +17,6 @@ namespace Machine.Specifications.ReSharperRunner
     {
       return !type.IsAbstract &&
              !type.IsStruct() &&
-             (type.IsPublic || type.IsNestedPublic) &&
              type.GenericParameters.Length == 0 &&
              !type.HasCustomAttribute(typeof(BehaviorsAttribute).FullName) &&
              (type.GetSpecifications().Any() ||

@@ -70,6 +70,7 @@
     </Compile>
     <Compile Include="AssertionSpecs.cs" />
     <Compile Include="ExceptionResultSpecs.cs" />
+    <Compile Include="Explorers\AssemblyExplorerSpecs.cs" />
     <Compile Include="Factories\ContextFactorySpecs.cs" />
     <Compile Include="Utility\Internal\ErrorMessageSpecs.cs" />
     <Compile Include="Utility\Internal\NamingSpecs.cs" />

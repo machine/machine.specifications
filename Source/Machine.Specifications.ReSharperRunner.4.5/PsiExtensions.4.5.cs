@@ -21,8 +21,7 @@ namespace Machine.Specifications.ReSharperRunner
 
       var contextBaseCandidate = !element.IsContext() &&
                                  clazz.IsValid() &&
-                                 clazz.GetContainingType() == null &&
-                                 clazz.GetAccessRights() == AccessRights.PUBLIC;
+                                 clazz.GetContainingType() == null;
       if (!contextBaseCandidate)
       {
         return false;

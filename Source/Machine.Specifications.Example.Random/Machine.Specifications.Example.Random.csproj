@@ -68,6 +68,7 @@
     <Compile Include="ExampleSpecs.cs" />
     <Compile Include="ExampleSpecsWithBehavior.cs" />
     <Compile Include="ExampleSpecsWithInheritance.cs" />
+    <Compile Include="InternalTypeSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestCleanupAfterEveryContext.cs" />
   </ItemGroup>

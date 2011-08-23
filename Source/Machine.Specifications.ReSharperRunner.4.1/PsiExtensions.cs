@@ -30,7 +30,6 @@ namespace Machine.Specifications.ReSharperRunner
       return clazz.IsValid() &&
              !clazz.IsAbstract &&
              !clazz.HasAttributeInstance(new CLRTypeName(typeof(BehaviorsAttribute).FullName), false) &&
-             clazz.GetAccessRights() == AccessRights.PUBLIC &&
              fields.Any(x => IsSpecification(x) || IsBehavior(x));
     }
     
