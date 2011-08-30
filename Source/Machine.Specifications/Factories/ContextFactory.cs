@@ -55,7 +55,10 @@ namespace Machine.Specifications.Factories
 
       if (becauses.Count > _allowedNumberOfBecauseBlocks)
       {
-        throw new SpecificationUsageException("There can only be one Because clause.");
+        var message = String.Format("There can only be one Because clause. Found {0} Becauses in the type hierarchy of {1}.",
+                                    becauses.Count,
+                                    instance.GetType().FullName);
+        throw new SpecificationUsageException(message);
       }
 
       var concern = ExtractSubject(type);

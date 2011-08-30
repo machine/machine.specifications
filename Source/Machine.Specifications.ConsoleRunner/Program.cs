@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using Machine.Specifications.ConsoleRunner.Properties;
+
 using Machine.Specifications.Reporting.Generation.Spark;
 using Machine.Specifications.Reporting.Generation.Xml;
 using Machine.Specifications.Reporting.Integration;

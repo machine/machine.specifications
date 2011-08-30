@@ -73,11 +73,6 @@ namespace Machine.Specifications.ConsoleRunner
         }
       }
 
-      if (_failureOccurred)
-      {
-        line += "\n\nGeneric failure occurred, no idea what this is";
-      }
-
       _console.WriteLine(line);
     }
 
