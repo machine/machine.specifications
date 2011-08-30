@@ -69,6 +69,7 @@ namespace Machine.Specifications.Specs
       () => Exception.Message.ShouldMatch(@"the following items did not meet the condition: {\s+\[1\],\s+\[3\]\s+}");
   }
 
+  [Subject(typeof(ShouldExtensionMethods))]
   public class when_a_list_contains_an_element_of_another_list
   {
     static Exception SpecException;
@@ -90,6 +91,7 @@ namespace Machine.Specifications.Specs
       () => SpecException.ShouldBeNull();
   }
 
+  [Subject(typeof(ShouldExtensionMethods))]
   public class when_a_list_not_contains_an_element_of_another_list
   {
     static Exception SpecException;
