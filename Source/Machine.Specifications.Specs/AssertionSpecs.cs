@@ -160,4 +160,19 @@ namespace Machine.Specifications.Specs
     It should_pass_the__ShouldNotBeNull__assertion =
       () => Catch.Exception(() => AString.ShouldNotBeNull()).ShouldBeNull();
   }
+
+  [Subject(typeof(ShouldExtensionMethods))]
+  public class when_a_type_assertion_fails
+  {
+    static string AString;
+    static SpecificationException Exception;
+
+    Establish context = () => { AString = null; };
+
+    Because of =
+      () => Exception = (SpecificationException) Catch.Exception(() => AString.ShouldBeOfType<int>());
+
+    It should_report_the_requested_type =
+      () => Exception.Message.ShouldStartWith("Should be of type System.Int32");
+  }
 }

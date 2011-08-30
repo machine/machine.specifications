@@ -129,7 +129,7 @@ namespace Machine.Specifications
     {
       if (actual == null)
       {
-        throw new SpecificationException(string.Format("Should be of type {0} but is [null]", expected.GetType()));
+        throw new SpecificationException(string.Format("Should be of type {0} but is [null]", expected));
       }
 
       if (!expected.IsAssignableFrom(actual.GetType()))
