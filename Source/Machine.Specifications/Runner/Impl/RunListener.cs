@@ -1,9 +1,6 @@
-using System;
+﻿using System;
 
-using Machine.Specifications.Runner;
-using Machine.Specifications.Runner.Impl;
-
-namespace Machine.Specifications.ConsoleRunner
+namespace Machine.Specifications.Runner.Impl
 {
   public class RunListener : ISpecificationRunListener, ISpecificationResultProvider
   {
@@ -94,7 +91,7 @@ namespace Machine.Specifications.ConsoleRunner
 
     public void OnSpecificationStart(SpecificationInfo specification)
     {
-      WriteVerbose("� " + specification.Name);
+      WriteVerbose("» " + specification.Name);
     }
 
     public void OnSpecificationEnd(SpecificationInfo specification, Result result)
