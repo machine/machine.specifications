@@ -9,35 +9,23 @@ namespace Machine.Specifications.Specs
     static Exception Exception;
     static int[] Ints;
 
-    Establish context = () =>
-    {
-      Ints = new[] {1, 2, 3};
-    };
+    Establish context = () => { Ints = new[] {1, 2, 3}; };
 
-    Because of = () =>
-    {
-      Exception = Catch.Exception(() => Ints.ShouldContain(x => x > 3));
-    };
+    Because of = () => { Exception = Catch.Exception(() => Ints.ShouldContain(x => x > 3)); };
 
     It should_print_the_func_description =
       () => Exception.Message.ShouldContain("Should contain elements conforming to: x => (x > 3)");
   }
-  
+
   [Subject(typeof(ShouldExtensionMethods))]
   public class when_checking_if_a_collection_contains_elements_that_do_not_match_a_func
   {
     static Exception Exception;
     static int[] Ints;
 
-    Establish context = () =>
-    {
-      Ints = new[] {1, 2, 3};
-    };
+    Establish context = () => { Ints = new[] {1, 2, 3}; };
 
-    Because of = () =>
-    {
-      Exception = Catch.Exception(() => Ints.ShouldNotContain(x => x < 3));
-    };
+    Because of = () => { Exception = Catch.Exception(() => Ints.ShouldNotContain(x => x < 3)); };
 
     It should_print_the_func_description =
       () => Exception.Message.ShouldContain("No elements should conform to: x => (x < 3)");
@@ -52,15 +40,9 @@ namespace Machine.Specifications.Specs
     static Exception Exception;
     static int[] Ints;
 
-    Establish context = () =>
-    {
-      Ints = new[] { 1, 2, 3 };
-    };
+    Establish context = () => { Ints = new[] {1, 2, 3}; };
 
-    Because of = () =>
-    {
-      Exception = Catch.Exception(() => Ints.ShouldEachConformTo(x => x % 2 == 0));
-    };
+    Because of = () => { Exception = Catch.Exception(() => Ints.ShouldEachConformTo(x => x % 2 == 0)); };
 
     It should_print_the_func_description =
       () => Exception.Message.ShouldContain("Should contain only elements conforming to: x => ((x % 2) = 0)");
@@ -80,7 +62,7 @@ namespace Machine.Specifications.Specs
     Establish context = () =>
     {
       Element = "An Element";
-      AList = new List<string> { Element };
+      AList = new List<string> {Element};
       AnotherList = new List<string>(AList);
     };
 
@@ -103,10 +85,10 @@ namespace Machine.Specifications.Specs
     Establish context = () =>
     {
       Element = "An Element";
-      AList = new List<string> { Element };
+      AList = new List<string> {Element};
 
       AnotherElement = "Another Element";
-      AnotherList = new List<string> { AnotherElement };
+      AnotherList = new List<string> {AnotherElement};
     };
 
     Because of =
@@ -114,5 +96,68 @@ namespace Machine.Specifications.Specs
 
     It should_fail_the__ShouldContains__assertion =
       () => SpecException.ShouldBeOfType<SpecificationException>();
+  }
+
+  [Subject(typeof(ShouldExtensionMethods))]
+  public class when_a_null_string_is_asserted_on
+  {
+    static string AString;
+
+    Establish context =
+      () => AString = null;
+
+    It should_fail_the__ShouldBeEmpty__assertion =
+      () => Catch.Exception(() => AString.ShouldBeEmpty()).ShouldBeOfType<SpecificationException>();
+
+    It should_fail_the__ShouldNotBeEmpty__assertion =
+      () => Catch.Exception(() => AString.ShouldNotBeEmpty()).ShouldBeOfType<SpecificationException>();
+
+    It should_pass_the__ShouldBeNull__assertion =
+      () => Catch.Exception(() => AString.ShouldBeNull()).ShouldBeNull();
+
+    It should_fail_the__ShouldNotBeNull__assertion =
+      () => Catch.Exception(() => AString.ShouldNotBeNull()).ShouldBeOfType<SpecificationException>();
+  }
+
+  [Subject(typeof(ShouldExtensionMethods))]
+  public class when_an_empty_string_is_asserted_on
+  {
+    static string AString;
+
+    Establish context =
+      () => AString = "";
+
+    It should_pass_the__ShouldBeEmpty__assertion =
+      () => Catch.Exception(() => AString.ShouldBeEmpty()).ShouldBeNull();
+
+    It should_fail_the__ShouldNotBeEmpty__assertion =
+      () => Catch.Exception(() => AString.ShouldNotBeEmpty()).ShouldBeOfType<SpecificationException>();
+
+    It should_fail_the__ShouldBeNull__assertion =
+      () => Catch.Exception(() => AString.ShouldBeNull()).ShouldBeOfType<SpecificationException>();
+
+    It should_pass_the__ShouldNotBeNull__assertion =
+      () => Catch.Exception(() => AString.ShouldNotBeNull()).ShouldBeNull();
+  }
+
+  [Subject(typeof(ShouldExtensionMethods))]
+  public class when_an_non_empty_string_is_asserted_on
+  {
+    static string AString;
+
+    Establish context =
+      () => AString = "hey";
+
+    It should_fail_the__ShouldBeEmpty__assertion =
+      () => Catch.Exception(() => AString.ShouldBeEmpty()).ShouldBeOfType<SpecificationException>();
+
+    It should_pass_the__ShouldNotBeEmpty__assertion =
+      () => Catch.Exception(() => AString.ShouldNotBeEmpty()).ShouldBeNull();
+
+    It should_fail_the__ShouldBeNull__assertion =
+      () => Catch.Exception(() => AString.ShouldBeNull()).ShouldBeOfType<SpecificationException>();
+
+    It should_pass_the__ShouldNotBeNull__assertion =
+      () => Catch.Exception(() => AString.ShouldNotBeNull()).ShouldBeNull();
   }
 }

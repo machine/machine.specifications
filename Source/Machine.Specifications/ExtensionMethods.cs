@@ -416,6 +416,11 @@ does contain: {2}",
 
     public static void ShouldBeEmpty(this string aString)
     {
+      if (aString == null)
+      {
+        throw new SpecificationException("Should be empty but is [null]");
+      }
+
       if (!string.IsNullOrEmpty(aString))
       {
         throw NewException("Should be empty but is {0}", aString);
