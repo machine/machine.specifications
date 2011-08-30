@@ -13,7 +13,7 @@ task :configure do
   
   build_config = {
     :build => {
-      :base => "0.4",
+      :base => "0.5",
       :number => ENV['BUILD_NUMBER'],
       :sha => ENV['BUILD_VCS_NUMBER'] || 'no SHA',
     },
