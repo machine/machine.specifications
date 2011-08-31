@@ -36,5 +36,37 @@ namespace Machine.Specifications.Runner
       AssemblyName = assemblyName;
       Namespace = @namespace;
     }
+
+    public override bool Equals(object obj)
+    {
+      if (ReferenceEquals(null, obj))
+      {
+        return false;
+      }
+      if (ReferenceEquals(this, obj))
+      {
+        return true;
+      }
+      if (obj.GetType() != typeof(ContextInfo))
+      {
+        return false;
+      }
+      return GetHashCode() == obj.GetHashCode();
+    }
+
+    public override int GetHashCode()
+    {
+      unchecked
+      {
+        int hash = 17;
+        hash = hash * 29 + (Name != null ? Name.GetHashCode() : 0);
+        hash = hash * 29 + (Concern != null ? Concern.GetHashCode() : 0);
+        hash = hash * 29 + (TypeName != null ? TypeName.GetHashCode() : 0);
+        hash = hash * 29 + (Namespace != null ? Namespace.GetHashCode() : 0);
+        hash = hash * 29 + (AssemblyName != null ? AssemblyName.GetHashCode() : 0);
+
+        return hash;
+      }
+    }
   }
 }
