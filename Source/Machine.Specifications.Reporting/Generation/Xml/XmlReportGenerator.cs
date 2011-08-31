@@ -160,6 +160,7 @@ namespace Machine.Specifications.Reporting.Generation.Xml
         reportBuilder.WriteStartElement("context");
         reportBuilder.WriteAttributeString("name", context.Name);
         reportBuilder.WriteAttributeString("type-name", context.TypeName);
+        reportBuilder.WriteAttributeString("time", _timer.GetContextTime(context).ToString(CultureInfo.InvariantCulture));
         RenderSpecifications(reportBuilder, context);
         reportBuilder.WriteEndElement();
       }
@@ -200,6 +201,7 @@ namespace Machine.Specifications.Reporting.Generation.Xml
         reportBuilder.WriteAttributeString("name", specification.Name);
         reportBuilder.WriteAttributeString("field-name", specification.FieldName);
         reportBuilder.WriteAttributeString("status", status);
+        reportBuilder.WriteAttributeString("time", _timer.GetSpecificationTime(specification).ToString(CultureInfo.InvariantCulture));
         RenderError(reportBuilder, result.Exception);
         reportBuilder.WriteEndElement();
       }
