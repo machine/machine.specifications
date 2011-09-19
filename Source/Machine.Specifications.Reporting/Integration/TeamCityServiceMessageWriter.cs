@@ -242,7 +242,6 @@ namespace Machine.Specifications.Reporting.Integration
             builder.Append("' errorDetails='");
             AppendEscapedString(builder, details);
             builder.Append("' status='ERROR'");
-            builder.Append('\'');
           });
         }
 

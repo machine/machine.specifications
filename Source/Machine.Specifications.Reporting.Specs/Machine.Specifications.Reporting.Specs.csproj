@@ -73,6 +73,7 @@
     </Compile>
     <Compile Include="CollectReportingInformationRunListenerSpecs.cs" />
     <Compile Include="Generation\Spark\GenerateSparkHtmlReportRunListenerSpecs.cs" />
+    <Compile Include="Integration\TeamCityServiceMessageWriterSpecs.cs" />
     <Compile Include="ReportSpecs.cs" />
     <Compile Include="Generation\Spark\SparkRendererSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
