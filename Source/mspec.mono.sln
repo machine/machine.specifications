@@ -27,6 +27,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Exam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.WithBehavior", "Machine.Specifications.Example.WithBehavior\Machine.Specifications.Example.WithBehavior.csproj", "{42E05EB9-FC41-4198-B8D2-BAE2417DC7FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ConsoleRunner.Specs", "Machine.Specifications.ConsoleRunner.Specs\Machine.Specifications.ConsoleRunner.Specs.csproj", "{F25C7917-4ED6-4261-B262-43C56D0CD37F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ConsoleRunner", "Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunner.csproj", "{CFF4B323-24C1-4B19-98CA-7DF92755458E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +85,14 @@ Global
 		{CCD02629-1262-4F78-9E9F-AC97B942D0E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCD02629-1262-4F78-9E9F-AC97B942D0E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCD02629-1262-4F78-9E9F-AC97B942D0E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFF4B323-24C1-4B19-98CA-7DF92755458E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFF4B323-24C1-4B19-98CA-7DF92755458E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFF4B323-24C1-4B19-98CA-7DF92755458E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFF4B323-24C1-4B19-98CA-7DF92755458E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F25C7917-4ED6-4261-B262-43C56D0CD37F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F25C7917-4ED6-4261-B262-43C56D0CD37F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F25C7917-4ED6-4261-B262-43C56D0CD37F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F25C7917-4ED6-4261-B262-43C56D0CD37F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{15FCDD3C-6C0E-4516-90D8-A1D82DC4C4F9} = {F882942E-7BB1-4A3D-9D05-1A1E6AB9BBE4}
@@ -93,6 +105,7 @@ Global
 		{89ECD0D1-6CC4-4319-B1B2-389E0B48F40D} = {F882942E-7BB1-4A3D-9D05-1A1E6AB9BBE4}
 		{A6B234F5-5D96-4809-BD25-86F6544BF838} = {F882942E-7BB1-4A3D-9D05-1A1E6AB9BBE4}
 		{42E05EB9-FC41-4198-B8D2-BAE2417DC7FF} = {F882942E-7BB1-4A3D-9D05-1A1E6AB9BBE4}
+		{F25C7917-4ED6-4261-B262-43C56D0CD37F} = {F882942E-7BB1-4A3D-9D05-1A1E6AB9BBE4}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Machine.Specifications\Machine.Specifications.csproj
