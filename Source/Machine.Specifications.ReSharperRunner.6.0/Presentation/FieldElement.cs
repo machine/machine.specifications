@@ -4,6 +4,7 @@ using System.Xml;
 
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.UnitTestFramework;
 
@@ -16,12 +17,14 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     readonly string _fieldName;
 
     protected FieldElement(MSpecUnitTestProvider provider,
+                           PsiModuleManager psiModuleManager,
+                           CacheManager cacheManager, 
                            Element parent,
                            ProjectModelElementEnvoy projectEnvoy,
                            string declaringTypeName,
                            string fieldName,
                            bool isIgnored)
-      : base(provider, parent, projectEnvoy, declaringTypeName, isIgnored || parent.Explicit)
+      : base(provider, psiModuleManager, cacheManager, parent, projectEnvoy, declaringTypeName, isIgnored || parent.Explicit)
     {
       _fieldName = fieldName;
       State = UnitTestElementState.Valid;

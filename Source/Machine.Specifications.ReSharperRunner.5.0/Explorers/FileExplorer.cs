@@ -6,8 +6,12 @@ using JetBrains.Application;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.UnitTestFramework;
+#if RESHARPER_61
+using JetBrains.ReSharper.UnitTestFramework.Elements;
+#endif
 
 using Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers;
 using Machine.Specifications.ReSharperRunner.Factories;
@@ -22,6 +26,11 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
     readonly CheckForInterrupt _interrupted;
 
     public FileExplorer(MSpecUnitTestProvider provider,
+#if RESHARPER_61
+                        IUnitTestElementManager manager,
+                        PsiModuleManager psiModuleManager,
+                        CacheManager cacheManager,
+#endif
                         UnitTestElementLocationConsumer consumer,
                         IFile file,
                         CheckForInterrupt interrupted)
@@ -49,10 +58,19 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
       string assemblyPath = UnitTestManager.GetOutputAssemblyPath(project).FullPath;
 
       var cache = new ContextCache();
+
+
+#if RESHARPER_61
+      var contextFactory = new ContextFactory(provider, manager, psiModuleManager, cacheManager, project, projectEnvoy, assemblyPath, cache);
+      var contextSpecificationFactory = new ContextSpecificationFactory(provider, manager, psiModuleManager, cacheManager, project, projectEnvoy, cache);
+      var behaviorFactory = new BehaviorFactory(provider, manager, psiModuleManager, cacheManager, project, projectEnvoy, cache);
+      var behaviorSpecificationFactory = new BehaviorSpecificationFactory(provider, manager, psiModuleManager, cacheManager, project, projectEnvoy);
+#else
       var contextFactory = new ContextFactory(provider, project, projectEnvoy, assemblyPath, cache);
       var contextSpecificationFactory = new ContextSpecificationFactory(provider, project, projectEnvoy, cache);
       var behaviorFactory = new BehaviorFactory(provider, project, projectEnvoy, cache);
       var behaviorSpecificationFactory = new BehaviorSpecificationFactory(provider, project, projectEnvoy);
+#endif
 
       _elementHandlers = new List<IElementHandler>
                          {

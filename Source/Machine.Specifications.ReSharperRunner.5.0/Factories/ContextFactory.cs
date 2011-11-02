@@ -4,7 +4,11 @@ using System.Linq;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.UnitTestFramework;
+#if RESHARPER_61
+using JetBrains.ReSharper.UnitTestFramework.Elements;
+#endif
 
 using Machine.Specifications.ReSharperRunner.Presentation;
 
@@ -18,9 +22,22 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     readonly MSpecUnitTestProvider _provider;
     readonly ContextCache _cache;
     readonly IProject _project;
+#if RESHARPER_61
+    readonly IUnitTestElementManager _manager;
+    readonly PsiModuleManager _psiModuleManager;
+    readonly CacheManager _cacheManager;
+#endif
 
+#if RESHARPER_61
+    public ContextFactory(MSpecUnitTestProvider provider, IUnitTestElementManager manager, PsiModuleManager psiModuleManager, CacheManager cacheManager, IProject project, ProjectModelElementEnvoy projectEnvoy, string assemblyPath, ContextCache cache)
+    {
+      _manager = manager;
+      _psiModuleManager = psiModuleManager;
+      _cacheManager = cacheManager;
+#else
     public ContextFactory(MSpecUnitTestProvider provider, IProject project, ProjectModelElementEnvoy projectEnvoy, string assemblyPath, ContextCache cache)
     {
+#endif
       _provider = provider;
       _cache = cache;
       _project = project;
@@ -36,6 +53,11 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       }
 
       var context = GetOrCreateContextElement(_provider,
+#if RESHARPER_61
+                                              _manager,
+                                              _psiModuleManager,
+                                              _cacheManager,
+#endif
                                               _project,
                                               _projectEnvoy,
 #if RESHARPER_6
@@ -62,6 +84,11 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     public ContextElement CreateContext(IMetadataTypeInfo type)
     {
       return GetOrCreateContextElement(_provider,
+#if RESHARPER_61
+                                       _manager,
+                                       _psiModuleManager,
+                                       _cacheManager,
+#endif
                                        _project,
                                        _projectEnvoy,
                                        type.FullyQualifiedName,
@@ -72,6 +99,11 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     }
 
     public static ContextElement GetOrCreateContextElement(MSpecUnitTestProvider provider,
+#if RESHARPER_61
+                                                           IUnitTestElementManager manager,
+                                                           PsiModuleManager psiModuleManager,
+                                                           CacheManager cacheManager,
+#endif
                                                            IProject project,
                                                            ProjectModelElementEnvoy projectEnvoy,
                                                            string typeName,
@@ -82,7 +114,11 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     {
 #if RESHARPER_6
       var id = ContextElement.CreateId(subject, typeName);
+#if RESHARPER_61
+      var contextElement = manager.GetElementById(project, id) as ContextElement;
+#else
       var contextElement = provider.UnitTestManager.GetElementById(project, id) as ContextElement;
+#endif
       if (contextElement != null)
       {
         contextElement.State = UnitTestElementState.Valid;
@@ -91,6 +127,15 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 #endif
 
       return new ContextElement(provider,
+#if RESHARPER_6
+#if RESHARPER_61
+                                psiModuleManager,
+                                cacheManager,
+#else
+                                provider.PsiModuleManager,
+                                provider.CacheManager,
+#endif
+#endif                
                                 projectEnvoy,
                                 typeName,
                                 assemblyLocation,

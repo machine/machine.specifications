@@ -4,7 +4,12 @@ using System.Linq;
 using JetBrains.Application;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.UnitTestFramework;
+#if RESHARPER_61
+using JetBrains.ReSharper.UnitTestFramework.Elements;
+#endif
 using JetBrains.Util;
 
 using Machine.Specifications.ReSharperRunner.Factories;
@@ -21,6 +26,11 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
     readonly ContextSpecificationFactory _contextSpecificationFactory;
 
     public AssemblyExplorer(MSpecUnitTestProvider provider,
+#if RESHARPER_61
+                            IUnitTestElementManager manager,
+                            PsiModuleManager psiModuleManager,
+                            CacheManager cacheManager,
+#endif
                             IMetadataAssembly assembly,
                             IProject project,
                             UnitTestElementConsumer consumer)
@@ -33,6 +43,12 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
         var projectEnvoy = new ProjectModelElementEnvoy(project);
 
         var cache = new ContextCache();
+#if RESHARPER_61
+        _contextFactory = new ContextFactory(provider, manager, psiModuleManager, cacheManager, project, projectEnvoy, _assembly.Location.FullPath, cache);
+        _contextSpecificationFactory = new ContextSpecificationFactory(provider, manager, psiModuleManager, cacheManager, project, projectEnvoy, cache);
+        _behaviorFactory = new BehaviorFactory(provider, manager, psiModuleManager, cacheManager, project, projectEnvoy, cache);
+        _behaviorSpecificationFactory = new BehaviorSpecificationFactory(provider, manager, psiModuleManager, cacheManager, project, projectEnvoy);
+#else
 #if RESHARPER_6
         _contextFactory = new ContextFactory(provider, project, projectEnvoy, _assembly.Location.FullPath, cache);
 #else
@@ -41,6 +57,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
         _contextSpecificationFactory = new ContextSpecificationFactory(provider, project, projectEnvoy, cache);
         _behaviorFactory = new BehaviorFactory(provider, project, projectEnvoy, cache);
         _behaviorSpecificationFactory = new BehaviorSpecificationFactory(provider, project, projectEnvoy);
+#endif
       }
     }
 

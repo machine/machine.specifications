@@ -23,12 +23,14 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     readonly MSpecUnitTestProvider _provider;
     readonly UnitTestTaskFactory _taskFactory;
     Element _parent;
+    readonly PsiModuleManager _psiModuleManager;
+    readonly CacheManager _cacheManager;
 
     protected Element(MSpecUnitTestProvider provider,
+                      PsiModuleManager psiModuleManager,
+                      CacheManager cacheManager,
                       Element parent,
-                      ProjectModelElementEnvoy projectEnvoy,
-                      string declaringTypeName,
-                      bool isIgnored)
+                      ProjectModelElementEnvoy projectEnvoy, string declaringTypeName, bool isIgnored)
     {
       if (projectEnvoy == null && !Shell.Instance.IsTestShell)
       {
@@ -47,6 +49,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
       _provider = provider;
       _declaringTypeName = declaringTypeName;
+      _psiModuleManager = psiModuleManager;
+      _cacheManager = cacheManager;
 
       if (isIgnored)
       {
@@ -245,6 +249,15 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
         return null;
       }
 
+#if RESHARPER_61
+      IPsiModule psiModule = _psiModuleManager.GetPrimaryPsiModule(project);
+      if (psiModule == null)
+      {
+        return null;
+      }
+
+      IDeclarationsCache declarationsCache = _cacheManager.GetDeclarationsCache(psiModule, true, true);
+#else
       IPsiModule psiModule = _provider.PsiModuleManager.GetPrimaryPsiModule(project);
       if (psiModule == null)
       {
@@ -252,6 +265,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       }
 
       IDeclarationsCache declarationsCache = _provider.CacheManager.GetDeclarationsCache(psiModule, true, true);
+#endif
       return declarationsCache.GetTypeElementByCLRName(_declaringTypeName);
     }
 

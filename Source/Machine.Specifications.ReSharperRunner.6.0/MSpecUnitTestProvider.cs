@@ -24,27 +24,24 @@ namespace Machine.Specifications.ReSharperRunner
     const string ProviderId = "Machine.Specifications";
     readonly UnitTestElementComparer _unitTestElementComparer = new UnitTestElementComparer();
     private UnitTestManager _unitTestManager;
-#if RESHARPER_61
-    private IUnitTestElementManager _unitTestElementManager;
-#endif
 
+#if RESHARPER_61
+    public MSpecUnitTestProvider()
+    {
+#else
     public MSpecUnitTestProvider(ISolution solution, PsiModuleManager psiModuleManager, CacheManager cacheManager)
     {
       Solution = solution;
       PsiModuleManager = psiModuleManager;
       CacheManager = cacheManager;
+#endif
       Debug.Listeners.Add(new DefaultTraceListener());
     }
 
+#if !RESHARPER_61
     public PsiModuleManager PsiModuleManager { get; private set; }
     public CacheManager CacheManager { get; private set; }
 
-#if RESHARPER_61
-    public IUnitTestElementManager UnitTestManager
-    {
-      get { return _unitTestElementManager ?? (_unitTestElementManager = Solution.GetComponent<IUnitTestElementManager>()); }
-    }
-#else
     public UnitTestManager UnitTestManager
     {
       get { return _unitTestManager ?? (_unitTestManager = Solution.GetComponent<UnitTestManager>());  }
@@ -66,8 +63,6 @@ namespace Machine.Specifications.ReSharperRunner
       get { return Resources.Logo; }
     }
 
-    public ISolution Solution { get; private set; }
-
     public void ExploreSolution(ISolution solution, UnitTestElementConsumer consumer)
     {
     }
@@ -77,6 +72,8 @@ namespace Machine.Specifications.ReSharperRunner
     }
 
 #if !RESHARPER_61
+    public ISolution Solution { get; private set; }
+
     public void SerializeElement(XmlElement parent, IUnitTestElement element)
     {
       var e = element as ISerializableElement;
@@ -92,13 +89,13 @@ namespace Machine.Specifications.ReSharperRunner
       var typeName = parent.GetAttribute("elemenType");
 
       if (Equals(typeName, "ContextElement"))
-        return ContextElement.ReadFromXml(parent, parentElement, this);
+        return ContextElement.ReadFromXml(parent, parentElement, this, Solution);
       if (Equals(typeName, "BehaviorElement"))
-        return BehaviorElement.ReadFromXml(parent, parentElement, this);
+        return BehaviorElement.ReadFromXml(parent, parentElement, this, Solution);
       if (Equals(typeName, "BehaviorSpecificationElement"))
-        return BehaviorSpecificationElement.ReadFromXml(parent, parentElement, this);
+        return BehaviorSpecificationElement.ReadFromXml(parent, parentElement, this, Solution);
       if (Equals(typeName, "ContextSpecificationElement"))
-        return ContextSpecificationElement.ReadFromXml(parent, parentElement, this);
+        return ContextSpecificationElement.ReadFromXml(parent, parentElement, this, Solution);
 
       return null;
     }

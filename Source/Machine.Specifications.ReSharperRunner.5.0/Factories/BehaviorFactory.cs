@@ -4,7 +4,11 @@ using System.Text.RegularExpressions;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.UnitTestFramework;
+#if RESHARPER_61
+using JetBrains.ReSharper.UnitTestFramework.Elements;
+#endif
 
 using Machine.Specifications.ReSharperRunner.Presentation;
 
@@ -17,9 +21,22 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     readonly ContextCache _cache;
     static readonly IDictionary<string, string> TypeNameCache = new Dictionary<string, string>();
     readonly IProject _project;
+#if RESHARPER_61
+    readonly IUnitTestElementManager _manager;
+    readonly PsiModuleManager _psiModuleManager;
+    readonly CacheManager _cacheManager;
+#endif
 
+#if RESHARPER_61
+    public BehaviorFactory(MSpecUnitTestProvider provider, IUnitTestElementManager manager, PsiModuleManager psiModuleManager, CacheManager cacheManager, IProject project, ProjectModelElementEnvoy projectEnvoy, ContextCache cache)
+    {
+      _manager = manager;
+      _psiModuleManager = psiModuleManager;
+      _cacheManager = cacheManager;
+#else
     public BehaviorFactory(MSpecUnitTestProvider provider, IProject project, ProjectModelElementEnvoy projectEnvoy, ContextCache cache)
     {
+#endif
       _provider = provider;
       _cache = cache;
       _project = project;
@@ -53,6 +70,9 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       }
 
       return GetOrCreateBehavior(_provider,
+#if RESHARPER_61
+                                 _manager, _psiModuleManager, _cacheManager, 
+#endif
                                  _project,
                                  _projectEnvoy,
                                  context,
@@ -67,6 +87,11 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     }
 
     public static BehaviorElement GetOrCreateBehavior(MSpecUnitTestProvider provider,
+#if RESHARPER_61
+                                                      IUnitTestElementManager manager,
+                                                      PsiModuleManager psiModuleManager,
+                                                      CacheManager cacheManager,
+#endif
                                                       IProject project,
                                                       ProjectModelElementEnvoy projectEnvoy,
                                                       ContextElement context,
@@ -77,7 +102,11 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     {
 #if RESHARPER_6
       var id = BehaviorElement.CreateId(context, fieldName);
+#if RESHARPER_61
+      var behavior = manager.GetElementById(project, id) as BehaviorElement;
+#else
       var behavior = provider.UnitTestManager.GetElementById(project, id) as BehaviorElement;
+#endif
       if (behavior != null)
       {
         behavior.Parent = context;
@@ -87,6 +116,13 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 #endif
 
       return new BehaviorElement(provider,
+#if RESHARPER_6
+#if RESHARPER_61
+                                 psiModuleManager, cacheManager, 
+#else
+                                 provider.PsiModuleManager, provider.CacheManager,
+#endif
+#endif
                                  context,
                                  projectEnvoy,
                                  declaringTypeName,
@@ -103,6 +139,9 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       var typeName = GetNormalizedTypeName(fullyQualifiedTypeName);
 
       var behaviorElement = GetOrCreateBehavior(_provider,
+#if RESHARPER_61
+                                                _manager, _psiModuleManager, _cacheManager, 
+#endif
                                                 _project,
                                                 _projectEnvoy,
                                                 context,

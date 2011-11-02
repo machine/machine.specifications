@@ -3,7 +3,12 @@ using System.Collections.Generic;
 using System.Xml;
 
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.UnitTestFramework;
+#if RESHARPER_61
+using JetBrains.ReSharper.UnitTestFramework.Elements;
+#endif
 
 using Machine.Specifications.Factories;
 
@@ -12,6 +17,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
   public class BehaviorElement : FieldElement
   {
     public BehaviorElement(MSpecUnitTestProvider provider,
+                           PsiModuleManager psiModuleManager,
+                           CacheManager cacheManager,
       // ReSharper disable SuggestBaseTypeForParameter
                            ContextElement context,
       // ReSharper restore SuggestBaseTypeForParameter
@@ -20,7 +27,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                            string fieldName,
                            bool isIgnored,
                            string fullyQualifiedTypeName)
-      : base(provider, context, projectEnvoy, declaringTypeName, fieldName, isIgnored || context.Explicit)
+      : base(provider, psiModuleManager, cacheManager, context, projectEnvoy, declaringTypeName, fieldName, isIgnored || context.Explicit)
     {
       FullyQualifiedTypeName = fullyQualifiedTypeName;
     }
@@ -53,10 +60,14 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       parent.SetAttribute("typeFQN", FullyQualifiedTypeName);
     }
 
-    public static IUnitTestElement ReadFromXml(XmlElement parent, IUnitTestElement parentElement, MSpecUnitTestProvider provider)
+    public static IUnitTestElement ReadFromXml(XmlElement parent, IUnitTestElement parentElement, MSpecUnitTestProvider provider, ISolution solution
+#if RESHARPER_61
+      , IUnitTestElementManager manager, PsiModuleManager psiModuleManager, CacheManager cacheManager
+#endif
+      )
     {
       var projectId = parent.GetAttribute("projectId");
-      var project = ProjectUtil.FindProjectElementByPersistentID(provider.Solution, projectId) as IProject;
+      var project = ProjectUtil.FindProjectElementByPersistentID(solution, projectId) as IProject;
       if (project == null)
       {
         return null;
@@ -74,6 +85,9 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       var fullyQualifiedTypeName = parent.GetAttribute("typeFQN");
 
       return Factories.BehaviorFactory.GetOrCreateBehavior(provider,
+#if RESHARPER_61
+                                                           manager, psiModuleManager, cacheManager,
+#endif
                                                            project,
                                                            ProjectModelElementEnvoy.Create(project),
                                                            context,
