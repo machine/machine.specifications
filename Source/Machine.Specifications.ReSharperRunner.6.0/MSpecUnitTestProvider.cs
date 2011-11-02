@@ -8,6 +8,9 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.TaskRunnerFramework;
 using JetBrains.ReSharper.UnitTestFramework;
+#if RESHARPER_61
+using JetBrains.ReSharper.UnitTestFramework.Elements;
+#endif
 
 using Machine.Specifications.ReSharperRunner.Presentation;
 using Machine.Specifications.ReSharperRunner.Properties;
@@ -21,6 +24,9 @@ namespace Machine.Specifications.ReSharperRunner
     const string ProviderId = "Machine.Specifications";
     readonly UnitTestElementComparer _unitTestElementComparer = new UnitTestElementComparer();
     private UnitTestManager _unitTestManager;
+#if RESHARPER_61
+    private IUnitTestElementManager _unitTestElementManager;
+#endif
 
     public MSpecUnitTestProvider(ISolution solution, PsiModuleManager psiModuleManager, CacheManager cacheManager)
     {
@@ -32,10 +38,18 @@ namespace Machine.Specifications.ReSharperRunner
 
     public PsiModuleManager PsiModuleManager { get; private set; }
     public CacheManager CacheManager { get; private set; }
+
+#if RESHARPER_61
+    public IUnitTestElementManager UnitTestManager
+    {
+      get { return _unitTestElementManager ?? (_unitTestElementManager = Solution.GetComponent<IUnitTestElementManager>()); }
+    }
+#else
     public UnitTestManager UnitTestManager
     {
       get { return _unitTestManager ?? (_unitTestManager = Solution.GetComponent<UnitTestManager>());  }
     }
+#endif
 
     public string ID
     {
@@ -62,6 +76,17 @@ namespace Machine.Specifications.ReSharperRunner
     {
     }
 
+#if !RESHARPER_61
+    public void SerializeElement(XmlElement parent, IUnitTestElement element)
+    {
+      var e = element as ISerializableElement;
+      if (e != null)
+      {
+        e.WriteToXml(parent);
+        parent.SetAttribute("elementType", e.GetType().Name);
+      }
+    }
+
     public IUnitTestElement DeserializeElement(XmlElement parent, IUnitTestElement parentElement)
     {
       var typeName = parent.GetAttribute("elemenType");
@@ -77,8 +102,9 @@ namespace Machine.Specifications.ReSharperRunner
 
       return null;
     }
+#endif
 
-      public RemoteTaskRunnerInfo GetTaskRunnerInfo()
+    public RemoteTaskRunnerInfo GetTaskRunnerInfo()
     {
       return new RemoteTaskRunnerInfo(typeof(RecursiveMSpecTaskRunner));
     }
@@ -86,16 +112,6 @@ namespace Machine.Specifications.ReSharperRunner
     public int CompareUnitTestElements(IUnitTestElement x, IUnitTestElement y)
     {
       return _unitTestElementComparer.Compare(x, y);
-    }
-
-    public void SerializeElement(XmlElement parent, IUnitTestElement element)
-    {
-      var e = element as ISerializableElement;
-      if (e != null)
-      {
-        e.WriteToXml(parent);
-        parent.SetAttribute("elementType", e.GetType().Name);
-      }
     }
 
     public bool IsElementOfKind(IUnitTestElement element, UnitTestElementKind elementKind)

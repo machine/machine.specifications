@@ -219,6 +219,7 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.0\Presentation\Presenter.cs">
       <Link>Presentation\Presenter.cs</Link>
     </Compile>
+    <Compile Include="MSpecUnitTestElementSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

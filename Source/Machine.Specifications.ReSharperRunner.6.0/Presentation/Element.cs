@@ -173,7 +173,11 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       return declaredType.GetSourceFiles().Select(x => x.ToProjectFile());
     }
 
+#if RESHARPER_61
+    public IList<UnitTestTask> GetTaskSequence(IList<IUnitTestElement> explicitElements)
+#else
     public IList<UnitTestTask> GetTaskSequence(IEnumerable<IUnitTestElement> explicitElements)
+#endif
     {
       if (this is ContextSpecificationElement)
       {
