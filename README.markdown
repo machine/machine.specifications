@@ -78,6 +78,7 @@ Options:
 -x, --exclude  Exclude specifications in contexts with these comma delimited tags. Ex. -x "foo,bar,foo_bar"
 -t, --timeinfo Shows time-related information in HTML output
 -s, --silent   Suppress console output
+-w, --wait     Wait 15 seconds for debugger to be attached
 --teamcity     Reporting for TeamCity CI integration (auto-detected)
 --html &lt;PATH&gt;  Outputs the HTML report to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)
 --xml &lt;PATH&gt;   Outputs the XML report to the file referenced by the path

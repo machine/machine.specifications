@@ -55,6 +55,11 @@ namespace Machine.Specifications.ConsoleRunner
     [ValueList(typeof(List<string>))]
     public IList<string> AssemblyFiles = null;
 
+    [Option("w",
+      "wait",
+      HelpText = "Wait for debugger to be attached")]
+    public bool WaitForDebugger;
+
     [HelpOption]
     public string GetUsage()
     {
@@ -68,6 +73,7 @@ namespace Machine.Specifications.ConsoleRunner
       sb.AppendLine("  -x, --exclude     Exclude specifications in contexts with these comma delimited tags. Ex. -x \"foo,bar,foo_bar\"");
       sb.AppendLine("  -t, --timeinfo    Shows time-related information in HTML output");
       sb.AppendLine("  -s, --silent      Suppress console output");
+      sb.AppendLine("  -w, --wait        Wait 15 seconds for debugger to be attached");
       sb.AppendLine("  --teamcity        Reporting for TeamCity CI integration");
       sb.AppendLine("  --html <PATH>     Outputs the HTML report to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)");
       sb.AppendLine("  --xml <PATH>      Outputs the XML report to the file referenced by the path");
