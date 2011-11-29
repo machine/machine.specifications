@@ -1,6 +1,8 @@
-﻿namespace Machine.Specifications.Model
+﻿using System;
+
+namespace Machine.Specifications.Model
 {
-  public class Tag
+  public class Tag : IEquatable<Tag>
   {
     readonly string _name;
     public string Name { get { return _name; } }
@@ -10,11 +12,11 @@
       _name = name;
     }
 
-    public bool Equals(Tag obj)
+    public bool Equals(Tag other)
     {
-      if (ReferenceEquals(null, obj)) return false;
-      if (ReferenceEquals(this, obj)) return true;
-      return Equals(obj._name, _name);
+      if (ReferenceEquals(null, other)) return false;
+      if (ReferenceEquals(this, other)) return true;
+      return Equals(other._name, _name);
     }
 
     public override bool Equals(object obj)
