@@ -11,59 +11,56 @@ namespace Machine.Specifications.Explorers
 {
   public class AssemblyExplorer
   {
-    readonly ContextFactory contextFactory;
+    readonly ContextFactory _contextFactory;
 
     public AssemblyExplorer()
     {
-      contextFactory = new ContextFactory();
+      _contextFactory = new ContextFactory();
     }
 
     public IEnumerable<Context> FindContextsIn(Assembly assembly)
     {
-      return EnumerateContextsIn(assembly).Select(x => CreateContextFrom(x));
+      return EnumerateContextsIn(assembly).Select(CreateContextFrom);
     }
 
     public IEnumerable<Context> FindContextsIn(Assembly assembly, string targetNamespace)
     {
       return EnumerateContextsIn(assembly)
         .Where(x => x.Namespace == targetNamespace)
-        .Select(x => CreateContextFrom(x));
+        .Select(CreateContextFrom);
     }
 
     public IEnumerable<ICleanupAfterEveryContextInAssembly> FindAssemblyWideContextCleanupsIn(Assembly assembly)
     {
       return assembly.GetExportedTypes()
-        .Where(x =>
-               x.GetInterfaces().Contains(typeof(ICleanupAfterEveryContextInAssembly)))
+        .Where(x => x.GetInterfaces().Contains(typeof(ICleanupAfterEveryContextInAssembly)))
         .Select(x => (ICleanupAfterEveryContextInAssembly) Activator.CreateInstance(x));
     }
 
     public IEnumerable<ISupplementSpecificationResults> FindSpecificationSupplementsIn(Assembly assembly)
     {
       return assembly.GetExportedTypes()
-        .Where(x =>
-               x.GetInterfaces().Contains(typeof(ISupplementSpecificationResults)))
+        .Where(x => x.GetInterfaces().Contains(typeof(ISupplementSpecificationResults)))
         .Select(x => (ISupplementSpecificationResults) Activator.CreateInstance(x));
     }
 
     public IEnumerable<IAssemblyContext> FindAssemblyContextsIn(Assembly assembly)
     {
       return assembly.GetExportedTypes()
-        .Where(x =>
-               x.GetInterfaces().Contains(typeof(IAssemblyContext)))
+        .Where(x => x.GetInterfaces().Contains(typeof(IAssemblyContext)))
         .Select(x => (IAssemblyContext) Activator.CreateInstance(x));
     }
 
     Context CreateContextFrom(Type type)
     {
       object instance = Activator.CreateInstance(type);
-      return contextFactory.CreateContextFrom(instance);
+      return _contextFactory.CreateContextFrom(instance);
     }
 
     Context CreateContextFrom(Type type, FieldInfo fieldInfo)
     {
       object instance = Activator.CreateInstance(type);
-      return contextFactory.CreateContextFrom(instance, fieldInfo);
+      return _contextFactory.CreateContextFrom(instance, fieldInfo);
     }
 
     static bool IsContext(Type type)
@@ -74,13 +71,15 @@ namespace Machine.Specifications.Explorers
     static bool HasSpecificationMembers(Type type)
     {
       return !type.IsAbstract &&
-             (type.GetPrivateFieldsWith(typeof(It)).Any() ||
-              type.GetPrivateFieldsWith(typeof(Behaves_like<>)).Any());
+             (type.GetInstanceFieldsOfType<It>().Any() ||
+              type.GetInstanceFieldsOfType(typeof(Behaves_like<>)).Any());
     }
 
     static IEnumerable<Type> EnumerateContextsIn(Assembly assembly)
     {
-      return assembly.GetTypes().Where(IsContext)
+      return assembly
+        .GetTypes()
+        .Where(IsContext)
         .OrderBy(t => t.Namespace);
     }
 

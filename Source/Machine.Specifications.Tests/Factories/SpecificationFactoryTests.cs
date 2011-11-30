@@ -55,7 +55,7 @@ namespace Machine.Specifications.Factories
     public override void BeforeEachTest()
     {
       Type type = typeof(ContextWithEmptySpecification);
-      FieldInfo field = type.GetPrivateFieldsWith(typeof(It)).First();
+      FieldInfo field = type.GetInstanceFieldsOfType(typeof(It)).First();
       ContextFactory factory = new ContextFactory();
       var context = factory.CreateContextFrom(new ContextWithEmptySpecification());
 
@@ -69,7 +69,7 @@ namespace Machine.Specifications.Factories
     public override void BeforeEachTest()
     {
       Type type = typeof(ContextWithSingleSpecification);
-      FieldInfo field = type.GetPrivateFieldsWith(typeof(It)).First();
+      FieldInfo field = type.GetInstanceFieldsOfType(typeof(It)).First();
       ContextFactory factory = new ContextFactory();
       var context = factory.CreateContextFrom(new ContextWithSingleSpecification());
 
@@ -83,7 +83,7 @@ namespace Machine.Specifications.Factories
     public override void BeforeEachTest()
     {
       Type type = typeof(ContextWithThrowingSpecification);
-      FieldInfo field = type.GetPrivateFieldsWith(typeof(It)).First();
+      FieldInfo field = type.GetInstanceFieldsOfType(typeof(It)).First();
       ContextFactory factory = new ContextFactory();
       var context = factory.CreateContextFrom(new ContextWithThrowingSpecification());
 

@@ -32,8 +32,8 @@ namespace Machine.Specifications.Factories
     public Context CreateContextFrom(object instance)
     {
       var type = instance.GetType();
-      var fieldInfos = type.GetPrivateFieldsOfType<It>()
-        .Union(type.GetPrivateFieldsWith(typeof(Behaves_like<>)));
+      var fieldInfos = type.GetInstanceFieldsOfType<It>()
+        .Union(type.GetInstanceFieldsOfType(typeof(Behaves_like<>)));
 
       return CreateContextFrom(instance, fieldInfos);
     }
@@ -41,7 +41,7 @@ namespace Machine.Specifications.Factories
     Context CreateContextFrom(object instance, IEnumerable<FieldInfo> acceptedSpecificationFields)
     {
       var type = instance.GetType();
-      var fieldInfos = type.GetPrivateFields();
+      var fieldInfos = type.GetInstanceFields();
       var itFieldInfos = new List<FieldInfo>();
       var itShouldBehaveLikeFieldInfos = new List<FieldInfo>();
 
@@ -167,7 +167,7 @@ namespace Machine.Specifications.Factories
         return;
       }
 
-      var fields = target.GetPrivateFieldsWith(typeof(T));
+      var fields = target.GetInstanceFieldsOfType(typeof(T));
 
       if (ensureMaximumOfOne && fields.Count() > 1)
       {

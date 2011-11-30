@@ -7,9 +7,9 @@ namespace Machine.Specifications.Utility
 {
   public static class ReflectionHelper
   {
-    public static IEnumerable<FieldInfo> GetPrivateFields(this Type type)
+    public static IEnumerable<FieldInfo> GetInstanceFields(this Type type)
     {
-      return type.GetFields(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.NonPublic);
+      return type.GetFields(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.NonPublic | BindingFlags.Public);
     }
 
     public static IEnumerable<FieldInfo> GetStaticProtectedOrInheritedFields(this Type type)
@@ -19,14 +19,14 @@ namespace Machine.Specifications.Utility
         .Where(x => !x.IsPrivate);
     }
 
-    public static IEnumerable<FieldInfo> GetPrivateFieldsOfType<T>(this Type type)
+    public static IEnumerable<FieldInfo> GetInstanceFieldsOfType<T>(this Type type)
     {
-      return type.GetPrivateFields().Where(x => x.FieldType == typeof(T));
+      return GetInstanceFields(type).Where(x => x.FieldType == typeof(T));
     }
 
-    public static IEnumerable<FieldInfo> GetPrivateFieldsWith(this Type type, Type fieldType)
+    public static IEnumerable<FieldInfo> GetInstanceFieldsOfType(this Type type, Type fieldType)
     {
-      return type.GetPrivateFields().Where(x => x.FieldType.IsOfType(fieldType));
+      return GetInstanceFields(type).Where(x => x.FieldType.IsOfType(fieldType));
     }
 
     public static FieldInfo GetStaticProtectedOrInheritedFieldNamed(this Type type, string fieldName)

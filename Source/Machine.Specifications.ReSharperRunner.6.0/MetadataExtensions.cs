@@ -32,13 +32,13 @@ namespace Machine.Specifications.ReSharperRunner
 
     public static IEnumerable<IMetadataField> GetSpecifications(this IMetadataTypeInfo type)
     {
-        var privateFieldsOfType = type.GetPrivateFieldsOfType<It>();
+        var privateFieldsOfType = type.GetInstanceFieldsOfType<It>();
         return privateFieldsOfType;
     }
 
       public static IEnumerable<IMetadataField> GetBehaviors(this IMetadataTypeInfo type)
     {
-      IEnumerable<IMetadataField> behaviorFields = type.GetPrivateFieldsWith(typeof(Behaves_like<>));
+      IEnumerable<IMetadataField> behaviorFields = type.GetInstanceFieldsOfType(typeof(Behaves_like<>));
       foreach (IMetadataField field in behaviorFields)
       {
         if (field.GetFirstGenericArgument().HasCustomAttribute(typeof(BehaviorsAttribute).FullName))
@@ -137,19 +137,19 @@ namespace Machine.Specifications.ReSharperRunner
       }
     }
 
-    static IEnumerable<IMetadataField> GetPrivateFields(this IMetadataTypeInfo type)
+    static IEnumerable<IMetadataField> GetInstanceFields(this IMetadataTypeInfo type)
     {
       return type.GetFields().Where(field => !field.IsStatic);
     }
 
-    static IEnumerable<IMetadataField> GetPrivateFieldsOfType<T>(this IMetadataTypeInfo type)
+    static IEnumerable<IMetadataField> GetInstanceFieldsOfType<T>(this IMetadataTypeInfo type)
     {
-      return type.GetPrivateFieldsWith(typeof(T));
+      return type.GetInstanceFieldsOfType(typeof(T));
     }
 
-    static IEnumerable<IMetadataField> GetPrivateFieldsWith(this IMetadataTypeInfo type, Type fieldType)
+    static IEnumerable<IMetadataField> GetInstanceFieldsOfType(this IMetadataTypeInfo type, Type fieldType)
     {
-        var metadataFields = type.GetPrivateFields();
+        var metadataFields = type.GetInstanceFields();
         var fields = metadataFields.Where(x => x.Type is IMetadataClassType);
         return fields.Where(x => (((IMetadataClassType)x.Type).Type.FullyQualifiedName == fieldType.FullName));
     }

@@ -398,6 +398,56 @@ namespace Machine.Specifications.Specs.Runner
     static TestListener testListener;
   }
 
+  [Subject("Specification Runner")]
+  public class when_running_a_context_with_public_Its
+    : RunnerSpecs
+  {
+    Because of = Run<context_with_public_It_field>;
+
+    It should_succeed =
+      () => testListener.SpecCount.ShouldEqual(1);
+  }
+
+  [Subject("Specification Runner")]
+  public class when_running_a_context_with_protected_Its
+    : RunnerSpecs
+  {
+    Because of = Run<context_with_protected_It_field>;
+
+    It should_succeed =
+      () => testListener.SpecCount.ShouldEqual(1);
+  }
+
+  [Subject("Specification Runner")]
+  public class when_running_a_context_with_internal_Its
+    : RunnerSpecs
+  {
+    Because of = Run<context_with_internal_It_field>;
+
+    It should_succeed =
+      () => testListener.SpecCount.ShouldEqual(1);
+  }
+
+  [Subject("Specification Runner")]
+  public class when_running_a_context_with_public_Behaves_like
+    : RunnerSpecs
+  {
+    Because of = Run<context_with_public_Behaves_like_field>;
+
+    It should_succeed =
+      () => testListener.SpecCount.ShouldEqual(1);
+  }
+
+  [Subject("Specification Runner")]
+  public class when_running_a_context_with_nonprivate_framework_fields
+    : RunnerSpecs
+  {
+    Because of = Run<context_with_nonprivate_framework_fields>;
+
+    It should_succeed =
+      () => testListener.LastResult.Passed.ShouldBeTrue();
+  }
+
   public class RunnerSpecs
   {
     static DefaultRunner runner;
