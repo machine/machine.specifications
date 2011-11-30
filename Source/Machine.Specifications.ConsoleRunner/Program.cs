@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Diagnostics;
+using System.Threading;
 
 using Machine.Specifications.Reporting.Generation.Spark;
 using Machine.Specifications.Reporting.Generation.Xml;
@@ -112,6 +114,16 @@ namespace Machine.Specifications.ConsoleRunner
           assemblies.Add(assembly);
         }
 
+        if (options.WaitForDebugger)
+        {
+          WaitForDebugger();
+          if (Debugger.IsAttached == false)
+          {
+            _console.WriteLine("Fatal error: Timeout while waiting for debugger to attach");
+            return ExitCode.Failure;
+          }
+        }
+
         specificationRunner.RunAssemblies(assemblies);
       }
       catch (Exception ex)
@@ -129,6 +141,18 @@ namespace Machine.Specifications.ConsoleRunner
         }
       }
       return ExitCode.Success;
+    }
+
+    private void WaitForDebugger()
+    {
+      const int waitTime = 200;
+      int countdown = 15000;
+
+      while (Debugger.IsAttached == false && countdown >= 0)
+      {
+          Thread.Sleep(waitTime);
+          countdown -= waitTime;
+      }
     }
 
     private static ISpecificationRunListener GetXmlReportListener(Options options, TimingRunListener timer)

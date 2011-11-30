@@ -161,7 +161,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <PropertyGroup>
+  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
     <PostBuildEvent>rem Spark doesn't support .Net 4.0 yet so we always use the older version
 "$(Framework20Dir)\installutil.exe" "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
