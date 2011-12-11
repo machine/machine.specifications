@@ -86,12 +86,15 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public override string Id
     {
-      get { return CreateId(Context, FieldName); }
+      get
+      {
+        return CreateId(TypeName, FieldName);
+      }
     }
 
-    public static string CreateId(ContextElement parent, string fieldName)
+    public static string CreateId(string contextElementTypeName, string fieldName)
     {
-      var id = String.Format("{0}.{1}", parent.Id, fieldName);
+      var id = String.Format("{0}.{1}", contextElementTypeName, fieldName);
       System.Diagnostics.Debug.WriteLine("CSE " + id);
       return id;
     }
