@@ -70,6 +70,7 @@
     <Compile Include="ExampleSpecsWithInheritance.cs" />
     <Compile Include="InternalTypeSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ContainedContextSpecs.cs" />
     <Compile Include="TestCleanupAfterEveryContext.cs" />
   </ItemGroup>
   <ItemGroup>

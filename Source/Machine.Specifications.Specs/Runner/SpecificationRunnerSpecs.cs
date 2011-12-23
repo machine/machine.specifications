@@ -1,5 +1,6 @@
 ﻿using System;
 using Machine.Specifications.Example;
+using Machine.Specifications.Example.Random;
 using Machine.Specifications.FailingExample;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
@@ -443,6 +444,26 @@ namespace Machine.Specifications.Specs.Runner
     : RunnerSpecs
   {
     Because of = Run<context_with_nonprivate_framework_fields>;
+
+    It should_succeed =
+      () => testListener.LastResult.Passed.ShouldBeTrue();
+  } 
+  
+  [Subject("Specification Runner")]
+  public class when_running_a_context_inside_a_static_class
+    : RunnerSpecs
+  {
+    Because of = Run<StaticContainer.when_a_context_is_nested_inside_a_static_class>;
+
+    It should_succeed =
+      () => testListener.LastResult.Passed.ShouldBeTrue();
+  }
+  
+  [Subject("Specification Runner")]
+  public class when_running_a_context_inside_a_static_class_that_is_nested_in_a_nonstatic_class
+    : RunnerSpecs
+  {
+    Because of = Run<NonStaticContainer.StaticContainer.when_a_context_is_nested_inside_a_static_class_that_is_nested_inside_a_class>;
 
     It should_succeed =
       () => testListener.LastResult.Passed.ShouldBeTrue();
