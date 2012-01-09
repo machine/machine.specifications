@@ -19,7 +19,8 @@ class MSBuild
 		properties = {
 			:BuildInParallel => false,
 			:BuildRunner => 'Rake',
-			:Configuration => 'Debug'
+			:Configuration => 'Debug',
+			:Platform => 'AnyCPU'
 		}
 		properties.merge!(userProperties)
 		
