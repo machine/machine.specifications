@@ -27,23 +27,23 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Exam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.WithBehavior", "Source\Machine.Specifications.Example.WithBehavior\Machine.Specifications.Example.WithBehavior.csproj", "{42E05EB9-FC41-4198-B8D2-BAE2417DC7FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ConsoleRunner.Specs", "Machine.Specifications.ConsoleRunner.Specs\Machine.Specifications.ConsoleRunner.Specs.csproj", "{F25C7917-4ED6-4261-B262-43C56D0CD37F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ConsoleRunner.Specs", "Source\Machine.Specifications.ConsoleRunner.Specs\Machine.Specifications.ConsoleRunner.Specs.csproj", "{F25C7917-4ED6-4261-B262-43C56D0CD37F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Tests", "Machine.Specifications.Tests\Machine.Specifications.Tests.csproj", "{FE10826D-F2C7-4FF3-A135-9EA9EF2C9CB4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Tests", "Source\Machine.Specifications.Tests\Machine.Specifications.Tests.csproj", "{FE10826D-F2C7-4FF3-A135-9EA9EF2C9CB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ConsoleRunner", "Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunner.csproj", "{CFF4B323-24C1-4B19-98CA-7DF92755458E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ConsoleRunner", "Source\Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunner.csproj", "{CFF4B323-24C1-4B19-98CA-7DF92755458E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Adapters", "Adapters", "{3A53907E-89F1-48D0-AEE5-667F8C8E669E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.3.1", "Machine.Specifications.GallioAdapter.3.1\Machine.Specifications.GallioAdapter.3.1.csproj", "{D1B0D26E-BEA9-45EF-87C2-0ED5FC9CAC3F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.3.1", "Source\Machine.Specifications.GallioAdapter.3.1\Machine.Specifications.GallioAdapter.3.1.csproj", "{D1B0D26E-BEA9-45EF-87C2-0ED5FC9CAC3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.3.1.TestResources", "Machine.Specifications.GallioAdapter.3.1.TestResources\Machine.Specifications.GallioAdapter.3.1.TestResources.csproj", "{263ABAC8-C6B2-497D-93E3-3773849CEDD3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.3.1.TestResources", "Source\Machine.Specifications.GallioAdapter.3.1.TestResources\Machine.Specifications.GallioAdapter.3.1.TestResources.csproj", "{263ABAC8-C6B2-497D-93E3-3773849CEDD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.3.1.Tests", "Machine.Specifications.GallioAdapter.3.1.Tests\Machine.Specifications.GallioAdapter.3.1.Tests.csproj", "{9C3D968A-AA2C-4612-94E8-C3FD16BFEEED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.3.1.Tests", "Source\Machine.Specifications.GallioAdapter.3.1.Tests\Machine.Specifications.GallioAdapter.3.1.Tests.csproj", "{9C3D968A-AA2C-4612-94E8-C3FD16BFEEED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.WatinSupport", "Machine.Specifications.WatinSupport\Machine.Specifications.WatinSupport.csproj", "{9EF302BE-21F7-4443-B871-534DA3BEDD59}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.WatinSupport", "Source\Machine.Specifications.WatinSupport\Machine.Specifications.WatinSupport.csproj", "{9EF302BE-21F7-4443-B871-534DA3BEDD59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.SeleniumSupport", "Machine.Specifications.SeleniumSupport\Machine.Specifications.SeleniumSupport.csproj", "{50E85B88-7E0C-4CE7-BD8D-BA9C618A6844}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.SeleniumSupport", "Source\Machine.Specifications.SeleniumSupport\Machine.Specifications.SeleniumSupport.csproj", "{50E85B88-7E0C-4CE7-BD8D-BA9C618A6844}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
