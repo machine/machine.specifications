@@ -229,9 +229,16 @@ namespace :package do
 
     sh "Tools/NuGet/NuGet.exe", *(opts)
   end
+  
+  def create_tools_package
+	opts = ["pack", "mspec.tools.nuspec",
+	  "-OutputDirectory", configatron.tools.package.dirname]
+	  
+	sh "Tools/NuGet/NuGet.exe", *(opts)
+  end
 
   namespace :nuget do
-    desc "Package build artifacts as a NuGet package and a symbols package"
+    desc "Package build artifacts as a NuGet package, symbols package, and a Chocolatey tools package"
     task :create => :zip do
       framework_files(configatron.out_dir).copy_hierarchy \
         :source_dir => configatron.out_dir,
@@ -252,6 +259,8 @@ namespace :package do
 
       FileList["#{configatron.out_dir}NuGet/src/", "#{configatron.out_dir}NuGet/**/*.pdb"].each { |f| rm_rf f }
       create_package
+      
+      create_tools_package
     end
     
     desc "Publishes the NuGet package"
