@@ -1,0 +1,30 @@
+try 
+{ 
+    $name    = '@configatron.toolsproject@'
+    $project = '@configatron.project@'
+    $version = '@configatron.version.compatible@'
+    
+    $tools   = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
+    $content = Join-Path (Split-Path $tools) 'content'
+
+	# Download the package from the nuget gallery. I don't
+	# want to make a large chocolatey package (in disk size).
+	# We can look into other mechanisms later.
+    nuget install $project -version $version
+    
+    $nugetPath  = Join-Path $tools "$project.$version"
+    $nugetTools = Join-Path $nugetPath 'tools'
+    
+    # Pull the contents of the tools directory from the 
+    # nuget package. Remove what's left. Chocolatey will
+    # put the exe files in the user's path.
+    Copy-Item $nugetTools\* $content
+    Remove-Item $nugetPath -Recurse -Force
+    
+    Write-ChocolateySuccess $name
+} 
+catch 
+{
+    Write-ChocolateyFailure $name "$($_.Exception.Message)"
+    throw 
+}
