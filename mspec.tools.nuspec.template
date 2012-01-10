@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>@configatron.toolsproject@</id>
+    <id>@configatron.tools.project@</id>
     <version>@configatron.version.compatible@</version>
-    <title>@configatron.toolstitle@</title>
+    <title>@configatron.tools.title@</title>
     <authors>Aaron Jensen, Alexander Groß, et al.</authors>
     <owners>Alexander Groß</owners>
     <summary>Machine.Specifications Context/Specification framework</summary>

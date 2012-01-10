@@ -1,6 +1,6 @@
 try 
 { 
-    $name    = '@configatron.toolsproject@'
+    $name    = '@configatron.tools.project@'
     $project = '@configatron.project@'
     $version = '@configatron.version.compatible@'
     

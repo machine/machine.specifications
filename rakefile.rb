@@ -30,8 +30,17 @@ task :configure do
   configatron.project = Configatron::Delayed.new do
     "#{project}#{"-Testing" if ENV.include? 'VERSION'}#{'-Signed' if configatron.sign_assembly}"
   end
+  configatron.tools.project = Configatron::Delayed.new do
+	"#{project}.tools"
+  end
+  configatron.tools.title = Configatron::Delayed.new do
+	"#{project} Tools"
+  end
   configatron.nuget.package = Configatron::Delayed.new do
     "Distribution/#{configatron.project}.#{configatron.version.compatible}.nupkg"
+  end
+  configatron.tools.package = Configatron::Delayed.new do
+	"Distribution/#{configatron.tools.project}.#{configatron.version.compatible}.nupkg"
   end
   configatron.zip.package = Configatron::Delayed.new do
     "Distribution/#{configatron.project}-#{configatron.target}.zip"
