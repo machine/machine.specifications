@@ -33,6 +33,15 @@ task :configure do
   configatron.tools.project = Configatron::Delayed.new do
 	"#{project}.tools"
   end
+  configatron.tools.resharper51.project = Configatron::Delayed.new do
+	"#{configatron.tools.project}.resharper51"
+  end
+  configatron.tools.resharper60.project = Configatron::Delayed.new do
+	"#{configatron.tools.project}.resharper60"
+  end
+  configatron.tools.resharper61.project = Configatron::Delayed.new do
+	"#{configatron.tools.project}.resharper61"
+  end
   configatron.tools.title = Configatron::Delayed.new do
 	"#{project} Tools"
   end
@@ -41,6 +50,15 @@ task :configure do
   end
   configatron.tools.package = Configatron::Delayed.new do
 	"Distribution/#{configatron.tools.project}.#{configatron.version.compatible}.nupkg"
+  end
+  configatron.tools.resharper51.package = Configatron::Delayed.new do
+	"Distribution/#{configatron.tools.resharper51.project}.#{configatron.version.compatible}.nupkg"
+  end
+  configatron.tools.resharper60.package = Configatron::Delayed.new do
+	"Distribution/#{configatron.tools.resharper60.project}.#{configatron.version.compatible}.nupkg"
+  end
+  configatron.tools.resharper61.package = Configatron::Delayed.new do
+	"Distribution/#{configatron.tools.resharper61.project}.#{configatron.version.compatible}.nupkg"
   end
   configatron.zip.package = Configatron::Delayed.new do
     "Distribution/#{configatron.project}-#{configatron.target}.zip"

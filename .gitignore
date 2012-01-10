@@ -14,8 +14,8 @@ NDependOut
 /Distribution
 /Specs
 install.ps1
-install.tools.ps1
+install.*.ps1
 mspec.nuspec
-mspec.tools.nuspec
+mspec.*.nuspec
 Source/Machine.Specifications.GallioAdapter.3.1/Machine.Specifications.GallioAdapter.plugin
 Source/Machine.Specifications.TDNetRunner/Machine.Specifications.dll.tdnet
