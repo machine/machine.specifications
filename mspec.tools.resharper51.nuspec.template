@@ -7,7 +7,7 @@
     <authors>Aaron Jensen, Alexander Groß, et al.</authors>
     <owners>Alexander Groß</owners>
     <summary>Machine.Specifications Context/Specification framework</summary>
-    <description>Machine.Specifications is a Context/Specification framework geared towards removing language noise and simplifying tests. This package installs the command line runners and ReSharper 5.1 integration with Visual Studio.</description>
+    <description>Machine.Specifications is a Context/Specification framework geared towards removing language noise and simplifying tests. This package installs the command line runners and ReSharper integration for Visual Studio 2008 and 2010.</description>
     <language>en-US</language>
     <projectUrl>http://github.com/machine/machine.specifications</projectUrl>
     <licenseUrl>http://github.com/machine/machine.specifications/blob/master/License.txt</licenseUrl>

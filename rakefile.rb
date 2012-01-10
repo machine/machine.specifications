@@ -51,15 +51,6 @@ task :configure do
   configatron.tools.package = Configatron::Delayed.new do
 	"Distribution/#{configatron.tools.project}.#{configatron.version.compatible}.nupkg"
   end
-  configatron.tools.resharper51.package = Configatron::Delayed.new do
-	"Distribution/#{configatron.tools.resharper51.project}.#{configatron.version.compatible}.nupkg"
-  end
-  configatron.tools.resharper60.package = Configatron::Delayed.new do
-	"Distribution/#{configatron.tools.resharper60.project}.#{configatron.version.compatible}.nupkg"
-  end
-  configatron.tools.resharper61.package = Configatron::Delayed.new do
-	"Distribution/#{configatron.tools.resharper61.project}.#{configatron.version.compatible}.nupkg"
-  end
   configatron.zip.package = Configatron::Delayed.new do
     "Distribution/#{configatron.project}-#{configatron.target}.zip"
   end
@@ -248,15 +239,15 @@ namespace :package do
     sh "Tools/NuGet/NuGet.exe", *(opts)
   end
   
-  def create_tools_package
-	opts = ["pack", "mspec.tools.nuspec",
+  def create_tools_package(package_name)
+	opts = ["pack", package_name,
 	  "-OutputDirectory", configatron.tools.package.dirname]
 	  
 	sh "Tools/NuGet/NuGet.exe", *(opts)
   end
 
   namespace :nuget do
-    desc "Package build artifacts as a NuGet package, symbols package, and a Chocolatey tools package"
+    desc "Package build artifacts as a NuGet package, symbols package, and Chocolatey tools packages"
     task :create => :zip do
       framework_files(configatron.out_dir).copy_hierarchy \
         :source_dir => configatron.out_dir,
@@ -278,7 +269,10 @@ namespace :package do
       FileList["#{configatron.out_dir}NuGet/src/", "#{configatron.out_dir}NuGet/**/*.pdb"].each { |f| rm_rf f }
       create_package
       
-      create_tools_package
+      create_tools_package "mspec.tools.nuspec"
+      create_tools_package "mspec.tools.resharper51.nuspec"
+      create_tools_package "mspec.tools.resharper60.nuspec"
+      create_tools_package "mspec.tools.resharper61.nuspec"
     end
     
     desc "Publishes the NuGet package"
