@@ -46,7 +46,7 @@ task :configure do
     "#{configatron.tools.project}.resharper61"
   end
   configatron.tools.title = Configatron::Delayed.new do
-    "#{project} Tools"
+    "#{configatron.project} Tools"
   end
   configatron.nuget.package = Configatron::Delayed.new do
     "Distribution/#{configatron.project}.#{configatron.version.compatible}.nupkg"
