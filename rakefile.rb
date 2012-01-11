@@ -34,7 +34,7 @@ task :configure do
     "#{project}#{"-Testing" if ENV.include? 'VERSION'}#{'-Signed' if configatron.sign_assembly}"
   end
   configatron.tools.project = Configatron::Delayed.new do
-    "#{project}.tools"
+    "#{configatron.project}.tools"
   end
   configatron.tools.resharper51.project = Configatron::Delayed.new do
     "#{configatron.tools.project}.resharper51"
@@ -242,7 +242,7 @@ namespace :package do
       sz.zip :files => packaged_files
     end
   end
-  
+
   def create_package
     opts = ["pack", "mspec.nuspec",
       "-BasePath", "#{configatron.out_dir}NuGet".gsub(/\//, '\\'),
