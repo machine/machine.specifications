@@ -20,7 +20,7 @@ try
     # Pull the contents of the tools directory from the 
     # nuget package. Remove what's left. Chocolatey will
     # put the exe files in the user's path.
-    Move-Item $nugetTools $content
+    Move-Item $nugetTools\* $content
     Remove-Item $nugetPath -Recurse -Force
     
     # Run both Visual Studio installers. There's no real
