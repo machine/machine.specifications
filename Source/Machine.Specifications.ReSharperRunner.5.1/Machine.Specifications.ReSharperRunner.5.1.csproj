@@ -172,8 +172,8 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\Task.cs">
       <Link>Tasks\Task.cs</Link>
     </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\UnitTestElementComparer.cs">
-      <Link>UnitTestElementComparer.cs</Link>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\MSpecUnitTestElementComparer.cs">
+      <Link>MSpecUnitTestElementComparer.cs</Link>
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.4.5\MSpecElementNaming.cs">
       <Link>MSpecElementNaming.cs</Link>

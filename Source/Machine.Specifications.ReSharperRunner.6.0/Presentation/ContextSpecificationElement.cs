@@ -88,13 +88,13 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     {
       get
       {
-        return CreateId(TypeName, FieldName);
+        return CreateId(Context.Id, FieldName);
       }
     }
 
-    public static string CreateId(string contextElementTypeName, string fieldName)
+    public static string CreateId(string contextElementId, string fieldName)
     {
-      var id = String.Format("{0}.{1}", contextElementTypeName, fieldName);
+      var id = String.Format("{0}.{1}", contextElementId, fieldName);
       System.Diagnostics.Debug.WriteLine("CSE " + id);
       return id;
     }

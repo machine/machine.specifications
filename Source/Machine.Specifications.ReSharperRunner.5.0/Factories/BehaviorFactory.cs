@@ -101,7 +101,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                       string fullyQualifiedTypeName)
     {
 #if RESHARPER_6
-      var id = BehaviorElement.CreateId(context.TypeName, fieldName);
+      var id = BehaviorElement.CreateId(context.Id, fieldName);
 #if RESHARPER_61
       var behavior = manager.GetElementById(project, id) as BehaviorElement;
 #else
