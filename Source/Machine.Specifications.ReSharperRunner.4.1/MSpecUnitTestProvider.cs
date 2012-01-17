@@ -27,7 +27,7 @@ namespace Machine.Specifications.ReSharperRunner
     const string ProviderId = "Machine.Specifications";
     static readonly Presenter Presenter = new Presenter();
     readonly UnitTestTaskFactory _taskFactory = new UnitTestTaskFactory(ProviderId);
-    readonly UnitTestElementComparer _unitTestElementComparer = new UnitTestElementComparer();
+    readonly MSpecUnitTestElementComparer _unitTestElementComparer = new MSpecUnitTestElementComparer();
 
     public MSpecUnitTestProvider()
     {

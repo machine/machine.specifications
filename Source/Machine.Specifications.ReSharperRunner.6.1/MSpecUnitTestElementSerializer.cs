@@ -13,13 +13,17 @@ namespace Machine.Specifications.ReSharperRunner
   [SolutionComponent]
   public class MSpecUnitTestElementSerializer : IUnitTestElementSerializer
   {
-    readonly ISolution _solution;
-    readonly MSpecUnitTestProvider _provider;
-    readonly IUnitTestElementManager _manager;
-    readonly PsiModuleManager _psiModuleManager;
     readonly CacheManager _cacheManager;
+    readonly IUnitTestElementManager _manager;
+    readonly MSpecUnitTestProvider _provider;
+    readonly PsiModuleManager _psiModuleManager;
+    readonly ISolution _solution;
 
-    public MSpecUnitTestElementSerializer(ISolution solution, MSpecUnitTestProvider provider, IUnitTestElementManager manager, PsiModuleManager psiModuleManager, CacheManager cacheManager)
+    public MSpecUnitTestElementSerializer(ISolution solution,
+                                          MSpecUnitTestProvider provider,
+                                          IUnitTestElementManager manager,
+                                          PsiModuleManager psiModuleManager,
+                                          CacheManager cacheManager)
     {
       _solution = solution;
       _provider = provider;
@@ -40,16 +44,48 @@ namespace Machine.Specifications.ReSharperRunner
 
     public IUnitTestElement DeserializeElement(XmlElement parent, IUnitTestElement parentElement)
     {
-      var typeName = parent.GetAttribute("elemenType");
+      var typeName = parent.GetAttribute("elementType");
 
       if (Equals(typeName, "ContextElement"))
-        return ContextElement.ReadFromXml(parent, parentElement, _provider, _solution, _manager, _psiModuleManager, _cacheManager);
+      {
+        return ContextElement.ReadFromXml(parent,
+                                          parentElement,
+                                          _provider,
+                                          _solution,
+                                          _manager,
+                                          _psiModuleManager,
+                                          _cacheManager);
+      }
       if (Equals(typeName, "BehaviorElement"))
-        return BehaviorElement.ReadFromXml(parent, parentElement, _provider, _solution, _manager, _psiModuleManager, _cacheManager);
+      {
+        return BehaviorElement.ReadFromXml(parent,
+                                           parentElement,
+                                           _provider,
+                                           _solution,
+                                           _manager,
+                                           _psiModuleManager,
+                                           _cacheManager);
+      }
       if (Equals(typeName, "BehaviorSpecificationElement"))
-        return BehaviorSpecificationElement.ReadFromXml(parent, parentElement, _provider, _solution, _manager, _psiModuleManager, _cacheManager);
+      {
+        return BehaviorSpecificationElement.ReadFromXml(parent,
+                                                        parentElement,
+                                                        _provider,
+                                                        _solution,
+                                                        _manager,
+                                                        _psiModuleManager,
+                                                        _cacheManager);
+      }
       if (Equals(typeName, "ContextSpecificationElement"))
-        return ContextSpecificationElement.ReadFromXml(parent, parentElement, _provider, _solution, _manager, _psiModuleManager, _cacheManager);
+      {
+        return ContextSpecificationElement.ReadFromXml(parent,
+                                                       parentElement,
+                                                       _provider,
+                                                       _solution,
+                                                       _manager,
+                                                       _psiModuleManager,
+                                                       _cacheManager);
+      }
 
       return null;
     }

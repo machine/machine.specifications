@@ -150,7 +150,7 @@
     <Compile Include="Presentation\FieldElement.cs" />
     <Compile Include="Tasks\Task.4.1.cs" />
     <Compile Include="Tasks\Task.cs" />
-    <Compile Include="UnitTestElementComparer.cs" />
+    <Compile Include="MSpecUnitTestElementComparer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj">
