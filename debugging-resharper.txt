@@ -1,0 +1,19 @@
+1. Create a new VS root suffix by running
+   devenv.exe /rootsuffix mspec
+2. Open VS and load Machine.Specifications.sln
+3. Navigate to the Machine.Specifications.ReSharperRunner.Debug.VS2010 project
+4. Set this project as the startup project
+5. Open the project's properties, under Debug, select:
+   Start external program: <VS install dir>\Common7\IDE\devenv.exe
+   Command line arguments: /rootsuffix mspec /ReSharper.Internal /ReSharper.Plugin "<MSpec solution dir>\Build\Debug\<MSpec runner>.dll"
+   
+Optional:
+To make debugging JetBrains' external task runner process (everything inside RecursiveMSpecTaskRunner) easier, check
+ReSharper | Options | Tools/Unit Testing | Enable Debug (Internal)
+in the debugged Visual Studio instance.
+   
+Visual Studio will choose the debugger based on the framework version the plugin is compiled against. This why we need
+a debugger project for each version of Visual Studio ReSharper supports. To debug the plugin for 
+- ReSharper on VS 2010, use Machine.Specifications.ReSharperRunner.Debug.VS2010
+- ReSharper on VS 2008, *transiently* switch the Machine.Specifications.ReSharperRunner.Debug.VS2010 to be compiled
+  against .NET 3.5 (or create a new debugger project for .NET Framework 3.5).
