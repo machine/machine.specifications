@@ -21,11 +21,56 @@ task :configure do
     :sign_assembly => (ENV['SIGN_ASSEMBLY'] =~ /true/i and true or false),
     :out_dir => "Build/#{target}/",
     :nunit_framework => "net-3.5",
-    :mspec_options => (["--teamcity"] if ENV.include?('TEAMCITY_PROJECT_NAME')) || []
+    :mspec_options => (["--teamcity"] if ENV.include?('TEAMCITY_PROJECT_NAME')) || [],
+    :packages => {
+#      ' ' => {
+#        :title => '',
+#        :references => [{ :file => 'Machine.Specifications.dll' }],
+#        :installer => 'install.ps1'
+#      },
+      'tools' => {
+        :title => ' Tools',
+        :description => ' This package installs the command line runners.',
+        :files => [{ :src => 'mspec.chocolatey.install.ps1', :target => 'tools\chocolateyInstall.ps1' }]
+      },
+      'tools.resharper51' => {
+        :title => ' Tools for ReSharper 5.1',
+        :description => ' This package installs the command line runners and ReSharper integration for Visual Studio 2008 and 2010.',
+        :dependencies => [{ :id => 'resharper', :version => '[5.1,6.0)' }],
+        :files => [{ :src => 'readme.markdown', :target => 'content\readme.markdown' }, { :src => 'mspec.chocolatey.install.ps1', :target => 'tools\chocolateyInstall.ps1' }],
+        :post_install => <<EOF
+& '.\InstallResharperRunner.5.1 - VS2008.bat'
+& '.\InstallResharperRunner.5.1 - VS2010.bat'
+EOF
+      },
+      'tools.resharper60' => {
+        :title => ' Tools for ReSharper 6.0',
+        :description => ' This package installs the command line runners and ReSharper integration for Visual Studio 2008 and 2010.',
+        :dependencies => [{ :id => 'resharper', :version => '[6.0,6.1)' }],
+        :files => [{ :src => 'readme.markdown', :target => 'content\readme.markdown' }, { :src => 'mspec.chocolatey.install.ps1', :target => 'tools\chocolateyInstall.ps1' }],
+        :post_install => <<EOF
+& '.\InstallResharperRunner.6.0 - VS2008.bat'
+& '.\InstallResharperRunner.6.0 - VS2010.bat'
+EOF
+      },
+      'tools.resharper61' => {
+        :title => ' Tools for ReSharper 6.1',
+        :description => ' This package installs the command line runners and ReSharper integration for Visual Studio 2008 and 2010.',
+        :dependencies => [{ :id => 'resharper', :version => '[6.1,7.0)' }],
+        :files => [{ :src => 'readme.markdown', :target => 'content\readme.markdown' }, { :src => 'mspec.chocolatey.install.ps1', :target => 'tools\chocolateyInstall.ps1' }],
+        :post_install => <<EOF
+& '.\InstallResharperRunner.6.1 - VS2008.bat'
+& '.\InstallResharperRunner.6.1 - VS2010.bat'
+EOF
+      }
+    }
   }
 
   configatron.nuget.key = Configatron::Dynamic.new do
     next File.read('NUGET_KEY') if File.readable?('NUGET_KEY')
+  end
+  configatron.chocolatey.key = Configatron::Dynamic.new do
+    next File.read('CHOCOLATEY_KEY') if File.readable?('CHOCOLATEY_KEY')
   end
   configatron.project = Configatron::Delayed.new do
     "#{project}#{"-Testing" if ENV.include? 'VERSION'}#{'-Signed' if configatron.sign_assembly}"
@@ -212,17 +257,44 @@ namespace :package do
       sz.zip :files => packaged_files
     end
   end
-  
-  def create_package
-    opts = ["pack", "mspec.nuspec",
-      "-BasePath", "#{configatron.out_dir}NuGet".gsub(/\//, '\\'),
+
+  def create_package(package_name, base_path = '.')
+    opts = ["pack", package_name,
+      "-BasePath", base_path,
       "-OutputDirectory", configatron.nuget.package.dirname]
 
     sh "Tools/NuGet/NuGet.exe", *(opts)
   end
+  
+  def publish_nuget_package
+    raise "NuGet access key is missing, cannot publish" if configatron.nuget.key.nil?
+    
+    opts = ["push",
+      configatron.nuget.package,
+      configatron.nuget.key,
+      { :verbose => false }]
 
+    sh "Tools/NuGet/NuGet.exe", *(opts) do |ok, status|
+      ok or fail "Command failed with status (#{status.exitstatus})"
+    end
+  end
+
+  def publish_tools_package(package_path)
+    raise "Chocolatey access key is missing, cannot publish" if configatron.chocolatey.key.nil?
+    
+    opts = ["push",
+      package_path,
+      configatron.chocolatey.key,
+      "-Source", "http://chocolatey.org/",
+      { :verbose => false }]
+
+    sh "Tools/NuGet/NuGet.exe", *(opts) do |ok, status|
+      ok or fail "Command failed with status (#{status.exitstatus})"
+    end
+  end
+  
   namespace :nuget do
-    desc "Package build artifacts as a NuGet package and a symbols package"
+    desc "Package build artifacts as a NuGet package, symbols package, and Chocolatey tools packages"
     task :create => :zip do
       framework_files(configatron.out_dir).copy_hierarchy \
         :source_dir => configatron.out_dir,
@@ -236,27 +308,71 @@ namespace :package do
         :source_dir => configatron.out_dir,
         :target_dir => "#{configatron.out_dir}NuGet/tools/"
 
-      cp 'install.ps1', "#{configatron.out_dir}NuGet/tools/"
+      cp 'mspec.install.ps1', "#{configatron.out_dir}NuGet/tools/"
 
-      create_package
+      create_package 'mspec.nuspec', "#{configatron.out_dir}NuGet".gsub(%r|/|, '\\')
       mv configatron.nuget.package, configatron.nuget.package.pathmap('%X.symbols%x')
 
       FileList["#{configatron.out_dir}NuGet/src/", "#{configatron.out_dir}NuGet/**/*.pdb"].each { |f| rm_rf f }
-      create_package
-    end
+      create_package 'mspec.nuspec', "#{configatron.out_dir}NuGet".gsub(%r|/|, '\\')
     
+      configatron.packages.configatron_keys.each do |package_id|
+        # This pulls the node of the current package.
+        config = configatron.packages.send(package_id.to_sym)
+
+        configatron.temp do        
+          package = configatron.package
+          
+          # Copy everything from the package config to the package root.
+          config.configatron_keys.each do |key|
+            package.send("#{key}=", config.send(key.to_sym))
+          end
+
+          # Massage package config properties.
+          package.package_id = package_id =~ /\w+/ ? ".#{package_id}" : nil
+          
+          package.description = nil unless config.exists?(:description)
+          package.post_install = nil unless config.exists?(:post_install)
+          
+          if config.exists?(:dependencies)
+            package.dependencies = config.dependencies.map { |d|
+              "<dependency id='#{d[:id]}' version='#{d[:version]}' />"
+            }.join(" ")
+          else
+            package.dependencies = nil
+          end
+          
+          if config.exists?(:references)
+            package.references = config.references.map { |f|
+              "<reference file='#{f[:file]}' />"
+            }.join(" ")
+          else
+            package.references = [] unless config.exists?(:references)
+          end
+          
+          if config.exists?(:files)
+            package.files = config.files.map { |f|
+              "<file src='#{f[:src]}' target='#{f[:target]}' />"
+            }.join(" ")
+          else
+            package.files = nil
+          end
+          
+          QuickTemplate.new('mspec.chocolatey.install.ps1.template').exec(configatron)
+          QuickTemplate.new('mspec.chocolatey.nuspec.template').exec(configatron)
+          
+          create_package 'mspec.chocolatey.nuspec'
+        end
+      end
+    end
+
     desc "Publishes the NuGet package"
     task :publish do
-      raise "NuGet access key is missing, cannot publish" if configatron.nuget.key.nil?
-
-      opts = ["push",
-        configatron.nuget.package,
-        configatron.nuget.key,
-        { :verbose => false }]
-
-      sh "Tools/NuGet/NuGet.exe", *(opts) do |ok, status|
-        ok or fail "Command failed with status (#{status.exitstatus})"
-      end
+      publish_nuget_package
+      publish_tools_package configatron.tools.package
+      publish_tools_package configatron.tools.resharper51.package
+      publish_tools_package configatron.tools.resharper60.package
+      publish_tools_package configatron.tools.resharper61.package
     end
   end
 end

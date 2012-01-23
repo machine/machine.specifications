@@ -77,12 +77,12 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public override string Id
     {
-      get { return CreateId(Behavior.TypeName, FieldName); }
+      get { return CreateId(Behavior.Id, FieldName); }
     }
 
-    public static string CreateId(string behaviorElementTypeName, string fieldName)
+    public static string CreateId(string behaviorElementId, string fieldName)
     {
-      var id = String.Format("{0}.{1}", behaviorElementTypeName, fieldName);
+      var id = String.Format("{0}.{1}", behaviorElementId, fieldName);
       System.Diagnostics.Debug.WriteLine("BSE " + id);
       return id;
     }

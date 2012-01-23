@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>@configatron.project@@configatron.package.package_id@</id>
+    <version>@configatron.version.compatible@</version>
+    <title>@configatron.project@@configatron.package.title@</title>
+    <authors>Aaron Jensen, Alexander Groß, et al.</authors>
+    <owners>Alexander Groß</owners>
+    <summary>Machine.Specifications Context/Specification framework</summary>
+    <description>Machine.Specifications is a Context/Specification framework geared towards removing language noise and simplifying tests.@configatron.package.description@</description>
+    <language>en-US</language>
+    <projectUrl>http://github.com/machine/machine.specifications</projectUrl>
+    <licenseUrl>http://github.com/machine/machine.specifications/blob/master/License.txt</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <iconUrl>http://github.com/machine/machine.specifications/raw/master/Misc/Machine.Specifications-32x32.png</iconUrl>
+    <tags>test unit testing context specification bdd tdd mspec</tags>
+    <dependencies>
+      @configatron.package.dependencies@
+    </dependencies>
+  </metadata>
+  <files>
+    @configatron.package.files@
+  </files>
+</package>
