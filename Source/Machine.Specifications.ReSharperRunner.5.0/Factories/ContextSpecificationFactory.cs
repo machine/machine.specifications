@@ -107,7 +107,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                                               bool isIgnored)
     {
 #if RESHARPER_6
-      var id = ContextSpecificationElement.CreateId(context.TypeName, fieldName);
+      var id = ContextSpecificationElement.CreateId(context.Id, fieldName);
 #if RESHARPER_61
       var contextSpecification = manager.GetElementById(project, id) as ContextSpecificationElement;
 #else

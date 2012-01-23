@@ -92,10 +92,11 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public void WriteToXml(XmlElement parent)
     {
+      parent.SetAttribute("projectId", GetProject().GetPersistentID());
       parent.SetAttribute("typeName", TypeName);
-      parent.GetAttribute("assemblyLocation", AssemblyLocation);
+      parent.SetAttribute("assemblyLocation", AssemblyLocation);
       parent.SetAttribute("isIgnored", Explicit.ToString());
-      parent.GetAttribute("subject", GetSubject());
+      parent.SetAttribute("subject", _subject);
     }
 
     public static IUnitTestElement ReadFromXml(XmlElement parent, IUnitTestElement parentElement, MSpecUnitTestProvider provider, ISolution solution

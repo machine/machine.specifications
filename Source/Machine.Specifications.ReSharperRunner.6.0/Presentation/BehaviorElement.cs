@@ -99,12 +99,12 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public override string Id
     {
-      get { return CreateId(TypeName, FieldName); }
+      get { return CreateId(Context.Id, FieldName); }
     }
 
-    public static string CreateId(string contextElementTypeName, string fieldName)
+    public static string CreateId(string contextElementId, string fieldName)
     {
-      var id = String.Format("{0}.{1}", contextElementTypeName, fieldName);
+      var id = String.Format("{0}.{1}", contextElementId, fieldName);
       System.Diagnostics.Debug.WriteLine("BE  " + id);
       return id;
     }
