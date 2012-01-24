@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("Machine.Specifications.Adapter")]
+[assembly: AssemblyTitle("Machine.Specifications.GallioAdapter")]
 [assembly: AssemblyDescription("An adapter for the Machine Specifications project allowing it to run using the Gallio Test Framework")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCulture("")]
