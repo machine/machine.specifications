@@ -1,0 +1,238 @@
+﻿## Velocity Template Language (VTL) to generate an HTML document.
+##
+#set ($stats = $report.TestPackageRun.Statistics)
+##
+#if ($xhtml)
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang="en" lang="en" dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:g="http://www.gallio.org/">
+#else
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en" dir="ltr">
+#end
+<!-- saved from url=(0014)about:internet -->
+<head>
+#if ($xhtml)
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+#else
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="charset=utf-8">
+#end
+#*
+	====================================================
+	 TITLE AND HEADER
+	====================================================
+*#
+<title>Gallio Test Report</title>
+<link rel="stylesheet" type="text/css" href="$resourceRoot/css/Gallio-Report.css" #if($xhtml)/#end>
+<link rel="stylesheet" type="text/css" href="$resourceRoot/css/Gallio-Report.generated.css" #if($xhtml)/#end>
+<script type="text/javascript" src="$resourceRoot/js/Gallio-Report.js"></script>
+<style type="text/css">html { overflow: auto; }</style>
+#if ($xhtml)
+</head>
+#end
+<body class="gallio-report">
+  <div id="Header" class="header">
+    <div class="header-image" />
+  </div>
+#*
+	====================================================
+	 NAVIGATION SIDE BAR
+	====================================================
+*#
+  <div id="Navigator" class="navigator">
+    <div class="navigator-stripes">
+    #foreach ($item in $tree.GetNavigatorChildren())
+    <a href="#if ($pagingEnabled)$helper.Paging.GetReportPath($helper.Paging.GetPageOf($item.Index, $pageSize))#end#testStepRun-$item.Run.Step.Id" style="top:$item.GetTopPosition($tree.Count)%" class="status-$item.Run.Result.Outcome.Status.ToString().ToLower()" title="$item.Run.Step.Name $item.Run.Result.Outcome.Status" onclick="expand(['#foreach ($rid in $item.GetSelfAndAncestorIds())
+detailPanel-$rid#between
+', '#end']);"></a>
+    #end
+    </div>
+  </div>
+#*
+	====================================================
+	 STATISTICS
+	====================================================
+*#
+  <div id="Content" class="content">
+    <iframe id="_asyncLoadFrame" src="about:blank" style="border:0; margin:0; padding:0; width:0; height:0; display:none;" onload="_asyncLoadFrameOnLoad()"></iframe>
+    $helper.Paging.Generate($pageIndex, $pageCount)
+    #if ($pageIndex == 0)
+    <div id="Statistics" class="section">
+      <h2>Statistics</h2>
+      <div class="section-content">
+      <table class="statistics-table">
+        <tr>
+        <td class="statistics-label-cell">Start time:</td>
+        <td>$report.TestPackageRun.StartTime</td>
+        </tr>
+        <tr class="alternate-row">
+        <td class="statistics-label-cell">End time:</td>
+        <td>$report.TestPackageRun.EndTime</td>
+        </tr>
+        <tr>
+        <td class="statistics-label-cell">Tests:</td>
+        <td>$stats.TestCount ($stats.StepCount steps)</td>
+        </tr>
+        <tr class="alternate-row">
+        <td class="statistics-label-cell">Results:</td>
+        <td>$stats.RunCount run, $stats.PassedCount passed, $stats.FailedCount failed, $stats.InconclusiveCount inconclusive, $stats.SkippedCount skipped</td>
+        </tr>
+        <tr>
+        <td class="statistics-label-cell">Duration:</td>
+        <td>$stats.Duration.ToString("F2") s</td>
+        </tr>
+        <tr class="alternate-row">
+          <td class="statistics-label-cell">Assertions:</td>
+        <td>$stats.AssertCount</td>
+        </tr>
+      </table>
+      </div>
+    </div>
+#*
+	====================================================
+	 FILES SECTION
+	====================================================
+*#
+    <div id="Files" class="section">
+      <h2>Files</h2>
+      <div class="section-content">
+      <ul>
+      #foreach ($file in $report.TestPackage.Files)
+        <li>$helper.Html.BreakWord($file)</li>
+      #end
+      </ul>
+      </div>
+    </div>
+#*
+	====================================================
+	 ANNOTATIONS SECTION
+	====================================================
+*#
+    #foreach ($annotation in $helper.Contents.GetAnnotations($report))
+          <li class="annotation annotation-type-$annotation.Type.ToString().ToLower()" >
+            <div class="annotation-message">[$annotation.Type.ToString()] $helper.Html.BreakWord($annotation.Message)</div>
+            #if ($annotation.CodeLocation.ToString().Length > 0)
+              #set ($path = $annotation.CodeLocation.Path)
+              #set ($line = $annotation.CodeLocation.Line)
+              #set ($column = $annotation.CodeLocation.Column)
+              <div class="annotation-location">Location: <a class="crossref" href="gallio:navigateTo?path=$path#if($line>0)&amp;line=$line#if($column>0)&amp;column=$column#end#end">$path#if($line>0)($line#if($column>0), $column#end)#end</a></div>
+            #end
+            #if ($annotation.CodeReference.AssemblyName != $null && $annotation.CodeReference.AssemblyName.Length > 0)
+              <div class="annotation-reference">Reference: $annotation.CodeReference.AssemblyName</div>
+            #end
+            #if ($annotation.Details != $null && $annotation.Details.Length > 0)
+              <div class="annotation-details">Details: $annotation.Details</div>
+            #end
+          </li>
+    #beforeall
+    <div id="Annotations" class="section">
+      <h2>Annotations</h2>
+      <div class="section-content">
+        <ul>
+    #afterall
+        </ul>
+      </div>
+    </div>
+    #end
+    
+    
+    
+    #if($annotation.CodeLocation.ToString().Length > 0)
+    Location: $annotation.CodeLocation.ToString()
+#end
+#if($annotation.CodeReference.ToString().Length > 0)
+    Reference: $annotation.CodeReference.ToString()
+#end
+#if($annotation.Details.Length > 0)
+    Details: $annotation.Details
+#end
+
+#*
+	====================================================
+	 SUMMARY SECTION
+	====================================================
+*#
+    <div id="Summary" class="section">
+      <h2>Summary#if ($condensed) (Condensed)#end</h2>
+      <div class="section-content">
+      #if ($stats.RunCount == 0)
+        <em>This report does not contain any test runs.</em>
+      #elseif ($condensed && $stats.RunCount == $stats.PassedCount)
+        <em>All tests passed.</em>
+      #else
+        <ul>
+          #set ($nestingLevel = 0)
+          #set ($node = $tree)
+          #parse ("Gallio-Report.html+xhtml.summary-item.vm")
+        </ul>
+      #end
+      </div>
+    </div>
+    #end
+#*
+	====================================================
+	 DETAILS SECTION
+	====================================================
+*#
+    #if (!$pagingEnabled || $pageIndex > 0)
+    <div id="Details" class="section">
+      <a name="Details"></a>
+      <h2>Details#if ($condensed) (Condensed)#end#if ($pageIndex > 0) (page $pageIndex of $pageCount)#end</h2>
+      <div class="section-content">
+      #if ($stats.RunCount == 0)
+        <em>This report does not contain any test runs.</em>
+      #elseif ($condensed && $stats.RunCount == $stats.PassedCount)
+        <em>All tests passed.</em>
+      #else
+        <ul class="testStepRunContainer">
+          #set ($nestingLevel = 0)
+          #set ($node = $tree)
+          #parse ("Gallio-Report.html+xhtml.detailed-item.vm")
+        </ul>
+      #end
+      </div>
+    </div>
+    #end
+#*
+	====================================================
+	 DIAGNOSTIC LOG SECTION
+	====================================================
+*#
+    #if ($pageIndex == 0)
+    <div id="Log" class="section">
+      <h2>Diagnostic Log</h2>
+      <div class="section-content">
+        <ul>
+        #foreach ($entry in $report.LogEntries)
+          #if ($entry.Severity != "Debug")
+          <li class="logEntry logEntry-severity-$entry.Severity.ToString().ToLower()">
+            <div class="logEntry-text">[$entry.Severity] $helper.Html.BreakWord($entry.Message)</div>
+            #if($entry.Details.Length > 0)
+            <div class="logEntry-details">$helper.Html.BreakWord($entry.Details)</div>
+            #end
+          </li>
+          #end
+        #end
+        </ul>
+      </div>
+    </div>
+    #end
+#*
+	====================================================
+	 FOOTER
+	====================================================
+*#
+  $helper.Paging.Generate($pageIndex, $pageCount)
+  </div>
+</body>
+#if ($xhtml)
+<script type="text/javascript">reportLoaded();</script>
+#else
+</link>
+</link>
+</meta>
+</META>
+</head>
+#end
+</html>
