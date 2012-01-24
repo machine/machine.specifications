@@ -292,9 +292,8 @@ namespace Machine.Specifications.GallioAdapter.Tests
       Assert.AreEqual("Machine Project", assemblyTest.Metadata.GetValue(MetadataKeys.Company));
       Assert.AreEqual("Test", assemblyTest.Metadata.GetValue(MetadataKeys.Configuration));
       AssertStringContains("Copyright © Machine Project 2008, 2009, 2010", assemblyTest.Metadata.GetValue(MetadataKeys.Copyright));
-      Assert.AreEqual("Machine.Specifications.Adapter.TestResources Description", assemblyTest.Metadata.GetValue(MetadataKeys.Description));
       Assert.AreEqual("Machine.Specifications", assemblyTest.Metadata.GetValue(MetadataKeys.Product));
-      Assert.AreEqual("Machine.Specifications.Adapter.TestResources", assemblyTest.Metadata.GetValue(MetadataKeys.Title));
+      Assert.AreEqual("Machine.Specifications.GallioAdapter.TestResources", assemblyTest.Metadata.GetValue(MetadataKeys.Title));
 
       Assert.IsNotEmpty(assemblyTest.Metadata.GetValue(MetadataKeys.InformationalVersion));
       Assert.IsNotEmpty(assemblyTest.Metadata.GetValue(MetadataKeys.FileVersion));
