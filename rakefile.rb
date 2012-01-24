@@ -218,7 +218,7 @@ namespace :package do
       "-BasePath", "#{configatron.out_dir}NuGet".gsub(/\//, '\\'),
       "-OutputDirectory", configatron.nuget.package.dirname]
 
-    sh "Tools/NuGet/NuGet.exe", *(opts)
+    sh ".nuget/NuGet.exe", *(opts)
   end
 
   namespace :nuget do
@@ -254,7 +254,7 @@ namespace :package do
         configatron.nuget.key,
         { :verbose => false }]
 
-      sh "Tools/NuGet/NuGet.exe", *(opts) do |ok, status|
+      sh ".nuget/NuGet.exe", *(opts) do |ok, status|
         ok or fail "Command failed with status (#{status.exitstatus})"
       end
     end
