@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Machine.Specifications.GallioAdapter</RootNamespace>
-    <AssemblyName>Machine.Specifications.GallioAdapter.3.1</AssemblyName>
+    <AssemblyName>Machine.Specifications.GallioAdapter</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>

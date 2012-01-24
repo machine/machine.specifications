@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Machine.Specifications.GallioAdapter.Tests</RootNamespace>
-    <AssemblyName>Machine.Specifications.TestGallioAdapter.3.1.Tests</AssemblyName>
+    <AssemblyName>Machine.Specifications.GallioAdapter.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -77,14 +77,14 @@
       <Name>Machine.Specifications.Example</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\Machine.Specifications.GallioAdapter.3.1.TestResources\Machine.Specifications.GallioAdapter.3.1.TestResources.csproj">
+    <ProjectReference Include="..\Machine.Specifications.GallioAdapter.3.1.TestResources\Machine.Specifications.GallioAdapter.TestResources.csproj">
       <Project>{263ABAC8-C6B2-497D-93E3-3773849CEDD3}</Project>
-      <Name>Machine.Specifications.GallioAdapter.3.1.TestResources</Name>
+      <Name>Machine.Specifications.GallioAdapter.TestResources</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\Machine.Specifications.GallioAdapter.3.1\Machine.Specifications.GallioAdapter.3.1.csproj">
+    <ProjectReference Include="..\Machine.Specifications.GallioAdapter.3.1\Machine.Specifications.GallioAdapter.csproj">
       <Project>{D1B0D26E-BEA9-45EF-87C2-0ED5FC9CAC3F}</Project>
-      <Name>Machine.Specifications.GallioAdapter.3.1</Name>
+      <Name>Machine.Specifications.GallioAdapter</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj">

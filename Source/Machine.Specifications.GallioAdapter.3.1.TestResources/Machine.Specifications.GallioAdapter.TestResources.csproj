@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Machine.Specifications.GallioAdapter.TestResources</RootNamespace>
-    <AssemblyName>Machine.Specifications.TestGallioAdapter.3.1.TestResources</AssemblyName>
+    <AssemblyName>Machine.Specifications.GallioAdapter.TestResources</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -25,7 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Build\Debug\Tests\Gallio\Machine.Specifications.TestGallioAdapter.3.1.TestResources.XML</DocumentationFile>
+    <DocumentationFile>..\..\Build\Debug\Tests\Gallio\Machine.Specifications.GallioAdapter.TestResources.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -35,7 +35,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Build\Release\Tests\Gallio\Machine.Specifications.TestGallioAdapter.3.1.TestResources.XML</DocumentationFile>
+    <DocumentationFile>..\..\Build\Release\Tests\Gallio\Machine.Specifications.GallioAdapter.TestResources.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
