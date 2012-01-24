@@ -1,0 +1,4 @@
+﻿Update the Controller to use the Runners from Machine.Specifications 
+  Mar 19 - Currently uses the context runner but need to refactor assembly runner to remove coupling on AssemblyExplorer
+The Controller should be able to reuse existing listeners based on the options
+  Mar 23 - It seems extremely difficult to configure which runner to use. need to explore gallio further.

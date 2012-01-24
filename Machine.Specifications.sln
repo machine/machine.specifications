@@ -52,12 +52,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.5.0", "Source\Machine.Specifications.ReSharperRunner.5.0\Machine.Specifications.ReSharperRunner.5.0.csproj", "{F78E1AB8-7F34-4C32-BC4D-558CAA94DB7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.3.1", "Source\Machine.Specifications.GallioAdapter.3.1\Machine.Specifications.GallioAdapter.3.1.csproj", "{D1B0D26E-BEA9-45EF-87C2-0ED5FC9CAC3F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.3.1.TestResources", "Source\Machine.Specifications.GallioAdapter.3.1.TestResources\Machine.Specifications.GallioAdapter.3.1.TestResources.csproj", "{263ABAC8-C6B2-497D-93E3-3773849CEDD3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.3.1.Tests", "Source\Machine.Specifications.GallioAdapter.3.1.Tests\Machine.Specifications.GallioAdapter.3.1.Tests.csproj", "{9C3D968A-AA2C-4612-94E8-C3FD16BFEEED}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.Clr4", "Source\Machine.Specifications.Example.Clr4\Machine.Specifications.Example.Clr4.csproj", "{0CE411DF-CFC3-45E3-96AD-2F872D99E1B1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.5.1", "Source\Machine.Specifications.ReSharperRunner.5.1\Machine.Specifications.ReSharperRunner.5.1.csproj", "{C47B3023-AC8D-4DFD-AAC2-006C4772B699}"
@@ -69,6 +63,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.6.0", "Source\Machine.Specifications.ReSharperRunner.6.0\Machine.Specifications.ReSharperRunner.6.0.csproj", "{5ED0B02E-7E2D-413D-ABE9-6DB07116E2CE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.6.1", "Source\Machine.Specifications.ReSharperRunner.6.1\Machine.Specifications.ReSharperRunner.6.1.csproj", "{AEF08081-3BB5-4654-9F21-C066647B370A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter", "Source\Machine.Specifications.GallioAdapter\Machine.Specifications.GallioAdapter.csproj", "{D1B0D26E-BEA9-45EF-87C2-0ED5FC9CAC3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.TestResources", "Source\Machine.Specifications.GallioAdapter.TestResources\Machine.Specifications.GallioAdapter.TestResources.csproj", "{263ABAC8-C6B2-497D-93E3-3773849CEDD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.Tests", "Source\Machine.Specifications.GallioAdapter.Tests\Machine.Specifications.GallioAdapter.Tests.csproj", "{9C3D968A-AA2C-4612-94E8-C3FD16BFEEED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
