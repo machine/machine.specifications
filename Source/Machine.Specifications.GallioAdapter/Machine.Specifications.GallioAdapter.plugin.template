@@ -34,7 +34,7 @@
                componentType="Machine.Specifications.GallioAdapter.MachineSpecificationsFramework, Machine.Specifications.GallioAdapter">
       <traits>
         <name>Machine Specifications</name>        
-        <frameworkAssemblies>Machine.Specifications, Version=@configatron.version.compatible@</frameworkAssemblies>
+        <frameworkAssemblies>Machine.Specifications</frameworkAssemblies>
         <version>@configatron.version.compatible@</version>
         <fileTypes>Assembly</fileTypes>
       </traits>
