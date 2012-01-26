@@ -6,7 +6,7 @@ namespace Machine.Specifications.Reporting
   public interface IFileSystem
   {
     bool IsValidPathToDirectory(string path);
-    void CreateOrOverwriteDirectory(string path);
+    void EnsureDirectoryExists(string path);
     bool IsValidPathToFile(string path);
     void DeleteIfFileExists(string path);
     void Move(string source, string destination);
@@ -26,11 +26,11 @@ namespace Machine.Specifications.Reporting
       }
     }
 
-    public void CreateOrOverwriteDirectory(string path)
+    public void EnsureDirectoryExists(string path)
     {
       if (Directory.Exists(path))
       {
-        Directory.Delete(path, true);
+        return;
       }
 
       Directory.CreateDirectory(path);

@@ -122,7 +122,7 @@ namespace Machine.Specifications.Reporting.Generation.Spark
     {
       var resourcePath = Path.Combine(directory, "resources");
 
-      _fileSystem.CreateOrOverwriteDirectory(resourcePath);
+      _fileSystem.EnsureDirectoryExists(resourcePath);
       return resourcePath;
     }
 
