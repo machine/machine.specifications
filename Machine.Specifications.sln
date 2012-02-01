@@ -88,6 +88,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A3F866
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.WebDriverSupport", "Source\Machine.Specifications.WebDriverSupport\Machine.Specifications.WebDriverSupport.csproj", "{0029D44B-6E6C-4FD5-9071-EEA15A765D37}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Tools4", "Source\Machine.Specifications.Tools4\Machine.Specifications.Tools4.csproj", "{4108E3FF-475D-45C7-8BA8-5BDB33320EF5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CCD02629-1262-4F78-9E9F-AC97B942D0E7} = {CCD02629-1262-4F78-9E9F-AC97B942D0E7}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Tools4.Specs", "Source\Machine.Specifications.Tools4.Specs\Machine.Specifications.Tools4.Specs.csproj", "{A4D509C3-3277-4AF5-B14C-EAA7CF13ADAC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -214,6 +221,14 @@ Global
 		{0029D44B-6E6C-4FD5-9071-EEA15A765D37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0029D44B-6E6C-4FD5-9071-EEA15A765D37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0029D44B-6E6C-4FD5-9071-EEA15A765D37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4108E3FF-475D-45C7-8BA8-5BDB33320EF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4108E3FF-475D-45C7-8BA8-5BDB33320EF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4108E3FF-475D-45C7-8BA8-5BDB33320EF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4108E3FF-475D-45C7-8BA8-5BDB33320EF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4D509C3-3277-4AF5-B14C-EAA7CF13ADAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4D509C3-3277-4AF5-B14C-EAA7CF13ADAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4D509C3-3277-4AF5-B14C-EAA7CF13ADAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4D509C3-3277-4AF5-B14C-EAA7CF13ADAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
