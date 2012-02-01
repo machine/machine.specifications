@@ -16,6 +16,7 @@
     <tags>test unit testing context specification bdd tdd mspec</tags>
     <references>
       <reference file="Machine.Specifications.dll" />
+      <reference file="Machine.Specifications.Tools4.dll" />
     </references>
   </metadata>
 </package>

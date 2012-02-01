@@ -150,6 +150,9 @@ namespace :specs do
     
     specs = FileList.new("#{configatron.out_dir}/Tests/*.Specs.dll").to_a
     sh "#{configatron.out_dir}/mspec.exe", "--html", "Specs/#{configatron.project}.Specs.html", "-x", "example", *(configatron.mspec_options + specs)
+
+    specs = FileList.new("#{configatron.out_dir}/Tests/*.Specs4.dll").to_a
+    sh "#{configatron.out_dir}/mspec-clr4.exe", "--html", "Specs/#{configatron.project}.Specs4.html", "-x", "example", *(configatron.mspec_options + specs)
     
     specs = ["#{configatron.out_dir}/Tests/Machine.Specifications.Example.Clr4.dll"]
     sh "#{configatron.out_dir}/mspec-clr4.exe", "-x", "example", *(configatron.mspec_options + specs)
@@ -181,6 +184,11 @@ namespace :package do
       .include("#{root}/Machine.Specifications.dll.tdnet") \
       .include("#{root}/Machine.Specifications.TDNetRunner.*")
   end
+
+  def framework4_files(root = '.')
+    FileList.new("#{root}/Machine.Specifications.Tools4.dll") 
+  end
+
 
   def source_files(root = '.')
     FileList.new("#{root}/**/*.cs") \
@@ -227,6 +235,10 @@ namespace :package do
       framework_files(configatron.out_dir).copy_hierarchy \
         :source_dir => configatron.out_dir,
         :target_dir => "#{configatron.out_dir}NuGet/lib/"
+
+      framework4_files(configatron.out_dir).copy_hierarchy \
+        :source_dir => configatron.out_dir,
+        :target_dir => "#{configatron.out_dir}NuGet/lib/NET40"
 
       source_files('Source').copy_hierarchy \
         :source_dir => 'Source',
