@@ -148,11 +148,11 @@ namespace :specs do
   task :run do
     puts 'Running Specs...'
     
-    specs = FileList.new("#{configatron.out_dir}/Tests/*.Specs.dll").to_a
+    specs = FileList.new("#{configatron.out_dir}/Tests/*.Specs.dll").exclude(/Clr4/)
     sh "#{configatron.out_dir}/mspec.exe", "--html", "Specs/#{configatron.project}.Specs.html", "-x", "example", *(configatron.mspec_options + specs)
     
-    specs = ["#{configatron.out_dir}/Tests/Machine.Specifications.Example.Clr4.dll"]
-    sh "#{configatron.out_dir}/mspec-clr4.exe", "-x", "example", *(configatron.mspec_options + specs)
+    specs = FileList.new("#{configatron.out_dir}/Tests/*Clr4*.dll")
+    sh "#{configatron.out_dir}/mspec-clr4.exe", *(configatron.mspec_options + specs)
     
     puts "Wrote specs to Specs/#{configatron.project}.Specs.html, run 'rake specs:view' to see them"
   end
