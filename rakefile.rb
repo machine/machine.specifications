@@ -175,11 +175,17 @@ namespace :tests do
 end
 
 namespace :package do
-  def framework_files(root = '.')
+  def net_20_framework_files(root = '.')
     FileList.new("#{root}/Machine.Specifications.dll") \
       .include("#{root}/Machine.Specifications.pdb") \
       .include("#{root}/Machine.Specifications.dll.tdnet") \
       .include("#{root}/Machine.Specifications.TDNetRunner.*")
+  end
+
+  def net_40_framework_files(root = '.')
+    net_20_framework_files(root) \
+      .include("#{root}/Machine.Specifications.Clr4.dll") \
+      .include("#{root}/Machine.Specifications.Clr4.pdb")
   end
 
   def source_files(root = '.')
@@ -224,9 +230,13 @@ namespace :package do
   namespace :nuget do
     desc "Package build artifacts as a NuGet package and a symbols package"
     task :create => :zip do
-      framework_files(configatron.out_dir).copy_hierarchy \
+      net_20_framework_files(configatron.out_dir).copy_hierarchy \
         :source_dir => configatron.out_dir,
-        :target_dir => "#{configatron.out_dir}NuGet/lib/"
+        :target_dir => "#{configatron.out_dir}NuGet/lib/net20"
+
+      net_40_framework_files(configatron.out_dir).copy_hierarchy \
+        :source_dir => configatron.out_dir,
+        :target_dir => "#{configatron.out_dir}NuGet/lib/net40"
 
       source_files('Source').copy_hierarchy \
         :source_dir => 'Source',
