@@ -10,6 +10,9 @@ _ReSharper.*
 NDependOut
 *mm_cache.bin
 
+*.ncrunchsolution
+*.ncrunchproject
+
 /Build
 /Distribution
 /Specs
