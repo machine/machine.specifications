@@ -123,6 +123,16 @@ By default, ReSharper will think that specification classes (those marked with t
 3. Ensure that the namespace "Machine.Specifications.Annotations" is checked
 4. Click "OK"
 
+##### Live templates
+
+MSpec provides following live templates:
+
+* `mse`, Shortcut for `Establish` delegate
+* `msb`, Shortcut for `Because` delegate
+* `msi`, Shortcut for `It` delegate
+
+To import these templates into Visual Studio go to ´ReSharper --> Templates Explorer...` select `Import...` and provide full path to `Misc\ReSharper.LiveTemplates.DotSettings` file.
+
 #### TestDriven.Net
 
 ##### Using InstallTDNetRunner.bat
