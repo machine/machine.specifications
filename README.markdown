@@ -123,6 +123,30 @@ By default, ReSharper will think that specification classes (those marked with t
 3. Ensure that the namespace "Machine.Specifications.Annotations" is checked
 4. Click "OK"
 
+##### ReSharper templates
+
+To import the templates into Visual Studio go to `ReSharper -> Templates Explorer...`, click `Import...` and select the `Misc\ReSharper.*.DotSettings` files.
+
+###### Live templates
+
+MSpec provides following live templates:
+
+* `mse`, shortcut for `Establish` delegate
+* `msb`, shortcut for `Because` delegate
+* `msi`, shortcut for `It` delegate
+* `msf`, shortcut for failing `It` delegate which is best used in conjugation with the `Catch.Exception` surround template.
+
+###### File templates
+
+At the moment there is only one file template which creates a new file containing a single MSpec context.
+
+###### Surround templates
+
+There is one surround template which makes the creation of `Catch.Exception` statements easier.
+
+Usage examples for the file and surround template can be found in the following blog post:
+http://therightstuff.de/2010/03/03/MachineSpecifications-Templates-For-ReSharper.aspx
+
 #### TestDriven.Net
 
 ##### Using InstallTDNetRunner.bat
