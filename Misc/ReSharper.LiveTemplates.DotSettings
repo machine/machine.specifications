@@ -4,6 +4,7 @@
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3A228F297FD77C4F955E5463BA527D3E/Description/@EntryValue">Live template for MSpec 'It' delegate</s:String>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3A228F297FD77C4F955E5463BA527D3E/Text/@EntryValue">It should_$do$ = () =&gt; $END$;</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3A228F297FD77C4F955E5463BA527D3E/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3A228F297FD77C4F955E5463BA527D3E/Categories/=MSpec/@EntryIndexedValue">MSpec</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3A228F297FD77C4F955E5463BA527D3E/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3A228F297FD77C4F955E5463BA527D3E/Scope/=C3001E7C0DA78E4487072B7E050D86C5/@KeyIndexDefined">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3A228F297FD77C4F955E5463BA527D3E/Scope/=C3001E7C0DA78E4487072B7E050D86C5/Type/@EntryValue">InCSharpFile</s:String>
@@ -15,6 +16,7 @@
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4FB0BAF1ABD68641AF1F6B28E9059683/Description/@EntryValue">Live template for MSpec 'Establish' delegate</s:String>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4FB0BAF1ABD68641AF1F6B28E9059683/Text/@EntryValue">Establish context = () =&gt; $END$;</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4FB0BAF1ABD68641AF1F6B28E9059683/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4FB0BAF1ABD68641AF1F6B28E9059683/Categories/=MSpec/@EntryIndexedValue">MSpec</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4FB0BAF1ABD68641AF1F6B28E9059683/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4FB0BAF1ABD68641AF1F6B28E9059683/Scope/=C3001E7C0DA78E4487072B7E050D86C5/@KeyIndexDefined">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4FB0BAF1ABD68641AF1F6B28E9059683/Scope/=C3001E7C0DA78E4487072B7E050D86C5/Type/@EntryValue">InCSharpFile</s:String>
@@ -24,6 +26,7 @@
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1D2A16F656FA6D40A1AF14C20A25F55E/Description/@EntryValue">Live template for MSpec 'Because' delegate</s:String>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1D2A16F656FA6D40A1AF14C20A25F55E/Text/@EntryValue">Because of = () =&gt; $END$;</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1D2A16F656FA6D40A1AF14C20A25F55E/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1D2A16F656FA6D40A1AF14C20A25F55E/Categories/=MSpec/@EntryIndexedValue">MSpec</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1D2A16F656FA6D40A1AF14C20A25F55E/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1D2A16F656FA6D40A1AF14C20A25F55E/Scope/=C3001E7C0DA78E4487072B7E050D86C5/@KeyIndexDefined">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=1D2A16F656FA6D40A1AF14C20A25F55E/Scope/=C3001E7C0DA78E4487072B7E050D86C5/Type/@EntryValue">InCSharpFile</s:String>
