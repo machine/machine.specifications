@@ -131,7 +131,7 @@ MSpec provides following live templates:
 * `msb`, Shortcut for `Because` delegate
 * `msi`, Shortcut for `It` delegate
 
-To import these templates into Visual Studio go to ´ReSharper --> Templates Explorer...` select `Import...` and provide full path to `Misc\ReSharper.LiveTemplates.DotSettings` file.
+To import these templates into Visual Studio go to `ReSharper --> Templates Explorer...` select `Import...` and provide full path to `Misc\ReSharper.LiveTemplates.DotSettings` file.
 
 #### TestDriven.Net
 
