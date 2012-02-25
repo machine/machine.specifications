@@ -4,7 +4,7 @@ using Machine.Specifications.ComparerStrategies;
 
 namespace Machine.Specifications
 {
-  class AssertComparer<T> : IComparer<T>, IEqualityComparer<T>
+  public class AssertComparer<T> : IComparer<T>, IEqualityComparer<T>
   {
     public int Compare(T x, T y)
     {
