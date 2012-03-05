@@ -29,7 +29,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;RESHARPER_6;RESHARPER_61</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -246,6 +246,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="InstallResharperRunner.7.0 - VS2011.bat" />
     <None Include="Resources\Machine.Specifications.ico" />
   </ItemGroup>
   <ItemGroup>
