@@ -247,7 +247,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="InstallResharperRunner.7.0 - VS2011.bat" />
+    <None Include="InstallResharperRunner.7.0 - VS2011.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Machine.Specifications.ico" />
   </ItemGroup>
   <ItemGroup>
