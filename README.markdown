@@ -96,7 +96,7 @@ MSpec provides [TeamCity](http://www.jetbrains.com/teamcity/) integration via sp
 
 #### HTML output from the command-line runner
 
-Using the `--html` option from the command-line runner will cause the runner to output its test results in a "human readable" HTML document. If no file name is provided as an argument, it will use the name of the tested assembly(s) as the name of the output file. In the case of multiple assemblies, an `index.html` will be included with links to each assembly-specific HTML document. If a filename is provided, the output will be place in a file at that name/path, overwriting previous files. If multiple assemblies are being testing, the output for each will be grouped into a single file.
+Using the `--html` option from the command-line runner will cause the runner to output its test results in a "human readable" HTML document. If no file name is provided as an argument, it will use the name of the tested assembly(s) as the name of the output file. In the case of multiple assemblies, an `index.html` will be included with links to each assembly-specific HTML document. If a filename is provided, the output will be place in a file at that name/path, overwriting previous files. If multiple assemblies are being tested, the output for each will be grouped into a single file.
 
 Using this option with a CI server that supports running the command-line runner and capturing the output HTML as an artifact, you can integrate the test results into your build report.
 
@@ -112,7 +112,7 @@ This option behaves the same as the `--html` option, in terms of filename behavi
 
 ##### Using InstallResharperRunner*.bat
 
-MSpec provides a batch file for each of the four versions of ReSharper it supports, 4.1, 4.5, 5.0, 5.1, 6.0 and 6.1.
+MSpec provides a batch file for each of the versions of ReSharper it supports, 4.1, 4.5, 5.0, 5.1, 6.0 and 6.1.
 
 ##### Preventing ReSharper from marking specifications as unused
 
@@ -163,7 +163,7 @@ After following these steps, MSpec-based Contexts and Specifications can be ran 
 
 ##### Using XCopy deploy in TD.NET 2.24+
 
-TestDriven.Net versions 2.24 and newer support an XCopy deployment model that simplifies the plugin deployment process and negates the versioning issues that arise from using the registry-based scheme used in `InstallTDNetRunner.bat`.
+TestDriven.Net versions 2.24 and newer support a XCopy deployment model that simplifies the plugin deployment process and negates the versioning issues that arise from using the registry-based scheme used in `InstallTDNetRunner.bat`.
 
 All that needs to be done is to make sure that the `Machine.Specifications.dll.tdnet` file that is deployed as part of the zip downloads and `Machine.Specifications.TDNetRunner.csproj` is in the same directory as your MSpec binaries.
 
@@ -236,7 +236,7 @@ void OnAssemblyStart()
 void OnAssemblyComplete()
 </pre>
 
-These methods are used by classes that implements `IAssemblyContext`, to set if an assembly loaded by reflection has started to be checked (explored) or is completed.
+These methods are used by classes that implement `IAssemblyContext`, to set if an assembly loaded by reflection has started to be checked (explored) or is completed.
 
 #### ICleanupAfterEveryContextInAssembly
 
