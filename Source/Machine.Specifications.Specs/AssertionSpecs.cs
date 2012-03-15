@@ -175,4 +175,32 @@ namespace Machine.Specifications.Specs
     It should_report_the_requested_type =
       () => Exception.Message.ShouldStartWith("Should be of type System.Int32");
   }
+
+  [Subject(typeof(ShouldExtensionMethods))]
+  public class when_checking_if_an_item_matches_a_func
+  {
+    static Exception Exception;
+    static int Int;
+
+    Establish context = () => { Int = 42; };
+
+    Because of = () => { Exception = Catch.Exception(() => Int.ShouldMatch(x => x > 1)); };
+
+    It should_succeed =
+      () => Exception.ShouldBeNull();
+  }
+  
+  [Subject(typeof(ShouldExtensionMethods))]
+  public class when_checking_if_an_item_matches_a_func_and_the_check_fails
+  {
+    static Exception Exception;
+    static int Int;
+
+    Establish context = () => { Int = 42; };
+
+    Because of = () => { Exception = Catch.Exception(() => Int.ShouldMatch(x => x > 50)); };
+
+    It should_print_the_func_description =
+      () => Exception.Message.ShouldContain("Should match expression [x => (x > 50)], but does not.");
+  }
 }
