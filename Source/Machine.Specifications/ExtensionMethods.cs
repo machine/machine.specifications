@@ -159,6 +159,14 @@ namespace Machine.Specifications
       }
     }
 
+    public static void ShouldMatch<T>(this T actual, Expression<Func<T, bool>> condition)
+    {
+        var matches = condition.Compile().Invoke(actual);
+
+        if (matches) return;
+        throw new SpecificationException(string.Format("Should match expression [{0}], but does not.", condition));
+    }   
+
     public static void ShouldEachConformTo<T>(this IEnumerable<T> list, Expression<Func<T, bool>> condition)
     {
       var source = new List<T>(list);
