@@ -190,7 +190,17 @@ namespace Machine.Specifications.ReSharperRunner
     public static ICollection<string> GetTags(this IAttributesOwner type)
     {
       return type.GetAttributeInstances(new CLRTypeName(typeof(TagsAttribute).FullName), true)
-        .SelectMany(x => x.PositionParameters(), (x, v) => v.ConstantValue.Value.ToString())
+        .SelectMany(x => x.PositionParameters())
+        .SelectMany(x =>
+        {
+          if (x.IsArray)
+          {
+            return x.ArrayValue.Select(av => av.ConstantValue);
+          }
+
+          return new[] {x.ConstantValue};
+        })
+        .Select(v => v.Value.ToString())
         .Distinct()
         .ToList();
     }
