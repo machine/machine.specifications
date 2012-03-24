@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Xml;
 
 using JetBrains.ProjectModel;
@@ -12,7 +11,6 @@ using JetBrains.ReSharper.UnitTestFramework.Elements;
 #endif
 using JetBrains.Util;
 
-using Machine.Specifications.Factories;
 using Machine.Specifications.Utility.Internal;
 
 using ContextFactory = Machine.Specifications.ReSharperRunner.Factories.ContextFactory;
@@ -21,6 +19,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 {
   public class ContextElement : Element, ISerializableElement
   {
+    readonly string _id;
     readonly string _assemblyLocation;
     readonly string _subject;
     readonly IEnumerable<UnitTestElementCategory> _categories;
@@ -36,6 +35,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                           bool isIgnored)
       : base(provider, psiModuleManager, cacheManager, null, projectEnvoy, typeName, isIgnored)
     {
+      _id = CreateId(subject, TypeName);
       _assemblyLocation = assemblyLocation;
       _subject = subject;
 
@@ -85,11 +85,6 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       get { return _categories; }
     }
 
-    public override string Id
-    {
-      get { return CreateId(_subject, TypeName); }
-    }
-
     public void WriteToXml(XmlElement parent)
     {
       parent.SetAttribute("projectId", GetProject().GetPersistentID());
@@ -130,11 +125,14 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                                                       isIgnored);
     }
 
+    public override string Id
+    {
+      get { return _id; }
+    }
+
     public static string CreateId(string subject, string typeName)
     {
-      var id = String.Format("{0}.{1}", subject, typeName);
-      System.Diagnostics.Debug.WriteLine("CE  " + id);
-      return id;
+      return String.Format("{0}.{1}", subject, typeName);
     }
   }
 }

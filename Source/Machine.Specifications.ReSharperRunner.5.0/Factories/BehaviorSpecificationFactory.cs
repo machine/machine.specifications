@@ -110,7 +110,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                                                 bool isIgnored)
     {
 #if RESHARPER_6
-      var id = BehaviorSpecificationElement.CreateId(behavior.Id, fieldName);
+      var id = BehaviorSpecificationElement.CreateId(behavior, fieldName);
 #if RESHARPER_61
       var behaviorSpecification = manager.GetElementById(project, id) as BehaviorSpecificationElement;
 #else
