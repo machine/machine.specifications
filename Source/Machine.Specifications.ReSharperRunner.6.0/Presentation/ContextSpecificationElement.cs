@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Xml;
 
 using JetBrains.ProjectModel;
@@ -18,6 +17,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 {
   internal class ContextSpecificationElement : FieldElement
   {
+    readonly string _id;
     readonly IEnumerable<UnitTestElementCategory> _categories;
 
     public ContextSpecificationElement(MSpecUnitTestProvider provider,
@@ -33,6 +33,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                                        bool isIgnored)
       : base(provider, psiModuleManager, cacheManager, context, project, declaringTypeName, fieldName, isIgnored || context.Explicit)
     {
+      _id = CreateId(context, fieldName);
+
       if (tags != null)
       {
         _categories = UnitTestElementCategory.Create(tags);
@@ -88,15 +90,13 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     {
       get
       {
-        return CreateId(Context.Id, FieldName);
+        return _id;
       }
     }
 
-    public static string CreateId(string contextElementId, string fieldName)
+    public static string CreateId(ContextElement contextElement, string fieldName)
     {
-      var id = String.Format("{0}.{1}", contextElementId, fieldName);
-      System.Diagnostics.Debug.WriteLine("CSE " + id);
-      return id;
+      return String.Format("{0}.{1}", contextElement.Id, fieldName);
     }
   }
 }

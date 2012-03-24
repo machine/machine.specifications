@@ -10,12 +10,12 @@ using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.ReSharper.UnitTestFramework.Elements;
 #endif
 
-using Machine.Specifications.Factories;
-
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
   public class BehaviorElement : FieldElement
   {
+    readonly string _id;
+
     public BehaviorElement(MSpecUnitTestProvider provider,
                            PsiModuleManager psiModuleManager,
                            CacheManager cacheManager,
@@ -29,6 +29,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                            string fullyQualifiedTypeName)
       : base(provider, psiModuleManager, cacheManager, context, projectEnvoy, declaringTypeName, fieldName, isIgnored || context.Explicit)
     {
+      _id = CreateId(context, fieldName);
       FullyQualifiedTypeName = fullyQualifiedTypeName;
     }
 
@@ -99,14 +100,12 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public override string Id
     {
-      get { return CreateId(Context.Id, FieldName); }
+      get { return _id; }
     }
 
-    public static string CreateId(string contextElementId, string fieldName)
+    public static string CreateId(ContextElement contextElement, string fieldName)
     {
-      var id = String.Format("{0}.{1}", contextElementId, fieldName);
-      System.Diagnostics.Debug.WriteLine("BE  " + id);
-      return id;
+      return String.Format("{0}.{1}", contextElement.Id, fieldName);
     }
   }
 }

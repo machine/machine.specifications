@@ -16,6 +16,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 {
   public class BehaviorSpecificationElement : FieldElement
   {
+    readonly string _id;
+
     public BehaviorSpecificationElement(MSpecUnitTestProvider provider,
                                         PsiModuleManager psiModuleManager,
                                         CacheManager cacheManager,
@@ -28,6 +30,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                                         bool isIgnored)
       : base(provider, psiModuleManager, cacheManager, behavior, projectEnvoy, declaringTypeName, fieldName, isIgnored || behavior.Explicit)
     {
+      _id = CreateId(behavior, fieldName);
     }
 
     public BehaviorElement Behavior
@@ -77,14 +80,12 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public override string Id
     {
-      get { return CreateId(Behavior.Id, FieldName); }
+      get { return _id; }
     }
 
-    public static string CreateId(string behaviorElementId, string fieldName)
+    public static string CreateId(BehaviorElement behaviorElement, string fieldName)
     {
-      var id = String.Format("{0}.{1}", behaviorElementId, fieldName);
-      System.Diagnostics.Debug.WriteLine("BSE " + id);
-      return id;
+      return String.Format("{0}.{1}", behaviorElement.Id, fieldName);
     }
   }
 }
