@@ -13,12 +13,13 @@ task :configure do
   
   build_config = {
     :build => {
-      :base => "0.5",
+      :base => File.read('VERSION'),
       :number => ENV['BUILD_NUMBER'],
       :sha => ENV['BUILD_VCS_NUMBER'] || 'no SHA',
+      :prerelease => ENV.include?('PRERELEASE')
     },
     :target => target,
-    :sign_assembly => (ENV['SIGN_ASSEMBLY'] =~ /true/i and true or false),
+    :sign_assembly => ENV.include?('SIGN_ASSEMBLY'),
     :out_dir => "Build/#{target}/",
     :nunit_framework => "net-3.5",
     :mspec_options => (["--teamcity"] if ENV.include?('TEAMCITY_PROJECT_NAME')) || []
@@ -31,16 +32,19 @@ task :configure do
     "#{project}#{'-Signed' if configatron.sign_assembly}"
   end
   configatron.nuget.package = Configatron::Delayed.new do
-    "Distribution/#{configatron.project}.#{configatron.version.compatible}.nupkg"
+    "Distribution/#{configatron.project}.#{configatron.version.package}.nupkg"
   end
   configatron.zip.package = Configatron::Delayed.new do
     "Distribution/#{configatron.project}-#{configatron.target}.zip"
   end
   configatron.version.full = Configatron::Delayed.new do
-    "#{configatron.build.base}.#{configatron.build.number || '0'}-#{configatron.build.sha[0..6]}"
+    "#{configatron.build.base}#{'-beta' + configatron.build.number if configatron.build.prerelease}-#{configatron.build.sha[0..6]}"
+  end
+  configatron.version.package = Configatron::Delayed.new do
+    "#{configatron.build.base}#{'-beta' + configatron.build.number if configatron.build.prerelease}"
   end
   configatron.version.compatible = Configatron::Delayed.new do
-    "#{configatron.build.base}.#{configatron.build.number || '0'}.0"
+    "#{configatron.build.base}.0"
   end
 
   configatron.configure_from_hash build_config
