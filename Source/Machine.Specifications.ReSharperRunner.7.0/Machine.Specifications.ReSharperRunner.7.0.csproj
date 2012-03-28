@@ -21,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\Build\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;RESHARPER_6;RESHARPER_61</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;RESHARPER_6;RESHARPER_61;RESHARPER_7</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -29,7 +29,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Build\Release\</OutputPath>
-    <DefineConstants>TRACE;RESHARPER_6;RESHARPER_61</DefineConstants>
+    <DefineConstants>TRACE;RESHARPER_6;RESHARPER_61;RESHARPER_7</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -76,6 +76,10 @@
     </Reference>
     <Reference Include="JetBrains.ReSharper.Features.Common">
       <HintPath>..\..\Libraries\ReSharper\7.0\JetBrains.ReSharper.Features.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Features.Shared">
+      <HintPath>..\..\Libraries\ReSharper\7.0\JetBrains.ReSharper.Features.Shared.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi">
