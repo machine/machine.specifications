@@ -164,6 +164,12 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     }
 
     public abstract string GetPresentation();
+
+    public string GetPresentation(IUnitTestElement unitTestElement)
+    {
+        return GetPresentation();
+    }
+
     public abstract IDeclaredElement GetDeclaredElement();
 
     public IEnumerable<IProjectFile> GetProjectFiles()
@@ -177,8 +183,10 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       return declaredType.GetSourceFiles().Select(x => x.ToProjectFile());
     }
 
-#if RESHARPER_61
-    public IList<UnitTestTask> GetTaskSequence(IList<IUnitTestElement> explicitElements)
+#if RESHARPER_7
+    public IList<UnitTestTask> GetTaskSequence(ICollection<IUnitTestElement> explicitElements, IUnitTestLaunch unitTestLaunch)
+#elif RESHARPER_61
+	 public IList<UnitTestTask> GetTaskSequence(IList<IUnitTestElement> explicitElements)
 #else
     public IList<UnitTestTask> GetTaskSequence(IEnumerable<IUnitTestElement> explicitElements)
 #endif
