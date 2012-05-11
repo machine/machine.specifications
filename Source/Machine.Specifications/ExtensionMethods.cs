@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using Machine.Specifications.Annotations;
@@ -594,6 +595,36 @@ entire list: {1}",
       exception.ShouldNotBeNull();
       exception.ShouldBeOfType(exceptionType);
       return exception;
+    }
+    
+    public static void ShouldBeLike(this object obj, object expected)
+    {
+      var exceptions = expected.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty)
+          .Select(expectedProperty =>
+            {
+              try
+              {
+                var expectedValue = expectedProperty.GetValue(expected, null);
+                
+                var property = obj.GetType().GetProperty(expectedProperty.Name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty);
+
+                if (property == null)
+                  throw NewException(string.Format("  Expected: {1}{0}  But was:  Not Defined", Environment.NewLine, expectedValue.ToUsefulString()));
+
+                var value = property.GetValue(obj, null);
+
+                value.ShouldEqual(expectedValue);
+
+                return null;
+              }
+              catch (SpecificationException ex)
+              {
+                return NewException(string.Format("Property {{0}}:{0}{1}", Environment.NewLine, ex.Message), expectedProperty.Name);
+              }
+            }).Where(e => e != null);
+
+      if(exceptions.Any())
+        throw NewException(exceptions.Select(e => e.Message).Aggregate("", (r, m) => r + m + Environment.NewLine + Environment.NewLine).TrimEnd());
     }
   }
 }
