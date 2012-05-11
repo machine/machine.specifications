@@ -5,10 +5,16 @@ namespace Machine.Specifications.Specs
   [Subject(typeof(ShouldExtensionMethods))]
   public class when_asserting_object_is_like_expected
   {
+    class Dummy
+    {
+      public string Prop1 { get; set; }
+      public int Prop2 { get; set; }
+    }
+
     static Exception Exception;
-    static object Obj;
+    static Dummy Obj;
     
-    Establish context = () => { Obj = new {Prop1 = "test", Prop2 = 2}; };
+    Establish context = () => { Obj = new Dummy{Prop1 = "test", Prop2 = 2}; };
 
     public class with_correct_properties_and_values
     {
