@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Machine.Specifications.Utility
@@ -9,7 +8,20 @@ namespace Machine.Specifications.Utility
     /// </summary>
     public static class ObjectGraphHelper
     {
-        public static IEnumerable<Member> GetGraph(object obj)
+        public static INode GetGraph(object obj)
+        {
+            if(obj.GetType().IsArray)
+                return GetArrayNode(obj);
+            else
+                return GetKeyValueNode(obj);
+        }
+
+        static INode GetArrayNode(object obj)
+        {
+            return new ArrayNode();
+        }
+
+        static INode GetKeyValueNode(object obj)
         {
             var properties = obj.GetType().GetProperties()
                 .Where(p => p.CanRead)
@@ -34,7 +46,20 @@ namespace Machine.Specifications.Utility
                     };
                 });
 
-            return properties.Concat(fields).OrderBy(m => m.Name);
+            return new KeyValueNode {KeyValues = properties.Concat(fields).OrderBy(m => m.Name)};
+        }
+
+        class ArrayNode : INode
+        {
+        }
+
+        public interface INode
+        {
+        }
+
+        public class KeyValueNode : INode
+        {
+            public IOrderedEnumerable<Member> KeyValues { get; set; }
         }
 
         public class Member
