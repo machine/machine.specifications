@@ -29,7 +29,7 @@ namespace Machine.Specifications.Specs
       
       It should_throw = () => Exception.ShouldBeOfType<SpecificationException>();
       It should_contain_message = () => Exception.Message.ShouldEqual(
-@"Property ""Prop1"":
+@"""Prop1"":
   Expected string length 5 but was 4. Strings differ at index 4.
   Expected: ""test2""
   But was:  ""test""
@@ -42,7 +42,7 @@ namespace Machine.Specifications.Specs
       
       It should_throw = () => Exception.ShouldBeOfType<SpecificationException>();
       It should_contain_message = () => Exception.Message.ShouldEqual(
-@"Property ""Prop3"":
+@"""Prop3"":
   Expected: ""other""
   But was:  Not Defined");
     }
@@ -53,17 +53,17 @@ namespace Machine.Specifications.Specs
       
       It should_throw = () => Exception.ShouldBeOfType<SpecificationException>();
       It should_contain_message = () => Exception.Message.ShouldEqual(
-@"Property ""Prop1"":
+@"""Prop1"":
   Expected string length 5 but was 4. Strings differ at index 4.
   Expected: ""test2""
   But was:  ""test""
   ---------------^
 
-Property ""Prop2"":
+""Prop2"":
   Expected: [3]
   But was:  [2]
 
-Property ""Prop3"":
+""Prop3"":
   Expected: ""other""
   But was:  Not Defined");
     }

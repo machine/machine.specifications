@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Machine.Specifications.Utility
@@ -10,15 +11,26 @@ namespace Machine.Specifications.Utility
     {
         public static INode GetGraph(object obj)
         {
-            if(obj.GetType().IsArray)
+            var objectType = obj.GetType();
+            if (objectType.IsArray)
+            {
                 return GetArrayNode(obj);
-            else
+            }
+            else if(objectType.IsClass && objectType != typeof(string))
+            {
                 return GetKeyValueNode(obj);
+            }
+            else
+            {
+                return new LiteralNode {Value = obj};
+            }
         }
 
         static INode GetArrayNode(object obj)
         {
-            return new ArrayNode();
+            var array = (IEnumerable<object>) obj;
+
+            return new ArrayNode {ValueGetters = array.Select<object, Func<object>>(a => () => a).ToArray()};
         }
 
         static INode GetKeyValueNode(object obj)
@@ -49,17 +61,23 @@ namespace Machine.Specifications.Utility
             return new KeyValueNode {KeyValues = properties.Concat(fields).OrderBy(m => m.Name)};
         }
 
-        class ArrayNode : INode
-        {
-        }
-
         public interface INode
         {
         }
 
+        public class ArrayNode : INode
+        {
+            public IEnumerable<Func<object>> ValueGetters { get; set; }
+        }
+
         public class KeyValueNode : INode
         {
-            public IOrderedEnumerable<Member> KeyValues { get; set; }
+            public IEnumerable<Member> KeyValues { get; set; }
+        }
+
+        public class LiteralNode:INode
+        {
+            public object Value { get; set; }
         }
 
         public class Member
