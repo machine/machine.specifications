@@ -129,6 +129,7 @@
     <Compile Include="Utility\Internal\PrettyPrintingExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Framework.cs" />
+    <Compile Include="Utility\ObjectGraphHelper.cs" />
     <Compile Include="Utility\RandomExtensionMethods.cs" />
     <Compile Include="Utility\ReflectionHelper.cs" />
     <Compile Include="SpecificationExceptions.cs" />

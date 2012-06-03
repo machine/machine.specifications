@@ -16,14 +16,14 @@ namespace Machine.Specifications.Specs
     
     Establish context = () => { Obj = new Dummy{Prop1 = "test", Prop2 = 2}; };
 
-    public class with_correct_properties_and_values
+    public class with_correct_nodes_and_values
     {
       Because of = () => { Exception = Catch.Exception(() => Obj.ShouldBeLike(new {Prop1 = "test", Prop2 = 2})); };
 
       It should_not_throw = () => Exception.ShouldBeNull();
     }
 
-    public class with_incorrect_property_value
+    public class with_incorrect_node_value
     {
       Because of = () => { Exception = Catch.Exception(() => Obj.ShouldBeLike(new {Prop1 = "test2", Prop2 = 2})); };
       
@@ -36,7 +36,7 @@ namespace Machine.Specifications.Specs
   ---------------^");
     }
     
-    public class with_missing_property
+    public class with_missing_node
     {
       Because of = () => { Exception = Catch.Exception(() => Obj.ShouldBeLike(new {Prop1 = "test", Prop2 = 2, Prop3 = "other"})); };
       
