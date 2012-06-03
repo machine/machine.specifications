@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 using Machine.Specifications.Utility;
 
@@ -9,7 +8,7 @@ namespace Machine.Specifications.Specs.Utility
     public class when_getting_an_object_graph
     {
         static object _obj;
-        static IEnumerable<ObjectGraphHelper.Member> _result;
+        static ObjectGraphHelper.INode _result;
 
         public class with_property
         {
@@ -17,8 +16,11 @@ namespace Machine.Specifications.Specs.Utility
 
             Because of = () => _result = ObjectGraphHelper.GetGraph(_obj);
 
-            It should_have_property = () => _result.Where(m => m.Name == "Property").ShouldNotBeEmpty();
-            It should_retrieve_value = () => _result.Where(m => m.Name == "Property").Single().ValueGetter().ShouldEqual("value");
+            It should_return_a_key_value_node = () => _result.ShouldBeOfType<ObjectGraphHelper.KeyValueNode>();
+            It should_have_property = () => ((ObjectGraphHelper.KeyValueNode) _result).KeyValues
+                .Where(m => m.Name == "Property").ShouldNotBeEmpty();
+            It should_retrieve_value = () => ((ObjectGraphHelper.KeyValueNode) _result).KeyValues
+                .Where(m => m.Name == "Property").Single().ValueGetter().ShouldEqual("value");
         }
 
         public class with_field
@@ -31,9 +33,12 @@ namespace Machine.Specifications.Specs.Utility
             };
 
             Because of = () => _result = ObjectGraphHelper.GetGraph(_obj);
-
-            It should_have_field = () => _result.Where(m => m.Name == "Field").ShouldNotBeEmpty();
-            It should_retrieve_value = () => _result.Where(m => m.Name == "Field").Single().ValueGetter().ShouldEqual("value");
+            
+            It should_return_a_key_value_node = () => _result.ShouldBeOfType<ObjectGraphHelper.KeyValueNode>();
+            It should_have_field = () => ((ObjectGraphHelper.KeyValueNode) _result).KeyValues
+                .Where(m => m.Name == "Field").ShouldNotBeEmpty();
+            It should_retrieve_value = () => ((ObjectGraphHelper.KeyValueNode) _result).KeyValues
+                .Where(m => m.Name == "Field").Single().ValueGetter().ShouldEqual("value");
         }
 
         public class with_readonly_field
@@ -41,12 +46,14 @@ namespace Machine.Specifications.Specs.Utility
             Establish ctx = () => _obj = new ObjectWithReadOnlyField("value");
 
             Because of = () => _result = ObjectGraphHelper.GetGraph(_obj);
-
-            It should_have_field = () => _result.Where(m => m.Name == "Field").ShouldNotBeEmpty();
-            It should_retrieve_value = () => _result.Where(m => m.Name == "Field").Single().ValueGetter().ShouldEqual("value");
+            
+            It should_return_a_key_value_node = () => _result.ShouldBeOfType<ObjectGraphHelper.KeyValueNode>();
+            It should_have_field = () => ((ObjectGraphHelper.KeyValueNode) _result).KeyValues
+                .Where(m => m.Name == "Field").ShouldNotBeEmpty();
+            It should_retrieve_value = () => ((ObjectGraphHelper.KeyValueNode) _result).KeyValues
+                .Where(m => m.Name == "Field").Single().ValueGetter().ShouldEqual("value");
         }
 
-        
         public class with_property_and_field
         {
             Establish ctx = () =>
@@ -56,14 +63,19 @@ namespace Machine.Specifications.Specs.Utility
                 obj.Field = "value2";
                 _obj = obj;
             };
+
             Because of = () => _result = ObjectGraphHelper.GetGraph(_obj);
             
-            It should_have_property = () => _result.Where(m => m.Name == "Property").ShouldNotBeEmpty();
-            It should_retrieve_property_value = () => _result.Where(m => m.Name == "Property").Single().ValueGetter().ShouldEqual("value1");
-            It should_have_field = () => _result.Where(m => m.Name == "Field").ShouldNotBeEmpty();
-            It should_retrieve_field_value = () => _result.Where(m => m.Name == "Field").Single().ValueGetter().ShouldEqual("value2");
+            It should_return_a_key_value_node = () => _result.ShouldBeOfType<ObjectGraphHelper.KeyValueNode>();
+            It should_have_field = () => ((ObjectGraphHelper.KeyValueNode) _result).KeyValues
+                .Where(m => m.Name == "Field").ShouldNotBeEmpty();
+            It should_have_property = () => ((ObjectGraphHelper.KeyValueNode) _result).KeyValues
+                .Where(m => m.Name == "Property").ShouldNotBeEmpty();
+            It should_retrieve_field_value = () => ((ObjectGraphHelper.KeyValueNode) _result).KeyValues
+                .Where(m => m.Name == "Field").Single().ValueGetter().ShouldEqual("value2");
+            It should_retrieve_property_value = () => ((ObjectGraphHelper.KeyValueNode) _result).KeyValues
+                .Where(m => m.Name == "Property").Single().ValueGetter().ShouldEqual("value1");
         }
-
     }
 
     class ObjectWithField
@@ -83,7 +95,7 @@ namespace Machine.Specifications.Specs.Utility
 
     class ObjectWithPropertyAndField
     {
-        public string Property { get; set; }   
         public string Field;
+        public string Property { get; set; }
     }
 }
