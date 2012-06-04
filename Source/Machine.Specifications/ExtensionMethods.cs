@@ -646,7 +646,7 @@ entire list: {1}",
 
               return Enumerable.Range(0, expectedCount)
                   .SelectMany(i => ShouldBeLikeInternal(actualValues.ElementAt(i)(), 
-                      expectedValues.ElementAt(i),
+                      expectedValues.ElementAt(i)(),
                       string.Format("{0}[{1}]", nodeName, i)));
           }
           else if(nodeType == typeof(ObjectGraphHelper.KeyValueNode))
