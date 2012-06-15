@@ -71,20 +71,21 @@ MSpec, like other testing frameworks, provides a robust command-line runner that
 
 Usage of the command-line runner is as follows (from `mspec.exe --help`):
 
-<pre>
-Usage: mspec.exe [options] &lt;assemblies&gt;
+```
+Usage: mspec.exe [options] <assemblies>
 Options:
--i, --include  Executes all specifications in contexts with these comma delimited tags. Ex. -i "foo,bar,foo_bar"
--x, --exclude  Exclude specifications in contexts with these comma delimited tags. Ex. -x "foo,bar,foo_bar"
--t, --timeinfo Shows time-related information in HTML output
--s, --silent   Suppress console output
--w, --wait     Wait 15 seconds for debugger to be attached
---teamcity     Reporting for TeamCity CI integration (auto-detected)
---html &lt;PATH&gt;  Outputs the HTML report to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)
---xml &lt;PATH&gt;   Outputs the XML report to the file referenced by the path
--h, --help     Shows this help message
-Usage: mspec.exe [options] &lt;assemblies&gt;
-</pre>
+-i, --include               Executes all specifications in contexts with these comma delimited tags. Ex. -i "foo,bar,foo_bar"
+-x, --exclude               Exclude specifications in contexts with these comma delimited tags. Ex. -x "foo,bar,foo_bar"
+-t, --timeinfo              Shows time-related information in HTML output
+-s, --silent                Suppress console output
+-w, --wait                  Wait 15 seconds for debugger to be attached
+--teamcity                  Reporting for TeamCity CI integration (also auto-detected)
+--no-teamcity-autodetect    Disables TeamCity autodetection
+--html <PATH>               Outputs the HTML report to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)
+--xml <PATH>                Outputs the XML report to the file referenced by the path
+-h, --help                  Shows this help message
+Usage: mspec.exe [options] <assemblies>
+```
 
 #### Selenium Support in the command-line runner
 

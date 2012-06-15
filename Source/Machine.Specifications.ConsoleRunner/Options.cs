@@ -37,8 +37,13 @@ namespace Machine.Specifications.ConsoleRunner
 
     [Option(null, 
       "teamcity",
-      HelpText = "Reporting for TeamCity CI integration (auto-detected)")]
+      HelpText = "Reporting for TeamCity CI integration (also auto-detected)")]
     public bool TeamCityIntegration = false;
+
+    [Option(null,
+      "no-teamcity-autodetect",
+      HelpText = "Disables TeamCity autodetection")]
+    public bool DisableTeamCityAutodetection = false;
 
     [OptionList("i",
       "include",
@@ -69,15 +74,16 @@ namespace Machine.Specifications.ConsoleRunner
       sb.AppendLine("");
       sb.AppendLine(Usage());
       sb.AppendLine("Options:");
-      sb.AppendLine("  -i, --include     Execute all specifications in contexts with these comma delimited tags. Ex. -i \"foo,bar,foo_bar\"");
-      sb.AppendLine("  -x, --exclude     Exclude specifications in contexts with these comma delimited tags. Ex. -x \"foo,bar,foo_bar\"");
-      sb.AppendLine("  -t, --timeinfo    Shows time-related information in HTML output");
-      sb.AppendLine("  -s, --silent      Suppress console output");
-      sb.AppendLine("  -w, --wait        Wait 15 seconds for debugger to be attached");
-      sb.AppendLine("  --teamcity        Reporting for TeamCity CI integration");
-      sb.AppendLine("  --html <PATH>     Outputs the HTML report to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)");
-      sb.AppendLine("  --xml <PATH>      Outputs the XML report to the file referenced by the path");
-      sb.AppendLine("  -h, --help        Shows this help message");
+      sb.AppendLine("  -i, --include               Execute all specifications in contexts with these comma delimited tags. Ex. -i \"foo,bar,foo_bar\"");
+      sb.AppendLine("  -x, --exclude               Exclude specifications in contexts with these comma delimited tags. Ex. -x \"foo,bar,foo_bar\"");
+      sb.AppendLine("  -t, --timeinfo              Shows time-related information in HTML output");
+      sb.AppendLine("  -s, --silent                Suppress console output");
+      sb.AppendLine("  -w, --wait                  Wait 15 seconds for debugger to be attached");
+      sb.AppendLine("  --teamcity                  Reporting for TeamCity CI integration (also auto-detected)");
+      sb.AppendLine("  --no-teamcity-autodetect    Disables TeamCity autodetection");
+      sb.AppendLine("  --html <PATH>               Outputs the HTML report to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)");
+      sb.AppendLine("  --xml <PATH>                Outputs the XML report to the file referenced by the path");
+      sb.AppendLine("  -h, --help                  Shows this help message");
 
       return sb.ToString();
     }
