@@ -4,8 +4,9 @@ using System.Drawing;
 using JetBrains.CommonControls;
 #if RESHARPER_7
 using JetBrains.ReSharper.Features.Shared.TreePsiBrowser;
-#endif
+#else
 using JetBrains.ReSharper.Features.Common.TreePsiBrowser;
+#endif
 using JetBrains.ReSharper.UnitTestExplorer;
 using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.ReSharper.UnitTestFramework.UI;

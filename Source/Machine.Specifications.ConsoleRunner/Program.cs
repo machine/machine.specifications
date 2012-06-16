@@ -50,7 +50,9 @@ namespace Machine.Specifications.ConsoleRunner
       listeners.Add(new AssemblyLocationAwareListener());
 
       ISpecificationRunListener mainListener;
-      if (options.TeamCityIntegration || Environment.GetEnvironmentVariable("TEAMCITY_PROJECT_NAME") != null)
+      if (options.TeamCityIntegration ||
+          (!options.DisableTeamCityAutodetection &&
+           Environment.GetEnvironmentVariable("TEAMCITY_PROJECT_NAME") != null))
       {
         mainListener = new TeamCityReporter(_console.WriteLine, timingListener);
       }
