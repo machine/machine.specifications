@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using Machine.Specifications.Annotations;
+using Machine.Specifications.Utility;
 using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications
@@ -594,6 +596,90 @@ entire list: {1}",
       exception.ShouldNotBeNull();
       exception.ShouldBeOfType(exceptionType);
       return exception;
+    }
+
+    public static void ShouldBeLike(this object obj, object expected)
+    {
+      var exceptions = ShouldBeLikeInternal(obj, expected, "").ToArray();
+
+      if (exceptions.Any())
+      {
+        throw NewException(exceptions.Select(e => e.Message).Aggregate("", (r, m) => r + m + Environment.NewLine + Environment.NewLine).TrimEnd());
+      }
+    }
+
+    static IEnumerable<SpecificationException> ShouldBeLikeInternal(object obj, object expected, string nodeName)
+    {
+      var expectedNode = ObjectGraphHelper.GetGraph(expected);
+      var nodeType = expectedNode.GetType();
+      if (nodeType == typeof(ObjectGraphHelper.LiteralNode))
+      {
+        try
+        {
+          obj.ShouldEqual(expected);
+        }
+        catch (SpecificationException ex)
+        {
+          return new[] {NewException(string.Format("{{0}}:{0}{1}", Environment.NewLine, ex.Message), nodeName)};
+        }
+
+        return Enumerable.Empty<SpecificationException>();
+      }
+      else if (nodeType == typeof(ObjectGraphHelper.ArrayNode))
+      {
+        var actualNode = ObjectGraphHelper.GetGraph(obj);
+        if (actualNode.GetType() != typeof(ObjectGraphHelper.ArrayNode))
+        {
+          var errorMessage = string.Format("  Expected: Array{0}  But was:  {1}", Environment.NewLine, obj.GetType());
+          return new[] {NewException(string.Format("{{0}}:{0}{1}", Environment.NewLine, errorMessage), nodeName)};
+        }
+
+        var expectedValues = ((ObjectGraphHelper.ArrayNode) expectedNode).ValueGetters;
+        var actualValues = ((ObjectGraphHelper.ArrayNode) actualNode).ValueGetters;
+
+        var expectedCount = expectedValues.Count();
+        var actualCount = actualValues.Count();
+        if (expectedCount != actualCount)
+        {
+          var errorMessage = string.Format("  Expected: Array length of {1}{0}  But was:  {2}", Environment.NewLine, expectedCount, actualCount);
+          return new[] {NewException(string.Format("{{0}}:{0}{1}", Environment.NewLine, errorMessage), nodeName)};
+        }
+
+        return Enumerable.Range(0, expectedCount)
+          .SelectMany(i => ShouldBeLikeInternal(actualValues.ElementAt(i)(),
+                                                expectedValues.ElementAt(i)(),
+                                                string.Format("{0}[{1}]", nodeName, i)));
+      }
+      else if (nodeType == typeof(ObjectGraphHelper.KeyValueNode))
+      {
+        var actualNode = ObjectGraphHelper.GetGraph(obj);
+        if (actualNode.GetType() != typeof(ObjectGraphHelper.KeyValueNode))
+        {
+          var errorMessage = string.Format("  Expected: Class{0}  But was:  {1}", Environment.NewLine, obj.GetType());
+          return new[] {NewException(string.Format("{{0}}:{0}{1}", Environment.NewLine, errorMessage), nodeName)};
+        }
+
+        var expectedKeyValues = ((ObjectGraphHelper.KeyValueNode) expectedNode).KeyValues;
+        var actualKeyValues = ((ObjectGraphHelper.KeyValueNode) actualNode).KeyValues;
+
+        return expectedKeyValues
+          .SelectMany(kv =>
+          {
+            var fullNodeName = string.IsNullOrEmpty(nodeName) ? kv.Name : string.Format("{0}.{1}", nodeName, kv.Name);
+            var actualKeyValue = actualKeyValues.SingleOrDefault(k => k.Name == kv.Name);
+            if (actualKeyValue == null)
+            {
+              var errorMessage = string.Format("  Expected: {1}{0}  But was:  Not Defined", Environment.NewLine, kv.ValueGetter().ToUsefulString());
+              return new[] {NewException(string.Format("{{0}}:{0}{1}", Environment.NewLine, errorMessage), fullNodeName)};
+            }
+
+            return ShouldBeLikeInternal(actualKeyValue.ValueGetter(), kv.ValueGetter(), fullNodeName);
+          });
+      }
+      else
+      {
+        throw new InvalidOperationException("Unknown node type");
+      }
     }
   }
 }

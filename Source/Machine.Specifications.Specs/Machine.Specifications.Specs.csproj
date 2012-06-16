@@ -74,6 +74,7 @@
     <Compile Include="ExceptionResultSpecs.cs" />
     <Compile Include="Explorers\AssemblyExplorerSpecs.cs" />
     <Compile Include="Factories\ContextFactorySpecs.cs" />
+    <Compile Include="ShouldBeLikeSpecs.cs" />
     <Compile Include="Utility\Internal\ErrorMessageSpecs.cs" />
     <Compile Include="Utility\Internal\NamingSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -90,6 +91,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tags.cs" />
+    <Compile Include="Utility\ObjectGraphHelperSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications.Example.CleanupFailure\Machine.Specifications.Example.CleanupFailure.csproj">
