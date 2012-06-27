@@ -113,7 +113,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                            bool isIgnored)
     {
 #if RESHARPER_6
-      var id = ContextElement.CreateId(subject, typeName);
+      var id = ContextElement.CreateId(subject, typeName, tags);
 #if RESHARPER_61
       var contextElement = manager.GetElementById(project, id) as ContextElement;
 #else
