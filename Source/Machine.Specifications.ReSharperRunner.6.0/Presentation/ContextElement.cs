@@ -35,7 +35,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                           bool isIgnored)
       : base(provider, psiModuleManager, cacheManager, null, projectEnvoy, typeName, isIgnored)
     {
-      _id = CreateId(subject, TypeName);
+      _id = CreateId(subject, TypeName, tags);
       _assemblyLocation = assemblyLocation;
       _subject = subject;
 
@@ -130,9 +130,14 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       get { return _id; }
     }
 
-    public static string CreateId(string subject, string typeName)
+    public static string CreateId(string subject, string typeName, IEnumerable<string> tags)
     {
-      return String.Format("{0}.{1}", subject, typeName);
+      string tagsAsString = null;
+      if (tags != null)
+      {
+        tagsAsString = tags.AggregateString("", "|", (builder, tag) => builder.Append(tag));
+      }
+      return String.Format("{0}.{1}.{2}", subject, typeName, tagsAsString);
     }
   }
 }
