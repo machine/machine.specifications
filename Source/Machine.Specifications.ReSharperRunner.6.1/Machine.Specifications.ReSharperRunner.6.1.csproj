@@ -272,10 +272,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="InstallResharperRunner.6.1 - VS2008.bat">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="InstallResharperRunner.6.1 - VS2010.bat">
+    <None Include="InstallResharperRunner.6.1.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
