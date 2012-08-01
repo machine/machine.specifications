@@ -180,4 +180,46 @@ namespace Machine.Specifications.Specs
       It should_throw = () => Exception.ShouldBeOfType<SpecificationException>();
     }
   }
+
+  [Subject(typeof(ShouldExtensionMethods))]
+  public class when_asserting_that_two_objects_of_the_same_concrete_type_are_like_each_other
+  {
+    static Exception Exception;
+    static Dummy Obj1;
+    static Dummy Obj2;
+
+    Establish context = () => { Obj1 = new Dummy {Prop1 = "test"}; };
+
+    class Dummy
+    {
+      public string Prop1 { get; set; }
+    }
+
+    public class and_the_objects_are_similar
+    {
+      Establish context = () => { Obj2 = new Dummy {Prop1 = "test"}; };
+
+      Because of = () => { Exception = Catch.Exception(() => Obj1.ShouldBeLike(Obj2)); };
+
+      It should_not_throw = () => Exception.ShouldBeNull();
+    }
+
+    public class and_the_objects_are_different
+    {
+      Establish context = () => { Obj2 = new Dummy {Prop1 = "different"}; };
+
+      Because of = () => { Exception = Catch.Exception(() => Obj1.ShouldBeLike(Obj2)); };
+
+      It should_throw = () => Exception.ShouldBeOfType<SpecificationException>();
+    }
+
+    public class and_the_objects_are_different_and_have_null_values
+    {
+      Establish context = () => { Obj2 = new Dummy {Prop1 = null}; };
+
+      Because of = () => { Exception = Catch.Exception(() => Obj1.ShouldBeLike(Obj2)); };
+
+      It should_throw_a_specification_exception = () => Exception.ShouldBeOfType<SpecificationException>();
+    }
+  }
 }
