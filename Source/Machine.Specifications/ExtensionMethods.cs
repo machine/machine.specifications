@@ -610,8 +610,15 @@ entire list: {1}",
 
     static IEnumerable<SpecificationException> ShouldBeLikeInternal(object obj, object expected, string nodeName)
     {
-      var expectedNode = ObjectGraphHelper.GetGraph(expected);
-      var nodeType = expectedNode.GetType();
+      ObjectGraphHelper.INode expectedNode = null;
+      var nodeType = typeof(ObjectGraphHelper.LiteralNode);
+
+      if (expected != null)
+      {
+          expectedNode = ObjectGraphHelper.GetGraph(expected);
+          nodeType = expectedNode.GetType();
+      }
+      
       if (nodeType == typeof(ObjectGraphHelper.LiteralNode))
       {
         try
