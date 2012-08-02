@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using Gallio.Runtime;
+﻿using NUnit.Framework;
 
 namespace Machine.Specifications.GallioAdapter.Tests
 {
