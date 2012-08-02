@@ -8,9 +8,9 @@ namespace Machine.Specifications.GallioAdapter.TestResources
   [Ignore]
   public class ignored_context_spec
   {
-    public static bool established = false;
-    public static bool because = false;
-    public static bool spec = false;
+    public static bool established;
+    public static bool because;
+    public static bool spec;
 
     Establish context = () =>
       established = true;
@@ -24,9 +24,9 @@ namespace Machine.Specifications.GallioAdapter.TestResources
 
   public class ignored_specification_spec
   {
-    public static bool established = false;
-    public static bool because = false;
-    public static bool spec = false;
+    public static bool established;
+    public static bool because;
+    public static bool spec;
 
     Establish context = () =>
       established = true;
