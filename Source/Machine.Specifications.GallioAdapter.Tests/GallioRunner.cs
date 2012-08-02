@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using Gallio.Common.Reflection;
 using Gallio.Framework.Utilities;
 using Gallio.Runner.Reports.Schema;
-using Gallio.Common.Reflection;
-using System.Reflection;
 
 namespace Machine.Specifications.GallioAdapter.Tests
 {
