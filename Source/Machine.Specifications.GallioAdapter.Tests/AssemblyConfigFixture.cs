@@ -8,7 +8,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
   [SetUpFixture]
   public class AssemblyConfigFixture
   {
-    static bool _running = false;
+    static bool _running;
 
     [SetUp]
     public void Setup()
