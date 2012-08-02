@@ -173,7 +173,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
       string category = test.Metadata.GetValue(MetadataKeys.Category);
 
       AssertStringContains("Testing out the framework", category);  // Make sure the text is there
-      AssertStringContains("bool", category);             // Make sure the type is there too
+      AssertStringContains("bool", category);  // Make sure the type is there too
     }
 
     [Test]
