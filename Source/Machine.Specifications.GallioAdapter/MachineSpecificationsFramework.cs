@@ -24,7 +24,7 @@ using Gallio.Runtime.Logging;
 namespace Machine.Specifications.GallioAdapter
 {
   public class MachineSpecificationsFramework : BaseTestFramework
-  {  
+  {
     public override TestDriverFactory GetTestDriverFactory()
     {
       return CreateDriver;

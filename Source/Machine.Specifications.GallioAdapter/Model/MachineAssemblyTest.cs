@@ -37,17 +37,17 @@ namespace Machine.Specifications.GallioAdapter.Model
 
     public IList<IAssemblyContext> AssemblyContexts { get; set; }
     public IList<ICleanupAfterEveryContextInAssembly> GlobalCleanup { get; set; }
-    public IList<ISupplementSpecificationResults> SpecificationSupplements { get; set; }           
-    
+    public IList<ISupplementSpecificationResults> SpecificationSupplements { get; set; }
+
     public string AssemblyFilePath 
     {
       get { return ((IAssemblyInfo)CodeElement).Path; } 
     }
-    
+
     public Version FrameworkVersion 
-    { 
+    {
       get { return _frameworkVersion; } 
-    }    
+    }
 
     /// <summary>
     /// Creates an object to represent an MSpec assembly.
@@ -57,11 +57,11 @@ namespace Machine.Specifications.GallioAdapter.Model
     /// <param name="frameworkVersion">The version number of the MSpec.</param>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="name"/>, or
     /// <paramref name="frameworkVersion" /> is null.</exception>
-    public MachineAssemblyTest(string name, ICodeElementInfo codeElement, Version frameworkVersion) 
+    public MachineAssemblyTest(string name, ICodeElementInfo codeElement, Version frameworkVersion)
       : base(name, codeElement)
     {
       _frameworkVersion = frameworkVersion;
       AssemblyContexts = new List<IAssemblyContext>();
-    }    
+    }
   }
 }

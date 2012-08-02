@@ -18,6 +18,6 @@ namespace Machine.Specifications.GallioAdapter.Model
     {
       this.Kind = TestKinds.Fixture;
       this._context = context;
-    }   
+    }
   }
 }

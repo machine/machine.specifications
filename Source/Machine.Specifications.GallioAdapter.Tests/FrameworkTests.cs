@@ -39,7 +39,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
   // Adapted from the Gallio BaseTestFrameworkTest<TSimpleTest> Test
   [TestFixture]
   public class FrameworkTests
-  {    
+  {
     const string ParentTestName = "simple test spec";
     const string PassTestName = "pass";
     const string FailTestName = "fail";
@@ -118,7 +118,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
 
       return null;
     } 
-    #endregion    
+    #endregion
 
     [Test]
     public void PopulateTreeTest_IgnoredContextShouldIncludeExtraMetadata()
@@ -128,7 +128,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
       Test test = GetDescendantByName(testModel.RootTest.Children[0], "ignored context spec");
       
       Assert.IsNotNull(test);
-      AssertStringContains("Attribute", test.Metadata.GetValue(MetadataKeys.IgnoreReason));      
+      AssertStringContains("Attribute", test.Metadata.GetValue(MetadataKeys.IgnoreReason));
     }
 
     [Test]
@@ -168,7 +168,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
 
       Test test = GetDescendantByName(testModel.RootTest.Children[0], "subject spec");
 
-      Assert.IsNotNull(test);    
+      Assert.IsNotNull(test);
       
       string category = test.Metadata.GetValue(MetadataKeys.Category);
 
@@ -207,7 +207,6 @@ namespace Machine.Specifications.GallioAdapter.Tests
     }
 
     // These tests are borrowed directly from the Gallio MS Test adapter tests
-    
     [Test]
     public void PopulateTestTree_WhenAssemblyDoesNotReferenceFramework_IsEmpty()
     {
@@ -267,7 +266,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
       Assert.IsTrue(failTest.IsTestCase);
       Assert.AreEqual(0, failTest.Children.Count);
     }
-    
+
     [Test]
     public void MetadataImport_XmlDocumentation()
     {
@@ -280,11 +279,11 @@ namespace Machine.Specifications.GallioAdapter.Tests
       Assert.AreEqual("<summary>\nA simple test specification.\n</summary>", test.Metadata.GetValue(MetadataKeys.XmlDocumentation));
       Assert.AreEqual("<summary>\nA passing specification.\n</summary>", passTest.Metadata.GetValue(MetadataKeys.XmlDocumentation));
       Assert.AreEqual("<summary>\nA failing specification.\n</summary>", failTest.Metadata.GetValue(MetadataKeys.XmlDocumentation));
-    }    
+    }
 
     [Test]
     public void MetadataImport_AssemblyAttributes()
-    {      
+    {
       TestModel testModel = PopulateTestTree();
 
       Test assemblyTest = testModel.RootTest.Children[0];
