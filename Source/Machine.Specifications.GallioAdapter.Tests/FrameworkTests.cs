@@ -15,7 +15,6 @@
 // 
 // Modified by and Portions Copyright 2008 Machine Project
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -45,7 +44,6 @@ namespace Machine.Specifications.GallioAdapter.Tests
     const string FailTestName = "fail";
     readonly string AssemblyKind = TestKinds.Assembly;
     readonly Assembly SimpleFixtureAssembly = typeof(simple_test_spec).Assembly;
-    readonly Type SimpleFixtureType = typeof(simple_test_spec);
     readonly string SimpleFixtureNamespace = typeof(simple_test_spec).Namespace;
 
     void AssertStringContains(string needle, string haystack)
