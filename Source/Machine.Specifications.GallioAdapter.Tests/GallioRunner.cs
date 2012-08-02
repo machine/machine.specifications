@@ -18,7 +18,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
     static Dictionary<Assembly, SampleRunner> _runners = new Dictionary<Assembly, SampleRunner>();
 
     static SampleRunner Run<T>()
-    {      
+    {
       Assembly assembly = typeof(T).Assembly;
       SampleRunner runner;
 
@@ -37,14 +37,14 @@ namespace Machine.Specifications.GallioAdapter.Tests
     }
 
     public static void RunAssemblyOf<T>()
-    {             
+    {
       Run<T>();
     }
 
     public static TestStepRun RunAllSpecificationsFor<T>()
     {
       SampleRunner runner = Run<T>();
-      return runner.GetPrimaryTestStepRun(CodeReference.CreateFromType(typeof(T)));      
-    }    
+      return runner.GetPrimaryTestStepRun(CodeReference.CreateFromType(typeof(T)));
+    }
   }
 }

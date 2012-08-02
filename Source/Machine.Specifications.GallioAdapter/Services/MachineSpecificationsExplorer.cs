@@ -35,11 +35,11 @@ namespace Machine.Specifications.GallioAdapter.Services
   public class MachineSpecificationsExplorer : TestExplorer
   {
     const string MachineSpecificationsAssemblyDisplayName = @"Machine.Specifications";
-    readonly Dictionary<IAssemblyInfo, MachineAssemblyTest> assemblyTests = 
-      new Dictionary<IAssemblyInfo, MachineAssemblyTest>();    
+    readonly Dictionary<IAssemblyInfo, MachineAssemblyTest> assemblyTests =
+      new Dictionary<IAssemblyInfo, MachineAssemblyTest>();
 
     protected override void ExploreImpl(IReflectionPolicy reflectionPolicy, ICodeElementInfo codeElement)
-    {      
+    {
       IAssemblyInfo assembly = ReflectionUtils.GetAssembly(codeElement);
       if (assembly != null)
       {
@@ -72,16 +72,16 @@ namespace Machine.Specifications.GallioAdapter.Services
         string frameworkName = String.Format("Machine Specifications v{0}", frameworkVersion);
         assemblyTest.Metadata.SetValue(MetadataKeys.Framework, frameworkName);
         assemblyTest.Metadata.SetValue(MetadataKeys.File, assembly.Path);
-        assemblyTest.Kind = TestKinds.Assembly;        
+        assemblyTest.Kind = TestKinds.Assembly;
 
         parentTest.AddChild(assemblyTest);
-        assemblyTests.Add(assembly, assemblyTest);         
+        assemblyTests.Add(assembly, assemblyTest);
       }
 
       if (populateRecursively)
       {
         AssemblyExplorer explorer = new AssemblyExplorer();
-        Assembly resolvedAssembly = assembly.Resolve(false);        
+        Assembly resolvedAssembly = assembly.Resolve(false);
 
         assemblyTest.AssemblyContexts = explorer.FindAssemblyContextsIn( resolvedAssembly).ToList();
         assemblyTest.GlobalCleanup = explorer.FindAssemblyWideContextCleanupsIn(resolvedAssembly).ToList();
@@ -89,7 +89,7 @@ namespace Machine.Specifications.GallioAdapter.Services
         
         explorer.FindContextsIn(resolvedAssembly)
           .Select( context => GetContextTest( context))
-          .Each( test => assemblyTest.AddChild( test));          
+          .Each( test => assemblyTest.AddChild( test));
       }
 
       return assemblyTest;
@@ -113,11 +113,11 @@ namespace Machine.Specifications.GallioAdapter.Services
         contextTest.Metadata.Add(MetadataKeys.IgnoreReason, "The context has the IgnoreAttribute");
 
       AddXmlComment(contextTest, Reflector.Wrap(context.Type));
-      return contextTest;      
-    }    
+      return contextTest;
+    }
 
     MachineSpecificationTest GetSpecificationTest(Context context, Specification specification)
-    {      
+    {
       MachineSpecificationTest specificationTest = new MachineSpecificationTest( specification);
 
       if (specification.IsIgnored)
@@ -138,6 +138,6 @@ namespace Machine.Specifications.GallioAdapter.Services
       {
         test.Metadata.Add(MetadataKeys.XmlDocumentation, xml);
       }
-    }  
+    }
   }
 }

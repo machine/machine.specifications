@@ -18,6 +18,6 @@ namespace Machine.Specifications.GallioAdapter.Model
       this.Kind = TestKinds.Test;
       this.IsTestCase = true;
       _specification = specification;
-    }   
+    }
   }
 }

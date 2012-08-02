@@ -32,11 +32,11 @@ namespace Machine.Specifications.GallioAdapter.Tests
 
     [Test]
     public void ShouldWriteExceptionToTheFailureStream()
-    {            
+    {
       var stream = _run.Children[0].TestLog.GetStream(MarkupStreamNames.Failures);
       stream.ShouldNotBeNull();
       string content = stream.ToString();
-      content.ShouldContain("hi scott, love you, miss you");      
+      content.ShouldContain("hi scott, love you, miss you");
     }
   }
 
@@ -83,7 +83,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
       var child = _run.Children.Single(x => x.Step.Name == "failing equality assertion");
       var stream = child.TestLog.GetStream(MarkupStreamNames.Failures);
       stream.ShouldNotBeNull();
-      string content = stream.ToString();      
+      string content = stream.ToString();
 
       content.ShouldContain("Expected");
       content.ShouldContain("1");
@@ -96,9 +96,9 @@ namespace Machine.Specifications.GallioAdapter.Tests
       var child = _run.Children.Single(x => x.Step.Name == "failing contains assertion");
       var stream = child.TestLog.GetStream(MarkupStreamNames.Failures);
       stream.ShouldNotBeNull();
-      string content = stream.ToString();       
+      string content = stream.ToString();
 
-      content.ShouldContain("Should");      
+      content.ShouldContain("Should");
       content.ShouldContain("4");
     }
   }
