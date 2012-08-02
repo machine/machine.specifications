@@ -15,8 +15,6 @@
 // 
 // Modified by and Portions Copyright 2008 Machine Project
 
-using System;
-using System.Diagnostics;
 using System.Linq;
 using Gallio.Model;
 using Gallio.Model.Commands;
@@ -26,8 +24,6 @@ using Gallio.Model.Tree;
 using Gallio.Runtime.ProgressMonitoring;
 using Machine.Specifications.GallioAdapter.Model;
 using Machine.Specifications.Utility;
-
-using TestLog = Gallio.Framework.TestLog;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
 

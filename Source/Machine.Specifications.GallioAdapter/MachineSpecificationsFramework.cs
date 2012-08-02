@@ -16,7 +16,6 @@
 // Modified by and Portions Copyright 2008 Machine Project
 
 using System.Collections.Generic;
-using System.Linq;
 using Gallio.Model;
 using Gallio.Runtime.Extensibility;
 using Gallio.Runtime.Logging;

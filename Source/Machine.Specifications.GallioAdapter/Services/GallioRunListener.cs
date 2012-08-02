@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Gallio.Common.Collections;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;

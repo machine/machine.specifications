@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Machine.Specifications.GallioAdapter.TestResources
+﻿namespace Machine.Specifications.GallioAdapter.TestResources
 {
   [Tags("tag")]
   public class tag_spec
