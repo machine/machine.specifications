@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<plugin pluginId="Gallio.XunitAdapter161"
+        recommendedInstallationPath="Xunit\v1.6.1"
+        xmlns="http://www.gallio.org/">
+  <traits>
+    <name>xUnit.Net v1.6.1 Adapter</name>
+    <version>3.4.0.0</version>
+    <description>Provides support for running xUnit.Net v1.6.1 tests.</description>
+    <icon>plugin://Gallio.XunitAdapter161/Resources/xUnit.ico</icon>
+  </traits>
+
+  <dependencies>
+    <dependency pluginId="Gallio" />
+  </dependencies>
+
+  <files>
+    <file path="Gallio.XunitAdapter161.plugin" />
+    <file path="Gallio.XunitAdapter161.dll" />
+    <file path="Gallio.XunitAdapter161.pdb" />
+    <file path="Readme.txt" />
+    <file path="EULA.txt" />
+    <file path="xunit.dll" />
+    <file path="xunit.dll.tdnet" />
+    <file path="xunit.xml" />
+    <file path="xunit.extensions.dll" />
+    <file path="xunit.extensions.xml" />
+    <file path="Resources\xUnit.ico" />
+  </files>
+
+  <assemblies>
+    <assembly fullName="Gallio.XunitAdapter161, Version=3.4.0.0, Culture=neutral, PublicKeyToken=null"
+              codeBase="Gallio.XunitAdapter161.dll"
+              qualifyPartialName="true" />
+
+    <assembly fullName="xunit, Version=1.6.1.1521, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c"
+              codeBase="xunit.dll">
+      <bindingRedirects>
+        <bindingRedirect oldVersion="1.1.0.0-1.6.65535.65535" />
+      </bindingRedirects>
+    </assembly>
+  </assemblies>
+
+  <probingPaths>
+    <probingPath>v1.6.1</probingPath>
+  </probingPaths>
+
+  <components>
+    <component componentId="XunitAdapter161.TestFramework"
+               serviceId="Gallio.TestFramework"
+               componentType="Gallio.XunitAdapter.Model.XunitTestFramework, Gallio.XunitAdapter161">
+      <traits>
+        <name>xUnit.net v1.6.1</name>
+        <frameworkAssemblies>xunit, Version=1.1.0.0-1.6.65535.65535</frameworkAssemblies>
+        <version>1.6.1.1521</version>
+        <fileTypes>Assembly</fileTypes>
+        <icon>plugin://Gallio.XunitAdapter161/Resources/xUnit.ico</icon>
+      </traits>
+    </component>
+
+    <component componentId="XunitAdapter161.TestKinds.NUnitTestAssembly"
+               serviceId="Gallio.TestKind">
+      <traits>
+        <name>xUnit v1.6.1 Assembly</name>
+        <description>xUnit v1.6.1 Test Assembly</description>
+        <icon>plugin://Gallio.XunitAdapter161/Resources/xUnit.ico</icon>
+      </traits>
+    </component>
+  </components>
+</plugin>
