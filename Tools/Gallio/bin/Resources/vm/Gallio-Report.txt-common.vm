@@ -1,0 +1,42 @@
+﻿## Velocity Template Language (VTL) to generate a plain text report.
+##
+#set($stats = $report.TestPackageRun.Statistics)
+##
+* Results: $stats.RunCount run, $stats.PassedCount passed, $stats.FailedCount failed, $stats.InconclusiveCount inconclusive, $stats.SkippedCount skipped
+
+#foreach ($item in $report.TestPackageRun.AllTestStepRuns)
+#if($item.Step.IsTestCase && ($showPassed || $item.Result.Outcome.Status != "Passed"))
+[$item.Result.Outcome.Status] $item.Step.Metadata.GetValue("TestKind") $item.Step.FullName
+#foreach($stream in $item.TestLog.Streams)
+$helper.Text.NormalizeEndOfLines($stream.ToString())
+#end
+#end
+#end
+#if($report.TestModel.Annotations.Count > 0)
+
+* Annotations
+#foreach ($annotation in $report.TestModel.Annotations)
+[$annotation.Type] $annotation.Message
+#if($annotation.CodeLocation.ToString().Length > 0)
+    Location: $annotation.CodeLocation.ToString()
+#end
+#if($annotation.CodeReference.ToString().Length > 0)
+    Reference: $annotation.CodeReference.ToString()
+#end
+#if($annotation.Details.Length > 0)
+    Details: $annotation.Details
+#end
+#end
+#end
+#if($report.LogEntries.Count > 0)
+
+* Diagnostic Log:
+#foreach ($entry in $report.LogEntries)
+#if($entry.Severity != "Debug")
+[$entry.Severity] $entry.Message
+#if($entry.Details.Length > 0)
+    $entry.Details
+#end
+#end
+#end
+#end

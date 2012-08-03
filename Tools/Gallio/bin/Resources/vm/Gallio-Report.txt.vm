@@ -1,0 +1,5 @@
+﻿## Velocity Template Language (VTL) to generate a plain text report.
+##
+#set($showPassed=true)
+##
+#parse("Gallio-Report.txt-common.vm")
