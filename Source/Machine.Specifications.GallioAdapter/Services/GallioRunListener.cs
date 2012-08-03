@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Gallio.Common.Collections;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
@@ -26,8 +25,8 @@ namespace Machine.Specifications.GallioAdapter.Services
     TestOutcome _outcome;
     public TestOutcome Outcome { get { return _outcome; } }
 
-    public GallioRunListener(ISpecificationRunListener listener, IProgressMonitor progressMonitor, 
-      ITestContext context, IEnumerable<ITestCommand> specificationCommands)     
+    public GallioRunListener(ISpecificationRunListener listener, IProgressMonitor progressMonitor,
+      ITestContext context, IEnumerable<ITestCommand> specificationCommands)
     {
       _listener = listener;
       _progressMonitor = progressMonitor;
@@ -35,7 +34,7 @@ namespace Machine.Specifications.GallioAdapter.Services
 
       _outcome = TestOutcome.Passed;
 
-      _contextsBySpec = new Dictionary<string, ITestContext>();      
+      _contextsBySpec = new Dictionary<string, ITestContext>();
       _commandsBySpec = (from command in specificationCommands
                          let specificationTest = command.Test as MachineSpecificationTest
                          where specificationTest != null
@@ -47,13 +46,13 @@ namespace Machine.Specifications.GallioAdapter.Services
     {
       _listener.OnContextStart(context);
       _testContext.LifecyclePhase = LifecyclePhases.Starting;
-      _progressMonitor.SetStatus(context.FullName);   
+      _progressMonitor.SetStatus(context.FullName);
     }
 
     public override void OnContextEnd(ContextInfo context)
     {
       _listener.OnContextEnd(context);
-      _testContext.LifecyclePhase = LifecyclePhases.Finishing;      
+      _testContext.LifecyclePhase = LifecyclePhases.Finishing;
     }
 
     public override void OnSpecificationStart(SpecificationInfo specification)
@@ -65,7 +64,7 @@ namespace Machine.Specifications.GallioAdapter.Services
       _contextsBySpec.Add(specification.Name, specContext);
 
       specContext.LifecyclePhase = LifecyclePhases.Starting;
-      _progressMonitor.SetStatus("» " + specification.Name);       
+      _progressMonitor.SetStatus("» " + specification.Name);
     }
 
     public override void OnSpecificationEnd(SpecificationInfo specification, Result result)
@@ -92,14 +91,14 @@ namespace Machine.Specifications.GallioAdapter.Services
         TestLog.Warnings.Flush();
 
         outcome = TestOutcome.Ignored;
-        span = new TimeSpan(0);        
+        span = new TimeSpan(0);
       }
       else if (result.Passed)
       {
         outcome = TestOutcome.Passed;
       }
       else
-      {        
+      {
         TestLog.Failures.WriteException( Convert( result.Exception));
         TestLog.Failures.Flush();
 

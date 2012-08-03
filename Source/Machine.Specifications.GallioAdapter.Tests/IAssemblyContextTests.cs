@@ -2,7 +2,7 @@
 using NUnit.Framework;
 
 namespace Machine.Specifications.GallioAdapter.Tests
-{ 
+{
   [TestFixture]
   public class IAssemblyContextTests
   {
@@ -22,6 +22,6 @@ namespace Machine.Specifications.GallioAdapter.Tests
     public void ShouldRunOnAssemblyCompleteMethodOfAssemblyContext()
     {
       TestAssemblyContext.OnAssemblyCompleteRun.ShouldBeTrue();
-    }     
+    }
   }
 }

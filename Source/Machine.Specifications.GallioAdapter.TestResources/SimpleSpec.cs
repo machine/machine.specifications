@@ -22,19 +22,19 @@ namespace Machine.Specifications.GallioAdapter.TestResources
 {
   /// <summary>
   /// A simple test specification.
-  /// </summary>  
+  /// </summary>
   public class simple_test_spec
   {
     /// <summary>
     /// A passing specification.
     /// </summary>
-    It pass = () => 
+    It pass = () =>
       true.ShouldBeTrue();
 
     /// <summary>
     /// A failing specification.
     /// </summary>
-    It fail = () => 
-      true.ShouldBeFalse();         
+    It fail = () =>
+      true.ShouldBeFalse();
   }
 }
