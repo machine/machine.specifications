@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<plugin pluginId="Gallio.MbUnitCppAdapter"
+        recommendedInstallationPath="MbUnitCpp"
+        xmlns="http://www.gallio.org/">
+  <traits>
+    <name>MbUnitCpp.Test Adapter Plugin</name>
+    <version>3.4.0.0</version>
+    <description>Provides support for running MbUnit tests for native unmanaged C++.</description>
+    <icon>plugin://Gallio.MbUnitCppAdapter/Resources/MbUnitCpp.ico</icon>
+  </traits>
+
+  <dependencies>
+    <dependency pluginId="Gallio" />
+  </dependencies>
+
+  <files>
+    <file path="Gallio.MbUnitCppAdapter.plugin" />
+    <file path="Gallio.MbUnitCppAdapter.dll" />
+    <file path="Gallio.MbUnitCppAdapter.pdb" />
+    <file path="Resources\MbUnitCpp.ico" />
+    <file path="Include\mbunit.cpp" />
+    <file path="Include\mbunit.h" />
+  </files>
+
+  <assemblies>
+    <assembly fullName="Gallio.MbUnitCppAdapter, Version=3.4.0.0, Culture=neutral, PublicKeyToken=null"
+              codeBase="Gallio.MbUnitCppAdapter.dll"
+              qualifyPartialName="true" />
+  </assemblies>
+
+  <components>
+    <component componentId="MbUnitCppAdapter.FileTypeRecognizer.MbUnitCppTestLibrary"
+               serviceId="Gallio.FileTypeRecognizer"
+               componentType="Gallio.MbUnitCppAdapter.Model.MbUnitCppTestFileTypeRecognizer, Gallio.MbUnitCppAdapter">
+      <traits>
+        <id>MbUnitCppTestLibrary</id>
+        <description>MbUnit Unmanaged C++ Test Library</description>
+        <superTypeId>Executable</superTypeId>
+      </traits>
+    </component>
+
+    <component componentId="MbUnitCppAdapter.TestFramework"
+               serviceId="Gallio.TestFramework"
+               componentType="Gallio.MbUnitCppAdapter.Model.MbUnitCppTestFramework, Gallio.MbUnitCppAdapter">
+      <traits>
+        <name>MbUnitCpp</name>
+        <fileTypes>Executable</fileTypes>
+        <icon>plugin://Gallio.MbUnitCppAdapter/Resources/MbUnitCpp.ico</icon>
+     </traits>
+    </component>
+
+    <component componentId="MbUnitCppAdapter.TestKinds.MbUnitCppTestLibrary"
+               serviceId="Gallio.TestKind">
+      <traits>
+        <name>MbUnit Unmanaged C++ Test Library</name>
+        <description>MbUnit Unmanaged C++ Test Library</description>
+        <icon>plugin://Gallio.MbUnitCppAdapter/Resources/MbUnitCpp.ico</icon>
+      </traits>
+    </component>
+
+  </components>
+  
+</plugin>

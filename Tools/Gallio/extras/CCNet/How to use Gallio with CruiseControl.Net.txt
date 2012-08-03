@@ -1,0 +1,6 @@
+How to use Gallio with CruiseControl.Net
+========================================
+
+This documentation has been moved to the Gallio wiki.
+
+http://www.gallio.org/wiki/doku.php?id=tools:cruisecontrol_net

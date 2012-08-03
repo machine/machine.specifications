@@ -1,0 +1,99 @@
+<assembly name="MbUnit">
+
+  <member name="M:MbUnit.Framework.Assert.Fail(System.String,System.Object[])">
+    <attribute ctor="M:JetBrains.Annotations.TerminatesProgramAttribute.#ctor"/>
+  </member>
+  <member name="M:MbUnit.Framework.Assert.Fail">
+    <attribute ctor="M:JetBrains.Annotations.TerminatesProgramAttribute.#ctor"/>
+  </member>
+
+  <member name="M:MbUnit.Framework.Assert.IsTrue(System.Boolean,System.String,System.Object[])">
+    <attribute ctor="M:JetBrains.Annotations.AssertionMethodAttribute.#ctor"/>
+    <parameter name="condition">
+      <attribute ctor="M:JetBrains.Annotations.AssertionConditionAttribute.#ctor(JetBrains.Annotations.AssertionConditionType)">
+        <argument>0</argument>
+      </attribute>
+    </parameter>
+  </member>
+  <member name="M:MbUnit.Framework.Assert.IsTrue(System.Boolean)">
+    <attribute ctor="M:JetBrains.Annotations.AssertionMethodAttribute.#ctor"/>
+    <parameter name="condition">
+      <attribute ctor="M:JetBrains.Annotations.AssertionConditionAttribute.#ctor(JetBrains.Annotations.AssertionConditionType)">
+        <argument>0</argument>
+      </attribute>
+    </parameter>
+  </member>
+
+  <member name="M:MbUnit.Framework.Assert.IsFalse(System.Boolean,System.String,System.Object[])">
+    <attribute ctor="M:JetBrains.Annotations.AssertionMethodAttribute.#ctor"/>
+    <parameter name="condition">
+      <attribute ctor="M:JetBrains.Annotations.AssertionConditionAttribute.#ctor(JetBrains.Annotations.AssertionConditionType)">
+        <argument>1</argument>
+      </attribute>
+    </parameter>
+  </member>
+  <member name="M:MbUnit.Framework.Assert.IsFalse(System.Boolean)">
+    <attribute ctor="M:JetBrains.Annotations.AssertionMethodAttribute.#ctor"/>
+    <parameter name="condition">
+      <attribute ctor="M:JetBrains.Annotations.AssertionConditionAttribute.#ctor(JetBrains.Annotations.AssertionConditionType)">
+        <argument>1</argument>
+      </attribute>
+    </parameter>
+  </member>
+
+  <member name="M:MbUnit.Framework.Assert.IsNotNull(System.Object,System.String,System.Object[])">
+    <attribute ctor="M:JetBrains.Annotations.AssertionMethodAttribute.#ctor"/>
+    <parameter name="anObject">
+      <attribute ctor="M:JetBrains.Annotations.AssertionConditionAttribute.#ctor(JetBrains.Annotations.AssertionConditionType)">
+        <argument>3</argument>
+      </attribute>
+    </parameter>
+  </member>
+  <member name="M:MbUnit.Framework.Assert.IsNotNull(System.Object)">
+    <attribute ctor="M:JetBrains.Annotations.AssertionMethodAttribute.#ctor"/>
+    <parameter name="anObject">
+      <attribute ctor="M:JetBrains.Annotations.AssertionConditionAttribute.#ctor(JetBrains.Annotations.AssertionConditionType)">
+        <argument>3</argument>
+      </attribute>
+    </parameter>
+  </member>
+
+  <member name="M:MbUnit.Framework.Assert.IsNull(System.Object,System.String,System.Object[])">
+    <attribute ctor="M:JetBrains.Annotations.AssertionMethodAttribute.#ctor"/>
+    <parameter name="anObject">
+      <attribute ctor="M:JetBrains.Annotations.AssertionConditionAttribute.#ctor(JetBrains.Annotations.AssertionConditionType)">
+        <argument>2</argument>
+      </attribute>
+    </parameter>
+  </member>
+  <member name="M:MbUnit.Framework.Assert.IsNull(System.Object)">
+    <attribute ctor="M:JetBrains.Annotations.AssertionMethodAttribute.#ctor"/>
+    <parameter name="anObject">
+      <attribute ctor="M:JetBrains.Annotations.AssertionConditionAttribute.#ctor(JetBrains.Annotations.AssertionConditionType)">
+        <argument>2</argument>
+      </attribute>
+    </parameter>
+  </member>
+
+  <member name="T:MbUnit.Framework.SetUpAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="T:MbUnit.Framework.TestFixtureAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="T:MbUnit.Framework.TestAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="T:MbUnit.Framework.FixtureSetUpAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="T:MbUnit.Framework.FixtureTearDownAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="T:MbUnit.Framework.SetUpAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="T:MbUnit.Framework.TearDownAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+</assembly>
