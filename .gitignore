@@ -1,6 +1,7 @@
 /Source/*/obj
 /Source/*/bin
 _ReSharper.*
+_dotCover.*
 *.user
 *.suo
 *.csproj[1-9]*
