@@ -547,6 +547,16 @@ does contain: {2}",
       exception.Message.ShouldContain(expected);
     }
 
+    public static void ShouldMatchErrorMessage(this Exception exception, string pattern)
+    {
+      exception.Message.ShouldMatch(pattern);
+    }
+
+    public static void ShouldMatchErrorMessage(this Exception exception, Regex regex)
+    {
+      exception.Message.ShouldMatch(regex);
+    }
+
     public static void ShouldContainOnly<T>(this IEnumerable<T> list, params T[] items)
     {
       list.ShouldContainOnly((IEnumerable<T>) items);
