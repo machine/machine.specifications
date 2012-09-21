@@ -236,6 +236,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="InstallDotCoverRunner.2.0.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Machine.Specifications.ico" />
   </ItemGroup>
   <ItemGroup>
