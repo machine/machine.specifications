@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ReSharper.Psi;
@@ -152,6 +153,38 @@ namespace Machine.Specifications.ReSharperRunner
         var metadataFields = type.GetInstanceFields();
         var fields = metadataFields.Where(x => x.Type is IMetadataClassType);
         return fields.Where(x => (((IMetadataClassType)x.Type).Type.FullyQualifiedName == fieldType.FullName));
+    }
+
+    public static string FullyQualifiedName(this IMetadataClassType classType)
+    {
+      return FullyQualifiedName(classType, false);
+    }
+
+    static string FullyQualifiedName(this IMetadataClassType classType, bool appendAssembly)
+    {
+      var fullyQualifiedName = new StringBuilder();
+
+      fullyQualifiedName.Append(classType.Type.FullyQualifiedName);
+
+      if (classType.Arguments.Length > 0)
+      {
+        fullyQualifiedName.Append("[");
+        fullyQualifiedName.Append(
+          String.Join(",",
+                      classType.Arguments
+                        .Select(x => x as IMetadataClassType)
+                        .Where(x => x != null)
+                        .Select(x => "[" + x.FullyQualifiedName(true) + "]")
+                        .ToArray()));
+        fullyQualifiedName.Append("]");
+      }
+
+      if (appendAssembly)
+      {
+        fullyQualifiedName.Append(classType.AssemblyQualification);
+      }
+
+      return fullyQualifiedName.ToString();
     }
   }
 }

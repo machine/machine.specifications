@@ -111,111 +111,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\ElementHandlers\BehaviorElementHandler.cs">
-      <Link>Explorers\ElementHandlers\BehaviorElementHandler.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\ElementHandlers\ContextElementHandler.cs">
-      <Link>Explorers\ElementHandlers\ContextElementHandler.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\ElementHandlers\ContextSpecificationElementHandler.cs">
-      <Link>Explorers\ElementHandlers\ContextSpecificationElementHandler.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Explorers\ElementHandlers\IElementHandler.cs">
-      <Link>Explorers\ElementHandlers\IElementHandler.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\ContextCache.cs">
-      <Link>Factories\ContextCache.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Factories\UnitTestTaskFactory.cs">
-      <Link>Factories\UnitTestTaskFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\PsiExtensions.cs">
-      <Link>PsiExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\machine.specifications.resharperrunner.4.1\runners\notifications\BehaviorSpecificationRemoteTaskNotification.cs">
-      <Link>Runners\Notifications\BehaviorSpecificationRemoteTaskNotification.cs</Link>
-    </Compile>
-    <Compile Include="..\machine.specifications.resharperrunner.4.1\runners\notifications\ContextSpecificationRemoteTaskNotification.cs">
-      <Link>Runners\Notifications\ContextSpecificationRemoteTaskNotification.cs</Link>
-    </Compile>
-    <Compile Include="..\machine.specifications.resharperrunner.4.1\runners\notifications\RemoteTaskNotification.cs">
-      <Link>Runners\Notifications\RemoteTaskNotification.cs</Link>
-    </Compile>
-    <Compile Include="..\machine.specifications.resharperrunner.4.1\runners\notifications\RemoteTaskNotificationFactory.cs">
-      <Link>Runners\Notifications\RemoteTaskNotificationFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\Notifications\SilentRemoteTaskNotification.cs">
-      <Link>Runners\Notifications\SilentRemoteTaskNotification.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\PerContextRunListener.cs">
-      <Link>Runners\PerContextRunListener.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\RecursiveMSpecTaskRunner.cs">
-      <Link>Runners\RecursiveMSpecTaskRunner.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Runners\VersionCompatibilityChecker.cs">
-      <Link>Runners\VersionCompatibilityChecker.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\BehaviorSpecificationTask.cs">
-      <Link>Tasks\BehaviorSpecificationTask.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\BehaviorTask.cs">
-      <Link>Tasks\BehaviorTask.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\ContextSpecificationTask.cs">
-      <Link>Tasks\ContextSpecificationTask.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\ContextTask.cs">
-      <Link>Tasks\ContextTask.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\Tasks\Task.cs">
-      <Link>Tasks\Task.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.1\MSpecUnitTestElementComparer.cs">
-      <Link>MSpecUnitTestElementComparer.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.5\MSpecElementNaming.cs">
-      <Link>MSpecElementNaming.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.5\PsiExtensions.4.5.cs">
-      <Link>PsiExtensions.4.5.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.4.5\Runners\ExceptionResultConverter.cs">
-      <Link>Runners\ExceptionResultConverter.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Explorers\AssemblyExplorer.cs">
-      <Link>Explorers\AssemblyExplorer.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Explorers\FileExplorer.cs">
-      <Link>Explorers\FileExplorer.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Factories\BehaviorFactory.cs">
-      <Link>Factories\BehaviorFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Factories\BehaviorSpecificationFactory.cs">
-      <Link>Factories\BehaviorSpecificationFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Factories\ContextFactory.cs">
-      <Link>Factories\ContextFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Factories\ContextSpecificationFactory.cs">
-      <Link>Factories\ContextSpecificationFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\MetadataExtensions.5.0.cs">
-      <Link>MetadataExtensions.5.0.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.5.0\Tasks\Task.5.0.cs">
-      <Link>Tasks\Task.5.0.cs</Link>
-    </Compile>
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Explorers\AssemblyExplorer.cs" />
+    <Compile Include="Explorers\ElementHandlers\BehaviorElementHandler.cs" />
+    <Compile Include="Explorers\ElementHandlers\ContextElementHandler.cs" />
+    <Compile Include="Explorers\ElementHandlers\ContextSpecificationElementHandler.cs" />
+    <Compile Include="Explorers\ElementHandlers\IElementHandler.cs" />
+    <Compile Include="Explorers\FileExplorer.cs" />
     <Compile Include="Explorers\MspecTestFileExplorer.cs" />
     <Compile Include="Explorers\MSpecTestMetadataExplorer.cs" />
+    <Compile Include="Factories\BehaviorFactory.cs" />
+    <Compile Include="Factories\BehaviorSpecificationFactory.cs" />
+    <Compile Include="Factories\ContextCache.cs" />
+    <Compile Include="Factories\ContextFactory.cs" />
+    <Compile Include="Factories\ContextSpecificationFactory.cs" />
+    <Compile Include="Factories\UnitTestTaskFactory.cs" />
     <Compile Include="MetadataExtensions.cs" />
+    <Compile Include="MSpecElementNaming.cs" />
+    <Compile Include="MSpecUnitTestElementComparer.cs" />
     <Compile Include="MSpecUnitTestPresenter.cs" />
     <Compile Include="MSpecUnitTestProvider.cs" />
     <Compile Include="Presentation\BehaviorElement.cs" />
@@ -232,6 +150,21 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="PsiExtensions.cs" />
+    <Compile Include="Runners\ExceptionResultConverter.cs" />
+    <Compile Include="Runners\Notifications\BehaviorSpecificationRemoteTaskNotification.cs" />
+    <Compile Include="Runners\Notifications\ContextSpecificationRemoteTaskNotification.cs" />
+    <Compile Include="Runners\Notifications\RemoteTaskNotification.cs" />
+    <Compile Include="Runners\Notifications\RemoteTaskNotificationFactory.cs" />
+    <Compile Include="Runners\Notifications\SilentRemoteTaskNotification.cs" />
+    <Compile Include="Runners\PerContextRunListener.cs" />
+    <Compile Include="Runners\RecursiveMSpecTaskRunner.cs" />
+    <Compile Include="Runners\VersionCompatibilityChecker.cs" />
+    <Compile Include="Tasks\BehaviorSpecificationTask.cs" />
+    <Compile Include="Tasks\BehaviorTask.cs" />
+    <Compile Include="Tasks\ContextSpecificationTask.cs" />
+    <Compile Include="Tasks\ContextTask.cs" />
+    <Compile Include="Tasks\Task.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj">
