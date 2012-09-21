@@ -50,14 +50,10 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
       }
     }
 
-#if RESHARPER_6
-
     public override bool IsMeaningfulTask
     {
       get { return true; }
     }
-
-#endif
 
     public bool Equals(BehaviorTask other)
     {

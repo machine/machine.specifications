@@ -1,13 +1,6 @@
 using JetBrains.ReSharper.TaskRunnerFramework;
-#if RESHARPER_5
-using JetBrains.ReSharper.UnitTestFramework;
-#else
 using JetBrains.ReSharper.UnitTestExplorer;
-#endif
-
-#if RESHARPER_6
 using JetBrains.ReSharper.UnitTestFramework;
-#endif
 
 using Machine.Specifications.ReSharperRunner.Presentation;
 using Machine.Specifications.ReSharperRunner.Tasks;

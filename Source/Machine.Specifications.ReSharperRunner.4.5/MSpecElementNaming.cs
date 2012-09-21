@@ -46,13 +46,6 @@ namespace Machine.Specifications.ReSharperRunner
     {
     }
 
-#if RESHARPER_5
-    public override PsiLanguageType Language
-    {
-      get { return PsiLanguageType.ANY; }
-    }
-#endif
-
     static bool IsContext(IDeclaredElement declaredElement)
     {
       return declaredElement.IsContext();
@@ -99,15 +92,12 @@ namespace Machine.Specifications.ReSharperRunner
     /// </summary>
     static bool IsInSpecificationContainer(IDeclaredElement declaredElement)
     {
-#if RESHARPER_6
       ITypeElement containingType = null;
       if (declaredElement is ITypeMember)
         containingType = ((ITypeMember) declaredElement).GetContainingType();
       else if (declaredElement is ITypeElement)
         containingType = (ITypeElement) declaredElement;
-#else
-      var containingType = declaredElement.GetContainingType();
-#endif
+
       return IsContext(containingType) || containingType.IsBehaviorContainer() || IsContextBase(containingType);
     }
   }

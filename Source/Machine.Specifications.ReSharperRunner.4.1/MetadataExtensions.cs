@@ -3,11 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using JetBrains.Metadata.Reader.API;
-#if RESHARPER_6
 using CLRTypeName = JetBrains.ReSharper.Psi.ClrTypeName;
-#else
-using JetBrains.ReSharper.Psi;
-#endif
 
 namespace Machine.Specifications.ReSharperRunner
 {
@@ -39,10 +35,7 @@ namespace Machine.Specifications.ReSharperRunner
       foreach (IMetadataField field in behaviorFields)
       {
         if (field.GetFirstGenericArgument().HasCustomAttribute(typeof(BehaviorsAttribute).FullName)
-#if !RESHARPER_5
-            && field.GetFirstGenericArgument().GenericParameters.Length == 0      
-#endif
-            )
+            && field.GetFirstGenericArgument().GenericParameters.Length == 0)
         {
           yield return field;
         }

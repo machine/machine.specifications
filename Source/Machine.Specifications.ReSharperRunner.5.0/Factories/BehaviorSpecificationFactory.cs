@@ -87,11 +87,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                               _project,
                                               behavior,
                                               _projectEnvoy,
-#if RESHARPER_6
                                               behavior.FullyQualifiedTypeName ?? ((ITypeMember)behaviorSpecification).GetContainingType().GetClrName().FullName,
-#else
-                                              behavior.FullyQualifiedTypeName ?? behaviorSpecification.GetContainingType().CLRName,
-#endif
  behaviorSpecification.ShortName,
                                               behaviorSpecification.IsIgnored());
     }
@@ -109,7 +105,6 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                                                 string fieldName,
                                                                                 bool isIgnored)
     {
-#if RESHARPER_6
       var id = BehaviorSpecificationElement.CreateId(behavior, fieldName);
 #if RESHARPER_61
       var behaviorSpecification = manager.GetElementById(project, id) as BehaviorSpecificationElement;
@@ -122,15 +117,12 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         behaviorSpecification.State = UnitTestElementState.Valid;
         return behaviorSpecification;
       }
-#endif
 
       return new BehaviorSpecificationElement(provider,
-#if RESHARPER_6
 #if RESHARPER_61
                                  psiModuleManager, cacheManager, 
 #else
                                  provider.PsiModuleManager, provider.CacheManager,
-#endif
 #endif
                                               behavior,
                                               projectEnvoy,

@@ -5,9 +5,7 @@ using System.Linq;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 
-#if RESHARPER_6
 using CLRTypeName = JetBrains.ReSharper.Psi.ClrTypeName;
-#endif
 
 namespace Machine.Specifications.ReSharperRunner
 {
@@ -44,9 +42,7 @@ namespace Machine.Specifications.ReSharperRunner
       return clazz.IsValid() &&
              !clazz.IsAbstract &&
              clazz.HasAttributeInstance(new CLRTypeName(typeof(BehaviorsAttribute).FullName), false) &&
-#if !RESHARPER_5
              clazz.GetFirstGenericArgument() == null &&
-#endif
              clazz.Fields.Any(IsSpecification);
     }
 
@@ -82,9 +78,7 @@ namespace Machine.Specifications.ReSharperRunner
     {
       return element.IsValidFieldOfType(typeof(Behaves_like<>)) &&
              element.GetFirstGenericArgument() != null &&
-#if !RESHARPER_5
              element.GetFirstGenericArgument().GetFirstGenericArgument() == null &&
-#endif
              element.GetFirstGenericArgument().HasAttributeInstance(
                new CLRTypeName(typeof(BehaviorsAttribute).FullName), false);
     }
@@ -168,11 +162,7 @@ namespace Machine.Specifications.ReSharperRunner
                                       if (x.IsType)
                                       {
                                         var declaredType = (IDeclaredType) x.TypeValue;
-#if RESHARPER_6
                                         return declaredType.GetClrName().ShortName;
-#else
-                                        return new CLRTypeName(declaredType.GetCLRName()).ShortName;
-#endif
                                       }
 
                                       return (string) x.ConstantValue.Value;
@@ -213,11 +203,7 @@ namespace Machine.Specifications.ReSharperRunner
         return false;
       }
 
-#if RESHARPER_6
       return fieldType.GetClrName().FullName == type.FullName;
-#else
-      return new CLRTypeName(fieldType.GetCLRName()) == new CLRTypeName(type.FullName);
-#endif
     }
 
     static IDeclaredType GetValidatedFieldType(this IDeclaredElement element)

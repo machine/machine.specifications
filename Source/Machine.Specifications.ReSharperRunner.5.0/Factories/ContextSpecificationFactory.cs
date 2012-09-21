@@ -43,11 +43,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
     public ContextSpecificationElement CreateContextSpecification(IDeclaredElement field)
     {
-#if RESHARPER_6
       IClass clazz = ((ITypeMember)field).GetContainingType() as IClass;
-#else
-      IClass clazz = field.GetContainingType() as IClass;
-#endif
       if (clazz == null)
       {
         return null;
@@ -67,11 +63,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                              _project,
                                              context,
                                              _projectEnvoy,
-#if RESHARPER_6
                                              clazz.GetClrName().FullName,
-#else
-                                             clazz.CLRName,
-#endif
                                              field.ShortName,
                                              clazz.GetTags(),
                                              field.IsIgnored());
@@ -106,7 +98,6 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                                               ICollection<string> tags,
                                                                               bool isIgnored)
     {
-#if RESHARPER_6
       var id = ContextSpecificationElement.CreateId(context, fieldName);
 #if RESHARPER_61
       var contextSpecification = manager.GetElementById(project, id) as ContextSpecificationElement;
@@ -119,15 +110,12 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         contextSpecification.State = UnitTestElementState.Valid;
         return contextSpecification;
       }
-#endif
 
       return new ContextSpecificationElement(provider,
-#if RESHARPER_6
 #if RESHARPER_61
                                  psiModuleManager, cacheManager, 
 #else
                                  provider.PsiModuleManager, provider.CacheManager,
-#endif
 #endif
                                              context,
                                              projectEnvoy,

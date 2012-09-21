@@ -60,22 +60,16 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 #endif
                                               _project,
                                               _projectEnvoy,
-#if RESHARPER_6
                                               type.GetClrName().FullName,
-#else
-                                              type.CLRName,
-#endif
                                               _assemblyPath,
                                               type.GetSubjectString(),
                                               type.GetTags(),
                                               type.IsIgnored());
 
-#if RESHARPER_6
       foreach (var child in context.Children)
       {
         child.State = UnitTestElementState.Pending;
       }
-#endif
 
       _cache.Classes.Add(type, context);
       return context;
@@ -112,7 +106,6 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                            ICollection<string> tags,
                                                            bool isIgnored)
     {
-#if RESHARPER_6
       var id = ContextElement.CreateId(subject, typeName, tags);
 #if RESHARPER_61
       var contextElement = manager.GetElementById(project, id) as ContextElement;
@@ -124,17 +117,14 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         contextElement.State = UnitTestElementState.Valid;
         return contextElement;
       }
-#endif
 
       return new ContextElement(provider,
-#if RESHARPER_6
 #if RESHARPER_61
                                 psiModuleManager,
                                 cacheManager,
 #else
                                 provider.PsiModuleManager,
                                 provider.CacheManager,
-#endif
 #endif                
                                 projectEnvoy,
                                 typeName,
@@ -144,7 +134,6 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                 isIgnored);
     }
 
-#if RESHARPER_6
     public void UpdateChildState(ITypeElement type)
     {
       ContextElement element;
@@ -158,6 +147,5 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         unitTestElement.State = UnitTestElementState.Invalid;
       }
     }
-#endif
   }
 }

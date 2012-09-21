@@ -1,11 +1,7 @@
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
-#if RESHARPER_5
-using JetBrains.ReSharper.UnitTestFramework;
-#else
 using JetBrains.ReSharper.UnitTestExplorer;
-#endif
 
 using Machine.Specifications.ReSharperRunner.Presentation;
 

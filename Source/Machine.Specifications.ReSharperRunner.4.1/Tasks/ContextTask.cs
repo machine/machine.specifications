@@ -35,13 +35,9 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
       return base.GetHashCode();
     }
 
-#if RESHARPER_6
-
     public override bool IsMeaningfulTask
     {
       get { return false; }
     }
-
-#endif
   }
 }
