@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{85BC2C4A-493A-476C-971E-BE9CE51ECF5D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runners", "Runners", "{3D475ECE-C800-4087-8FC5-B9A13E76ABC4}"
@@ -46,15 +46,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Exam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.SeleniumSupport", "Source\Machine.Specifications.SeleniumSupport\Machine.Specifications.SeleniumSupport.csproj", "{50E85B88-7E0C-4CE7-BD8D-BA9C618A6844}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.4.1", "Source\Machine.Specifications.ReSharperRunner.4.1\Machine.Specifications.ReSharperRunner.4.1.csproj", "{EA52971B-2916-4A32-8F1E-57CDA9CE8EB3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.4.5", "Source\Machine.Specifications.ReSharperRunner.4.5\Machine.Specifications.ReSharperRunner.4.5.csproj", "{F06E1AB8-7F34-4C32-BC4D-558CAA94DB7C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.5.0", "Source\Machine.Specifications.ReSharperRunner.5.0\Machine.Specifications.ReSharperRunner.5.0.csproj", "{F78E1AB8-7F34-4C32-BC4D-558CAA94DB7C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.Clr4", "Source\Machine.Specifications.Example.Clr4\Machine.Specifications.Example.Clr4.csproj", "{0CE411DF-CFC3-45E3-96AD-2F872D99E1B1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.5.1", "Source\Machine.Specifications.ReSharperRunner.5.1\Machine.Specifications.ReSharperRunner.5.1.csproj", "{C47B3023-AC8D-4DFD-AAC2-006C4772B699}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.WatinSupport", "Source\Machine.Specifications.WatinSupport\Machine.Specifications.WatinSupport.csproj", "{9EF302BE-21F7-4443-B871-534DA3BEDD59}"
 EndProject
@@ -66,12 +58,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.Debug.VS2010", "Source\Machine.Specifications.ReSharperRunner.Debug.VS2010\Machine.Specifications.ReSharperRunner.Debug.VS2010.csproj", "{79A3A8CA-CAEF-4DC6-83C9-E19A0C720B0E}"
 	ProjectSection(ProjectDependencies) = postProject
-		{EA52971B-2916-4A32-8F1E-57CDA9CE8EB3} = {EA52971B-2916-4A32-8F1E-57CDA9CE8EB3}
-		{C47B3023-AC8D-4DFD-AAC2-006C4772B699} = {C47B3023-AC8D-4DFD-AAC2-006C4772B699}
 		{5ED0B02E-7E2D-413D-ABE9-6DB07116E2CE} = {5ED0B02E-7E2D-413D-ABE9-6DB07116E2CE}
 		{AEF08081-3BB5-4654-9F21-C066647B370A} = {AEF08081-3BB5-4654-9F21-C066647B370A}
-		{F06E1AB8-7F34-4C32-BC4D-558CAA94DB7C} = {F06E1AB8-7F34-4C32-BC4D-558CAA94DB7C}
-		{F78E1AB8-7F34-4C32-BC4D-558CAA94DB7C} = {F78E1AB8-7F34-4C32-BC4D-558CAA94DB7C}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter", "Source\Machine.Specifications.GallioAdapter\Machine.Specifications.GallioAdapter.csproj", "{D1B0D26E-BEA9-45EF-87C2-0ED5FC9CAC3F}"
@@ -166,26 +154,10 @@ Global
 		{50E85B88-7E0C-4CE7-BD8D-BA9C618A6844}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50E85B88-7E0C-4CE7-BD8D-BA9C618A6844}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50E85B88-7E0C-4CE7-BD8D-BA9C618A6844}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EA52971B-2916-4A32-8F1E-57CDA9CE8EB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EA52971B-2916-4A32-8F1E-57CDA9CE8EB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EA52971B-2916-4A32-8F1E-57CDA9CE8EB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EA52971B-2916-4A32-8F1E-57CDA9CE8EB3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F06E1AB8-7F34-4C32-BC4D-558CAA94DB7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F06E1AB8-7F34-4C32-BC4D-558CAA94DB7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F06E1AB8-7F34-4C32-BC4D-558CAA94DB7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F06E1AB8-7F34-4C32-BC4D-558CAA94DB7C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F78E1AB8-7F34-4C32-BC4D-558CAA94DB7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F78E1AB8-7F34-4C32-BC4D-558CAA94DB7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F78E1AB8-7F34-4C32-BC4D-558CAA94DB7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F78E1AB8-7F34-4C32-BC4D-558CAA94DB7C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0CE411DF-CFC3-45E3-96AD-2F872D99E1B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0CE411DF-CFC3-45E3-96AD-2F872D99E1B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CE411DF-CFC3-45E3-96AD-2F872D99E1B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CE411DF-CFC3-45E3-96AD-2F872D99E1B1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C47B3023-AC8D-4DFD-AAC2-006C4772B699}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C47B3023-AC8D-4DFD-AAC2-006C4772B699}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C47B3023-AC8D-4DFD-AAC2-006C4772B699}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C47B3023-AC8D-4DFD-AAC2-006C4772B699}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9EF302BE-21F7-4443-B871-534DA3BEDD59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9EF302BE-21F7-4443-B871-534DA3BEDD59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EF302BE-21F7-4443-B871-534DA3BEDD59}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -255,10 +227,6 @@ Global
 		{E57865B9-C7EF-4340-8AF2-5D85F2545EC6} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
 		{CFF4B323-24C1-4B19-98CA-7DF92755458E} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
 		{F25C7917-4ED6-4261-B262-43C56D0CD37F} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
-		{EA52971B-2916-4A32-8F1E-57CDA9CE8EB3} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
-		{F06E1AB8-7F34-4C32-BC4D-558CAA94DB7C} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
-		{F78E1AB8-7F34-4C32-BC4D-558CAA94DB7C} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
-		{C47B3023-AC8D-4DFD-AAC2-006C4772B699} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
 		{5ED0B02E-7E2D-413D-ABE9-6DB07116E2CE} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
 		{AEF08081-3BB5-4654-9F21-C066647B370A} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
 		{79A3A8CA-CAEF-4DC6-83C9-E19A0C720B0E} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
