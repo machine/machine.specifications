@@ -47,7 +47,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public override string ShortName
     {
-      get { return Kind; }
+      get { return Kind + GetPresentation(); }
     }
 
     public string AssemblyLocation
