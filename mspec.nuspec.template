@@ -12,7 +12,7 @@
     <projectUrl>http://github.com/machine/machine.specifications</projectUrl>
     <licenseUrl>http://github.com/machine/machine.specifications/blob/master/License.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <iconUrl>http://github.com/machine/machine.specifications/raw/master/Misc/Machine.Specifications-32x32.png</iconUrl>
+    <iconUrl>http://github.com/machine/machine.specifications/raw/master/Misc/Machine.Specifications-128x128.png</iconUrl>
     <tags>test unit testing context specification bdd tdd mspec</tags>
     <references>
       <reference file="Machine.Specifications.dll" />
