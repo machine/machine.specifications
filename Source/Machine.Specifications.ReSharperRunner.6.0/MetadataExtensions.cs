@@ -54,6 +54,11 @@ namespace Machine.Specifications.ReSharperRunner
       var attributes = type.GetCustomAttributes(typeof(SubjectAttribute).FullName);
       if (attributes.Count != 1)
       {
+        var asMember = type as IMetadataTypeMember;
+        if (asMember != null && asMember.DeclaringType != null)
+        {
+          return asMember.DeclaringType.GetSubjectString();
+        }
         return null;
       }
 
