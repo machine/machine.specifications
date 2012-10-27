@@ -83,7 +83,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
         case Status.NotImplemented:
           notify(task => _server.TaskExplain(task, "Not implemented"));
           message = "Not implemented";
-          taskResult = TaskResult.Skipped;
+          taskResult = TaskResult.Inconclusive;
           break;
 
         case Status.Ignored:
