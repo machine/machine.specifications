@@ -30,9 +30,9 @@ namespace Machine.Specifications.Factories
 
       var isIgnored = behaviorField.HasAttribute<IgnoreAttribute>() ||
                       behaviorInstance.GetType().HasAttribute<IgnoreAttribute>();
-      var behavior = new Behavior(behaviorInstance, context, isIgnored);
+      var behavior = new Behavior(behaviorField.FieldType, behaviorInstance, context, isIgnored);
 
-      var itFieldInfos = behaviorType.GetInstanceFieldsOfType<It>();
+      var itFieldInfos = behaviorType.GetInstanceFieldsOfUsage(DelegateUsage.Assert);
       CreateBehaviorSpecifications(itFieldInfos, behavior);
 
       return behavior;
@@ -50,27 +50,27 @@ namespace Machine.Specifications.Factories
 
     static void EnsureBehaviorDoesNotHaveFrameworkFieldsExceptIt(Type behaviorType)
     {
-      if (behaviorType.GetInstanceFieldsOfType<Establish>().Any())
+      if (behaviorType.GetInstanceFieldsOfUsage(DelegateUsage.Setup).Any())
       {
-        throw new SpecificationUsageException("You cannot have Establishs on Behaviors. Establish found in " +
+        throw new SpecificationUsageException("You cannot have setup actions on Behaviors. Setup action found in " +
                                               behaviorType.FullName);
       }
 
-      if (behaviorType.GetInstanceFieldsOfType<Because>().Any())
+      if (behaviorType.GetInstanceFieldsOfUsage(DelegateUsage.Act).Any())
       {
-        throw new SpecificationUsageException("You cannot have Becauses on Behaviors. Because found in " +
+        throw new SpecificationUsageException("You cannot have act actions on Behaviors. Act action found in " +
                                               behaviorType.FullName);
       }
 
-      if (behaviorType.GetInstanceFieldsOfType<Cleanup>().Any())
+      if (behaviorType.GetInstanceFieldsOfUsage(DelegateUsage.Cleanup).Any())
       {
-        throw new SpecificationUsageException("You cannot have Cleanups on Behaviors. Cleanup found in " +
+        throw new SpecificationUsageException("You cannot have cleanup actions on Behaviors. Cleanup action found in " +
                                               behaviorType.FullName);
       }
 
-      if (behaviorType.GetInstanceFieldsOfType(typeof(Behaves_like<>)).Any())
+      if (behaviorType.GetInstanceFieldsOfUsage(DelegateUsage.Behavior).Any())
       {
-        throw new SpecificationUsageException("You cannot nest Behaviors. Nested Behaviors found in " +
+        throw new SpecificationUsageException("You cannot nest behaviors. Nested behaviors found in " +
                                               behaviorType.FullName);
       }
     }

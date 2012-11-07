@@ -1,4 +1,4 @@
-﻿<span id="${spec.Id}">${spec.Name}</span>
+﻿<span id="${spec.Id}">${spec.Leader} ${spec.Name}</span>
 
 <if condition="spec.Status == Status.Failing">
   <div class="failure">

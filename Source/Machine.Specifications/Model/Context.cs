@@ -13,10 +13,9 @@ namespace Machine.Specifications.Model
     readonly object _instance;
 
     readonly Subject _subject;
-    readonly IEnumerable<Establish> _contextClauses;
-    readonly IEnumerable<Because> _becauseClauses;
-
-    readonly IEnumerable<Cleanup> _cleanupClauses;
+    readonly IEnumerable<Delegate> _contextClauses;
+    readonly IEnumerable<Delegate> _becauseClauses;
+    readonly IEnumerable<Delegate> _cleanupClauses;
 
     readonly IEnumerable<Tag> _tags;
 
@@ -50,9 +49,9 @@ namespace Machine.Specifications.Model
 
     public Context(Type type,
                    object instance,
-                   IEnumerable<Establish> contextClauses,
-                   IEnumerable<Because> becauseClauses,
-                   IEnumerable<Cleanup> cleanupClauses,
+                   IEnumerable<Delegate> contextClauses,
+                   IEnumerable<Delegate> becauseClauses,
+                   IEnumerable<Delegate> cleanupClauses,
                    Subject subject,
                    bool isIgnored,
                    IEnumerable<Tag> tags,

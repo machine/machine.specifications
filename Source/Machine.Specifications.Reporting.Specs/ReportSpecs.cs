@@ -26,9 +26,9 @@ namespace Machine.Specifications.Reporting.Specs
       return new Context(name, specifications);
     }
 
-    protected static Specification Spec(string name, Result result)
+    protected static Specification Spec(string leader, string name, Result result)
     {
-      return new Specification(name, result) { Id = Guid.NewGuid().ToString() };
+      return new Specification(leader, name, result) { Id = Guid.NewGuid().ToString() };
     }
 
     protected static Exception PrepareException()

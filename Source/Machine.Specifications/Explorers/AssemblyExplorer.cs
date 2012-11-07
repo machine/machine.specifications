@@ -70,9 +70,7 @@ namespace Machine.Specifications.Explorers
 
     static bool HasSpecificationMembers(Type type)
     {
-      return !type.IsAbstract &&
-             (type.GetInstanceFieldsOfType<It>().Any() ||
-              type.GetInstanceFieldsOfType(typeof(Behaves_like<>)).Any());
+      return !type.IsAbstract && type.GetInstanceFieldsOfUsage(DelegateUsage.Assert, DelegateUsage.Behavior).Any();
     }
 
     static IEnumerable<Type> EnumerateContextsIn(Assembly assembly)
@@ -80,7 +78,7 @@ namespace Machine.Specifications.Explorers
       return assembly
         .GetTypes()
         .Where(IsContext)
-        .OrderBy(t => t.Namespace);
+        .OrderBy(t => t.Namespace).ToArray();
     }
 
     public Context FindContexts(Type type)
