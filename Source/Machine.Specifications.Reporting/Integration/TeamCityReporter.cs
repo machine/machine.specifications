@@ -113,7 +113,7 @@ namespace Machine.Specifications.Reporting.Integration
 
     protected string GetSpecificationName(SpecificationInfo specification)
     {
-      return _currentContext + " > " + specification.Name;
+      return _currentContext + " > " + specification.Leader + " " + specification.Name;
     }
   }
 }

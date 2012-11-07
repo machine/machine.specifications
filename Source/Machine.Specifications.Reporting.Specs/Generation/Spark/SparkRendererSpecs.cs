@@ -50,18 +50,18 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
         Report = Run(Assembly("assembly 2",
                               Concern("a 2 concern 2",
                                       Context("a 2 c 2 context 2",
-                                              Spec("a 2 c 2 c 2 specification 2", Result.Pass()),
-                                              Spec("a 2 c 2 c 2 specification 1", Result.Ignored())
+                                              Spec("it", "a 2 c 2 c 2 specification 2", Result.Pass()),
+                                              Spec("it", "a 2 c 2 c 2 specification 1", Result.Ignored())
                                         ),
                                       Context("a 2 c 2 context 1",
-                                              Spec("a 2 c 2 c 1 specification 2",
+                                              Spec("it", "a 2 c 2 c 1 specification 2",
                                                    Result.Failure(PrepareException())),
-                                              Spec("a 2 c 2 c 1 specification 1", Result.NotImplemented())
+                                              Spec("it", "a 2 c 2 c 1 specification 1", Result.NotImplemented())
                                         )
                                 ),
                               Concern("a 2 concern 1",
                                       Context("a 2 c 1 context 2",
-                                              Spec("a 2 c 1 c 2 specification 2",
+                                              Spec("it", "a 2 c 1 c 2 specification 2",
                                                    Result.Supplement(Result.Pass(),
                                                                      "the supplement",
                                                                      new Dictionary<string, string>
@@ -72,34 +72,34 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
                                                                        { "img-should-fail-copy", @"C:\some\html\image-should-fail-copy" },
                                                                        { "html-should-fail-copy", @"C:\some\html\file-should-fail-copy" }
                                                                      })),
-                                              Spec("a 2 c 1 c 2 specification 1", Result.Pass())
+                                              Spec("it", "a 2 c 1 c 2 specification 1", Result.Pass())
                                         ),
                                       Context("a 2 c 1 context 1",
-                                              Spec("a 2 c 1 c 1 specification 2", Result.Pass()),
-                                              Spec("a 2 c 1 c 1 specification 1",
+                                              Spec("it", "a 2 c 1 c 1 specification 2", Result.Pass()),
+                                              Spec("it", "a 2 c 1 c 1 specification 1",
                                                    Result.Failure(PrepareException()))
                                         )
                                 )),
                      Assembly("assembly 1",
                               Concern("a 1 concern 2",
                                       Context("a 1 c 2 context 2",
-                                              Spec("a 1 c 2 c 2 specification 2", Result.NotImplemented()),
-                                              Spec("a 1 c 2 c 2 specification 1", Result.Pass())
+                                              Spec("it", "a 1 c 2 c 2 specification 2", Result.NotImplemented()),
+                                              Spec("it", "a 1 c 2 c 2 specification 1", Result.Pass())
                                         ),
                                       Context("a 1 c 2 context 1",
-                                              Spec("a 1 c 2 c 1 specification 2", Result.Pass()),
-                                              Spec("a 1 c 2 c 1 specification 1",
+                                              Spec("it", "a 1 c 2 c 1 specification 2", Result.Pass()),
+                                              Spec("it", "a 1 c 2 c 1 specification 1",
                                                    Result.Failure(PrepareException()))
                                         )
                                 ),
                               Concern("a 1 concern 1",
                                       Context("a 1 c 1 context 2",
-                                              Spec("a 1 c 1 c 2 specification 2", Result.Pass()),
-                                              Spec("a 1 c 1 c 2 specification 1", Result.NotImplemented())
+                                              Spec("it", "a 1 c 1 c 2 specification 2", Result.Pass()),
+                                              Spec("it", "a 1 c 1 c 2 specification 1", Result.NotImplemented())
                                         ),
                                       Context("a 1 c 1 context 1",
-                                              Spec("a 1 c 1 c 1 specification 2", Result.Pass()),
-                                              Spec("a 1 c 1 c 1 specification 1", Result.Pass())
+                                              Spec("it", "a 1 c 1 c 1 specification 2", Result.Pass()),
+                                              Spec("it", "a 1 c 1 c 1 specification 1", Result.Pass())
                                         )
                                 )
                        )

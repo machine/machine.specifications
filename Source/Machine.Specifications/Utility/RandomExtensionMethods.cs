@@ -15,9 +15,9 @@ namespace Machine.Specifications.Utility
       }
     }
 
-    internal static void InvokeAll(this IEnumerable<Establish> contextActions)
+    internal static void InvokeAll(this IEnumerable<Delegate> contextActions, params object[] args)
     {
-      contextActions.AllNonNull().Select<Establish, Action>(x => x.Invoke).InvokeAll();
+      contextActions.AllNonNull().Select<Delegate, Action>(x => () => x.DynamicInvoke(args)).InvokeAll();
     }
 
     static IEnumerable<T> AllNonNull<T>(this IEnumerable<T> elements) where T : class
@@ -28,16 +28,6 @@ namespace Machine.Specifications.Utility
     static void InvokeAll(this IEnumerable<Action> actions)
     {
       actions.Each(x => x());
-    }
-
-    internal static void InvokeAll(this IEnumerable<Because> becauseActions)
-    {
-      becauseActions.AllNonNull().Select<Because, Action>(x => x.Invoke).InvokeAll();
-    }
-
-    internal static void InvokeAll(this IEnumerable<Cleanup> contextActions)
-    {
-      contextActions.AllNonNull().Select<Cleanup, Action>(x => x.Invoke).InvokeAll();
     }
 
     internal static bool HasAttribute<TAttribute>(this ICustomAttributeProvider attributeProvider)

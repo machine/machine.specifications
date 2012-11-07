@@ -45,7 +45,7 @@ namespace Machine.Specifications.Specs
     Because of = () => { Exception = Catch.Exception(() => Ints.ShouldEachConformTo(x => x % 2 == 0)); };
 
     It should_print_the_func_description =
-      () => Exception.Message.ShouldContain("Should contain only elements conforming to: x => ((x % 2) = 0)");
+      () => Exception.Message.ShouldContain("Should contain only elements conforming to: x => ((x % 2) == 0)");
 
     It should_print_the_elements_that_did_not_match =
       () => Exception.Message.ShouldMatch(@"the following items did not meet the condition: {\s+\[1\],\s+\[3\]\s+}");

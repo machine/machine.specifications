@@ -23,7 +23,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
 
         var assembly = new AssemblyInfo("assembly", "location");
         var context = new ContextInfo("conext", "concern", "System.Type", "System", "mscorlib");
-        var specification = new SpecificationInfo("spec", "System.Type", "field");
+        var specification = new SpecificationInfo("it", "spec", "System.Type", "field");
 
         Listener.OnRunStart();
         Listener.OnAssemblyStart(assembly);
