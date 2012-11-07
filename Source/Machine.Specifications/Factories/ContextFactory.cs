@@ -22,9 +22,9 @@ namespace Machine.Specifications.Factories
 
     public Context CreateContextFrom(object instance, FieldInfo fieldInfo)
     {
-      if (fieldInfo.FieldType == typeof(It))
+      if (fieldInfo.IsOfUsage(DelegateUsage.Assert))
       {
-        return CreateContextFrom(instance, new[] {fieldInfo});
+        return CreateContextFrom(instance, new[] { fieldInfo });
       }
       return CreateContextFrom(instance);
     }
@@ -32,9 +32,7 @@ namespace Machine.Specifications.Factories
     public Context CreateContextFrom(object instance)
     {
       var type = instance.GetType();
-      var fieldInfos = type.GetInstanceFieldsOfType<It>()
-        .Union(type.GetInstanceFieldsOfType(typeof(Behaves_like<>)));
-
+      var fieldInfos = type.GetInstanceFieldsOfUsage(DelegateUsage.Assert, DelegateUsage.Behavior);
       return CreateContextFrom(instance, fieldInfos);
     }
 
@@ -45,12 +43,12 @@ namespace Machine.Specifications.Factories
       var itFieldInfos = new List<FieldInfo>();
       var itShouldBehaveLikeFieldInfos = new List<FieldInfo>();
 
-      var contextClauses = ExtractPrivateFieldValues<Establish>(instance, true);
+      var contextClauses = ExtractPrivateFieldValues(instance, true, DelegateUsage.Setup);
       contextClauses.Reverse();
 
-      var cleanupClauses = ExtractPrivateFieldValues<Cleanup>(instance, true);
+      var cleanupClauses = ExtractPrivateFieldValues(instance, true, DelegateUsage.Cleanup);
 
-      var becauses = ExtractPrivateFieldValues<Because>(instance, false);
+      var becauses = ExtractPrivateFieldValues(instance, false, DelegateUsage.Act);
       becauses.Reverse();
 
       if (becauses.Count > _allowedNumberOfBecauseBlocks)
@@ -79,13 +77,13 @@ namespace Machine.Specifications.Factories
       foreach (var info in fieldInfos)
       {
         if (acceptedSpecificationFields.Contains(info) &&
-            info.FieldType == typeof(It))
+            info.IsOfUsage(DelegateUsage.Assert))
         {
           itFieldInfos.Add(info);
         }
 
         if (acceptedSpecificationFields.Contains(info) &&
-            info.FieldType.IsOfType(typeof(Behaves_like<>)))
+            info.IsOfUsage(DelegateUsage.Behavior))
         {
           itShouldBehaveLikeFieldInfos.Add(info);
         }
@@ -127,7 +125,7 @@ namespace Machine.Specifications.Factories
         return ExtractSubject(type.DeclaringType);
       }
 
-      var attribute = (SubjectAttribute) attributes[0];
+      var attribute = (SubjectAttribute)attributes[0];
 
       return attribute.CreateSubject();
     }
@@ -155,7 +153,7 @@ namespace Machine.Specifications.Factories
       }
     }
 
-    static void CollectDetailsOf<T>(Type target, Func<object> instanceResolver, ICollection<T> items, bool ensureMaximumOfOne)
+    static void CollectDetailsOf<T>(Type target, Func<object> instanceResolver, ICollection<T> items, bool ensureMaximumOfOne, DelegateUsage usage)
     {
       if (target == typeof(Object) || target == null)
       {
@@ -164,7 +162,7 @@ namespace Machine.Specifications.Factories
 
       if (target.IsAbstract)
       {
-        
+
       }
 
       if (!IsStatic(target))
@@ -175,7 +173,7 @@ namespace Machine.Specifications.Factories
           return;
         }
 
-        var fields = target.GetInstanceFieldsOfType(typeof(T));
+        var fields = target.GetInstanceFieldsOfUsage(usage);
 
         if (ensureMaximumOfOne && fields.Count() > 1)
         {
@@ -187,14 +185,14 @@ namespace Machine.Specifications.Factories
 
         if (field != null)
         {
-          var val = (T) field.GetValue(instance);
+          var val = (T)field.GetValue(instance);
           items.Add(val);
         }
 
-        CollectDetailsOf(target.BaseType, () => instance, items, ensureMaximumOfOne);
+        CollectDetailsOf(target.BaseType, () => instance, items, ensureMaximumOfOne, usage);
       }
 
-      CollectDetailsOf(target.DeclaringType, () => Activator.CreateInstance(target.DeclaringType), items, ensureMaximumOfOne);
+      CollectDetailsOf(target.DeclaringType, () => Activator.CreateInstance(target.DeclaringType), items, ensureMaximumOfOne, usage);
     }
 
     static bool IsStatic(Type target)
@@ -202,11 +200,11 @@ namespace Machine.Specifications.Factories
       return target.IsAbstract && target.IsSealed;
     }
 
-    static List<T> ExtractPrivateFieldValues<T>(object instance, bool ensureMaximumOfOne)
+    static List<Delegate> ExtractPrivateFieldValues(object instance, bool ensureMaximumOfOne, DelegateUsage usage)
     {
-      var delegates = new List<T>();
+      var delegates = new List<Delegate>();
       var type = instance.GetType();
-      CollectDetailsOf(type, () => instance, delegates,ensureMaximumOfOne);
+      CollectDetailsOf(type, () => instance, delegates, ensureMaximumOfOne, usage);
 
       return delegates;
     }

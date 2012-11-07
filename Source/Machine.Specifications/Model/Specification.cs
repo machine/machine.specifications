@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications.Model
 {
   public class Specification
   {
     readonly string _name;
-    readonly It _it;
+    readonly Delegate _it;
     readonly bool _isIgnored;
     readonly FieldInfo _fieldInfo;
+    readonly string _leader;
 
     public FieldInfo FieldInfo
     {
@@ -28,8 +30,14 @@ namespace Machine.Specifications.Model
       get { return _isIgnored; }
     }
 
-    public Specification(string name, It it, bool isIgnored, FieldInfo fieldInfo)
+    public string Leader
     {
+      get { return _leader; }
+    }
+
+    public Specification(string name, Type fieldType, Delegate it, bool isIgnored, FieldInfo fieldInfo)
+    {
+      _leader = fieldType.ToFormat();
       _name = name;
       _it = it;
       _isIgnored = isIgnored;
@@ -72,7 +80,7 @@ namespace Machine.Specifications.Model
 
     protected virtual void InvokeSpecificationField()
     {
-      _it.Invoke();
+      _it.DynamicInvoke();
     }
   }
 }

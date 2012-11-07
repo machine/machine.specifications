@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Machine.Specifications.Utility.Internal;
+using System;
 
 namespace Machine.Specifications.Model
 {
@@ -7,13 +9,20 @@ namespace Machine.Specifications.Model
     readonly Context _context;
     readonly object _instance;
     readonly List<Specification> _specifications;
+    readonly string _leader;
 
-    public Behavior(object instance, Context context, bool isIgnored)
+    public Behavior(Type fieldType, object instance, Context context, bool isIgnored)
     {
+      _leader = fieldType.ToFormat();
       _instance = instance;
       _context = context;
       IsIgnored = isIgnored;
       _specifications = new List<Specification>();
+    }
+
+    public string Leader
+    {
+      get { return _leader; }
     }
 
     public bool IsIgnored

@@ -198,6 +198,7 @@ namespace Machine.Specifications.Reporting.Generation.Xml
             break;
         }
         reportBuilder.WriteStartElement("specification");
+        reportBuilder.WriteAttributeString("leader", specification.Leader);
         reportBuilder.WriteAttributeString("name", specification.Name);
         reportBuilder.WriteAttributeString("field-name", specification.FieldName);
         reportBuilder.WriteAttributeString("status", status);

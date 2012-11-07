@@ -1,4 +1,8 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Machine.Specifications.Utility.Internal
 {
@@ -6,6 +10,21 @@ namespace Machine.Specifications.Utility.Internal
   {
     static readonly Regex QuoteRegex = new Regex(@"(?<quoted>__(?<inner>\w+?)__)",
                                                  RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
+    public static string ToFormat(this Type type)
+    {
+      while (true)
+      {
+        var args = type.GetGenericArguments();
+        if (args.Length == 0 || args.Where(x => x.IsGenericParameter).Any()) break;
+        type = type.GetGenericTypeDefinition();
+      }
+      var typeName = type.Name;
+      var index = typeName.IndexOf('`');
+      if (index > 0) typeName = typeName.Substring(0, index);
+      if (typeName.Length > 0) typeName = char.ToLower(typeName[0]) + typeName.Substring(1);
+      return ToFormat(typeName);
+    }
 
     public static string ToFormat(this string name)
     {

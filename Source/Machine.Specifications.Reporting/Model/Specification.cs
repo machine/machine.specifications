@@ -6,11 +6,13 @@ namespace Machine.Specifications.Reporting.Model
   {
     readonly ExceptionResult _exception;
     readonly string _name;
+    readonly string _leader;
     readonly Status _status;
     readonly IDictionary<string, IDictionary<string, string>> _supplements;
 
-    public Specification(string name, Result result)
+    public Specification(string leader, string name, Result result)
     {
+      _leader = leader;
       _status = result.Status;
       _exception = result.Exception;
       _supplements = result.Supplements;
@@ -21,6 +23,11 @@ namespace Machine.Specifications.Reporting.Model
     {
       get;
       set;
+    }
+
+    public string Leader
+    {
+      get { return _leader; }
     }
 
     public Status Status

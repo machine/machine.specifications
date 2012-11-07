@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Reflection;
 
 using Machine.Specifications.Utility;
+using System;
 
 namespace Machine.Specifications.Model
 {
@@ -12,12 +13,13 @@ namespace Machine.Specifications.Model
     readonly ConventionMapper _mapper;
 
     public BehaviorSpecification(string name,
-                                 It it,
+                                 Type fieldType,
+                                 Delegate it,
                                  bool isIgnored,
                                  FieldInfo fieldInfo,
                                  Context context,
                                  Behavior behavior)
-      : base(name, it, isIgnored, fieldInfo)
+      : base(name, fieldType, it, isIgnored, fieldInfo)
     {
       _contextInstance = context.Instance;
       _behaviorInstance = behavior.Instance;
