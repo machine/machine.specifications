@@ -78,7 +78,7 @@ namespace Machine.Specifications.Explorers
       return assembly
         .GetTypes()
         .Where(IsContext)
-        .OrderBy(t => t.Namespace).ToArray();
+        .OrderBy(t => t.Namespace);
     }
 
     public Context FindContexts(Type type)
