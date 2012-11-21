@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JetBrains.dotCover.TaskRunnerFramework</name>
+    </assembly>
+    <members>
+        <member name="T:JetBrains.ReSharper.TaskRunnerFramework.AppDomainExceptionTask">
+            <summary>
+            Dummy task to indicate that exception was unhandled in appdomain
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.TaskRunnerFramework.RemoteTask.IsMeaningfulTask">
+            <summary>
+            Must return <value>true</value>, if the task is meaningful, e. g. it has related IUnitTestElement
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.TaskRunnerFramework.IRemoteTaskServer.GetAdditionalControllerInfo">
+            <summary>
+            Provides any additional from host controller to client controller
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:JetBrains.ReSharper.TaskRunnerFramework.AssemblyLoader.myRegistrations">
+            <summary>
+            Don't add directly, use <see cref="M:JetBrains.ReSharper.TaskRunnerFramework.AssemblyLoader.RegisterAssembly(System.String,System.String)"/> overloads.
+            Stores under both local and full assembly names.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.TaskRunnerFramework.AssemblyLoader.myLoadedAssemblies">
+            <summary>
+            Don't add directly, use <see cref="M:JetBrains.ReSharper.TaskRunnerFramework.AssemblyLoader.RegisterLoadedAssembly(System.Reflection.Assembly)"/>.
+            Stores under both local and full assembly names.
+            </summary>
+        </member>
+        <member name="F:JetBrains.ReSharper.TaskRunnerFramework.AssemblyLoader.myResolveAssemblyToken">
+            <summary>
+            Reentrancy token for <see cref="M:JetBrains.ReSharper.TaskRunnerFramework.AssemblyLoader.RegisterAssembly(System.Reflection.Assembly)"/>, <c>True</c> when inside.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.TaskRunnerFramework.AssemblyLoader.RegisterAssembly(System.String,System.String)">
+            <summary>
+            Allows the assembly to be resolved later.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.TaskRunnerFramework.AssemblyLoader.RegisterAssembly(System.Reflection.Assembly)">
+            <summary>
+            Allows the assembly to be resolved later.
+            This overload must not be called across appdomains.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.TaskRunnerFramework.AssemblyLoader.ResolveAssembly(System.Object,System.ResolveEventArgs)">
+            <summary>
+            AppDomain Resolver entry point.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.TaskRunnerFramework.AssemblyLoader.ResolveRegisteredAssemblyByName(System.String)">
+            <summary>
+            Looks up the registered assemblies cache by the <see cref="!:name"/>, which could be either a full or a local name.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.TaskRunnerFramework.AssemblyLoader.ResolveAssemblyFileByName(System.String,System.String)">
+            <summary>
+            Looks up the assemblies on disk under the known paths by the <see cref="!:name"/>, which could be either a full or a local name (<paramref name="isFullName"/>).
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.TaskRunnerFramework.AssemblyLoader.RegisterLoadedAssembly(System.Reflection.Assembly)">
+            <summary>
+            As the assembly has been resolved, registers it for subsequent resolves under both local and full names.
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.TaskRunnerFramework.ITaskRunnerClientController.AdditionalControllerInfo(System.String)">
+            <summary>
+            Additional info provided by host controller right before end of run
+            </summary>
+            <param name="info"></param>
+        </member>
+        <member name="T:JetBrains.ReSharper.TaskRunnerFramework.TaskOutputInterceptor.DebuggerTraceListener">
+            <summary>
+            Intercept the Debug.WriteLine() and Trace.WriteLine() calls
+            </summary>
+        </member>
+        <member name="M:JetBrains.ReSharper.TaskRunnerFramework.TaskExecutor.Invoke(System.Object,System.Reflection.MethodInfo)">
+            <summary>
+            Invokes void method without parameters in a test-controlled environment
+            </summary>
+            <param name="method"></param>
+            <param name="instance"></param>
+        </member>
+        <member name="M:JetBrains.ReSharper.TaskRunnerFramework.TaskExecutor.Invoke(System.Object,System.Reflection.MethodInfo,System.Object[])">
+            <summary>
+            Invokes void method with parameters in a test-controlled environment
+            </summary>
+            <param name="method"></param>
+            <param name="instance"></param>
+            <param name="parameters"></param>
+        </member>
+        <member name="T:JetBrains.ReSharper.TaskRunnerFramework.ThreadProxyTaskServer">
+            <summary>
+            Proxies calls via another thread to prevent CallContext data from propagation
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.TaskRunnerFramework.TaskExecutorConfiguration.IsInInternalDebug">
+            <summary>
+            Internal option to debug TaskRunner
+            </summary>
+        </member>
+        <member name="P:JetBrains.ReSharper.TaskRunnerFramework.TaskExecutorConfiguration.RunnerPaths">
+            <summary>
+            Folders with UnitTestProviders (for 3rd party plugins)
+            </summary>
+        </member>
+    </members>
+</doc>
