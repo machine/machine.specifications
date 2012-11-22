@@ -10,7 +10,7 @@ include FileUtils
 task :configure do
   project = "Machine.Specifications"
   target = ENV['target'] || 'Debug'
-  
+
   build_config = {
     :build => {
       :base => File.read('VERSION'),
@@ -74,7 +74,7 @@ namespace :generate do
   desc "Generate embeddable version information"
   task :version do
     next if configatron.build.number.nil?
-    
+
     puts "##teamcity[buildNumber '#{configatron.version.full}']"
 
     asmInfo = AssemblyInfoBuilder.new({
@@ -85,7 +85,7 @@ namespace :generate do
 
     asmInfo.write 'Source/VersionInfo.cs'
   end
-  
+
   desc 'Update the configuration files for the build'
   task :config do
     FileList.new('**/*.template').each do |template|
@@ -105,7 +105,7 @@ namespace :build do
           :TrackFileAccess => false
         }
       }
-      
+
     def build (msbuild_options, config)
       project = msbuild_options[:project]
 
@@ -132,7 +132,7 @@ namespace :build do
       :clr4_x86    => { :TargetFrameworkVersion => 'v4.0', :PlatformTarget => 'x86',    :AssemblyName => 'mspec-x86-clr4' },
       :clr4_AnyCPU => { :TargetFrameworkVersion => 'v4.0', :PlatformTarget => 'AnyCPU', :AssemblyName => 'mspec-clr4' }
     }
-    
+
     console_runner.values.each do |config|
       project = 'Source/Machine.Specifications.ConsoleRunner/Machine.Specifications.ConsoleRunner.csproj'
       build opts.merge({ :project => project }), config
@@ -151,13 +151,13 @@ namespace :specs do
   desc "Run specifications"
   task :run do
     puts 'Running Specs...'
-    
+
     specs = FileList.new("#{configatron.out_dir}/Tests/*.Specs.dll").exclude(/Clr4/)
     sh "#{configatron.out_dir}/mspec.exe", "--html", "Specs/#{configatron.project}.Specs.html", "-x", "example", *(configatron.mspec_options + specs)
-    
-    specs = FileList.new("#{configatron.out_dir}/Tests/*Clr4*.dll")
+
+    specs = FileList.new("#{configatron.out_dir}/Tests/*Clr4*.dll").exclude(/Machine\.Specifications\.Clr4\.dll/)
     sh "#{configatron.out_dir}/mspec-clr4.exe", *(configatron.mspec_options + specs)
-    
+
     puts "Wrote specs to Specs/#{configatron.project}.Specs.html, run 'rake specs:view' to see them"
   end
 end
@@ -166,12 +166,12 @@ namespace :tests do
   desc "Run unit tests"
   task :run do
     puts 'Running NUnit tests...'
-    
+
     tests = FileList.new("#{configatron.out_dir}/Tests/*.Tests.dll").to_a
     runner = NUnitRunner.new :tool => 'packages/NUnit.2.5.10.11092/tools/nunit-console-x86.exe', :results => "Specs", :clr_version => configatron.nunit_framework
     runner.execute tests
   end
-  
+
   task :run do
     puts 'Running Gallio tests...'
     sh "Tools/Gallio/bin/Gallio.Echo.exe", "#{configatron.out_dir}/Tests/Gallio/Machine.Specifications.GallioAdapter.Tests.dll", "/plugin-directory:#{configatron.out_dir}", "/r:Local"
@@ -211,18 +211,18 @@ namespace :package do
   desc "Package build artifacts as a zip file"
   task :zip => [ 'build:rebuild', 'tests:run', 'specs:run' ] do
     rm_f configatron.zip.package
-    
+
     cp 'License.txt', configatron.out_dir
-    
+
     sz = SevenZip.new \
       :tool => 'Tools/7-Zip/7za.exe',
       :zip_name => configatron.zip.package
-    
+
     Dir.chdir(configatron.out_dir) do
       sz.zip :files => packaged_files
     end
   end
-  
+
   def create_package
     opts = ["pack", "mspec.nuspec",
       "-BasePath", "#{configatron.out_dir}NuGet".gsub(/\//, '\\'),
@@ -258,7 +258,7 @@ namespace :package do
       FileList["#{configatron.out_dir}NuGet/src/", "#{configatron.out_dir}NuGet/**/*.pdb"].each { |f| rm_rf f }
       create_package
     end
-    
+
     desc "Publishes the NuGet package"
     task :publish do
       raise "NuGet access key is missing, cannot publish" if configatron.nuget.key.nil?

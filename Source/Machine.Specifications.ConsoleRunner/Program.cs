@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Diagnostics;
 using System.Threading;
@@ -110,6 +111,13 @@ namespace Machine.Specifications.ConsoleRunner
           if (!File.Exists(assemblyName))
           {
             throw NewException.MissingAssembly(assemblyName);
+          }
+
+          var excludedAssemblies = new[] { "Machine.Specifications.dll", "Machine.Specifications.Clr4.dll" };
+          if (excludedAssemblies.Any(x => Path.GetFileName(assemblyName) == x))
+          {
+            _console.WriteLine("Warning: Excluded {0} from the test run because the file name matches either of these: {1}", assemblyName, String.Join(", ", excludedAssemblies));
+            continue;
           }
 
           Assembly assembly = Assembly.LoadFrom(assemblyName);
