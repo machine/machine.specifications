@@ -13,7 +13,7 @@ task :configure do
 
   build_config = {
     :build => {
-      :base => File.read('VERSION'),
+      :base => File.open('VERSION') { |f| f.readline }.strip,
       :number => ENV['BUILD_NUMBER'],
       :sha => ENV['BUILD_VCS_NUMBER'] || 'no SHA',
       :prerelease => ENV.include?('PRERELEASE')
