@@ -9,6 +9,8 @@ using JetBrains.ReSharper.Psi.Tree;
 
 using CLRTypeName = JetBrains.ReSharper.Psi.ClrTypeName;
 
+using JetBrains.ReSharper.Psi.Util;
+
 namespace Machine.Specifications.ReSharperRunner
 {
   internal static partial class PsiExtensions
@@ -129,9 +131,7 @@ namespace Machine.Specifications.ReSharperRunner
 
     public static string GetSubjectString(this IAttributesOwner type)
     {
-      var attribute = type.GetAttributeInstances(new CLRTypeName(typeof(SubjectAttribute).FullName), true)
-                          .FirstOrDefault();
-
+      var attribute = GetSubjectAttribute(type);
       if (attribute == null)
       {
         var containingType = type.GetContainingType();
@@ -177,6 +177,14 @@ namespace Machine.Specifications.ReSharperRunner
       {
         return null;
       }
+    }
+
+    private static IAttributeInstance GetSubjectAttribute(IAttributesSet type)
+    {
+      return (from a in type.GetAttributeInstances(true)
+              let h = (new[] { a.AttributeType}).Concat(a.AttributeType.GetSuperTypes())
+              where h.Any(t => t.GetClrName().FullName == typeof(SubjectAttribute).FullName)
+              select a).FirstOrDefault();
     }
 
     public static ICollection<string> GetTags(this IAttributesOwner type)

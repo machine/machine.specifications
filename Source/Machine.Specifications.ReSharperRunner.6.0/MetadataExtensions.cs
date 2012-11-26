@@ -51,7 +51,7 @@ namespace Machine.Specifications.ReSharperRunner
 
     public static string GetSubjectString(this IMetadataEntity type)
     {
-      var attributes = type.GetCustomAttributes(typeof(SubjectAttribute).FullName);
+      var attributes = GetSubjectAttributes(type);
       if (attributes.Count != 1)
       {
         var asMember = type as IMetadataTypeMember;
@@ -76,6 +76,13 @@ namespace Machine.Specifications.ReSharperRunner
       }).ToArray();
 
       return String.Join(" ", parameters);
+    }
+
+    private static IList<IMetadataCustomAttribute> GetSubjectAttributes(IMetadataEntity type)
+    {
+      return (from customAttribute in type.CustomAttributes
+              where customAttribute.AndAllBaseTypes().Any(i => i.FullyQualifiedName == typeof(SubjectAttribute).FullName)
+              select customAttribute).ToList();
     }
 
     public static ICollection<string> GetTags(this IMetadataEntity type)
