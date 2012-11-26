@@ -90,6 +90,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.dotCoverRunner.2.2", "Source\Machine.Specifications.dotCoverRunner.2.2\Machine.Specifications.dotCoverRunner.2.2.csproj", "{B88940C4-9552-4C47-85F2-33E820CD9FD1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Example.DerivedSubject", "Source\Machine.Specifications.Example.DerivedSubject\Machine.Specifications.Example.DerivedSubject.csproj", "{13650EC6-35A0-429A-A779-DCA0214E7F79}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -228,6 +230,10 @@ Global
 		{B88940C4-9552-4C47-85F2-33E820CD9FD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B88940C4-9552-4C47-85F2-33E820CD9FD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B88940C4-9552-4C47-85F2-33E820CD9FD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13650EC6-35A0-429A-A779-DCA0214E7F79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13650EC6-35A0-429A-A779-DCA0214E7F79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13650EC6-35A0-429A-A779-DCA0214E7F79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13650EC6-35A0-429A-A779-DCA0214E7F79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -242,6 +248,7 @@ Global
 		{1295C389-FCE4-4425-93E4-E4AE239B3E35} = {85BC2C4A-493A-476C-971E-BE9CE51ECF5D}
 		{0CE411DF-CFC3-45E3-96AD-2F872D99E1B1} = {85BC2C4A-493A-476C-971E-BE9CE51ECF5D}
 		{A6B234F5-5D96-4809-BD25-86F6544BF838} = {85BC2C4A-493A-476C-971E-BE9CE51ECF5D}
+		{13650EC6-35A0-429A-A779-DCA0214E7F79} = {85BC2C4A-493A-476C-971E-BE9CE51ECF5D}
 		{E57865B9-C7EF-4340-8AF2-5D85F2545EC6} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
 		{CFF4B323-24C1-4B19-98CA-7DF92755458E} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
 		{F25C7917-4ED6-4261-B262-43C56D0CD37F} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
