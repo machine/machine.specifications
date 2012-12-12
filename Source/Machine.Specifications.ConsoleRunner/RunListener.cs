@@ -89,7 +89,7 @@ namespace Machine.Specifications.ConsoleRunner
 
     public void OnSpecificationStart(SpecificationInfo specification)
     {
-      WriteVerbose("» " + specification.Leader + " " + specification.Name);
+      WriteVerbose("» " + specification.Name);
     }
 
     public void OnSpecificationEnd(SpecificationInfo specification, Result result)
