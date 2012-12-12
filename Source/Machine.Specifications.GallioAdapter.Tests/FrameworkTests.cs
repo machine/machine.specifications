@@ -15,7 +15,6 @@
 // 
 // Modified by and Portions Copyright 2008 Machine Project
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -39,13 +38,12 @@ namespace Machine.Specifications.GallioAdapter.Tests
   // Adapted from the Gallio BaseTestFrameworkTest<TSimpleTest> Test
   [TestFixture]
   public class FrameworkTests
-  {    
+  {
     const string ParentTestName = "simple test spec";
     const string PassTestName = "pass";
     const string FailTestName = "fail";
     readonly string AssemblyKind = TestKinds.Assembly;
     readonly Assembly SimpleFixtureAssembly = typeof(simple_test_spec).Assembly;
-    readonly Type SimpleFixtureType = typeof(simple_test_spec);
     readonly string SimpleFixtureNamespace = typeof(simple_test_spec).Namespace;
 
     void AssertStringContains(string needle, string haystack)
@@ -118,7 +116,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
 
       return null;
     } 
-    #endregion    
+    #endregion
 
     [Test]
     public void PopulateTreeTest_IgnoredContextShouldIncludeExtraMetadata()
@@ -128,7 +126,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
       Test test = GetDescendantByName(testModel.RootTest.Children[0], "ignored context spec");
       
       Assert.IsNotNull(test);
-      AssertStringContains("Attribute", test.Metadata.GetValue(MetadataKeys.IgnoreReason));      
+      AssertStringContains("Attribute", test.Metadata.GetValue(MetadataKeys.IgnoreReason));
     }
 
     [Test]
@@ -168,12 +166,12 @@ namespace Machine.Specifications.GallioAdapter.Tests
 
       Test test = GetDescendantByName(testModel.RootTest.Children[0], "subject spec");
 
-      Assert.IsNotNull(test);    
+      Assert.IsNotNull(test);
       
       string category = test.Metadata.GetValue(MetadataKeys.Category);
 
       AssertStringContains("Testing out the framework", category);  // Make sure the text is there
-      AssertStringContains("bool", category);             // Make sure the type is there too
+      AssertStringContains("bool", category);  // Make sure the type is there too
     }
 
     [Test]
@@ -207,7 +205,6 @@ namespace Machine.Specifications.GallioAdapter.Tests
     }
 
     // These tests are borrowed directly from the Gallio MS Test adapter tests
-    
     [Test]
     public void PopulateTestTree_WhenAssemblyDoesNotReferenceFramework_IsEmpty()
     {
@@ -267,7 +264,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
       Assert.IsTrue(failTest.IsTestCase);
       Assert.AreEqual(0, failTest.Children.Count);
     }
-    
+
     [Test]
     public void MetadataImport_XmlDocumentation()
     {
@@ -280,11 +277,11 @@ namespace Machine.Specifications.GallioAdapter.Tests
       Assert.AreEqual("<summary>\nA simple test specification.\n</summary>", test.Metadata.GetValue(MetadataKeys.XmlDocumentation));
       Assert.AreEqual("<summary>\nA passing specification.\n</summary>", passTest.Metadata.GetValue(MetadataKeys.XmlDocumentation));
       Assert.AreEqual("<summary>\nA failing specification.\n</summary>", failTest.Metadata.GetValue(MetadataKeys.XmlDocumentation));
-    }    
+    }
 
     [Test]
     public void MetadataImport_AssemblyAttributes()
-    {      
+    {
       TestModel testModel = PopulateTestTree();
 
       Test assemblyTest = testModel.RootTest.Children[0];

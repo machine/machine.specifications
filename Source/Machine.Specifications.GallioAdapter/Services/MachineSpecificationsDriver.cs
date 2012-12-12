@@ -34,6 +34,6 @@ namespace Machine.Specifications.GallioAdapter.Services
     protected override TestController CreateTestController()
     {
       return new DelegatingTestController( test => new Services.MachineSpecificationController() );
-    }    
+    }
   }
 }

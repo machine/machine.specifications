@@ -113,7 +113,7 @@ This option behaves the same as the `--html` option, in terms of filename behavi
 
 ##### Using InstallResharperRunner*.bat
 
-MSpec provides a batch file for each of the versions of ReSharper it supports, 4.1, 4.5, 5.0, 5.1, 6.0 and 6.1.
+MSpec provides a batch file for each of the versions of ReSharper it supports, 6.0, 6.1 and 7.0.
 
 ##### Preventing ReSharper from marking specifications as unused
 

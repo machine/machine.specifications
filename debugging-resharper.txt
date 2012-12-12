@@ -14,6 +14,6 @@ in the debugged Visual Studio instance.
    
 Visual Studio will choose the debugger based on the framework version the plugin is compiled against. This why we need
 a debugger project for each version of Visual Studio ReSharper supports. To debug the plugin for 
-- ReSharper on VS 2010, use Machine.Specifications.ReSharperRunner.Debug.VS2010
+- ReSharper on VS 2010/2012, use Machine.Specifications.ReSharperRunner.Debug.VS2010
 - ReSharper on VS 2008, *transiently* switch the Machine.Specifications.ReSharperRunner.Debug.VS2010 to be compiled
   against .NET 3.5 (or create a new debugger project for .NET Framework 3.5).

@@ -12,7 +12,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
 
     [SetUp]
     public void Setup()
-    {      
+    {
       _run = GallioRunner.RunAllSpecificationsFor<Example.when_a_customer_first_views_the_account_summary_page>();
     }
 
@@ -31,7 +31,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
 
     [Test]
     public void ShouldIndicateThat_should_display_all_account_transactions_for_the_past_thirty_days_IsNotImplemented()
-    {       
+    {
       AssertNotImplementedFor("should display all account transactions for the past thirty days"); 
     }
 

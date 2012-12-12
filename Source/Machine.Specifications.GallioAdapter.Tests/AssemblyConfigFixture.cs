@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using Gallio.Runtime;
+﻿using NUnit.Framework;
 
 namespace Machine.Specifications.GallioAdapter.Tests
 {
@@ -13,7 +8,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
   [SetUpFixture]
   public class AssemblyConfigFixture
   {
-    static bool _running = false;
+    static bool _running;
 
     [SetUp]
     public void Setup()

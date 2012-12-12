@@ -16,7 +16,6 @@
 // Modified by and Portions Copyright 2008 Machine Project
 
 using System.Collections.Generic;
-using System.Linq;
 using Gallio.Model;
 using Gallio.Runtime.Extensibility;
 using Gallio.Runtime.Logging;
@@ -24,7 +23,7 @@ using Gallio.Runtime.Logging;
 namespace Machine.Specifications.GallioAdapter
 {
   public class MachineSpecificationsFramework : BaseTestFramework
-  {  
+  {
     public override TestDriverFactory GetTestDriverFactory()
     {
       return CreateDriver;
