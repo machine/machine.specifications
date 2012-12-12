@@ -79,6 +79,7 @@
     <Compile Include="ComparerStrategies\DefaultComparer.cs" />
     <Compile Include="ComparerStrategies\EnumerableComparer.cs" />
     <Compile Include="ComparerStrategies\EquatableComparer.cs" />
+    <Compile Include="DelegateUsageAttribute.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Factories\BehaviorFactory.cs" />
     <Compile Include="Factories\ITagExtractor.cs" />
