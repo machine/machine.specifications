@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 using Machine.Specifications.Utility;
 
@@ -89,7 +90,7 @@ namespace Machine.Specifications.Specs.Utility
     }
 
     [Subject(typeof(ObjectGraphHelper))]
-    public class when_getting_an_array_graph
+    public class when_getting_a_sequence_graph_with_an_array
     {
         static object _array;
         static ObjectGraphHelper.INode _result;
@@ -100,17 +101,43 @@ namespace Machine.Specifications.Specs.Utility
         {
             Establish ctx = () => _array = new string[] {};
 
-            It should_return_an_array_node = () => _result.ShouldBeOfType<ObjectGraphHelper.ArrayNode>();
-            It should_be_empty = () => ((ObjectGraphHelper.ArrayNode) _result).ValueGetters.ShouldBeEmpty();
+            It should_return_an_array_node = () => _result.ShouldBeOfType<ObjectGraphHelper.SequenceNode>();
+            It should_be_empty = () => ((ObjectGraphHelper.SequenceNode) _result).ValueGetters.ShouldBeEmpty();
         }
         
         public class with_values
         {
             Establish ctx = () => _array = new[] {"value1", "value2"};
 
-            It should_return_an_array_node = () => _result.ShouldBeOfType<ObjectGraphHelper.ArrayNode>();
-            It should_contain_value1 = () => ((ObjectGraphHelper.ArrayNode) _result).ValueGetters.ElementAt(0)().ShouldEqual("value1");
-            It should_contain_value2 = () => ((ObjectGraphHelper.ArrayNode) _result).ValueGetters.ElementAt(1)().ShouldEqual("value2");
+            It should_return_an_array_node = () => _result.ShouldBeOfType<ObjectGraphHelper.SequenceNode>();
+            It should_contain_value1 = () => ((ObjectGraphHelper.SequenceNode) _result).ValueGetters.ElementAt(0)().ShouldEqual("value1");
+            It should_contain_value2 = () => ((ObjectGraphHelper.SequenceNode) _result).ValueGetters.ElementAt(1)().ShouldEqual("value2");
+        }
+    }
+
+    [Subject(typeof(ObjectGraphHelper))]
+    public class when_getting_a_sequence_graph_with_an_IEnumerable
+    {
+        static IEnumerable<string> _sequence;
+        static ObjectGraphHelper.INode _result;
+
+        Because of = () => _result = ObjectGraphHelper.GetGraph(_sequence);
+
+        public class when_no_values
+        {
+            Establish ctx = () => _sequence = new List<string>();
+
+            It should_return_an_array_node = () => _result.ShouldBeOfType<ObjectGraphHelper.SequenceNode>();
+            It should_be_empty = () => ((ObjectGraphHelper.SequenceNode)_result).ValueGetters.ShouldBeEmpty();
+        }
+
+        public class when_values
+        {
+            Establish ctx = () => _sequence = new List<string> { "value1", "value2" };
+
+            It should_return_an_array_node = () => _result.ShouldBeOfType<ObjectGraphHelper.SequenceNode>();
+            It should_contain_value1 = () => ((ObjectGraphHelper.SequenceNode)_result).ValueGetters.ElementAt(0)().ShouldEqual("value1");
+            It should_contain_value2 = () => ((ObjectGraphHelper.SequenceNode)_result).ValueGetters.ElementAt(1)().ShouldEqual("value2");
         }
     }
 
