@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Machine.Specifications.Specs
 {
@@ -111,7 +112,7 @@ namespace Machine.Specifications.Specs
       Because of = () => { Exception = Catch.Exception(() => _array.ShouldBeLike(new[] {"value1"})); };
 
       It should_contain_message = () => Exception.Message.ShouldEqual(@""""":
-  Expected: Array length of 1
+  Expected: Sequence length of 1
   But was:  2");
 
       It should_throw = () => Exception.ShouldBeOfType<SpecificationException>();
@@ -184,42 +185,207 @@ namespace Machine.Specifications.Specs
   [Subject(typeof(ShouldExtensionMethods))]
   public class when_asserting_that_two_objects_of_the_same_concrete_type_are_like_each_other
   {
+  static Exception Exception;
+  static Dummy Obj1;
+  static Dummy Obj2;
+
+  Establish context = () => { Obj1 = new Dummy {Prop1 = "test"}; };
+
+  class Dummy
+  {
+    public string Prop1 { get; set; }
+  }
+
+  public class and_the_objects_are_similar
+  {
+    Establish context = () => { Obj2 = new Dummy {Prop1 = "test"}; };
+
+    Because of = () => { Exception = Catch.Exception(() => Obj1.ShouldBeLike(Obj2)); };
+
+    It should_not_throw = () => Exception.ShouldBeNull();
+  }
+
+  public class and_the_objects_are_different
+  {
+    Establish context = () => { Obj2 = new Dummy {Prop1 = "different"}; };
+
+    Because of = () => { Exception = Catch.Exception(() => Obj1.ShouldBeLike(Obj2)); };
+
+    It should_throw = () => Exception.ShouldBeOfType<SpecificationException>();
+
+    It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop1"":
+  Expected string length 9 but was 4. Strings differ at index 0.
+  Expected: ""different""
+  But was:  ""test""
+  -----------^");
+  }
+
+  public class and_the_objects_are_different_and_have_null_values
+  {
+    Establish context = () => { Obj2 = new Dummy {Prop1 = null}; };
+
+    Because of = () => { Exception = Catch.Exception(() => Obj1.ShouldBeLike(Obj2)); };
+
+    It should_throw_a_specification_exception = () => Exception.ShouldBeOfType<SpecificationException>();
+
+    It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop1"":
+  Expected: [null]
+  But was:  ""test""");
+  }
+  }
+
+  [Subject(typeof(ShouldExtensionMethods))]
+  public class when_asserting_that_two_objects_containing_arrays_as_properties_are_like_each_other
+  {
     static Exception Exception;
     static Dummy Obj1;
     static Dummy Obj2;
-
-    Establish context = () => { Obj1 = new Dummy {Prop1 = "test"}; };
-
+    
     class Dummy
     {
-      public string Prop1 { get; set; }
+      public int[] Prop1 { get; set; }
     }
 
+    Establish context = () => { Obj1 = new Dummy { Prop1 = new[] {1, 1, 1} }; };
+    
     public class and_the_objects_are_similar
     {
-      Establish context = () => { Obj2 = new Dummy {Prop1 = "test"}; };
-
+      Establish context = () => { Obj2 = new Dummy { Prop1 = new[] {1, 1, 1} }; };
+      
       Because of = () => { Exception = Catch.Exception(() => Obj1.ShouldBeLike(Obj2)); };
-
+      
       It should_not_throw = () => Exception.ShouldBeNull();
     }
-
+    
     public class and_the_objects_are_different
     {
-      Establish context = () => { Obj2 = new Dummy {Prop1 = "different"}; };
-
+      Establish context = () => { Obj2 = new Dummy { Prop1 = new[] {2, 2, 2} }; };
+      
       Because of = () => { Exception = Catch.Exception(() => Obj1.ShouldBeLike(Obj2)); };
-
+      
       It should_throw = () => Exception.ShouldBeOfType<SpecificationException>();
+    
+      It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop1[0]"":
+  Expected: [2]
+  But was:  [1]
+
+""Prop1[1]"":
+  Expected: [2]
+  But was:  [1]
+
+""Prop1[2]"":
+  Expected: [2]
+  But was:  [1]");
     }
 
     public class and_the_objects_are_different_and_have_null_values
     {
-      Establish context = () => { Obj2 = new Dummy {Prop1 = null}; };
-
-      Because of = () => { Exception = Catch.Exception(() => Obj1.ShouldBeLike(Obj2)); };
-
+      Establish context = () => { Obj2 = new Dummy { Prop1 = null }; };
+      
+      Because of = () =>
+      {
+        Exception = Catch.Exception(() => Obj1.ShouldBeLike(Obj2));
+      };
+      
       It should_throw_a_specification_exception = () => Exception.ShouldBeOfType<SpecificationException>();
+    
+      It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop1"":
+  Expected: [null]
+  But was:  System.Int32[]:
+{
+  [1],
+  [1],
+  [1]
+}");
+    }
+  }
+  
+  [Subject(typeof(ShouldExtensionMethods))]
+  public class when_asserting_that_two_objects_containing_collections_as_properties_are_like_each_other
+  {
+    static ListDummy first;
+    static ListDummy second;
+    static Exception exception;
+
+    class ListDummy
+    {
+      public List<string> Prop1 { get; set; }
+      public HashSet<int> Prop2 { get; set; }
+      public IEnumerable<char> Prop3 { get; set; }
+    }
+
+    Establish context = () =>
+      first = new ListDummy
+      {
+        Prop1 = new List<string> {"hello", "world"},
+        Prop2 = new HashSet<int> {1, 2, 3},
+        Prop3 = new LinkedList<char>(new[] {'a', 'b', 'c'})
+      };
+
+    public class and_the_objects_are_similar
+    {
+      Establish context = () =>
+        second = new ListDummy
+        {
+          Prop1 = new List<string> {"hello", "world"},
+          Prop2 = new HashSet<int> {1, 2, 3},
+          Prop3 = new LinkedList<char>(new[] {'a', 'b', 'c'})
+        };
+
+      Because of = () => exception = Catch.Exception(() => first.ShouldBeLike(second));
+
+      It should_not_throw = () => exception.ShouldBeNull();
+    }
+
+    public class and_the_objects_differ
+    {
+      Establish context = () =>
+        second = new ListDummy
+        {
+          Prop1 = new List<string> { "hello", "world" },
+          Prop2 = new HashSet<int> { 3, 2, 1 },
+          Prop3 = new LinkedList<char>(new[] { 'a', 'b', 'c' })
+        };
+
+      Because of = () => exception = Catch.Exception(() => first.ShouldBeLike(second));
+
+      It should_throw = () => exception.ShouldBeOfType<SpecificationException>();
+
+      It should_contain_message = () => exception.Message.ShouldEqual(@"""Prop2[0]"":
+  Expected: [3]
+  But was:  [1]
+
+""Prop2[2]"":
+  Expected: [1]
+  But was:  [3]");
+    }
+
+    public class and_the_objects_differ_and_have_null_values
+    {
+      Establish context = () =>
+      {
+        first.Prop2 = null;
+
+        second = new ListDummy
+        {
+          Prop1 = new List<string> {"hello", "world"},
+          Prop2 = null,
+          Prop3 = null
+        };
+      };
+
+      Because of = () => exception = Catch.Exception(() => first.ShouldBeLike(second));
+
+      It should_throw = () => exception.ShouldBeOfType<SpecificationException>();
+
+      It should_contain_message = () => exception.Message.ShouldEqual(@"""Prop3"":
+  Expected: [null]
+  But was:  System.Collections.Generic.LinkedList`1[System.Char]:
+{
+  [a],
+  [b],
+  [c]
+}");
     }
   }
 }

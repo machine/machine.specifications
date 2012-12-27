@@ -299,7 +299,7 @@ does contain: {2}",
       if (parameters.Any())
       {
         return
-          new SpecificationException(string.Format(message,
+          new SpecificationException(string.Format(message.EnsureSafeFormat(),
                                                    parameters.Select(x => x.ToUsefulString()).Cast<object>().ToArray()));
       }
       return new SpecificationException(message);
@@ -632,23 +632,23 @@ entire list: {1}",
 
         return Enumerable.Empty<SpecificationException>();
       }
-      else if (nodeType == typeof(ObjectGraphHelper.ArrayNode))
+      else if (nodeType == typeof(ObjectGraphHelper.SequenceNode))
       {
         var actualNode = ObjectGraphHelper.GetGraph(obj);
-        if (actualNode.GetType() != typeof(ObjectGraphHelper.ArrayNode))
+        if (actualNode.GetType() != typeof(ObjectGraphHelper.SequenceNode))
         {
-          var errorMessage = string.Format("  Expected: Array{0}  But was:  {1}", Environment.NewLine, obj.GetType());
+          var errorMessage = string.Format("  Expected: Array or Sequence{0}  But was:  {1}", Environment.NewLine, obj.GetType());
           return new[] {NewException(string.Format("{{0}}:{0}{1}", Environment.NewLine, errorMessage), nodeName)};
         }
 
-        var expectedValues = ((ObjectGraphHelper.ArrayNode) expectedNode).ValueGetters;
-        var actualValues = ((ObjectGraphHelper.ArrayNode) actualNode).ValueGetters;
+        var expectedValues = ((ObjectGraphHelper.SequenceNode) expectedNode).ValueGetters;
+        var actualValues = ((ObjectGraphHelper.SequenceNode) actualNode).ValueGetters;
 
         var expectedCount = expectedValues.Count();
         var actualCount = actualValues.Count();
         if (expectedCount != actualCount)
         {
-          var errorMessage = string.Format("  Expected: Array length of {1}{0}  But was:  {2}", Environment.NewLine, expectedCount, actualCount);
+          var errorMessage = string.Format("  Expected: Sequence length of {1}{0}  But was:  {2}", Environment.NewLine, expectedCount, actualCount);
           return new[] {NewException(string.Format("{{0}}:{0}{1}", Environment.NewLine, errorMessage), nodeName)};
         }
 

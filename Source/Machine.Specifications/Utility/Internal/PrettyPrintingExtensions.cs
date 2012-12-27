@@ -3,11 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Machine.Specifications.Utility.Internal
 {
   public static class PrettyPrintingExtensions
   {
+    private const string CurlyBraceSurround = "{{{0}}}";
+    private static readonly Regex EscapeNonFormatBraces = new Regex(@"{([^\d].*?)}", RegexOptions.Compiled | RegexOptions.Singleline);
+
     public static string FormatErrorMessage(object actualObject, object expectedObject)
     {
       if (actualObject == null || !(actualObject is string) ||
@@ -151,16 +155,16 @@ namespace Machine.Specifications.Utility.Internal
     {
       var sb = new StringBuilder();
       sb.AppendLine("{");
-      sb.Append(String.Join(",\n", enumerable.Select(x => x.ToUsefulString().Tab()).Take(10).ToArray()));
+      sb.Append(String.Join(",\r\n", enumerable.Select(x => x.ToUsefulString().Tab()).Take(10).ToArray()));
       if (enumerable.Count() > 10)
       {
         if (enumerable.Count() > 11)
         {
-          sb.AppendLine(String.Format(",\n  ...({0} more elements)", enumerable.Count() - 10));
+          sb.AppendLine(String.Format(",\r\n  ...({0} more elements)", enumerable.Count() - 10));
         }
         else
         {
-          sb.AppendLine(",\n" + enumerable.Last().ToUsefulString().Tab());
+          sb.AppendLine(",\r\n" + enumerable.Last().ToUsefulString().Tab());
         }
       }
       else
@@ -194,7 +198,7 @@ namespace Machine.Specifications.Utility.Internal
       {
         var enumerable = ((IEnumerable) obj).Cast<object>();
 
-        return obj.GetType() + ":\n" + enumerable.EachToUsefulString();
+        return obj.GetType() + ":\r\n" + enumerable.EachToUsefulString();
       }
 
       str = obj.ToString();
@@ -220,6 +224,11 @@ namespace Machine.Specifications.Utility.Internal
       }
 
       return string.Format("{0}:[{1}]", obj.GetType(), str);
+    }
+
+    internal static string EnsureSafeFormat(this string message)
+    {
+        return EscapeNonFormatBraces.Replace(message, match => string.Format(CurlyBraceSurround, match.Groups[0]));
     }
   }
 }

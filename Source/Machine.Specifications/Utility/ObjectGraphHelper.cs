@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,25 +13,20 @@ namespace Machine.Specifications.Utility
     public static INode GetGraph(object obj)
     {
       var objectType = obj.GetType();
-      if (objectType.IsArray)
-      {
-        return GetArrayNode(obj);
-      }
-      else if (objectType.IsClass && objectType != typeof(string))
-      {
+      if (objectType.IsArray || (obj is IEnumerable && objectType != typeof(string)))
+        return GetSequenceNode(obj);
+      
+      if (objectType.IsClass && objectType != typeof(string))
         return GetKeyValueNode(obj);
-      }
-      else
-      {
-        return new LiteralNode {Value = obj};
-      }
+     
+      return new LiteralNode {Value = obj};
     }
 
-    static INode GetArrayNode(object obj)
+    static INode GetSequenceNode(object obj)
     {
-      var array = (IEnumerable<object>) obj;
+	  var sequence = ((IEnumerable) obj).Cast<object>();
 
-      return new ArrayNode {ValueGetters = array.Select<object, Func<object>>(a => () => a).ToArray()};
+      return new SequenceNode {ValueGetters = sequence.Select<object, Func<object>>(a => () => a).ToArray()};
     }
 
     static INode GetKeyValueNode(object obj)
@@ -61,7 +57,7 @@ namespace Machine.Specifications.Utility
       return new KeyValueNode {KeyValues = properties.Concat(fields).OrderBy(m => m.Name)};
     }
 
-    public class ArrayNode : INode
+    public class SequenceNode : INode
     {
       public IEnumerable<Func<object>> ValueGetters { get; set; }
     }
