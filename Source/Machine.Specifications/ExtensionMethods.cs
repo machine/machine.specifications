@@ -634,7 +634,12 @@ entire list: {1}",
       }
       else if (nodeType == typeof(ObjectGraphHelper.SequenceNode))
       {
-        var actualNode = ObjectGraphHelper.GetGraph(obj);
+        if (obj == null)
+        {
+	        var errorMessage = PrettyPrintingExtensions.FormatErrorMessage(null, expected);
+	        return new[] {NewException(string.Format("{{0}}:{0}{1}", Environment.NewLine, errorMessage), nodeName)};
+        }
+	    var actualNode = ObjectGraphHelper.GetGraph(obj);
         if (actualNode.GetType() != typeof(ObjectGraphHelper.SequenceNode))
         {
           var errorMessage = string.Format("  Expected: Array or Sequence{0}  But was:  {1}", Environment.NewLine, obj.GetType());

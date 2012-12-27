@@ -298,6 +298,27 @@ namespace Machine.Specifications.Specs
   [1]
 }");
     }
+    public class and_the_objects_are_different_and_the_actual_object_has_a_null_value
+    {
+      Establish context = () => { Obj2 = new Dummy { Prop1 = null }; };
+      
+      Because of = () =>
+      {
+      	Exception = Catch.Exception(() => Obj2.ShouldBeLike(Obj1));
+      };
+      
+      It should_throw_a_specification_exception = () => Exception.ShouldBeOfType<SpecificationException>();
+      
+      It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop1"":
+  Expected: System.Int32[]:
+{
+  [1],
+  [1],
+  [1]
+}
+
+  But was:  [null]");
+	}
   }
   
   [Subject(typeof(ShouldExtensionMethods))]
