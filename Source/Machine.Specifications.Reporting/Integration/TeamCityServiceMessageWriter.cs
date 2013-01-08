@@ -256,21 +256,39 @@ namespace Machine.Specifications.Reporting.Integration
 
         private static void AppendEscapedString(StringBuilder builder, string rawString)
         {
-            foreach (char c in rawString)
+          foreach (char c in rawString)
+          {
+            switch (c)
             {
-                if (c == '\n')
-                    builder.Append("|n");
-                else if (c == '\'')
-                    builder.Append("|'");
-                else if (c == '\r')
-                    builder.Append("|r");
-                else if (c == '|')
-                    builder.Append("||");
-                else if (c == ']')
-                    builder.Append("|]");
-                else
-                    builder.Append(c);
+              case '\n':
+                builder.Append("|n");
+                break;
+              case '\'':
+                builder.Append("|'");
+                break;
+              case '\r':
+                builder.Append("|r");
+                break;
+              case '|':
+                builder.Append("||");
+                break;
+              case ']':
+                builder.Append("|]");
+                break;
+              case '\u0085': // \u0085 (next line) => |x
+                builder.Append("|x");
+                break;
+              case '\u2028': // \u2028 (line separator) => |l
+                builder.Append("|l");
+                break;
+              case '\u2029':
+                builder.Append("|p");
+                break;
+              default:
+                builder.Append(c);
+                break;
             }
+          }
         }
     }
 }
