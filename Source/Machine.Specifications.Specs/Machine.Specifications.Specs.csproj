@@ -74,6 +74,7 @@
     <Compile Include="ExceptionResultSpecs.cs" />
     <Compile Include="Explorers\AssemblyExplorerSpecs.cs" />
     <Compile Include="Factories\ContextFactorySpecs.cs" />
+    <Compile Include="Runner\CustomDelegatesSpecs.cs" />
     <Compile Include="ShouldBeLikeSpecs.cs" />
     <Compile Include="Utility\Internal\ErrorMessageSpecs.cs" />
     <Compile Include="Utility\Internal\NamingSpecs.cs" />
@@ -94,6 +95,10 @@
     <Compile Include="Utility\ObjectGraphHelperSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Machine.Specifications.Example.CustomDelegates\Machine.Specifications.Example.CustomDelegates.csproj">
+      <Project>{844788df-f12f-462f-bde8-c46f8ffecd11}</Project>
+      <Name>Machine.Specifications.Example.CustomDelegates</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Machine.Specifications.Example.CleanupFailure\Machine.Specifications.Example.CleanupFailure.csproj">
       <Project>{0C0F5B79-50B7-4B6E-9EAB-9A7DC70F92AC}</Project>
       <Name>Machine.Specifications.Example.CleanupFailure</Name>
