@@ -78,6 +78,10 @@
     <Compile Include="ExitCode.cs" />
     <Compile Include="IConsole.cs" />
     <Compile Include="Options.cs" />
+    <Compile Include="Outputs\IOutput.cs" />
+    <Compile Include="Outputs\ProgressOutput.cs" />
+    <Compile Include="Outputs\SilentOutput.cs" />
+    <Compile Include="Outputs\VerboseOutput.cs" />
     <Compile Include="RunListener.cs" />
     <Compile Include="NewException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

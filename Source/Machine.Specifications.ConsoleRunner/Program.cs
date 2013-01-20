@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Threading;
 
+using Machine.Specifications.ConsoleRunner.Outputs;
 using Machine.Specifications.Reporting.Generation.Spark;
 using Machine.Specifications.Reporting.Generation.Xml;
 using Machine.Specifications.Reporting.Integration;
@@ -59,7 +60,7 @@ namespace Machine.Specifications.ConsoleRunner
       }
       else
       {
-        mainListener = new RunListener(_console, options.Silent, timingListener);
+        mainListener = new RunListener(_console, DetermineOutput(options, _console), timingListener);
       }
 
       try
@@ -151,6 +152,20 @@ namespace Machine.Specifications.ConsoleRunner
         }
       }
       return ExitCode.Success;
+    }
+
+    static IOutput DetermineOutput(Options options, IConsole console)
+    {
+      IOutput output = new VerboseOutput(console);
+      if (options.Silent)
+      {
+        output = new SilentOutput();
+      }
+      if (options.Progress)
+      {
+        output = new ProgressOutput(console);
+      }
+      return output;
     }
 
     void WaitForDebugger()

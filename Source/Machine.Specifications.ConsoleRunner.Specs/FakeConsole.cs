@@ -14,7 +14,6 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       get { return _console.ToString().Split(new[] { Environment.NewLine }, StringSplitOptions.None).ToList(); }
     }
 
-    #region IConsole Members
     public void Write(string line)
     {
       _console.Append(line);
@@ -33,17 +32,6 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     public void WriteLine(string line, params object[] parameters)
     {
       _console.AppendLine(string.Format(line, parameters));
-    }
-    #endregion
-
-    public void ShouldContainLineWith(string s)
-    {
-      Lines.Where(x => x.Contains(s)).Any().ShouldBeTrue();
-    }
-
-    public void ShouldNotContainLineWith(string s)
-    {
-      Lines.Where(x => x.Contains(s)).Any().ShouldBeFalse();
     }
   }
 }

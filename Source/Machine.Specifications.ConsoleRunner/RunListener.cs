@@ -1,5 +1,6 @@
 using System;
 
+using Machine.Specifications.ConsoleRunner.Outputs;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
 
@@ -8,10 +9,9 @@ namespace Machine.Specifications.ConsoleRunner
   public class RunListener : ISpecificationRunListener, ISpecificationResultProvider
   {
     readonly IConsole _console;
-    readonly bool _silent;
     readonly TimingRunListener _timer;
+    readonly IOutput _output;
     int _contextCount;
-    string _currentAssemblyName;
     int _specificationCount;
     int _passedSpecificationCount;
     int _failedSpecificationCount;
@@ -19,11 +19,11 @@ namespace Machine.Specifications.ConsoleRunner
     int _ignoredSpecificationCount;
     int _unimplementedSpecificationCount;
 
-    public RunListener(IConsole console, bool silent, TimingRunListener timer)
+    public RunListener(IConsole console, IOutput output, TimingRunListener timer)
     {
       _console = console;
-      _silent = silent;
       _timer = timer;
+      _output = output;
     }
 
     public bool FailureOccurred
@@ -33,18 +33,18 @@ namespace Machine.Specifications.ConsoleRunner
 
     public void OnAssemblyStart(AssemblyInfo assembly)
     {
-      _currentAssemblyName = assembly.Name;
-      WriteLineVerbose("");
-      WriteLineVerbose("Specs in " + _currentAssemblyName + ":");
-      WriteLineVerbose("");
+      _output.AssemblyStart(assembly);
     }
 
     public void OnAssemblyEnd(AssemblyInfo assembly)
     {
+      _output.AssemblyEnd(assembly);
     }
 
     public void OnRunStart()
     {
+      _output.RunStart();
+
       _contextCount = 0;
       _specificationCount = 0;
       _failedSpecificationCount = 0;
@@ -55,6 +55,8 @@ namespace Machine.Specifications.ConsoleRunner
 
     public void OnRunEnd()
     {
+      _output.RunEnd();
+
       var line = String.Format("Contexts: {0}, Specifications: {1}, Time: {2:s\\.ff} seconds",
                                _contextCount,
                                _specificationCount,
@@ -78,18 +80,18 @@ namespace Machine.Specifications.ConsoleRunner
 
     public void OnContextStart(ContextInfo context)
     {
-      WriteLineVerbose(context.FullName);
+      _output.ContextStart(context);
     }
 
     public void OnContextEnd(ContextInfo context)
     {
-      WriteLineVerbose("");
+      _output.ContextEnd(context);
       _contextCount += 1;
     }
 
     public void OnSpecificationStart(SpecificationInfo specification)
     {
-      WriteVerbose("» " + specification.Name);
+      _output.SpecificationStart(specification);
     }
 
     public void OnSpecificationEnd(SpecificationInfo specification, Result result)
@@ -99,20 +101,19 @@ namespace Machine.Specifications.ConsoleRunner
       {
         case Status.Passing:
           _passedSpecificationCount += 1;
-          WriteLineVerbose("");
+          _output.Passing(specification);
           break;
         case Status.NotImplemented:
           _unimplementedSpecificationCount += 1;
-          WriteLineVerbose(" (NOT IMPLEMENTED)");
+          _output.NotImplemented(specification);
           break;
         case Status.Ignored:
           _ignoredSpecificationCount += 1;
-          WriteLineVerbose(" (IGNORED)");
+          _output.Ignored(specification);
           break;
         default:
           _failedSpecificationCount += 1;
-          WriteLineVerbose(" (FAIL)");
-          WriteLineVerbose(result.Exception.ToString());
+          _output.Failed(specification, result);
           break;
       }
     }
@@ -120,6 +121,7 @@ namespace Machine.Specifications.ConsoleRunner
     public void OnFatalError(ExceptionResult exception)
     {
       _failureOccurred = true;
+      _console.WriteLine("");
       _console.WriteLine("Fatal Error");
       _console.WriteLine(exception.ToString());
       _console.WriteLine("");
@@ -128,22 +130,6 @@ namespace Machine.Specifications.ConsoleRunner
     static DateTime FormattableTimeSpan(long milliseconds)
     {
       return DateTime.MinValue + TimeSpan.FromMilliseconds(milliseconds);
-    }
-
-    void WriteVerbose(string str)
-    {
-      if (!_silent)
-      {
-        _console.Write(str);
-      }
-    }
-
-    void WriteLineVerbose(string str)
-    {
-      if (!_silent)
-      {
-        _console.WriteLine(str);
-      }
     }
   }
 }

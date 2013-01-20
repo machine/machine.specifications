@@ -29,6 +29,11 @@ namespace Machine.Specifications.ConsoleRunner
       "silent",
       HelpText = "Suppress console output")]
     public bool Silent = false;
+    
+    [Option("p",
+      "progress",
+      HelpText = "Print progress output")]
+    public bool Progress = false;
 
     [Option("t",
       "timeinfo",
@@ -78,6 +83,7 @@ namespace Machine.Specifications.ConsoleRunner
       sb.AppendLine("  -x, --exclude               Exclude specifications in contexts with these comma delimited tags. Ex. -x \"foo,bar,foo_bar\"");
       sb.AppendLine("  -t, --timeinfo              Shows time-related information in HTML output");
       sb.AppendLine("  -s, --silent                Suppress console output");
+      sb.AppendLine("  -p, --progress              Print progress output");
       sb.AppendLine("  -w, --wait                  Wait 15 seconds for debugger to be attached");
       sb.AppendLine("  --teamcity                  Reporting for TeamCity CI integration (also auto-detected)");
       sb.AppendLine("  --no-teamcity-autodetect    Disables TeamCity autodetection");
