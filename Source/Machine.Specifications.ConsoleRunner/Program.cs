@@ -157,6 +157,7 @@ namespace Machine.Specifications.ConsoleRunner
     static IOutput DetermineOutput(Options options, IConsole console)
     {
       IOutput output = new VerboseOutput(console);
+
       if (options.Silent)
       {
         output = new SilentOutput();
@@ -165,7 +166,12 @@ namespace Machine.Specifications.ConsoleRunner
       {
         output = new ProgressOutput(console);
       }
-      return output;
+      if (options.NoColor)
+      {
+        return output;
+      }
+
+      return new ColorOutput(output);
     }
 
     void WaitForDebugger()

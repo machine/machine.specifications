@@ -35,6 +35,11 @@ namespace Machine.Specifications.ConsoleRunner
       HelpText = "Print dotted progress output")]
     public bool Progress = false;
 
+    [Option("c",
+      "no-color",
+      HelpText = "Suppress colored console output")]
+    public bool NoColor = false;
+
     [Option("t",
       "timeinfo",
       HelpText = "Adds time-related information in HTML output")]
@@ -82,8 +87,9 @@ namespace Machine.Specifications.ConsoleRunner
       sb.AppendLine("  -i, --include               Execute all specifications in contexts with these comma delimited tags. Ex. -i \"foo,bar,foo_bar\"");
       sb.AppendLine("  -x, --exclude               Exclude specifications in contexts with these comma delimited tags. Ex. -x \"foo,bar,foo_bar\"");
       sb.AppendLine("  -t, --timeinfo              Shows time-related information in HTML output");
-      sb.AppendLine("  -s, --silent                Suppress console output");
+      sb.AppendLine("  -s, --silent                Suppress progress output (print fatal errors, failures and summary)");
       sb.AppendLine("  -p, --progress              Print progress output");
+      sb.AppendLine("  -c, --no-color              Suppress colored console output");
       sb.AppendLine("  -w, --wait                  Wait 15 seconds for debugger to be attached");
       sb.AppendLine("  --teamcity                  Reporting for TeamCity CI integration (also auto-detected)");
       sb.AppendLine("  --no-teamcity-autodetect    Disables TeamCity autodetection");

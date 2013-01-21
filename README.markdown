@@ -79,6 +79,7 @@ Options:
 -t, --timeinfo              Shows time-related information in HTML output
 -s, --silent                Suppress progress output (print fatal errors, failures and summary)
 -p, --progress              Print dotted progress output
+-c, --no-color              Suppress colored console output
 -w, --wait                  Wait 15 seconds for debugger to be attached
 --teamcity                  Reporting for TeamCity CI integration (also auto-detected)
 --no-teamcity-autodetect    Disables TeamCity autodetection
