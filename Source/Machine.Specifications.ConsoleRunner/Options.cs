@@ -19,28 +19,28 @@ namespace Machine.Specifications.ConsoleRunner
       "html",
       HelpText = "Outputs the HTML report to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)")]
     public string HtmlPath = string.Empty;
-    
+
     [Option("f",
       "filter",
-      HelpText = "Filter file specifying contexts to execute (full type name, one per line). Takes precedence over tags")] 
+      HelpText = "Filter file specifying contexts to execute (full type name, one per line). Takes precedence over tags")]
     public string FilterFile = string.Empty;
 
     [Option("s",
       "silent",
-      HelpText = "Suppress console output")]
+      HelpText = "Suppress progress output (print fatal errors, failures and summary)")]
     public bool Silent = false;
-    
+
     [Option("p",
       "progress",
-      HelpText = "Print progress output")]
+      HelpText = "Print dotted progress output")]
     public bool Progress = false;
 
     [Option("t",
       "timeinfo",
-      HelpText = "Adds time-related information in HTML output")] 
+      HelpText = "Adds time-related information in HTML output")]
     public bool ShowTimeInformation = false;
 
-    [Option(null, 
+    [Option(null,
       "teamcity",
       HelpText = "Reporting for TeamCity CI integration (also auto-detected)")]
     public bool TeamCityIntegration = false;
@@ -53,13 +53,13 @@ namespace Machine.Specifications.ConsoleRunner
     [OptionList("i",
       "include",
       HelpText = "Execute all specifications in contexts with these comma delimited tags. Ex. -i \"foo,bar,foo_bar\"",
-      Separator = ',')] 
+      Separator = ',')]
     public IList<string> IncludeTags = null;
 
     [OptionList("x",
       "exclude",
       HelpText = "Exclude specifications in contexts with these comma delimited tags. Ex. -x \"foo,bar,foo_bar\"",
-      Separator = ',')] 
+      Separator = ',')]
     public IList<string> ExcludeTags = null;
 
     [ValueList(typeof(List<string>))]

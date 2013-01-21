@@ -17,7 +17,6 @@ namespace Machine.Specifications.ConsoleRunner.Outputs
 
     public void RunEnd()
     {
-      EmptyLine();
     }
 
     public void AssemblyStart(AssemblyInfo assembly)
@@ -28,7 +27,7 @@ namespace Machine.Specifications.ConsoleRunner.Outputs
 
     public void AssemblyEnd(AssemblyInfo assembly)
     {
-       EmptyLine();
+      EmptyLine();
     }
 
     public void ContextStart(ContextInfo context)
@@ -58,7 +57,7 @@ namespace Machine.Specifications.ConsoleRunner.Outputs
       _console.Write("I");
     }
 
-    public void Failed(SpecificationInfo specification, Result exception)
+    public void Failed(SpecificationInfo specification, Result result)
     {
       _console.Write("F");
     }

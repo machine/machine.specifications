@@ -44,7 +44,7 @@ namespace Machine.Specifications.ConsoleRunner.Outputs
     {
     }
 
-    public void Failed(SpecificationInfo specification, Result exception)
+    public void Failed(SpecificationInfo specification, Result result)
     {
     }
   }

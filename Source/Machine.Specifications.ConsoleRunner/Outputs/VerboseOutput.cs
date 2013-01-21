@@ -2,6 +2,12 @@ using Machine.Specifications.Runner;
 
 namespace Machine.Specifications.ConsoleRunner.Outputs
 {
+  struct FailedSpecification
+  {
+    public Result Result;
+    public SpecificationInfo Specification;
+  }
+
   class VerboseOutput : IOutput
   {
     readonly IConsole _console;
@@ -60,10 +66,10 @@ namespace Machine.Specifications.ConsoleRunner.Outputs
       _console.WriteLine(" (IGNORED)");
     }
 
-    public void Failed(SpecificationInfo specification, Result exception)
+    public void Failed(SpecificationInfo specification, Result result)
     {
       _console.WriteLine(" (FAIL)");
-      _console.WriteLine(exception.Exception.ToString());
+      _console.WriteLine(result.Exception.ToString());
     }
 
     void EmptyLine()

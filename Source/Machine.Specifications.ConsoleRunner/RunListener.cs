@@ -18,12 +18,15 @@ namespace Machine.Specifications.ConsoleRunner
     bool _failureOccurred;
     int _ignoredSpecificationCount;
     int _unimplementedSpecificationCount;
+    ContextInfo _currentContext;
+    FailedSpecificationsSummary _summary;
 
     public RunListener(IConsole console, IOutput output, TimingRunListener timer)
     {
       _console = console;
       _timer = timer;
       _output = output;
+      _summary = new FailedSpecificationsSummary(new VerboseOutput(console), console);
     }
 
     public bool FailureOccurred
@@ -57,6 +60,8 @@ namespace Machine.Specifications.ConsoleRunner
     {
       _output.RunEnd();
 
+      _summary.WriteSummary();
+
       var line = String.Format("Contexts: {0}, Specifications: {1}, Time: {2:s\\.ff} seconds",
                                _contextCount,
                                _specificationCount,
@@ -64,7 +69,7 @@ namespace Machine.Specifications.ConsoleRunner
 
       if (_failedSpecificationCount > 0 || _unimplementedSpecificationCount > 0)
       {
-        line += String.Format("\n  {0} passed, {1} failed", _passedSpecificationCount, _failedSpecificationCount);
+        line += String.Format(Environment.NewLine + "  {0} passed, {1} failed", _passedSpecificationCount, _failedSpecificationCount);
         if (_unimplementedSpecificationCount > 0)
         {
           line += String.Format(", {0} not implemented", _unimplementedSpecificationCount);
@@ -75,11 +80,13 @@ namespace Machine.Specifications.ConsoleRunner
         }
       }
 
+      _console.WriteLine("");
       _console.WriteLine(line);
     }
 
     public void OnContextStart(ContextInfo context)
     {
+      _currentContext = context;
       _output.ContextStart(context);
     }
 
@@ -113,6 +120,7 @@ namespace Machine.Specifications.ConsoleRunner
           break;
         default:
           _failedSpecificationCount += 1;
+          _summary.RecordFailure(_currentContext, specification, result);
           _output.Failed(specification, result);
           break;
       }
@@ -124,7 +132,6 @@ namespace Machine.Specifications.ConsoleRunner
       _console.WriteLine("");
       _console.WriteLine("Fatal Error");
       _console.WriteLine(exception.ToString());
-      _console.WriteLine("");
     }
 
     static DateTime FormattableTimeSpan(long milliseconds)

@@ -5,7 +5,7 @@ The most recent release is available at [CodeBetter's TeamCity server](http://te
 
   * Recommended: [Unsigned release](http://teamcity.codebetter.com/guestAuth/repository/download/bt342/.lastSuccessful/Machine.Specifications-Release.zip),
   * [Signed release](http://teamcity.codebetter.com/guestAuth/repository/download/bt345/.lastSuccessful/Machine.Specifications-Signed-Release.zip).
-  
+
 You can also install these using [NuGet](http://nuget.org/Packages/Search?packageType=Packages&searchCategory=All+Categories&searchTerm=machine.specifications):
 <pre>
   PM> Install-Package Machine.Specifications
@@ -77,7 +77,8 @@ Options:
 -i, --include               Executes all specifications in contexts with these comma delimited tags. Ex. -i "foo,bar,foo_bar"
 -x, --exclude               Exclude specifications in contexts with these comma delimited tags. Ex. -x "foo,bar,foo_bar"
 -t, --timeinfo              Shows time-related information in HTML output
--s, --silent                Suppress console output
+-s, --silent                Suppress progress output (print fatal errors, failures and summary)
+-p, --progress              Print dotted progress output
 -w, --wait                  Wait 15 seconds for debugger to be attached
 --teamcity                  Reporting for TeamCity CI integration (also auto-detected)
 --no-teamcity-autodetect    Disables TeamCity autodetection
@@ -208,17 +209,17 @@ public class it_example_goes_here : ExampleSpecs {
 
 ### Testing for exceptions
 
-When testing for exceptions it is recommended that you use the `Catch` class in your `Because` statement then validate the exception in subsequent `It` statements. This ensures that no validation of the `Exception` occurs in the `Because` statement. It is also recommended to include an `It` statement that explicitly determines the type of `Exception` if that is important to you. Doing so will improve the readability of your specifications clarifying how the system is intended to behave. 
+When testing for exceptions it is recommended that you use the `Catch` class in your `Because` statement then validate the exception in subsequent `It` statements. This ensures that no validation of the `Exception` occurs in the `Because` statement. It is also recommended to include an `It` statement that explicitly determines the type of `Exception` if that is important to you. Doing so will improve the readability of your specifications clarifying how the system is intended to behave.
 
 <pre>
 public class when_the_user_credentials_cannot_be_verified : ExampleSpecs {
-  
+
   static Exception Exception;
 
-  Because of = () => 
+  Because of = () =>
     Exception = Catch.Exception(() => SecurityService.Authenticate("user", "pass") );
 
-  It should_fail = () => 
+  It should_fail = () =>
     Exception.ShouldBeOfType&lt;AuthenticationFailedException&gt;();
 
 }
@@ -241,5 +242,5 @@ These methods are used by classes that implement `IAssemblyContext`, to set if a
 
 #### ICleanupAfterEveryContextInAssembly
 
-#### [SetupForEachSpecification]  
+#### [SetupForEachSpecification]
 

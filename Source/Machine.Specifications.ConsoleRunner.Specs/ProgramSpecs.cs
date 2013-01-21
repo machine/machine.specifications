@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Text.RegularExpressions;
+
 using Machine.Specifications.ConsoleRunner.Properties;
 
 namespace Machine.Specifications.ConsoleRunner.Specs
@@ -11,7 +13,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
 
   [Subject("Console runner")]
   public class when_arguments_are_not_provided
-    : ConsoleRunnerSpecs 
+    : ConsoleRunnerSpecs
   {
     Because of = ()=>
       program.Run(new string[] {});
@@ -22,7 +24,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
 
   [Subject("Console runner")]
   public class when_running_a_specification_assembly
-    : ConsoleRunnerSpecs 
+    : ConsoleRunnerSpecs
   {
     Because of =
       () => program.Run(new [] { GetPath("Machine.Specifications.Example.dll") });
@@ -32,8 +34,8 @@ namespace Machine.Specifications.ConsoleRunner.Specs
 
     It should_write_the_specifications =
       () => console.Lines.ShouldContain(
-        "» should debit the from account by the amount transferred", 
-        "» should credit the to account by the amount transferred", 
+        "» should debit the from account by the amount transferred",
+        "» should credit the to account by the amount transferred",
         "» should not allow the transfer");
 
     It should_write_the_contexts =
@@ -47,69 +49,69 @@ namespace Machine.Specifications.ConsoleRunner.Specs
 
     It should_write_the_count_of_specifications =
       () => console.Lines.ShouldContain(l => l.Contains("Specifications: 6"));
-    
+
     It should_write_the_run_time =
       () => console.Lines.ShouldContain(l => l.Contains("Time: "));
   }
-  
+
   [Subject("Console runner")]
   public class when_running_a_specification_assembly_and_silent_is_set
-    : ConsoleRunnerSpecs 
+    : ConsoleRunnerSpecs
   {
-    Because of = 
+    Because of =
       () => program.Run(new [] { GetPath("Machine.Specifications.Example.dll"), "--silent" });
 
-    It should_not_write_the_assembly_name = 
+    It should_not_write_the_assembly_name =
       () => console.Lines.ShouldNotContain(l => l.Contains("Machine.Specifications.Example"));
 
-    It should_not_write_the_contexts = 
+    It should_not_write_the_contexts =
       () => console.Lines.ShouldEachConformTo(l => !l.StartsWith("Account Funds transfer"));
 
-    It should_not_write_the_specifications = 
+    It should_not_write_the_specifications =
       () => console.Lines.ShouldEachConformTo(l => !l.StartsWith("» should"));
 
-    It should_write_the_count_of_contexts = 
+    It should_write_the_count_of_contexts =
       () => console.Lines.ShouldContain(l => l.Contains("Contexts: 3"));
 
-    It should_write_the_count_of_specifications = 
+    It should_write_the_count_of_specifications =
       () => console.Lines.ShouldContain(l => l.Contains("Specifications: 6"));
-    
-    It should_write_the_run_time = 
+
+    It should_write_the_run_time =
       () => console.Lines.ShouldContain(l => l.Contains("Time: "));
   }
-  
+
   [Subject("Console runner")]
   public class when_running_a_specification_assembly_and_progress_is_set
-    : ConsoleRunnerSpecs 
+    : ConsoleRunnerSpecs
   {
-    Because of = 
+    Because of =
       () => program.Run(new [] { GetPath("Machine.Specifications.Example.dll"), "--progress" });
 
-    It should_write_the_assembly_name = 
+    It should_write_the_assembly_name =
       () => console.Lines.ShouldContain(l => l.Contains("Machine.Specifications.Example"));
 
-    It should_not_write_the_contexts = 
+    It should_not_write_the_contexts =
       () => console.Lines.ShouldEachConformTo(l => !l.StartsWith("Account Funds transfer"));
 
-    It should_not_write_the_specifications = 
+    It should_not_write_the_specifications =
       () => console.Lines.ShouldEachConformTo(l => !l.StartsWith("» should"));
-    
-    It should_write_the_specification_results = 
+
+    It should_write_the_specification_results =
       () => console.Lines.ShouldContain("...***");
 
-    It should_write_the_count_of_contexts = 
+    It should_write_the_count_of_contexts =
       () => console.Lines.ShouldContain(l => l.Contains("Contexts: 3"));
 
-    It should_write_the_count_of_specifications = 
+    It should_write_the_count_of_specifications =
       () => console.Lines.ShouldContain(l => l.Contains("Specifications: 6"));
-    
-    It should_write_the_run_time = 
+
+    It should_write_the_run_time =
       () => console.Lines.ShouldContain(l => l.Contains("Time: "));
   }
 
   [Subject("Console runner")]
   public class when_specifying_a_missing_assembly_on_the_command_line
-    : ConsoleRunnerSpecs 
+    : ConsoleRunnerSpecs
   {
     const string missingAssemblyName = "Some.Missing.Assembly.dll";
     public static ExitCode exitCode;
@@ -128,11 +130,9 @@ namespace Machine.Specifications.ConsoleRunner.Specs
   public class when_a_specification_fails : ConsoleRunnerSpecs
   {
     public static ExitCode exitCode;
-    const string assemblyWithFailingSpecification = "Machine.Specifications.FailingExample";
-    const string failingSpecificationName = "should fail";
 
-    Because of = ()=>
-      exitCode = program.Run(new[] { GetPath(assemblyWithFailingSpecification + ".dll") });
+    Because of =
+      () => exitCode = program.Run(new[] { GetPath("Machine.Specifications.FailingExample.dll") });
 
     It should_write_the_failure =
       () => console.Lines.ShouldContain(l => l.Contains("Exception"));
@@ -142,43 +142,60 @@ namespace Machine.Specifications.ConsoleRunner.Specs
 
     It should_return_the_Failure_exit_code =
       () => exitCode.ShouldEqual(ExitCode.Failure);
+
+    It should_separate_failures_from_the_rest_of_the_test_run =
+      () => console.Output.ShouldMatch(String.Format("\\S{0}{0}{0}Failures:{0}{0}\\S", Regex.Escape(Environment.NewLine)));
   }
 
   [Subject("Console runner")]
   public class when_a_specification_fails_and_silent_is_set : ConsoleRunnerSpecs
   {
     public static ExitCode exitCode;
-    const string assemblyWithFailingSpecification = "Machine.Specifications.FailingExample";
-    const string failingSpecificationName = "should fail";
 
-    Because of = ()=>
-      exitCode = program.Run(new[] { GetPath(assemblyWithFailingSpecification + ".dll"), "--silent" });
+    Because of =
+      () => exitCode = program.Run(new[] { GetPath("Machine.Specifications.FailingExample.dll"), "--silent", "--exclude", "example" });
 
-    It should_write_the_count_of_failed_specifications = ()=>
-      console.Lines.ShouldContain(l => l.Contains("1 failed"));
+    It should_write_the_count_of_failed_specifications =
+      () => console.Lines.ShouldContain(l => l.Contains("1 failed"));
 
-    It should_return_the_Failure_exit_code = ()=>
-      exitCode.ShouldEqual(ExitCode.Failure);
+    It should_return_the_failure_exit_code =
+      () => exitCode.ShouldEqual(ExitCode.Failure);
+
+    It should_write_a_summary_of_failing_specifications =
+      () => console.Lines.ShouldContain("Failures:", "Scott Bellware, at any given moment", "» will fail (FAIL)");
+
+    It should_write_failure_stack_traces =
+      () => console.Lines.ShouldContain(l => l.Contains("hi scott, love you, miss you."));
+
+    It should_separate_failures_from_the_rest_of_the_test_run =
+      () => console.Output.ShouldMatch(String.Format("\\S{0}{0}Failures:{0}{0}\\S", Regex.Escape(Environment.NewLine)));
   }
 
   [Subject("Console runner")]
   public class when_a_specification_fails_and_progress_is_set : ConsoleRunnerSpecs
   {
     public static ExitCode exitCode;
-    const string assemblyWithFailingSpecification = "Machine.Specifications.FailingExample";
-    const string failingSpecificationName = "should fail";
 
-    Because of = ()=>
-      exitCode = program.Run(new[] { GetPath(assemblyWithFailingSpecification + ".dll"), "--progress" });
+    Because of =
+      () => exitCode = program.Run(new[] { GetPath("Machine.Specifications.FailingExample.dll"), "--progress", "--exclude", "example" });
 
     It should_write_failed_specification_results =
       () => console.Lines.ShouldContain("F");
-    
+
     It should_write_the_count_of_failed_specifications =
       () => console.Lines.ShouldContain(l => l.Contains("1 failed"));
 
-    It should_return_the_Failure_exit_code = 
+    It should_return_the_failure_exit_code =
       () => exitCode.ShouldEqual(ExitCode.Failure);
+
+    It should_write_a_summary_of_failing_specifications =
+      () => console.Lines.ShouldContain("Failures:", "Scott Bellware, at any given moment", "» will fail (FAIL)");
+
+    It should_write_failure_stack_traces =
+      () => console.Lines.ShouldContain(l => l.Contains("hi scott, love you, miss you."));
+
+    It should_separate_failures_from_the_rest_of_the_test_run =
+      () => console.Output.ShouldMatch(String.Format("\\S{0}{0}{0}Failures:{0}{0}\\S", Regex.Escape(Environment.NewLine)));
   }
 
   [Subject("Console runner")]
@@ -202,7 +219,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
 
     It should_pass_the_specification_which_depends_on_external_file = () =>
       console.Lines.ShouldContain(
-        "External resources usage, when using file copied to assembly output directory", 
+        "External resources usage, when using file copied to assembly output directory",
         "» should be able to locate it by relative path");
 
     It should_pass_all_specifications = () =>

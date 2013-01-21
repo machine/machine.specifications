@@ -14,6 +14,11 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       get { return _console.ToString().Split(new[] { Environment.NewLine }, StringSplitOptions.None).ToList(); }
     }
 
+    public string Output
+    {
+      get { return _console.ToString(); }
+    }
+
     public void Write(string line)
     {
       _console.Append(line);

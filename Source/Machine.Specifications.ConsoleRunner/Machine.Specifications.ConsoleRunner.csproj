@@ -78,6 +78,7 @@
     <Compile Include="ExitCode.cs" />
     <Compile Include="IConsole.cs" />
     <Compile Include="Options.cs" />
+    <Compile Include="Outputs\FailedSpecificationsSummary.cs" />
     <Compile Include="Outputs\IOutput.cs" />
     <Compile Include="Outputs\ProgressOutput.cs" />
     <Compile Include="Outputs\SilentOutput.cs" />

@@ -14,6 +14,6 @@ namespace Machine.Specifications.ConsoleRunner.Outputs
     void Passing(SpecificationInfo specification);
     void NotImplemented(SpecificationInfo specification);
     void Ignored(SpecificationInfo specification);
-    void Failed(SpecificationInfo specification, Result exception);
+    void Failed(SpecificationInfo specification, Result result);
   }
 }
