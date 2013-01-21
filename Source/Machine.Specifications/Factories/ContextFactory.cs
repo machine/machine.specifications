@@ -178,7 +178,7 @@ namespace Machine.Specifications.Factories
         if (ensureMaximumOfOne && fields.Count() > 1)
         {
           throw new SpecificationUsageException(String.Format("You cannot have more than one {0} clause in {1}",
-                                                              typeof(T).Name,
+                                                              fields.First().FieldType.Name,
                                                               target.FullName));
         }
         var field = fields.FirstOrDefault();

@@ -1,5 +1,6 @@
 ﻿using System;
 using Machine.Specifications.Example;
+using Machine.Specifications.Example.CustomDelegates;
 using Machine.Specifications.Example.Random;
 using Machine.Specifications.FailingExample;
 using Machine.Specifications.Runner;
@@ -32,7 +33,7 @@ namespace Machine.Specifications.Specs.Runner
   }
 
   [Subject("Specification Runner")]
-  public class when_running_a_context_with_an_ignored_specifications
+  public class when_running_a_context_with_a_ignored_specifications
     : RunnerSpecs
   {
     Establish context = () =>
@@ -139,11 +140,30 @@ namespace Machine.Specifications.Specs.Runner
   {
     static Exception exception;
 
-    Because of = () =>
-      exception = Catch.Exception(Run<context_with_multiple_establish_clauses>);
+    Because of =
+      () => exception = Catch.Exception(Run<context_with_multiple_establish_clauses>);
 
-    It should_fail = () =>
-      exception.ShouldBeOfType<SpecificationUsageException>();
+    It should_fail =
+      () => exception.ShouldBeOfType<SpecificationUsageException>();
+
+    It should_report_the_reason =
+      () => exception.Message.ShouldStartWith("You cannot have more than one Establish clause in Machine.Specifications");
+  }
+
+  [Subject("Specification Runner")]
+  public class when_running_a_context_with_multiple_setup_clauses_and_custom_delegates
+    : RunnerSpecs
+  {
+    static Exception exception;
+
+    Because of =
+      () => exception = Catch.Exception(Run<context_with_multiple_given_clauses>);
+
+    It should_fail =
+      () => exception.ShouldBeOfType<SpecificationUsageException>();
+
+    It should_report_the_reason =
+      () => exception.Message.ShouldStartWith("You cannot have more than one Given clause in Machine.Specifications");
   }
 
   [Subject("Specification Runner")]
@@ -314,7 +334,7 @@ namespace Machine.Specifications.Specs.Runner
     static DefaultRunner runner;
     static TestListener testListener;
   }
-  
+
   [Subject("Specification Runner")]
   public class when_running_with_empty_filters
   {
@@ -340,7 +360,7 @@ namespace Machine.Specifications.Specs.Runner
     static DefaultRunner runner;
     static TestListener testListener;
   }
-  
+
   [Subject("Specification Runner")]
   public class when_running_with_context_filters
   {
@@ -366,7 +386,7 @@ namespace Machine.Specifications.Specs.Runner
     static DefaultRunner runner;
     static TestListener testListener;
   }
-  
+
   [Subject("Specification Runner")]
   public class when_running_with_specification_filters
   {
@@ -447,8 +467,8 @@ namespace Machine.Specifications.Specs.Runner
 
     It should_succeed =
       () => testListener.LastResult.Passed.ShouldBeTrue();
-  } 
-  
+  }
+
   [Subject("Specification Runner")]
   public class when_running_a_context_inside_a_static_class
     : RunnerSpecs
@@ -458,7 +478,7 @@ namespace Machine.Specifications.Specs.Runner
     It should_succeed =
       () => testListener.LastResult.Passed.ShouldBeTrue();
   }
-  
+
   [Subject("Specification Runner")]
   public class when_running_a_context_inside_a_static_class_that_is_nested_in_a_nonstatic_class
     : RunnerSpecs
