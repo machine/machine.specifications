@@ -111,23 +111,33 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     Action<Action<RemoteTask>> CreateTaskNotificationFor(SpecificationInfo specification)
     {
       return actionToBePerformedForEachTask =>
-        {
-          foreach (var notification in _taskNotifications)
-          {
-            if (notification.Matches(specification))
-            {
-              Debug.WriteLine(String.Format("Notifcation for {0} {1}, with {2} remote tasks",
-                                            specification.ContainingType,
-                                            specification.FieldName,
-                                            notification.RemoteTasks.Count()));
+      {
+        bool invoked = false;
 
-              foreach (var task in notification.RemoteTasks)
-              {
-                actionToBePerformedForEachTask(task);
-              }
+        foreach (var notification in _taskNotifications)
+        {
+          if (notification.Matches(specification))
+          {
+            Debug.WriteLine(String.Format("Notification for {0} {1}, with {2} remote tasks",
+                                          specification.ContainingType,
+                                          specification.FieldName,
+                                          notification.RemoteTasks.Count()));
+            invoked = true;
+
+            foreach (var task in notification.RemoteTasks)
+            {
+              actionToBePerformedForEachTask(task);
             }
           }
-        };
+        }
+
+        if (!invoked)
+        {
+          Debug.WriteLine(String.Format("IGNORED notification for {0} {1}",
+                                        specification.ContainingType,
+                                        specification.FieldName));
+        }
+      };
     }
 
     delegate void Action<T>(T arg);

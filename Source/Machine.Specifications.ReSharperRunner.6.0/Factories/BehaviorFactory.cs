@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
@@ -19,7 +16,6 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     readonly ProjectModelElementEnvoy _projectEnvoy;
     readonly MSpecUnitTestProvider _provider;
     readonly ContextCache _cache;
-    static readonly IDictionary<string, string> TypeNameCache = new Dictionary<string, string>();
     readonly IProject _project;
 #if RESHARPER_61
     readonly IUnitTestElementManager _manager;
@@ -58,16 +54,11 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         return null;
       }
 
-      string fullyQualifiedTypeName = null;
-      if (field is ITypeOwner)
-      {
-          // Work around the difference in how the MetaData API and Psi API return different type strings for generics.
-          TypeNameCache.TryGetValue(GetFirstGenericNormalizedTypeName(field), out fullyQualifiedTypeName);
-      }
+      var fullyQualifiedTypeName = new NormalizedTypeName(field as ITypeOwner);
 
       return GetOrCreateBehavior(_provider,
 #if RESHARPER_61
-                                 _manager, _psiModuleManager, _cacheManager, 
+                                 _manager, _psiModuleManager, _cacheManager,
 #endif
                                  _project,
                                  _projectEnvoy,
@@ -92,7 +83,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                       bool isIgnored,
                                                       string fullyQualifiedTypeName)
     {
-      var id = BehaviorElement.CreateId(context, fieldName);
+      var id = BehaviorElement.CreateId(context, fullyQualifiedTypeName, fieldName);
 #if RESHARPER_61
       var behavior = manager.GetElementById(project, id) as BehaviorElement;
 #else
@@ -107,7 +98,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
       return new BehaviorElement(provider,
 #if RESHARPER_61
-                                 psiModuleManager, cacheManager, 
+                                 psiModuleManager, cacheManager,
 #else
                                  provider.PsiModuleManager, provider.CacheManager,
 #endif
@@ -123,12 +114,12 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     {
       var typeContainingBehaviorSpecifications = behavior.GetFirstGenericArgument();
 
-      var fullyQualifiedTypeName = behavior.FirstGenericArgumentClass().FullyQualifiedName();
-      var typeName = GetNormalizedTypeName(fullyQualifiedTypeName);
+      var metadataTypeName = behavior.FirstGenericArgumentClass().FullyQualifiedName();
+      var fullyQualifiedTypeName = new NormalizedTypeName(metadataTypeName);
 
       var behaviorElement = GetOrCreateBehavior(_provider,
 #if RESHARPER_61
-                                                _manager, _psiModuleManager, _cacheManager, 
+                                                _manager, _psiModuleManager, _cacheManager,
 #endif
                                                 _project,
                                                 _projectEnvoy,
@@ -138,28 +129,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                 behavior.IsIgnored() || typeContainingBehaviorSpecifications.IsIgnored(),
                                                 fullyQualifiedTypeName);
 
-      if (!TypeNameCache.ContainsKey(typeName))
-      {
-        TypeNameCache.Add(typeName, fullyQualifiedTypeName);
-      }
-
       return behaviorElement;
-    }
-
-    static string GetFirstGenericNormalizedTypeName(IDeclaredElement field)
-    {
-      var typeName = ((ITypeOwner) field).Type.ToString();
-      typeName = typeName.Substring(typeName.IndexOf("-> ") + 3);
-      typeName = typeName.Remove(typeName.Length - 1);
-      typeName = Regex.Replace(typeName, @"\[.*->\s", "[");
-      return typeName;
-    }
-
-    static string GetNormalizedTypeName(string fullyQualifiedTypeName)
-    {
-      var typeName = Regex.Replace(fullyQualifiedTypeName, @"\,.+]", "]");
-      typeName = Regex.Replace(typeName, @"\[\[", "[");
-      return typeName;
     }
   }
 }

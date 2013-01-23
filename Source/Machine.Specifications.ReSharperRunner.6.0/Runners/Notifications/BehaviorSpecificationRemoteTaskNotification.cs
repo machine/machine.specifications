@@ -3,14 +3,13 @@
 using JetBrains.ReSharper.TaskRunnerFramework;
 
 using Machine.Specifications.ReSharperRunner.Tasks;
-using Machine.Specifications.Utility;
-using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
 {
   internal class BehaviorSpecificationRemoteTaskNotification : RemoteTaskNotification
   {
     readonly TaskExecutionNode _node;
+
     readonly BehaviorSpecificationTask _task;
 
     public BehaviorSpecificationRemoteTaskNotification(TaskExecutionNode node)
@@ -24,9 +23,9 @@ namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
       get { return _task.BehaviorTypeName; }
     }
 
-    protected override string Name
+    protected override string FieldName
     {
-      get { return _task.SpecificationFieldName.ToFormat(); }
+      get { return _task.SpecificationFieldName; }
     }
 
     public override IEnumerable<RemoteTask> RemoteTasks

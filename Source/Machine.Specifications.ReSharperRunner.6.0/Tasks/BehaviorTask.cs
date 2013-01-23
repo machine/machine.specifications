@@ -7,20 +7,29 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
   internal class BehaviorTask : Task, IEquatable<BehaviorTask>
   {
     readonly string _behaviorFieldName;
+    readonly string _behaviorFieldType;
 
     public BehaviorTask(XmlElement element) : base(element)
     {
+      _behaviorFieldType = GetXmlAttribute(element, "BehaviorFieldType");
       _behaviorFieldName = GetXmlAttribute(element, "BehaviorFieldName");
     }
 
     public BehaviorTask(string providerId,
                         string assemblyLocation,
                         string contextTypeName,
+                        string behaviorFieldType,
                         string behaviorFieldName,
                         bool runExplicitly)
       : base(providerId, assemblyLocation, contextTypeName, runExplicitly)
     {
+      _behaviorFieldType = behaviorFieldType;
       _behaviorFieldName = behaviorFieldName;
+    }
+
+    public string BehaviorFieldType
+    {
+      get { return _behaviorFieldType; }
     }
 
     public string BehaviorFieldName
@@ -32,6 +41,7 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
     {
       base.SaveXml(element);
 
+      SetXmlAttribute(element, "BehaviorFieldType", BehaviorFieldType);
       SetXmlAttribute(element, "BehaviorFieldName", BehaviorFieldName);
     }
 
@@ -45,6 +55,7 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
       unchecked
       {
         int result = base.GetHashCode();
+        result = (result * 397) ^ BehaviorFieldType.GetHashCode();
         result = (result * 397) ^ BehaviorFieldName.GetHashCode();
         return result;
       }
@@ -62,7 +73,8 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
         return false;
       }
 
-      return Equals(BehaviorFieldName, other.BehaviorFieldName);
+      return Equals(BehaviorFieldType, other.BehaviorFieldType) &&
+             Equals(BehaviorFieldName, other.BehaviorFieldName);
     }
   }
 }

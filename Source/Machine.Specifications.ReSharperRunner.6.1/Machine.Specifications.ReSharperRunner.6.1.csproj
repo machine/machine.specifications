@@ -126,6 +126,9 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.0\Factories\UnitTestTaskFactory.cs">
       <Link>Factories\UnitTestTaskFactory.cs</Link>
     </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.0\NormalizedTypeName.cs">
+      <Link>NormalizedTypeName.cs</Link>
+    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.0\PsiExtensions.cs">
       <Link>PsiExtensions.cs</Link>
     </Compile>

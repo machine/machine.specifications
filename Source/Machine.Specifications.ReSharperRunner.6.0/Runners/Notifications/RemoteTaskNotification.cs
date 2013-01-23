@@ -13,7 +13,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
       get;
     }
 
-    protected abstract string Name
+    protected abstract string FieldName
     {
       get;
     }
@@ -25,8 +25,8 @@ namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
 
     public virtual bool Matches(SpecificationInfo specification)
     {
-      return ContainingType == specification.ContainingType &&
-             Name == specification.Name;
+      return ContainingType == new NormalizedTypeName(specification.ContainingType) &&
+             FieldName == specification.FieldName;
     }
   }
 }

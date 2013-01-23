@@ -29,8 +29,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                            string fullyQualifiedTypeName)
       : base(provider, psiModuleManager, cacheManager, context, projectEnvoy, declaringTypeName, fieldName, isIgnored || context.Explicit)
     {
-      _id = CreateId(context, fieldName);
       FullyQualifiedTypeName = fullyQualifiedTypeName;
+      _id = CreateId(context, fullyQualifiedTypeName, fieldName);
     }
 
     public ContextElement Context
@@ -103,9 +103,9 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       get { return _id; }
     }
 
-    public static string CreateId(ContextElement contextElement, string fieldName)
+    public static string CreateId(ContextElement contextElement, string fullyQualifiedTypeName, string fieldName)
     {
-      return String.Format("{0}.{1}", contextElement.Id, fieldName);
+      return String.Format("{0}.{1}.{2}", contextElement.Id, fullyQualifiedTypeName, fieldName);
     }
   }
 }

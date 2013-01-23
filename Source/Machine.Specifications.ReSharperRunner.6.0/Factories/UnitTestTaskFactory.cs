@@ -49,6 +49,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                               new BehaviorTask(_providerId,
                                                context.AssemblyLocation,
                                                context.GetTypeClrName(),
+                                               behavior.FullyQualifiedTypeName,
                                                behavior.FieldName,
                                                false));
     }

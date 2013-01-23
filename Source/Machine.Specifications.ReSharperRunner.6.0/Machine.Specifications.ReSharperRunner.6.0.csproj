@@ -136,6 +136,7 @@
     <Compile Include="MSpecUnitTestElementComparer.cs" />
     <Compile Include="MSpecUnitTestPresenter.cs" />
     <Compile Include="MSpecUnitTestProvider.cs" />
+    <Compile Include="NormalizedTypeName.cs" />
     <Compile Include="Presentation\BehaviorElement.cs" />
     <Compile Include="Presentation\BehaviorSpecificationElement.cs" />
     <Compile Include="Presentation\ContextElement.cs" />

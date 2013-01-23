@@ -3,8 +3,6 @@
 using JetBrains.ReSharper.TaskRunnerFramework;
 
 using Machine.Specifications.ReSharperRunner.Tasks;
-using Machine.Specifications.Utility;
-using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
 {
@@ -24,9 +22,9 @@ namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
       get { return _task.ContextTypeName; }
     }
 
-    protected override string Name
+    protected override string FieldName
     {
-      get { return _task.SpecificationFieldName.ToFormat(); }
+      get { return _task.SpecificationFieldName; }
     }
 
     public override IEnumerable<RemoteTask> RemoteTasks

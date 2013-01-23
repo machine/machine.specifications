@@ -11,7 +11,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
       get { return null; }
     }
 
-    protected override string Name
+    protected override string FieldName
     {
       get { return null; }
     }

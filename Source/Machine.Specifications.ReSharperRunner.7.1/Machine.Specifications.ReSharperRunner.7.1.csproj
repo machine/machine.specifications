@@ -129,6 +129,9 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.0\MSpecUnitTestElementComparer.cs">
       <Link>MSpecUnitTestElementComparer.cs</Link>
     </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.0\NormalizedTypeName.cs">
+      <Link>NormalizedTypeName.cs</Link>
+    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.0\PsiExtensions.cs">
       <Link>PsiExtensions.cs</Link>
     </Compile>
