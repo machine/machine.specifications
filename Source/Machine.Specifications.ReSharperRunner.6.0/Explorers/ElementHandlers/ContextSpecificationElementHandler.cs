@@ -8,18 +8,18 @@ using Machine.Specifications.ReSharperRunner.Factories;
 
 namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
 {
-  internal class ContextSpecificationElementHandler : IElementHandler
+  class ContextSpecificationElementHandler : IElementHandler
   {
-    readonly ContextSpecificationFactory _contextSpecificationFactory;
+    readonly ContextSpecificationFactory _factory;
 
     public ContextSpecificationElementHandler(ContextSpecificationFactory contextSpecificationFactory)
     {
-      _contextSpecificationFactory = contextSpecificationFactory;
+      _factory = contextSpecificationFactory;
     }
 
     public bool Accepts(ITreeNode element)
     {
-      IDeclaration declaration = element as IDeclaration;
+      var declaration = element as IDeclaration;
       if (declaration == null)
       {
         return false;
@@ -30,16 +30,15 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
 
     public IEnumerable<UnitTestElementDisposition> AcceptElement(ITreeNode element, IFile file)
     {
-      IDeclaration declaration = (IDeclaration)element;
-      var contextSpecificationElement =
-        _contextSpecificationFactory.CreateContextSpecification(declaration.DeclaredElement);
+      var declaration = (IDeclaration) element;
+      var contextSpecification = _factory.CreateContextSpecification(declaration.DeclaredElement);
 
-      if (contextSpecificationElement == null)
+      if (contextSpecification == null)
       {
         yield break;
       }
 
-      yield return new UnitTestElementDisposition(contextSpecificationElement,
+      yield return new UnitTestElementDisposition(contextSpecification,
                                                   file.GetSourceFile().ToProjectFile(),
                                                   declaration.GetNavigationRange().TextRange,
                                                   declaration.GetDocumentRange().TextRange);

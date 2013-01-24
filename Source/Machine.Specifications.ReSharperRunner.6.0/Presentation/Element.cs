@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Xml;
 
 using JetBrains.Application;
 using JetBrains.ProjectModel;
@@ -30,7 +28,9 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                       PsiModuleManager psiModuleManager,
                       CacheManager cacheManager,
                       Element parent,
-                      ProjectModelElementEnvoy projectEnvoy, string declaringTypeName, bool isIgnored)
+                      ProjectModelElementEnvoy projectEnvoy,
+                      string declaringTypeName,
+                      bool isIgnored)
     {
       if (projectEnvoy == null && !Shell.Instance.IsTestShell)
       {

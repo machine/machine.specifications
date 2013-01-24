@@ -18,7 +18,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     protected FieldElement(MSpecUnitTestProvider provider,
                            PsiModuleManager psiModuleManager,
-                           CacheManager cacheManager, 
+                           CacheManager cacheManager,
                            Element parent,
                            ProjectModelElementEnvoy projectEnvoy,
                            string declaringTypeName,
@@ -27,7 +27,6 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       : base(provider, psiModuleManager, cacheManager, parent, projectEnvoy, declaringTypeName, isIgnored || parent.Explicit)
     {
       _fieldName = fieldName;
-      State = UnitTestElementState.Valid;
     }
 
     public override string ShortName
@@ -42,10 +41,16 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public override string GetPresentation()
     {
-      return String.Format("{0}{1}{2}",
-                           GetTitlePrefix(),
-                           String.IsNullOrEmpty(GetTitlePrefix()) ? String.Empty : " ",
-                           FieldName.ToFormat());
+      var presentation = String.Format("{0}{1}{2}",
+                                       GetTitlePrefix(),
+                                       String.IsNullOrEmpty(GetTitlePrefix()) ? String.Empty : " ",
+                                       FieldName.ToFormat());
+
+#if DEBUG
+      presentation += String.Format(" ({0})", Id);
+#endif
+
+      return presentation;
     }
 
     public override IDeclaredElement GetDeclaredElement()

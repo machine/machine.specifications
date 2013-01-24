@@ -39,21 +39,6 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       _projectEnvoy = projectEnvoy;
     }
 
-    BehaviorSpecificationElement CreateBehaviorSpecification(BehaviorElement behavior,
-                                                             IMetadataField behaviorSpecification)
-    {
-      return GetOrCreateBehaviorSpecification(_provider,
-#if RESHARPER_61
-                                              _manager, _psiModuleManager, _cacheManager, 
-#endif
-                                              _project,
-                                              behavior,
-                                              _projectEnvoy,
-                                              behavior.FullyQualifiedTypeName ?? behaviorSpecification.DeclaringType.FullyQualifiedName,
-                                              behaviorSpecification.Name,
-                                              behaviorSpecification.IsIgnored());
-    }
-
     public IEnumerable<BehaviorSpecificationElement> CreateBehaviorSpecificationsFromBehavior(
       BehaviorElement behavior,
       IMetadataField behaviorSpecification)
@@ -66,29 +51,33 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       }
     }
 
-    public IEnumerable<BehaviorSpecificationElement> CreateBehaviorSpecificationsFromBehavior(BehaviorElement behavior,
-                                                                                              IDeclaredElement behaviorSpecification)
-    {
-      IClass typeContainingBehaviorSpecifications = behaviorSpecification.GetFirstGenericArgument();
-
-      foreach (IField specification in typeContainingBehaviorSpecifications.GetBehaviorSpecifications())
-      {
-        yield return CreateBehaviorSpecification(behavior, specification);
-      }
-    }
-
-    BehaviorSpecificationElement CreateBehaviorSpecification(BehaviorElement behavior,
+    internal BehaviorSpecificationElement CreateBehaviorSpecification(BehaviorElement behavior,
                                                              IDeclaredElement behaviorSpecification)
     {
       return GetOrCreateBehaviorSpecification(_provider,
 #if RESHARPER_61
-                                              _manager, _psiModuleManager, _cacheManager, 
+                                              _manager, _psiModuleManager, _cacheManager,
 #endif
                                               _project,
                                               behavior,
                                               _projectEnvoy,
                                               behavior.FullyQualifiedTypeName ?? ((ITypeMember)behaviorSpecification).GetContainingType().GetClrName().FullName,
  behaviorSpecification.ShortName,
+                                              behaviorSpecification.IsIgnored());
+    }
+
+    BehaviorSpecificationElement CreateBehaviorSpecification(BehaviorElement behavior,
+                                                             IMetadataField behaviorSpecification)
+    {
+      return GetOrCreateBehaviorSpecification(_provider,
+#if RESHARPER_61
+                                              _manager, _psiModuleManager, _cacheManager,
+#endif
+                                              _project,
+                                              behavior,
+                                              _projectEnvoy,
+                                              behavior.FullyQualifiedTypeName ?? behaviorSpecification.DeclaringType.FullyQualifiedName,
+                                              behaviorSpecification.Name,
                                               behaviorSpecification.IsIgnored());
     }
 
@@ -120,9 +109,11 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
       return new BehaviorSpecificationElement(provider,
 #if RESHARPER_61
-                                 psiModuleManager, cacheManager, 
+                                              psiModuleManager,
+                                              cacheManager,
 #else
-                                 provider.PsiModuleManager, provider.CacheManager,
+                                              provider.PsiModuleManager,
+                                              provider.CacheManager,
 #endif
                                               behavior,
                                               projectEnvoy,

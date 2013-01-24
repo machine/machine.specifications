@@ -53,8 +53,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
       var projectEnvoy = new ProjectModelElementEnvoy(project);
       string assemblyPath = UnitTestManager.GetOutputAssemblyPath(project).FullPath;
 
-      var cache = new ContextCache();
-
+      var cache = new ElementCache();
 
 #if RESHARPER_61
       var contextFactory = new ContextFactory(provider, manager, psiModuleManager, cacheManager, project, projectEnvoy, assemblyPath, cache);
@@ -88,7 +87,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
 
     public void ProcessBeforeInterior(ITreeNode element)
     {
-      IElementHandler handler = _elementHandlers.Where(x => x.Accepts(element)).FirstOrDefault();
+      var handler = _elementHandlers.FirstOrDefault(x => x.Accepts(element));
       if (handler == null)
       {
         return;
@@ -107,6 +106,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
     {
       _elementHandlers
         .Where(x => x.Accepts(element))
+        .Reverse()
         .ToList()
         .ForEach(x => x.Cleanup(element));
     }

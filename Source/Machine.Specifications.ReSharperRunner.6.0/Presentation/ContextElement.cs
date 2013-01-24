@@ -26,7 +26,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public ContextElement(MSpecUnitTestProvider provider,
                           PsiModuleManager psiModuleManager,
-                          CacheManager cacheManager, 
+                          CacheManager cacheManager,
                           ProjectModelElementEnvoy projectEnvoy,
                           string typeName,
                           string assemblyLocation,
@@ -112,7 +112,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       var isIgnored = bool.Parse(parent.GetAttribute("isIgnored"));
       var subject = parent.GetAttribute("subject");
 
-      return ContextFactory.GetOrCreateContextElement(provider,
+      return ContextFactory.GetOrCreateContext(provider,
 #if RESHARPER_61
                                                       manager, psiModuleManager, cacheManager,
 #endif

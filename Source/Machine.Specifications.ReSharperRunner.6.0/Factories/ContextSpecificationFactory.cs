@@ -17,7 +17,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
   {
     readonly ProjectModelElementEnvoy _projectEnvoy;
     readonly MSpecUnitTestProvider _provider;
-    readonly ContextCache _cache;
+    readonly ElementCache _cache;
     readonly IProject _project;
 #if RESHARPER_61
     readonly IUnitTestElementManager _manager;
@@ -26,13 +26,13 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 #endif
 
 #if RESHARPER_61
-    public ContextSpecificationFactory(MSpecUnitTestProvider provider, IUnitTestElementManager manager, PsiModuleManager psiModuleManager, CacheManager cacheManager, IProject project, ProjectModelElementEnvoy projectEnvoy, ContextCache cache)
+    public ContextSpecificationFactory(MSpecUnitTestProvider provider, IUnitTestElementManager manager, PsiModuleManager psiModuleManager, CacheManager cacheManager, IProject project, ProjectModelElementEnvoy projectEnvoy, ElementCache cache)
     {
       _manager = manager;
       _psiModuleManager = psiModuleManager;
       _cacheManager = cacheManager;
 #else
-    public ContextSpecificationFactory(MSpecUnitTestProvider provider, IProject project, ProjectModelElementEnvoy projectEnvoy, ContextCache cache)
+    public ContextSpecificationFactory(MSpecUnitTestProvider provider, IProject project, ProjectModelElementEnvoy projectEnvoy, ElementCache cache)
     {
 #endif
       _provider = provider;
@@ -43,14 +43,14 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
     public ContextSpecificationElement CreateContextSpecification(IDeclaredElement field)
     {
-      IClass clazz = ((ITypeMember)field).GetContainingType() as IClass;
+      var clazz = ((ITypeMember)field).GetContainingType() as IClass;
       if (clazz == null)
       {
         return null;
       }
 
       ContextElement context;
-      _cache.Classes.TryGetValue(clazz, out context);
+      _cache.Contexts.TryGetValue(clazz, out context);
       if (context == null)
       {
         return null;
@@ -58,7 +58,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
       return GetOrCreateContextSpecification(_provider,
 #if RESHARPER_61
-                                             _manager, _psiModuleManager, _cacheManager, 
+                                             _manager, _psiModuleManager, _cacheManager,
 #endif
                                              _project,
                                              context,
@@ -73,7 +73,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     {
       return GetOrCreateContextSpecification(_provider,
 #if RESHARPER_61
-                                             _manager, _psiModuleManager, _cacheManager, 
+                                             _manager, _psiModuleManager, _cacheManager,
 #endif
                                              _project,
                                              context,
@@ -113,7 +113,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
       return new ContextSpecificationElement(provider,
 #if RESHARPER_61
-                                 psiModuleManager, cacheManager, 
+                                 psiModuleManager, cacheManager,
 #else
                                  provider.PsiModuleManager, provider.CacheManager,
 #endif

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,7 +21,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
     readonly ProjectModelElementEnvoy _projectEnvoy;
     readonly MSpecUnitTestProvider _provider;
-    readonly ContextCache _cache;
+    readonly ElementCache _cache;
     readonly IProject _project;
 #if RESHARPER_61
     readonly IUnitTestElementManager _manager;
@@ -29,13 +30,13 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 #endif
 
 #if RESHARPER_61
-    public ContextFactory(MSpecUnitTestProvider provider, IUnitTestElementManager manager, PsiModuleManager psiModuleManager, CacheManager cacheManager, IProject project, ProjectModelElementEnvoy projectEnvoy, string assemblyPath, ContextCache cache)
+    public ContextFactory(MSpecUnitTestProvider provider, IUnitTestElementManager manager, PsiModuleManager psiModuleManager, CacheManager cacheManager, IProject project, ProjectModelElementEnvoy projectEnvoy, string assemblyPath, ElementCache cache)
     {
       _manager = manager;
       _psiModuleManager = psiModuleManager;
       _cacheManager = cacheManager;
 #else
-    public ContextFactory(MSpecUnitTestProvider provider, IProject project, ProjectModelElementEnvoy projectEnvoy, string assemblyPath, ContextCache cache)
+    public ContextFactory(MSpecUnitTestProvider provider, IProject project, ProjectModelElementEnvoy projectEnvoy, string assemblyPath, ElementCache cache)
     {
 #endif
       _provider = provider;
@@ -47,12 +48,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
     public ContextElement CreateContext(ITypeElement type)
     {
-      if (_cache.Classes.ContainsKey(type))
-      {
-        return _cache.Classes[type];
-      }
-
-      var context = GetOrCreateContextElement(_provider,
+      var context = GetOrCreateContext(_provider,
 #if RESHARPER_61
                                               _manager,
                                               _psiModuleManager,
@@ -71,13 +67,13 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         child.State = UnitTestElementState.Pending;
       }
 
-      _cache.Classes.Add(type, context);
+      _cache.Contexts.Add(type, context);
       return context;
     }
 
     public ContextElement CreateContext(IMetadataTypeInfo type)
     {
-      return GetOrCreateContextElement(_provider,
+      return GetOrCreateContext(_provider,
 #if RESHARPER_61
                                        _manager,
                                        _psiModuleManager,
@@ -92,19 +88,19 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                        type.IsIgnored());
     }
 
-    public static ContextElement GetOrCreateContextElement(MSpecUnitTestProvider provider,
+    public static ContextElement GetOrCreateContext(MSpecUnitTestProvider provider,
 #if RESHARPER_61
-                                                           IUnitTestElementManager manager,
-                                                           PsiModuleManager psiModuleManager,
-                                                           CacheManager cacheManager,
+                                                    IUnitTestElementManager manager,
+                                                    PsiModuleManager psiModuleManager,
+                                                    CacheManager cacheManager,
 #endif
-                                                           IProject project,
-                                                           ProjectModelElementEnvoy projectEnvoy,
-                                                           string typeName,
-                                                           string assemblyLocation,
-                                                           string subject,
-                                                           ICollection<string> tags,
-                                                           bool isIgnored)
+                                                    IProject project,
+                                                    ProjectModelElementEnvoy projectEnvoy,
+                                                    string typeName,
+                                                    string assemblyLocation,
+                                                    string subject,
+                                                    ICollection<string> tags,
+                                                    bool isIgnored)
     {
       var id = ContextElement.CreateId(subject, typeName, tags);
 #if RESHARPER_61
@@ -125,7 +121,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 #else
                                 provider.PsiModuleManager,
                                 provider.CacheManager,
-#endif                
+#endif
                                 projectEnvoy,
                                 typeName,
                                 assemblyLocation,
@@ -136,16 +132,37 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
     public void UpdateChildState(ITypeElement type)
     {
-      ContextElement element;
-      if (!_cache.Classes.TryGetValue(type, out element))
+      ContextElement context;
+      if (!_cache.Contexts.TryGetValue(type, out context))
       {
         return;
       }
 
-      foreach (var unitTestElement in element.Children.Where(x => x.State == UnitTestElementState.Pending))
+      foreach (var element in context
+        .Children.Where(x => x.State == UnitTestElementState.Pending)
+        .Traverse(x => x.Children))
       {
-        unitTestElement.State = UnitTestElementState.Invalid;
+        element.State = UnitTestElementState.Invalid;
       }
     }
   }
+
+  static class EnumExt
+  {
+    internal static IEnumerable<T> Traverse<T>(this IEnumerable<T> source,
+                                              Func<T, IEnumerable<T>> childSelector)
+    {
+      foreach (var s in source)
+      {
+        yield return s;
+
+        var childs = childSelector(s);
+        foreach (var c in childs.Traverse(childSelector))
+        {
+          yield return c;
+        }
+      }
+    }
+  }
+
 }

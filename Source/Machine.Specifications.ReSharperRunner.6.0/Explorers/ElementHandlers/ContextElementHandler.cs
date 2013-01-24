@@ -8,18 +8,18 @@ using Machine.Specifications.ReSharperRunner.Factories;
 
 namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
 {
-  internal class ContextElementHandler : IElementHandler
+  class ContextElementHandler : IElementHandler
   {
-    readonly ContextFactory _contextFactory;
+    readonly ContextFactory _factory;
 
     public ContextElementHandler(ContextFactory contextFactory)
     {
-      _contextFactory = contextFactory;
+      _factory = contextFactory;
     }
 
     public bool Accepts(ITreeNode element)
     {
-      IDeclaration declaration = element as IDeclaration;
+      var declaration = element as IDeclaration;
       if (declaration == null)
       {
         return false;
@@ -30,15 +30,15 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
 
     public IEnumerable<UnitTestElementDisposition> AcceptElement(ITreeNode element, IFile file)
     {
-      IDeclaration declaration = (IDeclaration)element;
-      var contextElement = _contextFactory.CreateContext((ITypeElement)declaration.DeclaredElement);
+      var declaration = (IDeclaration) element;
+      var context = _factory.CreateContext((ITypeElement) declaration.DeclaredElement);
 
-      if (contextElement == null)
+      if (context == null)
       {
         yield break;
       }
 
-      yield return new UnitTestElementDisposition(contextElement,
+      yield return new UnitTestElementDisposition(context,
                                                   file.GetSourceFile().ToProjectFile(),
                                                   declaration.GetNavigationRange().TextRange,
                                                   declaration.GetDocumentRange().TextRange);
@@ -46,8 +46,8 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
 
     public void Cleanup(ITreeNode element)
     {
-      var declaration = (IDeclaration)element;
-      _contextFactory.UpdateChildState((IClass)declaration.DeclaredElement);
+      var declaration = (IDeclaration) element;
+      _factory.UpdateChildState((IClass) declaration.DeclaredElement);
     }
   }
 }

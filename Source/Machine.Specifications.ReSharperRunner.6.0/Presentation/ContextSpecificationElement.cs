@@ -22,7 +22,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public ContextSpecificationElement(MSpecUnitTestProvider provider,
                                        PsiModuleManager psiModuleManager,
-                                       CacheManager cacheManager, 
+                                       CacheManager cacheManager,
       // ReSharper disable SuggestBaseTypeForParameter
                                        ContextElement context,
       // ReSharper restore SuggestBaseTypeForParameter

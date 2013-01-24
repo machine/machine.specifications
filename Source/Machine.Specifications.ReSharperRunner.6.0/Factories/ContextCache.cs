@@ -6,14 +6,21 @@ using Machine.Specifications.ReSharperRunner.Presentation;
 
 namespace Machine.Specifications.ReSharperRunner.Factories
 {
-  internal class ContextCache
+  internal class ElementCache
   {
-    public ContextCache()
+    public ElementCache()
     {
-      Classes = new Dictionary<ITypeElement, ContextElement>();
+      Contexts = new Dictionary<ITypeElement, ContextElement>();
+      Behaviors = new Dictionary<IDeclaredElement, BehaviorElement>();
     }
 
-    public IDictionary<ITypeElement, ContextElement> Classes
+    public IDictionary<ITypeElement, ContextElement> Contexts
+    {
+      get;
+      private set;
+    }
+
+    public IDictionary<IDeclaredElement, BehaviorElement> Behaviors
     {
       get;
       private set;

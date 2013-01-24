@@ -42,7 +42,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
       {
         var projectEnvoy = new ProjectModelElementEnvoy(project);
 
-        var cache = new ContextCache();
+        var cache = new ElementCache();
 #if RESHARPER_61
         _contextFactory = new ContextFactory(provider, manager, psiModuleManager, cacheManager, project, projectEnvoy, _assembly.Location.FullPath, cache);
         _contextSpecificationFactory = new ContextSpecificationFactory(provider, manager, psiModuleManager, cacheManager, project, projectEnvoy, cache);
