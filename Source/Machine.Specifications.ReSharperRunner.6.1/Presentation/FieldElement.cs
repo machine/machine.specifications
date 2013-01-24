@@ -6,7 +6,6 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.Util;
-using JetBrains.ReSharper.UnitTestFramework;
 
 using Machine.Specifications.Utility.Internal;
 

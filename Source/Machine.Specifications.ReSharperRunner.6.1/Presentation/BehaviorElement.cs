@@ -6,9 +6,9 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.UnitTestFramework;
-#if RESHARPER_61
 using JetBrains.ReSharper.UnitTestFramework.Elements;
-#endif
+
+using Machine.Specifications.ReSharperRunner.Factories;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
@@ -19,15 +19,23 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     public BehaviorElement(MSpecUnitTestProvider provider,
                            PsiModuleManager psiModuleManager,
                            CacheManager cacheManager,
-      // ReSharper disable SuggestBaseTypeForParameter
+                           // ReSharper disable SuggestBaseTypeForParameter
                            ContextElement context,
-      // ReSharper restore SuggestBaseTypeForParameter
+                           // ReSharper restore SuggestBaseTypeForParameter
                            ProjectModelElementEnvoy projectEnvoy,
                            IClrTypeName declaringTypeName,
                            string fieldName,
                            bool isIgnored,
                            string fullyQualifiedTypeName)
-      : base(provider, psiModuleManager, cacheManager, context, projectEnvoy, declaringTypeName, fieldName, isIgnored || context.Explicit)
+      : base(
+        provider,
+        psiModuleManager,
+        cacheManager,
+        context,
+        projectEnvoy,
+        declaringTypeName,
+        fieldName,
+        isIgnored || context.Explicit)
     {
       FullyQualifiedTypeName = fullyQualifiedTypeName;
       _id = CreateId(context, fullyQualifiedTypeName, fieldName);
@@ -35,15 +43,10 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public ContextElement Context
     {
-      get { return (ContextElement)Parent; }
+      get { return (ContextElement) Parent; }
     }
 
     public string FullyQualifiedTypeName { get; private set; }
-
-    public override string GetTitlePrefix()
-    {
-      return "behaves like";
-    }
 
     public override string Kind
     {
@@ -55,16 +58,29 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       get { return UnitTestElementCategory.Uncategorized; }
     }
 
+    public override string Id
+    {
+      get { return _id; }
+    }
+
+    public override string GetTitlePrefix()
+    {
+      return "behaves like";
+    }
+
     public override void WriteToXml(XmlElement parent)
     {
       base.WriteToXml(parent);
       parent.SetAttribute("typeFQN", FullyQualifiedTypeName);
     }
 
-    public static IUnitTestElement ReadFromXml(XmlElement parent, IUnitTestElement parentElement, MSpecUnitTestProvider provider, ISolution solution
-#if RESHARPER_61
-      , IUnitTestElementManager manager, PsiModuleManager psiModuleManager, CacheManager cacheManager
-#endif
+    public static IUnitTestElement ReadFromXml(XmlElement parent,
+                                               IUnitTestElement parentElement,
+                                               MSpecUnitTestProvider provider,
+                                               ISolution solution,
+                                               IUnitTestElementManager manager,
+                                               PsiModuleManager psiModuleManager,
+                                               CacheManager cacheManager
       )
     {
       var projectId = parent.GetAttribute("projectId");
@@ -85,22 +101,17 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       var isIgnored = bool.Parse(parent.GetAttribute("isIgnored"));
       var fullyQualifiedTypeName = parent.GetAttribute("typeFQN");
 
-      return Factories.BehaviorFactory.GetOrCreateBehavior(provider,
-#if RESHARPER_61
-                                                           manager, psiModuleManager, cacheManager,
-#endif
-                                                           project,
-                                                           ProjectModelElementEnvoy.Create(project),
-                                                           context,
-                                                           new ClrTypeName(typeName),
-                                                           methodName,
-                                                           isIgnored,
-                                                           fullyQualifiedTypeName);
-    }
-
-    public override string Id
-    {
-      get { return _id; }
+      return BehaviorFactory.GetOrCreateBehavior(provider,
+                                                 manager,
+                                                 psiModuleManager,
+                                                 cacheManager,
+                                                 project,
+                                                 ProjectModelElementEnvoy.Create(project),
+                                                 context,
+                                                 new ClrTypeName(typeName),
+                                                 methodName,
+                                                 isIgnored,
+                                                 fullyQualifiedTypeName);
     }
 
     public static string CreateId(ContextElement contextElement, string fullyQualifiedTypeName, string fieldName)

@@ -6,36 +6,32 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.Impl.Reflection2;
 using JetBrains.ReSharper.UnitTestFramework;
-#if RESHARPER_61
 using JetBrains.ReSharper.UnitTestFramework.Elements;
-#endif
 
 using Machine.Specifications.ReSharperRunner.Presentation;
 
 namespace Machine.Specifications.ReSharperRunner.Factories
 {
-  internal class BehaviorSpecificationFactory
+  class BehaviorSpecificationFactory
   {
+    readonly CacheManager _cacheManager;
+    readonly IUnitTestElementManager _manager;
+    readonly IProject _project;
     readonly ProjectModelElementEnvoy _projectEnvoy;
     readonly MSpecUnitTestProvider _provider;
-    readonly IProject _project;
-#if RESHARPER_61
-    readonly ReflectionTypeNameCache _reflectionTypeNameCache = new ReflectionTypeNameCache();
-    readonly IUnitTestElementManager _manager;
     readonly PsiModuleManager _psiModuleManager;
-    readonly CacheManager _cacheManager;
-#endif
+    readonly ReflectionTypeNameCache _reflectionTypeNameCache = new ReflectionTypeNameCache();
 
-#if RESHARPER_61
-    public BehaviorSpecificationFactory(MSpecUnitTestProvider provider, IUnitTestElementManager manager, PsiModuleManager psiModuleManager, CacheManager cacheManager, IProject project, ProjectModelElementEnvoy projectEnvoy)
+    public BehaviorSpecificationFactory(MSpecUnitTestProvider provider,
+                                        IUnitTestElementManager manager,
+                                        PsiModuleManager psiModuleManager,
+                                        CacheManager cacheManager,
+                                        IProject project,
+                                        ProjectModelElementEnvoy projectEnvoy)
     {
       _manager = manager;
       _psiModuleManager = psiModuleManager;
       _cacheManager = cacheManager;
-#else
-    public BehaviorSpecificationFactory(MSpecUnitTestProvider provider, IProject project, ProjectModelElementEnvoy projectEnvoy)
-    {
-#endif
       _provider = provider;
       _project = project;
       _projectEnvoy = projectEnvoy;
@@ -45,7 +41,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       BehaviorElement behavior,
       IMetadataField behaviorSpecification)
     {
-      IMetadataTypeInfo typeContainingBehaviorSpecifications = behaviorSpecification.GetFirstGenericArgument();
+      var typeContainingBehaviorSpecifications = behaviorSpecification.GetFirstGenericArgument();
 
       foreach (var specification in typeContainingBehaviorSpecifications.GetSpecifications())
       {
@@ -54,16 +50,18 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     }
 
     internal BehaviorSpecificationElement CreateBehaviorSpecification(BehaviorElement behavior,
-                                                             IDeclaredElement behaviorSpecification)
+                                                                      IDeclaredElement behaviorSpecification)
     {
       return GetOrCreateBehaviorSpecification(_provider,
-#if RESHARPER_61
-                                              _manager, _psiModuleManager, _cacheManager,
-#endif
+                                              _manager,
+                                              _psiModuleManager,
+                                              _cacheManager,
                                               _project,
                                               behavior,
                                               _projectEnvoy,
-                                              ((ITypeMember)behaviorSpecification).GetContainingType().GetClrName().GetPersistent(),
+                                              ((ITypeMember) behaviorSpecification).GetContainingType()
+                                                                                   .GetClrName()
+                                                                                   .GetPersistent(),
                                               behaviorSpecification.ShortName,
                                               behaviorSpecification.IsIgnored());
     }
@@ -72,27 +70,21 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                              IMetadataField behaviorSpecification)
     {
       return GetOrCreateBehaviorSpecification(_provider,
-#if RESHARPER_61
-                                              _manager, _psiModuleManager, _cacheManager,
-#endif
+                                              _manager,
+                                              _psiModuleManager,
+                                              _cacheManager,
                                               _project,
                                               behavior,
                                               _projectEnvoy,
-#if RESHARPER_61
                                               _reflectionTypeNameCache.GetClrName(behaviorSpecification.DeclaringType),
-#else
-                                              new ClrTypeName(behaviorSpecification.DeclaringType.FullyQualifiedName), // may work incorrect in ReSharper 6.0
-#endif
                                               behaviorSpecification.Name,
                                               behaviorSpecification.IsIgnored());
     }
 
     public static BehaviorSpecificationElement GetOrCreateBehaviorSpecification(MSpecUnitTestProvider provider,
-#if RESHARPER_61
                                                                                 IUnitTestElementManager manager,
                                                                                 PsiModuleManager psiModuleManager,
                                                                                 CacheManager cacheManager,
-#endif
                                                                                 IProject project,
                                                                                 BehaviorElement behavior,
                                                                                 ProjectModelElementEnvoy projectEnvoy,
@@ -101,11 +93,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                                                 bool isIgnored)
     {
       var id = BehaviorSpecificationElement.CreateId(behavior, fieldName);
-#if RESHARPER_61
       var behaviorSpecification = manager.GetElementById(project, id) as BehaviorSpecificationElement;
-#else
-      var behaviorSpecification = provider.UnitTestManager.GetElementById(project, id) as BehaviorSpecificationElement;
-#endif
       if (behaviorSpecification != null)
       {
         behaviorSpecification.Parent = behavior;
@@ -114,13 +102,8 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       }
 
       return new BehaviorSpecificationElement(provider,
-#if RESHARPER_61
                                               psiModuleManager,
                                               cacheManager,
-#else
-                                              provider.PsiModuleManager,
-                                              provider.CacheManager,
-#endif
                                               behavior,
                                               projectEnvoy,
                                               declaringTypeName,

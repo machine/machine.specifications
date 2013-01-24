@@ -185,10 +185,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
 #if RESHARPER_7
     public IList<UnitTestTask> GetTaskSequence(ICollection<IUnitTestElement> explicitElements, IUnitTestLaunch unitTestLaunch)
-#elif RESHARPER_61
-	 public IList<UnitTestTask> GetTaskSequence(IList<IUnitTestElement> explicitElements)
 #else
-    public IList<UnitTestTask> GetTaskSequence(IEnumerable<IUnitTestElement> explicitElements)
+    public IList<UnitTestTask> GetTaskSequence(IList<IUnitTestElement> explicitElements)
 #endif
     {
       if (this is ContextSpecificationElement)
@@ -257,23 +255,14 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
         return null;
       }
 
-#if RESHARPER_61
-      IPsiModule psiModule = _psiModuleManager.GetPrimaryPsiModule(project);
+      var psiModule = _psiModuleManager.GetPrimaryPsiModule(project);
       if (psiModule == null)
       {
         return null;
       }
 
-      IDeclarationsCache declarationsCache = _cacheManager.GetDeclarationsCache(psiModule, true, true);
-#else
-      IPsiModule psiModule = _provider.PsiModuleManager.GetPrimaryPsiModule(project);
-      if (psiModule == null)
-      {
-        return null;
-      }
+      var declarationsCache = _cacheManager.GetDeclarationsCache(psiModule, true, true);
 
-      IDeclarationsCache declarationsCache = _provider.CacheManager.GetDeclarationsCache(psiModule, true, true);
-#endif
       return declarationsCache.GetTypeElementByCLRName(_declaringTypeName);
     }
 
@@ -295,7 +284,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public override int GetHashCode()
     {
-      int result = 0;
+      var result = 0;
       result = 29 * result + _projectEnvoy.GetHashCode();
       result = 29 * result + Id.GetHashCode();
       return result;

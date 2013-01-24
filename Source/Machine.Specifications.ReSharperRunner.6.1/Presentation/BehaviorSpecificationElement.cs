@@ -6,9 +6,7 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.UnitTestFramework;
-#if RESHARPER_61
 using JetBrains.ReSharper.UnitTestFramework.Elements;
-#endif
 
 using Machine.Specifications.ReSharperRunner.Factories;
 
@@ -21,21 +19,29 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     public BehaviorSpecificationElement(MSpecUnitTestProvider provider,
                                         PsiModuleManager psiModuleManager,
                                         CacheManager cacheManager,
-      // ReSharper disable SuggestBaseTypeForParameter
+                                        // ReSharper disable SuggestBaseTypeForParameter
                                         BehaviorElement behavior,
-      // ReSharper restore SuggestBaseTypeForParameter
+                                        // ReSharper restore SuggestBaseTypeForParameter
                                         ProjectModelElementEnvoy projectEnvoy,
                                         IClrTypeName declaringTypeName,
                                         string fieldName,
                                         bool isIgnored)
-      : base(provider, psiModuleManager, cacheManager, behavior, projectEnvoy, declaringTypeName, fieldName, isIgnored || behavior.Explicit)
+      : base(
+        provider,
+        psiModuleManager,
+        cacheManager,
+        behavior,
+        projectEnvoy,
+        declaringTypeName,
+        fieldName,
+        isIgnored || behavior.Explicit)
     {
       _id = CreateId(behavior, fieldName);
     }
 
     public BehaviorElement Behavior
     {
-      get { return (BehaviorElement)Parent; }
+      get { return (BehaviorElement) Parent; }
     }
 
     public override string Kind
@@ -48,10 +54,19 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       get { return UnitTestElementCategory.Uncategorized; }
     }
 
-    public static IUnitTestElement ReadFromXml(XmlElement parent, IUnitTestElement parentElement, MSpecUnitTestProvider provider, ISolution solution
-#if RESHARPER_61
-      , IUnitTestElementManager manager, PsiModuleManager psiModuleManager, CacheManager cacheManager
-#endif
+    public override string Id
+    {
+      get { return _id; }
+    }
+
+    public static IUnitTestElement ReadFromXml(XmlElement parent,
+                                               IUnitTestElement parentElement,
+                                               MSpecUnitTestProvider provider,
+                                               ISolution solution
+                                               ,
+                                               IUnitTestElementManager manager,
+                                               PsiModuleManager psiModuleManager,
+                                               CacheManager cacheManager
       )
     {
       var projectId = parent.GetAttribute("projectId");
@@ -72,15 +87,15 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       var isIgnored = bool.Parse(parent.GetAttribute("isIgnored"));
 
       return BehaviorSpecificationFactory.GetOrCreateBehaviorSpecification(provider,
-#if RESHARPER_61
-        manager, psiModuleManager, cacheManager,
-#endif
-        project, behavior, ProjectModelElementEnvoy.Create(project), new ClrTypeName(typeName), methodName, isIgnored);
-    }
-
-    public override string Id
-    {
-      get { return _id; }
+                                                                           manager,
+                                                                           psiModuleManager,
+                                                                           cacheManager,
+                                                                           project,
+                                                                           behavior,
+                                                                           ProjectModelElementEnvoy.Create(project),
+                                                                           new ClrTypeName(typeName),
+                                                                           methodName,
+                                                                           isIgnored);
     }
 
     public static string CreateId(BehaviorElement behaviorElement, string fieldName)
