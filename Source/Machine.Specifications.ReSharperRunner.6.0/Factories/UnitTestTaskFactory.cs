@@ -27,7 +27,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       return new UnitTestTask(context,
                               new ContextTask(_providerId,
                                               context.AssemblyLocation,
-                                              context.GetTypeClrName(),
+                                              context.GetTypeClrName().FullName,
                                               false));
     }
 
@@ -38,7 +38,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       return new UnitTestTask(contextSpecification,
                               new ContextSpecificationTask(_providerId,
                                                            context.AssemblyLocation,
-                                                           context.GetTypeClrName(),
+                                                           context.GetTypeClrName().FullName,
                                                            contextSpecification.FieldName,
                                                            false));
     }
@@ -48,7 +48,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       return new UnitTestTask(behavior,
                               new BehaviorTask(_providerId,
                                                context.AssemblyLocation,
-                                               context.GetTypeClrName(),
+                                               context.GetTypeClrName().FullName,
                                                behavior.FullyQualifiedTypeName,
                                                behavior.FieldName,
                                                false));
@@ -61,10 +61,10 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       return new UnitTestTask(behaviorSpecification,
                               new BehaviorSpecificationTask(_providerId,
                                                             context.AssemblyLocation,
-                                                            context.GetTypeClrName(),
+                                                            context.GetTypeClrName().FullName,
                                                             behaviorSpecification.Behavior.FieldName,
                                                             behaviorSpecification.FieldName,
-                                                            behaviorSpecification.GetTypeClrName(),
+                                                            behaviorSpecification.GetTypeClrName().FullName,
                                                             false));
     }
   }

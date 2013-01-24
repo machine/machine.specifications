@@ -4,6 +4,7 @@ using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
+using JetBrains.ReSharper.Psi.Impl.Reflection2;
 using JetBrains.ReSharper.UnitTestFramework;
 #if RESHARPER_61
 using JetBrains.ReSharper.UnitTestFramework.Elements;
@@ -19,6 +20,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     readonly MSpecUnitTestProvider _provider;
     readonly IProject _project;
 #if RESHARPER_61
+    readonly ReflectionTypeNameCache _reflectionTypeNameCache = new ReflectionTypeNameCache();
     readonly IUnitTestElementManager _manager;
     readonly PsiModuleManager _psiModuleManager;
     readonly CacheManager _cacheManager;
@@ -61,8 +63,8 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                               _project,
                                               behavior,
                                               _projectEnvoy,
-                                              behavior.FullyQualifiedTypeName ?? ((ITypeMember)behaviorSpecification).GetContainingType().GetClrName().FullName,
- behaviorSpecification.ShortName,
+                                              ((ITypeMember)behaviorSpecification).GetContainingType().GetClrName().GetPersistent(),
+                                              behaviorSpecification.ShortName,
                                               behaviorSpecification.IsIgnored());
     }
 
@@ -76,7 +78,11 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                               _project,
                                               behavior,
                                               _projectEnvoy,
-                                              behavior.FullyQualifiedTypeName ?? behaviorSpecification.DeclaringType.FullyQualifiedName,
+#if RESHARPER_61
+                                              _reflectionTypeNameCache.GetClrName(behaviorSpecification.DeclaringType),
+#else
+                                              new ClrTypeName(behaviorSpecification.DeclaringType.FullyQualifiedName), // may work incorrect in ReSharper 6.0
+#endif
                                               behaviorSpecification.Name,
                                               behaviorSpecification.IsIgnored());
     }
@@ -90,7 +96,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                                                 IProject project,
                                                                                 BehaviorElement behavior,
                                                                                 ProjectModelElementEnvoy projectEnvoy,
-                                                                                string declaringTypeName,
+                                                                                IClrTypeName declaringTypeName,
                                                                                 string fieldName,
                                                                                 bool isIgnored)
     {

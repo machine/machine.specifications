@@ -28,14 +28,14 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                           PsiModuleManager psiModuleManager,
                           CacheManager cacheManager,
                           ProjectModelElementEnvoy projectEnvoy,
-                          string typeName,
+                          IClrTypeName typeName,
                           string assemblyLocation,
                           string subject,
                           IEnumerable<string> tags,
                           bool isIgnored)
       : base(provider, psiModuleManager, cacheManager, null, projectEnvoy, typeName, isIgnored)
     {
-      _id = CreateId(subject, TypeName, tags);
+      _id = CreateId(subject, TypeName.FullName, tags);
       _assemblyLocation = assemblyLocation;
       _subject = subject;
 
@@ -57,7 +57,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public override string GetPresentation()
     {
-      return GetSubject() + new ClrTypeName(GetTypeClrName()).ShortName.ToFormat();
+      return GetSubject() + GetTypeClrName().ShortName.ToFormat();
     }
 
     string GetSubject()
@@ -88,7 +88,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     public void WriteToXml(XmlElement parent)
     {
       parent.SetAttribute("projectId", GetProject().GetPersistentID());
-      parent.SetAttribute("typeName", TypeName);
+      parent.SetAttribute("typeName", TypeName.FullName);
       parent.SetAttribute("assemblyLocation", AssemblyLocation);
       parent.SetAttribute("isIgnored", Explicit.ToString());
       parent.SetAttribute("subject", _subject);
@@ -118,7 +118,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 #endif
                                                       project,
                                                       ProjectModelElementEnvoy.Create(project),
-                                                      typeName,
+                                                      new ClrTypeName(typeName),
                                                       assemblyLocation,
                                                       subject,
                                                       EmptyArray<string>.Instance,

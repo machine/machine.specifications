@@ -6,6 +6,7 @@ using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
+using JetBrains.ReSharper.Psi.Impl.Reflection2;
 using JetBrains.ReSharper.UnitTestFramework;
 #if RESHARPER_61
 using JetBrains.ReSharper.UnitTestFramework.Elements;
@@ -24,6 +25,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     readonly ElementCache _cache;
     readonly IProject _project;
 #if RESHARPER_61
+    readonly ReflectionTypeNameCache _reflectionTypeNameCache = new ReflectionTypeNameCache();
     readonly IUnitTestElementManager _manager;
     readonly PsiModuleManager _psiModuleManager;
     readonly CacheManager _cacheManager;
@@ -56,7 +58,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 #endif
                                               _project,
                                               _projectEnvoy,
-                                              type.GetClrName().FullName,
+                                              type.GetClrName().GetPersistent(),
                                               _assemblyPath,
                                               type.GetSubjectString(),
                                               type.GetTags(),
@@ -81,7 +83,11 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 #endif
                                        _project,
                                        _projectEnvoy,
-                                       type.FullyQualifiedName,
+#if RESHARPER_61
+                                       _reflectionTypeNameCache.GetClrName(type),
+#else
+                                       new ClrTypeName(type.FullyQualifiedName), // may work incorrect in ReSharper 6.0
+#endif
                                        _assemblyPath,
                                        type.GetSubjectString(),
                                        type.GetTags(),
@@ -96,13 +102,13 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 #endif
                                                     IProject project,
                                                     ProjectModelElementEnvoy projectEnvoy,
-                                                    string typeName,
+                                                    IClrTypeName typeName,
                                                     string assemblyLocation,
                                                     string subject,
                                                     ICollection<string> tags,
                                                     bool isIgnored)
     {
-      var id = ContextElement.CreateId(subject, typeName, tags);
+      var id = ContextElement.CreateId(subject, typeName.FullName, tags);
 #if RESHARPER_61
       var contextElement = manager.GetElementById(project, id) as ContextElement;
 #else

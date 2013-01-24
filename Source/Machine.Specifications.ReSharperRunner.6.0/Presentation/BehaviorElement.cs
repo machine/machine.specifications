@@ -23,7 +23,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                            ContextElement context,
       // ReSharper restore SuggestBaseTypeForParameter
                            ProjectModelElementEnvoy projectEnvoy,
-                           string declaringTypeName,
+                           IClrTypeName declaringTypeName,
                            string fieldName,
                            bool isIgnored,
                            string fullyQualifiedTypeName)
@@ -92,7 +92,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                                                            project,
                                                            ProjectModelElementEnvoy.Create(project),
                                                            context,
-                                                           typeName,
+                                                           new ClrTypeName(typeName),
                                                            methodName,
                                                            isIgnored,
                                                            fullyQualifiedTypeName);

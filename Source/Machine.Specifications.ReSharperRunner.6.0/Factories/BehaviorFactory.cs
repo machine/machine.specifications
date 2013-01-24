@@ -4,6 +4,7 @@ using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
+using JetBrains.ReSharper.Psi.Impl.Reflection2;
 using JetBrains.ReSharper.UnitTestFramework;
 #if RESHARPER_61
 using JetBrains.ReSharper.UnitTestFramework.Elements;
@@ -20,6 +21,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     readonly ElementCache _cache;
     readonly IProject _project;
 #if RESHARPER_61
+    readonly ReflectionTypeNameCache _reflectionTypeNameCache = new ReflectionTypeNameCache();
     readonly IUnitTestElementManager _manager;
     readonly PsiModuleManager _psiModuleManager;
     readonly CacheManager _cacheManager;
@@ -65,7 +67,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                  _project,
                                  _projectEnvoy,
                                  context,
-                                 clazz.GetClrName().FullName,
+                                 clazz.GetClrName(),
                                  field.ShortName,
                                  field.IsIgnored(),
                                  fullyQualifiedTypeName);
@@ -93,7 +95,12 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                 _project,
                                                 _projectEnvoy,
                                                 context,
-                                                behavior.DeclaringType.FullyQualifiedName,
+#if RESHARPER_61
+                                                _reflectionTypeNameCache.GetClrName(behavior.DeclaringType),
+#else
+                                                new ClrTypeName(behavior.DeclaringType.FullyQualifiedName), // may work incorrect in ReSharper 6.0
+#endif
+
                                                 behavior.Name,
                                                 behavior.IsIgnored() || typeContainingBehaviorSpecifications.IsIgnored(),
                                                 fullyQualifiedTypeName);
@@ -110,7 +117,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                       IProject project,
                                                       ProjectModelElementEnvoy projectEnvoy,
                                                       ContextElement context,
-                                                      string declaringTypeName,
+                                                      IClrTypeName declaringTypeName,
                                                       string fieldName,
                                                       bool isIgnored,
                                                       string fullyQualifiedTypeName)

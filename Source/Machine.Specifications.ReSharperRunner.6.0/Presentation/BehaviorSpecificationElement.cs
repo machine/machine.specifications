@@ -25,7 +25,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                                         BehaviorElement behavior,
       // ReSharper restore SuggestBaseTypeForParameter
                                         ProjectModelElementEnvoy projectEnvoy,
-                                        string declaringTypeName,
+                                        IClrTypeName declaringTypeName,
                                         string fieldName,
                                         bool isIgnored)
       : base(provider, psiModuleManager, cacheManager, behavior, projectEnvoy, declaringTypeName, fieldName, isIgnored || behavior.Explicit)
@@ -75,7 +75,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 #if RESHARPER_61
         manager, psiModuleManager, cacheManager,
 #endif
-        project, behavior, ProjectModelElementEnvoy.Create(project), typeName, methodName, isIgnored);
+        project, behavior, ProjectModelElementEnvoy.Create(project), new ClrTypeName(typeName), methodName, isIgnored);
     }
 
     public override string Id

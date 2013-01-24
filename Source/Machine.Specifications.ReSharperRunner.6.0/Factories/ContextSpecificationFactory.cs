@@ -4,6 +4,7 @@ using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
+using JetBrains.ReSharper.Psi.Impl.Reflection2;
 using JetBrains.ReSharper.UnitTestFramework;
 #if RESHARPER_61
 using JetBrains.ReSharper.UnitTestFramework.Elements;
@@ -20,6 +21,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     readonly ElementCache _cache;
     readonly IProject _project;
 #if RESHARPER_61
+    readonly ReflectionTypeNameCache _reflectionTypeNameCache = new ReflectionTypeNameCache();
     readonly IUnitTestElementManager _manager;
     readonly PsiModuleManager _psiModuleManager;
     readonly CacheManager _cacheManager;
@@ -63,7 +65,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                              _project,
                                              context,
                                              _projectEnvoy,
-                                             clazz.GetClrName().FullName,
+                                             clazz.GetClrName().GetPersistent(),
                                              field.ShortName,
                                              clazz.GetTags(),
                                              field.IsIgnored());
@@ -78,7 +80,11 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                              _project,
                                              context,
                                              _projectEnvoy,
-                                             specification.DeclaringType.FullyQualifiedName,
+#if RESHARPER_61
+                                             _reflectionTypeNameCache.GetClrName(specification.DeclaringType),
+#else
+                                             new ClrTypeName(specification.DeclaringType.FullyQualifiedName), // may work incorrect in ReSharper 6.0
+#endif
                                              specification.Name,
                                              specification.DeclaringType.GetTags(),
                                              specification.IsIgnored());
@@ -93,7 +99,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                                               IProject project,
                                                                               ContextElement context,
                                                                               ProjectModelElementEnvoy projectEnvoy,
-                                                                              string declaringTypeName,
+                                                                              IClrTypeName declaringTypeName,
                                                                               string fieldName,
                                                                               ICollection<string> tags,
                                                                               bool isIgnored)

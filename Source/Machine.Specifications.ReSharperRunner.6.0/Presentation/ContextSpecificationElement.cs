@@ -27,7 +27,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                                        ContextElement context,
       // ReSharper restore SuggestBaseTypeForParameter
                                        ProjectModelElementEnvoy project,
-                                       string declaringTypeName,
+                                       IClrTypeName declaringTypeName,
                                        string fieldName,
                                        IEnumerable<string> tags,
                                        bool isIgnored)
@@ -83,7 +83,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 #if RESHARPER_61
                 manager, psiModuleManager, cacheManager,
 #endif
-                project, context, ProjectModelElementEnvoy.Create(project), typeName, methodName, EmptyArray<string>.Instance, isIgnored);
+                project, context, ProjectModelElementEnvoy.Create(project), new ClrTypeName(typeName), methodName, EmptyArray<string>.Instance, isIgnored);
     }
 
     public override string Id

@@ -21,7 +21,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                            CacheManager cacheManager,
                            Element parent,
                            ProjectModelElementEnvoy projectEnvoy,
-                           string declaringTypeName,
+                           IClrTypeName declaringTypeName,
                            string fieldName,
                            bool isIgnored)
       : base(provider, psiModuleManager, cacheManager, parent, projectEnvoy, declaringTypeName, isIgnored || parent.Explicit)
@@ -69,7 +69,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     public virtual void WriteToXml(XmlElement parent)
     {
       parent.SetAttribute("projectId", GetProject().GetPersistentID());
-      parent.SetAttribute("typeName", TypeName);
+      parent.SetAttribute("typeName", TypeName.FullName);
       parent.SetAttribute("methodName", FieldName);
       parent.SetAttribute("isIgnored", Explicit.ToString());
     }
