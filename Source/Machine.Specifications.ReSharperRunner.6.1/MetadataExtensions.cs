@@ -80,13 +80,14 @@ namespace Machine.Specifications.ReSharperRunner
 
     private static IList<IMetadataCustomAttribute> GetSubjectAttributes(IMetadataEntity type)
     {
-      return (from customAttribute in type.CustomAttributes
-              where customAttribute.AndAllBaseTypes().Any(i => i.FullyQualifiedName == typeof(SubjectAttribute).FullName)
-              select customAttribute).ToList();
+      return type.CustomAttributes
+                 .Where(attribute => attribute.AndAllBaseTypes()
+                                              .Any(i => i.FullyQualifiedName == typeof(SubjectAttribute).FullName))
+                 .ToList();
     }
 
     public static ICollection<string> GetTags(this IMetadataEntity type)
-    { 
+    {
         return type.AndAllBaseTypes()
                 .SelectMany(x => x.GetCustomAttributes(typeof(TagsAttribute).FullName))
                 .Select(x => x.ConstructorArguments)
@@ -98,10 +99,27 @@ namespace Machine.Specifications.ReSharperRunner
 
     static IEnumerable<IMetadataTypeInfo> AndAllBaseTypes(this IMetadataEntity type)
     {
+      Func<IMetadataEntity, IMetadataTypeInfo> getTypeFromAttributeConstructor = entity =>
+      {
+        var attr = type as IMetadataCustomAttribute;
+        if (attr == null)
+        {
+          return null;
+        }
+
+        return attr.UsedConstructor.DeclaringType;
+      };
+
       var typeInfo = type as IMetadataTypeInfo;
       if (typeInfo == null)
       {
-        yield break;
+        // type might be an attribute - which cannot be cast as IMetadataTypeInfo.
+        typeInfo = getTypeFromAttributeConstructor(type);
+        if (typeInfo == null)
+        {
+          // No idea how the get the type of the IMetadataEntity.
+          yield break;
+        }
       }
 
       yield return typeInfo;
