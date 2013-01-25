@@ -7,7 +7,6 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.ReSharper.UnitTestFramework.Elements;
-using JetBrains.Util;
 
 using Machine.Specifications.ReSharperRunner.Factories;
 
@@ -15,7 +14,6 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 {
   class ContextSpecificationElement : FieldElement
   {
-    readonly IEnumerable<UnitTestElementCategory> _categories;
     readonly string _id;
 
     public ContextSpecificationElement(MSpecUnitTestProvider provider,
@@ -27,7 +25,6 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                                        ProjectModelElementEnvoy project,
                                        IClrTypeName declaringTypeName,
                                        string fieldName,
-                                       IEnumerable<string> tags,
                                        bool isIgnored)
       : base(
         provider,
@@ -40,11 +37,6 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
         isIgnored || context.Explicit)
     {
       _id = CreateId(context, fieldName);
-
-      if (tags != null)
-      {
-        _categories = UnitTestElementCategory.Create(tags);
-      }
     }
 
     public ContextElement Context
@@ -59,7 +51,16 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public override IEnumerable<UnitTestElementCategory> Categories
     {
-      get { return _categories; }
+      get
+      {
+        var parent = Parent ?? Context;
+        if (parent == null)
+        {
+          return UnitTestElementCategory.Uncategorized;
+        }
+
+        return parent.Categories;
+      }
     }
 
     public override string Id
@@ -103,7 +104,6 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                                                                          ProjectModelElementEnvoy.Create(project),
                                                                          new ClrTypeName(typeName),
                                                                          methodName,
-                                                                         EmptyArray<string>.Instance,
                                                                          isIgnored);
     }
 

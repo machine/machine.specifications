@@ -55,7 +55,16 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public override IEnumerable<UnitTestElementCategory> Categories
     {
-      get { return UnitTestElementCategory.Uncategorized; }
+      get
+      {
+        var parent = Parent ?? Context;
+        if (parent == null)
+        {
+          return UnitTestElementCategory.Uncategorized;
+        }
+
+        return parent.Categories;
+      }
     }
 
     public override string Id

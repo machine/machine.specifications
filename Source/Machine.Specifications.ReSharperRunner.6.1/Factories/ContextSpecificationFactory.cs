@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
@@ -64,7 +62,6 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                              _projectEnvoy,
                                              clazz.GetClrName().GetPersistent(),
                                              field.ShortName,
-                                             clazz.GetTags(),
                                              field.IsIgnored());
     }
 
@@ -79,7 +76,6 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                              _projectEnvoy,
                                              _reflectionTypeNameCache.GetClrName(specification.DeclaringType),
                                              specification.Name,
-                                             specification.DeclaringType.GetTags(),
                                              specification.IsIgnored());
     }
 
@@ -92,7 +88,6 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                                               ProjectModelElementEnvoy projectEnvoy,
                                                                               IClrTypeName declaringTypeName,
                                                                               string fieldName,
-                                                                              ICollection<string> tags,
                                                                               bool isIgnored)
     {
       var id = ContextSpecificationElement.CreateId(context, fieldName);
@@ -111,7 +106,6 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                              projectEnvoy,
                                              declaringTypeName,
                                              fieldName,
-                                             tags,
                                              isIgnored);
     }
   }

@@ -263,7 +263,14 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
       var declarationsCache = _cacheManager.GetDeclarationsCache(psiModule, true, true);
 
-      return declarationsCache.GetTypeElementByCLRName(_declaringTypeName);
+      try
+      {
+        return declarationsCache.GetTypeElementByCLRName(_declaringTypeName);
+      }
+      catch (NullReferenceException)
+      {
+        return null;
+      }
     }
 
     public IClrTypeName GetTypeClrName()
