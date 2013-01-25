@@ -117,6 +117,9 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Runners\Notifications\BehaviorSpecificationRemoteTaskNotification.cs">
       <Link>Runners\Notifications\BehaviorSpecificationRemoteTaskNotification.cs</Link>
     </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Runners\Notifications\ContextRemoteTaskNotification.cs">
+      <Link>Runners\Notifications\ContextRemoteTaskNotification.cs</Link>
+    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Runners\Notifications\ContextSpecificationRemoteTaskNotification.cs">
       <Link>Runners\Notifications\ContextSpecificationRemoteTaskNotification.cs</Link>
     </Compile>
@@ -149,6 +152,9 @@
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Tasks\ContextTask.cs">
       <Link>Tasks\ContextTask.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Tasks\RunAssemblyContextsTask.cs">
+      <Link>Tasks\RunAssemblyContextsTask.cs</Link>
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Tasks\Task.cs">
       <Link>Tasks\Task.cs</Link>

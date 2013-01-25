@@ -4,11 +4,16 @@ using Machine.Specifications.ReSharperRunner.Tasks;
 
 namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
 {
-  internal class RemoteTaskNotificationFactory
+  class RemoteTaskNotificationFactory
   {
     public RemoteTaskNotification CreateTaskNotification(TaskExecutionNode node)
     {
       var remoteTask = node.RemoteTask;
+
+      if (remoteTask is ContextTask)
+      {
+        return new ContextRemoteTaskNotification(node);
+      }
 
       if (remoteTask is ContextSpecificationTask)
       {

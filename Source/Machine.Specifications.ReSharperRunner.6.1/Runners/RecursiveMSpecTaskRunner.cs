@@ -18,7 +18,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     readonly RemoteTaskNotificationFactory _taskNotificationFactory = new RemoteTaskNotificationFactory();
     Assembly _contextAssembly;
     Type _contextClass;
-    PerContextRunListener _listener;
+    PerAssemblyRunListener _listener;
     DefaultRunner _runner;
 
     public RecursiveMSpecTaskRunner(IRemoteTaskServer server) : base(server)
@@ -27,7 +27,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
     public override TaskResult Start(TaskExecutionNode node)
     {
-      var task = (ContextTask) node.RemoteTask;
+      var task = (RunAssemblyTask) node.RemoteTask;
 
       _contextAssembly = LoadContextAssembly(task);
       if (_contextAssembly == null)
@@ -44,18 +44,8 @@ namespace Machine.Specifications.ReSharperRunner.Runners
         return TaskResult.Error;
       }
 
-      _contextClass = _contextAssembly.GetType(task.ContextTypeName);
-      if (_contextClass == null)
-      {
-        Server.TaskExplain(task,
-                           String.Format("Could not load type '{0}' from assembly {1}.",
-                                         task.ContextTypeName,
-                                         task.AssemblyLocation));
-        Server.TaskError(node.RemoteTask, "Could not load context");
-        return TaskResult.Error;
-      }
+      _listener = new PerAssemblyRunListener(Server, task);
 
-      _listener = new PerContextRunListener(Server, node.RemoteTask);
       _runner = new DefaultRunner(_listener, RunOptions.Default);
 
       return TaskResult.Success;
@@ -67,16 +57,37 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       return TaskResult.Success;
     }
 
+    public override void ExecuteRecursive(TaskExecutionNode node)
+    {
+      FlattenChildren(node).Each(RegisterRemoteTaskNotifications);
+    }
+
     public override TaskResult Finish(TaskExecutionNode node)
     {
-      _runner.RunMember(_contextAssembly, _contextClass);
+      foreach (var child in node.Children)
+      {
+        RunContext(child);
+      }
 
       return TaskResult.Success;
     }
 
-    public override void ExecuteRecursive(TaskExecutionNode node)
+    void RunContext(TaskExecutionNode node)
     {
-      FlattenChildren(node).Each(RegisterRemoteTaskNotifications);
+      var task = (ContextTask) node.RemoteTask;
+
+      _contextClass = _contextAssembly.GetType(task.ContextTypeName);
+      if (_contextClass == null)
+      {
+        Server.TaskExplain(task,
+                           String.Format("Could not load type '{0}' from assembly {1}.",
+                                         task.ContextTypeName,
+                                         task.AssemblyLocation));
+        Server.TaskError(node.RemoteTask, "Could not load context");
+        return;
+      }
+
+      _runner.RunMember(_contextAssembly, _contextClass);
     }
 
     static IEnumerable<TaskExecutionNode> FlattenChildren(TaskExecutionNode node)
@@ -97,7 +108,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       _listener.RegisterTaskNotification(_taskNotificationFactory.CreateTaskNotification(node));
     }
 
-    Assembly LoadContextAssembly(Task task)
+    Assembly LoadContextAssembly(RunAssemblyTask task)
     {
       AssemblyName assemblyName;
       if (!File.Exists(task.AssemblyLocation))

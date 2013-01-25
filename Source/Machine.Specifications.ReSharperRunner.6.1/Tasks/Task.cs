@@ -6,7 +6,7 @@ using JetBrains.ReSharper.TaskRunnerFramework;
 namespace Machine.Specifications.ReSharperRunner.Tasks
 {
   [Serializable]
-  internal abstract partial class Task : RemoteTask, IEquatable<Task>
+  internal abstract class Task : RemoteTask, IEquatable<Task>
   {
     readonly string _assemblyLocation;
     readonly string _contextTypeName;

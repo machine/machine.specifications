@@ -151,6 +151,7 @@
     <Compile Include="PsiExtensions.cs" />
     <Compile Include="Runners\ExceptionResultConverter.cs" />
     <Compile Include="Runners\Notifications\BehaviorSpecificationRemoteTaskNotification.cs" />
+    <Compile Include="Runners\Notifications\ContextRemoteTaskNotification.cs" />
     <Compile Include="Runners\Notifications\ContextSpecificationRemoteTaskNotification.cs" />
     <Compile Include="Runners\Notifications\RemoteTaskNotification.cs" />
     <Compile Include="Runners\Notifications\RemoteTaskNotificationFactory.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="Tasks\BehaviorTask.cs" />
     <Compile Include="Tasks\ContextSpecificationTask.cs" />
     <Compile Include="Tasks\ContextTask.cs" />
+    <Compile Include="Tasks\RunAssemblyContextsTask.cs" />
     <Compile Include="Tasks\Task.cs" />
   </ItemGroup>
   <ItemGroup>

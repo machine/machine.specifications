@@ -1,29 +1,33 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 using JetBrains.ReSharper.TaskRunnerFramework;
 
 using Machine.Specifications.ReSharperRunner.Runners.Notifications;
+using Machine.Specifications.ReSharperRunner.Tasks;
 using Machine.Specifications.Runner;
 
 namespace Machine.Specifications.ReSharperRunner.Runners
 {
-  public class PerContextRunListener : ISpecificationRunListener
+  class PerAssemblyRunListener : ISpecificationRunListener
   {
-    readonly RemoteTask _contextTask;
+    readonly RunAssemblyTask _runAssemblyTask;
     readonly IRemoteTaskServer _server;
     readonly IList<RemoteTaskNotification> _taskNotifications = new List<RemoteTaskNotification>();
+    int _specifications;
+    int _successes;
+    int _errors;
 
-    public PerContextRunListener(IRemoteTaskServer server, RemoteTask contextNode)
+    public PerAssemblyRunListener(IRemoteTaskServer server, RunAssemblyTask runAssemblyTask)
     {
       _server = server;
-      _contextTask = contextNode;
+      _runAssemblyTask = runAssemblyTask;
     }
 
     public void OnAssemblyStart(AssemblyInfo assembly)
     {
+      _server.TaskStarting(_runAssemblyTask);
     }
 
     public void OnAssemblyEnd(AssemblyInfo assembly)
@@ -40,20 +44,36 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
     public void OnContextStart(ContextInfo context)
     {
-      _server.TaskProgress(_contextTask, "Running context");
+      _specifications = 0;
+      _errors = 0;
+      _successes = 0;
+
+      var notify = CreateTaskNotificationFor(context);
+      notify(task => _server.TaskStarting(task));
     }
 
     public void OnContextEnd(ContextInfo context)
     {
-      _server.TaskProgress(_contextTask, null);
+      var result = TaskResult.Inconclusive;
+      if (_specifications == _successes)
+      {
+        result = TaskResult.Success;
+      }
+      if (_errors > 0)
+      {
+        result = TaskResult.Error;
+      }
+
+      var notify = CreateTaskNotificationFor(context);
+      notify(task => _server.TaskFinished(task, null, result));
     }
 
     public void OnSpecificationStart(SpecificationInfo specification)
     {
-      var notify = CreateTaskNotificationFor(specification);
+      _specifications += 1;
 
+      var notify = CreateTaskNotificationFor(specification);
       notify(task => _server.TaskStarting(task));
-      notify(task => _server.TaskProgress(task, "Running specification"));
     }
 
     public void OnSpecificationEnd(SpecificationInfo specification, Result result)
@@ -70,6 +90,8 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       switch (result.Status)
       {
         case Status.Failing:
+          _errors += 1;
+
           notify(task => _server.TaskExplain(task, result.Exception.Message));
           notify(task => _server.TaskException(task,
                                                ExceptionResultConverter.ConvertExceptions(result.Exception, out message)));
@@ -77,6 +99,8 @@ namespace Machine.Specifications.ReSharperRunner.Runners
           break;
 
         case Status.Passing:
+          _successes += 1;
+
           taskResult = TaskResult.Success;
           break;
 
@@ -98,9 +122,11 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     public void OnFatalError(ExceptionResult exception)
     {
       string message;
-      _server.TaskExplain(_contextTask, "Fatal error: " + exception.Message);
-      _server.TaskException(_contextTask, ExceptionResultConverter.ConvertExceptions(exception, out message));
-      _server.TaskFinished(_contextTask, message, TaskResult.Exception);
+      _server.TaskExplain(_runAssemblyTask, "Fatal error: " + exception.Message);
+      _server.TaskException(_runAssemblyTask, ExceptionResultConverter.ConvertExceptions(exception, out message));
+      _server.TaskFinished(_runAssemblyTask, message, TaskResult.Exception);
+
+      _errors += 1;
     }
 
     internal void RegisterTaskNotification(RemoteTaskNotification notification)
@@ -108,7 +134,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       _taskNotifications.Add(notification);
     }
 
-    Action<Action<RemoteTask>> CreateTaskNotificationFor(SpecificationInfo specification)
+    Action<Action<RemoteTask>> CreateTaskNotificationFor(object infoFromRunner)
     {
       return actionToBePerformedForEachTask =>
       {
@@ -116,12 +142,9 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
         foreach (var notification in _taskNotifications)
         {
-          if (notification.Matches(specification))
+          if (notification.Matches(infoFromRunner))
           {
-            Debug.WriteLine(String.Format("Notification for {0} {1}, with {2} remote tasks",
-                                          specification.ContainingType,
-                                          specification.FieldName,
-                                          notification.RemoteTasks.Count()));
+            Debug.WriteLine(String.Format("Invoking notification for {0}", notification.ToString()));
             invoked = true;
 
             foreach (var task in notification.RemoteTasks)
@@ -133,9 +156,8 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
         if (!invoked)
         {
-          Debug.WriteLine(String.Format("IGNORED notification for {0} {1}",
-                                        specification.ContainingType,
-                                        specification.FieldName));
+          Debug.WriteLine(String.Format("No notification for {0} received by the runner",
+                                        infoFromRunner.ToString()));
         }
       };
     }

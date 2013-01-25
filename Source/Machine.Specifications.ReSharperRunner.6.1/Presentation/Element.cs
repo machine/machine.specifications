@@ -197,6 +197,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
         return new List<UnitTestTask>
                {
                  _taskFactory.CreateAssemblyLoadTask(context),
+                 _taskFactory.CreateRunAssemblyTask(context),
                  _taskFactory.CreateContextTask(context, explicitElements.Contains(context)),
                  _taskFactory.CreateContextSpecificationTask(context,
                                                              contextSpecification,
@@ -212,6 +213,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
         return new List<UnitTestTask>
                {
                  _taskFactory.CreateAssemblyLoadTask(context),
+                 _taskFactory.CreateRunAssemblyTask(context),
                  _taskFactory.CreateContextTask(context, explicitElements.Contains(context)),
                  _taskFactory.CreateBehaviorTask(context, behavior, explicitElements.Contains(behavior))
                };
@@ -226,6 +228,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
         return new List<UnitTestTask>
                {
                  _taskFactory.CreateAssemblyLoadTask(context),
+                 _taskFactory.CreateRunAssemblyTask(context),
                  _taskFactory.CreateContextTask(context, explicitElements.Contains(context)),
                  _taskFactory.CreateBehaviorTask(context, behavior, explicitElements.Contains(behavior)),
                  _taskFactory.CreateBehaviorSpecificationTask(context,

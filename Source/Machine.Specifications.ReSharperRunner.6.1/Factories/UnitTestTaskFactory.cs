@@ -1,5 +1,4 @@
 using JetBrains.ReSharper.TaskRunnerFramework;
-using JetBrains.ReSharper.UnitTestExplorer;
 using JetBrains.ReSharper.UnitTestFramework;
 
 using Machine.Specifications.ReSharperRunner.Presentation;
@@ -20,6 +19,12 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     {
       return new UnitTestTask(null,
                               new AssemblyLoadTask(context.AssemblyLocation));
+    }
+
+    public UnitTestTask CreateRunAssemblyTask(ContextElement context)
+    {
+      return new UnitTestTask(null,
+                              new RunAssemblyTask(_providerId, context.AssemblyLocation));
     }
 
     public UnitTestTask CreateContextTask(ContextElement context, bool isExplicit)
