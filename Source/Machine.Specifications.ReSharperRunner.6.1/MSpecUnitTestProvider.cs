@@ -64,6 +64,12 @@ namespace Machine.Specifications.ReSharperRunner
           return element is ContextSpecificationElement || element is BehaviorSpecificationElement;
         case UnitTestElementKind.TestContainer:
           return element is ContextElement || element is BehaviorElement;
+        case UnitTestElementKind.TestStuff:
+          return element is ContextSpecificationElement || element is BehaviorSpecificationElement ||
+                 element is ContextElement || element is BehaviorElement;
+        case UnitTestElementKind.Unknown:
+          return !(element is ContextSpecificationElement || element is BehaviorSpecificationElement ||
+                   element is ContextElement || element is BehaviorElement);
       }
 
       return false;
@@ -77,6 +83,10 @@ namespace Machine.Specifications.ReSharperRunner
           return declaredElement.IsSpecification();
         case UnitTestElementKind.TestContainer:
           return declaredElement.IsContext() || declaredElement.IsBehavior();
+        case UnitTestElementKind.TestStuff:
+          return declaredElement.IsSpecification() || declaredElement.IsContext() || declaredElement.IsBehavior();
+        case UnitTestElementKind.Unknown:
+          return !(declaredElement.IsSpecification() || declaredElement.IsContext() || declaredElement.IsBehavior());
       }
 
       return false;
