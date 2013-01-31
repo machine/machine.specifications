@@ -2,7 +2,7 @@ using System;
 
 using Machine.Specifications.ConsoleRunner.Outputs;
 using Machine.Specifications.Runner;
-using Machine.Specifications.Runner.Impl;
+using Machine.Specifications.Runner.Impl.Listener;
 
 namespace Machine.Specifications.ConsoleRunner
 {

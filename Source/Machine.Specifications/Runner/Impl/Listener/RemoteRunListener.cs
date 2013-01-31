@@ -1,16 +1,24 @@
 ﻿using System;
 using System.Security;
 
-namespace Machine.Specifications.Runner.Impl
+namespace Machine.Specifications.Runner.Impl.Listener
 {
   [Serializable]
-  public class RemoteRunListener : MarshalByRefObject, ISpecificationRunListener
+  class RemoteRunListener : MarshalByRefObject, ISpecificationRunListener
   {
     readonly ISpecificationRunListener _listener;
 
     public RemoteRunListener(ISpecificationRunListener listener)
     {
       _listener = listener;
+    }
+
+    public void OnRunStart()
+    {
+    }
+
+    public void OnRunEnd()
+    {
     }
 
     public void OnAssemblyStart(AssemblyInfo assembly)
@@ -21,14 +29,6 @@ namespace Machine.Specifications.Runner.Impl
     public void OnAssemblyEnd(AssemblyInfo assembly)
     {
       _listener.OnAssemblyEnd(assembly);
-    }
-
-    public void OnRunStart()
-    {
-    }
-
-    public void OnRunEnd()
-    {
     }
 
     public void OnContextStart(ContextInfo context)

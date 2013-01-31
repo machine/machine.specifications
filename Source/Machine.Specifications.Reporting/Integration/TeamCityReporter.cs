@@ -1,7 +1,6 @@
 using System;
 
 using Machine.Specifications.Runner;
-using Machine.Specifications.Runner.Impl;
 
 namespace Machine.Specifications.Reporting.Integration
 {

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Security;
+
+using Machine.Specifications.Runner.Impl.Listener;
 using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Runner.Impl

@@ -1,17 +1,70 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Machine.Specifications.Runner.Impl
+using Machine.Specifications.Runner.Impl.Listener;
+
+namespace Machine.Specifications.Runner
 {
   public class TimingRunListener : ISpecificationRunListener
   {
-    readonly Stopwatch _contextTimer = new Stopwatch();
-    readonly Stopwatch _specificationTimer = new Stopwatch();
     readonly Stopwatch _assemblyTimer = new Stopwatch();
-    readonly Stopwatch _runTimer = new Stopwatch();
-    readonly Dictionary<SpecificationInfo, long> _specificationTimes = new Dictionary<SpecificationInfo, long>();
-    readonly Dictionary<ContextInfo, long> _contextTimes = new Dictionary<ContextInfo, long>();
     readonly Dictionary<AssemblyInfo, long> _assemblyTimes = new Dictionary<AssemblyInfo, long>();
+    readonly Stopwatch _contextTimer = new Stopwatch();
+    readonly Dictionary<ContextInfo, long> _contextTimes = new Dictionary<ContextInfo, long>();
+    readonly Stopwatch _runTimer = new Stopwatch();
+    readonly Stopwatch _specificationTimer = new Stopwatch();
+    readonly Dictionary<SpecificationInfo, long> _specificationTimes = new Dictionary<SpecificationInfo, long>();
+
+    public void OnRunStart()
+    {
+      _runTimer.Restart();
+    }
+
+    public void OnRunEnd()
+    {
+      _runTimer.Stop();
+    }
+
+    public void OnAssemblyStart(AssemblyInfo assembly)
+    {
+      _assemblyTimer.Restart();
+    }
+
+    public void OnAssemblyEnd(AssemblyInfo assembly)
+    {
+      _assemblyTimer.Stop();
+      _assemblyTimes[assembly] = _assemblyTimer.ElapsedMilliseconds;
+    }
+
+    public void OnContextStart(ContextInfo context)
+    {
+      _contextTimer.Restart();
+      _specificationTimer.Restart();
+    }
+
+    public void OnContextEnd(ContextInfo context)
+    {
+      _contextTimer.Stop();
+      _contextTimes[context] = _contextTimer.ElapsedMilliseconds;
+    }
+
+    public void OnSpecificationStart(SpecificationInfo specification)
+    {
+      if (!_specificationTimer.IsRunning)
+      {
+        _specificationTimer.Restart();
+      }
+    }
+
+    public void OnSpecificationEnd(SpecificationInfo specification, Result result)
+    {
+      _specificationTimer.Stop();
+      _specificationTimes[specification] = _specificationTimer.ElapsedMilliseconds;
+    }
+
+    public void OnFatalError(ExceptionResult exception)
+    {
+    }
 
     public long GetSpecificationTime(SpecificationInfo specificationInfo)
     {
@@ -47,60 +100,9 @@ namespace Machine.Specifications.Runner.Impl
     {
       return _runTimer.ElapsedMilliseconds;
     }
-
-    public void OnAssemblyStart(AssemblyInfo assembly)
-    {
-      _assemblyTimer.Restart();
-    }
-
-    public void OnAssemblyEnd(AssemblyInfo assembly)
-    {
-      _assemblyTimer.Stop();
-      _assemblyTimes[assembly] = _assemblyTimer.ElapsedMilliseconds;
-    }
-
-    public void OnRunStart()
-    {
-      _runTimer.Restart();
-    }
-
-    public void OnRunEnd()
-    {
-      _runTimer.Stop();
-    }
-
-    public void OnContextStart(ContextInfo context)
-    {
-      _contextTimer.Restart();
-      _specificationTimer.Restart();
-    }
-
-    public void OnContextEnd(ContextInfo context)
-    {
-      _contextTimer.Stop();
-      _contextTimes[context] = _contextTimer.ElapsedMilliseconds;
-    }
-
-    public void OnSpecificationStart(SpecificationInfo specification)
-    {
-      if (!_specificationTimer.IsRunning)
-      {
-        _specificationTimer.Restart();
-      }
-    }
-
-    public void OnSpecificationEnd(SpecificationInfo specification, Result result)
-    {
-      _specificationTimer.Stop();
-      _specificationTimes[specification] = _specificationTimer.ElapsedMilliseconds;
-    }
-
-    public void OnFatalError(ExceptionResult exception)
-    {
-    }
   }
 
-  public static class TimerExtensions
+  static class TimerExtensions
   {
     public static void Restart(this Stopwatch timer)
     {

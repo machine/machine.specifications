@@ -1,4 +1,4 @@
-using Machine.Specifications.Runner.Impl;
+using Machine.Specifications.Runner;
 
 namespace Machine.Specifications.Reporting.Generation.Xml
 {

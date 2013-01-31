@@ -72,7 +72,6 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="AssemblyLocationAwareListener.cs" />
     <Compile Include="DefaultConsole.cs" />
     <Compile Include="ExceptionReporter.cs" />
     <Compile Include="ExitCode.cs" />

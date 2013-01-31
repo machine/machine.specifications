@@ -6,7 +6,6 @@ using System.Linq;
 using System.Xml;
 
 using Machine.Specifications.Runner;
-using Machine.Specifications.Runner.Impl;
 
 namespace Machine.Specifications.Reporting.Generation.Xml
 {
@@ -216,11 +215,11 @@ namespace Machine.Specifications.Reporting.Generation.Xml
       }
 
       reportBuilder.WriteStartElement("error");
-      
+
       reportBuilder.WriteStartElement("message");
       reportBuilder.WriteCData(exception.Message);
       reportBuilder.WriteEndElement();
-      
+
       reportBuilder.WriteStartElement("stack-trace");
       reportBuilder.WriteCData(exception.StackTrace);
       reportBuilder.WriteEndElement();

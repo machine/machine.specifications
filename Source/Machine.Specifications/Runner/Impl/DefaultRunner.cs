@@ -4,8 +4,8 @@ using System.Linq;
 using System.Reflection;
 
 using Machine.Specifications.Explorers;
-using Machine.Specifications.Factories;
 using Machine.Specifications.Model;
+using Machine.Specifications.Runner.Impl.Listener;
 using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Runner.Impl
@@ -18,7 +18,14 @@ namespace Machine.Specifications.Runner.Impl
 
     public DefaultRunner(ISpecificationRunListener listener, RunOptions options)
     {
-      _listener = listener;
+      _listener = new AggregateRunListener(
+        new ISpecificationRunListener[]
+        {
+          new AssemblyLocationAwareListener(),
+          new AssemblyContextRunListener(),
+        }
+          .Concat(new[] {listener}));
+
       _options = options;
       _explorer = new AssemblyExplorer();
     }

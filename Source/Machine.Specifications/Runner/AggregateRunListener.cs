@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace Machine.Specifications.Runner.Impl
+using Machine.Specifications.Utility;
+
+namespace Machine.Specifications.Runner
 {
   public class AggregateRunListener : ISpecificationRunListener
   {
-    readonly List<ISpecificationRunListener> _listeners;
+    readonly IList<ISpecificationRunListener> _listeners;
 
     public AggregateRunListener(IEnumerable<ISpecificationRunListener> listeners)
     {
@@ -16,47 +16,47 @@ namespace Machine.Specifications.Runner.Impl
 
     public void OnAssemblyStart(AssemblyInfo assembly)
     {
-      _listeners.ForEach(listener => listener.OnAssemblyStart(assembly));
+      _listeners.Each(listener => listener.OnAssemblyStart(assembly));
     }
 
     public void OnAssemblyEnd(AssemblyInfo assembly)
     {
-      _listeners.ForEach(listener => listener.OnAssemblyEnd(assembly));
+      _listeners.Reverse().Each(listener => listener.OnAssemblyEnd(assembly));
     }
 
     public void OnRunStart()
     {
-      _listeners.ForEach(listener => listener.OnRunStart());
+      _listeners.Each(listener => listener.OnRunStart());
     }
 
     public void OnRunEnd()
     {
-      _listeners.ForEach(listener => listener.OnRunEnd());
+      _listeners.Reverse().Each(listener => listener.OnRunEnd());
     }
 
     public void OnContextStart(ContextInfo context)
     {
-      _listeners.ForEach(listener => listener.OnContextStart(context));
+      _listeners.Each(listener => listener.OnContextStart(context));
     }
 
     public void OnContextEnd(ContextInfo context)
     {
-      _listeners.ForEach(listener => listener.OnContextEnd(context));
+      _listeners.Reverse().Each(listener => listener.OnContextEnd(context));
     }
 
     public void OnSpecificationStart(SpecificationInfo specification)
     {
-      _listeners.ForEach(listener => listener.OnSpecificationStart(specification));
+      _listeners.Each(listener => listener.OnSpecificationStart(specification));
     }
 
     public void OnSpecificationEnd(SpecificationInfo specification, Result result)
     {
-      _listeners.ForEach(listener => listener.OnSpecificationEnd(specification, result));
+      _listeners.Reverse().Each(listener => listener.OnSpecificationEnd(specification, result));
     }
 
     public void OnFatalError(ExceptionResult exception)
     {
-      _listeners.ForEach(listener => listener.OnFatalError(exception));
+      _listeners.Each(listener => listener.OnFatalError(exception));
     }
   }
 }

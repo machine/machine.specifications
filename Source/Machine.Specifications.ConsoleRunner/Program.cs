@@ -45,22 +45,22 @@ namespace Machine.Specifications.ConsoleRunner
         return ExitCode.Failure;
       }
 
-      List<ISpecificationRunListener> listeners = new List<ISpecificationRunListener>();
-
-      var timingListener = new TimingRunListener();
-      listeners.Add(timingListener);
-      listeners.Add(new AssemblyLocationAwareListener());
+      var timer = new TimingRunListener();
+      var listeners = new List<ISpecificationRunListener>
+                      {
+                        timer
+                      };
 
       ISpecificationRunListener mainListener;
       if (options.TeamCityIntegration ||
           (!options.DisableTeamCityAutodetection &&
            Environment.GetEnvironmentVariable("TEAMCITY_PROJECT_NAME") != null))
       {
-        mainListener = new TeamCityReporter(_console.WriteLine, timingListener);
+        mainListener = new TeamCityReporter(_console.WriteLine, timer);
       }
       else
       {
-        mainListener = new RunListener(_console, DetermineOutput(options, _console), timingListener);
+        mainListener = new RunListener(_console, DetermineOutput(options, _console), timer);
       }
 
       try
@@ -74,7 +74,7 @@ namespace Machine.Specifications.ConsoleRunner
           }
           else
           {
-            _console.WriteLine("Invalid html path:" + options.HtmlPath);
+            _console.WriteLine("Invalid html path: {0}", options.HtmlPath);
             _console.WriteLine(Options.Usage());
             return ExitCode.Failure;
           }
@@ -85,11 +85,11 @@ namespace Machine.Specifications.ConsoleRunner
         {
           if (IsHtmlPathValid(options.XmlPath))
           {
-            listeners.Add(GetXmlReportListener(options, timingListener));
+            listeners.Add(GetXmlReportListener(options, timer));
           }
           else
           {
-            _console.WriteLine("Invalid xml path:" + options.XmlPath);
+            _console.WriteLine("Invalid xml path: {0}", options.XmlPath);
             _console.WriteLine(Options.Usage());
             return ExitCode.Failure;
           }
