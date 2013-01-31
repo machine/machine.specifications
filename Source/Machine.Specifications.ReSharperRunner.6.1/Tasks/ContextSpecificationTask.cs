@@ -4,35 +4,51 @@ using System.Xml;
 namespace Machine.Specifications.ReSharperRunner.Tasks
 {
   [Serializable]
-  internal class ContextSpecificationTask : Task, IEquatable<ContextSpecificationTask>
+  class ContextSpecificationTask : Task, IEquatable<ContextSpecificationTask>
   {
-    readonly string _specificationFieldName;
-
     public ContextSpecificationTask(XmlElement element) : base(element)
     {
-      _specificationFieldName = GetXmlAttribute(element, "SpecificationFieldName");
+      ContextTypeName = GetXmlAttribute(element, "ContextTypeName");
+      SpecificationFieldName = GetXmlAttribute(element, "SpecificationFieldName");
     }
 
     public ContextSpecificationTask(string providerId,
                                     string assemblyLocation,
                                     string contextTypeName,
-                                    string specificationFieldName,
-                                    bool runExplicitly)
-      : base(providerId, assemblyLocation, contextTypeName, runExplicitly)
+                                    string specificationFieldName)
+      : base(providerId, assemblyLocation)
     {
-      _specificationFieldName = specificationFieldName;
+      ContextTypeName = contextTypeName;
+      SpecificationFieldName = specificationFieldName;
     }
 
-    public string SpecificationFieldName
+    public string ContextTypeName { get; private set; }
+
+    public string SpecificationFieldName { get; private set; }
+
+    public override bool IsMeaningfulTask
     {
-      get { return _specificationFieldName; }
+      get { return true; }
     }
 
     public override void SaveXml(XmlElement element)
     {
       base.SaveXml(element);
 
+      SetXmlAttribute(element, "ContextTypeName", ContextTypeName);
       SetXmlAttribute(element, "SpecificationFieldName", SpecificationFieldName);
+    }
+
+    public bool Equals(ContextSpecificationTask other)
+    {
+      if (other == null)
+      {
+        return false;
+      }
+
+      return base.Equals(other) &&
+             Equals(ContextTypeName, other.ContextTypeName) &&
+             Equals(SpecificationFieldName, other.SpecificationFieldName);
     }
 
     public override bool Equals(object other)
@@ -44,25 +60,11 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
     {
       unchecked
       {
-        int result = base.GetHashCode();
+        var result = base.GetHashCode();
+        result = (result * 397) ^ ContextTypeName.GetHashCode();
         result = (result * 397) ^ SpecificationFieldName.GetHashCode();
         return result;
       }
-    }
-
-    public override bool IsMeaningfulTask
-    {
-      get { return true; }
-    }
-
-    public bool Equals(ContextSpecificationTask other)
-    {
-      if (other == null || !base.Equals(other))
-      {
-        return false;
-      }
-
-      return Equals(SpecificationFieldName, other.SpecificationFieldName);
     }
   }
 }

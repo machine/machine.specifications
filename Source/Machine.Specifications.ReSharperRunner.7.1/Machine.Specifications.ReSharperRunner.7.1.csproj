@@ -108,6 +108,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\EnumerableExtensions.cs">
+      <Link>EnumerableExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Explorers\ElementHandlers\BehaviorElementHandler.cs">
       <Link>Explorers\ElementHandlers\BehaviorElementHandler.cs</Link>
     </Compile>
@@ -165,17 +168,14 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Tasks\BehaviorSpecificationTask.cs">
       <Link>Tasks\BehaviorSpecificationTask.cs</Link>
     </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Tasks\BehaviorTask.cs">
-      <Link>Tasks\BehaviorTask.cs</Link>
-    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Tasks\ContextSpecificationTask.cs">
       <Link>Tasks\ContextSpecificationTask.cs</Link>
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Tasks\ContextTask.cs">
       <Link>Tasks\ContextTask.cs</Link>
     </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Tasks\RunAssemblyContextsTask.cs">
-      <Link>Tasks\RunAssemblyContextsTask.cs</Link>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Tasks\RunAssemblyTask.cs">
+      <Link>Tasks\RunAssemblyTask.cs</Link>
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Tasks\Task.cs">
       <Link>Tasks\Task.cs</Link>

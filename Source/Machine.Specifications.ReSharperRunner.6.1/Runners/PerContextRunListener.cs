@@ -156,7 +156,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
         if (!invoked)
         {
-          Debug.WriteLine(String.Format("No notification for {0} received by the runner",
+          Debug.WriteLine(String.Format("No matching notification for {0} received by the runner",
                                         infoFromRunner.ToString()));
         }
       };

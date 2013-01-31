@@ -15,5 +15,10 @@ namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
     {
       return false;
     }
+
+    public override string ToString()
+    {
+      return "Silent";
+    }
   }
 }

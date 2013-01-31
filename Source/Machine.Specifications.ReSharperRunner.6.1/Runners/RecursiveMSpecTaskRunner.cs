@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
@@ -59,7 +58,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
     public override void ExecuteRecursive(TaskExecutionNode node)
     {
-      FlattenChildren(node).Each(RegisterRemoteTaskNotifications);
+      node.Flatten(x => x.Children).Each(RegisterRemoteTaskNotifications);
     }
 
     public override TaskResult Finish(TaskExecutionNode node)
@@ -88,19 +87,6 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       }
 
       _runner.RunMember(_contextAssembly, _contextClass);
-    }
-
-    static IEnumerable<TaskExecutionNode> FlattenChildren(TaskExecutionNode node)
-    {
-      foreach (var child in node.Children)
-      {
-        yield return child;
-
-        foreach (var descendant in child.Children)
-        {
-          yield return descendant;
-        }
-      }
     }
 
     void RegisterRemoteTaskNotifications(TaskExecutionNode node)

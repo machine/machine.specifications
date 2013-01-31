@@ -6,30 +6,19 @@ using JetBrains.ReSharper.TaskRunnerFramework;
 namespace Machine.Specifications.ReSharperRunner.Tasks
 {
   [Serializable]
-  internal abstract class Task : RemoteTask, IEquatable<Task>
+  abstract class Task : RemoteTask, IEquatable<Task>
   {
     readonly string _assemblyLocation;
-    readonly string _contextTypeName;
-    readonly bool _runExplicitly;
 
     protected Task(XmlElement element) : base(element)
     {
       _assemblyLocation = GetXmlAttribute(element, "AssemblyLocation");
-      _contextTypeName = GetXmlAttribute(element, "ContextTypeName");
-      _runExplicitly = GetXmlAttribute(element, "RunExplicitly") == true.ToString();
     }
 
-    protected Task(string providerId, string assemblyLocation, string contextTypeName, bool runExplicitly)
+    protected Task(string providerId, string assemblyLocation)
       : base(providerId)
     {
-      if (contextTypeName == null)
-      {
-        throw new ArgumentNullException("contextTypeName");
-      }
-
       _assemblyLocation = assemblyLocation;
-      _contextTypeName = contextTypeName;
-      _runExplicitly = runExplicitly;
     }
 
     public string AssemblyLocation
@@ -37,23 +26,27 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
       get { return _assemblyLocation; }
     }
 
-    public string ContextTypeName
-    {
-      get { return _contextTypeName; }
-    }
-
-    public bool RunExplicitly
-    {
-      get { return _runExplicitly; }
-    }
-
     public override void SaveXml(XmlElement element)
     {
       base.SaveXml(element);
 
       SetXmlAttribute(element, "AssemblyLocation", AssemblyLocation);
-      SetXmlAttribute(element, "ContextTypeName", ContextTypeName);
-      SetXmlAttribute(element, "RunExplicitly", RunExplicitly.ToString());
+    }
+
+    public bool Equals(Task other)
+    {
+      if (other == null)
+      {
+        return false;
+      }
+
+      return Equals(RunnerID, other.RunnerID) &&
+             Equals(AssemblyLocation, other.AssemblyLocation);
+    }
+
+    public override bool Equals(RemoteTask other)
+    {
+      return Equals(other as Task);
     }
 
     public override bool Equals(object other)
@@ -65,34 +58,10 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
     {
       unchecked
       {
-        int result = base.GetHashCode();
+        var result = base.GetHashCode();
         result = (result * 397) ^ AssemblyLocation.GetHashCode();
-        result = (result * 397) ^ ContextTypeName.GetHashCode();
-        result = (result * 397) ^ RunExplicitly.GetHashCode();
         return result;
       }
-    }
-
-    public bool Equals(Task other)
-    {
-      if (other == null || !BaseEquals(other))
-      {
-        return false;
-      }
-
-      return (Equals(AssemblyLocation, other.AssemblyLocation) &&
-              Equals(ContextTypeName, other.ContextTypeName) &&
-              RunExplicitly == other.RunExplicitly);
-    }
-
-    public override bool Equals(RemoteTask other)
-    {
-      return Equals(other as Task);
-    }
-
-    bool BaseEquals(RemoteTask other)
-    {
-      return !ReferenceEquals(null, other) && Equals(other.RunnerID, RunnerID);
     }
   }
 }

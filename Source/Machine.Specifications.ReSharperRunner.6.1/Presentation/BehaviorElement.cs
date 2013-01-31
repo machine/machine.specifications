@@ -26,7 +26,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                            IClrTypeName declaringTypeName,
                            string fieldName,
                            bool isIgnored,
-                           string fullyQualifiedTypeName)
+                           string fieldType)
       : base(
         provider,
         psiModuleManager,
@@ -37,8 +37,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
         fieldName,
         isIgnored || context.Explicit)
     {
-      FullyQualifiedTypeName = fullyQualifiedTypeName;
-      _id = CreateId(context, fullyQualifiedTypeName, fieldName);
+      FieldType = fieldType;
+      _id = CreateId(context, fieldType, fieldName);
     }
 
     public ContextElement Context
@@ -46,7 +46,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       get { return (ContextElement) Parent; }
     }
 
-    public string FullyQualifiedTypeName { get; private set; }
+    public string FieldType { get; private set; }
 
     public override string Kind
     {
@@ -80,7 +80,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     public override void WriteToXml(XmlElement parent)
     {
       base.WriteToXml(parent);
-      parent.SetAttribute("typeFQN", FullyQualifiedTypeName);
+      parent.SetAttribute("fieldType", FieldType);
     }
 
     public static IUnitTestElement ReadFromXml(XmlElement parent,
@@ -108,7 +108,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       var typeName = parent.GetAttribute("typeName");
       var methodName = parent.GetAttribute("methodName");
       var isIgnored = bool.Parse(parent.GetAttribute("isIgnored"));
-      var fullyQualifiedTypeName = parent.GetAttribute("typeFQN");
+      var fieldType = parent.GetAttribute("fieldType");
 
       return BehaviorFactory.GetOrCreateBehavior(provider,
                                                  manager,
@@ -120,12 +120,12 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                                                  new ClrTypeName(typeName),
                                                  methodName,
                                                  isIgnored,
-                                                 fullyQualifiedTypeName);
+                                                 fieldType);
     }
 
-    public static string CreateId(ContextElement contextElement, string fullyQualifiedTypeName, string fieldName)
+    public static string CreateId(ContextElement contextElement, string fieldType, string fieldName)
     {
-      return String.Format("{0}.{1}.{2}", contextElement.Id, fullyQualifiedTypeName, fieldName);
+      return String.Format("{0}.{1}.{2}", contextElement.Id, fieldType, fieldName);
     }
   }
 }

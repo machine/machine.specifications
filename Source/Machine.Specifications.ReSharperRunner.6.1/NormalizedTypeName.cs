@@ -11,9 +11,14 @@ namespace Machine.Specifications.ReSharperRunner
     static readonly Regex OpenBracketFollowedByDart = new Regex(@"\[.*->\s", RegexOptions.Compiled);
     static readonly Regex DoubleOpenBrackets = new Regex(@"\[\[", RegexOptions.Compiled);
 
-    public NormalizedTypeName(string fullyQualifiedTypeName)
+    public NormalizedTypeName(string typeName)
     {
-      _normalized = QualifiedNetNotationWithoutAssembly(fullyQualifiedTypeName);
+      _normalized = QualifiedNetNotationWithoutAssembly(typeName);
+    }
+
+    public NormalizedTypeName(IClrTypeName clrTypeName)
+    {
+      _normalized = QualifiedNetNotationWithoutAssembly(clrTypeName.FullName);
     }
 
     public NormalizedTypeName(ITypeOwner field)

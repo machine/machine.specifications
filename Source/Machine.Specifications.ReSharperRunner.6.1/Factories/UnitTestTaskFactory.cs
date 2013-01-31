@@ -6,7 +6,7 @@ using Machine.Specifications.ReSharperRunner.Tasks;
 
 namespace Machine.Specifications.ReSharperRunner.Factories
 {
-  internal class UnitTestTaskFactory
+  class UnitTestTaskFactory
   {
     readonly string _providerId;
 
@@ -27,41 +27,26 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                               new RunAssemblyTask(_providerId, context.AssemblyLocation));
     }
 
-    public UnitTestTask CreateContextTask(ContextElement context, bool isExplicit)
+    public UnitTestTask CreateContextTask(ContextElement context)
     {
       return new UnitTestTask(context,
                               new ContextTask(_providerId,
                                               context.AssemblyLocation,
-                                              context.GetTypeClrName().FullName,
-                                              false));
+                                              context.GetTypeClrName().FullName));
     }
 
     public UnitTestTask CreateContextSpecificationTask(ContextElement context,
-                                                       ContextSpecificationElement contextSpecification,
-                                                       bool isExplicit)
+                                                       ContextSpecificationElement contextSpecification)
     {
       return new UnitTestTask(contextSpecification,
                               new ContextSpecificationTask(_providerId,
                                                            context.AssemblyLocation,
                                                            context.GetTypeClrName().FullName,
-                                                           contextSpecification.FieldName,
-                                                           false));
-    }
-
-    public UnitTestTask CreateBehaviorTask(ContextElement context, BehaviorElement behavior, bool isExplicit)
-    {
-      return new UnitTestTask(behavior,
-                              new BehaviorTask(_providerId,
-                                               context.AssemblyLocation,
-                                               context.GetTypeClrName().FullName,
-                                               behavior.FullyQualifiedTypeName,
-                                               behavior.FieldName,
-                                               false));
+                                                           contextSpecification.FieldName));
     }
 
     public UnitTestTask CreateBehaviorSpecificationTask(ContextElement context,
-                                                        BehaviorSpecificationElement behaviorSpecification,
-                                                        bool isExplicit)
+                                                        BehaviorSpecificationElement behaviorSpecification)
     {
       return new UnitTestTask(behaviorSpecification,
                               new BehaviorSpecificationTask(_providerId,
@@ -69,8 +54,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                             context.GetTypeClrName().FullName,
                                                             behaviorSpecification.Behavior.FieldName,
                                                             behaviorSpecification.FieldName,
-                                                            behaviorSpecification.GetTypeClrName().FullName,
-                                                            false));
+                                                            behaviorSpecification.Behavior.FieldType));
     }
   }
 }

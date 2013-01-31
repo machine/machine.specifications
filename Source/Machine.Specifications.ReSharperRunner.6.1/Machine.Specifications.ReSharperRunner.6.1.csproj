@@ -114,6 +114,7 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="Explorers\AssemblyExplorer.cs" />
     <Compile Include="Explorers\ElementHandlers\BehaviorElementHandler.cs" />
     <Compile Include="Explorers\ElementHandlers\ContextElementHandler.cs" />
@@ -160,10 +161,9 @@
     <Compile Include="Runners\RecursiveMSpecTaskRunner.cs" />
     <Compile Include="Runners\VersionCompatibilityChecker.cs" />
     <Compile Include="Tasks\BehaviorSpecificationTask.cs" />
-    <Compile Include="Tasks\BehaviorTask.cs" />
     <Compile Include="Tasks\ContextSpecificationTask.cs" />
     <Compile Include="Tasks\ContextTask.cs" />
-    <Compile Include="Tasks\RunAssemblyContextsTask.cs" />
+    <Compile Include="Tasks\RunAssemblyTask.cs" />
     <Compile Include="Tasks\Task.cs" />
   </ItemGroup>
   <ItemGroup>

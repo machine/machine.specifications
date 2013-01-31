@@ -45,7 +45,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
         return false;
       }
 
-      return ContainingType == specification.ContainingType &&
+      return ContainingType == new NormalizedTypeName(specification.ContainingType) &&
              FieldName == specification.FieldName;
     }
 

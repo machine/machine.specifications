@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -125,27 +124,9 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
       foreach (var element in context
         .Children.Where(x => x.State == UnitTestElementState.Pending)
-        .Traverse(x => x.Children))
+        .Flatten(x => x.Children))
       {
         element.State = UnitTestElementState.Invalid;
-      }
-    }
-  }
-
-  static class EnumExt
-  {
-    internal static IEnumerable<T> Traverse<T>(this IEnumerable<T> source,
-                                               Func<T, IEnumerable<T>> childSelector)
-    {
-      foreach (var s in source)
-      {
-        yield return s;
-
-        var childs = childSelector(s);
-        foreach (var c in childs.Traverse(childSelector))
-        {
-          yield return c;
-        }
       }
     }
   }

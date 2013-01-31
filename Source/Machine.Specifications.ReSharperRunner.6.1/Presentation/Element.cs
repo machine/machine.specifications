@@ -192,52 +192,33 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       if (this is ContextSpecificationElement)
       {
         var contextSpecification = this as ContextSpecificationElement;
-        ContextElement context = contextSpecification.Context;
+        var context = contextSpecification.Context;
 
         return new List<UnitTestTask>
                {
                  _taskFactory.CreateAssemblyLoadTask(context),
                  _taskFactory.CreateRunAssemblyTask(context),
-                 _taskFactory.CreateContextTask(context, explicitElements.Contains(context)),
-                 _taskFactory.CreateContextSpecificationTask(context,
-                                                             contextSpecification,
-                                                             explicitElements.Contains(contextSpecification))
-               };
-      }
-
-      if (this is BehaviorElement)
-      {
-        var behavior = this as BehaviorElement;
-        ContextElement context = behavior.Context;
-
-        return new List<UnitTestTask>
-               {
-                 _taskFactory.CreateAssemblyLoadTask(context),
-                 _taskFactory.CreateRunAssemblyTask(context),
-                 _taskFactory.CreateContextTask(context, explicitElements.Contains(context)),
-                 _taskFactory.CreateBehaviorTask(context, behavior, explicitElements.Contains(behavior))
+                 _taskFactory.CreateContextTask(context),
+                 _taskFactory.CreateContextSpecificationTask(context, contextSpecification)
                };
       }
 
       if (this is BehaviorSpecificationElement)
       {
         var behaviorSpecification = this as BehaviorSpecificationElement;
-        BehaviorElement behavior = behaviorSpecification.Behavior;
-        ContextElement context = behavior.Context;
+        var behavior = behaviorSpecification.Behavior;
+        var context = behavior.Context;
 
         return new List<UnitTestTask>
                {
                  _taskFactory.CreateAssemblyLoadTask(context),
                  _taskFactory.CreateRunAssemblyTask(context),
-                 _taskFactory.CreateContextTask(context, explicitElements.Contains(context)),
-                 _taskFactory.CreateBehaviorTask(context, behavior, explicitElements.Contains(behavior)),
-                 _taskFactory.CreateBehaviorSpecificationTask(context,
-                                                              behaviorSpecification,
-                                                              explicitElements.Contains(behaviorSpecification))
+                 _taskFactory.CreateContextTask(context),
+                 _taskFactory.CreateBehaviorSpecificationTask(context, behaviorSpecification)
                };
       }
 
-      if (this is ContextElement)
+      if (this is ContextElement || this is BehaviorElement)
       {
         return EmptyArray<UnitTestTask>.Instance;
       }

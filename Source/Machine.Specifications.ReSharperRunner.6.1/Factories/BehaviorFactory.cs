@@ -5,6 +5,7 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.Impl.Reflection2;
+using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.ReSharper.UnitTestFramework.Elements;
 
@@ -55,7 +56,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         return null;
       }
 
-      var fullyQualifiedTypeName = new NormalizedTypeName(field as ITypeOwner);
+      var fieldType = new NormalizedTypeName(field as ITypeOwner);
 
       var behavior = GetOrCreateBehavior(_provider,
                                          _manager,
@@ -67,7 +68,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                          clazz.GetClrName(),
                                          field.ShortName,
                                          field.IsIgnored(),
-                                         fullyQualifiedTypeName);
+                                         fieldType);
 
       foreach (var child in behavior.Children)
       {
@@ -83,7 +84,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       var typeContainingBehaviorSpecifications = behavior.GetFirstGenericArgument();
 
       var metadataTypeName = behavior.FirstGenericArgumentClass().FullyQualifiedName();
-      var fullyQualifiedTypeName = new NormalizedTypeName(metadataTypeName);
+      var fieldType = new NormalizedTypeName(new ClrTypeName(metadataTypeName));
 
       var behaviorElement = GetOrCreateBehavior(_provider,
                                                 _manager,
@@ -95,7 +96,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                 _reflectionTypeNameCache.GetClrName(behavior.DeclaringType),
                                                 behavior.Name,
                                                 behavior.IsIgnored() || typeContainingBehaviorSpecifications.IsIgnored(),
-                                                fullyQualifiedTypeName);
+                                                fieldType);
 
       return behaviorElement;
     }
@@ -110,9 +111,9 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                       IClrTypeName declaringTypeName,
                                                       string fieldName,
                                                       bool isIgnored,
-                                                      string fullyQualifiedTypeName)
+                                                      string fieldType)
     {
-      var id = BehaviorElement.CreateId(context, fullyQualifiedTypeName, fieldName);
+      var id = BehaviorElement.CreateId(context, fieldType, fieldName);
       var behavior = manager.GetElementById(project, id) as BehaviorElement;
       if (behavior != null)
       {
@@ -129,7 +130,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                  declaringTypeName,
                                  fieldName,
                                  isIgnored,
-                                 fullyQualifiedTypeName);
+                                 fieldType);
     }
 
     public void UpdateChildState(IDeclaredElement field)
@@ -142,7 +143,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
       foreach (var element in behavior
         .Children.Where(x => x.State == UnitTestElementState.Pending)
-        .Traverse(x => x.Children))
+        .Flatten(x => x.Children))
       {
         element.State = UnitTestElementState.Invalid;
       }

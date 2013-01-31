@@ -4,25 +4,42 @@ using System.Xml;
 namespace Machine.Specifications.ReSharperRunner.Tasks
 {
   [Serializable]
-  internal class ContextTask : Task, IEquatable<ContextTask>
+  class ContextTask : Task, IEquatable<ContextTask>
   {
     public ContextTask(XmlElement element) : base(element)
     {
+      ContextTypeName = GetXmlAttribute(element, "ContextTypeName");
     }
 
-    public ContextTask(string providerId, string assemblyLocation, string contextTypeName, bool runExplicitly)
-      : base(providerId, assemblyLocation, contextTypeName, runExplicitly)
+    public ContextTask(string providerId, string assemblyLocation, string contextTypeName)
+      : base(providerId, assemblyLocation)
     {
+      ContextTypeName = contextTypeName;
+    }
+
+    public string ContextTypeName { get; private set; }
+
+    public override bool IsMeaningfulTask
+    {
+      get { return false; }
+    }
+
+    public override void SaveXml(XmlElement element)
+    {
+      base.SaveXml(element);
+
+      SetXmlAttribute(element, "ContextTypeName", ContextTypeName);
     }
 
     public bool Equals(ContextTask other)
     {
-      if (other == null || !base.Equals(other))
+      if (other == null)
       {
         return false;
       }
 
-      return true;
+      return base.Equals(other) &&
+             Equals(ContextTypeName, other.ContextTypeName);
     }
 
     public override bool Equals(object other)
@@ -32,12 +49,12 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
 
     public override int GetHashCode()
     {
-      return base.GetHashCode();
-    }
-
-    public override bool IsMeaningfulTask
-    {
-      get { return false; }
+      unchecked
+      {
+        var result = base.GetHashCode();
+        result = (result * 397) ^ ContextTypeName.GetHashCode();
+        return result;
+      }
     }
   }
 }
