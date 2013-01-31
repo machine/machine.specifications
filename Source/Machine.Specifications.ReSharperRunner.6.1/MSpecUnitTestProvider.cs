@@ -16,7 +16,11 @@ namespace Machine.Specifications.ReSharperRunner
   public class MSpecUnitTestProvider : IUnitTestProvider
   {
     const string ProviderId = "Machine.Specifications";
-    readonly UnitTestElementComparer _unitTestElementComparer = new UnitTestElementComparer();
+
+    readonly UnitTestElementComparer _unitTestElementComparer = new UnitTestElementComparer(typeof(ContextElement),
+                                                                                            typeof(BehaviorElement),
+                                                                                            typeof(BehaviorSpecificationElement),
+                                                                                            typeof(ContextSpecificationElement));
 
     public MSpecUnitTestProvider()
     {
