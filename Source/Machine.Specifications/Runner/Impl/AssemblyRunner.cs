@@ -21,7 +21,7 @@ namespace Machine.Specifications.Runner.Impl
 
     public void Run(Assembly assembly, IEnumerable<Context> contexts)
     {
-      var hasExecutableSpecifications = contexts.Where(x => x.HasExecutableSpecifications).Any();
+      var hasExecutableSpecifications = contexts.Any(x => x.HasExecutableSpecifications);
 
       var explorer = new AssemblyExplorer();
       var globalCleanups = new List<ICleanupAfterEveryContextInAssembly>(explorer.FindAssemblyWideContextCleanupsIn(assembly));
@@ -55,7 +55,6 @@ namespace Machine.Specifications.Runner.Impl
         catch (Exception err)
         {
           _listener.OnFatalError(new ExceptionResult(err));
-          throw;
         }
       }
     }
