@@ -96,6 +96,7 @@
     <Compile Include="Runner\Impl\ContextRunnerFactory.cs" />
     <Compile Include="Runner\Impl\ContextRunner.cs" />
     <Compile Include="Runner\Impl\Listener\AssemblyLocationAwareListener.cs" />
+    <Compile Include="Runner\Impl\RemoteRunListener.cs" />
     <Compile Include="Runner\Impl\SpecAssemblyResolver.cs" />
     <Compile Include="Runner\Impl\SpecificationRunner.cs" />
     <Compile Include="Model\Tag.cs" />
@@ -120,7 +121,6 @@
     <Compile Include="Runner\Impl\InfoExtensions.cs" />
     <Compile Include="Runner\ISpecificationRunListener.cs" />
     <Compile Include="Runner\ISpecificationRunner.cs" />
-    <Compile Include="Runner\Impl\Listener\RemoteRunListener.cs" />
     <Compile Include="Runner\SpecificationInfo.cs" />
     <Compile Include="Runner\Impl\DefaultRunner.cs" />
     <Compile Include="TagsAttribute.cs" />

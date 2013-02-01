@@ -37,7 +37,7 @@ namespace Machine.Specifications.Runner.Impl
     {
       _internalListener.OnRunStart();
 
-      assemblies.Each(x => InternalRunAssembly(x));
+      assemblies.Each(InternalRunAssembly);
 
       _internalListener.OnRunEnd();
     }
@@ -46,8 +46,8 @@ namespace Machine.Specifications.Runner.Impl
     public void RunNamespace(Assembly assembly, string targetNamespace)
     {
       _internalListener.OnRunStart();
-      AppDomain appDomain = CreateAppDomain(assembly);
 
+      var appDomain = CreateAppDomain(assembly);
       CreateRunnerAndUnloadAppDomain("Namespace", appDomain, assembly, targetNamespace);
 
       _internalListener.OnRunEnd();
@@ -57,8 +57,8 @@ namespace Machine.Specifications.Runner.Impl
     public void RunMember(Assembly assembly, MemberInfo member)
     {
       _internalListener.OnRunStart();
-      AppDomain appDomain = CreateAppDomain(assembly);
 
+      var appDomain = CreateAppDomain(assembly);
       CreateRunnerAndUnloadAppDomain("Member", appDomain, assembly, member);
 
       _internalListener.OnRunEnd();
@@ -67,15 +67,14 @@ namespace Machine.Specifications.Runner.Impl
     [SecuritySafeCritical]
     void InternalRunAssembly(Assembly assembly)
     {
-      AppDomain appDomain = CreateAppDomain(assembly);
-
+      var appDomain = CreateAppDomain(assembly);
       CreateRunnerAndUnloadAppDomain("Assembly", appDomain, assembly);
     }
 
     [SecuritySafeCritical]
     void CreateRunnerAndUnloadAppDomain(string runMethod, AppDomain appDomain, Assembly assembly, params object[] args)
     {
-      string mspecAssemblyFilename = Path.Combine(Path.GetDirectoryName(assembly.Location), "Machine.Specifications.dll");
+      var mspecAssemblyFilename = Path.Combine(Path.GetDirectoryName(assembly.Location), "Machine.Specifications.dll");
 
       var mspecAssemblyName = AssemblyName.GetAssemblyName(mspecAssemblyFilename);
 
@@ -116,7 +115,6 @@ namespace Machine.Specifications.Runner.Impl
       var appDomainSetup = new AppDomainSetup();
       appDomainSetup.ApplicationBase = Path.GetDirectoryName(assembly.Location);
       appDomainSetup.ApplicationName = Guid.NewGuid().ToString();
-
       appDomainSetup.ConfigurationFile = GetConfigFile(assembly);
 
       return AppDomain.CreateDomain(appDomainSetup.ApplicationName, null, appDomainSetup);
@@ -124,10 +122,12 @@ namespace Machine.Specifications.Runner.Impl
 
     static string GetConfigFile(Assembly assembly)
     {
-      string configFile = assembly.Location + ".config";
+      var configFile = assembly.Location + ".config";
 
       if (File.Exists(configFile))
+      {
         return configFile;
+      }
 
       return null;
     }

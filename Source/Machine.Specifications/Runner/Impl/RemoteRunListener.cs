@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Security;
 
-namespace Machine.Specifications.Runner.Impl.Listener
+namespace Machine.Specifications.Runner.Impl
 {
   [Serializable]
   class RemoteRunListener : MarshalByRefObject, ISpecificationRunListener
