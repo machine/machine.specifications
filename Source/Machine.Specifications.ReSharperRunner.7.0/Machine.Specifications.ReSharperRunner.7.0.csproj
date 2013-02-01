@@ -156,8 +156,8 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Runners\Notifications\SilentRemoteTaskNotification.cs">
       <Link>Runners\Notifications\SilentRemoteTaskNotification.cs</Link>
     </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Runners\PerContextRunListener.cs">
-      <Link>Runners\PerContextRunListener.cs</Link>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Runners\PerAssemblyRunListener.cs">
+      <Link>Runners\PerAssemblyRunListener.cs</Link>
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Runners\RecursiveMSpecTaskRunner.cs">
       <Link>Runners\RecursiveMSpecTaskRunner.cs</Link>
