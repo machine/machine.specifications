@@ -5,18 +5,29 @@ using System.Reflection;
 
 using Machine.Specifications.Explorers;
 using Machine.Specifications.Model;
+using Machine.Specifications.Runner.Impl.Listener;
 
 namespace Machine.Specifications.Runner.Impl
 {
-  public class AssemblyRunner
+  class AssemblyRunner
   {
     readonly ISpecificationRunListener _listener;
     readonly RunOptions _options;
+    Action<Assembly> _assemblyStart;
+    Action<Assembly> _assemblyEnd;
 
     public AssemblyRunner(ISpecificationRunListener listener, RunOptions options)
     {
-      _listener = listener;
+      _listener = new AggregateRunListener(new[]
+                                           {
+                                             new AssemblyLocationAwareListener(),
+                                             new AssemblyContextRunListener(),
+                                             listener
+                                           });
       _options = options;
+
+      _assemblyStart = OnAssemblyStart;
+      _assemblyEnd = OnAssemblyEnd;
     }
 
     public void Run(Assembly assembly, IEnumerable<Context> contexts)
@@ -24,14 +35,14 @@ namespace Machine.Specifications.Runner.Impl
       var hasExecutableSpecifications = contexts.Any(x => x.HasExecutableSpecifications);
 
       var explorer = new AssemblyExplorer();
-      var globalCleanups = new List<ICleanupAfterEveryContextInAssembly>(explorer.FindAssemblyWideContextCleanupsIn(assembly));
-      var specificationSupplements = new List<ISupplementSpecificationResults>(explorer.FindSpecificationSupplementsIn(assembly));
+      var globalCleanups = explorer.FindAssemblyWideContextCleanupsIn(assembly).ToList();
+      var specificationSupplements = explorer.FindSpecificationSupplementsIn(assembly).ToList();
 
       try
       {
         if (hasExecutableSpecifications)
         {
-          _listener.OnAssemblyStart(assembly.GetInfo());
+          _assemblyStart(assembly);
         }
 
         foreach (var context in contexts)
@@ -45,18 +56,48 @@ namespace Machine.Specifications.Runner.Impl
       }
       finally
       {
-        try
+        if (hasExecutableSpecifications)
         {
-          if (hasExecutableSpecifications)
-          {
-            _listener.OnAssemblyEnd(assembly.GetInfo());
-          }
-        }
-        catch (Exception err)
-        {
-          _listener.OnFatalError(new ExceptionResult(err));
+          _assemblyEnd(assembly);
         }
       }
+    }
+
+    void OnAssemblyStart(Assembly assembly)
+    {
+      try
+      {
+        _listener.OnAssemblyStart(assembly.GetInfo());
+      }
+      catch (Exception err)
+      {
+        _listener.OnFatalError(new ExceptionResult(err));
+      }
+    }
+
+    void OnAssemblyEnd(Assembly assembly)
+    {
+      try
+      {
+        _listener.OnAssemblyEnd(assembly.GetInfo());
+      }
+      catch (Exception err)
+      {
+        _listener.OnFatalError(new ExceptionResult(err));
+      }
+    }
+
+    public void StartExplicitRunScope(Assembly assembly)
+    {
+      _assemblyStart = x => {};
+      _assemblyEnd = x => {};
+
+      OnAssemblyStart(assembly);
+    }
+
+    public void EndExplicitRunScope(Assembly assembly)
+    {
+      OnAssemblyEnd(assembly);
     }
 
     void RunContext(Context context,

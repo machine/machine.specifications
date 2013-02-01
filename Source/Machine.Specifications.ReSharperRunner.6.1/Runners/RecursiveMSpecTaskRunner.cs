@@ -12,6 +12,18 @@ using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.ReSharperRunner.Runners
 {
+  class RunScope
+  {
+    public Action<Assembly> StartRun { get; set; }
+    public Action<Assembly> EndRun { get; set; }
+
+    public RunScope()
+    {
+      StartRun = x => { };
+      EndRun = x => { };
+    }
+  }
+
   internal class RecursiveMSpecTaskRunner : RecursiveRemoteTaskRunner
   {
     readonly RemoteTaskNotificationFactory _taskNotificationFactory = new RemoteTaskNotificationFactory();
@@ -19,6 +31,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     Type _contextClass;
     PerAssemblyRunListener _listener;
     DefaultRunner _runner;
+    RunScope _runScope;
 
     public RecursiveMSpecTaskRunner(IRemoteTaskServer server) : base(server)
     {
@@ -46,8 +59,30 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       _listener = new PerAssemblyRunListener(Server, task);
 
       _runner = new DefaultRunner(_listener, RunOptions.Default);
+      _runScope = GetRunScope(_runner);
 
       return TaskResult.Success;
+    }
+
+    static RunScope GetRunScope(DefaultRunner runner)
+    {
+      var scope = new RunScope();
+
+      var runnerType = runner.GetType();
+
+      var startRun = runnerType.GetMethod("StartRun", new[]{typeof(Assembly)});
+      if (startRun != null)
+      {
+        scope.StartRun = asm => startRun.Invoke(runner, new object[] { asm });
+      }
+
+      var endRun = runnerType.GetMethod("EndRun", new[] {typeof(Assembly)});
+      if (endRun != null)
+      {
+        scope.EndRun = asm => endRun.Invoke(runner, new object[] { asm });
+      }
+
+      return scope;
     }
 
     public override TaskResult Execute(TaskExecutionNode node)
@@ -63,12 +98,21 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
     public override TaskResult Finish(TaskExecutionNode node)
     {
-      foreach (var child in node.Children)
+      try
       {
-        RunContext(child);
-      }
+        _runScope.StartRun(_contextAssembly);
 
-      return TaskResult.Success;
+        foreach (var child in node.Children)
+        {
+          RunContext(child);
+        }
+
+        return TaskResult.Success;
+      }
+      finally
+      {
+        _runScope.EndRun(_contextAssembly);
+      }
     }
 
     void RunContext(TaskExecutionNode node)

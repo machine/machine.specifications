@@ -5,7 +5,6 @@ using System.Reflection;
 
 using Machine.Specifications.Explorers;
 using Machine.Specifications.Model;
-using Machine.Specifications.Runner.Impl.Listener;
 using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Runner.Impl
@@ -15,19 +14,20 @@ namespace Machine.Specifications.Runner.Impl
     readonly ISpecificationRunListener _listener;
     readonly RunOptions _options;
     readonly AssemblyExplorer _explorer;
+    readonly AssemblyRunner _assemblyRunner;
+    Action _runStart;
+    Action _runEnd;
 
     public DefaultRunner(ISpecificationRunListener listener, RunOptions options)
     {
-      _listener = new AggregateRunListener(
-        new ISpecificationRunListener[]
-        {
-          new AssemblyLocationAwareListener(),
-          new AssemblyContextRunListener(),
-        }
-          .Concat(new[] {listener}));
-
+      _listener = listener;
       _options = options;
+      _assemblyRunner = new AssemblyRunner(_listener, _options);
+
       _explorer = new AssemblyExplorer();
+
+      _runStart = () => _listener.OnRunStart();
+      _runEnd = () => _listener.OnRunEnd();
     }
 
     public void RunAssembly(Assembly assembly)
@@ -69,7 +69,7 @@ namespace Machine.Specifications.Runner.Impl
 
     void RunField(MemberInfo member, Assembly assembly)
     {
-      FieldInfo fieldInfo = (FieldInfo)member;
+      var fieldInfo = (FieldInfo)member;
       var context = _explorer.FindContexts(fieldInfo);
 
       StartRun(CreateMap(assembly, new[] {context}));
@@ -77,7 +77,7 @@ namespace Machine.Specifications.Runner.Impl
 
     void RunClass(MemberInfo member, Assembly assembly)
     {
-      Type type = (Type)member;
+      var type = (Type)member;
       var context = _explorer.FindContexts(type);
 
       if (context == null)
@@ -97,7 +97,7 @@ namespace Machine.Specifications.Runner.Impl
 
     void StartRun(IDictionary<Assembly, IEnumerable<Context>> contextMap)
     {
-      _listener.OnRunStart();
+      _runStart();
 
       foreach (var pair in contextMap)
       {
@@ -111,13 +111,27 @@ namespace Machine.Specifications.Runner.Impl
         }
       }
 
-      _listener.OnRunEnd();
+      _runEnd();
     }
 
     void StartAssemblyRun(Assembly assembly, IEnumerable<Context> contexts)
     {
-      var runner = new AssemblyRunner(_listener, _options);
-      runner.Run(assembly, contexts.FilteredBy(_options));
+      _assemblyRunner.Run(assembly, contexts.FilteredBy(_options));
+    }
+
+    public void StartRun(Assembly assembly)
+    {
+      _runStart = () => {};
+      _runEnd = () => {};
+
+      _listener.OnRunStart();
+      _assemblyRunner.StartExplicitRunScope(assembly);
+    }
+
+    public void EndRun(Assembly assembly)
+    {
+      _assemblyRunner.EndExplicitRunScope(assembly);
+      _listener.OnRunEnd();
     }
   }
 
