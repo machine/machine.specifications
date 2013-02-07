@@ -158,7 +158,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
         return other.ShortName == ShortName
                && other.Provider == Provider
                && Equals(element._projectEnvoy, _projectEnvoy)
-               && element._declaringTypeName == _declaringTypeName;
+               && element._declaringTypeName.FullName == _declaringTypeName.FullName;
       }
       return false;
     }
