@@ -18,6 +18,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     int _specifications;
     int _successes;
     int _errors;
+    ContextInfo _currentContext;
 
     public PerAssemblyRunListener(IRemoteTaskServer server, RunAssemblyTask runAssemblyTask)
     {
@@ -48,7 +49,9 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       _errors = 0;
       _successes = 0;
 
-      var notify = CreateTaskNotificationFor(context);
+      // TODO: This sucks, but there's no better way unless we make behaviors first-class citizens.
+      _currentContext = context;
+      var notify = CreateTaskNotificationFor(context, context);
       notify(task => _server.TaskStarting(task));
     }
 
@@ -64,7 +67,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
         result = TaskResult.Error;
       }
 
-      var notify = CreateTaskNotificationFor(context);
+      var notify = CreateTaskNotificationFor(context, _currentContext);
       notify(task => _server.TaskFinished(task, null, result));
     }
 
@@ -72,13 +75,13 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     {
       _specifications += 1;
 
-      var notify = CreateTaskNotificationFor(specification);
+      var notify = CreateTaskNotificationFor(specification, _currentContext);
       notify(task => _server.TaskStarting(task));
     }
 
     public void OnSpecificationEnd(SpecificationInfo specification, Result result)
     {
-      var notify = CreateTaskNotificationFor(specification);
+      var notify = CreateTaskNotificationFor(specification, _currentContext);
 
       notify(task => _server.TaskProgress(task, null));
 
@@ -134,7 +137,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       _taskNotifications.Add(notification);
     }
 
-    Action<Action<RemoteTask>> CreateTaskNotificationFor(object infoFromRunner)
+    Action<Action<RemoteTask>> CreateTaskNotificationFor(object infoFromRunner, ContextInfo maybeContext)
     {
       return actionToBePerformedForEachTask =>
       {
@@ -142,7 +145,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
         foreach (var notification in _taskNotifications)
         {
-          if (notification.Matches(infoFromRunner))
+          if (notification.Matches(infoFromRunner, maybeContext))
           {
             Debug.WriteLine(String.Format("Invoking notification for {0}", notification.ToString()));
             invoked = true;

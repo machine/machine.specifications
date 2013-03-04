@@ -35,7 +35,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
       get { yield return _node.RemoteTask; }
     }
 
-    public override bool Matches(object infoFromRunner)
+    public override bool Matches(object infoFromRunner, ContextInfo maybeContext)
     {
       var specification = infoFromRunner as SpecificationInfo;
 

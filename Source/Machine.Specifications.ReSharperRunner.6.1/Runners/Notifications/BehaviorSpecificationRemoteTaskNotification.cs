@@ -21,6 +21,11 @@ namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
       _task = (BehaviorSpecificationTask) node.RemoteTask;
     }
 
+    string ContextTypeName
+    {
+      get { return _task.ContextTypeName; }
+    }
+
     string ContainingType
     {
       get { return _task.BehaviorTypeName; }
@@ -36,16 +41,21 @@ namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
       get { yield return _node.RemoteTask; }
     }
 
-    public override bool Matches(object infoFromRunner)
+    public override bool Matches(object infoFromRunner, ContextInfo maybeContext)
     {
-      var specification = infoFromRunner as SpecificationInfo;
+      if (maybeContext == null)
+      {
+        return false;
+      }
 
+      var specification = infoFromRunner as SpecificationInfo;
       if (specification == null)
       {
         return false;
       }
 
-      return ContainingType == new NormalizedTypeName(specification.ContainingType) &&
+      return ContextTypeName == maybeContext.TypeName &&
+             ContainingType == new NormalizedTypeName(specification.ContainingType) &&
              FieldName == specification.FieldName;
     }
 

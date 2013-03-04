@@ -28,7 +28,7 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
       SpecificationFieldNameOnContext = specificationFieldNameOnContext;
     }
 
-    string ContextTypeName { get; set; }
+    public string ContextTypeName { get; set; }
 
     public string BehaviorTypeName { get; private set; }
 
