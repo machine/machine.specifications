@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 
+using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.UnitTestFramework;
@@ -61,11 +62,40 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
 
         var behaviorSpecification = _behaviorSpecifications.CreateBehaviorSpecification(behavior, field);
 
-        yield return new UnitTestElementDisposition(behaviorSpecification,
-                                                    field.GetSourceFiles()[0].ToProjectFile(),
-                                                    new TextRange(),
-                                                    field.GetDeclarations()[0].GetDocumentRange().TextRange);
+        var projectFile = GetProjectFile(field);
+        if (projectFile != null)
+        {
+          yield return new UnitTestElementDisposition(behaviorSpecification,
+                                                      projectFile,
+                                                      new TextRange(),
+                                                      GetTextRange(field));
+        }
+        else
+        {
+          yield return new UnitTestElementDisposition(new UnitTestElementLocation[] {}, behaviorSpecification);
+        }
       }
+    }
+
+    static IProjectFile GetProjectFile(IDeclaredElement field)
+    {
+      var sourceFile = field.GetSourceFiles();
+      if (sourceFile.Count > 0)
+      {
+        return sourceFile[0].ToProjectFile();
+      }
+      return null;
+    }
+
+    static TextRange GetTextRange(IDeclaredElement field)
+    {
+      var declarations = field.GetDeclarations();
+      if (declarations.Count > 0)
+      {
+        return declarations[0].GetDocumentRange().TextRange;
+      }
+
+      return new TextRange();
     }
 
     public void Cleanup(ITreeNode element)
