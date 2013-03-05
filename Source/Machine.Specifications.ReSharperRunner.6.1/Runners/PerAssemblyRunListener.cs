@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 
 using JetBrains.ReSharper.TaskRunnerFramework;
 
@@ -12,6 +14,45 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 {
   class PerAssemblyRunListener : ISpecificationRunListener
   {
+    class RedirectOutput : IDisposable
+    {
+      readonly TextWriter _oldOut;
+      readonly TextWriter _oldError;
+      readonly TraceListenerCollection _oldListeners;
+      internal readonly TextWriter StdOut;
+      internal readonly TextWriter StdError;
+      internal readonly TextWriter DebugTrace;
+
+      public RedirectOutput()
+      {
+        _oldOut = Console.Out;
+        _oldError = Console.Error;
+        _oldListeners = Trace.Listeners;
+
+        StdOut = new StringWriter(CultureInfo.CurrentCulture);
+        Console.SetOut(StdOut);
+
+        StdError = new StringWriter(CultureInfo.CurrentCulture);
+        Console.SetError(StdError);
+
+        DebugTrace = new StringWriter(CultureInfo.CurrentCulture);
+        Trace.Listeners.Clear();
+        Trace.Listeners.Add(new TextWriterTraceListener(DebugTrace));
+      }
+
+      public void Dispose()
+      {
+        Console.SetOut(_oldOut);
+        Console.SetError(_oldError);
+        try
+        {
+          Trace.Listeners.Clear();
+          Trace.Listeners.AddRange(_oldListeners);
+        }
+        catch (Exception) { }
+      }
+    }
+
     readonly RunAssemblyTask _runAssemblyTask;
     readonly IRemoteTaskServer _server;
     readonly IList<RemoteTaskNotification> _taskNotifications = new List<RemoteTaskNotification>();
@@ -19,6 +60,8 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     int _successes;
     int _errors;
     ContextInfo _currentContext;
+    RedirectOutput _contextOutput;
+    RedirectOutput _specificationOutput;
 
     public PerAssemblyRunListener(IRemoteTaskServer server, RunAssemblyTask runAssemblyTask)
     {
@@ -49,6 +92,8 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       _errors = 0;
       _successes = 0;
 
+      _contextOutput = new RedirectOutput();
+
       // TODO: This sucks, but there's no better way unless we make behaviors first-class citizens.
       _currentContext = context;
       var notify = CreateTaskNotificationFor(context, context);
@@ -68,12 +113,16 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       }
 
       var notify = CreateTaskNotificationFor(context, _currentContext);
+
+      NotifyRedirectedOutput(notify, _contextOutput);
       notify(task => _server.TaskFinished(task, null, result));
     }
 
     public void OnSpecificationStart(SpecificationInfo specification)
     {
       _specifications += 1;
+
+      _specificationOutput = new RedirectOutput();
 
       var notify = CreateTaskNotificationFor(specification, _currentContext);
       notify(task => _server.TaskStarting(task));
@@ -85,8 +134,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
       notify(task => _server.TaskProgress(task, null));
 
-      notify(task => _server.TaskOutput(task, result.ConsoleOut, TaskOutputType.STDOUT));
-      notify(task => _server.TaskOutput(task, result.ConsoleError, TaskOutputType.STDERR));
+      NotifyRedirectedOutput(notify, _specificationOutput);
 
       TaskResult taskResult = TaskResult.Success;
       string message = null;
@@ -166,5 +214,20 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     }
 
     delegate void Action<T>(T arg);
+
+    void NotifyRedirectedOutput(Action<Action<RemoteTask>> notify, RedirectOutput redirectOutput)
+    {
+      try
+      {
+        var output = redirectOutput;
+        notify(task => _server.TaskOutput(task, output.StdOut.ToString(), TaskOutputType.STDOUT));
+        notify(task => _server.TaskOutput(task, output.StdError.ToString(), TaskOutputType.STDERR));
+        notify(task => _server.TaskOutput(task, output.DebugTrace.ToString(), TaskOutputType.DEBUGTRACE));
+      }
+      finally
+      {
+        redirectOutput.Dispose();
+      }
+    }
   }
 }
