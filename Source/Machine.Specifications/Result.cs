@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Machine.Specifications
@@ -15,16 +18,25 @@ namespace Machine.Specifications
   [Serializable]
   public class ExceptionResult
   {
-    readonly string _toString;
-
     public string FullTypeName { get; private set; }
     public string TypeName { get; private set; }
     public string Message { get; private set; }
     public string StackTrace { get; private set; }
     public ExceptionResult InnerExceptionResult { get; private set; }
 
-    public ExceptionResult(Exception exception)
+    public ExceptionResult(Exception exception) : this(exception, true)
     {
+    }
+
+    ExceptionResult(Exception exception, bool outermost)
+    {
+#if CLEAN_EXCEPTION_STACK_TRACE
+      if (outermost && exception is TargetInvocationException)
+      {
+        exception = exception.InnerException;
+      }
+#endif
+
       FullTypeName = exception.GetType().FullName;
       TypeName = exception.GetType().Name;
       Message = exception.Message;
@@ -32,15 +44,29 @@ namespace Machine.Specifications
 
       if (exception.InnerException != null)
       {
-        InnerExceptionResult = new ExceptionResult(exception.InnerException);
+        InnerExceptionResult = new ExceptionResult(exception.InnerException, false);
       }
-
-      _toString = exception.ToString();
     }
 
     public override string ToString()
     {
-      return _toString;
+      var message = new StringBuilder();
+      message.Append(FullTypeName);
+
+      if (!string.IsNullOrEmpty(Message))
+      {
+        message.AppendFormat(": {0}", Message);
+      }
+      if (InnerExceptionResult != null)
+      {
+        message.AppendFormat(" ---> {0}{1}   --- End of inner exception stack trace ---", InnerExceptionResult, Environment.NewLine);
+      }
+      if (StackTrace != null)
+      {
+        message.Append(Environment.NewLine + StackTrace);
+      }
+
+      return message.ToString();
     }
 
     #region Borrowed from XUnit to clean up the stack trace, licened under MS-PL
@@ -49,7 +75,9 @@ namespace Machine.Specifications
     /// <summary>
     ///  A description of the regular expression:
     ///
-    ///  \w+\sMachine\.Specifications
+    ///  ^\s+\w+\sMachine\.Specifications
+    ///      Beginning of string
+    ///      Whitespace, one or more repetitions
     ///      Alphanumeric, one or more repetitions
     ///      Whitespace
     ///      Machine
@@ -57,8 +85,8 @@ namespace Machine.Specifications
     ///      Specifications
     ///      Literal .
     /// </summary>
-    static Regex FrameworkStackLine = new Regex("\\w+\\sMachine\\.Specifications\\.",
-      RegexOptions.CultureInvariant | RegexOptions.Compiled);
+    static readonly Regex FrameworkStackLine = new Regex("^\\s+\\w+\\sMachine\\.Specifications\\.",
+                                                         RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
     /// <summary>
     /// Filters the stack trace to remove all lines that occur within the testing framework.
@@ -68,42 +96,20 @@ namespace Machine.Specifications
     static string FilterStackTrace(string stackTrace)
     {
       if (stackTrace == null)
-        return null;      
+        return null;
 
-      List<string> results = new List<string>();
+      var lines = stackTrace
+        .Split(new[] {Environment.NewLine}, StringSplitOptions.None)
+        .Where(line => !IsFrameworkStackFrame(line))
+        .ToArray();
 
-      foreach (string line in SplitLines(stackTrace))
-      {
-        string trimmedLine = line.TrimStart();
-        if (!IsFrameworkStackFrame(trimmedLine))
-          results.Add(line);
-      }
-
-      return string.Join(Environment.NewLine, results.ToArray());
+      return string.Join(Environment.NewLine, lines);
     }
 
     static bool IsFrameworkStackFrame(string trimmedLine)
     {
       // Anything in the Machine.Specifications namespace
       return FrameworkStackLine.IsMatch(trimmedLine);
-    }
-
-    // Our own custom String.Split because Silverlight/CoreCLR doesn't support the version we were using
-    static IEnumerable<string> SplitLines(string input)
-    {
-      while (true)
-      {
-        int index = input.IndexOf(Environment.NewLine);
-
-        if (index < 0)
-        {
-          yield return input;
-          break;
-        }
-
-        yield return input.Substring(0, index);
-        input = input.Substring(index + Environment.NewLine.Length);
-      }
     }
 #else
     // Do not change the line at all if you are not going to clean it

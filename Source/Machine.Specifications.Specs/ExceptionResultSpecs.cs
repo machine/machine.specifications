@@ -1,9 +1,10 @@
 using System;
+using System.Reflection;
 
 using Machine.Specifications;
 
+#if CLEAN_EXCEPTION_STACK_TRACE
 using SomeProject.Specs;
-
 
 namespace SomeProject.Specs
 {
@@ -25,7 +26,6 @@ namespace SomeProject.Specs
   }
 }
 
-#if CLEAN_EXCEPTION_STACK_TRACE
 namespace Machine.Specifications.Specs
 {
   [Subject(typeof(ExceptionResult))]
@@ -38,8 +38,33 @@ namespace Machine.Specifications.Specs
     It should_remove_framework_stack_lines =
       () => Result.StackTrace.ShouldNotContain(" Machine.Specifications.");
 
+    It should_remove_framework_stack_lines_from_the_string_representation =
+      () => Result.ToString().ShouldNotContain(" Machine.Specifications.");
+
     It should_keep_user_stack_lines =
       () => Result.StackTrace.ShouldContain(" SomeProject.Specs.Throw.Exception");
+  }
+
+  [Subject(typeof(ExceptionResult))]
+  public class When_the_actual_exception_is_wrapped_in_a_TargetInvocationException
+  {
+    static ExceptionResult Result;
+
+    Because of = () => { Result = new ExceptionResult(new TargetInvocationException(new Exception("inner"))); };
+
+    It should_only_take_the_inner_exception_into_account =
+      () => Result.FullTypeName.ShouldEqual(typeof(Exception).FullName);
+  }
+
+  [Subject(typeof(ExceptionResult))]
+  public class When_a_TargetInvocationException_is_wrapped
+  {
+    static ExceptionResult Result;
+
+    Because of = () => { Result = new ExceptionResult(new Exception("outer", new TargetInvocationException(new Exception("inner")))); };
+
+    It should_keep_the_exception =
+      () => Result.InnerExceptionResult.FullTypeName.ShouldEqual(typeof(TargetInvocationException).FullName);
   }
 }
 #endif

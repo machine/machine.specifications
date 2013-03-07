@@ -216,6 +216,10 @@ namespace Machine.Specifications.Reporting.Generation.Xml
 
       reportBuilder.WriteStartElement("error");
 
+      reportBuilder.WriteStartElement("type");
+      reportBuilder.WriteCData(exception.FullTypeName);
+      reportBuilder.WriteEndElement();
+
       reportBuilder.WriteStartElement("message");
       reportBuilder.WriteCData(exception.Message);
       reportBuilder.WriteEndElement();
@@ -223,6 +227,11 @@ namespace Machine.Specifications.Reporting.Generation.Xml
       reportBuilder.WriteStartElement("stack-trace");
       reportBuilder.WriteCData(exception.StackTrace);
       reportBuilder.WriteEndElement();
+
+      if (exception.InnerExceptionResult != null)
+      {
+        RenderError(reportBuilder, exception.InnerExceptionResult);
+      }
 
       reportBuilder.WriteEndElement();
     }
