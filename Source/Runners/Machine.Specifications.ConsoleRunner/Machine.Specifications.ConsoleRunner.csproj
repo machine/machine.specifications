@@ -94,7 +94,7 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Machine.Specifications.Reporting\Machine.Specifications.Reporting.csproj">
+    <ProjectReference Include="..\..\Reporting\Machine.Specifications.Reporting\Machine.Specifications.Reporting.csproj">
       <Project>{490496AF-BEA5-4454-88B0-F73C62C22987}</Project>
       <Name>Machine.Specifications.Reporting</Name>
     </ProjectReference>

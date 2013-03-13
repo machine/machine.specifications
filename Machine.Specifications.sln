@@ -24,9 +24,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Cons
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Failing", "Source\Examples\Example.Failing\Example.Failing.csproj", "{89ECD0D1-6CC4-4319-B1B2-389E0B48F40D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Reporting", "Source\Machine.Specifications.Reporting\Machine.Specifications.Reporting.csproj", "{490496AF-BEA5-4454-88B0-F73C62C22987}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Reporting", "Source\Reporting\Machine.Specifications.Reporting\Machine.Specifications.Reporting.csproj", "{490496AF-BEA5-4454-88B0-F73C62C22987}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Reporting.Specs", "Source\Machine.Specifications.Reporting.Specs\Machine.Specifications.Reporting.Specs.csproj", "{97BD55A5-03CA-4E8E-8AE0-55722C39E0AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Reporting.Specs", "Source\Reporting\Machine.Specifications.Reporting.Specs\Machine.Specifications.Reporting.Specs.csproj", "{97BD55A5-03CA-4E8E-8AE0-55722C39E0AF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Specs", "Source\Machine.Specifications.Specs\Machine.Specifications.Specs.csproj", "{15FCDD3C-6C0E-4516-90D8-A1D82DC4C4F9}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -44,11 +44,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.CleanupFailure", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Random", "Source\Examples\Example.Random\Example.Random.csproj", "{1295C389-FCE4-4425-93E4-E4AE239B3E35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.SeleniumSupport", "Source\Machine.Specifications.SeleniumSupport\Machine.Specifications.SeleniumSupport.csproj", "{50E85B88-7E0C-4CE7-BD8D-BA9C618A6844}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.SeleniumSupport", "Source\Reporting\Machine.Specifications.SeleniumSupport\Machine.Specifications.SeleniumSupport.csproj", "{50E85B88-7E0C-4CE7-BD8D-BA9C618A6844}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Clr4", "Source\Examples\Example.Clr4\Example.Clr4.csproj", "{0CE411DF-CFC3-45E3-96AD-2F872D99E1B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.WatinSupport", "Source\Machine.Specifications.WatinSupport\Machine.Specifications.WatinSupport.csproj", "{9EF302BE-21F7-4443-B871-534DA3BEDD59}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.WatinSupport", "Source\Reporting\Machine.Specifications.WatinSupport\Machine.Specifications.WatinSupport.csproj", "{9EF302BE-21F7-4443-B871-534DA3BEDD59}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.UsingExternalFile", "Source\Examples\Example.UsingExternalFile\Example.UsingExternalFile.csproj", "{A6B234F5-5D96-4809-BD25-86F6544BF838}"
 EndProject
@@ -73,7 +73,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A3F866
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.WebDriverSupport", "Source\Machine.Specifications.WebDriverSupport\Machine.Specifications.WebDriverSupport.csproj", "{0029D44B-6E6C-4FD5-9071-EEA15A765D37}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.WebDriverSupport", "Source\Reporting\Machine.Specifications.WebDriverSupport\Machine.Specifications.WebDriverSupport.csproj", "{0029D44B-6E6C-4FD5-9071-EEA15A765D37}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Clr4", "Source\Machine.Specifications.Clr4\Machine.Specifications.Clr4.csproj", "{4F5B8F3D-21FE-46AE-9D45-4E1ED891F4DF}"
 EndProject
