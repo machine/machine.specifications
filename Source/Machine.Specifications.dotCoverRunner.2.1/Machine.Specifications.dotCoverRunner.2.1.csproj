@@ -36,6 +36,7 @@
   <ItemGroup>
     <Reference Include="JetBrains.dotCover.Resources">
       <HintPath>..\..\Libraries\dotCover\2.1\JetBrains.dotCover.Resources.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.dotCover.ComponentModel">
       <HintPath>..\..\Libraries\dotCover\2.1\JetBrains.Platform.dotCover.ComponentModel.dll</HintPath>
