@@ -13,11 +13,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Source\Examples\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Tests", "Source\Machine.Specifications.Tests\Machine.Specifications.Tests.csproj", "{FE10826D-F2C7-4FF3-A135-9EA9EF2C9CB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.TDNetRunner", "Source\Machine.Specifications.TDNetRunner\Machine.Specifications.TDNetRunner.csproj", "{E57865B9-C7EF-4340-8AF2-5D85F2545EC6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.TDNetRunner", "Source\Runners\Machine.Specifications.TDNetRunner\Machine.Specifications.TDNetRunner.csproj", "{E57865B9-C7EF-4340-8AF2-5D85F2545EC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ConsoleRunner", "Source\Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunner.csproj", "{CFF4B323-24C1-4B19-98CA-7DF92755458E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ConsoleRunner", "Source\Runners\Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunner.csproj", "{CFF4B323-24C1-4B19-98CA-7DF92755458E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ConsoleRunner.Specs", "Source\Machine.Specifications.ConsoleRunner.Specs\Machine.Specifications.ConsoleRunner.Specs.csproj", "{F25C7917-4ED6-4261-B262-43C56D0CD37F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ConsoleRunner.Specs", "Source\Runners\Machine.Specifications.ConsoleRunner.Specs\Machine.Specifications.ConsoleRunner.Specs.csproj", "{F25C7917-4ED6-4261-B262-43C56D0CD37F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{89ECD0D1-6CC4-4319-B1B2-389E0B48F40D} = {89ECD0D1-6CC4-4319-B1B2-389E0B48F40D}
 	EndProjectSection
@@ -52,20 +52,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Wati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.UsingExternalFile", "Source\Examples\Example.UsingExternalFile\Example.UsingExternalFile.csproj", "{A6B234F5-5D96-4809-BD25-86F6544BF838}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.6.1", "Source\Machine.Specifications.ReSharperRunner.6.1\Machine.Specifications.ReSharperRunner.6.1.csproj", "{AEF08081-3BB5-4654-9F21-C066647B370A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.6.1", "Source\Runners\Machine.Specifications.ReSharperRunner.6.1\Machine.Specifications.ReSharperRunner.6.1.csproj", "{AEF08081-3BB5-4654-9F21-C066647B370A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.Debug.VS2010", "Source\Machine.Specifications.ReSharperRunner.Debug.VS2010\Machine.Specifications.ReSharperRunner.Debug.VS2010.csproj", "{79A3A8CA-CAEF-4DC6-83C9-E19A0C720B0E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.Debug.VS2010", "Source\Runners\Machine.Specifications.ReSharperRunner.Debug.VS2010\Machine.Specifications.ReSharperRunner.Debug.VS2010.csproj", "{79A3A8CA-CAEF-4DC6-83C9-E19A0C720B0E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{11063B30-327C-4467-9FF4-8632D71E68A4} = {11063B30-327C-4467-9FF4-8632D71E68A4}
 		{AEF08081-3BB5-4654-9F21-C066647B370A} = {AEF08081-3BB5-4654-9F21-C066647B370A}
 		{DFD90CB9-4192-4677-9AAC-3277C65B878D} = {DFD90CB9-4192-4677-9AAC-3277C65B878D}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter", "Source\Machine.Specifications.GallioAdapter\Machine.Specifications.GallioAdapter.csproj", "{D1B0D26E-BEA9-45EF-87C2-0ED5FC9CAC3F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter", "Source\Runners\Machine.Specifications.GallioAdapter\Machine.Specifications.GallioAdapter.csproj", "{D1B0D26E-BEA9-45EF-87C2-0ED5FC9CAC3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.TestResources", "Source\Machine.Specifications.GallioAdapter.TestResources\Machine.Specifications.GallioAdapter.TestResources.csproj", "{263ABAC8-C6B2-497D-93E3-3773849CEDD3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.TestResources", "Source\Runners\Machine.Specifications.GallioAdapter.TestResources\Machine.Specifications.GallioAdapter.TestResources.csproj", "{263ABAC8-C6B2-497D-93E3-3773849CEDD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.Tests", "Source\Machine.Specifications.GallioAdapter.Tests\Machine.Specifications.GallioAdapter.Tests.csproj", "{9C3D968A-AA2C-4612-94E8-C3FD16BFEEED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.GallioAdapter.Tests", "Source\Runners\Machine.Specifications.GallioAdapter.Tests\Machine.Specifications.GallioAdapter.Tests.csproj", "{9C3D968A-AA2C-4612-94E8-C3FD16BFEEED}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A3F86654-7BCD-4E8D-9258-7CFE0AB14D0B}"
 	ProjectSection(SolutionItems) = preProject
@@ -79,15 +79,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Clr4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Clr4.Specs", "Source\Machine.Specifications.Clr4.Specs\Machine.Specifications.Clr4.Specs.csproj", "{8B6A3294-62DB-4838-AF2F-F107A1CC1926}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.7.0", "Source\Machine.Specifications.ReSharperRunner.7.0\Machine.Specifications.ReSharperRunner.7.0.csproj", "{11063B30-327C-4467-9FF4-8632D71E68A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.7.0", "Source\Runners\Machine.Specifications.ReSharperRunner.7.0\Machine.Specifications.ReSharperRunner.7.0.csproj", "{11063B30-327C-4467-9FF4-8632D71E68A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.dotCoverRunner.2.0", "Source\Machine.Specifications.dotCoverRunner.2.0\Machine.Specifications.dotCoverRunner.2.0.csproj", "{20D19E3D-B8FA-49A7-A96C-5910580B0FE2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.dotCoverRunner.2.0", "Source\Runners\Machine.Specifications.dotCoverRunner.2.0\Machine.Specifications.dotCoverRunner.2.0.csproj", "{20D19E3D-B8FA-49A7-A96C-5910580B0FE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.dotCoverRunner.2.1", "Source\Machine.Specifications.dotCoverRunner.2.1\Machine.Specifications.dotCoverRunner.2.1.csproj", "{130D757E-E773-4A6F-8D5F-EE3C75CC211B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.dotCoverRunner.2.1", "Source\Runners\Machine.Specifications.dotCoverRunner.2.1\Machine.Specifications.dotCoverRunner.2.1.csproj", "{130D757E-E773-4A6F-8D5F-EE3C75CC211B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.7.1", "Source\Machine.Specifications.ReSharperRunner.7.1\Machine.Specifications.ReSharperRunner.7.1.csproj", "{DFD90CB9-4192-4677-9AAC-3277C65B878D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.7.1", "Source\Runners\Machine.Specifications.ReSharperRunner.7.1\Machine.Specifications.ReSharperRunner.7.1.csproj", "{DFD90CB9-4192-4677-9AAC-3277C65B878D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.dotCoverRunner.2.2", "Source\Machine.Specifications.dotCoverRunner.2.2\Machine.Specifications.dotCoverRunner.2.2.csproj", "{B88940C4-9552-4C47-85F2-33E820CD9FD1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.dotCoverRunner.2.2", "Source\Runners\Machine.Specifications.dotCoverRunner.2.2\Machine.Specifications.dotCoverRunner.2.2.csproj", "{B88940C4-9552-4C47-85F2-33E820CD9FD1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.DerivedSubject", "Source\Examples\Example.DerivedSubject\Example.DerivedSubject.csproj", "{13650EC6-35A0-429A-A779-DCA0214E7F79}"
 EndProject

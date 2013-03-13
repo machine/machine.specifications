@@ -136,7 +136,7 @@ namespace :build do
     }
 
     console_runner.values.each do |config|
-      project = 'Source/Machine.Specifications.ConsoleRunner/Machine.Specifications.ConsoleRunner.csproj'
+      project = 'Source/Runners/Machine.Specifications.ConsoleRunner/Machine.Specifications.ConsoleRunner.csproj'
       build opts.merge({ :project => project }), config
     end
   end

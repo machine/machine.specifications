@@ -17,5 +17,3 @@ NDependOut
 /packages
 install.ps1
 mspec.nuspec
-Source/Machine.Specifications.GallioAdapter/Machine.Specifications.GallioAdapter.plugin
-Source/Machine.Specifications.TDNetRunner/Machine.Specifications.dll.tdnet
