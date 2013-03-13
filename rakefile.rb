@@ -107,37 +107,51 @@ namespace :build do
         }
       }
 
-    def build (msbuild_options, config)
-      project = msbuild_options[:project]
+    def patch(project_file, config)
+      csproj = File.read project_file
 
-      xml = File.read project
+      patched = csproj.dup
       config.each do |element, value|
-        xml.gsub!(/<#{element}>.*?<\/#{element}>/, "<#{element}>#{value}</#{element}>")
+        patched.gsub!(/<#{element}>.*?<\/#{element}>/, "<#{element}>#{value}</#{element}>")
       end
 
-      project += config.hash.to_s
-      begin
-        File.open(project, "w") { |file| file.puts xml }
-        MSBuild.compile msbuild_options.merge({ :project => project })
-      ensure
-        rm project
+      File.open(project_file, "w") { |file| file.write patched }
+
+      {
+        :file => project_file,
+        :original_contents => csproj
+      }
+    end
+
+    begin
+      csprojs = FileList.new('Source/**/*.csproj').map do |project|
+        patch project, { :SignAssembly => configatron.sign_assembly }
       end
-    end
 
-    FileList.new('Source/**/*.csproj').each do |project|
-      build opts.merge({ :project => project }), { :SignAssembly => configatron.sign_assembly }
-    end
+      csprojs.each do |project|
+        MSBuild.compile opts.merge({ :project => project[:file] })
+      end
 
-    console_runner = {
-      :x86         => { :TargetFrameworkVersion => 'v3.5', :PlatformTarget => 'x86',    :AssemblyName => 'mspec-x86' },
-      :AnyCPU      => { :TargetFrameworkVersion => 'v3.5', :PlatformTarget => 'AnyCPU', :AssemblyName => 'mspec' },
-      :clr4_x86    => { :TargetFrameworkVersion => 'v4.0', :PlatformTarget => 'x86',    :AssemblyName => 'mspec-x86-clr4' },
-      :clr4_AnyCPU => { :TargetFrameworkVersion => 'v4.0', :PlatformTarget => 'AnyCPU', :AssemblyName => 'mspec-clr4' }
-    }
+      runner_configs = {
+        :x86         => { :TargetFrameworkVersion => 'v3.5', :PlatformTarget => 'x86',    :AssemblyName => 'mspec-x86' },
+        :AnyCPU      => { :TargetFrameworkVersion => 'v3.5', :PlatformTarget => 'AnyCPU', :AssemblyName => 'mspec' },
+        :clr4_x86    => { :TargetFrameworkVersion => 'v4.0', :PlatformTarget => 'x86',    :AssemblyName => 'mspec-x86-clr4' },
+        :clr4_AnyCPU => { :TargetFrameworkVersion => 'v4.0', :PlatformTarget => 'AnyCPU', :AssemblyName => 'mspec-clr4' }
+      }
+      console_runner = 'Source/Runners/Machine.Specifications.ConsoleRunner/Machine.Specifications.ConsoleRunner.csproj'
 
-    console_runner.values.each do |config|
-      project = 'Source/Runners/Machine.Specifications.ConsoleRunner/Machine.Specifications.ConsoleRunner.csproj'
-      build opts.merge({ :project => project }), config
+      runner_configs.values.each do |config|
+        project = patch console_runner, config
+
+        # We need to remove obj, otherwise MSBuild will delete the build output from previous runner_config builds.
+        rm_rf File.join(File.dirname(console_runner), 'obj')
+
+        MSBuild.compile opts.merge({ :project => project[:file] })
+      end
+    ensure
+      csprojs.each do |project|
+        File.open(project[:file], "w") { |file| file.write project[:original_contents] }
+      end
     end
   end
 
