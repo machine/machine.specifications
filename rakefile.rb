@@ -102,7 +102,8 @@ namespace :build do
         :switches => { :verbosity => :minimal, :target => :Build },
         :properties => {
           :Configuration => configatron.target,
-          :TrackFileAccess => false
+          :TrackFileAccess => false,
+          :SolutionDir => File.expand_path('.')
         }
       }
 
@@ -111,15 +112,16 @@ namespace :build do
 
       xml = File.read project
       config.each do |element, value|
-        xml.gsub! /<#{element}>.*?<\/#{element}>/, "<#{element}>#{value}</#{element}>"
+        xml.gsub!(/<#{element}>.*?<\/#{element}>/, "<#{element}>#{value}</#{element}>")
       end
 
       project += config.hash.to_s
-      File.open(project, "w") { |file| file.puts xml }
-
-      MSBuild.compile msbuild_options.merge({ :project => project })
-
-      rm project
+      begin
+        File.open(project, "w") { |file| file.puts xml }
+        MSBuild.compile msbuild_options.merge({ :project => project })
+      ensure
+        rm project
+      end
     end
 
     FileList.new('Source/**/*.csproj').each do |project|
@@ -153,9 +155,9 @@ namespace :specs do
     puts 'Running Specs...'
 
     specs = FileList.new("#{configatron.out_dir}/Tests/*.Specs.dll").exclude(/Clr4/)
-    sh "#{configatron.out_dir}/mspec.exe", "--html", "Specs/#{configatron.project}.Specs.html", "-x", "example", *(configatron.mspec_options + specs)
+    sh "#{configatron.out_dir}/mspec.exe", "--html", "Specs/#{configatron.project}.Specs.html", *(configatron.mspec_options + specs)
 
-    specs = FileList.new("#{configatron.out_dir}/Tests/*Clr4*.dll").exclude(/Machine\.Specifications\.Clr4\.dll/)
+    specs = FileList.new("#{configatron.out_dir}/Tests/*.Clr4.Specs.dll")
     sh "#{configatron.out_dir}/mspec-clr4.exe", *(configatron.mspec_options + specs)
 
     puts "Wrote specs to Specs/#{configatron.project}.Specs.html, run 'rake specs:view' to see them"

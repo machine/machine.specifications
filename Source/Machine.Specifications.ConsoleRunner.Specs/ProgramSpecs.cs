@@ -27,10 +27,10 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     : ConsoleRunnerSpecs
   {
     Because of =
-      () => program.Run(new [] { GetPath("Machine.Specifications.Example.dll") });
+      () => program.Run(new [] { GetPath("Example.dll") });
 
     It should_write_the_assembly_name =
-      () => console.Lines.ShouldContain(l => l.Contains("Machine.Specifications.Example"));
+      () => console.Lines.ShouldContain(l => l.Contains("Example"));
 
     It should_write_the_specifications =
       () => console.Lines.ShouldContain(
@@ -59,10 +59,10 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     : ConsoleRunnerSpecs
   {
     Because of =
-      () => program.Run(new [] { GetPath("Machine.Specifications.Example.dll"), "--silent" });
+      () => program.Run(new [] { GetPath("Example.dll"), "--silent" });
 
     It should_not_write_the_assembly_name =
-      () => console.Lines.ShouldNotContain(l => l.Contains("Machine.Specifications.Example"));
+      () => console.Lines.ShouldNotContain(l => l.Contains("Example"));
 
     It should_not_write_the_contexts =
       () => console.Lines.ShouldEachConformTo(l => !l.StartsWith("Account Funds transfer"));
@@ -85,10 +85,10 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     : ConsoleRunnerSpecs
   {
     Because of =
-      () => program.Run(new [] { GetPath("Machine.Specifications.Example.dll"), "--progress" });
+      () => program.Run(new [] { GetPath("Example.dll"), "--progress" });
 
     It should_write_the_assembly_name =
-      () => console.Lines.ShouldContain(l => l.Contains("Machine.Specifications.Example"));
+      () => console.Lines.ShouldContain(l => l.Contains("Example"));
 
     It should_not_write_the_contexts =
       () => console.Lines.ShouldEachConformTo(l => !l.StartsWith("Account Funds transfer"));
@@ -132,7 +132,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     public static ExitCode exitCode;
 
     Because of =
-      () => exitCode = program.Run(new[] { GetPath("Machine.Specifications.FailingExample.dll") });
+      () => exitCode = program.Run(new[] { GetPath("Example.Failing.dll") });
 
     It should_write_the_failure =
       () => console.Lines.ShouldContain(l => l.Contains("Exception"));
@@ -153,7 +153,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     public static ExitCode exitCode;
 
     Because of =
-      () => exitCode = program.Run(new[] { GetPath("Machine.Specifications.FailingExample.dll"), "--silent", "--exclude", "example" });
+      () => exitCode = program.Run(new[] { GetPath("Example.Failing.dll"), "--silent", "--exclude", "example" });
 
     It should_write_the_count_of_failed_specifications =
       () => console.Lines.ShouldContain(l => l.Contains("1 failed"));
@@ -177,7 +177,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     public static ExitCode exitCode;
 
     Because of =
-      () => exitCode = program.Run(new[] { GetPath("Machine.Specifications.FailingExample.dll"), "--progress", "--exclude", "example" });
+      () => exitCode = program.Run(new[] { GetPath("Example.Failing.dll"), "--progress", "--exclude", "example" });
 
     It should_write_failed_specification_results =
       () => console.Lines.ShouldContain("F");
@@ -202,7 +202,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
   public class when_specifying_an_include_filter : ConsoleRunnerSpecs
   {
     Because of = ()=>
-      program.Run(new [] { GetPath("Machine.Specifications.Example.dll"), "--include", "failure"});
+      program.Run(new [] { GetPath("Example.dll"), "--include", "failure"});
 
     It should_execute_specs_with_the_included_tag = () =>
       console.Lines.ShouldContain(l => l.Contains("Account Funds transfer, when transferring an amount larger than the balance of the from account"));
@@ -215,7 +215,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
   public class when_running_from_directory_different_from_assembly_location : ConsoleRunnerSpecs
   {
     Because of = () =>
-      program.Run(new[] { GetPath(@"ExternalFile\Machine.Specifications.Example.UsingExternalFile.dll") });
+      program.Run(new[] { GetPath(@"ExternalFile\Example.UsingExternalFile.dll") });
 
     It should_pass_the_specification_which_depends_on_external_file = () =>
       console.Lines.ShouldContain(

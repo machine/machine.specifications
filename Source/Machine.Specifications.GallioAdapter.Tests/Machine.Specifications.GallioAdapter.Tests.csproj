@@ -73,9 +73,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Machine.Specifications.Example\Machine.Specifications.Example.csproj">
-      <Project>{2C28C643-31A2-44CA-B762-953A963F6F61}</Project>
-      <Name>Machine.Specifications.Example</Name>
+    <ProjectReference Include="..\Examples\Example\Example.csproj">
+      <Project>{2c28c643-31a2-44ca-b762-953a963f6f61}</Project>
+      <Name>Example</Name>
       <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\Machine.Specifications.GallioAdapter.TestResources\Machine.Specifications.GallioAdapter.TestResources.csproj">

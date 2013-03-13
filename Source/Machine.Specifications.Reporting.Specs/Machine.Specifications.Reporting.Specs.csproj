@@ -87,11 +87,11 @@
     <Compile Include="Visitors\IgnoredSpecificationLinkerSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Machine.Specifications.Example.Random\Machine.Specifications.Example.Random.csproj">
+    <ProjectReference Include="..\Examples\Example.Random\Example.Random.csproj">
       <Project>{1295C389-FCE4-4425-93E4-E4AE239B3E35}</Project>
       <Name>Machine.Specifications.Example.Random</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Machine.Specifications.Example\Machine.Specifications.Example.csproj">
+    <ProjectReference Include="..\Examples\Example\Example.csproj">
       <Project>{2C28C643-31A2-44CA-B762-953A963F6F61}</Project>
       <Name>Machine.Specifications.Example</Name>
     </ProjectReference>

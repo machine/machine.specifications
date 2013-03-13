@@ -33,8 +33,8 @@ namespace Machine.Specifications.Specs.Runner
   public class when_running_specs_in_an_assembly_with_a_reference_that_cannot_be_bound : running_specs
   {
     static Exception Exception;
-    readonly static string SpecAssembly = GetPath("Machine.Specifications.Example.BindingFailure.dll");
-    readonly static string ReferencedAssembly = GetPath("Machine.Specifications.Example.BindingFailure.Ref.dll");
+    readonly static string SpecAssembly = GetPath("Example.BindingFailure.dll");
+    readonly static string ReferencedAssembly = GetPath("Example.BindingFailure.Ref.dll");
 
     Establish context = () =>
     {
@@ -95,7 +95,7 @@ namespace Machine.Specifications.Specs.Runner
     It should_run = () =>
       listener.SpecCount.ShouldEqual(1);
   }
-  
+
   public class when_running_specs_of_a_nested_context_by_member : running_specs
   {
     Because of = () =>

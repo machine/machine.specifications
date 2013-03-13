@@ -1,6 +1,5 @@
 ﻿using System;
 using Machine.Specifications.Example;
-using Machine.Specifications.Example.CustomDelegates;
 using Machine.Specifications.Example.Random;
 using Machine.Specifications.FailingExample;
 using Machine.Specifications.Runner;
