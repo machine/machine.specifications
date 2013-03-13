@@ -1,5 +1,7 @@
 using System;
 
+using Example.Random;
+
 namespace Machine.Specifications.Specs.Runner
 {
   [Subject("Specification Runner")]
@@ -17,7 +19,7 @@ namespace Machine.Specifications.Specs.Runner
     It should_run_the_context_spec = () => context_with_behaviors.LocalSpecRan.ShouldBeTrue();
     It should_run_the_behavior_spec = () => Behaviors.BehaviorSpecRan.ShouldBeTrue();
   }
-  
+
   [Subject("Specification Runner")]
   public class when_running_a_context_with_specifications_in_a_behavior_where_the_behavior_field_is_ignored
     : RunnerSpecs
@@ -33,7 +35,7 @@ namespace Machine.Specifications.Specs.Runner
     It should_run_the_context_spec = () => context_with_behaviors_where_the_behavior_field_is_ignored.LocalSpecRan.ShouldBeTrue();
     It should_not_run_the_behavior_spec = () => Behaviors.BehaviorSpecRan.ShouldBeFalse();
   }
-  
+
   [Subject("Specification Runner")]
   public class when_running_a_context_with_specifications_in_a_behavior_where_the_behavior_is_ignored
     : RunnerSpecs
@@ -49,7 +51,7 @@ namespace Machine.Specifications.Specs.Runner
     It should_run_the_context_spec = () => context_with_behaviors_where_the_behavior_is_ignored.LocalSpecRan.ShouldBeTrue();
     It should_not_run_the_behavior_spec = () => IgnoredBehaviors.BehaviorSpecRan.ShouldBeFalse();
   }
-  
+
   [Subject("Specification Runner")]
   public class when_running_a_context_with_specifications_in_a_behavior_where_the_behavior_specs_are_ignored
     : RunnerSpecs
@@ -75,10 +77,10 @@ namespace Machine.Specifications.Specs.Runner
     Because of = () => { Exception = Catch.Exception(Run<context_with_nested_behaviors>); };
 
     It should_fail = () => Exception.ShouldBeOfType<SpecificationUsageException>();
-    It should_print_the_type_containing_the_nested_behaviors = () => 
+    It should_print_the_type_containing_the_nested_behaviors = () =>
       Exception.Message.ShouldContain(typeof(BehaviorsWithNestedBehavior).FullName);
   }
-  
+
   [Subject("Specification Runner")]
   public class when_running_a_context_with_behaviors_that_do_not_have_the_behaviors_attribute
     : RunnerSpecs
@@ -91,7 +93,7 @@ namespace Machine.Specifications.Specs.Runner
     It should_print_the_type_missing_the_attribute = () =>
       Exception.Message.ShouldContain(typeof(BehaviorsWithoutBehaviorsAttribute).FullName);
   }
-  
+
   [Subject("Specification Runner")]
   public class when_running_a_context_with_behaviors_with_establish
     : RunnerSpecs
@@ -104,7 +106,7 @@ namespace Machine.Specifications.Specs.Runner
     It should_print_the_behaviors_with_the_establish = () =>
       Exception.Message.ShouldContain(typeof(BehaviorsWithEstablish).FullName);
   }
-  
+
   [Subject("Specification Runner")]
   public class when_running_a_context_with_behaviors_with_because
     : RunnerSpecs

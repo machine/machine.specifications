@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+using Example.Random;
+
 using Machine.Specifications.Explorers;
 using Machine.Specifications.Model;
 
@@ -14,7 +16,7 @@ namespace Machine.Specifications.Specs.Explorers
     Establish context = () => { Explorer = new AssemblyExplorer(); };
 
     Because of =
-      () => { Contexts = Explorer.FindContextsIn(typeof(tag).Assembly, "Machine.Specifications.Specs.Internal"); };
+      () => { Contexts = Explorer.FindContextsIn(typeof(tag).Assembly, "Example.Random.Internal"); };
 
     It should_find_two_contexts =
       () => Contexts.Count().ShouldEqual(2);

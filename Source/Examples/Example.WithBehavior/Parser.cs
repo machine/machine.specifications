@@ -1,6 +1,6 @@
 using System;
 
-namespace Machine.Specifications.Example.WithBehavior
+namespace Example.WithBehavior
 {
   public interface IParser
   {

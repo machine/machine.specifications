@@ -1,6 +1,8 @@
 using System;
 
-namespace Machine.Specifications.Example
+using Machine.Specifications;
+
+namespace Example
 {
   [Subject(typeof(Account), "Funds transfer")]
   public class when_transferring_between_two_accounts

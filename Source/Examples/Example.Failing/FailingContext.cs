@@ -1,6 +1,8 @@
 ﻿using System;
 
-namespace Machine.Specifications.FailingExample
+using Machine.Specifications;
+
+namespace Example.Failing
 {
   [Subject("Scott Bellware")]
   public class at_any_given_moment

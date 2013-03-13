@@ -1,7 +1,8 @@
+using Example.Random;
+
 using Machine.Specifications.Reporting.Generation;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
-using Machine.Specifications.Specs;
 
 namespace Machine.Specifications.Reporting.Specs
 {

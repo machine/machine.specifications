@@ -1,10 +1,12 @@
 using System;
 
+using Machine.Specifications;
+
 // This is a rather contrived example, but I hope it shows what you can do with it.
 // I like the concept of MbUnit's RowTest and TypeFixture very much, especially when it comes to
 // testing the same logic with different input patterns/files, etc.
 
-namespace Machine.Specifications.Example.WithBehavior
+namespace Example.WithBehavior
 {
   [Subject("Date time parsing")]
   public class when_a_date_is_parsed_with_the_regular_expression_parser : DateTimeParsingSpecs

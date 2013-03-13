@@ -1,4 +1,6 @@
-﻿namespace Machine.Specifications.Example.Random
+﻿using Machine.Specifications;
+
+namespace Example.Random
 {
   public static class StaticContainer
   {
@@ -14,7 +16,7 @@
       It should_be_run = () => Foo.ShouldBeTrue();
     }
   }
-  
+
   public class NonStaticContainer
   {
     static readonly bool Bar;

@@ -1,6 +1,6 @@
-using System;
+using Machine.Specifications;
 
-namespace Machine.Specifications.Specs
+namespace Example.Random
 {
   public class TestCleanupAfterEveryContext : ICleanupAfterEveryContextInAssembly
   {

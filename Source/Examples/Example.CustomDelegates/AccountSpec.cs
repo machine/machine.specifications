@@ -1,6 +1,8 @@
 ﻿using System;
 
-namespace Machine.Specifications.Example.CustomDelegates
+using Machine.Specifications;
+
+namespace Example.CustomDelegates
 {
   [Subject(typeof(Account), "Funds transfer")]
   public class when_transferring_between_two_accounts
@@ -14,10 +16,10 @@ namespace Machine.Specifications.Example.CustomDelegates
       toAccount = new Account {Balance = 1m};
     };
 
-    When transfer_is_made = 
+    When transfer_is_made =
       () => fromAccount.Transfer(1m, toAccount);
 
-    Then should_debit_the_from_account_by_the_amount_transferred = 
+    Then should_debit_the_from_account_by_the_amount_transferred =
       () => fromAccount.Balance.ShouldEqual(0m);
 
     Then should_credit_the_to_account_by_the_amount_transferred =
@@ -37,7 +39,7 @@ namespace Machine.Specifications.Example.CustomDelegates
       toAccount = new Account {Balance = 1m};
     };
 
-    Because transfer_is_made = 
+    Because transfer_is_made =
       () => exception = Catch.Exception(() => fromAccount.Transfer(2m, toAccount));
 
     Then should_not_allow_the_transfer =

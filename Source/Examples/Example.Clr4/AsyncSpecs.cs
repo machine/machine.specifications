@@ -2,7 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Machine.Specifications.Example.Clr4
+using Machine.Specifications;
+
+namespace Example.Clr4
 {
   public class AsyncWorker
   {

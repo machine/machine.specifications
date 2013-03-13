@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading;
+﻿using Machine.Specifications;
 
 // This class demonstrates the creation of "empty"
 // specs.. technically speaking, this is a normal
@@ -22,9 +16,9 @@ using System.Threading;
 // the implementation team to put expectations down in
 // code and have a place to come back to later, when
 // the documented functionality is implemented (or
-// intra-implementation, even). 
+// intra-implementation, even).
 
-namespace Machine.Specifications.Example
+namespace Example
 {
   [Subject("Recent Account Activity Summary page")]
   public class when_a_customer_first_views_the_account_summary_page

@@ -1,3 +1,5 @@
+using Example.Random;
+
 namespace Machine.Specifications.Specs.Runner
 {
   [Subject("Specification Runner")]

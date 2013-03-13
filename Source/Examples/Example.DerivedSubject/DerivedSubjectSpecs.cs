@@ -1,6 +1,8 @@
 ﻿using System;
 
-namespace Machine.Specifications.Example.DerivedSubject
+using Machine.Specifications;
+
+namespace Example.DerivedSubject
 {
   public class Account
   {

@@ -1,4 +1,4 @@
-namespace Machine.Specifications.Example.BindingFailure.Ref
+namespace Example.BindingFailure.Ref
 {
   public class Referenced
   {

@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 
+using Example.Random;
+
 using Machine.Specifications.Factories;
 using Machine.Specifications.Model;
 
@@ -116,7 +118,7 @@ namespace Machine.Specifications.Specs.Factories
                                                   .nested_context_that_has_a_because_block_which());
     };
 
-    It should_be_able_to_be_created_successfully_if_a_testing_tool_has_specified_to_override_the_allowed_number_of_because_blocks = 
+    It should_be_able_to_be_created_successfully_if_a_testing_tool_has_specified_to_override_the_allowed_number_of_because_blocks =
       () => new_context.ShouldNotBeNull();
 
     static Context new_context;

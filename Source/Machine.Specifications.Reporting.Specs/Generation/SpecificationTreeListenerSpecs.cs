@@ -1,6 +1,7 @@
 ﻿using System;
 
-using Machine.Specifications.Example;
+using Example;
+
 using Machine.Specifications.Reporting.Generation;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
@@ -27,13 +28,11 @@ namespace Machine.Specifications.Reporting.Specs.Generation
 
     It should_set_the_report_generation_date =
       () => DateTime.Now.AddSeconds(-5).ShouldBeLessThan(listener.Run.Meta.GeneratedAt);
-    
+
     It should_default_to_no_timestamp =
       () => listener.Run.Meta.ShouldGenerateTimeInfo.ShouldBeFalse();
-    
+
     It should_default_to_no_link_to_the_summary =
       () => listener.Run.Meta.ShouldGenerateIndexLink.ShouldBeFalse();
   }
 }
-
-

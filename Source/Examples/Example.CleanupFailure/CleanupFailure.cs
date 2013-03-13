@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
-namespace Machine.Specifications.Example.CleanupFailure
+using Machine.Specifications;
+
+namespace Example.CleanupFailure
 {
   public class cleanup_failure
   {

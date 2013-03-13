@@ -1,4 +1,5 @@
-﻿using Machine.Specifications.Example;
+﻿using Example;
+
 using NUnit.Framework;
 
 namespace Machine.Specifications.GallioAdapter.Tests

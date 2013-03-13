@@ -1,4 +1,6 @@
-namespace Machine.Specifications.Specs
+using Machine.Specifications;
+
+namespace Example.Random
 {
   [Tags(tag.example, "behavior usage")]
   public class context_with_behaviors
@@ -52,7 +54,7 @@ namespace Machine.Specifications.Specs
     It should_run = () => LocalSpecRan = true;
     Behaves_like<BehaviorsWithNestedBehavior> behavior_with_nested_behavior;
   }
-  
+
   [Tags(tag.example)]
   public class context_with_behaviors_without_behaviors_attribute
   {
@@ -61,7 +63,7 @@ namespace Machine.Specifications.Specs
     It should_run = () => LocalSpecRan = true;
     Behaves_like<BehaviorsWithoutBehaviorsAttribute> behavior_without_behavior_attribute;
   }
-  
+
   [Tags(tag.example)]
   public class context_with_behaviors_with_establish
   {
@@ -70,7 +72,7 @@ namespace Machine.Specifications.Specs
     It should_run = () => LocalSpecRan = true;
     Behaves_like<BehaviorsWithEstablish> behavior_with_establish;
   }
-  
+
   [Tags(tag.example)]
   public class context_with_behaviors_with_because
   {
@@ -84,7 +86,7 @@ namespace Machine.Specifications.Specs
   public class context_missing_protected_fields_that_are_in_behaviors
   {
     public static bool LocalSpecRan;
-    
+
     It should_not_run = () => LocalSpecRan = true;
     Behaves_like<BehaviorsWithProtectedFields> behavior_with_protected_fields;
   }
@@ -106,7 +108,7 @@ namespace Machine.Specifications.Specs
 
     It should_run_if_behavior_is_not_ignored = () => BehaviorSpecRan = true;
   }
-  
+
   [Ignore]
   [Behaviors]
   public class IgnoredBehaviors
@@ -130,7 +132,7 @@ namespace Machine.Specifications.Specs
   {
     Behaves_like<object> diallowed_nested_behavior;
   }
-  
+
   public class BehaviorsWithoutBehaviorsAttribute
   {
     public static bool BehaviorSpecRan;
@@ -143,7 +145,7 @@ namespace Machine.Specifications.Specs
   {
     Establish context;
   }
-  
+
   [Behaviors]
   public class BehaviorsWithBecause
   {

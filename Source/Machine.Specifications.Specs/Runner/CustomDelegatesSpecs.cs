@@ -1,4 +1,4 @@
-﻿using Machine.Specifications.Example.CustomDelegates;
+﻿using Example.CustomDelegates;
 
 namespace Machine.Specifications.Specs.Runner
 {

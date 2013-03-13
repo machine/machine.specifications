@@ -1,7 +1,9 @@
 ﻿using System;
-using Machine.Specifications.Example;
-using Machine.Specifications.Example.Random;
-using Machine.Specifications.FailingExample;
+
+using Example;
+using Example.Failing;
+using Example.Random;
+
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
 
@@ -146,7 +148,7 @@ namespace Machine.Specifications.Specs.Runner
       () => exception.ShouldBeOfType<SpecificationUsageException>();
 
     It should_report_the_reason =
-      () => exception.Message.ShouldStartWith("You cannot have more than one Establish clause in Machine.Specifications");
+      () => exception.Message.ShouldStartWith("You cannot have more than one Establish clause in Example.Failing.context_with_multiple_establish_clauses");
   }
 
   [Subject("Specification Runner")]
@@ -162,7 +164,7 @@ namespace Machine.Specifications.Specs.Runner
       () => exception.ShouldBeOfType<SpecificationUsageException>();
 
     It should_report_the_reason =
-      () => exception.Message.ShouldStartWith("You cannot have more than one Given clause in Machine.Specifications");
+      () => exception.Message.ShouldStartWith("You cannot have more than one Given clause in Example.Failing.context_with_multiple_given_clauses");
   }
 
   [Subject("Specification Runner")]
@@ -366,7 +368,7 @@ namespace Machine.Specifications.Specs.Runner
     Establish context = () =>
     {
       testListener = new TestListener();
-      var options = new RunOptions(new string[] {}, new string[] {}, new []{ "Machine.Specifications.Specs.context_with_multiple_specifications" });
+      var options = new RunOptions(new string[] {}, new string[] {}, new []{ "Example.Random.context_with_multiple_specifications" });
 
       runner = new DefaultRunner(testListener, options);
     };
@@ -396,8 +398,8 @@ namespace Machine.Specifications.Specs.Runner
                                    new string[] { },
                                    new[]
                                    {
-                                     "Machine.Specifications.Specs.context_with_multiple_specifications",
-                                     "Machine.Specifications.Specs.context_with_duplicate_tags"
+                                     "Example.Random.context_with_multiple_specifications",
+                                     "Example.Random.context_with_duplicate_tags"
                                    });
 
       runner = new DefaultRunner(testListener, options);

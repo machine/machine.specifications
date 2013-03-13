@@ -1,6 +1,8 @@
 using System.Configuration;
 
-namespace Machine.Specifications.Example.UsingExternalFile
+using Machine.Specifications;
+
+namespace Example.UsingExternalFile
 {
   [Subject("External resources usage")]
   public class when_using_test_assembly_configuration_file

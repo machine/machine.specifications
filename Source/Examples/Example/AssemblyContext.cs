@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Machine.Specifications;
 
-namespace Machine.Specifications.Example
+namespace Example
 {
   public class TestAssemblyContext : IAssemblyContext
   {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Machine.Specifications.Example.CustomDelegates
+namespace Example.CustomDelegates
 {
   public class Account
   {

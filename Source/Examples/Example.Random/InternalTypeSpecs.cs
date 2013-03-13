@@ -1,4 +1,6 @@
-﻿namespace Machine.Specifications.Specs.Internal
+﻿using Machine.Specifications;
+
+namespace Example.Random.Internal
 {
   [Subject("Internal types")]
   [Tags(tag.example)]

@@ -2,8 +2,10 @@
 using System.IO;
 using System.Reflection;
 
-using Machine.Specifications.Example;
-using Machine.Specifications.Example.CleanupFailure;
+using Example;
+using Example.CleanupFailure;
+using Example.Random;
+
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
 
@@ -45,7 +47,7 @@ namespace Machine.Specifications.Specs.Runner
     };
 
     Because of = () =>
-	  runner.RunAssembly(Assembly.LoadFrom(SpecAssembly));
+    runner.RunAssembly(Assembly.LoadFrom(SpecAssembly));
 
     It should_fail = () =>
       listener.LastFatalError.ShouldNotBeNull();
@@ -72,7 +74,7 @@ namespace Machine.Specifications.Specs.Runner
   public class when_running_specs_by_namespace : running_specs
   {
     Because of = () =>
-      runner.RunNamespace(typeof(Account).Assembly, "Machine.Specifications.Example");
+      runner.RunNamespace(typeof(Account).Assembly, "Example");
 
     It should_run_them_all = () =>
       listener.SpecCount.ShouldEqual(6);

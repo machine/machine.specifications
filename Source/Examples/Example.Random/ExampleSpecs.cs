@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Machine.Specifications.Specs
+using Machine.Specifications;
+
+namespace Example.Random
 {
   public static class tag
   {
@@ -55,7 +57,7 @@ namespace Machine.Specifications.Specs
   {
     It should_be_unimplemented;
   }
-  
+
   [Ignore]
   public class context_with_ignore : context_with_no_specs
   {
@@ -73,7 +75,7 @@ namespace Machine.Specifications.Specs
     It should_be_ignored = () =>
       IgnoredSpecRan = true;
   }
-  
+
   [Ignore("just because")]
   public class context_with_ignore_and_reason : context_with_no_specs
   {

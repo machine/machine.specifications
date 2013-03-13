@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Machine.Specifications.Example;
+
+using Example;
+
 using Machine.Testing;
 using NUnit.Framework;
 

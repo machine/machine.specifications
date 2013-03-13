@@ -1,4 +1,6 @@
-namespace Machine.Specifications.Specs
+using Machine.Specifications;
+
+namespace Example.Random
 {
   public abstract class context_that_inherits
   {

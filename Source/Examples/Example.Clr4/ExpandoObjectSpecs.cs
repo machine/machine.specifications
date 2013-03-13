@@ -1,6 +1,8 @@
 ﻿using System.Dynamic;
 
-namespace Machine.Specifications.Example.Clr4
+using Machine.Specifications;
+
+namespace Example.Clr4
 {
 	public class When_specs_target_the_common_language_runtime_in_version_4
 	{
