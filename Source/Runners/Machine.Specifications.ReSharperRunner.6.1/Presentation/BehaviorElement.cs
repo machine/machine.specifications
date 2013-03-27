@@ -5,12 +5,14 @@ using System.Xml;
 
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.ReSharper.UnitTestFramework.Elements;
 using JetBrains.Util;
 
 using Machine.Specifications.ReSharperRunner.Factories;
+using Machine.Specifications.ReSharperRunner.Shims;
+
+using ICache = Machine.Specifications.ReSharperRunner.Shims.ICache;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
@@ -19,8 +21,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     readonly string _id;
 
     public BehaviorElement(MSpecUnitTestProvider provider,
-                           PsiModuleManager psiModuleManager,
-                           CacheManager cacheManager,
+                           IPsi psiModuleManager,
+                           ICache cacheManager,
                            // ReSharper disable SuggestBaseTypeForParameter
                            ContextElement context,
                            // ReSharper restore SuggestBaseTypeForParameter
@@ -29,15 +31,14 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
                            string fieldName,
                            bool isIgnored,
                            string fieldType)
-      : base(
-        provider,
-        psiModuleManager,
-        cacheManager,
-        context,
-        projectEnvoy,
-        declaringTypeName,
-        fieldName,
-        isIgnored || context.Explicit)
+      : base(provider,
+             psiModuleManager,
+             cacheManager,
+             context,
+             projectEnvoy,
+             declaringTypeName,
+             fieldName,
+             isIgnored || context.Explicit)
     {
       FieldType = fieldType;
       _id = CreateId(context, fieldType, fieldName);
@@ -87,12 +88,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public static IUnitTestElement ReadFromXml(XmlElement parent,
                                                IUnitTestElement parentElement,
-                                               MSpecUnitTestProvider provider,
                                                ISolution solution,
-                                               IUnitTestElementManager manager,
-                                               PsiModuleManager psiModuleManager,
-                                               CacheManager cacheManager
-      )
+                                               BehaviorFactory factory)
     {
       var projectId = parent.GetAttribute("projectId");
       var project = ProjectUtil.FindProjectElementByPersistentID(solution, projectId) as IProject;
@@ -112,17 +109,11 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       var isIgnored = bool.Parse(parent.GetAttribute("isIgnored"));
       var fieldType = parent.GetAttribute("fieldType");
 
-      return BehaviorFactory.GetOrCreateBehavior(provider,
-                                                 manager,
-                                                 psiModuleManager,
-                                                 cacheManager,
-                                                 project,
-                                                 ProjectModelElementEnvoy.Create(project),
-                                                 context,
-                                                 new ClrTypeName(typeName),
-                                                 methodName,
-                                                 isIgnored,
-                                                 fieldType);
+      return factory.GetOrCreateBehavior(context,
+                                         new ClrTypeName(typeName),
+                                         methodName,
+                                         isIgnored,
+                                         fieldType);
     }
 
     public static string CreateId(ContextElement contextElement, string fieldType, string fieldName)

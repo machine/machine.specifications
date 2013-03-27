@@ -5,13 +5,14 @@ using System.Xml;
 
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.UnitTestFramework;
-using JetBrains.ReSharper.UnitTestFramework.Elements;
 using JetBrains.Util;
 
 using Machine.Specifications.ReSharperRunner.Factories;
+using Machine.Specifications.ReSharperRunner.Shims;
 using Machine.Specifications.Utility.Internal;
+
+using ICache = Machine.Specifications.ReSharperRunner.Shims.ICache;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
@@ -23,8 +24,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     readonly string _subject;
 
     public ContextElement(MSpecUnitTestProvider provider,
-                          PsiModuleManager psiModuleManager,
-                          CacheManager cacheManager,
+                          IPsi psiModuleManager,
+                          ICache cacheManager,
                           ProjectModelElementEnvoy projectEnvoy,
                           IClrTypeName typeName,
                           string assemblyLocation,
@@ -98,13 +99,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     }
 
     public static IUnitTestElement ReadFromXml(XmlElement parent,
-                                               IUnitTestElement parentElement,
-                                               MSpecUnitTestProvider provider,
                                                ISolution solution,
-                                               IUnitTestElementManager manager,
-                                               PsiModuleManager psiModuleManager,
-                                               CacheManager cacheManager
-      )
+                                               ContextFactory factory)
     {
       var projectId = parent.GetAttribute("projectId");
       var project = ProjectUtil.FindProjectElementByPersistentID(solution, projectId) as IProject;
@@ -118,17 +114,11 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       var isIgnored = bool.Parse(parent.GetAttribute("isIgnored"));
       var subject = parent.GetAttribute("subject");
 
-      return ContextFactory.GetOrCreateContext(provider,
-                                               manager,
-                                               psiModuleManager,
-                                               cacheManager,
-                                               project,
-                                               ProjectModelElementEnvoy.Create(project),
-                                               new ClrTypeName(typeName),
-                                               assemblyLocation,
-                                               subject,
-                                               EmptyArray<string>.Instance,
-                                               isIgnored);
+      return factory.GetOrCreateContext(new ClrTypeName(typeName),
+                                        assemblyLocation,
+                                        subject,
+                                        EmptyArray<string>.Instance,
+                                        isIgnored);
     }
 
     public static string CreateId(string subject, string typeName, IEnumerable<string> tags)

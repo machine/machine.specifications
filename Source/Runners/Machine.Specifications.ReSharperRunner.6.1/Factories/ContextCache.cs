@@ -6,7 +6,7 @@ using Machine.Specifications.ReSharperRunner.Presentation;
 
 namespace Machine.Specifications.ReSharperRunner.Factories
 {
-  internal class ElementCache
+  public class ElementCache
   {
     public ElementCache()
     {

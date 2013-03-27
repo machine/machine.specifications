@@ -5,12 +5,14 @@ using System.Xml;
 
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.ReSharper.UnitTestFramework.Elements;
 using JetBrains.Util;
 
 using Machine.Specifications.ReSharperRunner.Factories;
+using Machine.Specifications.ReSharperRunner.Shims;
+
+using ICache = Machine.Specifications.ReSharperRunner.Shims.ICache;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
@@ -19,24 +21,22 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     readonly string _id;
 
     public BehaviorSpecificationElement(MSpecUnitTestProvider provider,
-                                        PsiModuleManager psiModuleManager,
-                                        CacheManager cacheManager,
-                                        // ReSharper disable SuggestBaseTypeForParameter
-                                        BehaviorElement behavior,
-                                        // ReSharper restore SuggestBaseTypeForParameter
+                                        IPsi psiModuleManager,
+                                        ICache cacheManager,
                                         ProjectModelElementEnvoy projectEnvoy,
+                                        BehaviorElement behavior,
                                         IClrTypeName declaringTypeName,
                                         string fieldName,
-                                        bool isIgnored)
-      : base(
-        provider,
-        psiModuleManager,
-        cacheManager,
-        behavior,
-        projectEnvoy,
-        declaringTypeName,
-        fieldName,
-        isIgnored || behavior.Explicit)
+                                        bool isIgnored
+      )
+      : base(provider,
+             psiModuleManager,
+             cacheManager,
+             behavior,
+             projectEnvoy,
+             declaringTypeName,
+             fieldName,
+             isIgnored || behavior.Explicit)
     {
       _id = CreateId(behavior, fieldName);
     }
@@ -72,13 +72,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public static IUnitTestElement ReadFromXml(XmlElement parent,
                                                IUnitTestElement parentElement,
-                                               MSpecUnitTestProvider provider,
-                                               ISolution solution
-                                               ,
-                                               IUnitTestElementManager manager,
-                                               PsiModuleManager psiModuleManager,
-                                               CacheManager cacheManager
-      )
+                                               ISolution solution,
+                                               BehaviorSpecificationFactory factory)
     {
       var projectId = parent.GetAttribute("projectId");
       var project = ProjectUtil.FindProjectElementByPersistentID(solution, projectId) as IProject;
@@ -97,16 +92,10 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       var methodName = parent.GetAttribute("methodName");
       var isIgnored = bool.Parse(parent.GetAttribute("isIgnored"));
 
-      return BehaviorSpecificationFactory.GetOrCreateBehaviorSpecification(provider,
-                                                                           manager,
-                                                                           psiModuleManager,
-                                                                           cacheManager,
-                                                                           project,
-                                                                           behavior,
-                                                                           ProjectModelElementEnvoy.Create(project),
-                                                                           new ClrTypeName(typeName),
-                                                                           methodName,
-                                                                           isIgnored);
+      return factory.GetOrCreateBehaviorSpecification(behavior,
+                                                      new ClrTypeName(typeName),
+                                                      methodName,
+                                                      isIgnored);
     }
 
     public static string CreateId(BehaviorElement behaviorElement, string fieldName)

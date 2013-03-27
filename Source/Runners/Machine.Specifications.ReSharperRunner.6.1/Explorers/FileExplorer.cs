@@ -6,17 +6,16 @@ using JetBrains.Application;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.UnitTestFramework;
-using JetBrains.ReSharper.UnitTestFramework.Elements;
 
 using Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers;
 using Machine.Specifications.ReSharperRunner.Factories;
 
 namespace Machine.Specifications.ReSharperRunner.Explorers
 {
-  class FileExplorer : IRecursiveElementProcessor
+  [SolutionComponent]
+  public class FileExplorer : IRecursiveElementProcessor
   {
     readonly UnitTestElementLocationConsumer _consumer;
     readonly IEnumerable<IElementHandler> _elementHandlers;
@@ -24,12 +23,10 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
     readonly CheckForInterrupt _interrupted;
 
     public FileExplorer(MSpecUnitTestProvider provider,
-                        IUnitTestElementManager manager,
-                        PsiModuleManager psiModuleManager,
-                        CacheManager cacheManager,
                         UnitTestElementLocationConsumer consumer,
                         IFile file,
-                        CheckForInterrupt interrupted)
+                        CheckForInterrupt interrupted,
+                        ElementFactories factories)
     {
       if (file == null)
       {
@@ -45,46 +42,12 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
       _file = file;
       _interrupted = interrupted;
 
-      var project = file.GetSourceFile().ToProjectFile().GetProject();
-      var projectEnvoy = new ProjectModelElementEnvoy(project);
-      var assemblyPath = UnitTestManager.GetOutputAssemblyPath(project).FullPath;
-
-      var cache = new ElementCache();
-
-      var contextFactory = new ContextFactory(provider,
-                                              manager,
-                                              psiModuleManager,
-                                              cacheManager,
-                                              project,
-                                              projectEnvoy,
-                                              assemblyPath,
-                                              cache);
-      var contextSpecificationFactory = new ContextSpecificationFactory(provider,
-                                                                        manager,
-                                                                        psiModuleManager,
-                                                                        cacheManager,
-                                                                        project,
-                                                                        projectEnvoy,
-                                                                        cache);
-      var behaviorFactory = new BehaviorFactory(provider,
-                                                manager,
-                                                psiModuleManager,
-                                                cacheManager,
-                                                project,
-                                                projectEnvoy,
-                                                cache);
-      var behaviorSpecificationFactory = new BehaviorSpecificationFactory(provider,
-                                                                          manager,
-                                                                          psiModuleManager,
-                                                                          cacheManager,
-                                                                          project,
-                                                                          projectEnvoy);
 
       _elementHandlers = new List<IElementHandler>
                          {
-                           new ContextElementHandler(contextFactory),
-                           new ContextSpecificationElementHandler(contextSpecificationFactory),
-                           new BehaviorElementHandler(behaviorFactory, behaviorSpecificationFactory)
+                           new ContextElementHandler(factories),
+                           new ContextSpecificationElementHandler(factories),
+                           new BehaviorElementHandler(factories)
                          };
     }
 

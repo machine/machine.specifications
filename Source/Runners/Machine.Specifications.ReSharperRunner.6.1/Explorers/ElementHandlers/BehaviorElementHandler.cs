@@ -15,10 +15,10 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
     readonly BehaviorFactory _factory;
     readonly BehaviorSpecificationFactory _behaviorSpecifications;
 
-    public BehaviorElementHandler(BehaviorFactory behaviorFactory, BehaviorSpecificationFactory behaviorSpecificationFactory)
+    public BehaviorElementHandler(ElementFactories factories)
     {
-      _factory = behaviorFactory;
-      _behaviorSpecifications = behaviorSpecificationFactory;
+      _factory = factories.Behaviors;
+      _behaviorSpecifications = factories.BehaviorSpecifications;
     }
 
     public bool Accepts(ITreeNode element)

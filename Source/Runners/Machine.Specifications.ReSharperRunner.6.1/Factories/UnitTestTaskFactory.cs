@@ -14,12 +14,13 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     {
       _providerId = providerId;
     }
-
+#if !RESHARPER_8
     public UnitTestTask CreateAssemblyLoadTask(ContextElement context)
     {
       return new UnitTestTask(null,
                               new AssemblyLoadTask(context.AssemblyLocation));
     }
+#endif
 
     public UnitTestTask CreateRunAssemblyTask(ContextElement context)
     {

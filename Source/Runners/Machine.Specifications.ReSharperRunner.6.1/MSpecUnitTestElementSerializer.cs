@@ -1,11 +1,9 @@
 ﻿using System.Xml;
 
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.UnitTestFramework;
-using JetBrains.ReSharper.UnitTestFramework.Elements;
 
+using Machine.Specifications.ReSharperRunner.Factories;
 using Machine.Specifications.ReSharperRunner.Presentation;
 
 namespace Machine.Specifications.ReSharperRunner
@@ -13,33 +11,38 @@ namespace Machine.Specifications.ReSharperRunner
   [SolutionComponent]
   public class MSpecUnitTestElementSerializer : IUnitTestElementSerializer
   {
-    readonly CacheManager _cacheManager;
-    readonly IUnitTestElementManager _manager;
+    readonly BehaviorFactory _behaviorFactory;
+    readonly BehaviorSpecificationFactory _behaviorSpecificationFactory;
+    readonly ContextFactory _contextFactory;
+    readonly ContextSpecificationFactory _contextSpecificationFactory;
     readonly MSpecUnitTestProvider _provider;
-    readonly PsiModuleManager _psiModuleManager;
     readonly ISolution _solution;
 
     public MSpecUnitTestElementSerializer(ISolution solution,
                                           MSpecUnitTestProvider provider,
-                                          IUnitTestElementManager manager,
-                                          PsiModuleManager psiModuleManager,
-                                          CacheManager cacheManager)
+                                          ContextFactory contextFactory,
+                                          ContextSpecificationFactory contextSpecificationFactory,
+                                          BehaviorFactory behaviorFactory,
+                                          BehaviorSpecificationFactory behaviorSpecificationFactory)
     {
       _solution = solution;
       _provider = provider;
-      _manager = manager;
-      _psiModuleManager = psiModuleManager;
-      _cacheManager = cacheManager;
+      _contextFactory = contextFactory;
+      _contextSpecificationFactory = contextSpecificationFactory;
+      _behaviorFactory = behaviorFactory;
+      _behaviorSpecificationFactory = behaviorSpecificationFactory;
     }
 
     public void SerializeElement(XmlElement parent, IUnitTestElement element)
     {
       var e = element as ISerializableElement;
-      if (e != null)
+      if (e == null)
       {
-        e.WriteToXml(parent);
-        parent.SetAttribute("elementType", e.GetType().Name);
+        return;
       }
+
+      e.WriteToXml(parent);
+      parent.SetAttribute("elementType", e.GetType().Name);
     }
 
     public IUnitTestElement DeserializeElement(XmlElement parent, IUnitTestElement parentElement)
@@ -49,42 +52,29 @@ namespace Machine.Specifications.ReSharperRunner
       if (Equals(typeName, "ContextElement"))
       {
         return ContextElement.ReadFromXml(parent,
-                                          parentElement,
-                                          _provider,
                                           _solution,
-                                          _manager,
-                                          _psiModuleManager,
-                                          _cacheManager);
+                                          _contextFactory);
       }
       if (Equals(typeName, "BehaviorElement"))
       {
         return BehaviorElement.ReadFromXml(parent,
                                            parentElement,
-                                           _provider,
                                            _solution,
-                                           _manager,
-                                           _psiModuleManager,
-                                           _cacheManager);
+                                           _behaviorFactory);
       }
       if (Equals(typeName, "BehaviorSpecificationElement"))
       {
         return BehaviorSpecificationElement.ReadFromXml(parent,
                                                         parentElement,
-                                                        _provider,
                                                         _solution,
-                                                        _manager,
-                                                        _psiModuleManager,
-                                                        _cacheManager);
+                                                        _behaviorSpecificationFactory);
       }
       if (Equals(typeName, "ContextSpecificationElement"))
       {
         return ContextSpecificationElement.ReadFromXml(parent,
                                                        parentElement,
-                                                       _provider,
                                                        _solution,
-                                                       _manager,
-                                                       _psiModuleManager,
-                                                       _cacheManager);
+                                                       _contextSpecificationFactory);
       }
 
       return null;

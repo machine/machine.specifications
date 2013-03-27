@@ -4,10 +4,12 @@ using System.Xml;
 
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.Util;
 
+using Machine.Specifications.ReSharperRunner.Shims;
 using Machine.Specifications.Utility.Internal;
+
+using ICache = Machine.Specifications.ReSharperRunner.Shims.ICache;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
@@ -16,8 +18,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     readonly string _fieldName;
 
     protected FieldElement(MSpecUnitTestProvider provider,
-                           PsiModuleManager psiModuleManager,
-                           CacheManager cacheManager,
+                           IPsi psiModuleManager,
+                           ICache cacheManager,
                            Element parent,
                            ProjectModelElementEnvoy projectEnvoy,
                            IClrTypeName declaringTypeName,
@@ -60,9 +62,9 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
         return null;
       }
 
-      return declaredType.EnumerateMembers(FieldName, false)
-        .Where(member => member as IField != null)
-        .FirstOrDefault();
+      return declaredType
+        .EnumerateMembers(FieldName, false)
+        .FirstOrDefault(member => member as IField != null);
     }
 
     public virtual void WriteToXml(XmlElement parent)

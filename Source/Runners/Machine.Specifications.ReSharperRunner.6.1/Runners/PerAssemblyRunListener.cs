@@ -132,11 +132,9 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     {
       var notify = CreateTaskNotificationFor(specification, _currentContext);
 
-      notify(task => _server.TaskProgress(task, null));
-
       NotifyRedirectedOutput(notify, _specificationOutput);
 
-      TaskResult taskResult = TaskResult.Success;
+      var taskResult = TaskResult.Success;
       string message = null;
       switch (result.Status)
       {

@@ -1,30 +1,33 @@
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.Impl.Reflection2;
 using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.ReSharper.UnitTestFramework.Elements;
 
 using Machine.Specifications.ReSharperRunner.Presentation;
+using Machine.Specifications.ReSharperRunner.Shims;
+
+using ICache = Machine.Specifications.ReSharperRunner.Shims.ICache;
 
 namespace Machine.Specifications.ReSharperRunner.Factories
 {
-  class ContextSpecificationFactory
+  [SolutionComponent]
+  public class ContextSpecificationFactory
   {
     readonly ElementCache _cache;
-    readonly CacheManager _cacheManager;
+    readonly ICache _cacheManager;
     readonly IUnitTestElementManager _manager;
     readonly IProject _project;
     readonly ProjectModelElementEnvoy _projectEnvoy;
     readonly MSpecUnitTestProvider _provider;
-    readonly PsiModuleManager _psiModuleManager;
+    readonly IPsi _psiModuleManager;
     readonly ReflectionTypeNameCache _reflectionTypeNameCache = new ReflectionTypeNameCache();
 
     public ContextSpecificationFactory(MSpecUnitTestProvider provider,
                                        IUnitTestElementManager manager,
-                                       PsiModuleManager psiModuleManager,
-                                       CacheManager cacheManager,
+                                       IPsi psiModuleManager,
+                                       ICache cacheManager,
                                        IProject project,
                                        ProjectModelElementEnvoy projectEnvoy,
                                        ElementCache cache)
@@ -53,13 +56,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         return null;
       }
 
-      return GetOrCreateContextSpecification(_provider,
-                                             _manager,
-                                             _psiModuleManager,
-                                             _cacheManager,
-                                             _project,
-                                             context,
-                                             _projectEnvoy,
+      return GetOrCreateContextSpecification(context,
                                              clazz.GetClrName().GetPersistent(),
                                              field.ShortName,
                                              field.IsIgnored());
@@ -67,31 +64,19 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
     public ContextSpecificationElement CreateContextSpecification(ContextElement context, IMetadataField specification)
     {
-      return GetOrCreateContextSpecification(_provider,
-                                             _manager,
-                                             _psiModuleManager,
-                                             _cacheManager,
-                                             _project,
-                                             context,
-                                             _projectEnvoy,
+      return GetOrCreateContextSpecification(context,
                                              _reflectionTypeNameCache.GetClrName(specification.DeclaringType),
                                              specification.Name,
                                              specification.IsIgnored());
     }
 
-    public static ContextSpecificationElement GetOrCreateContextSpecification(MSpecUnitTestProvider provider,
-                                                                              IUnitTestElementManager manager,
-                                                                              PsiModuleManager psiModuleManager,
-                                                                              CacheManager cacheManager,
-                                                                              IProject project,
-                                                                              ContextElement context,
-                                                                              ProjectModelElementEnvoy projectEnvoy,
+    public ContextSpecificationElement GetOrCreateContextSpecification(ContextElement context,
                                                                               IClrTypeName declaringTypeName,
                                                                               string fieldName,
                                                                               bool isIgnored)
     {
       var id = ContextSpecificationElement.CreateId(context, fieldName);
-      var contextSpecification = manager.GetElementById(project, id) as ContextSpecificationElement;
+      var contextSpecification = _manager.GetElementById(_project, id) as ContextSpecificationElement;
       if (contextSpecification != null)
       {
         contextSpecification.Parent = context;
@@ -99,14 +84,13 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         return contextSpecification;
       }
 
-      return new ContextSpecificationElement(provider,
-                                             psiModuleManager,
-                                             cacheManager,
+      return new ContextSpecificationElement(_provider,
+                                             _psiModuleManager,
+                                             _cacheManager,
+                                             _projectEnvoy,
                                              context,
-                                             projectEnvoy,
                                              declaringTypeName,
-                                             fieldName,
-                                             isIgnored);
+                                             fieldName, isIgnored);
     }
   }
 }

@@ -128,6 +128,7 @@
     <Compile Include="Factories\ContextCache.cs" />
     <Compile Include="Factories\ContextFactory.cs" />
     <Compile Include="Factories\ContextSpecificationFactory.cs" />
+    <Compile Include="Factories\ElementFactories.cs" />
     <Compile Include="Factories\UnitTestTaskFactory.cs" />
     <Compile Include="MetadataExtensions.cs" />
     <Compile Include="MSpecElementNaming.cs" />
@@ -160,6 +161,10 @@
     <Compile Include="Runners\PerAssemblyRunListener.cs" />
     <Compile Include="Runners\RecursiveMSpecTaskRunner.cs" />
     <Compile Include="Runners\VersionCompatibilityChecker.cs" />
+    <Compile Include="Shims\Cache.cs" />
+    <Compile Include="Shims\ICache.cs" />
+    <Compile Include="Shims\IPsi.cs" />
+    <Compile Include="Shims\Psi.cs" />
     <Compile Include="Tasks\BehaviorSpecificationTask.cs" />
     <Compile Include="Tasks\ContextSpecificationTask.cs" />
     <Compile Include="Tasks\ContextTask.cs" />

@@ -2,15 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using JetBrains.Application;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.Util;
 
 using Machine.Specifications.ReSharperRunner.Factories;
+using Machine.Specifications.ReSharperRunner.Shims;
+
+using ICache = Machine.Specifications.ReSharperRunner.Shims.ICache;
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
@@ -21,22 +22,17 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     readonly MSpecUnitTestProvider _provider;
     readonly UnitTestTaskFactory _taskFactory;
     Element _parent;
-    readonly PsiModuleManager _psiModuleManager;
-    readonly CacheManager _cacheManager;
+    readonly IPsi _psiModuleManager;
+    readonly ICache _cacheManager;
 
     protected Element(MSpecUnitTestProvider provider,
-                      PsiModuleManager psiModuleManager,
-                      CacheManager cacheManager,
+                      IPsi psiModuleManager,
+                      ICache cacheManager,
                       Element parent,
                       ProjectModelElementEnvoy projectEnvoy,
                       IClrTypeName declaringTypeName,
                       bool isIgnored)
     {
-      if (projectEnvoy == null && !Shell.Instance.IsTestShell)
-      {
-        throw new ArgumentNullException("project");
-      }
-
       if (declaringTypeName == null)
       {
         throw new ArgumentNullException("declaringTypeName");
@@ -65,7 +61,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       _taskFactory = new UnitTestTaskFactory(_provider.ID);
     }
 
-    public IClrTypeName TypeName { get; protected set; }
+    public IClrTypeName TypeName { get; private set; }
     public abstract string Kind { get; }
     public abstract IEnumerable<UnitTestElementCategory> Categories { get; }
     public string ExplicitReason { get; private set; }
@@ -196,7 +192,9 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
         return new List<UnitTestTask>
                {
+#if !RESHARPER_8
                  _taskFactory.CreateAssemblyLoadTask(context),
+#endif
                  _taskFactory.CreateRunAssemblyTask(context),
                  _taskFactory.CreateContextTask(context),
                  _taskFactory.CreateContextSpecificationTask(context, contextSpecification)
@@ -211,7 +209,9 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
         return new List<UnitTestTask>
                {
+#if !RESHARPER_8
                  _taskFactory.CreateAssemblyLoadTask(context),
+#endif
                  _taskFactory.CreateRunAssemblyTask(context),
                  _taskFactory.CreateContextTask(context),
                  _taskFactory.CreateBehaviorSpecificationTask(context, behaviorSpecification)

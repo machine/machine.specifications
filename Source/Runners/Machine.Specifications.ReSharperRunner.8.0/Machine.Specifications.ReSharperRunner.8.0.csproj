@@ -21,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\..\Build\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;RESHARPER_7</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;RESHARPER_7,RESHARPER_8</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -29,7 +29,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\..\Build\Release\</OutputPath>
-    <DefineConstants>TRACE;RESHARPER_7</DefineConstants>
+    <DefineConstants>TRACE;RESHARPER_7,RESHARPER_8</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -126,6 +126,9 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Factories\ContextCache.cs">
       <Link>Factories\ContextCache.cs</Link>
     </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Factories\ElementFactories.cs">
+      <Link>Factories\ElementFactories.cs</Link>
+    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Factories\UnitTestTaskFactory.cs">
       <Link>Factories\UnitTestTaskFactory.cs</Link>
     </Compile>
@@ -164,6 +167,12 @@
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Runners\VersionCompatibilityChecker.cs">
       <Link>Runners\VersionCompatibilityChecker.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Shims\ICache.cs">
+      <Link>Shims\ICache.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Shims\IPsi.cs">
+      <Link>Shims\IPsi.cs</Link>
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Tasks\BehaviorSpecificationTask.cs">
       <Link>Tasks\BehaviorSpecificationTask.cs</Link>
@@ -261,6 +270,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Shims\Cache.cs" />
+    <Compile Include="Shims\Psi.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="InstallResharperRunner.8.0.bat">

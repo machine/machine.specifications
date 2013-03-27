@@ -12,9 +12,9 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
   {
     readonly ContextFactory _factory;
 
-    public ContextElementHandler(ContextFactory contextFactory)
+    public ContextElementHandler(ElementFactories factories)
     {
-      _factory = contextFactory;
+      _factory = factories.Contexts;
     }
 
     public bool Accepts(ITreeNode element)

@@ -3,29 +3,32 @@ using System.Collections.Generic;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.Impl.Reflection2;
 using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.ReSharper.UnitTestFramework.Elements;
 
 using Machine.Specifications.ReSharperRunner.Presentation;
+using Machine.Specifications.ReSharperRunner.Shims;
+
+using ICache = Machine.Specifications.ReSharperRunner.Shims.ICache;
 
 namespace Machine.Specifications.ReSharperRunner.Factories
 {
-  class BehaviorSpecificationFactory
+  [SolutionComponent]
+  public class BehaviorSpecificationFactory
   {
-    readonly CacheManager _cacheManager;
+    readonly ICache _cacheManager;
     readonly IUnitTestElementManager _manager;
     readonly IProject _project;
     readonly ProjectModelElementEnvoy _projectEnvoy;
     readonly MSpecUnitTestProvider _provider;
-    readonly PsiModuleManager _psiModuleManager;
+    readonly IPsi _psiModuleManager;
     readonly ReflectionTypeNameCache _reflectionTypeNameCache = new ReflectionTypeNameCache();
 
     public BehaviorSpecificationFactory(MSpecUnitTestProvider provider,
                                         IUnitTestElementManager manager,
-                                        PsiModuleManager psiModuleManager,
-                                        CacheManager cacheManager,
+                                        IPsi psiModuleManager,
+                                        ICache cacheManager,
                                         IProject project,
                                         ProjectModelElementEnvoy projectEnvoy)
     {
@@ -52,13 +55,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     internal BehaviorSpecificationElement CreateBehaviorSpecification(BehaviorElement behavior,
                                                                       IDeclaredElement behaviorSpecification)
     {
-      return GetOrCreateBehaviorSpecification(_provider,
-                                              _manager,
-                                              _psiModuleManager,
-                                              _cacheManager,
-                                              _project,
-                                              behavior,
-                                              _projectEnvoy,
+      return GetOrCreateBehaviorSpecification(behavior,
                                               ((ITypeMember) behaviorSpecification).GetContainingType()
                                                                                    .GetClrName()
                                                                                    .GetPersistent(),
@@ -69,31 +66,19 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     BehaviorSpecificationElement CreateBehaviorSpecification(BehaviorElement behavior,
                                                              IMetadataField behaviorSpecification)
     {
-      return GetOrCreateBehaviorSpecification(_provider,
-                                              _manager,
-                                              _psiModuleManager,
-                                              _cacheManager,
-                                              _project,
-                                              behavior,
-                                              _projectEnvoy,
+      return GetOrCreateBehaviorSpecification(behavior,
                                               _reflectionTypeNameCache.GetClrName(behaviorSpecification.DeclaringType),
                                               behaviorSpecification.Name,
                                               behaviorSpecification.IsIgnored());
     }
 
-    public static BehaviorSpecificationElement GetOrCreateBehaviorSpecification(MSpecUnitTestProvider provider,
-                                                                                IUnitTestElementManager manager,
-                                                                                PsiModuleManager psiModuleManager,
-                                                                                CacheManager cacheManager,
-                                                                                IProject project,
-                                                                                BehaviorElement behavior,
-                                                                                ProjectModelElementEnvoy projectEnvoy,
-                                                                                IClrTypeName declaringTypeName,
-                                                                                string fieldName,
-                                                                                bool isIgnored)
+    public BehaviorSpecificationElement GetOrCreateBehaviorSpecification(BehaviorElement behavior,
+                                                                         IClrTypeName declaringTypeName,
+                                                                         string fieldName,
+                                                                         bool isIgnored)
     {
       var id = BehaviorSpecificationElement.CreateId(behavior, fieldName);
-      var behaviorSpecification = manager.GetElementById(project, id) as BehaviorSpecificationElement;
+      var behaviorSpecification = _manager.GetElementById(_project, id) as BehaviorSpecificationElement;
       if (behaviorSpecification != null)
       {
         behaviorSpecification.Parent = behavior;
@@ -101,11 +86,11 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         return behaviorSpecification;
       }
 
-      return new BehaviorSpecificationElement(provider,
-                                              psiModuleManager,
-                                              cacheManager,
+      return new BehaviorSpecificationElement(_provider,
+                                              _psiModuleManager,
+                                              _cacheManager,
+                                              _projectEnvoy,
                                               behavior,
-                                              projectEnvoy,
                                               declaringTypeName,
                                               fieldName,
                                               isIgnored);
