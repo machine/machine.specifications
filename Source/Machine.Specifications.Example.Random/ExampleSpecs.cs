@@ -109,6 +109,10 @@ namespace Machine.Specifications.Specs
     };
   }
 
+  public class context_without_subject
+  {
+  }
+
   [Subject(typeof(int), "Some description")]
   [Tags(tag.example)]
   public class context_with_subject

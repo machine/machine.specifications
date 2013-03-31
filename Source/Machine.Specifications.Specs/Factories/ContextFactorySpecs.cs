@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.ComponentModel;
+using System.Linq;
 
 using Machine.Specifications.Factories;
 using Machine.Specifications.Model;
@@ -167,5 +168,41 @@ namespace Machine.Specifications.Specs.Factories
 
     It should_capture_the_tags_once =
       () => newContext.Tags.Count().ShouldEqual(1);
+  }
+
+  [Subject(typeof(ContextFactory))]
+  public class when_creating_a_context_with_a_concern_that_has_had_a_subject_attribute_added_dynamically
+  {
+    static Context newContext;
+
+    Establish context = () =>
+    {
+      TypeDescriptor.AddAttributes(typeof(context_without_subject), new SubjectAttribute(typeof(int), "holz"));
+      newContext = new ContextFactory().CreateContextFrom(new context_without_subject());
+    };
+
+    It should_capture_the_subject_type =
+      () => newContext.Subject.Type.ShouldEqual(typeof(int));
+
+    It should_capture_the_subject_description =
+      () => newContext.Subject.Description.ShouldEqual("holz");
+  }
+
+  [Subject(typeof(ContextFactory))]
+  public class when_creating_a_context_with_a_concern_with_a_subject_attribute_that_has_also_had_a_subject_attribute_added_dynamically
+  {
+    static Context newContext;
+
+    Establish context = () =>
+    {
+      TypeDescriptor.AddAttributes(typeof(context_with_subject), new SubjectAttribute(typeof(object), "holz"));
+      newContext = new ContextFactory().CreateContextFrom(new context_with_subject());
+    };
+
+    It should_use_the_dynamically_added_subject_type =
+      () => newContext.Subject.Type.ShouldEqual(typeof(object));
+
+    It should_use_the_dynamically_added_subject_description =
+      () => newContext.Subject.Description.ShouldEqual("holz");
   }
 }
