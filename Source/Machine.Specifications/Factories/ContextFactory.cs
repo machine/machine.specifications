@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
@@ -108,14 +109,14 @@ namespace Machine.Specifications.Factories
 
     static Subject ExtractSubject(Type type)
     {
-      var attributes = type.GetCustomAttributes(typeof(SubjectAttribute), true);
+      var attributes = TypeDescriptor.GetAttributes(type).OfType<SubjectAttribute>();
 
-      if (attributes.Length > 1)
+      if (attributes.Count() > 1)
       {
         throw new SpecificationUsageException("Cannot have more than one Subject on a Context");
       }
 
-      if (attributes.Length == 0)
+      if (!attributes.Any())
       {
         if (type.DeclaringType == null)
         {
@@ -125,9 +126,7 @@ namespace Machine.Specifications.Factories
         return ExtractSubject(type.DeclaringType);
       }
 
-      var attribute = (SubjectAttribute)attributes[0];
-
-      return attribute.CreateSubject();
+      return attributes.First().CreateSubject();
     }
 
     void CreateSpecifications(IEnumerable<FieldInfo> itFieldInfos, Context context)
