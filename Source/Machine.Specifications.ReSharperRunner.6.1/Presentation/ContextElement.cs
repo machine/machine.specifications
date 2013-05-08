@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 
 using JetBrains.ProjectModel;
@@ -137,7 +138,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       {
         tagsAsString = tags.AggregateString("", "|", (builder, tag) => builder.Append(tag));
       }
-      return String.Format("{0}.{1}.{2}", subject, typeName, tagsAsString);
+      var result = new[] {subject, typeName, tagsAsString};
+      return result.Where(s => !string.IsNullOrEmpty(s)).AggregateString(".");
     }
   }
 }
