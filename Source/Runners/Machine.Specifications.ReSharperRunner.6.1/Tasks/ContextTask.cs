@@ -21,7 +21,7 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
 
     public override bool IsMeaningfulTask
     {
-      get { return false; }
+      get { return true; }
     }
 
     public override void SaveXml(XmlElement element)
