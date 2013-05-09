@@ -93,7 +93,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.DerivedSubject", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.CustomDelegates", "Source\Examples\Example.CustomDelegates\Example.CustomDelegates.csproj", "{844788DF-F12F-462F-BDE8-C46F8FFECD11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.dotCoverRunner.2.5", "Source\Machine.Specifications.dotCoverRunner.2.5\Machine.Specifications.dotCoverRunner.2.5.csproj", "{D94FE7E7-C389-4698-8633-87C75F5FBD96}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.dotCoverRunner.2.5", "Source\Runners\Machine.Specifications.dotCoverRunner.2.5\Machine.Specifications.dotCoverRunner.2.5.csproj", "{D94FE7E7-C389-4698-8633-87C75F5FBD96}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
