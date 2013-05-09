@@ -41,7 +41,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\debugging-resharper.txt">
+    <Content Include="..\..\..\debugging-resharper.txt">
       <Link>debugging-resharper.txt</Link>
     </Content>
   </ItemGroup>
