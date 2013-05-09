@@ -15,6 +15,7 @@ using ICache = Machine.Specifications.ReSharperRunner.Shims.ICache;
 
 namespace Machine.Specifications.ReSharperRunner.Factories
 {
+  [SolutionComponent]
   public class ContextFactory
   {
     readonly string _assemblyPath;
