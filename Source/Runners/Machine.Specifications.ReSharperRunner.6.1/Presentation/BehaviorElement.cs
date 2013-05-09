@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 
 using JetBrains.ProjectModel;
@@ -7,6 +8,7 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.ReSharper.UnitTestFramework.Elements;
+using JetBrains.Util;
 
 using Machine.Specifications.ReSharperRunner.Factories;
 
@@ -125,7 +127,8 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
     public static string CreateId(ContextElement contextElement, string fieldType, string fieldName)
     {
-      return String.Format("{0}.{1}.{2}", contextElement.Id, fieldType, fieldName);
+      var result = new[] {contextElement.Id, fieldType, fieldName};
+      return result.Where(s => !string.IsNullOrEmpty(s)).AggregateString(".");
     }
   }
 }
