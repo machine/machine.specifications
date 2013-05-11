@@ -28,10 +28,10 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
       return declaration.DeclaredElement.IsContext();
     }
 
-    public IEnumerable<UnitTestElementDisposition> AcceptElement(ITreeNode element, IFile file)
+    public IEnumerable<UnitTestElementDisposition> AcceptElement(string assemblyPath, IFile file, ITreeNode element)
     {
       var declaration = (IDeclaration) element;
-      var context = _factory.CreateContext((ITypeElement) declaration.DeclaredElement);
+      var context = _factory.CreateContext(assemblyPath, declaration);
 
       if (context == null)
       {

@@ -114,8 +114,9 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       var isIgnored = bool.Parse(parent.GetAttribute("isIgnored"));
       var subject = parent.GetAttribute("subject");
 
-      return factory.GetOrCreateContext(new ClrTypeName(typeName),
-                                        assemblyLocation,
+      return factory.GetOrCreateContext(assemblyLocation,
+                                        project,
+                                        new ClrTypeName(typeName),
                                         subject,
                                         EmptyArray<string>.Instance,
                                         isIgnored);

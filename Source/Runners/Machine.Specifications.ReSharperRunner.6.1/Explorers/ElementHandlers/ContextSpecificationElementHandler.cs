@@ -28,7 +28,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
       return declaration.DeclaredElement.IsSpecification();
     }
 
-    public IEnumerable<UnitTestElementDisposition> AcceptElement(ITreeNode element, IFile file)
+    public IEnumerable<UnitTestElementDisposition> AcceptElement(string assemblyPath, IFile file, ITreeNode element)
     {
       var declaration = (IDeclaration) element;
       var contextSpecification = _factory.CreateContextSpecification(declaration.DeclaredElement);

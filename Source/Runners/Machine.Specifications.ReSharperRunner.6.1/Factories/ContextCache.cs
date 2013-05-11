@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 
+using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 
 using Machine.Specifications.ReSharperRunner.Presentation;
 
 namespace Machine.Specifications.ReSharperRunner.Factories
 {
+  [SolutionComponent]
   public class ElementCache
   {
     public ElementCache()

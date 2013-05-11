@@ -5,6 +5,7 @@ using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Impl.Reflection2;
+using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.ReSharper.UnitTestFramework.Elements;
 
@@ -18,13 +19,9 @@ namespace Machine.Specifications.ReSharperRunner.Factories
   [SolutionComponent]
   public class ContextFactory
   {
-    readonly string _assemblyPath;
-
     readonly ElementCache _cache;
     readonly ICache _cacheManager;
     readonly IUnitTestElementManager _manager;
-    readonly IProject _project;
-    readonly ProjectModelElementEnvoy _projectEnvoy;
     readonly MSpecUnitTestProvider _provider;
     readonly IPsi _psiModuleManager;
     readonly ReflectionTypeNameCache _reflectionTypeNameCache = new ReflectionTypeNameCache();
@@ -33,9 +30,6 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                           IUnitTestElementManager manager,
                           IPsi psiModuleManager,
                           ICache cacheManager,
-                          IProject project,
-                          ProjectModelElementEnvoy projectEnvoy,
-                          string assemblyPath,
                           ElementCache cache)
     {
       _manager = manager;
@@ -43,18 +37,16 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       _cacheManager = cacheManager;
       _provider = provider;
       _cache = cache;
-      _project = project;
-      _projectEnvoy = projectEnvoy;
-      _assemblyPath = assemblyPath;
     }
 
-    public ContextElement CreateContext(ITypeElement type)
+    public IUnitTestElement CreateContext(string assemblyPath, IDeclaration declaration)
     {
-      var context = GetOrCreateContext(type.GetClrName().GetPersistent(),
-                                       _assemblyPath,
+      var type = (ITypeElement) declaration.DeclaredElement;
+      var context = GetOrCreateContext(assemblyPath,
+                                       declaration.GetProject(),
+                                       type.GetClrName().GetPersistent(),
                                        type.GetSubjectString(),
-                                       type.GetTags(),
-                                       type.IsIgnored());
+                                       type.GetTags(), type.IsIgnored());
 
       foreach (var child in context.Children)
       {
@@ -65,23 +57,24 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       return context;
     }
 
-    public ContextElement CreateContext(IMetadataTypeInfo type)
+    public ContextElement CreateContext(IProject project, string assemblyPath, IMetadataTypeInfo type)
     {
-      return GetOrCreateContext(_reflectionTypeNameCache.GetClrName(type),
-                                _assemblyPath,
+      return GetOrCreateContext(assemblyPath,
+                                project,
+                                _reflectionTypeNameCache.GetClrName(type),
                                 type.GetSubjectString(),
-                                type.GetTags(),
-                                type.IsIgnored());
+                                type.GetTags(), type.IsIgnored());
     }
 
-    public ContextElement GetOrCreateContext(IClrTypeName typeName,
-                                             string assemblyLocation,
+    public ContextElement GetOrCreateContext(string assemblyPath,
+                                             IProject project,
+                                             IClrTypeName typeName,
                                              string subject,
                                              ICollection<string> tags,
                                              bool isIgnored)
     {
       var id = ContextElement.CreateId(subject, typeName.FullName, tags);
-      var contextElement = _manager.GetElementById(_project, id) as ContextElement;
+      var contextElement = _manager.GetElementById(project, id) as ContextElement;
       if (contextElement != null)
       {
         contextElement.State = UnitTestElementState.Valid;
@@ -91,9 +84,9 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       return new ContextElement(_provider,
                                 _psiModuleManager,
                                 _cacheManager,
-                                _projectEnvoy,
+                                new ProjectModelElementEnvoy(project),
                                 typeName,
-                                assemblyLocation,
+                                assemblyPath,
                                 subject,
                                 tags,
                                 isIgnored);

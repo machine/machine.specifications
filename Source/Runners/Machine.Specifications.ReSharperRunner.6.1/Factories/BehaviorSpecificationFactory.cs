@@ -19,8 +19,6 @@ namespace Machine.Specifications.ReSharperRunner.Factories
   {
     readonly ICache _cacheManager;
     readonly IUnitTestElementManager _manager;
-    readonly IProject _project;
-    readonly ProjectModelElementEnvoy _projectEnvoy;
     readonly MSpecUnitTestProvider _provider;
     readonly IPsi _psiModuleManager;
     readonly ReflectionTypeNameCache _reflectionTypeNameCache = new ReflectionTypeNameCache();
@@ -28,16 +26,12 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     public BehaviorSpecificationFactory(MSpecUnitTestProvider provider,
                                         IUnitTestElementManager manager,
                                         IPsi psiModuleManager,
-                                        ICache cacheManager,
-                                        IProject project,
-                                        ProjectModelElementEnvoy projectEnvoy)
+                                        ICache cacheManager)
     {
       _manager = manager;
       _psiModuleManager = psiModuleManager;
       _cacheManager = cacheManager;
       _provider = provider;
-      _project = project;
-      _projectEnvoy = projectEnvoy;
     }
 
     public IEnumerable<BehaviorSpecificationElement> CreateBehaviorSpecificationsFromBehavior(
@@ -78,7 +72,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                                          bool isIgnored)
     {
       var id = BehaviorSpecificationElement.CreateId(behavior, fieldName);
-      var behaviorSpecification = _manager.GetElementById(_project, id) as BehaviorSpecificationElement;
+      var behaviorSpecification = _manager.GetElementById(behavior.GetProject(), id) as BehaviorSpecificationElement;
       if (behaviorSpecification != null)
       {
         behaviorSpecification.Parent = behavior;
@@ -89,7 +83,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       return new BehaviorSpecificationElement(_provider,
                                               _psiModuleManager,
                                               _cacheManager,
-                                              _projectEnvoy,
+                                              new ProjectModelElementEnvoy(behavior.GetProject()),
                                               behavior,
                                               declaringTypeName,
                                               fieldName,

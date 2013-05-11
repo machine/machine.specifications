@@ -18,29 +18,23 @@ namespace Machine.Specifications.ReSharperRunner.Factories
   public class BehaviorFactory
   {
     readonly ElementCache _cache;
-    readonly IUnitTestElementManager _elementManager;
+    readonly IUnitTestElementManager _manager;
     readonly ICache _cacheManager;
-    readonly IProject _project;
-    readonly ProjectModelElementEnvoy _projectEnvoy;
     readonly MSpecUnitTestProvider _provider;
     readonly IPsi _psiModuleManager;
     readonly ReflectionTypeNameCache _reflectionTypeNameCache = new ReflectionTypeNameCache();
 
-    public BehaviorFactory(MSpecUnitTestProvider provider,
-                           IPsi psiModuleManager,
-                           ICache cacheManager,
-                           IProject project,
-                           ProjectModelElementEnvoy projectEnvoy,
-                           ElementCache cache,
-                           IUnitTestElementManager elementManager)
+     public BehaviorFactory(MSpecUnitTestProvider provider,
+                          IUnitTestElementManager manager,
+                          IPsi psiModuleManager,
+                          ICache cacheManager,
+                          ElementCache cache)
     {
       _psiModuleManager = psiModuleManager;
       _cacheManager = cacheManager;
       _provider = provider;
       _cache = cache;
-      _elementManager = elementManager;
-      _project = project;
-      _projectEnvoy = projectEnvoy;
+      _manager = manager;
     }
 
     public BehaviorElement CreateBehavior(IDeclaredElement field)
@@ -98,7 +92,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                                string fieldType)
     {
       var id = BehaviorElement.CreateId(context, fieldType, fieldName);
-      var behavior = _elementManager.GetElementById(_project, id) as BehaviorElement;
+      var behavior = _manager.GetElementById(context.GetProject(), id) as BehaviorElement;
       if (behavior != null)
       {
         behavior.Parent = context;
@@ -110,7 +104,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                  _psiModuleManager,
                                  _cacheManager,
                                  context,
-                                 _projectEnvoy,
+                                 new ProjectModelElementEnvoy(context.GetProject()),
                                  declaringTypeName,
                                  fieldName,
                                  isIgnored,

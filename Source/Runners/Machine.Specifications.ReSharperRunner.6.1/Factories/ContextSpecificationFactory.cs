@@ -18,8 +18,6 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     readonly ElementCache _cache;
     readonly ICache _cacheManager;
     readonly IUnitTestElementManager _manager;
-    readonly IProject _project;
-    readonly ProjectModelElementEnvoy _projectEnvoy;
     readonly MSpecUnitTestProvider _provider;
     readonly IPsi _psiModuleManager;
     readonly ReflectionTypeNameCache _reflectionTypeNameCache = new ReflectionTypeNameCache();
@@ -28,8 +26,6 @@ namespace Machine.Specifications.ReSharperRunner.Factories
                                        IUnitTestElementManager manager,
                                        IPsi psiModuleManager,
                                        ICache cacheManager,
-                                       IProject project,
-                                       ProjectModelElementEnvoy projectEnvoy,
                                        ElementCache cache)
     {
       _manager = manager;
@@ -37,8 +33,6 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       _cacheManager = cacheManager;
       _provider = provider;
       _cache = cache;
-      _project = project;
-      _projectEnvoy = projectEnvoy;
     }
 
     public ContextSpecificationElement CreateContextSpecification(IDeclaredElement field)
@@ -71,12 +65,12 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     }
 
     public ContextSpecificationElement GetOrCreateContextSpecification(ContextElement context,
-                                                                              IClrTypeName declaringTypeName,
-                                                                              string fieldName,
-                                                                              bool isIgnored)
+                                                                       IClrTypeName declaringTypeName,
+                                                                       string fieldName,
+                                                                       bool isIgnored)
     {
       var id = ContextSpecificationElement.CreateId(context, fieldName);
-      var contextSpecification = _manager.GetElementById(_project, id) as ContextSpecificationElement;
+      var contextSpecification = _manager.GetElementById(context.GetProject(), id) as ContextSpecificationElement;
       if (contextSpecification != null)
       {
         contextSpecification.Parent = context;
@@ -87,7 +81,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       return new ContextSpecificationElement(_provider,
                                              _psiModuleManager,
                                              _cacheManager,
-                                             _projectEnvoy,
+                                             new ProjectModelElementEnvoy(context.GetProject()),
                                              context,
                                              declaringTypeName,
                                              fieldName, isIgnored);

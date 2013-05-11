@@ -19,7 +19,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
 
     public void ExploreAssembly(IProject project, IMetadataAssembly assembly, UnitTestElementConsumer consumer)
     {
-      _assemblyExplorer.Explore(assembly, consumer);
+      _assemblyExplorer.Explore(project, assembly, consumer);
     }
 
     public IUnitTestProvider Provider

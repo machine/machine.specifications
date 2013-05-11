@@ -20,7 +20,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
       _factories = factories;
     }
 
-    public void Explore(IMetadataAssembly assembly, UnitTestElementConsumer consumer)
+    public void Explore(IProject project, IMetadataAssembly assembly, UnitTestElementConsumer consumer)
     {
       if (!assembly.ReferencedAssembliesNames.Any(x => String.Equals(
                                                                      x.Name,
@@ -32,7 +32,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
 
       assembly.GetTypes().Where(type => type.IsContext()).ForEach(type =>
       {
-        var contextElement = _factories.Contexts.CreateContext(type);
+        var contextElement = _factories.Contexts.CreateContext(project,assembly.Location.FullPath, type);
         consumer(contextElement);
 
         type

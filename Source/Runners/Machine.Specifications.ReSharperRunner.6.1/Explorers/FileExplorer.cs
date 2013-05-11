@@ -4,7 +4,6 @@ using System.Linq;
 
 using JetBrains.Application;
 using JetBrains.Application.Progress;
-using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.UnitTestFramework;
@@ -14,19 +13,19 @@ using Machine.Specifications.ReSharperRunner.Factories;
 
 namespace Machine.Specifications.ReSharperRunner.Explorers
 {
-  [SolutionComponent]
   public class FileExplorer : IRecursiveElementProcessor
   {
     readonly UnitTestElementLocationConsumer _consumer;
     readonly IEnumerable<IElementHandler> _elementHandlers;
     readonly IFile _file;
     readonly CheckForInterrupt _interrupted;
+    readonly string _assemblyPath;
 
     public FileExplorer(MSpecUnitTestProvider provider,
-                        UnitTestElementLocationConsumer consumer,
+                        ElementFactories factories,
                         IFile file,
-                        CheckForInterrupt interrupted,
-                        ElementFactories factories)
+                        UnitTestElementLocationConsumer consumer,
+                        CheckForInterrupt interrupted)
     {
       if (file == null)
       {
@@ -42,6 +41,8 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
       _file = file;
       _interrupted = interrupted;
 
+      var project = file.GetSourceFile().ToProjectFile().GetProject();
+      _assemblyPath = UnitTestManager.GetOutputAssemblyPath(project).FullPath;
 
       _elementHandlers = new List<IElementHandler>
                          {
@@ -69,7 +70,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
         return;
       }
 
-      foreach (var elementDisposition in handler.AcceptElement(element, _file))
+      foreach (var elementDisposition in handler.AcceptElement(_assemblyPath, _file, element))
       {
         if (elementDisposition != null && elementDisposition.UnitTestElement != null)
         {

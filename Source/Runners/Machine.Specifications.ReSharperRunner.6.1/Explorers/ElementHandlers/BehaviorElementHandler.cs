@@ -32,7 +32,7 @@ namespace Machine.Specifications.ReSharperRunner.Explorers.ElementHandlers
       return declaration.DeclaredElement.IsBehavior();
     }
 
-    public IEnumerable<UnitTestElementDisposition> AcceptElement(ITreeNode element, IFile file)
+    public IEnumerable<UnitTestElementDisposition> AcceptElement(string assemblyPath, IFile file, ITreeNode element)
     {
       var declaration = (IDeclaration) element;
       var behavior = _factory.CreateBehavior(declaration.DeclaredElement);
