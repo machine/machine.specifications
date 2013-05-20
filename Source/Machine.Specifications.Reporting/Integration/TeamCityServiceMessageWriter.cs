@@ -256,6 +256,8 @@ namespace Machine.Specifications.Reporting.Integration
 
         private static void AppendEscapedString(StringBuilder builder, string rawString)
         {
+          if (rawString == null)
+             return;
           foreach (char c in rawString)
           {
             switch (c)
