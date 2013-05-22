@@ -1,18 +1,18 @@
 // Copyright 2005-2008 Gallio Project - http://www.gallio.org/
 // Portions Copyright 2000-2004 Jonathan De Halleux, Jamie Cansdale
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// 
+//
 // Modified by and Portions Copyright 2008 Machine Project
 
 using System.Collections.Generic;
@@ -115,7 +115,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
       }
 
       return null;
-    } 
+    }
     #endregion
 
     [Test]
@@ -124,7 +124,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
       TestModel testModel = PopulateTestTree();
 
       Test test = GetDescendantByName(testModel.RootTest.Children[0], "ignored context spec");
-      
+
       Assert.IsNotNull(test);
       AssertStringContains("Attribute", test.Metadata.GetValue(MetadataKeys.IgnoreReason));
     }
@@ -167,7 +167,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
       Test test = GetDescendantByName(testModel.RootTest.Children[0], "subject spec");
 
       Assert.IsNotNull(test);
-      
+
       string category = test.Metadata.GetValue(MetadataKeys.Category);
 
       AssertStringContains("Testing out the framework", category);  // Make sure the text is there
@@ -288,7 +288,7 @@ namespace Machine.Specifications.GallioAdapter.Tests
 
       Assert.AreEqual("Machine Project", assemblyTest.Metadata.GetValue(MetadataKeys.Company));
       Assert.AreEqual("Test", assemblyTest.Metadata.GetValue(MetadataKeys.Configuration));
-      AssertStringContains("Copyright © Machine Project 2008, 2009, 2010", assemblyTest.Metadata.GetValue(MetadataKeys.Copyright));
+      AssertStringContains("Copyright © Machine Project 2007-", assemblyTest.Metadata.GetValue(MetadataKeys.Copyright));
       Assert.AreEqual("Machine.Specifications", assemblyTest.Metadata.GetValue(MetadataKeys.Product));
       Assert.AreEqual("Machine.Specifications.GallioAdapter.TestResources", assemblyTest.Metadata.GetValue(MetadataKeys.Title));
 

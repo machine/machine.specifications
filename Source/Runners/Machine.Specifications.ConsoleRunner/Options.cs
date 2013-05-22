@@ -80,7 +80,7 @@ namespace Machine.Specifications.ConsoleRunner
     {
       StringBuilder sb = new StringBuilder();
       sb.AppendLine("Machine.Specifications");
-      sb.AppendLine("Copyright (C) 2007 - 2011");
+      sb.AppendLine("Copyright (C) 2007-2013");
       sb.AppendLine("");
       sb.AppendLine(Usage());
       sb.AppendLine("Options:");
