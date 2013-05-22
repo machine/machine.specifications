@@ -202,6 +202,7 @@ Usage of the command-line runner is as follows (from `mspec.exe --help`):
 ```text
 Usage: mspec.exe [options] <assemblies>
 Options:
+-f, --filters               Filter file specifying contexts to execute (full type name, one per line). Takes precedence over tags
 -i, --include               Executes all specifications in contexts with these comma delimited tags. Ex. -i "foo,bar,foo_bar"
 -x, --exclude               Exclude specifications in contexts with these comma delimited tags. Ex. -x "foo,bar,foo_bar"
 -t, --timeinfo              Shows time-related information in HTML output
