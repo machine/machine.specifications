@@ -70,10 +70,11 @@ namespace Machine.Specifications.ConsoleRunner
     {
       StringBuilder sb = new StringBuilder();
       sb.AppendLine("Machine.Specifications");
-      sb.AppendLine("Copyright (C) 2007 - 2011");
+      sb.AppendLine("Copyright (C) 2007 - 2013");
       sb.AppendLine("");
       sb.AppendLine(Usage());
       sb.AppendLine("Options:");
+	  sb.AppendLine("  -f, --filters               Filter file specifying contexts to execute (full type name, one per line). Takes precedence over tags");
       sb.AppendLine("  -i, --include               Execute all specifications in contexts with these comma delimited tags. Ex. -i \"foo,bar,foo_bar\"");
       sb.AppendLine("  -x, --exclude               Exclude specifications in contexts with these comma delimited tags. Ex. -x \"foo,bar,foo_bar\"");
       sb.AppendLine("  -t, --timeinfo              Shows time-related information in HTML output");
