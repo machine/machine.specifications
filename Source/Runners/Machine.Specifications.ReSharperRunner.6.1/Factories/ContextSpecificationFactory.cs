@@ -43,8 +43,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         return null;
       }
 
-      ContextElement context;
-      _cache.Contexts.TryGetValue(clazz, out context);
+      var context = _cache.TryGetContext(clazz);
       if (context == null)
       {
         return null;

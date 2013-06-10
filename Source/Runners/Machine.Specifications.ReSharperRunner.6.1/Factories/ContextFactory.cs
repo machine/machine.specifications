@@ -53,7 +53,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         child.State = UnitTestElementState.Pending;
       }
 
-      _cache.Contexts.Add(type, context);
+      _cache.AddContext(type, context);
       return context;
     }
 
@@ -94,8 +94,8 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
     public void UpdateChildState(ITypeElement type)
     {
-      ContextElement context;
-      if (!_cache.Contexts.TryGetValue(type, out context))
+      var context = _cache.TryGetContext(type);
+      if (context == null)
       {
         return;
       }

@@ -45,8 +45,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         return null;
       }
 
-      ContextElement context;
-      _cache.Contexts.TryGetValue(clazz, out context);
+      var context = _cache.TryGetContext(clazz);
       if (context == null)
       {
         return null;
@@ -65,7 +64,7 @@ namespace Machine.Specifications.ReSharperRunner.Factories
         child.State = UnitTestElementState.Pending;
       }
 
-      _cache.Behaviors.Add(field, behavior);
+      _cache.AddBehavior(field, behavior);
       return behavior;
     }
 
@@ -113,8 +112,8 @@ namespace Machine.Specifications.ReSharperRunner.Factories
 
     public void UpdateChildState(IDeclaredElement field)
     {
-      BehaviorElement behavior;
-      if (!_cache.Behaviors.TryGetValue(field, out behavior))
+      var behavior = _cache.TryGetBehavior(field);
+      if (behavior == null)
       {
         return;
       }
