@@ -1,77 +1,193 @@
-Machine.Specifications (MSpec)
-======================================================================
-
-The most recent release is available at [CodeBetter's TeamCity server](http://teamcity.codebetter.com/project.html?projectId=project27):
-
-  * Recommended: [Unsigned release](http://teamcity.codebetter.com/guestAuth/repository/download/bt342/.lastSuccessful/Machine.Specifications-Release.zip),
-  * [Signed release](http://teamcity.codebetter.com/guestAuth/repository/download/bt345/.lastSuccessful/Machine.Specifications-Signed-Release.zip).
-
-You can also install these using [NuGet](http://nuget.org/Packages/Search?packageType=Packages&searchCategory=All+Categories&searchTerm=machine.specifications):
-<pre>
-  PM> Install-Package Machine.Specifications
-  PM> Install-Package Machine.Specifications-Signed
-</pre>
-
-On top of that we provide downloads for the latest successful build (possibly more current than the releases above):
-
-  * [Unsigned build](http://teamcity.codebetter.com/guestAuth/repository/download/bt44/.lastSuccessful/Machine.Specifications-Release.zip),
-  * [Signed build](http://teamcity.codebetter.com/guestAuth/repository/download/bt344/.lastSuccessful/Machine.Specifications-Signed-Release.zip).
-
-Machine.Specifications is a Context/Specification framework geared towards removing language noise and simplifying tests. All it asks is that you accept the `=()=>`.
-
-Below docs are a work in progress:
-
 # Machine.Specifications
 
-Machine.Specifications is a [Context/Specification](http://www.code-magazine.com/article.aspx?quickid=0805061) framework geared towards removing language noise and simplifying tests. All it asks is that you accept the `=()=>`.
+Machine.Specifications (MSpec) is a [context/specification][5] framework that removes language noise and simplifies tests. All it asks is that you accept the `= () =>`. Keep up with the [latest news and discussions][8] or follow the maintainer, [@agross](https://twitter.com/agross).
 
-The source code is available on GitHub at [http://github.com/machine/machine.specifications](http://github.com/machine/machine.specifications). It is released under the terms of the MIT license with some parts MS-PL. Information about this license is contained within the accompanying `License.txt` file.
+# Installation
 
-## Getting started with MSpec
+You can download the [unsigned binaries][1] (<strong>recommended</strong>) or the [signed binaries][2] directly from the [TeamCity server][3]. But, we recommended installing [the NuGet package][4]. Install on the command line from your solution directory
 
-### Downloading/Building/Installing MSpec (would love to make this simpler)
+```bash
+cmd> nuget install Machine.Specifications
+```
 
-MSpec is a tool that is constantly being worked on in order to fix bugs or add new features. As such, it does not have the classic model of milestone releases to represent "stable" version, although the version number of MSpec is periodically updated to reflect progress in the evolution of the codebase.
+Or use the Package Manager console in Visual Studio
 
-With this in mind, there are two common ways to obtain MSpec: build from source or get the latest build zip MSpec's Continuous Integration (CI) server.
+```powershell
+PM> Install-Package Machine.Specifications
+```
 
-#### Build from source
+# Usage
+MSpec is called a "context/specification" test framework because of the "grammar" that is used in describing and coding the tests or "specs". That grammar reads roughly like this
 
-The easiest way to build MSpec from source is to clone the git repository on GitHub and build the MSpec solution. If you do not intend to fork/contribute changes MSpec, you can anonymously clone the GitHub repo with the following command. If terms like "git" and "clone the git repository" are moon language to you, you can learn more [here](http://book.git-scm.com).
+> When the system is in such a state, and a certain action occurs, it should do such-and-such or be in some end state.
 
-`git clone git://github.com/machine/machine.specifications.git`
+You should be able to see the components of the traditional [Arrange-Act-Assert][9] model in there. To support readability and remove as much "noise" as possible, MSpec eschews the traditional attribute-on-method model of test construction. It instead uses custom .NET Delegates that you assign anonymous methods and asks you to name them following a certain convention.
 
-Start the build by running `build.cmd` right from the cloned directory.
+Read on to construct a simple MSpec styled specification class.
 
-The solution file is located, relative to the root of the repo, at `Source\Machine.Specifications.sln`.
+## Subject
 
-#### Get the latest build from the CI server
+The `Subject` attribute is the first part of any spec class. It describes the "context", which can be the literal `Type` under test or a broader description. The subject is *required* on any spec class, because it drives the command-line and integrated test runners. The class naming convention is to use `Sentence_snake_case` and to start with the word "When".
 
-MSpec has a Continuous Integration setup, provided by [CodeBetter](http://www.codebetter.com) and running on TeamCity.
+```csharp
+[Subject("Authentication")]                           // a description
+[Subject(typeof(SecurityService))]                    // the type under test
+[Subject(typeof(SecurityService), "Authentication")]  // or a combo! 
+public class When_authenticating_a_user { ... }       // remember: you can only use one Subject Attribute!
+```
 
-If you'd like to skip the above steps and just want the binaries for MSpec, get the zip of the latest release
+## Tags
 
-  * Recommended: [Unsigned release](http://teamcity.codebetter.com/guestAuth/repository/download/bt342/.lastSuccessful/Machine.Specifications-Release.zip),
-  * [Signed release](http://teamcity.codebetter.com/guestAuth/repository/download/bt345/.lastSuccessful/Machine.Specifications-Signed-Release.zip).
+The `Tags` attribute is used to organize your spec classes for inclusion or exclusion in test runs. You can identify tests that hit the database by tagging them "Slow" or tests for special reports by tagging them "AcceptanceTest".
 
-### How stuff works
+```csharp
+[Tags("RegressionTest")]  // this attribute supports any number of tags via a params string[] argument!
+[Subject(typeof(SecurityService), "Authentication")]
+public class When_authenticating_a_user { ... }
+```
 
-Subject/It/Because of/Establish context/Cleanup after
+## Establish
 
-### Running your specs (Test Runners)
+The `Establish` delegate is the "Arrange" part of the spec class. The establish will only run *once*, so your assertions should not mutate any state or you may be in trouble.
 
-#### Command line
+```csharp
+[Subject("Authentication")]
+public class When_authenticating_a_new_user 
+{
+    Establish context = () => 
+    {
+        // ... any mocking, stubbing, or other setup ...
+        Subject = new SecurityService(foo, bar);
+    }
+  
+    static SecurityService Subject;
+}
+```
+
+## Cleanup
+
+The pair to Establish is `Cleanup`, which is also called *once* after all of the specs have been run.
+
+```csharp
+[Subject("Authentication")]
+public class When_authenticating_a_user 
+{
+    Establish context = () => 
+    {
+        Subject = new SecurityService(foo, bar);
+    }
+  
+    Cleanup after = () => 
+    {
+        SecurityService.Dispose();
+    }
+  
+    static SecurityService Subject;
+}
+```
+
+## Because
+
+The `Because` delegate is the "Act" part of the spec class. It should be the single action for this context, the only part that mutates state, against which all of the assertions can be made. Most because statements are only *one* line, which allows you to leave off the squiggly brackets!
+
+```csharp
+[Subject("Authentication")]
+public class When_authenticating_a_user 
+{
+    Establish context = () => 
+    {
+        Subject = new SecurityService(foo, bar);
+    }
+
+    Because of = () => Subject.Authenticate("username", "password");
+
+    static SecurityService Subject;
+}
+```
+
+If you have a multi-line because statement, you probably need to identify which of those lines are actually setup and move them into the establish. Or, your spec may be concerned with too many contexts and needs to be split or the subject-under-test needs to be refactored.
+
+## Catch
+
+When testing that exceptions are thrown from the "action" you should use a `Catch` statement. This prevents thrown exceptions from escaping the spec and failing the test run. You can inspect the exception's expected properites in your assertions.
+
+(You may want to jump ahead and read about the `It` assertion delegate first!)
+
+```csharp
+[Subject("Authentication")]
+public class When_authenticating_a_user_fails_due_to_bad_credentials
+{
+    Establish context = () => 
+    {
+        Subject = new SecurityService(foo, bar);
+    }
+
+    Because of = () => Exception = Catch.Exception(() => Subject.Authenticate("username", "password"));
+
+    It should_fail = () => Exception.ShouldBeOfType<AuthenticationFailedException>();
+    It should_have_a_specific_reason = () => Exception.Message.ShouldContain("credentials")
+
+    static SecurityService Subject;
+    static Exception Exception;
+}
+```
+
+## It
+
+The `It` delegate is the "Assert" part of the spec class. It may appear one or more times in your spec class. Each statement should contain a single assertion, so that the intent and failure reporting is crystal clear. Like Because statements, It statements are usually one-liners and may not have squiggly brackets.
+
+```csharp
+[Subject("Authentication")]
+public class When_authenticating_an_admin_user 
+{
+    Establish context = () => 
+    {
+        Subject = new SecurityService(foo, bar);
+    }
+
+    Because of = () => Token = Subject.Authenticate("username", "password");
+    
+    It should_indicate_the_users_role = () => Token.Role.ShouldEqual(Roles.Admin);
+    It should_have_a_unique_session_id = () => Token.SessionId.ShouldNotBeNull();
+
+    static SecurityService Subject;
+    static UserToken Token;
+}
+```
+
+An It statement without an assignment will be reported by the test runner in the "Pending" state. You may find that "stubbing" your assertions like this helps you practice TDD.
+
+```csharp
+It should_list_your_authorized_actions;
+```
+
+### Assertion Extension Methods
+
+As you can see above, the It assertions make use of these `Should` extension methods. They encourage readability and a good flow to your assertions when read aloud or on paper. You *should* use them wherever possible, just "dot" off of your object and browse the Intellisense!
+
+It's good practice to make your own Should assertion extension methods for complicated custom objects or domain concepts.
+
+## Ignore
+
+Every test framework lets you ignore incomplete or failing (I hope not) specs, MSpec provides the `Ignore` attribute for just that. Just leave a note describing the reason that you ignored this spec.
+
+```csharp
+[Ignore("We are switching out the session ID factory for a better implementation")]
+It should_have_a_unique_session_id = () => Token.SessionId.ShouldNotBeNull();
+```
+
+# Command Line Reference
 
 MSpec, like other testing frameworks, provides a robust command-line runner that can be used to execute specs in one or more assemblies and allows a number of output formats to suit your needs. The runner comes in different flavors:
 
-  * `mspec.exe`, AnyCPU, runs on the CLR 2.0
-  * `mspec-x86.exe`, x86, runs on the CLR 2.0
-  * `mspec-clr4.exe`, AnyCPU, runs on the CLR 4.0
-  * `mspec-x86-clr4.exe`, x86, runs on the CLR 4.0
+ * `mspec.exe`, AnyCPU, runs on the CLR 2.0
+ * `mspec-x86.exe`, x86, runs on the CLR 2.0
+ * `mspec-clr4.exe`, AnyCPU, runs on the CLR 4.0
+ * `mspec-x86-clr4.exe`, x86, runs on the CLR 4.0
 
 Usage of the command-line runner is as follows (from `mspec.exe --help`):
 
-```
+```text
 Usage: mspec.exe [options] <assemblies>
 Options:
 -i, --include               Executes all specifications in contexts with these comma delimited tags. Ex. -i "foo,bar,foo_bar"
@@ -89,159 +205,48 @@ Options:
 Usage: mspec.exe [options] <assemblies>
 ```
 
-#### Selenium Support in the command-line runner
+**TeamCity Reports**  
+MSpec can output [TeamCity](http://www.jetbrains.com/teamcity/) [service messages][7] to update the test run status in real time. This feature is enabled by passing the `--teamcity` switch, but the command-line runner *can* auto-detect that it is running in the TeamCity context.
 
-The command-line runner provides support for [Selenium](http://seleniumhq.org/) web tests written using MSpec. When utilized, the MSpec HTML reports will show additional, Selenium-specific information, like screenshots and some useful debug info that can come in handy when trying to figure out why a web test has failed. Aaron Jensen has written a [blog post](http://codebetter.com/blogs/aaron.jensen/archive/2009/10/19/advanced-selenium-logging-with-mspec.aspx) on the topic that explains how to integrate this feature into your specs.
+**HTML Reports**  
+MSpec can output human-readable HTML reports of the test run by passing the `--html` option. If a filename is provided, the output is placed at that path, overwriting existing files. If multiple assemblies are being testing, the output is grouped into a single file. If no filename is provided, it will use the name of the assembly(s). If multiple assemblies are being tested, an `index.html` is created with links to each assembly-specific report. You can use this option if your CI server supports capturing HTML as build reports.
 
-#### TeamCity support from the command-line runner
+**XML Reports**  
+MSpec can output XML test run reports by passing the `--xml` option. This option behaves the same as the `--html` option, in terms of file naming.
 
-MSpec provides [TeamCity](http://www.jetbrains.com/teamcity/) integration via specialized output from the command-line runner to provide information and updates on overall test run status while the specs are running. This functionality can be enabled by passing the `--teamcity` option to the command-line runner. The runner will auto-detect TeamCity if the option is not passed.
+**Selenium Reports**  
+The MSpec HTML reports can show additional [Selenium](http://seleniumhq.org/)-specific information, like screenshots and debug statements. Instructions on [how to integrate this feature][6] into your specs is available on the web.
 
-#### HTML output from the command-line runner
+# ReSharper Integration
 
-Using the `--html` option from the command-line runner will cause the runner to output its test results in a "human readable" HTML document. If no file name is provided as an argument, it will use the name of the tested assembly(s) as the name of the output file. In the case of multiple assemblies, an `index.html` will be included with links to each assembly-specific HTML document. If a filename is provided, the output will be place in a file at that name/path, overwriting previous files. If multiple assemblies are being tested, the output for each will be grouped into a single file.
+MSpec provides a batch file to integrate with the ReSharper test runner, custom naming rules, and code annotations. MSpec currently supports ReSharper 6.1, 7.0, and 7.1.
 
-Using this option with a CI server that supports running the command-line runner and capturing the output HTML as an artifact, you can integrate the test results into your build report.
+**Code Annotations**  
+By default, ReSharper thinks that specification classes (those with the `[Subject]` attribute) and their internals are unused. To change this behavior in Visual Studio:
 
-Also, this option is needed if you intend to capture Selenium-specific test information in your build results.
+ 1. Open the ReSharper Options (ReSharper -> Options...)
+ 1. Select "Code Annotations"
+ 1. Ensure that the namespace "Machine.Specifications.Annotations" is checked
+ 1. Click "OK"
 
-#### XML output from the command-line runner
+**Templates**  
+The file, live, and surround templates can be imported from `Misc\ReSharper.*.DotSettings`. The single file template creates a basic context. The single surround template wraps a `Catch.Exception` call. The live templates cover the major delegates
 
-XML output can be generated by MSpec's command-line runner for use with external tools that can consume the markup with the `--xml <filename(s)>` option.
+ * `mse`, an `Establish` delegate
+ * `msb`, a `Because` delegate
+ * `msi`, an `It` delegate
+ * `msf`, a failing `It` delegate, use in combination with the `Catch` surround template
 
-This option behaves the same as the `--html` option, in terms of filename behavior and multiple assemblies.
+# TestDriven.Net Integration
 
-#### ReSharper
+MSpec provides a batch file for setting up TD.NET integration. Newer versions (2.24+) support an xcopy integration that avoids the versioning issues arising from the registry-based scheme. Just copy `Machine.Specifications.dll.tdnet` and `Machine.Specifications.TDNetRunner.csproj` to the location of your MSpec binaries.
 
-##### Using InstallResharperRunner*.bat
-
-MSpec provides a batch file for each of the versions of ReSharper it supports, 6.1, 7.0 and 7.1.
-
-##### Preventing ReSharper from marking specifications as unused
-
-By default, ReSharper will think that specification classes (those marked with the [Subject] attribute), and their internals are unused.  To change this behavior in Visual Studio:
-
-1. Open the ReSharper Options (ReSharper -> Options...)
-2. Select "Code Annotations"
-3. Ensure that the namespace "Machine.Specifications.Annotations" is checked
-4. Click "OK"
-
-##### ReSharper templates
-
-To import the templates into Visual Studio go to `ReSharper -> Templates Explorer...`, click `Import...` and select the `Misc\ReSharper.*.DotSettings` files.
-
-###### Live templates
-
-MSpec provides following live templates:
-
-* `mse`, shortcut for `Establish` delegate
-* `msb`, shortcut for `Because` delegate
-* `msi`, shortcut for `It` delegate
-* `msf`, shortcut for failing `It` delegate which is best used in conjugation with the `Catch.Exception` surround template.
-
-###### File templates
-
-At the moment there is only one file template which creates a new file containing a single MSpec context.
-
-###### Surround templates
-
-There is one surround template which makes the creation of `Catch.Exception` statements easier.
-
-Usage examples for the file and surround template can be found in the following blog post:
-http://therightstuff.de/2010/03/03/MachineSpecifications-Templates-For-ReSharper.aspx
-
-#### TestDriven.Net
-
-##### Using InstallTDNetRunner.bat
-
-*NOTE: If you obtained the latest successful binaries from CI build as indicated above, the InstallTDNetRunner.bat is already with the binaries and doesn't need to be copied.*
-
-MSpec provides a `InstallTDNetRunner.bat` file which can be used to add support for MSpec to TestDriven.Net. The file (and another version which runs silently) are available in the `\Distribution\Specifications` directory of the source repository. To add TD.Net support:
-
-- Copy one or more of the .bat files in the above-mentioned directory into a directory which contains the complete build output of the project (usually `\Build` in the source repo).
-
-- Run one of them.
-
-After following these steps, MSpec-based Contexts and Specifications can be ran from within Visual Studio in the same manner as tests from other frameworks are executed.
-
-##### Using XCopy deploy in TD.NET 2.24+
-
-TestDriven.Net versions 2.24 and newer support a XCopy deployment model that simplifies the plugin deployment process and negates the versioning issues that arise from using the registry-based scheme used in `InstallTDNetRunner.bat`.
-
-All that needs to be done is to make sure that the `Machine.Specifications.dll.tdnet` file that is deployed as part of the zip downloads and `Machine.Specifications.TDNetRunner.csproj` is in the same directory as your MSpec binaries.
-
-## Guidelines
-
-### The utility of Inheritance in Context/Specification-style testing
-
-aka When/how to use base classes.
-
-### Intention revealing contexts
-
-aka helper methods in base classes, fluent-fixture patterns, etc etc ad nauseum.
-
-## Tips
-
-### Make your Its/Becauses single-line statements
-
-MSpec is designed to reduce noise in tests. You should generally only have one line in your `It` and `Because` statements. As such, you should probably leave out the `{` and `}`. Context/Specification testing, while a rethinking of "classic" TDD, still abides by the rules of [Arrange-Act-Assert](http://c2.com/cgi/wiki?ArrangeActAssert). As such, it is preferrable to keep the latter two as succinct as possible.
-
-#### Because
-
-If you're consistently finding that you need to have multiple lines in your `Because` statements, that may be a code smell that your Context is "too chunky". You want to be able to verify and "nail down" that the behavior that you're verifying with your `It` statements is because of a *single* action. Of course, most non-trivial contexts require multiple lines of setup to get into the preferred state that you're verifying, but you want to be able to say that there is a particular, final action that makes your specifications pass.
-
-For example:
-
-<pre>
-public class because_example_goes_here : ExampleSpecs {
-
-}
-</pre>
-
-#### It
-
-Simultaneously, your `It` statements should be single-liners and reflect a single assertion. If you're stuffing multiple assertions into a single `It`, considering the wording of that `It` and how you may be able to break it up into two or more specifications, each containing a single statement.
-
-<pre>
-public class it_example_goes_here : ExampleSpecs {
-
-}
-</pre>
-
-### Testing for exceptions
-
-When testing for exceptions it is recommended that you use the `Catch` class in your `Because` statement then validate the exception in subsequent `It` statements. This ensures that no validation of the `Exception` occurs in the `Because` statement. It is also recommended to include an `It` statement that explicitly determines the type of `Exception` if that is important to you. Doing so will improve the readability of your specifications clarifying how the system is intended to behave.
-
-<pre>
-public class when_the_user_credentials_cannot_be_verified : ExampleSpecs {
-
-  static Exception Exception;
-
-  Because of = () =>
-    Exception = Catch.Exception(() => SecurityService.Authenticate("user", "pass") );
-
-  It should_fail = () =>
-    Exception.ShouldBeOfType&lt;AuthenticationFailedException&gt;();
-
-}
-</pre>
-
-### External links (blog posts, etc?)
-
-## Framework Features
-
-#### IAssemblyContext
-
-This interface has two methods
-<pre>
-void OnAssemblyStart()
-
-void OnAssemblyComplete()
-</pre>
-
-These methods are used by classes that implement `IAssemblyContext`, to set if an assembly loaded by reflection has started to be checked (explored) or is completed.
-
-#### ICleanupAfterEveryContextInAssembly
-
-#### [SetupForEachSpecification]
-
+ [1]: http://teamcity.codebetter.com/guestAuth/repository/download/bt342/.lastSuccessful/Machine.Specifications-Release.zip
+ [2]: http://teamcity.codebetter.com/guestAuth/repository/download/bt345/.lastSuccessful/Machine.Specifications-Signed-Release.zip
+ [3]: http://teamcity.codebetter.com/project.html?projectId=project27
+ [4]: http://nuget.org/packages/Machine.Specifications
+ [5]: http://www.code-magazine.com/article.aspx?quickid=0805061
+ [6]: http://codebetter.com/blogs/aaron.jensen/archive/2009/10/19/advanced-selenium-logging-with-mspec.aspx
+ [7]: http://confluence.jetbrains.com/display/TCD7/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-ReportingTests
+ [8]: https://groups.google.com/forum/?fromgroups#!forum/machine_users
+ [9]: http://c2.com/cgi/wiki?ArrangeActAssert 
