@@ -4,16 +4,22 @@ Machine.Specifications (MSpec) is a [context/specification][5] framework that re
 
 # Installation
 
-You can download the [unsigned binaries][1] (<strong>recommended</strong>) or the [signed binaries][2] directly from the [TeamCity server][3]. But, we recommended installing [the NuGet package][4]. Install on the command line from your solution directory
+You can download the [unsigned binaries][1] (<strong>recommended</strong>) or the [signed binaries][2] directly from the [TeamCity server][3]. But, we recommended installing [the NuGet package][4]. Install on the command line from your solution directory:
 
 ```bash
 cmd> nuget install Machine.Specifications
+
+# or:
+cmd> nuget install Machine.Specifications-Signed
 ```
 
-Or use the Package Manager console in Visual Studio
+Or use the Package Manager console in Visual Studio:
 
 ```powershell
 PM> Install-Package Machine.Specifications
+
+# or:
+PM> Install-Package Machine.Specifications-Signed
 ```
 
 # Usage
@@ -27,18 +33,24 @@ Read on to construct a simple MSpec styled specification class.
 
 ## Subject
 
-The `Subject` attribute is the first part of any spec class. It describes the "context", which can be the literal `Type` under test or a broader description. The subject is *required* on any spec class, because it drives the command-line and integrated test runners. The class naming convention is to use `Sentence_snake_case` and to start with the word "When".
+The `Subject` attribute is the first part of a spec class. It describes the "context", which can be the literal `Type` under test or a broader description.
+
+The subject is not required, but it is good practice to add it. Also, the attribute allows [ReSharper](#resharper-integration) to detect context classes such that [delegate members](#establish) will not be regarded as unused.
+
+The class naming convention is to use `Sentence_snake_case` and to start with the word "When".
 
 ```csharp
 [Subject("Authentication")]                           // a description
 [Subject(typeof(SecurityService))]                    // the type under test
-[Subject(typeof(SecurityService), "Authentication")]  // or a combo! 
+[Subject(typeof(SecurityService), "Authentication")]  // or a combo!
 public class When_authenticating_a_user { ... }       // remember: you can only use one Subject Attribute!
 ```
 
 ## Tags
 
 The `Tags` attribute is used to organize your spec classes for inclusion or exclusion in test runs. You can identify tests that hit the database by tagging them "Slow" or tests for special reports by tagging them "AcceptanceTest".
+
+Tags can be used to [include or exclude certain contexts during a spec run](command-line-reference).
 
 ```csharp
 [Tags("RegressionTest")]  // this attribute supports any number of tags via a params string[] argument!
@@ -52,14 +64,14 @@ The `Establish` delegate is the "Arrange" part of the spec class. The establish 
 
 ```csharp
 [Subject("Authentication")]
-public class When_authenticating_a_new_user 
+public class When_authenticating_a_new_user
 {
-    Establish context = () => 
+    Establish context = () =>
     {
         // ... any mocking, stubbing, or other setup ...
         Subject = new SecurityService(foo, bar);
     }
-  
+
     static SecurityService Subject;
 }
 ```
@@ -70,31 +82,31 @@ The pair to Establish is `Cleanup`, which is also called *once* after all of the
 
 ```csharp
 [Subject("Authentication")]
-public class When_authenticating_a_user 
+public class When_authenticating_a_user
 {
-    Establish context = () => 
+    Establish context = () =>
     {
         Subject = new SecurityService(foo, bar);
     }
-  
-    Cleanup after = () => 
+
+    Cleanup after = () =>
     {
         SecurityService.Dispose();
     }
-  
+
     static SecurityService Subject;
 }
 ```
 
 ## Because
 
-The `Because` delegate is the "Act" part of the spec class. It should be the single action for this context, the only part that mutates state, against which all of the assertions can be made. Most because statements are only *one* line, which allows you to leave off the squiggly brackets!
+The `Because` delegate is the "Act" part of the spec class. It should be the single action for this context, the only part that mutates state, against which all of the assertions can be made. Most `Because` statements are only *one* line, which allows you to leave off the squiggly brackets!
 
 ```csharp
 [Subject("Authentication")]
-public class When_authenticating_a_user 
+public class When_authenticating_a_user
 {
-    Establish context = () => 
+    Establish context = () =>
     {
         Subject = new SecurityService(foo, bar);
     }
@@ -111,13 +123,13 @@ If you have a multi-line because statement, you probably need to identify which 
 
 When testing that exceptions are thrown from the "action" you should use a `Catch` statement. This prevents thrown exceptions from escaping the spec and failing the test run. You can inspect the exception's expected properites in your assertions.
 
-(You may want to jump ahead and read about the `It` assertion delegate first!)
+(You may want to jump ahead and read about the [`It` assertion delegate](#it) first!)
 
 ```csharp
 [Subject("Authentication")]
 public class When_authenticating_a_user_fails_due_to_bad_credentials
 {
-    Establish context = () => 
+    Establish context = () =>
     {
         Subject = new SecurityService(foo, bar);
     }
@@ -134,19 +146,19 @@ public class When_authenticating_a_user_fails_due_to_bad_credentials
 
 ## It
 
-The `It` delegate is the "Assert" part of the spec class. It may appear one or more times in your spec class. Each statement should contain a single assertion, so that the intent and failure reporting is crystal clear. Like Because statements, It statements are usually one-liners and may not have squiggly brackets.
+The `It` delegate is the "Assert" part of the spec class. It may appear one or more times in your spec class. Each statement should contain a single assertion, so that the intent and failure reporting is crystal clear. Like `Because` statements, `It` statements are usually one-liners and may not have squiggly brackets.
 
 ```csharp
 [Subject("Authentication")]
-public class When_authenticating_an_admin_user 
+public class When_authenticating_an_admin_user
 {
-    Establish context = () => 
+    Establish context = () =>
     {
         Subject = new SecurityService(foo, bar);
     }
 
     Because of = () => Token = Subject.Authenticate("username", "password");
-    
+
     It should_indicate_the_users_role = () => Token.Role.ShouldEqual(Roles.Admin);
     It should_have_a_unique_session_id = () => Token.SessionId.ShouldNotBeNull();
 
@@ -155,7 +167,7 @@ public class When_authenticating_an_admin_user
 }
 ```
 
-An It statement without an assignment will be reported by the test runner in the "Pending" state. You may find that "stubbing" your assertions like this helps you practice TDD.
+An `It` statement without an assignment will be reported by the test runner in the "Not implemented" state. You may find that "stubbing" your assertions like this helps you practice TDD.
 
 ```csharp
 It should_list_your_authorized_actions;
@@ -163,13 +175,13 @@ It should_list_your_authorized_actions;
 
 ### Assertion Extension Methods
 
-As you can see above, the It assertions make use of these `Should` extension methods. They encourage readability and a good flow to your assertions when read aloud or on paper. You *should* use them wherever possible, just "dot" off of your object and browse the Intellisense!
+As you can see above, the `It` assertions make use of these `Should` extension methods. They encourage readability and a good flow to your assertions when read aloud or on paper. You *should* use them wherever possible, just "dot" off of your object and browse the IntelliSense!
 
-It's good practice to make your own Should assertion extension methods for complicated custom objects or domain concepts.
+It's good practice to make your own `Should` assertion extension methods for complicated custom objects or domain concepts.
 
 ## Ignore
 
-Every test framework lets you ignore incomplete or failing (I hope not) specs, MSpec provides the `Ignore` attribute for just that. Just leave a note describing the reason that you ignored this spec.
+Every test framework lets you ignore incomplete or failing (we hope not) specs, MSpec provides the `Ignore` attribute for just that. Just leave a note describing the reason that you ignored this spec.
 
 ```csharp
 [Ignore("We are switching out the session ID factory for a better implementation")]
@@ -205,23 +217,23 @@ Options:
 Usage: mspec.exe [options] <assemblies>
 ```
 
-**TeamCity Reports**  
+**TeamCity Reports**
 MSpec can output [TeamCity](http://www.jetbrains.com/teamcity/) [service messages][7] to update the test run status in real time. This feature is enabled by passing the `--teamcity` switch, but the command-line runner *can* auto-detect that it is running in the TeamCity context.
 
-**HTML Reports**  
+**HTML Reports**
 MSpec can output human-readable HTML reports of the test run by passing the `--html` option. If a filename is provided, the output is placed at that path, overwriting existing files. If multiple assemblies are being testing, the output is grouped into a single file. If no filename is provided, it will use the name of the assembly(s). If multiple assemblies are being tested, an `index.html` is created with links to each assembly-specific report. You can use this option if your CI server supports capturing HTML as build reports.
 
-**XML Reports**  
+**XML Reports**
 MSpec can output XML test run reports by passing the `--xml` option. This option behaves the same as the `--html` option, in terms of file naming.
 
-**Selenium Reports**  
-The MSpec HTML reports can show additional [Selenium](http://seleniumhq.org/)-specific information, like screenshots and debug statements. Instructions on [how to integrate this feature][6] into your specs is available on the web.
+**Selenium Reports**
+The MSpec HTML reports can show additional [Selenium](http://seleniumhq.org/)-specific information, like screenshots and debug statements. Instructions on [how to integrate this feature][6] into your specs is available on the web. There is also a [sample implementation][10] available.
 
 # ReSharper Integration
 
 MSpec provides a batch file to integrate with the ReSharper test runner, custom naming rules, and code annotations. MSpec currently supports ReSharper 6.1, 7.0, and 7.1.
 
-**Code Annotations**  
+**Code Annotations**
 By default, ReSharper thinks that specification classes (those with the `[Subject]` attribute) and their internals are unused. To change this behavior in Visual Studio:
 
  1. Open the ReSharper Options (ReSharper -> Options...)
@@ -229,8 +241,8 @@ By default, ReSharper thinks that specification classes (those with the `[Subjec
  1. Ensure that the namespace "Machine.Specifications.Annotations" is checked
  1. Click "OK"
 
-**Templates**  
-The file, live, and surround templates can be imported from `Misc\ReSharper.*.DotSettings`. The single file template creates a basic context. The single surround template wraps a `Catch.Exception` call. The live templates cover the major delegates
+**Templates**
+The file, live, and surround templates can be imported from `Misc\ReSharper.*.DotSettings`. The single file template creates a basic context. The single surround template wraps a `Catch.Exception` call ([more information how to use them][11]). The live templates cover the major delegates:
 
  * `mse`, an `Establish` delegate
  * `msb`, a `Because` delegate
@@ -239,7 +251,7 @@ The file, live, and surround templates can be imported from `Misc\ReSharper.*.Do
 
 # TestDriven.Net Integration
 
-MSpec provides a batch file for setting up TD.NET integration. Newer versions (2.24+) support an xcopy integration that avoids the versioning issues arising from the registry-based scheme. Just copy `Machine.Specifications.dll.tdnet` and `Machine.Specifications.TDNetRunner.csproj` to the location of your MSpec binaries.
+MSpec provides a batch file for setting up TD.NET integration. Newer versions (2.24+) support an xcopy integration that avoids the versioning issues arising from the registry-based scheme. If you use NuGet, you're already set. If you're not using NuGet, make sure to  copy `Machine.Specifications.dll.tdnet` and `Machine.Specifications.TDNetRunner.dll` to your project's output directory.
 
  [1]: http://teamcity.codebetter.com/guestAuth/repository/download/bt342/.lastSuccessful/Machine.Specifications-Release.zip
  [2]: http://teamcity.codebetter.com/guestAuth/repository/download/bt345/.lastSuccessful/Machine.Specifications-Signed-Release.zip
@@ -249,4 +261,6 @@ MSpec provides a batch file for setting up TD.NET integration. Newer versions (2
  [6]: http://codebetter.com/blogs/aaron.jensen/archive/2009/10/19/advanced-selenium-logging-with-mspec.aspx
  [7]: http://confluence.jetbrains.com/display/TCD7/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-ReportingTests
  [8]: https://groups.google.com/forum/?fromgroups#!forum/machine_users
- [9]: http://c2.com/cgi/wiki?ArrangeActAssert 
+ [9]: http://c2.com/cgi/wiki?ArrangeActAssert
+ [10]: https://github.com/agross/mspec-samples/tree/master/WebSpecs/LoginApp.Selenium.Specs
+ [11]: http://therightstuff.de/2010/03/03/MachineSpecifications-Templates-For-ReSharper.aspx
