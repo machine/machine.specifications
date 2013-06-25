@@ -105,6 +105,9 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Factories\ContextCache.cs">
       <Link>Factories\ContextCache.cs</Link>
     </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Factories\ElementFactories.cs">
+      <Link>Factories\ElementFactories.cs</Link>
+    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Factories\UnitTestTaskFactory.cs">
       <Link>Factories\UnitTestTaskFactory.cs</Link>
     </Compile>
@@ -143,6 +146,12 @@
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Runners\VersionCompatibilityChecker.cs">
       <Link>Runners\VersionCompatibilityChecker.cs</Link>
+    </Compile>
+    <Compile Include="..\machine.specifications.resharperrunner.6.1\shims\ICache.cs">
+      <Link>Shims\ICache.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Shims\IPsi.cs">
+      <Link>Shims\IPsi.cs</Link>
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Tasks\BehaviorSpecificationTask.cs">
       <Link>Tasks\BehaviorSpecificationTask.cs</Link>
