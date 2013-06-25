@@ -42,7 +42,12 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
       _interrupted = interrupted;
 
       var project = file.GetSourceFile().ToProjectFile().GetProject();
+        
+#if !RESHARPER_8
       _assemblyPath = UnitTestManager.GetOutputAssemblyPath(project).FullPath;
+#else
+      _assemblyPath = project.GetOutputFilePath().FullPath;
+#endif
 
       _elementHandlers = new List<IElementHandler>
                          {
