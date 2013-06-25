@@ -52,7 +52,11 @@ namespace Machine.Specifications.ReSharperRunner
 
     public RemoteTaskRunnerInfo GetTaskRunnerInfo()
     {
+#if !RESHARPER_8
       return new RemoteTaskRunnerInfo(typeof(RecursiveMSpecTaskRunner));
+#else
+      return new RemoteTaskRunnerInfo(ID, typeof(RecursiveMSpecTaskRunner));
+#endif
     }
 
     public int CompareUnitTestElements(IUnitTestElement x, IUnitTestElement y)

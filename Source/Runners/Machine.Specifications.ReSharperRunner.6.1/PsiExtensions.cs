@@ -181,10 +181,17 @@ namespace Machine.Specifications.ReSharperRunner
 
     private static IAttributeInstance GetSubjectAttribute(IAttributesSet type)
     {
+#if !RESHARPER_8
       return (from a in type.GetAttributeInstances(true)
               let h = (new[] { a.AttributeType}).Concat(a.AttributeType.GetSuperTypes())
               where h.Any(t => t.GetClrName().FullName == typeof(SubjectAttribute).FullName)
               select a).FirstOrDefault();
+#else
+      return (from a in type.GetAttributeInstances(true)
+              let h = (new[] { a.GetAttributeType() }).Concat(a.GetAttributeType().GetSuperTypes())
+              where h.Any(t => t.GetClrName().FullName == typeof(SubjectAttribute).FullName)
+              select a).FirstOrDefault();
+#endif
     }
 
     public static ICollection<string> GetTags(this IAttributesOwner type)
