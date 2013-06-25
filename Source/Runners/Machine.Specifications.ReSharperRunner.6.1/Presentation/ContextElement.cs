@@ -40,7 +40,7 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
       if (tags != null)
       {
-        _categories = UnitTestElementCategory.Create(tags);
+        _categories = UnitTestElementCategory.Create(new JetHashSet<string>(tags));
       }
     }
 

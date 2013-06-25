@@ -267,6 +267,7 @@
     <Compile Include="Shims\Psi.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Explorers\MSpecTestMetadataExplorer.8.0.cs" />
     <None Include="InstallResharperRunner.8.0.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

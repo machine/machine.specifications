@@ -5,7 +5,7 @@ using JetBrains.ReSharper.UnitTestFramework;
 namespace Machine.Specifications.ReSharperRunner.Explorers
 {
   [MetadataUnitTestExplorer]
-  public class MSpecTestMetadataExplorer : IUnitTestMetadataExplorer
+  public partial class MSpecTestMetadataExplorer : IUnitTestMetadataExplorer
   {
     readonly AssemblyExplorer _assemblyExplorer;
     readonly MSpecUnitTestProvider _provider;
