@@ -12,9 +12,9 @@ namespace Machine.Specifications.ReSharperRunner.Shims
       _cache = cache;
     }
 
-    public IDeclarationsCache GetDeclarationsCache(IPsiModule psiModule, bool withReferences, bool caseSensitive)
+    public ISymbolScope GetDeclarationsCache(IPsiModule psiModule, bool withReferences, bool caseSensitive)
     {
-      throw new System.NotImplementedException();
+      return _cache.GetSymbolScope(LibrarySymbolScope.FULL, caseSensitive, psiModule.GetContextFromModule());
     }
   }
 }

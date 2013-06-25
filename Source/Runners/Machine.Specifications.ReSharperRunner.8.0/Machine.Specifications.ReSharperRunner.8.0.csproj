@@ -84,7 +84,6 @@
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi">
       <HintPath>..\..\..\Libraries\ReSharper\8.0\JetBrains.ReSharper.Psi.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Resources">
       <HintPath>..\..\..\Libraries\ReSharper\8.0\JetBrains.ReSharper.Resources.dll</HintPath>
@@ -167,9 +166,6 @@
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Runners\VersionCompatibilityChecker.cs">
       <Link>Runners\VersionCompatibilityChecker.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Shims\ICache.cs">
-      <Link>Shims\ICache.cs</Link>
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Shims\IPsi.cs">
       <Link>Shims\IPsi.cs</Link>
@@ -271,6 +267,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Shims\Cache.cs" />
+    <Compile Include="Shims\ICache.cs" />
     <Compile Include="Shims\Psi.cs" />
   </ItemGroup>
   <ItemGroup>
