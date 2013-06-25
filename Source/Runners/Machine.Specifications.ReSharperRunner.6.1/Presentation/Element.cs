@@ -6,6 +6,9 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.UnitTestFramework;
+#if RESHARPER_8
+using JetBrains.ReSharper.UnitTestFramework.Strategy;
+#endif
 using JetBrains.Util;
 
 using Machine.Specifications.ReSharperRunner.Factories;
@@ -225,6 +228,13 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
 
       throw new ArgumentException(String.Format("Element is not a Machine.Specifications element: '{0}'", this));
     }
+
+#if RESHARPER_8
+    public IUnitTestRunStrategy GetRunStrategy(IHostProvider hostProvider)
+    {
+      throw new NotImplementedException();
+    }
+#endif
 
     public virtual string GetTitlePrefix()
     {

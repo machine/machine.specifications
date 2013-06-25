@@ -37,6 +37,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     {
     }
 
+#if !RESHARPER_8
     public override TaskResult Start(TaskExecutionNode node)
     {
       var task = (RunAssemblyTask) node.RemoteTask;
@@ -63,6 +64,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
       return TaskResult.Success;
     }
+#endif
 
     static RunScope GetRunScope(DefaultRunner runner)
     {
@@ -84,18 +86,21 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
       return scope;
     }
-
+      
+#if !RESHARPER_8
     public override TaskResult Execute(TaskExecutionNode node)
     {
       // This method is never called.
       return TaskResult.Success;
     }
+#endif
 
     public override void ExecuteRecursive(TaskExecutionNode node)
     {
       node.Flatten(x => x.Children).Each(RegisterRemoteTaskNotifications);
     }
-
+      
+#if !RESHARPER_8
     public override TaskResult Finish(TaskExecutionNode node)
     {
       try
@@ -114,6 +119,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
         _runScope.EndRun(_contextAssembly);
       }
     }
+#endif
 
     void RunContext(TaskExecutionNode node)
     {
