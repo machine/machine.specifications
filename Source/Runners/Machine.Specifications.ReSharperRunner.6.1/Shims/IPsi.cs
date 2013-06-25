@@ -1,6 +1,6 @@
 ﻿using JetBrains.ProjectModel;
 #if RESHARPER_8
-using JetBrains.ReSharper.Psi.Modules
+using JetBrains.ReSharper.Psi.Modules;
 #else
 using JetBrains.ReSharper.Psi;
 #endif
