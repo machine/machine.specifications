@@ -158,12 +158,6 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Runners\Notifications\SilentRemoteTaskNotification.cs">
       <Link>Runners\Notifications\SilentRemoteTaskNotification.cs</Link>
     </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Runners\PerAssemblyRunListener.cs">
-      <Link>Runners\PerAssemblyRunListener.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Runners\RecursiveMSpecTaskRunner.cs">
-      <Link>Runners\RecursiveMSpecTaskRunner.cs</Link>
-    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Runners\VersionCompatibilityChecker.cs">
       <Link>Runners\VersionCompatibilityChecker.cs</Link>
     </Compile>
@@ -266,6 +260,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Runners\PerAssemblyRunListener.cs" />
+    <Compile Include="Runners\RecursiveMSpecTaskRunner.cs" />
     <Compile Include="Shims\Cache.cs" />
     <Compile Include="Shims\ICache.cs" />
     <Compile Include="Shims\Psi.cs" />
