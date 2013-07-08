@@ -36,6 +36,7 @@
   <ItemGroup>
     <Reference Include="JetBrains.PsiFeatures.dotCover.Resources">
       <HintPath>..\..\..\Libraries\dotCover\2.5\JetBrains.PsiFeatures.dotCover.Resources.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.dotCover.ComponentModel">
       <HintPath>..\..\..\Libraries\dotCover\2.5\JetBrains.Platform.dotCover.ComponentModel.dll</HintPath>

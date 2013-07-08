@@ -84,6 +84,7 @@
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi">
       <HintPath>..\..\..\Libraries\ReSharper\8.0\JetBrains.ReSharper.Psi.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Resources">
       <HintPath>..\..\..\Libraries\ReSharper\8.0\JetBrains.ReSharper.Resources.dll</HintPath>
