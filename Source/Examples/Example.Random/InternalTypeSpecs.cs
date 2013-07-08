@@ -24,7 +24,9 @@ namespace Example.Random.Internal
   [Behaviors]
   class WorkingSpecs
   {
+#pragma warning disable 0649
     protected static bool MSpecRocks;
+#pragma warning restore 0649
 
     It should_work =
       () => MSpecRocks.ShouldBeTrue();

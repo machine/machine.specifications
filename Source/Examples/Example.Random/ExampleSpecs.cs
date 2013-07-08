@@ -58,7 +58,7 @@ namespace Example.Random
     It should_be_unimplemented;
   }
 
-  [Ignore]
+  [Ignore("example reason")]
   public class context_with_ignore : context_with_no_specs
   {
     public static bool IgnoredSpecRan;
@@ -71,12 +71,12 @@ namespace Example.Random
   {
     public static bool IgnoredSpecRan;
 
-    [Ignore]
+    [Ignore("example reason")]
     It should_be_ignored = () =>
       IgnoredSpecRan = true;
   }
 
-  [Ignore("just because")]
+  [Ignore("example reason")]
   public class context_with_ignore_and_reason : context_with_no_specs
   {
     public static bool IgnoredSpecRan;
@@ -89,7 +89,7 @@ namespace Example.Random
   {
     public static bool IgnoredSpecRan;
 
-    [Ignore("just because")]
+    [Ignore("example reason")]
     It should_be_ignored = () =>
       IgnoredSpecRan = true;
   }
@@ -302,7 +302,9 @@ namespace Example.Random
   [Tags(tag.example)]
   public class context_with_internal_It_field
   {
+#pragma warning disable 0649
     internal It should;
+#pragma warning restore 0649
   }
 
   [Tags(tag.example)]
@@ -318,7 +320,9 @@ namespace Example.Random
     public Because because;
     public Cleanup cleanup;
 
+#pragma warning disable 0649
     internal Behaves_like<Behaviors> behavior;
+#pragma warning restore 0649
     protected It specification;
     It private_specification;
   }

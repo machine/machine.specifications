@@ -220,7 +220,7 @@ namespace Machine.Specifications.Specs.Runner
   }
 
   [Subject("Specification Runner")]
-  [Ignore]
+  [Ignore("currently not supported")]
   public class when_running_a_specification_with_console_output
     : RunnerSpecs
   {
@@ -239,7 +239,7 @@ namespace Machine.Specifications.Specs.Runner
   }
 
   [Subject("Specification Runner")]
-  [Ignore]
+  [Ignore("currently not supported")]
   public class when_running_a_specification_with_console_output_and_foreach
     : RunnerSpecs
   {

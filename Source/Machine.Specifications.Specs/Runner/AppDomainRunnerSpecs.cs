@@ -60,7 +60,7 @@ namespace Machine.Specifications.Specs.Runner
 
   }
 
-  [Ignore]
+  [Ignore("exceptions during cleanup are ignored")]
   public class when_running_specs_in_which_the_cleanup_throws_a_non_serializable_exception : running_specs
   {
     Because of = () =>

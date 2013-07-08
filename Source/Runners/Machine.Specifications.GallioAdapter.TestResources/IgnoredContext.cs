@@ -1,6 +1,6 @@
 ﻿namespace Machine.Specifications.GallioAdapter.TestResources
 {
-  [Ignore]
+  [Ignore("example reason")]
   public class ignored_context_spec
   {
     public static bool established;
@@ -29,7 +29,7 @@
     Because action = () =>
       because = true;
 
-    [Ignore]
+    [Ignore("example reason")]
     It should = () =>
       spec = true;
   }

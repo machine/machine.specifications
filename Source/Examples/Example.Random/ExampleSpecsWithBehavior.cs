@@ -24,7 +24,7 @@ namespace Example.Random
 
     It should_run = () => LocalSpecRan = true;
 
-    [Ignore]
+    [Ignore("example reason")]
     Behaves_like<Behaviors> behavior;
   }
 
@@ -109,7 +109,7 @@ namespace Example.Random
     It should_run_if_behavior_is_not_ignored = () => BehaviorSpecRan = true;
   }
 
-  [Ignore]
+  [Ignore("example reason")]
   [Behaviors]
   public class IgnoredBehaviors
   {
@@ -123,7 +123,7 @@ namespace Example.Random
   {
     public static bool BehaviorSpecRan;
 
-    [Ignore]
+    [Ignore("example reason")]
     It should_not_run = () => BehaviorSpecRan = true;
   }
 
