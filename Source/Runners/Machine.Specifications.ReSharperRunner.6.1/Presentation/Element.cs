@@ -5,9 +5,11 @@ using System.Linq;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.TaskRunnerFramework;
 using JetBrains.ReSharper.UnitTestFramework;
 #if RESHARPER_8
 using JetBrains.ReSharper.UnitTestFramework.Strategy;
+using Machine.Specifications.ReSharperRunner.Runners;
 #endif
 using JetBrains.Util;
 
@@ -230,9 +232,11 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
     }
 
 #if RESHARPER_8
+    private static readonly IUnitTestRunStrategy RunStrategy = new OutOfProcessUnitTestRunStrategy(new RemoteTaskRunnerInfo(RecursiveMSpecTaskRunner.RunnerId, typeof(RecursiveMSpecTaskRunner)));
+
     public IUnitTestRunStrategy GetRunStrategy(IHostProvider hostProvider)
     {
-      throw new NotImplementedException();
+      return RunStrategy;
     }
 #endif
 

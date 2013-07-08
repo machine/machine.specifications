@@ -24,14 +24,10 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     }
   }
 
-  internal class RecursiveMSpecTaskRunner : RecursiveRemoteTaskRunner
+  class RecursiveMSpecTaskRunner : RecursiveRemoteTaskRunner
   {
-    readonly RemoteTaskNotificationFactory _taskNotificationFactory = new RemoteTaskNotificationFactory();
-    Assembly _contextAssembly;
-    Type _contextClass;
-    PerAssemblyRunListener _listener;
-    DefaultRunner _runner;
-    RunScope _runScope;
+    static readonly RemoteTaskNotificationFactory TaskNotificationFactory = new RemoteTaskNotificationFactory();
+    public const string RunnerId = "Machine.Specifications";
 
     public RecursiveMSpecTaskRunner(IRemoteTaskServer server) : base(server)
     {
@@ -60,15 +56,44 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
     public override void ExecuteRecursive(TaskExecutionNode node)
     {
-      node.Flatten(x => x.Children).Each(RegisterRemoteTaskNotifications);
+      var contextAssembly = LoadContextAssembly((RunAssemblyTask)node.RemoteTask);
+
+      var result = VersionCompatibilityChecker.Check(contextAssembly);
+      if (!result.Success)
+      {
+        Server.TaskException(node.RemoteTask, new[]{new TaskException("no type", result.ErrorMessage, null)});
+
+        return;
+      }
+
+      var listener = new PerAssemblyRunListener(Server, (RunAssemblyTask) node.RemoteTask);
+      var runner = new DefaultRunner(listener, RunOptions.Default);
+      var runScope = GetRunScope(runner);
+
+      node.Flatten(x => x.Children).Each(children => RegisterRemoteTaskNotifications(listener, children));
+      
+      try
+      {
+        runScope.StartRun(contextAssembly);
+        
+        foreach (var child in node.Children)
+        {
+          RunContext(runner, contextAssembly, child);
+        }
+      }
+      finally
+      {
+        runScope.EndRun(contextAssembly);
+      }
+
     }
       
-    void RunContext(TaskExecutionNode node)
+    void RunContext(ISpecificationRunner runner, Assembly contextAssembly, TaskExecutionNode node)
     {
       var task = (ContextTask) node.RemoteTask;
 
-      _contextClass = _contextAssembly.GetType(task.ContextTypeName);
-      if (_contextClass == null)
+      var contextClass = contextAssembly.GetType(task.ContextTypeName);
+      if (contextClass == null)
       {
         Server.TaskOutput(task,
                           String.Format("Could not load type '{0}' from assembly {1}.",
@@ -79,45 +104,55 @@ namespace Machine.Specifications.ReSharperRunner.Runners
         return;
       }
 
-      _runner.RunMember(_contextAssembly, _contextClass);
+      runner.RunMember(contextAssembly, contextClass);
     }
 
-    void RegisterRemoteTaskNotifications(TaskExecutionNode node)
+    void RegisterRemoteTaskNotifications(PerAssemblyRunListener listener, TaskExecutionNode node)
     {
-      _listener.RegisterTaskNotification(_taskNotificationFactory.CreateTaskNotification(node));
+      listener.RegisterTaskNotification(TaskNotificationFactory.CreateTaskNotification(node));
     }
 
     Assembly LoadContextAssembly(RunAssemblyTask task)
     {
-      AssemblyName assemblyName;
       if (!File.Exists(task.AssemblyLocation))
       {
-        Server.TaskOutput(task,
-                          String.Format("Could not load assembly from {0}: File does not exist", task.AssemblyLocation),
-                          TaskOutputType.STDOUT);
-        Server.TaskException(task, new[] { new TaskException(new Exception("Could not load context assembly")) });
+        Server.TaskException(task,
+          new[]
+          {
+            new TaskException("no type",
+              String.Format("Could not load assembly from {0}: File does not exist", task.AssemblyLocation),
+              null)
+          });
         return null;
       }
 
+      AssemblyName assemblyName;
       try
       {
         assemblyName = AssemblyName.GetAssemblyName(task.AssemblyLocation);
       }
       catch (FileLoadException ex)
       {
-        Server.TaskOutput(task,
-                          String.Format("Could not load assembly from {0}: {1}", task.AssemblyLocation, ex.Message),
-                          TaskOutputType.STDOUT);
-        Server.TaskException(task, new[] { new TaskException(new Exception("Could not load context assembly")) });
+        Server.TaskException(task,
+          new[]
+          {
+            new TaskException("no type",
+              String.Format("Could not load assembly from {0}: {1}", task.AssemblyLocation, ex.Message),
+              null)
+          });
         return null;
       }
 
       if (assemblyName == null)
       {
-        Server.TaskOutput(task,
-                          String.Format("Could not load assembly from {0}: Not an assembly", task.AssemblyLocation),
-                          TaskOutputType.STDOUT);
-        Server.TaskException(task, new[] { new TaskException(new Exception("Could not load context assembly")) });
+        Server.TaskException(task,
+          new[]
+          {
+            new TaskException("no type",
+              String.Format("Could not load assembly from {0}: Not an assembly", task.AssemblyLocation),
+              null)
+          });
+
         return null;
       }
 
@@ -127,10 +162,13 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       }
       catch (Exception ex)
       {
-        Server.TaskOutput(task,
-                          String.Format("Could not load assembly from {0}: {1}", task.AssemblyLocation, ex.Message),
-                          TaskOutputType.STDOUT);
-        Server.TaskException(task, new[] { new TaskException(new Exception("Could not load context assembly")) });
+        Server.TaskException(task,
+          new[]
+          {
+            new TaskException("no type",
+              String.Format("Could not load assembly from {0}: {1}", task.AssemblyLocation, ex.Message),
+              null)
+          });
         return null;
       }
     }
