@@ -3,6 +3,7 @@ using JetBrains.ReSharper.Psi.Modules;
 
 namespace Machine.Specifications.ReSharperRunner.Shims
 {
+  [SolutionComponent]
   public class Psi : IPsi
   {
     readonly IPsiModules _psiModules;
