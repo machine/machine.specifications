@@ -46,18 +46,18 @@ namespace Machine.Specifications.Specs.Runner
       }
     };
 
-    Because of = () =>
-    runner.RunAssembly(Assembly.LoadFrom(SpecAssembly));
+    Because of = () => runner.RunAssembly(Assembly.LoadFrom(SpecAssembly));
 
-    It should_fail = () =>
-      listener.LastFatalError.ShouldNotBeNull();
-    //Exception.ShouldBeOfType<TargetInvocationException>();
+    It should_fail =
+      () => listener.LastFatalError.ShouldNotBeNull();
+
+    It should_record_that_the_referenced_assembly_could_not_be_found =
+      () => listener.LastFatalError.FullTypeName.ShouldEqual(typeof(FileNotFoundException).FullName);
 
     static string GetPath(string path)
     {
       return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), path);
     }
-
   }
 
   [Ignore("exceptions during cleanup are ignored")]
