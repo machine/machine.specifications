@@ -57,6 +57,6 @@
   <PropertyGroup>
     <StartAction>Program</StartAction>
     <StartProgram>$(DevEnvDir)devenv.exe</StartProgram>
-    <StartArguments>/rootsuffix mspec /ReSharper.Internal /ReSharper.Plugin "$(SolutionDir)\Build\Debug\Machine.Specifications.ReSharperRunner.7.1.dll"</StartArguments>
+    <StartArguments>/rootsuffix mspec /ReSharper.Internal /ReSharper.Plugin "$(SolutionDir)\Build\Debug\Machine.Specifications.ReSharperRunner.8.0.dll"</StartArguments>
   </PropertyGroup>
 </Project>
