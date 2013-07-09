@@ -37,11 +37,15 @@ task :configure do
   configatron.zip.package = Configatron::Delayed.new do
     "Distribution/#{configatron.project}-#{configatron.target}.zip"
   end
+
+  configatron.version.beta = Configatron::Delayed.new do
+    "-beta#{"%02d" % configatron.build.number}" if configatron.build.prerelease || nil
+  end
   configatron.version.full = Configatron::Delayed.new do
-    "#{configatron.build.base}#{'-beta' + configatron.build.number if configatron.build.prerelease}-#{configatron.build.sha[0..6]}"
+    "#{configatron.build.base}#{configatron.version.beta}-#{configatron.build.sha[0..6]}"
   end
   configatron.version.package = Configatron::Delayed.new do
-    "#{configatron.build.base}#{'-beta' + configatron.build.number if configatron.build.prerelease}"
+    "#{configatron.build.base}#{configatron.version.beta}"
   end
   configatron.version.compatible = Configatron::Delayed.new do
     "#{configatron.build.base}.0"
