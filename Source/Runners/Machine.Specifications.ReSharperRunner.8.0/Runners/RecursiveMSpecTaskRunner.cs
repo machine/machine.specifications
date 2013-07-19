@@ -59,6 +59,10 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       var task = (RunAssemblyTask) node.RemoteTask;
 
       var contextAssembly = LoadContextAssembly(task);
+      if (contextAssembly == null)
+      {
+        return;
+      }
 
       var result = VersionCompatibilityChecker.Check(contextAssembly);
       if (!result.Success)

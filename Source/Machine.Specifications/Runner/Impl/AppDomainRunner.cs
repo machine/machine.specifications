@@ -4,7 +4,6 @@ using System.IO;
 using System.Reflection;
 using System.Security;
 
-using Machine.Specifications.Runner.Impl.Listener;
 using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Runner.Impl
@@ -12,12 +11,10 @@ namespace Machine.Specifications.Runner.Impl
   public class AppDomainRunner : ISpecificationRunner
   {
     readonly ISpecificationRunListener _listener;
-    readonly ISpecificationRunListener _internalListener;
     readonly RunOptions _options;
 
     public AppDomainRunner(ISpecificationRunListener listener, RunOptions options)
     {
-      _internalListener = listener;
       _listener = new RemoteRunListener(listener);
       _options = options;
     }
@@ -25,99 +22,138 @@ namespace Machine.Specifications.Runner.Impl
     [SecuritySafeCritical]
     public void RunAssembly(Assembly assembly)
     {
-      _internalListener.OnRunStart();
-
-      InternalRunAssembly(assembly);
-
-      _internalListener.OnRunEnd();
+      try
+      {
+        StartRun(assembly);
+        GetOrCreateAppDomainRunner(assembly).Runner.RunAssembly(assembly);
+      }
+      finally
+      {
+        EndRun(assembly);
+      }
     }
 
     [SecuritySafeCritical]
     public void RunAssemblies(IEnumerable<Assembly> assemblies)
     {
-      _internalListener.OnRunStart();
-
-      assemblies.Each(InternalRunAssembly);
-
-      _internalListener.OnRunEnd();
+      assemblies.Each(RunAssembly);
     }
 
     [SecuritySafeCritical]
     public void RunNamespace(Assembly assembly, string targetNamespace)
     {
-      _internalListener.OnRunStart();
-
-      var appDomain = CreateAppDomain(assembly);
-      CreateRunnerAndUnloadAppDomain("Namespace", appDomain, assembly, targetNamespace);
-
-      _internalListener.OnRunEnd();
+      StartRun(assembly);
+      GetOrCreateAppDomainRunner(assembly).Runner.RunNamespace(assembly, targetNamespace);
     }
 
     [SecuritySafeCritical]
     public void RunMember(Assembly assembly, MemberInfo member)
     {
-      _internalListener.OnRunStart();
-
-      var appDomain = CreateAppDomain(assembly);
-      CreateRunnerAndUnloadAppDomain("Member", appDomain, assembly, member);
-
-      _internalListener.OnRunEnd();
+      StartRun(assembly);
+      GetOrCreateAppDomainRunner(assembly).Runner.RunMember(assembly, member);
     }
 
     [SecuritySafeCritical]
-    void InternalRunAssembly(Assembly assembly)
+    public void StartRun(Assembly assembly)
     {
-      var appDomain = CreateAppDomain(assembly);
-      CreateRunnerAndUnloadAppDomain("Assembly", appDomain, assembly);
+      if (RunnerWasCreated(assembly))
+      {
+        return;
+      }
+
+      GetOrCreateAppDomainRunner(assembly).Runner.StartRun(assembly);
     }
 
     [SecuritySafeCritical]
-    void CreateRunnerAndUnloadAppDomain(string runMethod, AppDomain appDomain, Assembly assembly, params object[] args)
+    public void EndRun(Assembly assembly)
+    {
+      if (!RunnerWasCreated(assembly))
+      {
+        return;
+      }
+
+      var appDomainRunner = GetOrCreateAppDomainRunner(assembly);
+      RemoveEntryFor(assembly);
+      try
+      {
+        appDomainRunner.Runner.EndRun(assembly);
+      }
+      finally
+      {
+        AppDomain.Unload(appDomainRunner.AppDomain);
+        RemoveEntryFor(assembly);
+      }
+    }
+
+    void RemoveEntryFor(Assembly assembly)
+    {
+      _appDomains.Remove(assembly);
+    }
+
+    [SecuritySafeCritical]
+    DefaultRunner CreateRunnerInSeparateAppDomain(AppDomain appDomain, Assembly assembly)
     {
       var mspecAssemblyFilename = Path.Combine(Path.GetDirectoryName(assembly.Location), "Machine.Specifications.dll");
-
       var mspecAssemblyName = AssemblyName.GetAssemblyName(mspecAssemblyFilename);
 
-      var constructorArgs = new object[args.Length + 3];
+      var constructorArgs = new object[2];
       constructorArgs[0] = _listener;
-      constructorArgs[1] = assembly;
-      constructorArgs[2] = _options;
-      Array.Copy(args, 0, constructorArgs, 3, args.Length);
+      constructorArgs[1] = _options;
 
       using (new SpecAssemblyResolver(assembly))
       {
         try
         {
-          appDomain.CreateInstanceAndUnwrap(mspecAssemblyName.FullName,
-                                            "Machine.Specifications.Runner.Impl.AppDomainRunner+" + runMethod + "Runner",
-                                            false,
-                                            0,
-                                            null,
-                                            constructorArgs,
-                                            null,
-                                            null,
-                                            null);
+          return (DefaultRunner) appDomain.CreateInstanceAndUnwrap(mspecAssemblyName.FullName,
+                                                                   "Machine.Specifications.Runner.Impl.DefaultRunner",
+                                                                   false,
+                                                                   0,
+                                                                   null,
+                                                                   constructorArgs,
+                                                                   null,
+                                                                   null,
+                                                                   null);
         }
         catch (Exception err)
         {
           Console.Error.WriteLine("Runner failure: " + err);
           throw;
         }
-        finally
-        {
-          AppDomain.Unload(appDomain);
-        }
       }
     }
 
-    static AppDomain CreateAppDomain(Assembly assembly)
-    {
-      var appDomainSetup = new AppDomainSetup();
-      appDomainSetup.ApplicationBase = Path.GetDirectoryName(assembly.Location);
-      appDomainSetup.ApplicationName = Guid.NewGuid().ToString();
-      appDomainSetup.ConfigurationFile = GetConfigFile(assembly);
+    readonly Dictionary<Assembly, AppDomainAndRunner> _appDomains = new Dictionary<Assembly, AppDomainAndRunner>();
 
-      return AppDomain.CreateDomain(appDomainSetup.ApplicationName, null, appDomainSetup);
+    AppDomainAndRunner GetOrCreateAppDomainRunner(Assembly assembly)
+    {
+      AppDomainAndRunner appDomainAndRunner;
+      if (_appDomains.TryGetValue(assembly, out appDomainAndRunner))
+      {
+        return appDomainAndRunner;
+      }
+
+      var appDomainSetup = new AppDomainSetup
+                           {
+                             ApplicationBase = Path.GetDirectoryName(assembly.Location),
+                             ApplicationName = Guid.NewGuid().ToString(),
+                             ConfigurationFile = GetConfigFile(assembly)
+                           };
+
+      var appDomain = AppDomain.CreateDomain(appDomainSetup.ApplicationName, null, appDomainSetup);
+      var runner = CreateRunnerInSeparateAppDomain(appDomain, assembly);
+
+      _appDomains.Add(assembly, new AppDomainAndRunner
+                                {
+                                  AppDomain = appDomain,
+                                  Runner = runner
+                                });
+
+      return GetOrCreateAppDomainRunner(assembly);
+    }
+
+    bool RunnerWasCreated(Assembly assembly)
+    {
+      return _appDomains.ContainsKey(assembly);
     }
 
     static string GetConfigFile(Assembly assembly)
@@ -132,70 +168,10 @@ namespace Machine.Specifications.Runner.Impl
       return null;
     }
 
-    public class AssemblyRunner : MarshalByRefObject
+    class AppDomainAndRunner
     {
-      public AssemblyRunner(ISpecificationRunListener listener, Assembly assembly, RunOptions options)
-      {
-        try
-        {
-          var runner = new DefaultRunner(listener, options);
-          runner.RunAssembly(assembly);
-        }
-        catch (Exception err)
-        {
-          listener.OnFatalError(new ExceptionResult(err));
-        }
-      }
-
-      [SecurityCritical]
-      public override object InitializeLifetimeService()
-      {
-        return null;
-      }
-    }
-
-    public class NamespaceRunner : MarshalByRefObject
-    {
-      public NamespaceRunner(ISpecificationRunListener listener, Assembly assembly, RunOptions options, string targetNamespace)
-      {
-        try
-        {
-          var runner = new DefaultRunner(listener, options);
-          runner.RunNamespace(assembly, targetNamespace);
-        }
-        catch (Exception err)
-        {
-          listener.OnFatalError(new ExceptionResult(err));
-        }
-      }
-
-      [SecurityCritical]
-      public override object InitializeLifetimeService()
-      {
-        return null;
-      }
-    }
-
-    public class MemberRunner : MarshalByRefObject
-    {
-      public MemberRunner(ISpecificationRunListener listener, Assembly assembly, RunOptions options, MemberInfo memberInfo)
-      {
-        try
-        {
-          var runner = new DefaultRunner(listener, options);
-          runner.RunMember(assembly, memberInfo);
-        }
-        catch (Exception err)
-        {
-          listener.OnFatalError(new ExceptionResult(err));
-        }
-      }
-
-      [SecurityCritical]
-      public override object InitializeLifetimeService()
-      {
-        return null;
-      }
+      public AppDomain AppDomain { get; set; }
+      public DefaultRunner Runner { get; set; }
     }
   }
 }

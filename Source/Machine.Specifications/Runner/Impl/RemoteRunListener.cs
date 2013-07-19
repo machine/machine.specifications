@@ -15,10 +15,12 @@ namespace Machine.Specifications.Runner.Impl
 
     public void OnRunStart()
     {
+      _listener.OnRunStart();
     }
 
     public void OnRunEnd()
     {
+      _listener.OnRunEnd();
     }
 
     public void OnAssemblyStart(AssemblyInfo assembly)

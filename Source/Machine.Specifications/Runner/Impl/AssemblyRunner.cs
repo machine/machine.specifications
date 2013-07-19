@@ -32,14 +32,16 @@ namespace Machine.Specifications.Runner.Impl
 
     public void Run(Assembly assembly, IEnumerable<Context> contexts)
     {
-      var hasExecutableSpecifications = contexts.Any(x => x.HasExecutableSpecifications);
-
-      var explorer = new AssemblyExplorer();
-      var globalCleanups = explorer.FindAssemblyWideContextCleanupsIn(assembly).ToList();
-      var specificationSupplements = explorer.FindSpecificationSupplementsIn(assembly).ToList();
+      var hasExecutableSpecifications = false;
 
       try
       {
+        hasExecutableSpecifications = contexts.Any(x => x.HasExecutableSpecifications);
+
+        var explorer = new AssemblyExplorer();
+        var globalCleanups = explorer.FindAssemblyWideContextCleanupsIn(assembly).ToList();
+        var specificationSupplements = explorer.FindSpecificationSupplementsIn(assembly).ToList();
+
         if (hasExecutableSpecifications)
         {
           _assemblyStart(assembly);

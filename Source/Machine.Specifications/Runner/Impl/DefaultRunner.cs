@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security;
 
 using Machine.Specifications.Explorers;
 using Machine.Specifications.Model;
@@ -9,7 +10,8 @@ using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Runner.Impl
 {
-  public class DefaultRunner : ISpecificationRunner
+  [Serializable]
+  public class DefaultRunner : MarshalByRefObject, ISpecificationRunner
   {
     readonly ISpecificationRunListener _listener;
     readonly RunOptions _options;
@@ -105,18 +107,10 @@ namespace Machine.Specifications.Runner.Impl
         // TODO: move this filtering to a more sensible place
         var contexts = pair.Value.FilteredBy(_options);
 
-        if (contexts.Any())
-        {
-          StartAssemblyRun(assembly, contexts);
-        }
+        _assemblyRunner.Run(assembly, contexts);
       }
 
       _runEnd();
-    }
-
-    void StartAssemblyRun(Assembly assembly, IEnumerable<Context> contexts)
-    {
-      _assemblyRunner.Run(assembly, contexts.FilteredBy(_options));
     }
 
     public void StartRun(Assembly assembly)
@@ -132,6 +126,12 @@ namespace Machine.Specifications.Runner.Impl
     {
       _assemblyRunner.EndExplicitRunScope(assembly);
       _listener.OnRunEnd();
+    }
+
+    [SecurityCritical]
+    public override object InitializeLifetimeService()
+    {
+      return null;
     }
   }
 

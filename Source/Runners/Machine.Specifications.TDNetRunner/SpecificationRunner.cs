@@ -17,7 +17,15 @@ namespace Machine.Specifications.TDNetRunner
     {
       var listener = new TDNetRunListener(testListener);
       var runner = new AppDomainRunner(listener, RunOptions.Default);
-      runner.RunAssembly(assembly);
+      try
+      {
+        runner.StartRun(assembly);
+        runner.RunAssembly(assembly);
+      }
+      finally
+      {
+        runner.EndRun(assembly);
+      }
 
       return listener.TestRunState;
     }
@@ -26,7 +34,15 @@ namespace Machine.Specifications.TDNetRunner
     {
       var listener = new TDNetRunListener(testListener);
       var runner = new AppDomainRunner(listener, RunOptions.Default);
-      runner.RunNamespace(assembly, ns);
+      try
+      {
+        runner.StartRun(assembly);
+        runner.RunNamespace(assembly, ns);
+      }
+      finally
+      {
+        runner.EndRun(assembly);
+      }
 
       return listener.TestRunState;
     }
@@ -35,7 +51,15 @@ namespace Machine.Specifications.TDNetRunner
     {
       var listener = new TDNetRunListener(testListener);
       var runner = new AppDomainRunner(listener, RunOptions.Default);
-      runner.RunMember(assembly, member);
+      try
+      {
+        runner.StartRun(assembly);
+        runner.RunMember(assembly, member);
+      }
+      finally
+      {
+        runner.EndRun(assembly);
+      }
 
       return listener.TestRunState;
     }
