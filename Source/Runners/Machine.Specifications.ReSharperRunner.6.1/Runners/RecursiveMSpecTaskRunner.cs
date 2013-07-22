@@ -30,7 +30,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     Assembly _contextAssembly;
     Type _contextClass;
     PerAssemblyRunListener _listener;
-    DefaultRunner _runner;
+    ISpecificationRunner _runner;
     RunScope _runScope;
 
     public RecursiveMSpecTaskRunner(IRemoteTaskServer server) : base(server)
@@ -64,7 +64,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       return TaskResult.Success;
     }
 
-    static RunScope GetRunScope(DefaultRunner runner)
+    static RunScope GetRunScope(ISpecificationRunner runner)
     {
       var scope = new RunScope();
 

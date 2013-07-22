@@ -91,9 +91,14 @@ namespace Machine.Specifications.Runner.Impl
     }
 
     [SecuritySafeCritical]
-    DefaultRunner CreateRunnerInSeparateAppDomain(AppDomain appDomain, Assembly assembly)
+    ISpecificationRunner CreateRunnerInSeparateAppDomain(AppDomain appDomain, Assembly assembly)
     {
       var mspecAssemblyFilename = Path.Combine(Path.GetDirectoryName(assembly.Location), "Machine.Specifications.dll");
+      if (!File.Exists(mspecAssemblyFilename))
+      {
+        return new NullRunner();
+      }
+
       var mspecAssemblyName = AssemblyName.GetAssemblyName(mspecAssemblyFilename);
 
       var constructorArgs = new object[2];
@@ -171,7 +176,7 @@ namespace Machine.Specifications.Runner.Impl
     class AppDomainAndRunner
     {
       public AppDomain AppDomain { get; set; }
-      public DefaultRunner Runner { get; set; }
+      public ISpecificationRunner Runner { get; set; }
     }
   }
 }

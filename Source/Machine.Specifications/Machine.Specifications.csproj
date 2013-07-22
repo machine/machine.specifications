@@ -96,6 +96,7 @@
     <Compile Include="Runner\Impl\ContextRunnerFactory.cs" />
     <Compile Include="Runner\Impl\ContextRunner.cs" />
     <Compile Include="Runner\Impl\Listener\AssemblyLocationAwareListener.cs" />
+    <Compile Include="Runner\Impl\NullRunner.cs" />
     <Compile Include="Runner\Impl\RemoteRunListener.cs" />
     <Compile Include="Runner\Impl\SpecAssemblyResolver.cs" />
     <Compile Include="Runner\Impl\SpecificationRunner.cs" />

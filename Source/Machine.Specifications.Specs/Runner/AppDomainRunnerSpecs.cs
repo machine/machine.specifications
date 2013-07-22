@@ -60,6 +60,23 @@ namespace Machine.Specifications.Specs.Runner
     }
   }
 
+  [Tags("Issue-146")]
+  public class when_running_an_assembly_that_does_not_use_mspec : running_specs
+  {
+    static Exception Exception;
+    readonly static string SpecAssembly = GetPath(@"Issue146-NoMSpecDll\Example.Issue146-NoMSpecDll.dll");
+
+    Because of = () => runner.RunAssembly(Assembly.LoadFrom(SpecAssembly));
+
+    It should_succeed =
+      () => true.ShouldBeTrue();
+    
+    static string GetPath(string path)
+    {
+      return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), path);
+    }
+  }
+
   [Ignore("exceptions during cleanup are ignored")]
   public class when_running_specs_in_which_the_cleanup_throws_a_non_serializable_exception : running_specs
   {
