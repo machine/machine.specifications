@@ -33,9 +33,7 @@ Read on to construct a simple MSpec styled specification class.
 
 ## Subject
 
-The `Subject` attribute is the first part of a spec class. It describes the "context", which can be the literal `Type` under test or a broader description.
-
-The subject is not required, but it is good practice to add it. Also, the attribute allows [ReSharper](#resharper-integration) to detect context classes such that [delegate members](#establish) will not be regarded as unused.
+The `Subject` attribute is the first part of a spec class. It describes the "context", which can be the literal `Type` under test or a broader description. The subject is not required, but it is good practice to add it. Also, the attribute allows [ReSharper](#resharper-integration) to detect context classes such that [delegate members](#establish) will not be regarded as unused.
 
 The class naming convention is to use `Sentence_snake_case` and to start with the word "When".
 
@@ -50,7 +48,7 @@ public class When_authenticating_a_user { ... }       // remember: you can only 
 
 The `Tags` attribute is used to organize your spec classes for inclusion or exclusion in test runs. You can identify tests that hit the database by tagging them "Slow" or tests for special reports by tagging them "AcceptanceTest".
 
-Tags can be used to [include or exclude certain contexts during a spec run](command-line-reference).
+Tags can be used to [include or exclude certain contexts during a spec run](#command-line-reference).
 
 ```csharp
 [Tags("RegressionTest")]  // this attribute supports any number of tags via a params string[] argument!
@@ -91,7 +89,7 @@ public class When_authenticating_a_user
 
     Cleanup after = () =>
     {
-        SecurityService.Dispose();
+        Subject.Dispose();
     }
 
     static SecurityService Subject;
@@ -118,31 +116,6 @@ public class When_authenticating_a_user
 ```
 
 If you have a multi-line because statement, you probably need to identify which of those lines are actually setup and move them into the establish. Or, your spec may be concerned with too many contexts and needs to be split or the subject-under-test needs to be refactored.
-
-## Catch
-
-When testing that exceptions are thrown from the "action" you should use a `Catch` statement. This prevents thrown exceptions from escaping the spec and failing the test run. You can inspect the exception's expected properites in your assertions.
-
-(You may want to jump ahead and read about the [`It` assertion delegate](#it) first!)
-
-```csharp
-[Subject("Authentication")]
-public class When_authenticating_a_user_fails_due_to_bad_credentials
-{
-    Establish context = () =>
-    {
-        Subject = new SecurityService(foo, bar);
-    }
-
-    Because of = () => Exception = Catch.Exception(() => Subject.Authenticate("username", "password"));
-
-    It should_fail = () => Exception.ShouldBeOfType<AuthenticationFailedException>();
-    It should_have_a_specific_reason = () => Exception.Message.ShouldContain("credentials")
-
-    static SecurityService Subject;
-    static Exception Exception;
-}
-```
 
 ## It
 
@@ -179,13 +152,36 @@ As you can see above, the `It` assertions make use of these `Should` extension m
 
 It's good practice to make your own `Should` assertion extension methods for complicated custom objects or domain concepts.
 
-## Ignore
+### Ignore
 
 Every test framework lets you ignore incomplete or failing (we hope not) specs, MSpec provides the `Ignore` attribute for just that. Just leave a note describing the reason that you ignored this spec.
 
 ```csharp
 [Ignore("We are switching out the session ID factory for a better implementation")]
 It should_have_a_unique_session_id = () => Token.SessionId.ShouldNotBeNull();
+```
+
+## Catch
+
+When testing that exceptions are thrown from the "action" you should use a `Catch` statement. This prevents thrown exceptions from escaping the spec and failing the test run. You can inspect the exception's expected properites in your assertions.
+
+```csharp
+[Subject("Authentication")]
+public class When_authenticating_a_user_fails_due_to_bad_credentials
+{
+    Establish context = () =>
+    {
+        Subject = new SecurityService(foo, bar);
+    }
+
+    Because of = () => Exception = Catch.Exception(() => Subject.Authenticate("username", "password"));
+
+    It should_fail = () => Exception.ShouldBeOfType<AuthenticationFailedException>();
+    It should_have_a_specific_reason = () => Exception.Message.ShouldContain("credentials")
+
+    static SecurityService Subject;
+    static Exception Exception;
+}
 ```
 
 # Command Line Reference
@@ -218,23 +214,28 @@ Options:
 Usage: mspec.exe [options] <assemblies>
 ```
 
-**TeamCity Reports**
+### TeamCity Reports
+
 MSpec can output [TeamCity](http://www.jetbrains.com/teamcity/) [service messages][7] to update the test run status in real time. This feature is enabled by passing the `--teamcity` switch, but the command-line runner *can* auto-detect that it is running in the TeamCity context.
 
-**HTML Reports**
+### HTML Reports
+
 MSpec can output human-readable HTML reports of the test run by passing the `--html` option. If a filename is provided, the output is placed at that path, overwriting existing files. If multiple assemblies are being testing, the output is grouped into a single file. If no filename is provided, it will use the name of the assembly(s). If multiple assemblies are being tested, an `index.html` is created with links to each assembly-specific report. You can use this option if your CI server supports capturing HTML as build reports.
 
-**XML Reports**
+### XML Reports
+
 MSpec can output XML test run reports by passing the `--xml` option. This option behaves the same as the `--html` option, in terms of file naming.
 
-**Selenium Reports**
+### Selenium Reports
+
 The MSpec HTML reports can show additional [Selenium](http://seleniumhq.org/)-specific information, like screenshots and debug statements. Instructions on [how to integrate this feature][6] into your specs is available on the web. There is also a [sample implementation][10] available.
 
 # ReSharper Integration
 
 MSpec provides a batch file to integrate with the ReSharper test runner, custom naming rules, and code annotations. MSpec currently supports ReSharper 6.1, 7.0, and 7.1.
 
-**Code Annotations**
+### Code Annotations
+
 By default, ReSharper thinks that specification classes (those with the `[Subject]` attribute) and their internals are unused. To change this behavior in Visual Studio:
 
  1. Open the ReSharper Options (ReSharper -> Options...)
@@ -242,7 +243,8 @@ By default, ReSharper thinks that specification classes (those with the `[Subjec
  1. Ensure that the namespace "Machine.Specifications.Annotations" is checked
  1. Click "OK"
 
-**Templates**
+### Templates
+
 The file, live, and surround templates can be imported from `Misc\ReSharper.*.DotSettings`. The single file template creates a basic context. The single surround template wraps a `Catch.Exception` call ([more information how to use them][11]). The live templates cover the major delegates:
 
  * `mse`, an `Establish` delegate
