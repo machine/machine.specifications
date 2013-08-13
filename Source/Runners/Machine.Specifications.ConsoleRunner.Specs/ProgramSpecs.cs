@@ -225,6 +225,19 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     It should_pass_all_specifications = () =>
       console.Lines.ShouldNotContain("failed");
   }
+  
+  [Subject("Console runner")]
+  [Tags("Issue-157")]
+  public class when_running_two_spec_assemblies_and_the_first_has_failing_specifications : ConsoleRunnerSpecs
+  {
+    static ExitCode ExitCode;
+
+    Because of = () =>
+      ExitCode = program.Run(new[] { GetPath(@"ExternalFile\Example.Failing.dll"), GetPath(@"Example.dll") });
+
+    It should_fail_the_run = () =>
+      ExitCode.ShouldNotEqual(ExitCode.Success);
+  }
 
   public class ConsoleRunnerSpecs
   {
