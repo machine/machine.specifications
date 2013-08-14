@@ -233,7 +233,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     static ExitCode ExitCode;
 
     Because of = () =>
-      ExitCode = program.Run(new[] { GetPath(@"ExternalFile\Example.Failing.dll"), GetPath(@"Example.dll") });
+      ExitCode = program.Run(new[] { GetPath(@"Issue157\Example.Issue157-Fail.dll"), GetPath(@"Issue157\Example.Issue157-Success.dll") });
 
     It should_fail_the_run = () =>
       ExitCode.ShouldNotEqual(ExitCode.Success);
@@ -246,7 +246,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     static ExitCode ExitCode;
 
     Because of = () =>
-      ExitCode = program.Run(new[] { GetPath(@"Example.dll"), GetPath(@"ExternalFile\Example.Failing.dll") });
+      ExitCode = program.Run(new[] { GetPath(@"Issue157\Example.Issue157-Success.dll"), GetPath(@"Issue157\Example.Issue157-Fail.dll") });
 
     It should_fail_the_run = () =>
       ExitCode.ShouldNotEqual(ExitCode.Success);
