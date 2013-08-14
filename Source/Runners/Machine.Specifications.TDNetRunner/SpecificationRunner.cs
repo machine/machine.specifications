@@ -1,12 +1,8 @@
-using System;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using Machine.Specifications.Explorers;
+
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
-using Machine.Specifications.TDNetRunner;
+
 using TestDriven.Framework;
 
 namespace Machine.Specifications.TDNetRunner
@@ -17,15 +13,7 @@ namespace Machine.Specifications.TDNetRunner
     {
       var listener = new TDNetRunListener(testListener);
       var runner = new AppDomainRunner(listener, RunOptions.Default);
-      try
-      {
-        runner.StartRun(assembly);
-        runner.RunAssembly(assembly);
-      }
-      finally
-      {
-        runner.EndRun(assembly);
-      }
+      runner.RunAssembly(assembly);
 
       return listener.TestRunState;
     }
@@ -34,15 +22,7 @@ namespace Machine.Specifications.TDNetRunner
     {
       var listener = new TDNetRunListener(testListener);
       var runner = new AppDomainRunner(listener, RunOptions.Default);
-      try
-      {
-        runner.StartRun(assembly);
-        runner.RunNamespace(assembly, ns);
-      }
-      finally
-      {
-        runner.EndRun(assembly);
-      }
+      runner.RunNamespace(assembly, ns);
 
       return listener.TestRunState;
     }
@@ -51,15 +31,7 @@ namespace Machine.Specifications.TDNetRunner
     {
       var listener = new TDNetRunListener(testListener);
       var runner = new AppDomainRunner(listener, RunOptions.Default);
-      try
-      {
-        runner.StartRun(assembly);
-        runner.RunMember(assembly, member);
-      }
-      finally
-      {
-        runner.EndRun(assembly);
-      }
+      runner.RunMember(assembly, member);
 
       return listener.TestRunState;
     }

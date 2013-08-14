@@ -12,18 +12,6 @@ using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.ReSharperRunner.Runners
 {
-  class RunScope
-  {
-    public Action<Assembly> StartRun { get; set; }
-    public Action<Assembly> EndRun { get; set; }
-
-    public RunScope()
-    {
-      StartRun = x => { };
-      EndRun = x => { };
-    }
-  }
-
   internal class RecursiveMSpecTaskRunner : RecursiveRemoteTaskRunner
   {
     readonly RemoteTaskNotificationFactory _taskNotificationFactory = new RemoteTaskNotificationFactory();
@@ -31,7 +19,6 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     Type _contextClass;
     PerAssemblyRunListener _listener;
     ISpecificationRunner _runner;
-    RunScope _runScope;
 
     public RecursiveMSpecTaskRunner(IRemoteTaskServer server) : base(server)
     {
@@ -58,33 +45,11 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
       _listener = new PerAssemblyRunListener(Server, task);
 
-      _runner = new DefaultRunner(_listener, RunOptions.Default);
-      _runScope = GetRunScope(_runner);
+      _runner = new DefaultRunner(_listener, RunOptions.Default, false);
 
       return TaskResult.Success;
     }
 
-    static RunScope GetRunScope(ISpecificationRunner runner)
-    {
-      var scope = new RunScope();
-
-      var runnerType = runner.GetType();
-
-      var startRun = runnerType.GetMethod("StartRun", new[]{typeof(Assembly)});
-      if (startRun != null)
-      {
-        scope.StartRun = asm => startRun.Invoke(runner, new object[] { asm });
-      }
-
-      var endRun = runnerType.GetMethod("EndRun", new[] {typeof(Assembly)});
-      if (endRun != null)
-      {
-        scope.EndRun = asm => endRun.Invoke(runner, new object[] { asm });
-      }
-
-      return scope;
-    }
-      
     public override TaskResult Execute(TaskExecutionNode node)
     {
       // This method is never called.
@@ -95,12 +60,12 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     {
       node.Flatten(x => x.Children).Each(RegisterRemoteTaskNotifications);
     }
-      
+
     public override TaskResult Finish(TaskExecutionNode node)
     {
       try
       {
-        _runScope.StartRun(_contextAssembly);
+        _runner.StartRun(_contextAssembly);
 
         foreach (var child in node.Children)
         {
@@ -111,7 +76,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       }
       finally
       {
-        _runScope.EndRun(_contextAssembly);
+        _runner.EndRun(_contextAssembly);
       }
     }
 

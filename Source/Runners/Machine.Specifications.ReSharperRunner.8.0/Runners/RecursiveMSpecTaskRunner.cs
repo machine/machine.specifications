@@ -12,18 +12,6 @@ using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.ReSharperRunner.Runners
 {
-  class RunScope
-  {
-    public RunScope()
-    {
-      StartRun = x => { };
-      EndRun = x => { };
-    }
-
-    public Action<Assembly> StartRun { get; set; }
-    public Action<Assembly> EndRun { get; set; }
-  }
-
   class RecursiveMSpecTaskRunner : RecursiveRemoteTaskRunner
   {
     public const string RunnerId = "Machine.Specifications";
@@ -31,27 +19,6 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
     public RecursiveMSpecTaskRunner(IRemoteTaskServer server) : base(server)
     {
-    }
-
-    static RunScope GetRunScope(ISpecificationRunner runner)
-    {
-      var scope = new RunScope();
-
-      var runnerType = runner.GetType();
-
-      var startRun = runnerType.GetMethod("StartRun", new[] {typeof(Assembly)});
-      if (startRun != null)
-      {
-        scope.StartRun = asm => startRun.Invoke(runner, new object[] {asm});
-      }
-
-      var endRun = runnerType.GetMethod("EndRun", new[] {typeof(Assembly)});
-      if (endRun != null)
-      {
-        scope.EndRun = asm => endRun.Invoke(runner, new object[] {asm});
-      }
-
-      return scope;
     }
 
     public override void ExecuteRecursive(TaskExecutionNode node)
@@ -74,14 +41,12 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
       var listener = new PerAssemblyRunListener(Server, task);
       var runner = new AppDomainRunner(listener, RunOptions.Default);
-      var runScope = GetRunScope(runner);
-
+      
       node.Flatten(x => x.Children).Each(children => RegisterRemoteTaskNotifications(listener, children));
 
       try
       {
-        runScope.StartRun(contextAssembly);
-
+        runner.StartRun(contextAssembly);
         foreach (var child in node.Children)
         {
           RunContext(runner, contextAssembly, child);
@@ -89,7 +54,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       }
       finally
       {
-        runScope.EndRun(contextAssembly);
+        runner.EndRun(contextAssembly);
       }
     }
 

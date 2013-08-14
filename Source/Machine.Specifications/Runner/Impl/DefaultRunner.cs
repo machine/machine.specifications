@@ -17,10 +17,15 @@ namespace Machine.Specifications.Runner.Impl
     readonly RunOptions _options;
     readonly AssemblyExplorer _explorer;
     readonly AssemblyRunner _assemblyRunner;
-    Action _runStart;
-    Action _runEnd;
+    InvokeOnce _runStart = new InvokeOnce(() => { });
+    InvokeOnce _runEnd = new InvokeOnce(() => { });
+    bool _explicitStartAndEnd;
 
-    public DefaultRunner(ISpecificationRunListener listener, RunOptions options)
+    public DefaultRunner(ISpecificationRunListener listener, RunOptions options) : this(listener, options, true)
+    {
+    }
+    
+    public DefaultRunner(ISpecificationRunListener listener, RunOptions options, bool signalRunStartAndEnd)
     {
       _listener = listener;
       _options = options;
@@ -28,8 +33,11 @@ namespace Machine.Specifications.Runner.Impl
 
       _explorer = new AssemblyExplorer();
 
-      _runStart = () => _listener.OnRunStart();
-      _runEnd = () => _listener.OnRunEnd();
+      if (signalRunStartAndEnd)
+      {
+        _runStart = new InvokeOnce(() => _listener.OnRunStart());
+        _runEnd = new InvokeOnce(() => _listener.OnRunEnd());
+      }
     }
 
     public void RunAssembly(Assembly assembly)
@@ -99,7 +107,10 @@ namespace Machine.Specifications.Runner.Impl
 
     void StartRun(IDictionary<Assembly, IEnumerable<Context>> contextMap)
     {
-      _runStart();
+      if (!_explicitStartAndEnd)
+      {
+        _runStart.Invoke();
+      }
 
       foreach (var pair in contextMap)
       {
@@ -110,22 +121,23 @@ namespace Machine.Specifications.Runner.Impl
         _assemblyRunner.Run(assembly, contexts);
       }
 
-      _runEnd();
+      if (!_explicitStartAndEnd)
+      {
+        _runEnd.Invoke();
+      }
     }
 
     public void StartRun(Assembly assembly)
     {
-      _runStart = () => {};
-      _runEnd = () => {};
-
-      _listener.OnRunStart();
+      _explicitStartAndEnd = true;
+      _runStart.Invoke();
       _assemblyRunner.StartExplicitRunScope(assembly);
     }
 
     public void EndRun(Assembly assembly)
     {
       _assemblyRunner.EndExplicitRunScope(assembly);
-      _listener.OnRunEnd();
+      _runEnd.Invoke();
     }
 
     [SecurityCritical]

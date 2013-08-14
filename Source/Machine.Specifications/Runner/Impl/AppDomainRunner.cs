@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Security;
@@ -12,36 +13,49 @@ namespace Machine.Specifications.Runner.Impl
   {
     readonly ISpecificationRunListener _listener;
     readonly RunOptions _options;
+    readonly InvokeOnce _signalRunStart;
+    readonly InvokeOnce _signalRunEnd;
 
     public AppDomainRunner(ISpecificationRunListener listener, RunOptions options)
     {
       _listener = new RemoteRunListener(listener);
       _options = options;
+
+      _signalRunStart = new InvokeOnce(listener.OnRunStart);
+      _signalRunEnd = new InvokeOnce(listener.OnRunEnd);
     }
 
     [SecuritySafeCritical]
     public void RunAssembly(Assembly assembly)
     {
-      try
-      {
-        StartRun(assembly);
-        GetOrCreateAppDomainRunner(assembly).Runner.RunAssembly(assembly);
-      }
-      finally
-      {
-        EndRun(assembly);
-      }
+      RunAssemblies(new[] {assembly});
     }
 
     [SecuritySafeCritical]
     public void RunAssemblies(IEnumerable<Assembly> assemblies)
     {
-      assemblies.Each(RunAssembly);
+      _signalRunStart.Invoke();
+
+      assemblies.Each(assembly =>
+      {
+        try
+        {
+          StartRun(assembly);
+          GetOrCreateAppDomainRunner(assembly).Runner.RunAssembly(assembly);
+        }
+        finally
+        {
+          EndRun(assembly);
+        }
+      });
+
+      _signalRunEnd.Invoke();
     }
 
     [SecuritySafeCritical]
     public void RunNamespace(Assembly assembly, string targetNamespace)
     {
+      _signalRunStart.Invoke();
       StartRun(assembly);
       GetOrCreateAppDomainRunner(assembly).Runner.RunNamespace(assembly, targetNamespace);
     }
@@ -49,6 +63,7 @@ namespace Machine.Specifications.Runner.Impl
     [SecuritySafeCritical]
     public void RunMember(Assembly assembly, MemberInfo member)
     {
+      _signalRunStart.Invoke();
       StartRun(assembly);
       GetOrCreateAppDomainRunner(assembly).Runner.RunMember(assembly, member);
     }
@@ -81,7 +96,6 @@ namespace Machine.Specifications.Runner.Impl
       finally
       {
         AppDomain.Unload(appDomainRunner.AppDomain);
-        RemoveEntryFor(assembly);
       }
     }
 
@@ -101,9 +115,10 @@ namespace Machine.Specifications.Runner.Impl
 
       var mspecAssemblyName = AssemblyName.GetAssemblyName(mspecAssemblyFilename);
 
-      var constructorArgs = new object[2];
+      var constructorArgs = new object[3];
       constructorArgs[0] = _listener;
       constructorArgs[1] = _options;
+      constructorArgs[2] = false;
 
       using (new SpecAssemblyResolver(assembly))
       {

@@ -91,6 +91,7 @@
     <Compile Include="ComparerStrategies\NoResult.cs" />
     <Compile Include="ComparerStrategies\ObjectExtension.cs" />
     <Compile Include="Runner\AggregateRunListener.cs" />
+    <Compile Include="Runner\Impl\InvokeOnce.cs" />
     <Compile Include="Runner\Impl\Listener\AssemblyContextRunListener.cs" />
     <Compile Include="Runner\Impl\AssemblyRunner.cs" />
     <Compile Include="Runner\Impl\ContextRunnerFactory.cs" />
