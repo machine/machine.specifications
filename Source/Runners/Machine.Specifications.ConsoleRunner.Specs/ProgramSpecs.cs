@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
@@ -250,6 +251,18 @@ namespace Machine.Specifications.ConsoleRunner.Specs
 
     It should_fail_the_run = () =>
       ExitCode.ShouldNotEqual(ExitCode.Success);
+  }
+  
+  [Subject("Console runner")]
+  public class when_running_two_spec_assemblies : ConsoleRunnerSpecs
+  {
+    static ExitCode ExitCode;
+
+    Because of = () =>
+      ExitCode = program.Run(new[] { GetPath(@"Example.dll"), GetPath(@"Example.Failing.dll") });
+
+    It should_write_the_summary_once = () =>
+      console.Lines.Count(x => x.StartsWith("Contexts: ")).ShouldEqual(1);
   }
 
   public class ConsoleRunnerSpecs
