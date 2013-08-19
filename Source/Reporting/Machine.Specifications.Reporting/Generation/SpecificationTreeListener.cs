@@ -11,17 +11,17 @@ namespace Machine.Specifications.Reporting.Generation
   {
     public static Assembly ToNode(this AssemblyInfo assemblyInfo, IEnumerable<Concern> concerns)
     {
-      return new Assembly(assemblyInfo.Name, concerns);
+      return new Assembly(assemblyInfo, concerns);
     }
     
     public static Context ToNode(this ContextInfo contextInfo, IEnumerable<Specification> specifications)
     {
-      return new Context(contextInfo.Name, specifications);
+      return new Context(contextInfo, specifications);
     }
 
     public static Specification ToNode(this SpecificationInfo specification, Result result)
     {
-      return new Specification(specification.Leader, specification.Name, result);
+      return new Specification(specification, result);
     }
   }
 

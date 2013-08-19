@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+using Machine.Specifications.Runner;
+
 namespace Machine.Specifications.Reporting.Model
 {
   public class Assembly : SpecificationContainer, ISpecificationNode
@@ -9,6 +11,7 @@ namespace Machine.Specifications.Reporting.Model
     readonly IEnumerable<Concern> _concerns;
     readonly int _totalConerns;
     readonly int _totalContexts;
+    readonly string _capturedOutput;
 
     public Assembly(string name, IEnumerable<Concern> concerns) : base(concerns.Cast<SpecificationContainer>())
     {
@@ -18,9 +21,19 @@ namespace Machine.Specifications.Reporting.Model
       _totalContexts = concerns.Sum(x => x.TotalContexts);
     }
 
+    public Assembly(AssemblyInfo assembly, IEnumerable<Concern> concerns) : this(assembly.Name, concerns)
+    {
+      _capturedOutput = assembly.CapturedOutput;
+    }
+
     public string Name
     {
       get { return _name; }
+    }
+    
+    public string CapturedOutput
+    {
+      get { return _capturedOutput; }
     }
 
     public IEnumerable<Concern> Concerns

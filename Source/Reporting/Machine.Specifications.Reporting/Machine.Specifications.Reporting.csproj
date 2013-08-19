@@ -115,6 +115,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Generation\Spark\Templates\_CapturedOutput.spark">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Generation\Spark\Templates\_Stylesheet.spark">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -134,6 +137,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Generation\Spark\Templates\_Concern.spark">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Generation\Spark\Templates\_ToggleVisibility.spark">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

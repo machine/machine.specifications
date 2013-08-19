@@ -4,4 +4,5 @@
 <h4 class="count">
   ${context.TotalSpecifications} ${Pluralize("specification", context.TotalSpecifications)}
 </h4>
+<CapturedOutput output="context.CapturedOutput" />
 <render />

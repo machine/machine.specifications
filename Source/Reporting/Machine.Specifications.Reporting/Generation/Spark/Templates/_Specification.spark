@@ -51,6 +51,8 @@
   </ul>
 </div>
 
+<CapturedOutput output="spec.CapturedOutput" />
+
 <for each="var supplement in spec.Supplements">
   <for each="var item in supplement.Value">
     <if condition='item.Key.StartsWith("img-")'>
@@ -86,20 +88,4 @@
   </for> 
 </for>
 
-<script type="text/javascript" once="toggle-visibility">
-  function toggleVisibility(id, description)
-  {
-    var section = document.getElementById(id);
-    var link = document.getElementById(id + "_link");
-
-    if (section.style.display == "block")
-    {
-      section.style.display = "none";
-      link.innerHTML = "Show " + description;
-    } else
-    {
-      section.style.display = "block";
-      link.innerHTML = "Hide " + description;
-    }
-  };
-</script> 
+<ToggleVisibility />

@@ -17,3 +17,4 @@
     <span class="ignored">${assembly.IgnoredSpecifications} ${Pluralize("ignored spec", assembly.IgnoredSpecifications)}</span>
   </if>
 </h2>
+<CapturedOutput output="assembly.CapturedOutput" />

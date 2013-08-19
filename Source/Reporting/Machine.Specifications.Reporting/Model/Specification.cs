@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+using Machine.Specifications.Runner;
+
 namespace Machine.Specifications.Reporting.Model
 {
   public class Specification : ISpecificationNode, ILinkTarget, ILinkToCanFail, ILinkToNotImplemented, ILinkToIgnored
@@ -9,6 +11,7 @@ namespace Machine.Specifications.Reporting.Model
     readonly string _leader;
     readonly Status _status;
     readonly IDictionary<string, IDictionary<string, string>> _supplements;
+    readonly string _capturedOutput;
 
     public Specification(string leader, string name, Result result)
     {
@@ -17,6 +20,11 @@ namespace Machine.Specifications.Reporting.Model
       _exception = result.Exception;
       _supplements = result.Supplements;
       _name = name;
+    }
+
+    public Specification(SpecificationInfo specification, Result result) : this(specification.Leader, specification.Name, result)
+    {
+      _capturedOutput = specification.CapturedOutput;
     }
 
     public string Id
@@ -38,6 +46,11 @@ namespace Machine.Specifications.Reporting.Model
     public string Name
     {
       get { return _name; }
+    }
+
+    public string CapturedOutput
+    {
+      get { return _capturedOutput; }
     }
 
     public ExceptionResult Exception
