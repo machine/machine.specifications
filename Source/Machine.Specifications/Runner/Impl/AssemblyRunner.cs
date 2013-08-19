@@ -22,10 +22,10 @@ namespace Machine.Specifications.Runner.Impl
       _listener = new AggregateRunListener(new[]
                                            {
                                              new AssemblyLocationAwareListener(),
-                                             new SetUpRedirectOutputRunListener(state), 
-                                             new AssemblyContextRunListener(),
+                                             new SetUpRedirectOutputRunListener(state),
                                              listener,
-                                             new TearDownRedirectOutputRunListener(state)
+                                             new TearDownRedirectOutputRunListener(state),
+                                             new AssemblyContextRunListener()
                                            });
       _options = options;
 

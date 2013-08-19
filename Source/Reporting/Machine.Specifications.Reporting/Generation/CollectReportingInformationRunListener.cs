@@ -44,6 +44,7 @@ namespace Machine.Specifications.Reporting.Generation
 
     public virtual void OnAssemblyEnd(AssemblyInfo assembly)
     {
+      _currentAssembly.CapturedOutput = assembly.CapturedOutput;
     }
 
     public virtual void OnRunStart()
@@ -63,6 +64,7 @@ namespace Machine.Specifications.Reporting.Generation
 
     public virtual void OnContextEnd(ContextInfo context)
     {
+      _currentContext.CapturedOutput = context.CapturedOutput;
     }
 
     public virtual void OnSpecificationStart(SpecificationInfo specification)

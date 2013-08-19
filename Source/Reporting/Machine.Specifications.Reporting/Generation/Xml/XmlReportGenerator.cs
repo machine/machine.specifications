@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Xml;
 
 using Machine.Specifications.Runner;
@@ -118,9 +119,28 @@ namespace Machine.Specifications.Reporting.Generation.Xml
           reportBuilder.WriteAttributeString("name", assembly.Name);
           reportBuilder.WriteAttributeString("location", assembly.Location);
           reportBuilder.WriteAttributeString("time", _timer.GetAssemblyTime(assembly).ToString(CultureInfo.InvariantCulture));
+          RenderCapturedOutput(reportBuilder, assembly);
           RenderConcerns(reportBuilder, contextsByAssembly[assembly]);
           reportBuilder.WriteEndElement();
         });
+    }
+
+    static void RenderCapturedOutput(XmlWriter reportBuilder, object info)
+    {
+      var capture = info.GetType().GetProperty("CapturedOutput");
+      if (capture == null)
+      {
+        return;
+      }
+      
+      var output = capture.GetValue(info, new object[0]);
+
+      reportBuilder.WriteStartElement("output");
+      if (output != null)
+      {
+        reportBuilder.WriteValue(output);
+      }
+      reportBuilder.WriteEndElement();
     }
 
     private void RenderConcerns(XmlWriter reportBuilder, IEnumerable<ContextInfo> contexts)
@@ -160,6 +180,7 @@ namespace Machine.Specifications.Reporting.Generation.Xml
         reportBuilder.WriteAttributeString("name", context.Name);
         reportBuilder.WriteAttributeString("type-name", context.TypeName);
         reportBuilder.WriteAttributeString("time", _timer.GetContextTime(context).ToString(CultureInfo.InvariantCulture));
+        RenderCapturedOutput(reportBuilder, context);
         RenderSpecifications(reportBuilder, context);
         reportBuilder.WriteEndElement();
       }
@@ -203,6 +224,7 @@ namespace Machine.Specifications.Reporting.Generation.Xml
         reportBuilder.WriteAttributeString("status", status);
         reportBuilder.WriteAttributeString("time", _timer.GetSpecificationTime(specification).ToString(CultureInfo.InvariantCulture));
         RenderError(reportBuilder, result.Exception);
+        RenderCapturedOutput(reportBuilder, specification);
         reportBuilder.WriteEndElement();
       }
     }
