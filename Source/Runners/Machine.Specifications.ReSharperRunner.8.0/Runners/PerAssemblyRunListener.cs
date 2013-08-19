@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
-using System.IO;
 
+using JetBrains.Reflection;
 using JetBrains.ReSharper.TaskRunnerFramework;
 
 using Machine.Specifications.ReSharperRunner.Runners.Notifications;
@@ -14,45 +13,6 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 {
   class PerAssemblyRunListener : ISpecificationRunListener
   {
-    class RedirectOutput : IDisposable
-    {
-      readonly TextWriter _oldOut;
-      readonly TextWriter _oldError;
-      readonly TraceListenerCollection _oldListeners;
-      internal readonly TextWriter StdOut;
-      internal readonly TextWriter StdError;
-      internal readonly TextWriter DebugTrace;
-
-      public RedirectOutput()
-      {
-        _oldOut = Console.Out;
-        _oldError = Console.Error;
-        _oldListeners = Trace.Listeners;
-
-        StdOut = new StringWriter(CultureInfo.CurrentCulture);
-        Console.SetOut(StdOut);
-
-        StdError = new StringWriter(CultureInfo.CurrentCulture);
-        Console.SetError(StdError);
-
-        DebugTrace = new StringWriter(CultureInfo.CurrentCulture);
-        Trace.Listeners.Clear();
-        Trace.Listeners.Add(new TextWriterTraceListener(DebugTrace));
-      }
-
-      public void Dispose()
-      {
-        Console.SetOut(_oldOut);
-        Console.SetError(_oldError);
-        try
-        {
-          Trace.Listeners.Clear();
-          Trace.Listeners.AddRange(_oldListeners);
-        }
-        catch (Exception) { }
-      }
-    }
-
     readonly RunAssemblyTask _runAssemblyTask;
     readonly IRemoteTaskServer _server;
     readonly IList<RemoteTaskNotification> _taskNotifications = new List<RemoteTaskNotification>();
@@ -60,8 +20,6 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     int _successes;
     int _errors;
     ContextInfo _currentContext;
-    RedirectOutput _contextOutput;
-    RedirectOutput _specificationOutput;
 
     public PerAssemblyRunListener(IRemoteTaskServer server, RunAssemblyTask runAssemblyTask)
     {
@@ -76,6 +34,8 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
     public void OnAssemblyEnd(AssemblyInfo assembly)
     {
+      var notify = CreateTaskNotificationFor(assembly, _runAssemblyTask);
+      NotifyRedirectedOutput(notify, assembly);
     }
 
     public void OnRunStart()
@@ -91,8 +51,6 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       _specifications = 0;
       _errors = 0;
       _successes = 0;
-
-      _contextOutput = new RedirectOutput();
 
       // TODO: This sucks, but there's no better way unless we make behaviors first-class citizens.
       _currentContext = context;
@@ -114,15 +72,13 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
       var notify = CreateTaskNotificationFor(context, _currentContext);
 
-      NotifyRedirectedOutput(notify, _contextOutput);
+      NotifyRedirectedOutput(notify, context);
       notify(task => _server.TaskFinished(task, null, result));
     }
 
     public void OnSpecificationStart(SpecificationInfo specification)
     {
       _specifications += 1;
-
-      _specificationOutput = new RedirectOutput();
 
       var notify = CreateTaskNotificationFor(specification, _currentContext);
       notify(task => _server.TaskStarting(task));
@@ -132,7 +88,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     {
       var notify = CreateTaskNotificationFor(specification, _currentContext);
 
-      NotifyRedirectedOutput(notify, _specificationOutput);
+      NotifyRedirectedOutput(notify, specification);
 
       var taskResult = TaskResult.Success;
       string message = null;
@@ -141,7 +97,6 @@ namespace Machine.Specifications.ReSharperRunner.Runners
         case Status.Failing:
           _errors += 1;
 
-          notify(task => _server.TaskOutput(task, result.Exception.Message, TaskOutputType.STDOUT));
           notify(task => _server.TaskException(task,
                                                ExceptionResultConverter.ConvertExceptions(result.Exception, out message)));
           taskResult = TaskResult.Exception;
@@ -183,7 +138,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners
       _taskNotifications.Add(notification);
     }
 
-    Action<Action<RemoteTask>> CreateTaskNotificationFor(object infoFromRunner, ContextInfo maybeContext)
+    Action<Action<RemoteTask>> CreateTaskNotificationFor(object infoFromRunner, object maybeContext)
     {
       return actionToBePerformedForEachTask =>
       {
@@ -191,15 +146,17 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
         foreach (var notification in _taskNotifications)
         {
-          if (notification.Matches(infoFromRunner, maybeContext))
+          if (!notification.Matches(infoFromRunner, maybeContext))
           {
-            Debug.WriteLine(String.Format("Invoking notification for {0}", notification.ToString()));
-            invoked = true;
+            continue;
+          }
 
-            foreach (var task in notification.RemoteTasks)
-            {
-              actionToBePerformedForEachTask(task);
-            }
+          Debug.WriteLine(String.Format("Invoking notification for {0}", notification.ToString()));
+          invoked = true;
+
+          foreach (var task in notification.RemoteTasks)
+          {
+            actionToBePerformedForEachTask(task);
           }
         }
 
@@ -213,19 +170,22 @@ namespace Machine.Specifications.ReSharperRunner.Runners
 
     delegate void Action<T>(T arg);
 
-    void NotifyRedirectedOutput(Action<Action<RemoteTask>> notify, RedirectOutput redirectOutput)
+    void NotifyRedirectedOutput(Action<Action<RemoteTask>> notify, object maybeHasCapturedOutput)
     {
-      try
+      var capture = maybeHasCapturedOutput.GetFieldOrPropertyValue("CapturedOutput");
+      if (capture == null)
       {
-        var output = redirectOutput;
-        notify(task => _server.TaskOutput(task, output.StdOut.ToString(), TaskOutputType.STDOUT));
-        notify(task => _server.TaskOutput(task, output.StdError.ToString(), TaskOutputType.STDERR));
-        notify(task => _server.TaskOutput(task, output.DebugTrace.ToString(), TaskOutputType.DEBUGTRACE));
+        // Info doesn't have captured output, nothing to report.
+        return;
       }
-      finally
+
+      var stdOutWithStdErrorAndDebugTrace = capture as string;
+      if (stdOutWithStdErrorAndDebugTrace == null)
       {
-        redirectOutput.Dispose();
+        return;
       }
+
+      notify(task => _server.TaskOutput(task, stdOutWithStdErrorAndDebugTrace, TaskOutputType.STDOUT));
     }
   }
 }

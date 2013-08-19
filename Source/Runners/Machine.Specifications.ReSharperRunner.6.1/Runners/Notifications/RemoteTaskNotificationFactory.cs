@@ -10,6 +10,11 @@ namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
     {
       var remoteTask = node.RemoteTask;
 
+      if (remoteTask is RunAssemblyTask)
+      {
+        return new AssemblyRemoteTaskNotification(node);
+      }
+      
       if (remoteTask is ContextTask)
       {
         return new ContextRemoteTaskNotification(node);

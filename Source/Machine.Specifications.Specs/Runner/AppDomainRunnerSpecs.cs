@@ -126,23 +126,32 @@ namespace Machine.Specifications.Specs.Runner
 
   public class TestListener : ISpecificationRunListener
   {
-    public int SpecCount = 0;
-    public Result LastResult;
+    public int SpecCount;
+
+    public AssemblyInfo LastAssembly { get; private set; }
+    public ContextInfo LastContext { get; private set; }
+    public SpecificationInfo LastSpecification { get; private set; }
+    public ExceptionResult LastFatalError { get; private set; }
+    public Result LastResult { get; private set; }
+
+    public void OnRunStart()
+    {
+      LastAssembly = null;
+      LastContext = null;
+      LastResult = null;
+    }
+
+    public void OnRunEnd()
+    {
+    }
+
     public void OnAssemblyStart(AssemblyInfo assembly)
     {
     }
 
     public void OnAssemblyEnd(AssemblyInfo assembly)
     {
-    }
-
-    public void OnRunStart()
-    {
-      LastResult = null;
-    }
-
-    public void OnRunEnd()
-    {
+      LastAssembly = assembly;
     }
 
     public void OnContextStart(ContextInfo context)
@@ -151,6 +160,7 @@ namespace Machine.Specifications.Specs.Runner
 
     public void OnContextEnd(ContextInfo context)
     {
+      LastContext = context;
     }
 
     public void OnSpecificationStart(SpecificationInfo specification)
@@ -159,6 +169,7 @@ namespace Machine.Specifications.Specs.Runner
 
     public void OnSpecificationEnd(SpecificationInfo specification, Result result)
     {
+      LastSpecification = specification;
       LastResult = result;
       SpecCount++;
     }
@@ -167,7 +178,5 @@ namespace Machine.Specifications.Specs.Runner
     {
       LastFatalError = exception;
     }
-
-    public ExceptionResult LastFatalError { get; private set; }
   }
 }

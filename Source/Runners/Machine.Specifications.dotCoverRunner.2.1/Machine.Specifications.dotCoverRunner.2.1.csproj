@@ -121,6 +121,9 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\PsiExtensions.cs">
       <Link>PsiExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Runners\Notifications\AssemblyRemoteTaskNotification.cs">
+      <Link>Runners\Notifications\AssemblyRemoteTaskNotification.cs</Link>
+    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Runners\Notifications\BehaviorSpecificationRemoteTaskNotification.cs">
       <Link>Runners\Notifications\BehaviorSpecificationRemoteTaskNotification.cs</Link>
     </Compile>

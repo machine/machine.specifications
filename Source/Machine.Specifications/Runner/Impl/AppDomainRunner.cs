@@ -155,11 +155,12 @@ namespace Machine.Specifications.Runner.Impl
       var appDomainSetup = new AppDomainSetup
                            {
                              ApplicationBase = Path.GetDirectoryName(assembly.Location),
-                             ApplicationName = Guid.NewGuid().ToString(),
+                             ApplicationName = "Machine Specifications runner",
                              ConfigurationFile = GetConfigFile(assembly)
                            };
 
       var appDomain = AppDomain.CreateDomain(appDomainSetup.ApplicationName, null, appDomainSetup);
+      
       var runner = CreateRunnerInSeparateAppDomain(appDomain, assembly);
 
       _appDomains.Add(assembly, new AppDomainAndRunner

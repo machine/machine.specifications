@@ -2,8 +2,6 @@
 
 using JetBrains.ReSharper.TaskRunnerFramework;
 
-using Machine.Specifications.Runner;
-
 namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
 {
   internal class SilentRemoteTaskNotification : RemoteTaskNotification
@@ -13,7 +11,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
       get { yield break; }
     }
 
-    public override bool Matches(object infoFromRunner, ContextInfo maybeContext)
+    public override bool Matches(object infoFromRunner, object maybeContext)
     {
       return false;
     }

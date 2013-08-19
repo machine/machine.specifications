@@ -220,43 +220,70 @@ namespace Machine.Specifications.Specs.Runner
   }
 
   [Subject("Specification Runner")]
-  [Ignore("currently not supported")]
   public class when_running_a_specification_with_console_output
     : RunnerSpecs
   {
     Because of = () =>
       Run<context_with_console_output>();
 
-    It should_capture_the_console_out_stream = () =>
-      testListener.LastResult.ConsoleOut.ShouldEqual("Console.Out message in establish\r\n" +
-        "Console.Out message in because\r\n" +
-        "Console.Out message in spec\r\n");
+    It should_capture_the_standard_output =
+      () => testListener.LastAssembly.CapturedOutput.ShouldEqual(String.Format("Console.Out message in establish{0}" +
+                                                                               "Console.Out message in because{0}" +
+                                                                               "Console.Out message in spec{0}" +
+                                                                               "Console.Out message in nth spec{0}" +
+                                                                               "Console.Out message in cleanup{0}",
+                                                                               Environment.NewLine));
+  }
+  
+  [Subject("Specification Runner")]
+  public class when_running_a_specification_with_error_output
+    : RunnerSpecs
+  {
+    Because of = () =>
+      Run<context_with_console_error_output>();
 
-    It should_capture_the_console_error_stream = () =>
-      testListener.LastResult.ConsoleError.ShouldEqual("Console.Error message in establish\r\n" +
-        "Console.Error message in because\r\n" +
-        "Console.Error message in spec\r\n");
+    It should_capture_the_standard_error =
+      () => testListener.LastAssembly.CapturedOutput.ShouldEqual(String.Format("Console.Error message in establish{0}" +
+                                                                               "Console.Error message in because{0}" +
+                                                                               "Console.Error message in spec{0}" +
+                                                                               "Console.Error message in nth spec{0}" +
+                                                                               "Console.Error message in cleanup{0}",
+                                                                               Environment.NewLine));
+  }
+  
+  [Subject("Specification Runner")]
+  public class when_running_a_specification_with_debug_output
+    : RunnerSpecs
+  {
+    Because of = () =>
+      Run<context_with_debug_output>();
+
+    It should_capture_the_debug_trace =
+      () => testListener.LastAssembly.CapturedOutput.ShouldEqual(String.Format("Debug.WriteLine message in establish{0}" +
+                                                                               "Debug.WriteLine message in because{0}" +
+                                                                               "Debug.WriteLine message in spec{0}" +
+                                                                               "Debug.WriteLine message in nth spec{0}" +
+                                                                               "Debug.WriteLine message in cleanup{0}",
+                                                                               Environment.NewLine));
   }
 
   [Subject("Specification Runner")]
-  [Ignore("currently not supported")]
   public class when_running_a_specification_with_console_output_and_foreach
     : RunnerSpecs
   {
     Because of = () =>
-      Run<context_with_console_output_and_for_each>();
+      Run<context_with_console_output_and_setup_for_each>();
 
-    It should_capture_the_console_out_stream = () =>
-      testListener.LastResult.ConsoleOut.ShouldEqual("Console.Out message in establish\r\n" +
-        "Console.Out message in because\r\n" +
-        "Console.Out message in spec\r\n" +
-        "Console.Out message in cleanup\r\n");
-
-    It should_capture_the_console_error_stream = () =>
-      testListener.LastResult.ConsoleError.ShouldEqual("Console.Error message in establish\r\n" +
-        "Console.Error message in because\r\n" +
-        "Console.Error message in spec\r\n" +
-        "Console.Error message in cleanup\r\n");
+    It should_capture_the_standard_output =
+      () => testListener.LastAssembly.CapturedOutput.ShouldEqual(String.Format("Console.Out message in establish{0}" +
+                                                                               "Console.Out message in because{0}" +
+                                                                               "Console.Out message in spec{0}" +
+                                                                               "Console.Out message in cleanup{0}" +
+                                                                               "Console.Out message in establish{0}" +
+                                                                               "Console.Out message in because{0}" +
+                                                                               "Console.Out message in nth spec{0}" +
+                                                                               "Console.Out message in cleanup{0}",
+                                                                               Environment.NewLine));
   }
 
   [Subject("Specification Runner")]

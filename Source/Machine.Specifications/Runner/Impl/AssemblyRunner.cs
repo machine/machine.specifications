@@ -18,11 +18,14 @@ namespace Machine.Specifications.Runner.Impl
 
     public AssemblyRunner(ISpecificationRunListener listener, RunOptions options)
     {
+      var state = new RedirectOutputState();
       _listener = new AggregateRunListener(new[]
                                            {
                                              new AssemblyLocationAwareListener(),
+                                             new SetUpRedirectOutputRunListener(state), 
                                              new AssemblyContextRunListener(),
-                                             listener
+                                             listener,
+                                             new TearDownRedirectOutputRunListener(state)
                                            });
       _options = options;
 

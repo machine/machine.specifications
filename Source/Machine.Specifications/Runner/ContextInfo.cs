@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Machine.Specifications.Runner
 {
@@ -27,6 +24,8 @@ namespace Machine.Specifications.Runner
         return line + Name;
       }
     }
+
+    public string CapturedOutput { get; set; }
 
     public ContextInfo(string name, string concern, string typeName, string @namespace, string assemblyName)
     {
@@ -67,6 +66,21 @@ namespace Machine.Specifications.Runner
 
         return hash;
       }
+    }
+  }
+
+  [Serializable]
+  public class CapturedOutput
+  {
+    public string StdOut { get; set; }
+    public string StdError { get; set; }
+    public string DebugTrace { get; set; }
+
+    public CapturedOutput(string stdOut, string stdError, string debugTrace)
+    {
+      StdOut = stdOut;
+      StdError = stdError;
+      DebugTrace = debugTrace;
     }
   }
 }

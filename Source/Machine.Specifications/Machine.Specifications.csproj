@@ -97,6 +97,10 @@
     <Compile Include="Runner\Impl\ContextRunnerFactory.cs" />
     <Compile Include="Runner\Impl\ContextRunner.cs" />
     <Compile Include="Runner\Impl\Listener\AssemblyLocationAwareListener.cs" />
+    <Compile Include="Runner\Impl\Listener\Redirection\ForwardingStringWriter.cs" />
+    <Compile Include="Runner\Impl\Listener\Redirection\ForwardingTraceListener.cs" />
+    <Compile Include="Runner\Impl\Listener\Redirection\OutputInterceptor.cs" />
+    <Compile Include="Runner\Impl\Listener\RedirectOutputRunListener.cs" />
     <Compile Include="Runner\Impl\NullRunner.cs" />
     <Compile Include="Runner\Impl\RemoteRunListener.cs" />
     <Compile Include="Runner\Impl\SpecAssemblyResolver.cs" />
@@ -128,8 +132,6 @@
     <Compile Include="TagsAttribute.cs" />
     <Compile Include="ComparerStrategies\TypeComparer.cs" />
     <Compile Include="ComparerStrategies\TypeExtension.cs" />
-    <Compile Include="Utility\ConsoleRedirection.cs" />
-    <Compile Include="Utility\ConsoleStreams.cs" />
     <Compile Include="Utility\Internal\Naming.cs" />
     <Compile Include="Utility\Internal\PrettyPrintingExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

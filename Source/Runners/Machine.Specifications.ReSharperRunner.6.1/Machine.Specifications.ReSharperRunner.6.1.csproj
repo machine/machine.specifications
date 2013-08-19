@@ -152,6 +152,7 @@
     </Compile>
     <Compile Include="PsiExtensions.cs" />
     <Compile Include="Runners\ExceptionResultConverter.cs" />
+    <Compile Include="Runners\Notifications\AssemblyRemoteTaskNotification.cs" />
     <Compile Include="Runners\Notifications\BehaviorSpecificationRemoteTaskNotification.cs" />
     <Compile Include="Runners\Notifications\ContextRemoteTaskNotification.cs" />
     <Compile Include="Runners\Notifications\ContextSpecificationRemoteTaskNotification.cs" />

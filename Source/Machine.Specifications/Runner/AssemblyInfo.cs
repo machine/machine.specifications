@@ -11,17 +11,9 @@ namespace Machine.Specifications.Runner
       Location = location;
     }
 
-    public string Name
-    {
-      get;
-      private set;
-    }
-
-    public string Location
-    {
-      get;
-      private set;
-    }
+    public string Name { get; private set; }
+    public string Location { get; private set; }
+    public string CapturedOutput { get; set; }
 
     public override bool Equals(object obj)
     {

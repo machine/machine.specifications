@@ -145,18 +145,6 @@ namespace Machine.Specifications
       get { return _status; }
     }
 
-    public string ConsoleOut
-    {
-      get;
-      internal set;
-    }
-
-    public string ConsoleError
-    {
-      get;
-      internal set;
-    }
-
     public bool HasSupplement(string name)
     {
       return _supplements.ContainsKey(name);
@@ -194,8 +182,6 @@ namespace Machine.Specifications
       }
 
       _supplements.Add(supplementName, supplement);
-      this.ConsoleOut = result.ConsoleOut;
-      this.ConsoleError = result.ConsoleError;
     }
 
     public static Result Pass()

@@ -9,20 +9,20 @@ using Machine.Specifications.Runner;
 
 namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
 {
-  class ContextRemoteTaskNotification : RemoteTaskNotification
+  class AssemblyRemoteTaskNotification : RemoteTaskNotification
   {
     readonly TaskExecutionNode _node;
-    readonly ContextTask _task;
+    readonly RunAssemblyTask _task;
 
-    public ContextRemoteTaskNotification(TaskExecutionNode node)
+    public AssemblyRemoteTaskNotification(TaskExecutionNode node)
     {
       _node = node;
-      _task = (ContextTask) node.RemoteTask;
+      _task = (RunAssemblyTask) node.RemoteTask;
     }
 
-    string ContainingType
+    string Location
     {
-      get { return _task.ContextTypeName; }
+      get { return _task.AssemblyLocation; }
     }
 
     public override IEnumerable<RemoteTask> RemoteTasks
@@ -32,20 +32,19 @@ namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
 
     public override bool Matches(object infoFromRunner, object maybeContext)
     {
-      var context = infoFromRunner as ContextInfo;
-
-      if (context == null)
+      var assembly = infoFromRunner as AssemblyInfo;
+      if (assembly == null)
       {
         return false;
       }
 
-      return ContainingType == context.TypeName;
+      return Location == assembly.Location;
     }
 
     public override string ToString()
     {
-      return String.Format("Context {0} with {1} remote tasks",
-                           ContainingType,
+      return String.Format("Assembly {0} with {1} remote tasks",
+                           Location,
                            RemoteTasks.Count());
     }
   }

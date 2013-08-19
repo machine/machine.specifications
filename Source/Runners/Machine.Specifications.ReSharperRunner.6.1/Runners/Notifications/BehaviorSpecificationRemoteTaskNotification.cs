@@ -41,9 +41,10 @@ namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
       get { yield return _node.RemoteTask; }
     }
 
-    public override bool Matches(object infoFromRunner, ContextInfo maybeContext)
+    public override bool Matches(object infoFromRunner, object maybeContext)
     {
-      if (maybeContext == null)
+      var context = maybeContext as ContextInfo;
+      if (context == null)
       {
         return false;
       }
@@ -54,7 +55,7 @@ namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
         return false;
       }
 
-      return ContextTypeName == maybeContext.TypeName &&
+      return ContextTypeName == context.TypeName &&
              ContainingType == new NormalizedTypeName(specification.ContainingType) &&
              FieldName == specification.FieldName;
     }
