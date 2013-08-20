@@ -156,10 +156,23 @@ namespace Machine.Specifications.ReSharperRunner.Presentation
       if (other.GetType() == GetType())
       {
         var element = (Element) other;
+        string thisFullName;
+        string otherFullName;
+        try
+        {
+          // This might throw for invalid elements.
+          thisFullName = _declaringTypeName.FullName;
+          otherFullName = element._declaringTypeName.FullName;
+        }
+        catch (NullReferenceException)
+        {
+          return false;
+        }
+
         return other.ShortName == ShortName
                && other.Provider == Provider
                && Equals(element._projectEnvoy, _projectEnvoy)
-               && element._declaringTypeName.FullName == _declaringTypeName.FullName;
+               && thisFullName == otherFullName;
       }
       return false;
     }
