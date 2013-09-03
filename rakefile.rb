@@ -232,7 +232,7 @@ namespace :package do
   task :zip => [ 'build:rebuild', 'tests:run', 'specs:run' ] do
     rm_f configatron.zip.package
 
-    cp 'License.txt', configatron.out_dir
+    %w(License.txt History.txt).each { |f| cp f, configatron.out_dir }
 
     sz = SevenZip.new \
       :tool => 'Tools/7-Zip/7za.exe',
