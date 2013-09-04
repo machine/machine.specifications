@@ -1,3 +1,12 @@
+Machine.Specifications 0.5.18
+-----------------------------
+- The zip package looks just like the NuGet package, minus NuGet-specific files
+
+Machine.Specifications 0.5.17
+-----------------------------
+- This version was accidentally released as the signed version only. It is equal
+to 0.5.16 unsigned.
+
 Machine.Specifications 0.5.16
 -----------------------------
 - Capturing standard out, standard error and trace streams in ReSharper 8
