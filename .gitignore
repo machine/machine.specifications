@@ -11,6 +11,7 @@ NDependOut
 *.ncrunchsolution
 *.ncrunchproject
 
+/.nuget/nuget.exe
 /Build
 /Distribution
 /Specs
