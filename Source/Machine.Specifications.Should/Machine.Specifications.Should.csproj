@@ -7,11 +7,11 @@
     <ProjectGuid>{4B86A9FC-4D07-40E3-AEB6-2898B5292972}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Machine.Specifications.Should</RootNamespace>
+    <RootNamespace>Machine.Specifications</RootNamespace>
     <AssemblyName>Machine.Specifications.Should</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-	<AssemblyOriginatorKeyFile>..\Machine.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\Machine.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,7 +41,26 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-	<Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Annotations\ReSharperAttributes.cs" />
+    <Compile Include="AssertComparer.cs" />
+    <Compile Include="Catch.cs" />
+    <Compile Include="ComparerStrategies\ComparableComparer.cs" />
+    <Compile Include="ComparerStrategies\ComparerFactory.cs" />
+    <Compile Include="ComparerStrategies\ComparisionResult.cs" />
+    <Compile Include="ComparerStrategies\DefaultComparer.cs" />
+    <Compile Include="ComparerStrategies\EnumerableComparer.cs" />
+    <Compile Include="ComparerStrategies\EquatableComparer.cs" />
+    <Compile Include="ComparerStrategies\GenericTypeComparer.cs" />
+    <Compile Include="ComparerStrategies\IComparerStrategy.cs" />
+    <Compile Include="ComparerStrategies\NoResult.cs" />
+    <Compile Include="ComparerStrategies\ObjectExtension.cs" />
+    <Compile Include="ComparerStrategies\TypeComparer.cs" />
+    <Compile Include="ComparerStrategies\TypeExtension.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShouldExtensionMethods.cs" />
+    <Compile Include="SpecificationException.cs" />
+    <Compile Include="Utility\Internal\PrettyPrintingExtensions.cs" />
+    <Compile Include="Utility\ObjectGraphHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

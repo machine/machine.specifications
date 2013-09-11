@@ -70,26 +70,13 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Annotations\ReSharperAttributes.cs" />
-    <Compile Include="AssertComparer.cs" />
     <Compile Include="BehaviorsAttribute.cs" />
-    <Compile Include="Catch.cs" />
-    <Compile Include="ComparerStrategies\ComparableComparer.cs" />
-    <Compile Include="ComparerStrategies\ComparerFactory.cs" />
-    <Compile Include="ComparerStrategies\ComparisionResult.cs" />
-    <Compile Include="ComparerStrategies\DefaultComparer.cs" />
-    <Compile Include="ComparerStrategies\EnumerableComparer.cs" />
-    <Compile Include="ComparerStrategies\EquatableComparer.cs" />
     <Compile Include="DelegateUsageAttribute.cs" />
-    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Factories\BehaviorFactory.cs" />
     <Compile Include="Factories\ITagExtractor.cs" />
-    <Compile Include="ComparerStrategies\GenericTypeComparer.cs" />
     <Compile Include="ICleanupAfterEveryContextInAssembly.cs" />
-    <Compile Include="ComparerStrategies\IComparerStrategy.cs" />
     <Compile Include="Model\Behavior.cs" />
     <Compile Include="Model\BehaviorSpecification.cs" />
-    <Compile Include="ComparerStrategies\NoResult.cs" />
-    <Compile Include="ComparerStrategies\ObjectExtension.cs" />
     <Compile Include="Runner\AggregateRunListener.cs" />
     <Compile Include="Runner\Impl\InvokeOnce.cs" />
     <Compile Include="Runner\Impl\Listener\AssemblyContextRunListener.cs" />
@@ -110,6 +97,7 @@
     <Compile Include="Runner\RunOptions.cs" />
     <Compile Include="Runner\TimingRunListener.cs" />
     <Compile Include="SetupForEachSpecification.cs" />
+    <Compile Include="SpecificationExceptions.cs" />
     <Compile Include="SubjectAttribute.cs" />
     <Compile Include="Explorers\AssemblyExplorer.cs" />
     <Compile Include="Factories\SpecificationFactory.cs" />
@@ -130,16 +118,11 @@
     <Compile Include="Runner\SpecificationInfo.cs" />
     <Compile Include="Runner\Impl\DefaultRunner.cs" />
     <Compile Include="TagsAttribute.cs" />
-    <Compile Include="ComparerStrategies\TypeComparer.cs" />
-    <Compile Include="ComparerStrategies\TypeExtension.cs" />
     <Compile Include="Utility\Internal\Naming.cs" />
-    <Compile Include="Utility\Internal\PrettyPrintingExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Framework.cs" />
-    <Compile Include="Utility\ObjectGraphHelper.cs" />
     <Compile Include="Utility\RandomExtensionMethods.cs" />
     <Compile Include="Utility\ReflectionHelper.cs" />
-    <Compile Include="SpecificationExceptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TODO.txt" />
