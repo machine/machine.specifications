@@ -17,6 +17,7 @@
     <references>
       <reference file="Machine.Specifications.dll" />
       <reference file="Machine.Specifications.Clr4.dll" />
+      <reference file="Machine.Specifications.Should.dll" />
     </references>
   </metadata>
 </package>
