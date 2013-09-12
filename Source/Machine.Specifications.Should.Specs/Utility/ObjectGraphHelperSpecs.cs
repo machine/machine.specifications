@@ -3,7 +3,7 @@ using System.Linq;
 
 using Machine.Specifications.Utility;
 
-namespace Machine.Specifications.Specs.Utility
+namespace Machine.Specifications.Should.Specs.Utility
 {
     [Subject(typeof(ObjectGraphHelper))]
     public class when_getting_an_object_graph
