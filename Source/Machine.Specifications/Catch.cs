@@ -20,5 +20,19 @@ namespace Machine.Specifications
 
       return null;
     }
+
+    public static Exception Exception<T>(Func<T> throwingFunc)
+    {
+      try
+      {
+        throwingFunc();
+      }
+      catch (Exception exception)
+      {
+        return exception;
+      }
+
+      return null;
+    }
   }
 }
