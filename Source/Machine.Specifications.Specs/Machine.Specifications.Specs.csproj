@@ -70,7 +70,6 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="CatchSpecs.cs" />
     <Compile Include="ExceptionResultSpecs.cs" />
     <Compile Include="Explorers\AssemblyExplorerSpecs.cs" />
     <Compile Include="Factories\ContextFactorySpecs.cs" />
