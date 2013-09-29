@@ -9,7 +9,7 @@ namespace Machine.Specifications.Should.Specs
     static Exception Exception;
     static Dummy Obj;
 
-    Establish context = () => { Obj = new Dummy { Prop1 = "test", Prop2 = 2 }; };
+    Establish context = () => { Obj = new Dummy {Prop1 = "test", Prop2 = 2}; };
 
     class Dummy
     {
@@ -19,14 +19,14 @@ namespace Machine.Specifications.Should.Specs
 
     public class with_correct_key_values
     {
-      Because of = () => { Exception = Catch.Exception(() => Obj.ShouldBeLike(new { Prop1 = "test", Prop2 = 2 })); };
+      Because of = () => { Exception = Catch.Exception(() => Obj.ShouldBeLike(new {Prop1 = "test", Prop2 = 2})); };
 
       It should_not_throw = () => Exception.ShouldBeNull();
     }
 
     public class with_incorrect_key_value
     {
-      Because of = () => { Exception = Catch.Exception(() => Obj.ShouldBeLike(new { Prop1 = "test2", Prop2 = 2 })); };
+      Because of = () => { Exception = Catch.Exception(() => Obj.ShouldBeLike(new {Prop1 = "test2", Prop2 = 2})); };
 
       It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop1"":
   Expected string length 5 but was 4. Strings differ at index 4.
@@ -39,7 +39,8 @@ namespace Machine.Specifications.Should.Specs
 
     public class with_missing_key
     {
-      Because of = () => { Exception = Catch.Exception(() => Obj.ShouldBeLike(new { Prop1 = "test", Prop2 = 2, Prop3 = "other" })); };
+      Because of =
+        () => { Exception = Catch.Exception(() => Obj.ShouldBeLike(new {Prop1 = "test", Prop2 = 2, Prop3 = "other"})); };
 
       It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop3"":
   Expected: ""other""
@@ -50,7 +51,11 @@ namespace Machine.Specifications.Should.Specs
 
     public class with_multiple_errors
     {
-      Because of = () => { Exception = Catch.Exception(() => Obj.ShouldBeLike(new { Prop1 = "test2", Prop2 = 3, Prop3 = "other" })); };
+      Because of =
+        () =>
+        {
+          Exception = Catch.Exception(() => Obj.ShouldBeLike(new {Prop1 = "test2", Prop2 = 3, Prop3 = "other"}));
+        };
 
       It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop1"":
   Expected string length 5 but was 4. Strings differ at index 4.
@@ -78,24 +83,24 @@ namespace Machine.Specifications.Should.Specs
 
     public class with_correct_values
     {
-      Establish ctx = () => _array = new[] { "value1", "value2" };
-      Because of = () => { Exception = Catch.Exception(() => _array.ShouldBeLike(new[] { "value1", "value2" })); };
+      Establish ctx = () => _array = new[] {"value1", "value2"};
+      Because of = () => { Exception = Catch.Exception(() => _array.ShouldBeLike(new[] {"value1", "value2"})); };
 
       It should_not_throw = () => Exception.ShouldBeNull();
     }
 
     public class with_no_values
     {
-      Establish ctx = () => _array = new string[] { };
-      Because of = () => { Exception = Catch.Exception(() => _array.ShouldBeLike(new string[] { })); };
+      Establish ctx = () => _array = new string[] {};
+      Because of = () => { Exception = Catch.Exception(() => _array.ShouldBeLike(new string[] {})); };
 
       It should_not_throw = () => Exception.ShouldBeNull();
     }
 
     public class with_incorrect_values
     {
-      Establish ctx = () => _array = new[] { "value1", "value2" };
-      Because of = () => { Exception = Catch.Exception(() => _array.ShouldBeLike(new[] { "value1", "value3" })); };
+      Establish ctx = () => _array = new[] {"value1", "value2"};
+      Because of = () => { Exception = Catch.Exception(() => _array.ShouldBeLike(new[] {"value1", "value3"})); };
 
       It should_contain_message = () => Exception.Message.ShouldEqual(@"""[1]"":
   String lengths are both 6. Strings differ at index 5.
@@ -108,8 +113,8 @@ namespace Machine.Specifications.Should.Specs
 
     public class with_incorrect_length
     {
-      Establish ctx = () => _array = new[] { "value1", "value2" };
-      Because of = () => { Exception = Catch.Exception(() => _array.ShouldBeLike(new[] { "value1" })); };
+      Establish ctx = () => _array = new[] {"value1", "value2"};
+      Because of = () => { Exception = Catch.Exception(() => _array.ShouldBeLike(new[] {"value1"})); };
 
       It should_contain_message = () => Exception.Message.ShouldEqual(@""""":
   Expected: Sequence length of 1
@@ -123,7 +128,13 @@ namespace Machine.Specifications.Should.Specs
   public class when_asserting_object_is_like_expected_nested_object
   {
     static Exception Exception;
-    static Dummy _obj = new Dummy { Prop1 = "value1", Prop2 = 10, NestedProp = new NestedDummy { NestedProp1 = 5, NestedProp2 = "value2" } };
+
+    static Dummy _obj = new Dummy
+    {
+      Prop1 = "value1",
+      Prop2 = 10,
+      NestedProp = new NestedDummy {NestedProp1 = 5, NestedProp2 = "value2"}
+    };
 
     class Dummy
     {
@@ -140,14 +151,40 @@ namespace Machine.Specifications.Should.Specs
 
     public class with_correct_values
     {
-      Because of = () => { Exception = Catch.Exception(() => _obj.ShouldBeLike(new { Prop1 = "value1", Prop2 = 10, NestedProp = new { NestedProp1 = 5, NestedProp2 = "value2" } })); };
+      Because of =
+        () =>
+        {
+          Exception =
+            Catch.Exception(
+                            () =>
+                              _obj.ShouldBeLike(
+                                                new
+                                                {
+                                                  Prop1 = "value1",
+                                                  Prop2 = 10,
+                                                  NestedProp = new {NestedProp1 = 5, NestedProp2 = "value2"}
+                                                }));
+        };
 
       It should_not_throw = () => Exception.ShouldBeNull();
     }
 
     public class with_incorrect_values
     {
-      Because of = () => { Exception = Catch.Exception(() => _obj.ShouldBeLike(new { Prop1 = "value1", Prop2 = 10, NestedProp = new { NestedProp1 = 7, NestedProp2 = "value2" } })); };
+      Because of =
+        () =>
+        {
+          Exception =
+            Catch.Exception(
+                            () =>
+                              _obj.ShouldBeLike(
+                                                new
+                                                {
+                                                  Prop1 = "value1",
+                                                  Prop2 = 10,
+                                                  NestedProp = new {NestedProp1 = 7, NestedProp2 = "value2"}
+                                                }));
+        };
 
       It should_contain_message = () => Exception.Message.ShouldEqual(@"""NestedProp.NestedProp1"":
   Expected: [7]
@@ -189,7 +226,7 @@ namespace Machine.Specifications.Should.Specs
     static Dummy Obj1;
     static Dummy Obj2;
 
-    Establish context = () => { Obj1 = new Dummy { Prop1 = "test" }; };
+    Establish context = () => { Obj1 = new Dummy {Prop1 = "test"}; };
 
     class Dummy
     {
@@ -198,7 +235,7 @@ namespace Machine.Specifications.Should.Specs
 
     public class and_the_objects_are_similar
     {
-      Establish context = () => { Obj2 = new Dummy { Prop1 = "test" }; };
+      Establish context = () => { Obj2 = new Dummy {Prop1 = "test"}; };
 
       Because of = () => { Exception = Catch.Exception(() => Obj1.ShouldBeLike(Obj2)); };
 
@@ -207,7 +244,7 @@ namespace Machine.Specifications.Should.Specs
 
     public class and_the_objects_are_different
     {
-      Establish context = () => { Obj2 = new Dummy { Prop1 = "different" }; };
+      Establish context = () => { Obj2 = new Dummy {Prop1 = "different"}; };
 
       Because of = () => { Exception = Catch.Exception(() => Obj1.ShouldBeLike(Obj2)); };
 
@@ -222,7 +259,7 @@ namespace Machine.Specifications.Should.Specs
 
     public class and_the_objects_are_different_and_have_null_values
     {
-      Establish context = () => { Obj2 = new Dummy { Prop1 = null }; };
+      Establish context = () => { Obj2 = new Dummy {Prop1 = null}; };
 
       Because of = () => { Exception = Catch.Exception(() => Obj1.ShouldBeLike(Obj2)); };
 
@@ -246,11 +283,11 @@ namespace Machine.Specifications.Should.Specs
       public int[] Prop1 { get; set; }
     }
 
-    Establish context = () => { Obj1 = new Dummy { Prop1 = new[] { 1, 1, 1 } }; };
+    Establish context = () => { Obj1 = new Dummy {Prop1 = new[] {1, 1, 1}}; };
 
     public class and_the_objects_are_similar
     {
-      Establish context = () => { Obj2 = new Dummy { Prop1 = new[] { 1, 1, 1 } }; };
+      Establish context = () => { Obj2 = new Dummy {Prop1 = new[] {1, 1, 1}}; };
 
       Because of = () => { Exception = Catch.Exception(() => Obj1.ShouldBeLike(Obj2)); };
 
@@ -259,7 +296,7 @@ namespace Machine.Specifications.Should.Specs
 
     public class and_the_objects_are_different
     {
-      Establish context = () => { Obj2 = new Dummy { Prop1 = new[] { 2, 2, 2 } }; };
+      Establish context = () => { Obj2 = new Dummy {Prop1 = new[] {2, 2, 2}}; };
 
       Because of = () => { Exception = Catch.Exception(() => Obj1.ShouldBeLike(Obj2)); };
 
@@ -280,7 +317,7 @@ namespace Machine.Specifications.Should.Specs
 
     public class and_the_objects_are_different_and_have_null_values
     {
-      Establish context = () => { Obj2 = new Dummy { Prop1 = null }; };
+      Establish context = () => { Obj2 = new Dummy {Prop1 = null}; };
 
       Because of = () =>
       {
@@ -298,9 +335,10 @@ namespace Machine.Specifications.Should.Specs
   [1]
 }");
     }
+
     public class and_the_objects_are_different_and_the_actual_object_has_a_null_value
     {
-      Establish context = () => { Obj2 = new Dummy { Prop1 = null }; };
+      Establish context = () => { Obj2 = new Dummy {Prop1 = null}; };
 
       Because of = () =>
       {
@@ -338,9 +376,9 @@ namespace Machine.Specifications.Should.Specs
     Establish context = () =>
       first = new ListDummy
       {
-        Prop1 = new List<string> { "hello", "world" },
-        Prop2 = new HashSet<int> { 1, 2, 3 },
-        Prop3 = new LinkedList<char>(new[] { 'a', 'b', 'c' })
+        Prop1 = new List<string> {"hello", "world"},
+        Prop2 = new HashSet<int> {1, 2, 3},
+        Prop3 = new LinkedList<char>(new[] {'a', 'b', 'c'})
       };
 
     public class and_the_objects_are_similar
@@ -348,9 +386,9 @@ namespace Machine.Specifications.Should.Specs
       Establish context = () =>
         second = new ListDummy
         {
-          Prop1 = new List<string> { "hello", "world" },
-          Prop2 = new HashSet<int> { 1, 2, 3 },
-          Prop3 = new LinkedList<char>(new[] { 'a', 'b', 'c' })
+          Prop1 = new List<string> {"hello", "world"},
+          Prop2 = new HashSet<int> {1, 2, 3},
+          Prop3 = new LinkedList<char>(new[] {'a', 'b', 'c'})
         };
 
       Because of = () => exception = Catch.Exception(() => first.ShouldBeLike(second));
@@ -363,9 +401,9 @@ namespace Machine.Specifications.Should.Specs
       Establish context = () =>
         second = new ListDummy
         {
-          Prop1 = new List<string> { "hello", "world" },
-          Prop2 = new HashSet<int> { 3, 2, 1 },
-          Prop3 = new LinkedList<char>(new[] { 'a', 'b', 'c' })
+          Prop1 = new List<string> {"hello", "world"},
+          Prop2 = new HashSet<int> {3, 2, 1},
+          Prop3 = new LinkedList<char>(new[] {'a', 'b', 'c'})
         };
 
       Because of = () => exception = Catch.Exception(() => first.ShouldBeLike(second));
@@ -389,7 +427,7 @@ namespace Machine.Specifications.Should.Specs
 
         second = new ListDummy
         {
-          Prop1 = new List<string> { "hello", "world" },
+          Prop1 = new List<string> {"hello", "world"},
           Prop2 = null,
           Prop3 = null
         };
