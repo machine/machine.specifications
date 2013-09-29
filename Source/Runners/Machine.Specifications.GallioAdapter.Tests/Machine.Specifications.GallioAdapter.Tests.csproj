@@ -78,6 +78,10 @@
       <Name>Example</Name>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\Machine.Specifications.Should\Machine.Specifications.Should.csproj">
+      <Project>{4b86a9fc-4d07-40e3-aeb6-2898b5292972}</Project>
+      <Name>Machine.Specifications.Should</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Machine.Specifications.GallioAdapter.TestResources\Machine.Specifications.GallioAdapter.TestResources.csproj">
       <Project>{263ABAC8-C6B2-497D-93E3-3773849CEDD3}</Project>
       <Name>Machine.Specifications.GallioAdapter.TestResources</Name>

@@ -55,6 +55,10 @@
       <Project>{4F5B8F3D-21FE-46AE-9D45-4E1ED891F4DF}</Project>
       <Name>Machine.Specifications.Clr4</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Machine.Specifications.Should\Machine.Specifications.Should.csproj">
+      <Project>{4b86a9fc-4d07-40e3-aeb6-2898b5292972}</Project>
+      <Name>Machine.Specifications.Should</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Machine.Specifications\Machine.Specifications.csproj">
       <Project>{CCD02629-1262-4F78-9E9F-AC97B942D0E7}</Project>
       <Name>Machine.Specifications</Name>

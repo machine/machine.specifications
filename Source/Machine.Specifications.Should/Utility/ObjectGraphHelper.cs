@@ -15,18 +15,18 @@ namespace Machine.Specifications.Utility
       var objectType = obj.GetType();
       if (objectType.IsArray || (obj is IEnumerable && objectType != typeof(string)))
         return GetSequenceNode(obj);
-      
+
       if (objectType.IsClass && objectType != typeof(string))
         return GetKeyValueNode(obj);
-     
-      return new LiteralNode {Value = obj};
+
+      return new LiteralNode { Value = obj };
     }
 
     static INode GetSequenceNode(object obj)
     {
-	  var sequence = ((IEnumerable) obj).Cast<object>();
+      var sequence = ((IEnumerable)obj).Cast<object>();
 
-      return new SequenceNode {ValueGetters = sequence.Select<object, Func<object>>(a => () => a).ToArray()};
+      return new SequenceNode { ValueGetters = sequence.Select<object, Func<object>>(a => () => a).ToArray() };
     }
 
     static INode GetKeyValueNode(object obj)
@@ -54,7 +54,7 @@ namespace Machine.Specifications.Utility
           };
         });
 
-      return new KeyValueNode {KeyValues = properties.Concat(fields).OrderBy(m => m.Name)};
+      return new KeyValueNode { KeyValues = properties.Concat(fields).OrderBy(m => m.Name) };
     }
 
     public class SequenceNode : INode
