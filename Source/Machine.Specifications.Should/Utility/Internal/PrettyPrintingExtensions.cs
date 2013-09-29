@@ -130,7 +130,7 @@ namespace Machine.Specifications.Utility.Internal
 
       return string.Format("Expected string length {0} but was {1}.", actual, expected);
     }
-    
+
     static string Tab(this string str)
     {
       if (string.IsNullOrEmpty(str))
@@ -185,7 +185,7 @@ namespace Machine.Specifications.Utility.Internal
       }
       if (obj.GetType() == typeof(string))
       {
-        str = (string) obj;
+        str = (string)obj;
 
         return "\"" + str.Replace("\n", "\\n") + "\"";
       }
@@ -196,7 +196,7 @@ namespace Machine.Specifications.Utility.Internal
 
       if (obj is IEnumerable)
       {
-        var enumerable = ((IEnumerable) obj).Cast<object>();
+        var enumerable = ((IEnumerable)obj).Cast<object>();
 
         return obj.GetType() + ":\r\n" + enumerable.EachToUsefulString();
       }
@@ -228,7 +228,7 @@ namespace Machine.Specifications.Utility.Internal
 
     internal static string EnsureSafeFormat(this string message)
     {
-        return EscapeNonFormatBraces.Replace(message, match => string.Format(CurlyBraceSurround, match.Groups[0]));
+      return EscapeNonFormatBraces.Replace(message, match => string.Format(CurlyBraceSurround, match.Groups[0]));
     }
   }
 }

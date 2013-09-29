@@ -5,7 +5,7 @@
     public ComparisionResult Compare(T x, T y)
     {
       var type = typeof(T);
-      
+
       if (!type.IsValueType || (type.IsGenericType && type.IsNullable()))
       {
         if (x.IsEqualToDefault())

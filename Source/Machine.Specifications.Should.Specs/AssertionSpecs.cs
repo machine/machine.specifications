@@ -9,7 +9,7 @@ namespace Machine.Specifications.Should.Specs
     static Exception Exception;
     static int[] Ints;
 
-    Establish context = () => { Ints = new[] {1, 2, 3}; };
+    Establish context = () => { Ints = new[] { 1, 2, 3 }; };
 
     Because of = () => { Exception = Catch.Exception(() => Ints.ShouldContain(x => x > 3)); };
 
@@ -23,7 +23,7 @@ namespace Machine.Specifications.Should.Specs
     static Exception Exception;
     static int[] Ints;
 
-    Establish context = () => { Ints = new[] {1, 2, 3}; };
+    Establish context = () => { Ints = new[] { 1, 2, 3 }; };
 
     Because of = () => { Exception = Catch.Exception(() => Ints.ShouldNotContain(x => x < 3)); };
 
@@ -40,7 +40,7 @@ namespace Machine.Specifications.Should.Specs
     static Exception Exception;
     static int[] Ints;
 
-    Establish context = () => { Ints = new[] {1, 2, 3}; };
+    Establish context = () => { Ints = new[] { 1, 2, 3 }; };
 
     Because of = () => { Exception = Catch.Exception(() => Ints.ShouldEachConformTo(x => x % 2 == 0)); };
 
@@ -65,7 +65,7 @@ namespace Machine.Specifications.Should.Specs
     Establish context = () =>
     {
       Element = "An Element";
-      AList = new List<string> {Element};
+      AList = new List<string> { Element };
       AnotherList = new List<string>(AList);
     };
 
@@ -88,10 +88,10 @@ namespace Machine.Specifications.Should.Specs
     Establish context = () =>
     {
       Element = "An Element";
-      AList = new List<string> {Element};
+      AList = new List<string> { Element };
 
       AnotherElement = "Another Element";
-      AnotherList = new List<string> {AnotherElement};
+      AnotherList = new List<string> { AnotherElement };
     };
 
     Because of =
@@ -173,7 +173,7 @@ namespace Machine.Specifications.Should.Specs
     Establish context = () => { AString = null; };
 
     Because of =
-      () => Exception = (SpecificationException) Catch.Exception(() => AString.ShouldBeOfType<int>());
+      () => Exception = (SpecificationException)Catch.Exception(() => AString.ShouldBeOfType<int>());
 
     It should_report_the_requested_type =
       () => Exception.Message.ShouldStartWith("Should be of type System.Int32");
@@ -192,7 +192,7 @@ namespace Machine.Specifications.Should.Specs
     It should_succeed =
       () => Exception.ShouldBeNull();
   }
-  
+
   [Subject(typeof(ShouldExtensionMethods))]
   public class when_checking_if_an_item_matches_a_func_and_the_check_fails
   {
