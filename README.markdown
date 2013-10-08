@@ -68,7 +68,7 @@ public class When_authenticating_a_new_user
     {
         // ... any mocking, stubbing, or other setup ...
         Subject = new SecurityService(foo, bar);
-    }
+    };
 
     static SecurityService Subject;
 }
@@ -85,12 +85,12 @@ public class When_authenticating_a_user
     Establish context = () =>
     {
         Subject = new SecurityService(foo, bar);
-    }
+    };
 
     Cleanup after = () =>
     {
         Subject.Dispose();
-    }
+    };
 
     static SecurityService Subject;
 }
@@ -107,7 +107,7 @@ public class When_authenticating_a_user
     Establish context = () =>
     {
         Subject = new SecurityService(foo, bar);
-    }
+    };
 
     Because of = () => Subject.Authenticate("username", "password");
 
@@ -128,7 +128,7 @@ public class When_authenticating_an_admin_user
     Establish context = () =>
     {
         Subject = new SecurityService(foo, bar);
-    }
+    };
 
     Because of = () => Token = Subject.Authenticate("username", "password");
 
@@ -172,7 +172,7 @@ public class When_authenticating_a_user_fails_due_to_bad_credentials
     Establish context = () =>
     {
         Subject = new SecurityService(foo, bar);
-    }
+    };
 
     Because of = () => Exception = Catch.Exception(() => Subject.Authenticate("username", "password"));
 
