@@ -202,6 +202,8 @@ namespace :package do
   def net_20_framework_files(root = '.')
     FileList.new("#{root}/Machine.Specifications.dll") \
       .include("#{root}/Machine.Specifications.pdb") \
+      .include("#{root}/Machine.Specifications.Should.dll") \
+      .include("#{root}/Machine.Specifications.Should.pdb") \
       .include("#{root}/Machine.Specifications.dll.tdnet") \
       .include("#{root}/Machine.Specifications.TDNetRunner.*")
   end
