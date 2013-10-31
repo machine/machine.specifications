@@ -1,3 +1,7 @@
+Machine.Specifications 
+-----------------------------
+- Should Extension Methods are moved into own assembly which simplifies things for people using other assertion libraries.
+
 Machine.Specifications 0.5.18
 -----------------------------
 - The zip package looks just like the NuGet package, minus NuGet-specific files
