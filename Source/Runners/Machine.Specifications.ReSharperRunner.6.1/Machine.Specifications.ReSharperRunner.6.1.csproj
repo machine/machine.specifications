@@ -114,43 +114,47 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="AssemblySource\MetadataAttributeInfoAdapter.cs" />
+    <Compile Include="AssemblySource\TypeInfoExtension.cs" />
     <Compile Include="EnumerableExtensions.cs" />
-    <Compile Include="Explorers\AssemblyExplorer.cs" />
-    <Compile Include="Explorers\ElementHandlers\BehaviorElementHandler.cs" />
-    <Compile Include="Explorers\ElementHandlers\ContextElementHandler.cs" />
-    <Compile Include="Explorers\ElementHandlers\ContextSpecificationElementHandler.cs" />
-    <Compile Include="Explorers\ElementHandlers\IElementHandler.cs" />
-    <Compile Include="Explorers\FileExplorer.cs" />
-    <Compile Include="Explorers\MspecTestFileExplorer.cs" />
-    <Compile Include="Explorers\MSpecTestMetadataExplorer.cs" />
-    <Compile Include="Factories\BehaviorFactory.cs" />
-    <Compile Include="Factories\BehaviorSpecificationFactory.cs" />
-    <Compile Include="Factories\ContextCache.cs" />
-    <Compile Include="Factories\ContextFactory.cs" />
-    <Compile Include="Factories\ContextSpecificationFactory.cs" />
-    <Compile Include="Factories\ElementFactories.cs" />
-    <Compile Include="Factories\UnitTestTaskFactory.cs" />
-    <Compile Include="MetadataExtensions.cs" />
+    <Compile Include="AssemblySource\AssemblyExplorer.cs" />
+    <Compile Include="TestElements\BehaviorElementHandler.cs" />
+    <Compile Include="TestElements\ContextElementHandler.cs" />
+    <Compile Include="TestElements\ContextSpecificationElementHandler.cs" />
+    <Compile Include="TestElements\IElementHandler.cs" />
+    <Compile Include="PSISource\FileExplorer.cs" />
+    <Compile Include="PSISource\MspecTestFileExplorer.cs" />
+    <Compile Include="AssemblySource\MSpecTestMetadataExplorer.cs" />
+    <Compile Include="TestElementFactories\BehaviorFactory.cs" />
+    <Compile Include="TestElementFactories\BehaviorSpecificationFactory.cs" />
+    <Compile Include="TestElementFactories\ContextCache.cs" />
+    <Compile Include="TestElementFactories\ContextFactory.cs" />
+    <Compile Include="TestElementFactories\ContextSpecificationFactory.cs" />
+    <Compile Include="TestElementFactories\ElementFactories.cs" />
+    <Compile Include="TestElementFactories\UnitTestTaskFactory.cs" />
+    <Compile Include="AssemblySource\MetadataExtensions.cs" />
+    <Compile Include="AssemblySource\MetadataTypeInfoAdapter.cs" />
     <Compile Include="MSpecElementNaming.cs" />
     <Compile Include="MSpecUnitTestElementComparer.cs" />
     <Compile Include="MSpecUnitTestPresenter.cs" />
     <Compile Include="MSpecUnitTestProvider.cs" />
     <Compile Include="NormalizedTypeName.cs" />
-    <Compile Include="Presentation\BehaviorElement.cs" />
-    <Compile Include="Presentation\BehaviorSpecificationElement.cs" />
-    <Compile Include="Presentation\ContextElement.cs" />
-    <Compile Include="Presentation\ContextSpecificationElement.cs" />
-    <Compile Include="Presentation\Element.cs" />
-    <Compile Include="Presentation\FieldElement.cs" />
-    <Compile Include="Presentation\ISerializableElement.cs" />
-    <Compile Include="Presentation\Presenter.cs" />
+    <Compile Include="TestElements\BehaviorElement.cs" />
+    <Compile Include="TestElements\BehaviorSpecificationElement.cs" />
+    <Compile Include="TestElements\ContextElement.cs" />
+    <Compile Include="TestElements\ContextSpecificationElement.cs" />
+    <Compile Include="TestElements\Element.cs" />
+    <Compile Include="TestElements\FieldElement.cs" />
+    <Compile Include="TestElements\ISerializableElement.cs" />
+    <Compile Include="TestElements\Presenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="PsiExtensions.cs" />
+    <Compile Include="PSISource\PsiExtensions.cs" />
+    <Compile Include="PSISource\PsiTypeInfoAdapter.cs" />
     <Compile Include="Runners\ExceptionResultConverter.cs" />
     <Compile Include="Runners\Notifications\AssemblyRemoteTaskNotification.cs" />
     <Compile Include="Runners\Notifications\BehaviorSpecificationRemoteTaskNotification.cs" />

@@ -108,29 +108,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\AssemblySource\AssemblyExplorer.cs">
+      <Link>AssemblySource\AssemblyExplorer.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\AssemblySource\MetadataExtensions.cs">
+      <Link>AssemblySource\MetadataExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\AssemblySource\MetadataTypeInfoAdapter.cs">
+      <Link>AssemblySource\MetadataTypeInfoAdapter.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\AssemblySource\MSpecTestMetadataExplorer.cs">
+      <Link>AssemblySource\MSpecTestMetadataExplorer.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\AssemblySource\TypeInfoExtension.cs">
+      <Link>AssemblySource\TypeInfoExtension.cs</Link>
+    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\EnumerableExtensions.cs">
       <Link>EnumerableExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Explorers\ElementHandlers\BehaviorElementHandler.cs">
-      <Link>Explorers\ElementHandlers\BehaviorElementHandler.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Explorers\ElementHandlers\ContextElementHandler.cs">
-      <Link>Explorers\ElementHandlers\ContextElementHandler.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Explorers\ElementHandlers\ContextSpecificationElementHandler.cs">
-      <Link>Explorers\ElementHandlers\ContextSpecificationElementHandler.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Explorers\ElementHandlers\IElementHandler.cs">
-      <Link>Explorers\ElementHandlers\IElementHandler.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Factories\ContextCache.cs">
-      <Link>Factories\ContextCache.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Factories\ElementFactories.cs">
-      <Link>Factories\ElementFactories.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Factories\UnitTestTaskFactory.cs">
-      <Link>Factories\UnitTestTaskFactory.cs</Link>
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\MSpecUnitTestElementComparer.cs">
       <Link>MSpecUnitTestElementComparer.cs</Link>
@@ -138,8 +132,17 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\NormalizedTypeName.cs">
       <Link>NormalizedTypeName.cs</Link>
     </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\PsiExtensions.cs">
-      <Link>PsiExtensions.cs</Link>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\PSISource\FileExplorer.cs">
+      <Link>PSISource\FileExplorer.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\PSISource\MspecTestFileExplorer.cs">
+      <Link>PSISource\MspecTestFileExplorer.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\PSISource\PsiExtensions.cs">
+      <Link>PSISource\PsiExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\PSISource\PsiTypeInfoAdapter.cs">
+      <Link>PSISource\PsiTypeInfoAdapter.cs</Link>
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Runners\Notifications\AssemblyRemoteTaskNotification.cs">
       <Link>Runners\Notifications\AssemblyRemoteTaskNotification.cs</Link>
@@ -189,62 +192,11 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Runners\ExceptionResultConverter.cs">
       <Link>Runners\ExceptionResultConverter.cs</Link>
     </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Explorers\AssemblyExplorer.cs">
-      <Link>Explorers\AssemblyExplorer.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Explorers\FileExplorer.cs">
-      <Link>Explorers\FileExplorer.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Factories\BehaviorFactory.cs">
-      <Link>Factories\BehaviorFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Factories\BehaviorSpecificationFactory.cs">
-      <Link>Factories\BehaviorSpecificationFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Factories\ContextFactory.cs">
-      <Link>Factories\ContextFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Factories\ContextSpecificationFactory.cs">
-      <Link>Factories\ContextSpecificationFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Explorers\MspecTestFileExplorer.cs">
-      <Link>Explorers\MspecTestFileExplorer.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Explorers\MSpecTestMetadataExplorer.cs">
-      <Link>Explorers\MSpecTestMetadataExplorer.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\MetadataExtensions.cs">
-      <Link>MetadataExtensions.cs</Link>
-    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\MSpecUnitTestPresenter.cs">
       <Link>MSpecUnitTestPresenter.cs</Link>
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\MSpecUnitTestProvider.cs">
       <Link>MSpecUnitTestProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Presentation\BehaviorElement.cs">
-      <Link>Presentation\BehaviorElement.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Presentation\BehaviorSpecificationElement.cs">
-      <Link>Presentation\BehaviorSpecificationElement.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Presentation\ContextElement.cs">
-      <Link>Presentation\ContextElement.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Presentation\ContextSpecificationElement.cs">
-      <Link>Presentation\ContextSpecificationElement.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Presentation\Element.cs">
-      <Link>Presentation\Element.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Presentation\FieldElement.cs">
-      <Link>Presentation\FieldElement.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Presentation\ISerializableElement.cs">
-      <Link>Presentation\ISerializableElement.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Presentation\Presenter.cs">
-      <Link>Presentation\Presenter.cs</Link>
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\MSpecUnitTestElementSerializer.cs">
       <Link>MSpecUnitTestElementSerializer.cs</Link>
@@ -254,6 +206,63 @@
     </Compile>
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElementFactories\BehaviorFactory.cs">
+      <Link>TestElementFactories\BehaviorFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElementFactories\BehaviorSpecificationFactory.cs">
+      <Link>TestElementFactories\BehaviorSpecificationFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElementFactories\ContextCache.cs">
+      <Link>TestElementFactories\ContextCache.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElementFactories\ContextFactory.cs">
+      <Link>TestElementFactories\ContextFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElementFactories\ContextSpecificationFactory.cs">
+      <Link>TestElementFactories\ContextSpecificationFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElementFactories\ElementFactories.cs">
+      <Link>TestElementFactories\ElementFactories.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElementFactories\UnitTestTaskFactory.cs">
+      <Link>TestElementFactories\UnitTestTaskFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElements\BehaviorElement.cs">
+      <Link>TestElements\BehaviorElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElements\BehaviorElementHandler.cs">
+      <Link>TestElements\BehaviorElementHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElements\BehaviorSpecificationElement.cs">
+      <Link>TestElements\BehaviorSpecificationElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElements\ContextElement.cs">
+      <Link>TestElements\ContextElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElements\ContextElementHandler.cs">
+      <Link>TestElements\ContextElementHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElements\ContextSpecificationElement.cs">
+      <Link>TestElements\ContextSpecificationElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElements\ContextSpecificationElementHandler.cs">
+      <Link>TestElements\ContextSpecificationElementHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElements\Element.cs">
+      <Link>TestElements\Element.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElements\FieldElement.cs">
+      <Link>TestElements\FieldElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElements\IElementHandler.cs">
+      <Link>TestElements\IElementHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElements\ISerializableElement.cs">
+      <Link>TestElements\ISerializableElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElements\Presenter.cs">
+      <Link>TestElements\Presenter.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>
@@ -271,7 +280,7 @@
     <Compile Include="Shims\Psi.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Explorers\MSpecTestMetadataExplorer.8.0.cs" />
+    <Compile Include="AssemblySource\MSpecTestMetadataExplorer.8.0.cs" />
     <None Include="InstallResharperRunner.8.0.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -296,6 +305,7 @@
       <Name>Machine.Specifications</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

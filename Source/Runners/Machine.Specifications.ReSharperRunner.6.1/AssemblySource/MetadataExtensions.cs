@@ -8,27 +8,16 @@ using JetBrains.Metadata.Reader.API;
 using JetBrains.ReSharper.Psi;
 using JetBrains.Util;
 
+using Machine.Specifications.Sdk;
+
 namespace Machine.Specifications.ReSharperRunner
 {
-  internal static partial class MetadataExtensions
+  internal static class MetadataExtensions
   {
-    public static bool IsContext(this IMetadataTypeInfo type)
-    {
-      return !type.IsAbstract &&
-             !type.IsStruct() &&
-             type.GenericParameters.Length == 0 &&
-             !type.HasCustomAttribute(typeof(BehaviorsAttribute).FullName) &&
-             (type.GetSpecifications().Any() ||
-              type.GetBehaviors().Any());
-    }
 
-    static bool IsStruct(this IMetadataTypeInfo type)
+    public static ITypeInfo AsTypeInfo(this IMetadataTypeInfo type)
     {
-      if (type.Base != null)
-      {
-        return type.Base.Type.FullyQualifiedName == typeof(ValueType).FullName;
-      }
-      return false;
+        return new MetadataTypeInfoAdapter(type);
     }
 
     public static IEnumerable<IMetadataField> GetSpecifications(this IMetadataTypeInfo type)
@@ -36,17 +25,31 @@ namespace Machine.Specifications.ReSharperRunner
         var privateFieldsOfType = type.GetInstanceFieldsOfType<It>();
         return privateFieldsOfType;
     }
-
-      public static IEnumerable<IMetadataField> GetBehaviors(this IMetadataTypeInfo type)
+    public static IEnumerable<IMetadataField> GetBehaviors(this IMetadataTypeInfo type)
     {
-      IEnumerable<IMetadataField> behaviorFields = type.GetInstanceFieldsOfType(typeof(Behaves_like<>));
-      foreach (IMetadataField field in behaviorFields)
-      {
-        if (field.GetFirstGenericArgument().HasCustomAttribute(typeof(BehaviorsAttribute).FullName))
+        IEnumerable<IMetadataField> behaviorFields = type.GetInstanceFieldsOfType(typeof(Behaves_like<>));
+        foreach (IMetadataField field in behaviorFields)
         {
-          yield return field;
+            if (field.GetFirstGenericArgument().HasCustomAttribute(typeof(BehaviorsAttribute).FullName))
+            {
+                yield return field;
+            }
         }
-      }
+    }
+
+    static IEnumerable<IMetadataField> GetInstanceFieldsOfType<T>(this IMetadataTypeInfo type)
+    {
+        return type.GetInstanceFieldsOfType(typeof(T));
+    }
+    static IEnumerable<IMetadataField> GetInstanceFieldsOfType(this IMetadataTypeInfo type, Type fieldType)
+    {
+        var metadataFields = type.GetInstanceFields();
+        var fields = metadataFields.Where(x => x.Type is IMetadataClassType);
+        return fields.Where(x => (((IMetadataClassType)x.Type).Type.FullyQualifiedName == fieldType.FullName));
+    }
+    static IEnumerable<IMetadataField> GetInstanceFields(this IMetadataTypeInfo type)
+    {
+        return type.GetFields().Where(field => !field.IsStatic);
     }
 
     public static string GetSubjectString(this IMetadataEntity type)
@@ -166,23 +169,6 @@ namespace Machine.Specifications.ReSharperRunner
                 yield return coll;
             }
       }
-    }
-
-    static IEnumerable<IMetadataField> GetInstanceFields(this IMetadataTypeInfo type)
-    {
-      return type.GetFields().Where(field => !field.IsStatic);
-    }
-
-    static IEnumerable<IMetadataField> GetInstanceFieldsOfType<T>(this IMetadataTypeInfo type)
-    {
-      return type.GetInstanceFieldsOfType(typeof(T));
-    }
-
-    static IEnumerable<IMetadataField> GetInstanceFieldsOfType(this IMetadataTypeInfo type, Type fieldType)
-    {
-        var metadataFields = type.GetInstanceFields();
-        var fields = metadataFields.Where(x => x.Type is IMetadataClassType);
-        return fields.Where(x => (((IMetadataClassType)x.Type).Type.FullyQualifiedName == fieldType.FullName));
     }
 
     public static string FullyQualifiedName(this IMetadataClassType classType)
