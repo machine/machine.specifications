@@ -8,11 +8,8 @@ using JetBrains.ReSharper.Psi.Impl.Reflection2;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.ReSharper.UnitTestFramework.Elements;
-
-using Machine.Specifications.ReSharperRunner.AssemblySource;
 using Machine.Specifications.ReSharperRunner.Presentation;
 using Machine.Specifications.ReSharperRunner.Shims;
-using Machine.Specifications.Sdk;
 
 using ICache = Machine.Specifications.ReSharperRunner.Shims.ICache;
 
@@ -60,10 +57,10 @@ namespace Machine.Specifications.ReSharperRunner.Factories
     }
 
       //Todo either IMetadataTypeInfo or ITypeInfo
-    public ContextElement CreateContext(IProject project, string assemblyPath, IMetadataTypeInfo type, ITypeInfo infoType)
+    public ContextElement CreateContext(IProject project, string assemblyPath, IMetadataTypeInfo type)
     {
-        return this.GetOrCreateContext(assemblyPath, project, _reflectionTypeNameCache.GetClrName(type), infoType.GetStringOfSubjectAttribute(),
-                                type.GetTags(), type.IsIgnored()); //type.GetTags and type.IsIgnored -> are IMetadataTypeInfos
+        return this.GetOrCreateContext(assemblyPath, project, _reflectionTypeNameCache.GetClrName(type), type.GetSubjectString(),
+                                type.GetTags(), type.IsIgnored());
     }
 
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using JetBrains.Metadata.Reader.API;
 
@@ -12,10 +11,12 @@ namespace Machine.Specifications.ReSharperRunner.AssemblySource
     internal static class TypeInfoExtension
     {
 
+
+
         public static ICollection<string> GetTags(this IMetadataEntity type)
         {
             return type.AndAllBaseTypes()
-                    .SelectMany(x => x.GetCustomAttributes(typeof(TagsAttribute).FullName))
+                    .SelectMany(x => x.GetCustomAttributes(new TagsAttributeFullName()))
                     .Select(x => x.ConstructorArguments)
                     .Flatten(tag => tag.FirstOrDefault().Value as string,
                     tag => tag.Skip(1).FirstOrDefault().ValuesArray.Select(v => v.Value as string))

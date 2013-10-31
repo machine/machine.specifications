@@ -114,14 +114,8 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\AssemblySource\MetadataExtensions.cs">
       <Link>AssemblySource\MetadataExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\AssemblySource\MetadataTypeInfoAdapter.cs">
-      <Link>AssemblySource\MetadataTypeInfoAdapter.cs</Link>
-    </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\AssemblySource\MSpecTestMetadataExplorer.cs">
       <Link>AssemblySource\MSpecTestMetadataExplorer.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\AssemblySource\TypeInfoExtension.cs">
-      <Link>AssemblySource\TypeInfoExtension.cs</Link>
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\EnumerableExtensions.cs">
       <Link>EnumerableExtensions.cs</Link>
@@ -140,9 +134,6 @@
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\PSISource\PsiExtensions.cs">
       <Link>PSISource\PsiExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\PSISource\PsiTypeInfoAdapter.cs">
-      <Link>PSISource\PsiTypeInfoAdapter.cs</Link>
     </Compile>
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\Runners\Notifications\AssemblyRemoteTaskNotification.cs">
       <Link>Runners\Notifications\AssemblyRemoteTaskNotification.cs</Link>
@@ -264,6 +255,7 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElements\Presenter.cs">
       <Link>TestElements\Presenter.cs</Link>
     </Compile>
+    <Compile Include="AssemblySource\SafeDereferenceExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>
       </SubType>

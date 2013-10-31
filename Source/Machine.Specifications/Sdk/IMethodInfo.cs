@@ -15,7 +15,7 @@ namespace Machine.Specifications.Sdk
         /// reflected from (i.e., equivalent to MethodInfo.ReflectedType)
         /// </summary>
         [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Class", Justification = "This would be a breaking change.")]
-        ITypeInfo Class { get; }
+       // ITypeInfo Class { get; }
 
         /// <summary>
         /// Gets a value indicating whether the method is abstract.

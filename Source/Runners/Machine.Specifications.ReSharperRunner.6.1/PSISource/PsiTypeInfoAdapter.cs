@@ -5,55 +5,56 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Util;
 
 using Machine.Specifications.Sdk;
+using CLRTypeName = JetBrains.ReSharper.Psi.ClrTypeName;
+
 
 namespace Machine.Specifications.ReSharperRunner
 {
-    public class PsiTypeInfoAdapter : ITypeInfo
+    public class PsiTypeInfoAdapter// : ITypeInfo
     {
-        readonly IClass psiType;
+        //readonly IClass psiType;
 
-        public PsiTypeInfoAdapter(IClass psiType)
-        {
-            this.psiType = psiType;
-        }
+        //public PsiTypeInfoAdapter(IClass psiType)
+        //{
+        //    this.psiType = psiType;
+        //}
 
+        //public bool IsStruct
+        //{
+        //    get
+        //    {
+        //        return false;
+        //    }
+        //}
 
-        public bool ExistsAnySpecifications()
-        {
+        //public bool ExistsAnySpecifications()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-            throw new NotImplementedException();
-        }
+        ////public bool ExistsAnyBehaviors()
+        ////{
+        ////    return psiType.GetBehaviors().Any();
+        ////}
 
-        public bool ExistsAnyBehaviors()
-        {
-            throw new NotImplementedException();
-        }
+        //public int GenericParametersCount { get; private set; }
 
-        public string GetStringOfSubjectAttribute()
-        {
-            throw new NotImplementedException();
-        }
+        //public bool HasBehaviorAttributeName
+        //{
+        //    get
+        //    {
+        //        return psiType.HasAttributeInstance(new CLRTypeName(new BehaviorAttributeFullName()), false);
+        //    }
+        //}
 
-        public bool IsStruct
-        {
-            get
-            {
-                return false;
-            }
-        }
+        //public bool IsAbstract
+        //{
+        //    get { return psiType.IsAbstract; }
+        //}
 
-        public int GenericParametersCount { get; private set; }
-        
-        public bool HasBehaviorAttributeName { get; private set; }
-
-        public bool IsAbstract
-        {
-            get { return psiType.IsAbstract; }
-        }
-
-        public bool IsSealed
-        {
-            get { return psiType.IsSealed; }
-        }
+        //public bool IsSealed
+        //{
+        //    get { return psiType.IsSealed; }
+        //}
     }
 }

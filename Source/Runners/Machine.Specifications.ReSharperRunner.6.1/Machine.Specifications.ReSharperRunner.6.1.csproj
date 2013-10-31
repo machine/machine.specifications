@@ -114,7 +114,6 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="AssemblySource\MetadataAttributeInfoAdapter.cs" />
     <Compile Include="AssemblySource\TypeInfoExtension.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="AssemblySource\AssemblyExplorer.cs" />

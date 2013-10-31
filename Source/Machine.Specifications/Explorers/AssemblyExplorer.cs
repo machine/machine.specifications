@@ -11,11 +11,11 @@ namespace Machine.Specifications.Explorers
 {
   public class AssemblyExplorer
   {
-    readonly ContextFactory _contextFactory;
+    readonly ContextFactory contextFactory;
 
     public AssemblyExplorer()
     {
-      _contextFactory = new ContextFactory();
+      this.contextFactory = new ContextFactory();
     }
 
     public IEnumerable<Context> FindContextsIn(Assembly assembly)
@@ -54,13 +54,13 @@ namespace Machine.Specifications.Explorers
     Context CreateContextFrom(Type type)
     {
       object instance = Activator.CreateInstance(type);
-      return _contextFactory.CreateContextFrom(instance);
+      return this.contextFactory.CreateContextFrom(instance);
     }
 
     Context CreateContextFrom(Type type, FieldInfo fieldInfo)
     {
       object instance = Activator.CreateInstance(type);
-      return _contextFactory.CreateContextFrom(instance, fieldInfo);
+      return this.contextFactory.CreateContextFrom(instance, fieldInfo);
     }
 
     static bool IsContext(Type type)

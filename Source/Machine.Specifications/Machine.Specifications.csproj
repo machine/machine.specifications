@@ -101,10 +101,11 @@
     <Compile Include="Runner\RunListenerBase.cs" />
     <Compile Include="Runner\RunOptions.cs" />
     <Compile Include="Runner\TimingRunListener.cs" />
-    <Compile Include="Sdk\IAttributeInfo.cs" />
-    <Compile Include="Sdk\IMethodInfo.cs" />
-    <Compile Include="Sdk\ITypeInfo.cs" />
-    <Compile Include="Sdk\SpecTypeCheck.cs" />
+    <Compile Include="Sdk\BehavesLikeDelegateFullName.cs" />
+    <Compile Include="Sdk\BehaviorAttributeFullName.cs" />
+    <Compile Include="Sdk\ItDelegateFullName.cs" />
+    <Compile Include="Sdk\SubjectAttributeFullName.cs" />
+    <Compile Include="Sdk\TagsAttributeFullName.cs" />
     <Compile Include="SetupForEachSpecification.cs" />
     <Compile Include="SpecificationExceptions.cs" />
     <Compile Include="SubjectAttribute.cs" />

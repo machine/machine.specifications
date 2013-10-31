@@ -13,44 +13,39 @@ namespace Machine.Specifications.Sdk
         /// <summary>
         /// Gets a value indicating the paramet count of the type
         /// </summary>
-        int GenericParametersCount { get; }
+        //int GenericParametersCount { get; }
 
         /// <summary>
         /// Gets a value indicating wheter the type has a Behavior Attribute
         /// </summary>
-        bool HasBehaviorAttributeName { get;  }
+        //bool HasBehaviorAttributeName { get;  }
 
         /// <summary>
         /// Gets a value indicating whether the type is abstract.
         /// </summary>
-        bool IsAbstract { get; }
+        //bool IsAbstract { get; }
 
         /// <summary>
         /// Gets a value indicating whether the type is sealed.
         /// </summary>
-        bool IsSealed { get; }
+        //bool IsSealed { get; }
 
         /// <summary>
         /// Determines if the type is a struct
         /// </summary>
-        bool IsStruct { get; }
+        //bool IsStruct { get; }
 
         /// <summary>
         /// Determines if field is of type It
         /// </summary>
         /// <returns></returns>
-        bool ExistsAnySpecifications();
+        //bool ExistsAnySpecifications();
 
         /// <summary>
         /// Determines if field is has Behaviors Attribute or is a type of Behaves_like
         /// </summary>
         /// <returns></returns>
-        bool ExistsAnyBehaviors();
+        //bool ExistsAnyBehaviors();
 
-        /// <summary>
-        /// Gets the subject string of the Subject Attribute
-        /// </summary>
-        /// <returns></returns>
-        string GetStringOfSubjectAttribute();
     }
 }
