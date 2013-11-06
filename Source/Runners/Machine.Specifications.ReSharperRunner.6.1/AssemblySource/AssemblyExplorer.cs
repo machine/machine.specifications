@@ -28,13 +28,10 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
             return;
         }
         
-        //Todo metadataTypeInfo fully replaced with typeInfo
         var contextElement = factories.Contexts.CreateContext(project, assembly.Location.FullPath, metadataTypeInfo);
     
         consumer(contextElement);
         
-        //Todo should be typeInfo but GetSpecifications returns ReSharper specific stuff, which is not wanted because typeInfo is a Machine.Specification Interface
-     
         metadataTypeInfo.GetSpecifications()
             .ForEach(x => consumer(factories.ContextSpecifications.CreateContextSpecification(contextElement, x)));
 

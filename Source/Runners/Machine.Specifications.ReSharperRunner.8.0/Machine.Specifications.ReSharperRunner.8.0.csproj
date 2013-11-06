@@ -255,7 +255,6 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.6.1\TestElements\Presenter.cs">
       <Link>TestElements\Presenter.cs</Link>
     </Compile>
-    <Compile Include="AssemblySource\SafeDereferenceExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>
       </SubType>
