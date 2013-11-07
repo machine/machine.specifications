@@ -52,14 +52,14 @@ namespace Machine.Specifications.ReSharperRunner
 
     public static bool IsSpecification(this IDeclaredElement element)
     {
-      return element.IsValidFieldOfType(new ItDelegateFullName());
+      return element.IsValidFieldOfType(new AssertDelegateAttributeFullName());
     }
 
     public static bool IsSupportingField(this IDeclaredElement element)
     {
-      return element.IsValidFieldOfType(new EstablishDelegateFullName()) ||
-             element.IsValidFieldOfType(new BecauseDelegateFullName()) ||
-             element.IsValidFieldOfType(new CleanupDelegateFullName());
+      return element.IsValidFieldOfType(new SetupDelegateAttributeFullName()) ||
+             element.IsValidFieldOfType(new ActDelegateAttributeFullName()) ||
+             element.IsValidFieldOfType(new CleanupDelegateAttributeFullName());
     }
 
     public static bool IsField(this IDeclaredElement element)
@@ -80,7 +80,7 @@ namespace Machine.Specifications.ReSharperRunner
 
     public static bool IsBehavior(this IDeclaredElement element)
     {
-      return element.IsValidFieldOfType(new BehavesLikeDelegateFullName()) &&
+      return element.IsValidFieldOfType(new BehaviorDelegateAttributeFullName()) &&
              element.GetFirstGenericArgument() != null &&
              element.GetFirstGenericArgument().GetFirstGenericArgument() == null &&
              element.GetFirstGenericArgument().HasAttributeInstance(
@@ -220,7 +220,7 @@ namespace Machine.Specifications.ReSharperRunner
         return false;
       }
 
-      return fieldType.GetClrName().FullName == typefullName;
+      return fieldType.GetTypeElement().HasAttributeInstance(new ClrTypeName(typefullName), false);
     }
 
     static IDeclaredType GetValidatedFieldType(this IDeclaredElement element)

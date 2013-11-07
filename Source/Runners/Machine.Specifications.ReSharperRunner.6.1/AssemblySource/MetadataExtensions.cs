@@ -23,13 +23,13 @@
 
         public static IEnumerable<IMetadataField> GetSpecifications(this IMetadataTypeInfo type)
         {
-            var privateFieldsOfType = type.GetInstanceFieldsOfType(new ItDelegateFullName());
+            var privateFieldsOfType = type.GetInstanceFieldsOfType(new AssertDelegateAttributeFullName());
             return privateFieldsOfType;
         }
 
         public static IEnumerable<IMetadataField> GetBehaviors(this IMetadataTypeInfo type)
         {
-            IEnumerable<IMetadataField> behaviorFields = type.GetInstanceFieldsOfType(new BehavesLikeDelegateFullName());
+            IEnumerable<IMetadataField> behaviorFields = type.GetInstanceFieldsOfType(new BehaviorDelegateAttributeFullName());
             foreach (IMetadataField field in behaviorFields)
             {
                 if (field.GetFirstGenericArgument().HasCustomAttribute(new BehaviorAttributeFullName()))
@@ -121,7 +121,7 @@
         {
             var metadataFields = type.GetInstanceFields();
             var fields = metadataFields.Where(x => x.Type is IMetadataClassType);
-            return fields.Where(x => (((IMetadataClassType)x.Type).Type.FullyQualifiedName == fullyQualifiedName));
+            return fields.Where(x => (((IMetadataClassType)x.Type).Type.HasCustomAttribute(fullyQualifiedName)));
         }
 
         private static IEnumerable<IMetadataField> GetInstanceFields(this IMetadataTypeInfo type)
