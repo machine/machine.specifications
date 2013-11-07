@@ -2,6 +2,7 @@
 
 namespace Machine.Specifications
 {
+  [ObsoleteEx(Message = "DelegateUsageAttribute should be replaced by SetupDelegateAttribute, ActDelegateAttribute, BehaviorDelegateAttribute, AssertDelegateAttribute or CleanupDelegateAttribute accordingly.", RemoveInVersion = "0.8", TreatAsErrorFromVersion = "0.7")]
   [AttributeUsage(AttributeTargets.Delegate, Inherited = false, AllowMultiple = false)]
   public class DelegateUsageAttribute : Attribute
   {
