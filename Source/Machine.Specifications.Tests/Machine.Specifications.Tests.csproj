@@ -55,15 +55,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FakeItEasy">
-      <HintPath>..\..\packages\FakeItEasy.1.14.0\lib\net35\FakeItEasy.dll</HintPath>
-    </Reference>
-    <Reference Include="FluentAssertions">
-      <HintPath>..\..\packages\FluentAssertions.2.1.0.0\lib\net35\FluentAssertions.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.Platform.ReSharper.Metadata">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\JetBrains\ReSharper\v8.0\Bin\JetBrains.Platform.ReSharper.Metadata.dll</HintPath>
-    </Reference>
     <Reference Include="Machine.Container, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5c474de7a495cff1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\Machine\Machine.Container.dll</HintPath>
