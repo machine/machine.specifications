@@ -1,6 +1,7 @@
 using Machine.Specifications.Model;
 using NUnit.Framework;
 
+
 namespace Machine.Specifications.Factories
 {
   [TestFixture]

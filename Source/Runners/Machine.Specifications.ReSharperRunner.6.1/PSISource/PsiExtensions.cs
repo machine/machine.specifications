@@ -1,19 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using JetBrains.Application.Progress;
-using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Search;
-using JetBrains.ReSharper.Psi.Tree;
-
-using CLRTypeName = JetBrains.ReSharper.Psi.ClrTypeName;
-
-using JetBrains.ReSharper.Psi.Util;
-
 namespace Machine.Specifications.ReSharperRunner
 {
-  internal static partial class PsiExtensions
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using JetBrains.Application.Progress;
+    using JetBrains.ReSharper.Psi;
+    using JetBrains.ReSharper.Psi.Search;
+    using JetBrains.ReSharper.Psi.Tree;
+
+    using Machine.Specifications.Sdk;
+
+    using CLRTypeName = JetBrains.ReSharper.Psi.ClrTypeName;
+
+  internal static class PsiExtensions
   {
     public static bool IsContext(this IDeclaredElement element)
     {
@@ -31,7 +31,7 @@ namespace Machine.Specifications.ReSharperRunner
 
       return clazz.IsValid() &&
              !clazz.IsAbstract &&
-             !clazz.HasAttributeInstance(new CLRTypeName(typeof(BehaviorsAttribute).FullName), false) &&
+             !clazz.HasAttributeInstance(new CLRTypeName(new BehaviorAttributeFullName()), false) &&
              fields.Any(x => IsSpecification(x) || IsBehavior(x));
     }
     
@@ -45,21 +45,21 @@ namespace Machine.Specifications.ReSharperRunner
 
       return clazz.IsValid() &&
              !clazz.IsAbstract &&
-             clazz.HasAttributeInstance(new CLRTypeName(typeof(BehaviorsAttribute).FullName), false) &&
+             clazz.HasAttributeInstance(new CLRTypeName(new BehaviorAttributeFullName()), false) &&
              clazz.GetFirstGenericArgument() == null &&
              clazz.Fields.Any(IsSpecification);
     }
 
     public static bool IsSpecification(this IDeclaredElement element)
     {
-      return element.IsValidFieldOfType(typeof(It));
+      return element.IsValidFieldOfType(new AssertDelegateAttributeFullName());
     }
 
     public static bool IsSupportingField(this IDeclaredElement element)
     {
-      return element.IsValidFieldOfType(typeof(Establish)) ||
-             element.IsValidFieldOfType(typeof(Because)) ||
-             element.IsValidFieldOfType(typeof(Cleanup));
+      return element.IsValidFieldOfType(new SetupDelegateAttributeFullName()) ||
+             element.IsValidFieldOfType(new ActDelegateAttributeFullName()) ||
+             element.IsValidFieldOfType(new CleanupDelegateAttributeFullName());
     }
 
     public static bool IsField(this IDeclaredElement element)
@@ -80,11 +80,11 @@ namespace Machine.Specifications.ReSharperRunner
 
     public static bool IsBehavior(this IDeclaredElement element)
     {
-      return element.IsValidFieldOfType(typeof(Behaves_like<>)) &&
+      return element.IsValidFieldOfType(new BehaviorDelegateAttributeFullName()) &&
              element.GetFirstGenericArgument() != null &&
              element.GetFirstGenericArgument().GetFirstGenericArgument() == null &&
              element.GetFirstGenericArgument().HasAttributeInstance(
-               new CLRTypeName(typeof(BehaviorsAttribute).FullName), false);
+               new CLRTypeName(new BehaviorAttributeFullName()), false);
     }
 
     public static IClass GetFirstGenericArgument(this IDeclaredElement element)
@@ -126,7 +126,7 @@ namespace Machine.Specifications.ReSharperRunner
         hasInitializer = initializer.Initializer != null;
       }
 
-      return !hasInitializer || attributeOwner.HasAttributeInstance(new CLRTypeName(typeof(IgnoreAttribute).FullName), false);
+      return !hasInitializer || attributeOwner.HasAttributeInstance(new CLRTypeName(new IgnoreAttributeFullName()), false);
     }
 
     public static string GetSubjectString(this IAttributesOwner type)
@@ -184,19 +184,19 @@ namespace Machine.Specifications.ReSharperRunner
 #if !RESHARPER_8
       return (from a in type.GetAttributeInstances(true)
               let h = (new[] { a.AttributeType}).Concat(a.AttributeType.GetSuperTypes())
-              where h.Any(t => t.GetClrName().FullName == typeof(SubjectAttribute).FullName)
+              where h.Any(t => t.GetClrName().FullName == new SubjectAttributeFullName())
               select a).FirstOrDefault();
 #else
       return (from a in type.GetAttributeInstances(true)
               let h = (new[] { a.GetAttributeType() }).Concat(a.GetAttributeType().GetSuperTypes())
-              where h.Any(t => t.GetClrName().FullName == typeof(SubjectAttribute).FullName)
+              where h.Any(t => t.GetClrName().FullName == new SubjectAttributeFullName())
               select a).FirstOrDefault();
 #endif
     }
 
     public static ICollection<string> GetTags(this IAttributesOwner type)
     {
-      return type.GetAttributeInstances(new CLRTypeName(typeof(TagsAttribute).FullName), true)
+      return type.GetAttributeInstances(new CLRTypeName(new TagsAttributeFullName()), true)
         .SelectMany(x => x.PositionParameters())
         .SelectMany(x =>
         {
@@ -212,7 +212,7 @@ namespace Machine.Specifications.ReSharperRunner
         .ToList();
     }
 
-    static bool IsValidFieldOfType(this IDeclaredElement element, Type type)
+    static bool IsValidFieldOfType(this IDeclaredElement element, string typefullName)
     {
       IDeclaredType fieldType = element.GetValidatedFieldType();
       if (fieldType == null)
@@ -220,7 +220,7 @@ namespace Machine.Specifications.ReSharperRunner
         return false;
       }
 
-      return fieldType.GetClrName().FullName == type.FullName;
+      return fieldType.GetTypeElement().HasAttributeInstance(new ClrTypeName(typefullName), false);
     }
 
     static IDeclaredType GetValidatedFieldType(this IDeclaredElement element)

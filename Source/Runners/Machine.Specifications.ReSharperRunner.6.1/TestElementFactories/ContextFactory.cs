@@ -8,7 +8,6 @@ using JetBrains.ReSharper.Psi.Impl.Reflection2;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.ReSharper.UnitTestFramework.Elements;
-
 using Machine.Specifications.ReSharperRunner.Presentation;
 using Machine.Specifications.ReSharperRunner.Shims;
 
@@ -57,39 +56,27 @@ namespace Machine.Specifications.ReSharperRunner.Factories
       return context;
     }
 
+      //Todo either IMetadataTypeInfo or ITypeInfo
     public ContextElement CreateContext(IProject project, string assemblyPath, IMetadataTypeInfo type)
     {
-      return GetOrCreateContext(assemblyPath,
-                                project,
-                                _reflectionTypeNameCache.GetClrName(type),
-                                type.GetSubjectString(),
+        return this.GetOrCreateContext(assemblyPath, project, _reflectionTypeNameCache.GetClrName(type), type.GetSubjectString(),
                                 type.GetTags(), type.IsIgnored());
     }
 
-    public ContextElement GetOrCreateContext(string assemblyPath,
-                                             IProject project,
-                                             IClrTypeName typeName,
-                                             string subject,
-                                             ICollection<string> tags,
-                                             bool isIgnored)
-    {
-      var id = ContextElement.CreateId(subject, typeName.FullName, tags);
-      var contextElement = _manager.GetElementById(project, id) as ContextElement;
-      if (contextElement != null)
-      {
-        contextElement.State = UnitTestElementState.Valid;
-        return contextElement;
-      }
 
-      return new ContextElement(_provider,
-                                _psiModuleManager,
-                                _cacheManager,
-                                new ProjectModelElementEnvoy(project),
-                                typeName,
-                                assemblyPath,
-                                subject,
-                                tags,
-                                isIgnored);
+    public ContextElement GetOrCreateContext(string assemblyPath, IProject project, IClrTypeName typeName, string subject, 
+        ICollection<string> tags, bool isIgnored)
+    {
+        var id = ContextElement.CreateId(subject, typeName.FullName, tags);
+        //if tests already exists in resharper, do not create new test class
+        var contextElement = _manager.GetElementById(project, id) as ContextElement; 
+        if (contextElement != null)
+        {
+            contextElement.State = UnitTestElementState.Valid;
+            return contextElement;
+        }
+        return new ContextElement(_provider, _psiModuleManager, _cacheManager, new ProjectModelElementEnvoy(project), typeName,
+                                    assemblyPath, subject, tags, isIgnored);
     }
 
     public void UpdateChildState(ITypeElement type)
