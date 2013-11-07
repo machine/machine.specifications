@@ -3,7 +3,7 @@
 namespace Machine.Specifications
 {
   [AttributeUsage(AttributeTargets.Delegate, Inherited = false, AllowMultiple = false)]
-  public sealed class DelegateUsageAttribute : Attribute
+  public class DelegateUsageAttribute : Attribute
   {
     public DelegateUsage DelegateUsage
     {
@@ -24,5 +24,45 @@ namespace Machine.Specifications
     Behavior = 2,
     Assert = 3,
     Cleanup = 4
+  }
+
+  [AttributeUsage(AttributeTargets.Delegate, Inherited = false, AllowMultiple = false)]
+  public sealed class SetupDelegateAttribute : DelegateUsageAttribute
+  {
+    public SetupDelegateAttribute() : base(DelegateUsage.Setup)
+    {
+    }
+  }
+
+  [AttributeUsage(AttributeTargets.Delegate, Inherited = false, AllowMultiple = false)]
+  public sealed class ActDelegateAttribute : DelegateUsageAttribute
+  {
+    public ActDelegateAttribute() : base(DelegateUsage.Act)
+    {
+    }
+  }
+
+  [AttributeUsage(AttributeTargets.Delegate, Inherited = false, AllowMultiple = false)]
+  public sealed class BehaviorDelegateAttribute : DelegateUsageAttribute
+  {
+    public BehaviorDelegateAttribute() : base(DelegateUsage.Behavior)
+    {
+    }
+  }
+
+  [AttributeUsage(AttributeTargets.Delegate, Inherited = false, AllowMultiple = false)]
+  public sealed class AssertDelegateAttribute : DelegateUsageAttribute
+  {
+    public AssertDelegateAttribute() : base(DelegateUsage.Assert)
+    {
+    }
+  }
+
+  [AttributeUsage(AttributeTargets.Delegate, Inherited = false, AllowMultiple = false)]
+  public sealed class CleanupDelegateAttribute : DelegateUsageAttribute
+  {
+    public CleanupDelegateAttribute() : base(DelegateUsage.Cleanup)
+    {
+    }
   }
 }

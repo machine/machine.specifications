@@ -1,20 +1,16 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Machine.Specifications
 {
-  [DelegateUsage(DelegateUsage.Setup)]
+  [SetupDelegate]
   public delegate void Establish();
 
-  [DelegateUsage(DelegateUsage.Act)]
+  [ActDelegate]
   public delegate void Because();
 
-  [DelegateUsage(DelegateUsage.Assert)]
+  [AssertDelegate]
   public delegate void It();
-  [DelegateUsage(DelegateUsage.Behavior)]
+  [BehaviorDelegate]
   public delegate void Behaves_like<TBehavior>();
 
-  [DelegateUsage(DelegateUsage.Cleanup)]
+  [CleanupDelegate]
   public delegate void Cleanup();
 }
