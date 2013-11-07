@@ -1,6 +1,7 @@
 Machine.Specifications 
 -----------------------------
 - Should Extension Methods are moved into own assembly which simplifies things for people using other assertion libraries.
+- DelegateUsageAttribute is deprecated and will be remove in next version use new *DelegateAttribute types for custom delegates
 
 Machine.Specifications 0.5.18
 -----------------------------
