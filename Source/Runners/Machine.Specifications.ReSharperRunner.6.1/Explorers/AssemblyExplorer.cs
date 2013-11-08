@@ -20,34 +20,30 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
       _factories = factories;
     }
 
-    public void Explore(IProject project, IMetadataAssembly assembly, UnitTestElementConsumer consumer)
+    public void Explore(IProject project, IMetadataAssembly assembly, UnitTestElementConsumer consumer, IMetadataTypeInfo metadataTypeInfo)
     {
-      if (!assembly.ReferencedAssembliesNames.Any(x => String.Equals(
-                                                                     x.Name,
-                                                                     typeof(It).Assembly.GetName().Name,
-                                                                     StringComparison.InvariantCultureIgnoreCase)))
+      if (!metadataTypeInfo.IsContext())
       {
         return;
       }
 
-      assembly.GetTypes().Where(type => type.IsContext()).ForEach(type =>
-      {
-        var contextElement = _factories.Contexts.CreateContext(project,assembly.Location.FullPath, type);
-        consumer(contextElement);
+      var contextElement = _factories.Contexts.CreateContext(project, assembly.Location.FullPath, metadataTypeInfo);
 
-        type
-          .GetSpecifications()
+      consumer(contextElement);
+
+      metadataTypeInfo.GetSpecifications()
           .ForEach(x => consumer(_factories.ContextSpecifications.CreateContextSpecification(contextElement, x)));
 
-        type.GetBehaviors().ForEach(x =>
-        {
-          var behaviorElement = _factories.Behaviors.CreateBehavior(contextElement, x);
-          consumer(behaviorElement);
 
-          _factories.BehaviorSpecifications
+      metadataTypeInfo.GetBehaviors().ForEach(x =>
+      {
+        var behaviorElement = _factories.Behaviors.CreateBehavior(contextElement, x);
+        consumer(behaviorElement);
+
+
+        _factories.BehaviorSpecifications
                     .CreateBehaviorSpecificationsFromBehavior(behaviorElement, x)
                     .ForEach(y => consumer(y));
-        });
       });
     }
   }
