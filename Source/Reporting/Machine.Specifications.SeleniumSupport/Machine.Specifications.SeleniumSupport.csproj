@@ -60,8 +60,7 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="ThoughtWorks.Selenium.Core">
-      <HintPath>..\..\..\packages\Selenium.RC.2.4.1\lib\ThoughtWorks.Selenium.Core.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\packages\Selenium.RC.2.37.0\lib\net35\ThoughtWorks.Selenium.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
