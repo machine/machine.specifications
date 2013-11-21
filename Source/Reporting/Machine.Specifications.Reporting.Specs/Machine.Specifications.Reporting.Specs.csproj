@@ -89,11 +89,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Examples\Example.Random\Example.Random.csproj">
       <Project>{1295C389-FCE4-4425-93E4-E4AE239B3E35}</Project>
-      <Name>Machine.Specifications.Example.Random</Name>
+      <Name>Example.Random</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Examples\Example\Example.csproj">
       <Project>{2C28C643-31A2-44CA-B762-953A963F6F61}</Project>
-      <Name>Machine.Specifications.Example</Name>
+      <Name>Example</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Machine.Specifications.Should\Machine.Specifications.Should.csproj">
       <Project>{4b86a9fc-4d07-40e3-aeb6-2898b5292972}</Project>

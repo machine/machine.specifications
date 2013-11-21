@@ -72,7 +72,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Example.BindingFailure.Ref\Example.BindingFailure.Ref.csproj">
       <Project>{2C33D385-9024-4346-8839-93CFF1AF227C}</Project>
-      <Name>Machine.Specifications.BindingFailure.Ref</Name>
+      <Name>Example.BindingFailure.Ref</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Machine.Specifications\Machine.Specifications.csproj">
       <Project>{CCD02629-1262-4F78-9E9F-AC97B942D0E7}</Project>
