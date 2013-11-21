@@ -2,6 +2,8 @@
 
 Machine.Specifications (MSpec) is a [context/specification][5] framework that removes language noise and simplifies tests. All it asks is that you accept the `= () =>`. Keep up with the [latest news and discussions][8] or follow the maintainer, [@agross](https://twitter.com/agross).
 
+![NDepend supports the Machine.Specifications project](http://www.ndepend.com/res/PoweredByNDepend.png)
+
 # Installation
 
 You can download the [unsigned binaries][1] (<strong>recommended</strong>) or the [signed binaries][2] directly from the [TeamCity server][3]. But, we recommended installing [the NuGet package][4]. Install on the command line from your solution directory:
