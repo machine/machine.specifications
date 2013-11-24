@@ -4,7 +4,7 @@ using System.Xml;
 namespace Machine.Specifications.ReSharperRunner.Tasks
 {
   [Serializable]
-  class RunAssemblyTask : Task, IEquatable<RunAssemblyTask>
+  public class RunAssemblyTask : Task, IEquatable<RunAssemblyTask>
   {
     public RunAssemblyTask(XmlElement element) : base(element)
     {
