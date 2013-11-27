@@ -83,11 +83,11 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Examples\Example\Example.csproj">
       <Project>{2C28C643-31A2-44CA-B762-953A963F6F61}</Project>
-      <Name>Machine.Specifications.Example</Name>
+      <Name>Example</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Examples\Example.Failing\Example.Failing.csproj">
       <Project>{89ECD0D1-6CC4-4319-B1B2-389E0B48F40D}</Project>
-      <Name>Machine.Specifications.FailingExample</Name>
+      <Name>Example.Failing</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Machine.Specifications\Machine.Specifications.csproj">
       <Project>{CCD02629-1262-4F78-9E9F-AC97B942D0E7}</Project>

@@ -18,3 +18,5 @@ NDependOut
 /packages
 install.ps1
 mspec.nuspec
+
+Thumbs.db

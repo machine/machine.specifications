@@ -4,7 +4,7 @@ using System.Xml;
 namespace Machine.Specifications.ReSharperRunner.Tasks
 {
   [Serializable]
-  class BehaviorSpecificationTask : Task, IEquatable<BehaviorSpecificationTask>
+  public class BehaviorSpecificationTask : Task, IEquatable<BehaviorSpecificationTask>
   {
     public BehaviorSpecificationTask(XmlElement element) : base(element)
     {
