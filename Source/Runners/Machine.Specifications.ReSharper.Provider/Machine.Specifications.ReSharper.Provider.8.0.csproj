@@ -167,7 +167,8 @@
     <Compile Include="..\Machine.Specifications.ReSharperRunner.8.0\Shims\Psi.cs">
       <Link>Shims\Psi.cs</Link>
     </Compile>
-    <Compile Include="AssemblyRegistrar.cs" />
+    <Compile Include="ExternalAnnotations\AnnotationsLoader.cs" />
+    <Compile Include="RunnerAssemblyResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Machine.Specifications\Machine.Specifications.csproj">
@@ -184,9 +185,19 @@
       <Link>Properties\Resources.resx</Link>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="ExternalAnnotations\Machine.Specifications.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <PropertyGroup>
     <ReSharperSdkTargets Condition=" '$(ReSharperSdkTargets)' == '' ">$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v8.0</ReSharperSdkTargets>
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ReSharperSdkTargets)\Plugin.Targets" />
+  <PropertyGroup>
+    <PostBuildEvent>mkdir $(TargetDir)runner\
+move /Y $(TargetDir)Machine.Specifications.ReSharper.Runner.8.0.* $(TargetDir)runner\
+move /Y $(TargetDir)Castle.Core.* $(TargetDir)runner\</PostBuildEvent>
+  </PropertyGroup>
 </Project>

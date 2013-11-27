@@ -29,6 +29,10 @@ namespace Machine.Specifications.ReSharper.Runner
             _runAssemblyTask = runAssemblyTask;
         }
 
+        // TODO: There have been some signature changes through the ages
+        // We might get called with different types (although unlikely, and it was 5 years ago)
+        // OnSpecificationEnd(..., Result) was SpecificationResult (27/09/2008 - 4e0f9a08d4bde7f3b7045e9cf503a73ff9406ad1)
+        // AssemblyInfo was Assembly, ContextInfo was Model.Context, SpecificationInfo was Model.Specification (23/09/2008 - aa9621b707503a0d7bdaec6870aad5a952fee6c3)
         protected override void PerformProceed(IInvocation invocation)
         {
             switch (invocation.Method.Name)

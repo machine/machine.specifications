@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<assembly name="Machine.Specifications">
+  <!-- A small hack to support older versions. Current Machine.Specifications.dll looks for
+       delegates with these attributes, and older versions don't provide them -->
+  <member name="T:Machine.Specifications.Establish">
+    <attribute ctor="M:Machine.Specifications.SetupDelegateAttribute.#ctor"/>
+  </member>
+  <member name="T:Machine.Specifications.Because">
+    <attribute ctor="M:Machine.Specifications.ActDelegateAttribute.#ctor"/>
+  </member>
+  <member name="T:Machine.Specifications.It">
+    <attribute ctor="M:Machine.Specifications.AssertDelegateAttribute.#ctor"/>
+  </member>
+  <member name="T:Machine.Specifications.Behaves_like{``0}">
+    <attribute ctor="M:Machine.Specifications.BehaviorDelegateAttribute.#ctor"/>
+  </member>
+  <member name="T:Machine.Specifications.Cleanup">
+    <attribute ctor="M:Machine.Specifications.CleanupDelegateAttribute.#ctor"/>
+  </member>
+</assembly>

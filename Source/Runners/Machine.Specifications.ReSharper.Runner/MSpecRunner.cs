@@ -14,24 +14,65 @@ namespace Machine.Specifications.ReSharperRunner.Runners
     {
         public const string RunnerId = "Machine.Specifications";
 
+        Assembly _mspecAssembly;
+
         public RecursiveMSpecTaskRunner(IRemoteTaskServer server)
             : base(server)
         {
+            AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
+        }
+
+        Assembly OnAssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            // Remoting is weird (tm). We load the project's Machine.Specifications.dll in
+            // the main AppDomain, then tell it do stuff in a new AppDomain that it creates.
+            // It reports progress back via a remoting, MarshalByRefObject interface. Except,
+            // when the message gets back to the main AppDomain, the de-serialiser tries to
+            // resolve the Machine.Specifications.dll assembly again, even though it's loaded
+            // into memory. I don't know why. It does this with the full assembly name
+            // ("Machine.Specifications, Version=0.4.1.0, ...") and for some reason, that
+            // doesn't resolve automatically. Again, I don't know why. Fortunately, we can
+            // hook the AssemblyResolve event, and if anyone asks for the mspec dll we have
+            // loaded, give it to 'em
+            if (_mspecAssembly != null && args.Name == _mspecAssembly.FullName)
+                return _mspecAssembly;
+            return null;
         }
 
         public override void ExecuteRecursive(TaskExecutionNode node)
         {
             var task = (RunAssemblyTask) node.RemoteTask;
 
+            var previousCurrentDirectory = Directory.GetCurrentDirectory();
+            try
+            {
+                var directoryName = Path.GetDirectoryName(task.AssemblyLocation);
+                if (!string.IsNullOrEmpty(directoryName))
+                    Directory.SetCurrentDirectory(directoryName);
+
+                Execute(node, task);
+            }
+            finally
+            {
+                Directory.SetCurrentDirectory(previousCurrentDirectory);
+            }
+        }
+
+        void Execute(TaskExecutionNode node, RunAssemblyTask task)
+        {
             var contextAssembly = LoadContextAssembly(task);
             if (contextAssembly == null)
+            {
                 return;
+            }
 
-            var mspecAssembly = LoadMSpecAssembly(Path.GetDirectoryName(task.AssemblyLocation));
-            if (mspecAssembly == null)
+            _mspecAssembly = LoadMSpecAssembly(Path.GetDirectoryName(task.AssemblyLocation));
+            if (_mspecAssembly == null)
+            {
                 return;
+            }
 
-            var factory = new RunnerFactory(Server, mspecAssembly, node);
+            var factory = new RunnerFactory(Server, _mspecAssembly, node);
             var runner = factory.CreateRunner();
 
             try
@@ -111,7 +152,11 @@ namespace Machine.Specifications.ReSharperRunner.Runners
         Assembly LoadMSpecAssembly(string assemblyLocation)
         {
             // TODO: Error handling
-            return Assembly.LoadFrom(Path.Combine(assemblyLocation, "Machine.Specifications.dll"));
+            // Load context doesn't work. Neither does LoadFrom or LoadFile
+            var assemblyFile = Path.Combine(assemblyLocation, "Machine.Specifications.dll");
+            var assemblyName = AssemblyName.GetAssemblyName(assemblyFile);
+            assemblyName.CodeBase = new Uri(assemblyFile).AbsoluteUri;
+            return Assembly.Load(assemblyName);
         }
 
         void RunContext(IReSharperSpecificationRunner runner, Assembly contextAssembly, TaskExecutionNode node)
