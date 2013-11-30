@@ -128,6 +128,12 @@ namespace :build do
     end
 
     begin
+      nopts = %W(
+        Tools/Nuget/NuGet.exe restore ./Machine.Specifications.sln
+      )
+
+      sh(*nopts)
+	
       csprojs = FileList.new('Source/**/*.csproj').map do |project|
         patch project, { :SignAssembly => configatron.sign_assembly }
       end
@@ -268,7 +274,7 @@ namespace :package do
     dir = dir.gsub(%r|/|, '\\').gsub(%r|\\\\|, '\\')
 
     opts = %W(
-      .nuget/NuGet.exe pack mspec.nuspec
+      Tools/Nuget/NuGet.exe pack mspec.nuspec
       -BasePath #{dir}
       -OutputDirectory #{configatron.nuget.package.dirname}
       )
@@ -299,7 +305,7 @@ namespace :package do
       raise "NuGet access key is missing, cannot publish" if configatron.nuget.key.nil?
 
       opts = %W(
-        .nuget/NuGet.exe push
+        Tools/Nuget/NuGet.exe push
         #{configatron.nuget.package}
         #{configatron.nuget.key}
       ) << { :verbose => false }
