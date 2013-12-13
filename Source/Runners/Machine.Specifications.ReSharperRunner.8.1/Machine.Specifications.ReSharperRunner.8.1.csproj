@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\..\packages\JetBrains.ReSharper.SDK.Tests.8.1.231-EAP\build\JetBrains.ReSharper.SDK.Tests.Props" Condition="Exists('..\..\..\packages\JetBrains.ReSharper.SDK.Tests.8.1.231-EAP\build\JetBrains.ReSharper.SDK.Tests.Props')" />
-  <Import Project="..\..\..\packages\JetBrains.ReSharper.SDK.8.1.411-EAP\build\JetBrains.ReSharper.SDK.Props" Condition="Exists('..\..\..\packages\JetBrains.ReSharper.SDK.8.1.411-EAP\build\JetBrains.ReSharper.SDK.Props')" />
+  <Import Project="..\..\..\packages\JetBrains.ReSharper.SDK.Tests.8.1.555\build\JetBrains.ReSharper.SDK.Tests.Props" Condition="Exists('..\..\..\packages\JetBrains.ReSharper.SDK.Tests.8.1.555\build\JetBrains.ReSharper.SDK.Tests.Props')" />
+  <Import Project="..\..\..\packages\JetBrains.ReSharper.SDK.8.1.555\build\JetBrains.ReSharper.SDK.Props" Condition="Exists('..\..\..\packages\JetBrains.ReSharper.SDK.8.1.555\build\JetBrains.ReSharper.SDK.Props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -224,7 +224,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Import Project="..\..\..\packages\JetBrains.ReSharper.SDK.8.1.411-EAP\build\JetBrains.ReSharper.SDK.Targets" Condition="Exists('..\..\..\packages\JetBrains.ReSharper.SDK.8.1.411-EAP\build\JetBrains.ReSharper.SDK.Targets')" />
+  <Import Project="..\..\..\packages\JetBrains.ReSharper.SDK.8.1.555\build\JetBrains.ReSharper.SDK.Targets" Condition="Exists('..\..\..\packages\JetBrains.ReSharper.SDK.8.1.555\build\JetBrains.ReSharper.SDK.Targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
