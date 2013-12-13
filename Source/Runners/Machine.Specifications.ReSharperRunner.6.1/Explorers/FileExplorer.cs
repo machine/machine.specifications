@@ -18,14 +18,14 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
     readonly UnitTestElementLocationConsumer _consumer;
     readonly IEnumerable<IElementHandler> _elementHandlers;
     readonly IFile _file;
-    readonly CheckForInterrupt _interrupted;
+    readonly Func<bool> _interrupted;
     readonly string _assemblyPath;
 
     public FileExplorer(MSpecUnitTestProvider provider,
                         ElementFactories factories,
                         IFile file,
                         UnitTestElementLocationConsumer consumer,
-                        CheckForInterrupt interrupted)
+                        Func<bool> interrupted)
     {
       if (file == null)
       {

@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{85BC2C4A-493A-476C-971E-BE9CE51ECF5D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runners", "Runners", "{3D475ECE-C800-4087-8FC5-B9A13E76ABC4}"
@@ -114,6 +112,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Should.Specs", "Source\Machine.Specifications.Should.Specs\Machine.Specifications.Should.Specs.csproj", "{B7E595D5-A988-4616-8548-87D3D691D28F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NewCustomDelegates", "Source\Examples\Example.NewCustomDelegates\Example.NewCustomDelegates.csproj", "{844788DF-F12F-462F-BDE8-C46F8FFECD12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.8.1", "Source\Runners\Machine.Specifications.ReSharperRunner.8.1\Machine.Specifications.ReSharperRunner.8.1.csproj", "{69C6A07F-2EAD-474C-90A6-3F1DA5A05460}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -289,6 +289,10 @@ Global
 		{844788DF-F12F-462F-BDE8-C46F8FFECD12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{844788DF-F12F-462F-BDE8-C46F8FFECD12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{844788DF-F12F-462F-BDE8-C46F8FFECD12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69C6A07F-2EAD-474C-90A6-3F1DA5A05460}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69C6A07F-2EAD-474C-90A6-3F1DA5A05460}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69C6A07F-2EAD-474C-90A6-3F1DA5A05460}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69C6A07F-2EAD-474C-90A6-3F1DA5A05460}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -324,6 +328,7 @@ Global
 		{B88940C4-9552-4C47-85F2-33E820CD9FD1} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
 		{D94FE7E7-C389-4698-8633-87C75F5FBD96} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
 		{DFD90CB9-4192-4677-9AAC-3277C65B878E} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
+		{69C6A07F-2EAD-474C-90A6-3F1DA5A05460} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
 		{490496AF-BEA5-4454-88B0-F73C62C22987} = {1F11BF5C-810C-4FC8-AFF4-7E416A867F39}
 		{97BD55A5-03CA-4E8E-8AE0-55722C39E0AF} = {1F11BF5C-810C-4FC8-AFF4-7E416A867F39}
 		{50E85B88-7E0C-4CE7-BD8D-BA9C618A6844} = {1F11BF5C-810C-4FC8-AFF4-7E416A867F39}
