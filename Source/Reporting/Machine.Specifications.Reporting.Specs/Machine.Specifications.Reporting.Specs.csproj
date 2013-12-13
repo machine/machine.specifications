@@ -144,5 +144,4 @@
 copy /y "$(ProjectDir)..\Machine.Specifications.Reporting\$(OutDir)..\Machine.Specifications.Reporting.Templates.dll" "$(TargetDir)"
 if errorlevel 1 copy /y "$(ProjectDir)..\Machine.Specifications.Reporting\$(OutDir)Machine.Specifications.Reporting.Templates.dll" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>
