@@ -12,11 +12,6 @@ task :configure do
   target = ENV['target'] || 'Debug'
 
   build_config = {
-    :build => {
-      :number => ENV['BUILD_NUMBER'],
-      :sha => ENV['BUILD_VCS_NUMBER'] || 'no SHA',
-      :prerelease => ENV.include?('PRERELEASE')
-    },
     :target => target,
     :sign_assembly => ENV.include?('SIGN_ASSEMBLY'),
     :out_dir => "Build/#{target}/",
