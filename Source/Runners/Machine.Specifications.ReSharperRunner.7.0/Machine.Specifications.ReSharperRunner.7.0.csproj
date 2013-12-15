@@ -36,71 +36,54 @@
   <ItemGroup>
     <Reference Include="JetBrains.Platform.ReSharper.ComponentModel">
       <HintPath>..\..\..\Libraries\ReSharper\7.0\JetBrains.Platform.ReSharper.ComponentModel.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.DocumentManager">
       <HintPath>..\..\..\Libraries\ReSharper\7.0\JetBrains.Platform.ReSharper.DocumentManager.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.DocumentModel">
       <HintPath>..\..\..\Libraries\ReSharper\7.0\JetBrains.Platform.ReSharper.DocumentModel.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.IDE">
       <HintPath>..\..\..\Libraries\ReSharper\7.0\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.Metadata">
       <HintPath>..\..\..\Libraries\ReSharper\7.0\JetBrains.Platform.ReSharper.Metadata.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.ProjectModel">
       <HintPath>..\..\..\Libraries\ReSharper\7.0\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.Shell">
       <HintPath>..\..\..\Libraries\ReSharper\7.0\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.UI">
       <HintPath>..\..\..\Libraries\ReSharper\7.0\JetBrains.Platform.ReSharper.UI.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.Util">
       <HintPath>..\..\..\Libraries\ReSharper\7.0\JetBrains.Platform.ReSharper.Util.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Feature.Services">
       <HintPath>..\..\..\Libraries\ReSharper\7.0\JetBrains.ReSharper.Feature.Services.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Features.Common">
       <HintPath>..\..\..\Libraries\ReSharper\7.0\JetBrains.ReSharper.Features.Common.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Features.Shared">
       <HintPath>..\..\..\Libraries\ReSharper\7.0\JetBrains.ReSharper.Features.Shared.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi">
       <HintPath>..\..\..\Libraries\ReSharper\7.0\JetBrains.ReSharper.Psi.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Resources">
       <HintPath>..\..\..\Libraries\ReSharper\7.0\JetBrains.ReSharper.Resources.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.TaskRunnerFramework">
       <HintPath>..\..\..\Libraries\ReSharper\7.0\JetBrains.ReSharper.TaskRunnerFramework.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.UnitTestExplorer">
       <HintPath>..\..\..\Libraries\ReSharper\7.0\JetBrains.ReSharper.UnitTestExplorer.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.UnitTestFramework">
       <HintPath>..\..\..\Libraries\ReSharper\7.0\JetBrains.ReSharper.UnitTestFramework.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -267,9 +250,6 @@
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\VersionInfo.cs">
-      <Link>Properties\VersionInfo.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>
       </SubType>
@@ -306,6 +286,8 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\Tools\Ripple\RippleRestoreTask.targets" />
+  <Import Project="$(SolutionDir)\Tools\GitFlowVersion\build\GitFlowVersionTask.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

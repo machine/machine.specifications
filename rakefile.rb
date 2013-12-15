@@ -13,7 +13,6 @@ task :configure do
 
   build_config = {
     :build => {
-      :base => File.open('VERSION') { |f| f.readline }.strip,
       :number => ENV['BUILD_NUMBER'],
       :sha => ENV['BUILD_VCS_NUMBER'] || 'no SHA',
       :prerelease => ENV.include?('PRERELEASE')
@@ -31,24 +30,11 @@ task :configure do
   configatron.project = Configatron::Delayed.new do
     "#{project}#{'-Signed' if configatron.sign_assembly}"
   end
-  configatron.nuget.package = Configatron::Delayed.new do
-    "Distribution/#{configatron.project}.#{configatron.version.package}.nupkg"
-  end
-  configatron.zip.package = Configatron::Delayed.new do
-    "Distribution/#{configatron.project}-#{configatron.target}.zip"
-  end
-
-  configatron.version.beta = Configatron::Delayed.new do
-    "-beta#{"%02d" % configatron.build.number}" if configatron.build.prerelease || nil
+  configatron.distribution.dir = Configatron::Delayed.new do
+    "Distribution/"
   end
   configatron.version.full = Configatron::Delayed.new do
-    "#{configatron.build.base}#{configatron.version.beta}-#{configatron.build.sha[0..6]}"
-  end
-  configatron.version.package = Configatron::Delayed.new do
-    "#{configatron.build.base}#{configatron.version.beta}"
-  end
-  configatron.version.compatible = Configatron::Delayed.new do
-    "#{configatron.build.base}.0"
+    open("|Tools/GitFlowVersion/GitFlowVersion.exe").read().scan(/NugetVersion":"(.*)"/)[0][0][0,20]
   end
 
   configatron.configure_from_hash build_config
@@ -75,20 +61,8 @@ CLEAN.map! do |f|
 end
 
 namespace :generate do
-  desc "Generate embeddable version information"
-  task :version do
-    next if configatron.build.number.nil?
-
-    puts "##teamcity[buildNumber '#{configatron.version.full}']"
-
-    asmInfo = AssemblyInfoBuilder.new({
-      :AssemblyFileVersion => configatron.version.compatible,
-      :AssemblyVersion => configatron.version.compatible,
-      :AssemblyInformationalVersion => configatron.version.full
-    })
-
-    asmInfo.write 'Source/VersionInfo.cs'
-  end
+  
+  puts "##teamcity[buildNumber '#{configatron.version.full}']"
 
   desc 'Update the configuration files for the build'
   task :config do
@@ -100,7 +74,7 @@ end
 
 namespace :build do
   desc "Compile everything"
-  task :compile => ['generate:version', 'generate:config'] do
+  task :compile => ['generate:config'] do
     opts = {
         :version => 'v4\Full',
         :switches => { :verbosity => :minimal, :target => :Build },
@@ -194,110 +168,20 @@ namespace :tests do
     puts 'Running NUnit tests...'
 
     tests = FileList.new("#{configatron.out_dir}/Tests/*.Tests.dll").to_a
-    runner = NUnitRunner.new :tool => 'packages/NUnit.Runners.2.6.3/tools/nunit-console-x86.exe', :results => "Specs", :clr_version => configatron.nunit_framework
+    runner = NUnitRunner.new :tool => 'Source/packages/NUnit.Runners/tools/nunit-console-x86.exe', :results => "Specs", :clr_version => configatron.nunit_framework
     runner.execute tests
-  end
-
-  task :run do
-    puts 'Running Gallio tests...'
-    sh "Tools/Gallio/bin/Gallio.Echo.exe", "#{configatron.out_dir}/Tests/Gallio/Machine.Specifications.GallioAdapter.Tests.dll", "/plugin-directory:#{configatron.out_dir}", "/r:Local"
   end
 end
 
 namespace :package do
-  def net_20_framework_files(root = '.')
-    FileList.new("#{root}/Machine.Specifications.dll") \
-      .include("#{root}/Machine.Specifications.pdb") \
-      .include("#{root}/Machine.Specifications.Should.dll") \
-      .include("#{root}/Machine.Specifications.Should.pdb") \
-      .include("#{root}/Machine.Specifications.dll.tdnet") \
-      .include("#{root}/Machine.Specifications.TDNetRunner.*")
-  end
-
-  def net_40_framework_files(root = '.')
-    net_20_framework_files(root) \
-      .include("#{root}/Machine.Specifications.Clr4.dll") \
-      .include("#{root}/Machine.Specifications.Clr4.pdb")
-  end
-
-  def source_files(root = '.')
-    FileList.new("#{root}/**/*.cs") \
-      .exclude('**/*Example*') \
-      .exclude('**/*.Specs/') \
-      .exclude('**/*.Test*/')
-  end
-
-  def packaged_files(root = '.')
-    FileList.new("#{root}/**/*") \
-      .exclude("#{root}/**/*.InstallLog") \
-      .exclude("#{root}/**/*.InstallState") \
-      .exclude("#{root}/Generation") \
-      .exclude("#{root}/Tests") \
-      .exclude("#{root}/NuGet") \
-      .exclude("#{root}/Package")
-  end
-
-  def copy_distributed_files_to(destination)
-    mkdir_p destination
-
-    %w(License.txt History.txt).each { |f| cp f, destination }
-
-    net_20_framework_files(configatron.out_dir).copy_hierarchy \
-      :source_dir => configatron.out_dir,
-      :target_dir => "#{destination}/lib/net20"
-
-    net_40_framework_files(configatron.out_dir).copy_hierarchy \
-      :source_dir => configatron.out_dir,
-      :target_dir => "#{destination}/lib/net40"
-
-    packaged_files(configatron.out_dir).copy_hierarchy \
-      :source_dir => configatron.out_dir,
-      :target_dir => "#{destination}/tools"
-  end
-
-  desc "Package build artifacts as a zip file"
-  task :zip => [ 'build:rebuild', 'tests:run', 'specs:run' ] do
-    rm_f configatron.zip.package
-
-    copy_distributed_files_to "#{configatron.out_dir}/Package"
-
-    sz = SevenZip.new \
-      :tool => 'Tools/7-Zip/7za.exe',
-      :zip_name => configatron.zip.package
-
-    Dir.chdir("#{configatron.out_dir}/Package") do
-      sz.zip :files => FileList.new("**/*")
-    end
-  end
-
-  def create_package_from(dir)
-    dir = dir.gsub(%r|/|, '\\').gsub(%r|\\\\|, '\\')
-
-    opts = %W(
-      Tools/Nuget/NuGet.exe pack mspec.nuspec
-      -BasePath #{dir}
-      -OutputDirectory #{configatron.nuget.package.dirname}
-      )
-
-    sh(*opts)
-  end
-
-  namespace :nuget do
+    namespace :nuget do
     desc "Package build artifacts as a NuGet package and a symbols package"
-    task :create => :zip do
+    task :create do
+		opts = %W(
+		  Tools/Ripple/Ripple.exe create-packages --version #{configatron.version.full} --symbols --verbose --destination #{configatron.distribution.dir}
+		  )
 
-      copy_distributed_files_to "#{configatron.out_dir}/NuGet"
-      source_files('Source').copy_hierarchy \
-        :source_dir => 'Source',
-        :target_dir => "#{configatron.out_dir}/NuGet/src/"
-
-      cp 'install.ps1', "#{configatron.out_dir}/NuGet/tools"
-
-      create_package_from "#{configatron.out_dir}/NuGet"
-      mv configatron.nuget.package, configatron.nuget.package.pathmap('%X.symbols%x')
-
-      FileList["#{configatron.out_dir}/NuGet/src/", "#{configatron.out_dir}/NuGet/**/*.pdb"].each { |f| rm_rf f }
-      create_package_from "#{configatron.out_dir}/NuGet"
+		sh(*opts)
     end
 
     desc "Publishes the NuGet package"
@@ -305,14 +189,12 @@ namespace :package do
       raise "NuGet access key is missing, cannot publish" if configatron.nuget.key.nil?
 
       opts = %W(
-        Tools/Nuget/NuGet.exe push
-        #{configatron.nuget.package}
-        #{configatron.nuget.key}
-      ) << { :verbose => false }
+        Tools/Ripple/Ripple.exe publish #{configatron.version.full} #{configatron.nuget.key} --artifacts #{configatron.distribution.dir} --verbose         
+      )
 
       sh(*opts) do |ok, status|
         ok or fail "Command failed with status (#{status.exitstatus})"
-      end
     end
-  end
+	end
+	end
 end
