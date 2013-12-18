@@ -4,6 +4,7 @@ Machine.Specifications 0.6.0
 - DelegateUsageAttribute is deprecated and will be remove in next version use new *DelegateAttribute types for custom delegates
 - Dropped support for Gallio
 - Resharper 8.1 support
+- DotCover 2.6 support
 
 Machine.Specifications 0.5.18
 -----------------------------
