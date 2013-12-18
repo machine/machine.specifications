@@ -171,7 +171,7 @@ end
 namespace :package do
     namespace :nuget do
     desc "Package build artifacts as a NuGet package and a symbols package"
-    task :create do
+    task :create => [ 'build:rebuild', 'tests:run', 'specs:run' ] do
 		opts = %W(
 		  Tools/Ripple/Ripple.exe create-packages --version #{configatron.version.full} --symbols --verbose --destination #{configatron.distribution.dir}
 		  )
