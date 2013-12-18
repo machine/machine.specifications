@@ -11,9 +11,13 @@ NDependOut
 *.ncrunchsolution
 *.ncrunchproject
 
+/.nuget/nuget.exe
 /Build
 /Distribution
 /Specs
 /packages
 install.ps1
 mspec.nuspec
+
+Source/packages/*
+logs/*

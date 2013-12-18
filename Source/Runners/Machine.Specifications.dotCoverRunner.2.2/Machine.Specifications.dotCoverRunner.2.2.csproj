@@ -34,53 +34,41 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JetBrains.dotCover.Resources">
-      <HintPath>..\..\..\Libraries\dotCover\2.2\JetBrains.dotCover.Resources.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.dotCover.ComponentModel">
-      <HintPath>..\..\..\Libraries\dotCover\2.2\JetBrains.Platform.dotCover.ComponentModel.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.dotCover.DocumentModel">
-      <HintPath>..\..\..\Libraries\dotCover\2.2\JetBrains.Platform.dotCover.DocumentModel.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.dotCover.Metadata">
-      <HintPath>..\..\..\Libraries\dotCover\2.2\JetBrains.Platform.dotCover.Metadata.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.dotCover.ProjectModel">
-      <HintPath>..\..\..\Libraries\dotCover\2.2\JetBrains.Platform.dotCover.ProjectModel.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.dotCover.Shell">
-      <HintPath>..\..\..\Libraries\dotCover\2.2\JetBrains.Platform.dotCover.Shell.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.dotCover.UI">
-      <HintPath>..\..\..\Libraries\dotCover\2.2\JetBrains.Platform.dotCover.UI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JetBrains.Platform.dotCover.Util">
-      <HintPath>..\..\..\Libraries\dotCover\2.2\JetBrains.Platform.dotCover.Util.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="JetBrains.dotCover.Features.Shared">
       <HintPath>..\..\..\Libraries\dotCover\2.2\JetBrains.dotCover.Features.Shared.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.dotCover.Psi">
       <HintPath>..\..\..\Libraries\dotCover\2.2\JetBrains.dotCover.Psi.dll</HintPath>
-      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.dotCover.Resources">
+      <HintPath>..\..\..\Libraries\dotCover\2.2\JetBrains.dotCover.Resources.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.dotCover.TaskRunnerFramework">
       <HintPath>..\..\..\Libraries\dotCover\2.2\JetBrains.dotCover.TaskRunnerFramework.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.dotCover.UnitTestFramework">
       <HintPath>..\..\..\Libraries\dotCover\2.2\JetBrains.dotCover.UnitTestFramework.dll</HintPath>
-      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.dotCover.ComponentModel">
+      <HintPath>..\..\..\Libraries\dotCover\2.2\JetBrains.Platform.dotCover.ComponentModel.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.dotCover.DocumentModel">
+      <HintPath>..\..\..\Libraries\dotCover\2.2\JetBrains.Platform.dotCover.DocumentModel.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.dotCover.Metadata">
+      <HintPath>..\..\..\Libraries\dotCover\2.2\JetBrains.Platform.dotCover.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.dotCover.ProjectModel">
+      <HintPath>..\..\..\Libraries\dotCover\2.2\JetBrains.Platform.dotCover.ProjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.dotCover.Shell">
+      <HintPath>..\..\..\Libraries\dotCover\2.2\JetBrains.Platform.dotCover.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.dotCover.UI">
+      <HintPath>..\..\..\Libraries\dotCover\2.2\JetBrains.Platform.dotCover.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Platform.dotCover.Util">
+      <HintPath>..\..\..\Libraries\dotCover\2.2\JetBrains.Platform.dotCover.Util.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -241,9 +229,6 @@
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\VersionInfo.cs">
-      <Link>Properties\VersionInfo.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>
       </SubType>
@@ -274,7 +259,8 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="$(SolutionDir)\Tools\Ripple\RippleRestoreTask.targets" />
+  <Import Project="$(SolutionDir)\Tools\GitFlowVersion\build\GitFlowVersionTask.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

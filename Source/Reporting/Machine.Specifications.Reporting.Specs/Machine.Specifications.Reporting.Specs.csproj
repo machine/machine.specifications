@@ -57,21 +57,18 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\..\packages\RhinoMocks\lib\net\Rhino.Mocks.dll</HintPath>
+    </Reference>
     <Reference Include="Rhino.Mocks, Version=3.6.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Tools\Rhino Mocks\Rhino.Mocks.dll</HintPath>
+      <HintPath>..\..\..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\..\VersionInfo.cs">
-      <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="CollectReportingInformationRunListenerSpecs.cs" />
     <Compile Include="Generation\Spark\GenerateSparkHtmlReportRunListenerSpecs.cs" />
@@ -94,6 +91,10 @@
     <ProjectReference Include="..\..\Examples\Example\Example.csproj">
       <Project>{2C28C643-31A2-44CA-B762-953A963F6F61}</Project>
       <Name>Machine.Specifications.Example</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Machine.Specifications.Should\Machine.Specifications.Should.csproj">
+      <Project>{4b86a9fc-4d07-40e3-aeb6-2898b5292972}</Project>
+      <Name>Machine.Specifications.Should</Name>
     </ProjectReference>
     <ProjectReference Include="..\Machine.Specifications.Reporting\Machine.Specifications.Reporting.csproj">
       <Project>{490496AF-BEA5-4454-88B0-F73C62C22987}</Project>
@@ -121,7 +122,12 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ripple.dependencies.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\Tools\Ripple\RippleRestoreTask.targets" />
+  <Import Project="$(SolutionDir)\Tools\GitFlowVersion\build\GitFlowVersionTask.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -137,5 +143,4 @@
 copy /y "$(ProjectDir)..\Machine.Specifications.Reporting\$(OutDir)..\Machine.Specifications.Reporting.Templates.dll" "$(TargetDir)"
 if errorlevel 1 copy /y "$(ProjectDir)..\Machine.Specifications.Reporting\$(OutDir)Machine.Specifications.Reporting.Templates.dll" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

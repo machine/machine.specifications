@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
 
 using Machine.Testing.AutoMocking;
 
 using NUnit.Framework;
 
 using Rhino.Mocks;
-using Rhino.Mocks.Impl;
 using Rhino.Mocks.Interfaces;
 
 namespace Machine.Testing
