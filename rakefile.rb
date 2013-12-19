@@ -31,6 +31,9 @@ task :configure do
   configatron.version.full = Configatron::Delayed.new do
     open("|Tools/GitFlowVersion/GitFlowVersion.exe").read().scan(/NugetVersion":"(.*)"/)[0][0][0,20]
   end
+  configatron.version.short = Configatron::Delayed.new do
+    open("|Tools/GitFlowVersion/GitFlowVersion.exe").read().scan(/ShortVersion":"(.*)"/)[0][0]
+  end
 
   configatron.configure_from_hash build_config
   configatron.protect_all!
@@ -57,6 +60,8 @@ end
 
 namespace :generate do
   
+  puts "##teamcity[buildNumber '#{configatron.version.short}']"
+
   desc 'Update the configuration files for the build'
   task :config do
     FileList.new('**/*.template').each do |template|
