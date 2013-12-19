@@ -184,7 +184,7 @@ namespace :package do
       raise "NuGet access key is missing, cannot publish" if configatron.nuget.key.nil?
 
       opts = %W(
-        Tools/Ripple/Ripple.exe publish #{configatron.version.full} #{configatron.nuget.key} --artifacts #{configatron.distribution.dir} --verbose         
+        Tools/Ripple/Ripple.exe publish #{configatron.version.full} #{configatron.nuget.key} --symbols --artifacts #{configatron.distribution.dir} --verbose         
       )
 
       sh(*opts) do |ok, status|
