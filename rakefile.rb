@@ -183,7 +183,7 @@ namespace :package do
     end
 
     desc "Publishes the NuGet package"
-    task :publish do
+    task :publish => [ 'build:rebuild', 'tests:run', 'specs:run' ] do
       raise "NuGet access key is missing, cannot publish" if configatron.nuget.key.nil?
 
       opts = %W(
