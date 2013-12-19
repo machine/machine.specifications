@@ -1,3 +1,8 @@
+Machine.Specifications 0.6.1
+-----------------------------
+- Nuget package adds proper references for .NET 4.0 and 4.5
+- Nuget package excludes sources
+
 Machine.Specifications 0.6.0
 -----------------------------
 - Should Extension Methods are moved into own assembly which simplifies things for people using other assertion libraries.

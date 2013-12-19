@@ -31,6 +31,9 @@ task :configure do
   configatron.version.full = Configatron::Delayed.new do
     open("|Tools/GitFlowVersion/GitFlowVersion.exe").read().scan(/NugetVersion":"(.*)"/)[0][0][0,20]
   end
+  configatron.version.short = Configatron::Delayed.new do
+    open("|Tools/GitFlowVersion/GitFlowVersion.exe").read().scan(/ShortVersion":"(.*)"/)[0][0]
+  end
 
   configatron.configure_from_hash build_config
   configatron.protect_all!
@@ -57,7 +60,7 @@ end
 
 namespace :generate do
   
-  puts "##teamcity[buildNumber '#{configatron.version.full}']"
+  puts "##teamcity[buildNumber '#{configatron.version.short}']"
 
   desc 'Update the configuration files for the build'
   task :config do
@@ -180,11 +183,11 @@ namespace :package do
     end
 
     desc "Publishes the NuGet package"
-    task :publish do
+    task :publish => [ 'build:rebuild', 'tests:run', 'specs:run' ] do
       raise "NuGet access key is missing, cannot publish" if configatron.nuget.key.nil?
 
       opts = %W(
-        Tools/Ripple/Ripple.exe publish #{configatron.version.full} #{configatron.nuget.key} --artifacts #{configatron.distribution.dir} --verbose         
+        Tools/Ripple/Ripple.exe publish #{configatron.version.full} #{configatron.nuget.key} --symbols --artifacts #{configatron.distribution.dir} --verbose         
       )
 
       sh(*opts) do |ok, status|

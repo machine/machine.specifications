@@ -15,10 +15,14 @@
 		<iconUrl>http://github.com/machine/machine.specifications/raw/master/Misc/Machine.Specifications-128x128.png</iconUrl>
 		<tags>test unit testing context specification bdd tdd mspec</tags>
 		<references> 
-			<group targetFramework="net45"> 
+			<group targetFramework="net45">
+				<reference file="Machine.Specifications.dll" />
+				<reference file="Machine.Specifications.Should.dll" />
 				<reference file="Machine.Specifications.Clr4.dll" />
 			</group>
-			<group targetFramework="net40"> 
+			<group targetFramework="net40">
+				<reference file="Machine.Specifications.dll" />
+				<reference file="Machine.Specifications.Should.dll" />
 				<reference file="Machine.Specifications.Clr4.dll" />
 			</group> 
 			<group>
