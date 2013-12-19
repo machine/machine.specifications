@@ -57,8 +57,6 @@ end
 
 namespace :generate do
   
-  puts "##teamcity[buildNumber '#{configatron.version.full}']"
-
   desc 'Update the configuration files for the build'
   task :config do
     FileList.new('**/*.template').each do |template|
