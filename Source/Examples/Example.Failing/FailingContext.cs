@@ -19,7 +19,7 @@ namespace Example.Failing
     It should = () => { };
   }
 
-  [DelegateUsage(DelegateUsage.Setup)]
+  [SetupDelegate]
   public delegate void Given();
 
   [Tags("example")]
