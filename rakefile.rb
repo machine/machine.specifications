@@ -79,7 +79,8 @@ namespace :build do
         :properties => {
           :Configuration => configatron.target,
           :TrackFileAccess => false,
-          :SolutionDir => File.expand_path('.')
+          :SolutionDir => File.expand_path('.'),
+		  :SignAssembly => configatron.sign_assembly
         }
       }
 
@@ -105,14 +106,8 @@ namespace :build do
       )
 
       sh(*nopts)
-	
-      csprojs = FileList.new('Source/**/*.csproj').map do |project|
-        patch project, { :SignAssembly => configatron.sign_assembly }
-      end
-
-      csprojs.each do |project|
-        MSBuild.compile opts.merge({ :project => project[:file] })
-      end
+	  
+      MSBuild.compile opts.merge({ :project => './Machine.Specifications.sln', :properties => { :Platform => 'Any CPU' } })
 
       runner_configs = {
         :x86         => { :TargetFrameworkVersion => 'v3.5', :PlatformTarget => 'x86',    :AssemblyName => 'mspec-x86' },
@@ -129,10 +124,8 @@ namespace :build do
         rm_rf File.join(File.dirname(console_runner), 'obj')
 
         MSBuild.compile opts.merge({ :project => project[:file] })
-      end
-    ensure
-      csprojs.each do |project|
-        File.open(project[:file], "w") { |file| file.write project[:original_contents] }
+		
+		File.open(project[:file], "w") { |file| file.write project[:original_contents] }
       end
     end
   end
