@@ -35,7 +35,8 @@ class MSBuild
 		switches.merge!(userSwitches)
 
 		switches = switches.collect { |key, value|
-			"/#{key}#{":\"#{value}\"" unless value.kind_of? TrueClass or value.kind_of? FalseClass}" if value
+			"/#{key}#{":\"#{value}\"" unless value.kind_of? TrueClass or value.kind_of? FalseClass }" if value
+			"/#{key}" if value.nil?
 		}.join " "
 
 		sh "#{msbuild.escape} #{projectFile.escape} #{switches} #{properties}"
