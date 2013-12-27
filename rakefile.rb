@@ -76,29 +76,15 @@ namespace :build do
     opts = {
         :version => 'v4\Full',
         :switches => { :verbosity => :minimal, :target => :Build },
+		:project => './Machine.Specifications.sln',
         :properties => {
           :Configuration => configatron.target,
           :TrackFileAccess => false,
           :SolutionDir => File.expand_path('.'),
-		  :SignAssembly => configatron.sign_assembly
+		  :SignAssembly => configatron.sign_assembly,
+		  :Platform => 'Any CPU'
         }
       }
-
-    def patch(project_file, config)
-      csproj = File.read project_file
-
-      patched = csproj.dup
-      config.each do |element, value|
-        patched.gsub!(/<#{element}>.*?<\/#{element}>/, "<#{element}>#{value}</#{element}>")
-      end
-
-      File.open(project_file, "w") { |file| file.write patched }
-
-      {
-        :file => project_file,
-        :original_contents => csproj
-      }
-    end
 
     begin
       nopts = %W(
@@ -107,26 +93,8 @@ namespace :build do
 
       sh(*nopts)
 	  
-      MSBuild.compile opts.merge({ :project => './Machine.Specifications.sln', :properties => { :Platform => 'Any CPU' } })
+      MSBuild.compile opts
 
-      runner_configs = {
-        :x86         => { :TargetFrameworkVersion => 'v3.5', :PlatformTarget => 'x86',    :AssemblyName => 'mspec-x86' },
-        :AnyCPU      => { :TargetFrameworkVersion => 'v3.5', :PlatformTarget => 'AnyCPU', :AssemblyName => 'mspec' },
-        :clr4_x86    => { :TargetFrameworkVersion => 'v4.0', :PlatformTarget => 'x86',    :AssemblyName => 'mspec-x86-clr4' },
-        :clr4_AnyCPU => { :TargetFrameworkVersion => 'v4.0', :PlatformTarget => 'AnyCPU', :AssemblyName => 'mspec-clr4' }
-      }
-      console_runner = 'Source/Runners/Machine.Specifications.ConsoleRunner/Machine.Specifications.ConsoleRunner.csproj'
-
-      runner_configs.values.each do |config|
-        project = patch console_runner, config
-
-        # We need to remove obj, otherwise MSBuild will delete the build output from previous runner_config builds.
-        rm_rf File.join(File.dirname(console_runner), 'obj')
-
-        MSBuild.compile opts.merge({ :project => project[:file] })
-		
-		File.open(project[:file], "w") { |file| file.write project[:original_contents] }
-      end
     end
   end
 
