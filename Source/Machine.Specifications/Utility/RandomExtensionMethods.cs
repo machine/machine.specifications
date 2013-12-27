@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using Machine.Specifications.Sdk;
+
 namespace Machine.Specifications.Utility
 {
   public static class RandomExtensionMethods
@@ -30,9 +32,47 @@ namespace Machine.Specifications.Utility
       actions.Each(x => x());
     }
 
-    internal static bool HasAttribute<TAttribute>(this ICustomAttributeProvider attributeProvider)
+    internal static bool HasAttribute<TAttributeFullName>(this ICustomAttributeProvider attributeProvider, TAttributeFullName attributeFullName)
+      where TAttributeFullName : AttributeFullName
     {
-      return attributeProvider.GetCustomAttributes(typeof(TAttribute), true).Any();
+      var attributeType = Type.GetType(attributeFullName.FullName);
+      return attributeProvider.GetCustomAttributes(attributeType, true).Any();
+    }
+
+    internal static AttributeFullName GetCustomDelegateAttributeFullName(this Type type)
+    {
+      // TODO: Make smarter
+      var attributeType = Type.GetType(new ActDelegateAttributeFullName());
+      if (type.GetCustomAttributes(attributeType, false).Any())
+      {
+        return new ActDelegateAttributeFullName();
+      }
+
+      attributeType = Type.GetType(new AssertDelegateAttributeFullName());
+      if (type.GetCustomAttributes(attributeType, false).Any())
+      {
+        return new AssertDelegateAttributeFullName();
+      }
+
+      attributeType = Type.GetType(new BehaviorDelegateAttributeFullName());
+      if (type.GetCustomAttributes(attributeType, false).Any())
+      {
+        return new BehaviorDelegateAttributeFullName();
+      }
+
+      attributeType = Type.GetType(new CleanupDelegateAttributeFullName());
+      if (type.GetCustomAttributes(attributeType, false).Any())
+      {
+        return new CleanupDelegateAttributeFullName();
+      }
+
+      attributeType = Type.GetType(new SetupDelegateAttributeFullName());
+      if (type.GetCustomAttributes(attributeType, false).Any())
+      {
+        return new SetupDelegateAttributeFullName();
+      }
+
+      return null;
     }
   }
 }

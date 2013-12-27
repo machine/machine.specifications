@@ -1,6 +1,6 @@
 ﻿namespace Machine.Specifications.Sdk
 {
-  public class AssertDelegateAttributeFullName : AttributeFullName
+  public class AssertDelegateAttributeFullName : DelegateAttributeFullName
   {
     static readonly string assertDelegateAttributeName = typeof(AssertDelegateAttribute).FullName;
 

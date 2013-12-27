@@ -5,6 +5,7 @@ using System.Reflection;
 
 using Machine.Specifications.Factories;
 using Machine.Specifications.Model;
+using Machine.Specifications.Sdk;
 using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Explorers
@@ -65,12 +66,12 @@ namespace Machine.Specifications.Explorers
 
     static bool IsContext(Type type)
     {
-      return HasSpecificationMembers(type) && !type.HasAttribute<BehaviorsAttribute>();
+      return HasSpecificationMembers(type) && !type.HasAttribute(new BehaviorAttributeFullName());
     }
 
     static bool HasSpecificationMembers(Type type)
     {
-      return !type.IsAbstract && type.GetInstanceFieldsOfUsage(DelegateUsage.Assert, DelegateUsage.Behavior).Any();
+      return !type.IsAbstract && type.GetInstanceFieldsOfUsage(new AssertDelegateAttributeFullName(), new BehaviorDelegateAttributeFullName()).Any();
     }
 
     static IEnumerable<Type> EnumerateContextsIn(Assembly assembly)

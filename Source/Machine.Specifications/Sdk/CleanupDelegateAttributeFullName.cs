@@ -1,6 +1,6 @@
 ﻿namespace Machine.Specifications.Sdk
 {
-  public class CleanupDelegateAttributeFullName : AttributeFullName
+  public class CleanupDelegateAttributeFullName : DelegateAttributeFullName
   {
     static readonly string cleanupDelegateAttributeName = typeof(CleanupDelegateAttribute).FullName;
 

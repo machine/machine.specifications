@@ -1,6 +1,6 @@
 ﻿namespace Machine.Specifications.Sdk
 {
-  public class ActDelegateAttributeFullName : AttributeFullName
+  public class ActDelegateAttributeFullName : DelegateAttributeFullName
   {
     static readonly string actDelegateAttributeName = typeof(ActDelegateAttribute).FullName;
 

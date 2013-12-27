@@ -1,6 +1,6 @@
 ﻿namespace Machine.Specifications.Sdk
 {
-  public class BehaviorDelegateAttributeFullName : AttributeFullName
+  public class BehaviorDelegateAttributeFullName : DelegateAttributeFullName
   {
     static readonly string behaviorDelegateAttribute = typeof(BehaviorDelegateAttribute).FullName;
 

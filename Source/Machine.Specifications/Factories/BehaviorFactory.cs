@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 
 using Machine.Specifications.Model;
+using Machine.Specifications.Sdk;
 using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Factories
@@ -28,11 +29,11 @@ namespace Machine.Specifications.Factories
 
       EnsureAllBehaviorFieldsAreInContext(behaviorType, context);
 
-      var isIgnored = behaviorField.HasAttribute<IgnoreAttribute>() ||
-                      behaviorInstance.GetType().HasAttribute<IgnoreAttribute>();
+      var isIgnored = behaviorField.HasAttribute(new IgnoreAttributeFullName()) ||
+                      behaviorInstance.GetType().HasAttribute(new IgnoreAttributeFullName());
       var behavior = new Behavior(behaviorField.FieldType, behaviorInstance, context, isIgnored);
 
-      var itFieldInfos = behaviorType.GetInstanceFieldsOfUsage(DelegateUsage.Assert);
+      var itFieldInfos = behaviorType.GetInstanceFieldsOfUsage(new AssertDelegateAttributeFullName());
       CreateBehaviorSpecifications(itFieldInfos, behavior);
 
       return behavior;
@@ -40,7 +41,7 @@ namespace Machine.Specifications.Factories
 
     static void EnsureBehaviorHasBehaviorsAttribute(Type behaviorType)
     {
-      if (!behaviorType.HasAttribute<BehaviorsAttribute>())
+      if (!behaviorType.HasAttribute(new BehaviorAttributeFullName()))
       {
         throw new SpecificationUsageException(
           "Behaviors require the BehaviorsAttribute on the type containing the Specifications. Attribute is missing from " +
@@ -50,25 +51,25 @@ namespace Machine.Specifications.Factories
 
     static void EnsureBehaviorDoesNotHaveFrameworkFieldsExceptIt(Type behaviorType)
     {
-      if (behaviorType.GetInstanceFieldsOfUsage(DelegateUsage.Setup).Any())
+      if (behaviorType.GetInstanceFieldsOfUsage(new SetupDelegateAttributeFullName()).Any())
       {
         throw new SpecificationUsageException("You cannot have setup actions on Behaviors. Setup action found in " +
                                               behaviorType.FullName);
       }
 
-      if (behaviorType.GetInstanceFieldsOfUsage(DelegateUsage.Act).Any())
+      if (behaviorType.GetInstanceFieldsOfUsage(new ActDelegateAttributeFullName()).Any())
       {
         throw new SpecificationUsageException("You cannot have act actions on Behaviors. Act action found in " +
                                               behaviorType.FullName);
       }
 
-      if (behaviorType.GetInstanceFieldsOfUsage(DelegateUsage.Cleanup).Any())
+      if (behaviorType.GetInstanceFieldsOfUsage(new CleanupDelegateAttributeFullName()).Any())
       {
         throw new SpecificationUsageException("You cannot have cleanup actions on Behaviors. Cleanup action found in " +
                                               behaviorType.FullName);
       }
 
-      if (behaviorType.GetInstanceFieldsOfUsage(DelegateUsage.Behavior).Any())
+      if (behaviorType.GetInstanceFieldsOfUsage(new BehaviorDelegateAttributeFullName()).Any())
       {
         throw new SpecificationUsageException("You cannot nest behaviors. Nested behaviors found in " +
                                               behaviorType.FullName);

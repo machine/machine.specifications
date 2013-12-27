@@ -102,6 +102,7 @@
     <Compile Include="Sdk\BehaviorAttributeFullName.cs" />
     <Compile Include="Sdk\BehaviorDelegateAttributeFullName.cs" />
     <Compile Include="Sdk\CleanupDelegateAttributeFullName.cs" />
+    <Compile Include="Sdk\DelegateAttributeFullName.cs" />
     <Compile Include="Sdk\IgnoreAttributeFullName.cs" />
     <Compile Include="Sdk\SetupDelegateAttributeFullName.cs" />
     <Compile Include="Sdk\SubjectAttributeFullName.cs" />
