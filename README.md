@@ -234,7 +234,7 @@ The MSpec HTML reports can show additional [Selenium](http://seleniumhq.org/)-sp
 
 # ReSharper Integration
 
-MSpec provides a batch file to integrate with the ReSharper test runner, custom naming rules, and code annotations. MSpec currently supports ReSharper 6.1, 7.0, and 7.1.
+MSpec provides a batch file to integrate with the ReSharper test runner, custom naming rules, and code annotations. MSpec currently supports ReSharper 6.1, 7.0, 7.1, 8.0 and 8.1.
 
 ### Code Annotations
 
