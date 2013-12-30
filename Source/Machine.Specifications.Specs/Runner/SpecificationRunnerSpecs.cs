@@ -239,7 +239,7 @@ namespace Machine.Specifications.Specs.Runner
                                                                                "Console.Out message in cleanup{0}",
                                                                                Environment.NewLine));
   }
-  
+
   [Subject("Specification Runner")]
   public class when_running_a_specification_with_error_output
     : RunnerSpecs
@@ -255,7 +255,7 @@ namespace Machine.Specifications.Specs.Runner
                                                                                "Console.Error message in cleanup{0}",
                                                                                Environment.NewLine));
   }
-  
+
   [Subject("Specification Runner")]
   public class when_running_a_specification_with_debug_output
     : RunnerSpecs
@@ -295,10 +295,10 @@ namespace Machine.Specifications.Specs.Runner
   public class when_running_a_specification_that_throws_an_exception_with_an_inner_exception
     : RunnerSpecs
   {
-    Because of =()=>
+    Because of = () =>
       Run<context_with_inner_exception>();
 
-    It should_include_the_inner_exception_in_the_result =()=>
+    It should_include_the_inner_exception_in_the_result = () =>
       testListener.LastResult.Exception.ToString().Should().Contain("INNER123");
   }
 
@@ -400,7 +400,7 @@ namespace Machine.Specifications.Specs.Runner
     Establish context = () =>
     {
       testListener = new TestListener();
-      var options = new RunOptions(new string[] {}, new string[] {}, new []{ "Example.Random.context_with_multiple_specifications" });
+      var options = new RunOptions(new string[] { }, new string[] { }, new[] { "Example.Random.context_with_multiple_specifications" });
 
       runner = new DefaultRunner(testListener, options);
     };
@@ -538,7 +538,7 @@ namespace Machine.Specifications.Specs.Runner
       runner.RunMember(typeof(T).Assembly, typeof(T));
     }
 
-        public static Exception Exception(Action throwingAction)
+    public static Exception Exception(Action throwingAction)
     {
       try
       {
