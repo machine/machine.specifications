@@ -1,5 +1,7 @@
 using Example.Random;
 
+using FluentAssertions;
+
 namespace Machine.Specifications.Specs.Runner
 {
   [Subject("Specification Runner")]
@@ -17,18 +19,18 @@ namespace Machine.Specifications.Specs.Runner
 
     It should_establish_the_context_once = () =>
                                            context_with_inherited_specifications.BecauseClauseRunCount.
-                                             ShouldEqual(1);
+                                             Should().Be(1);
 
     It should_invoke_the_because_clause_once = () =>
                                                context_with_inherited_specifications.EstablishRunCount.
-                                                 ShouldEqual(1);
+                                                 Should().Be(1);
 
     It should_invoke_the_because_clause_from_the_base_class_once = () =>
                                                                    context_that_inherits.BaseEstablishRunCount.
-                                                                     ShouldEqual(1);
+                                                                     Should().Be(1);
 
     It should_detect_two_specs = () =>
-                                 testListener.SpecCount.ShouldEqual(2);
+                                 testListener.SpecCount.Should().Be(2);
   }
 
   [Subject("Specification Runner")]
@@ -46,17 +48,17 @@ namespace Machine.Specifications.Specs.Runner
 
     It should_establish_the_context_twice = () =>
                                             context_with_inherited_specifications_and_setup_for_each.
-                                              BecauseClauseRunCount.ShouldEqual(2);
+                                              BecauseClauseRunCount.Should().Be(2);
 
     It should_invoke_the_because_clause_twice = () =>
                                                 context_with_inherited_specifications_and_setup_for_each.
-                                                  EstablishRunCount.ShouldEqual(2);
+                                                  EstablishRunCount.Should().Be(2);
 
     It should_invoke_the_because_clause_from_the_base_class_twice = () =>
                                                                     context_that_inherits.BaseEstablishRunCount.
-                                                                      ShouldEqual(2);
+                                                                      Should().Be(2);
 
     It should_detect_two_specs = () =>
-                                 testListener.SpecCount.ShouldEqual(2);
+                                 testListener.SpecCount.Should().Be(2);
   }
 }

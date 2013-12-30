@@ -58,8 +58,13 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentAssertions">
+      <HintPath>..\packages\FluentAssertions\lib\net35\FluentAssertions.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs">
@@ -105,10 +110,6 @@
     <ProjectReference Include="..\Examples\Example\Example.csproj">
       <Project>{2C28C643-31A2-44CA-B762-953A963F6F61}</Project>
       <Name>Example</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Machine.Specifications.Should\Machine.Specifications.Should.csproj">
-      <Project>{4b86a9fc-4d07-40e3-aeb6-2898b5292972}</Project>
-      <Name>Machine.Specifications.Should</Name>
     </ProjectReference>
     <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj">
       <Project>{CCD02629-1262-4F78-9E9F-AC97B942D0E7}</Project>

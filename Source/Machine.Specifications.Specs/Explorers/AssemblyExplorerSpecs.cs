@@ -3,6 +3,8 @@ using System.Linq;
 
 using Example.Random;
 
+using FluentAssertions;
+
 using Machine.Specifications.Explorers;
 using Machine.Specifications.Model;
 
@@ -19,6 +21,6 @@ namespace Machine.Specifications.Specs.Explorers
       () => { Contexts = Explorer.FindContextsIn(typeof(tag).Assembly, "Example.Random.Internal"); };
 
     It should_find_two_contexts =
-      () => Contexts.Count().ShouldEqual(2);
+      () => Contexts.Count().Should().Be(2);
   }
 }
