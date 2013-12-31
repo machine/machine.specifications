@@ -73,10 +73,6 @@
     <Compile Include="ProgramSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Machine.Specifications.Should\Machine.Specifications.Should.csproj">
-      <Project>{4b86a9fc-4d07-40e3-aeb6-2898b5292972}</Project>
-      <Name>Machine.Specifications.Should</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunner.csproj">
       <Project>{CFF4B323-24C1-4B19-98CA-7DF92755458E}</Project>
       <Name>Machine.Specifications.ConsoleRunner</Name>
