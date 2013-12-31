@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+
+using FluentAssertions;
+
 using Machine.Specifications.Factories;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
@@ -19,19 +22,19 @@ namespace Machine.Specifications.Model
     [Test]
     public void ShouldEstablishContext()
     {
-      ContextWithSingleSpecification.BecauseInvoked.ShouldBeTrue();
+      ContextWithSingleSpecification.BecauseInvoked.Should().BeTrue();
     }
 
     [Test]
     public void ShouldCallBeforeEach()
     {
-      ContextWithSingleSpecification.ContextInvoked.ShouldBeTrue();
+      ContextWithSingleSpecification.ContextInvoked.Should().BeTrue();
     }
 
     [Test]
     public void ShouldCleanup()
     {
-      ContextWithSingleSpecification.CleanupInvoked.ShouldBeTrue();
+      ContextWithSingleSpecification.CleanupInvoked.Should().BeTrue();
     }
   }
 

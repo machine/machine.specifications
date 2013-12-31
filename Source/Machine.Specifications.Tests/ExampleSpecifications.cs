@@ -1,5 +1,7 @@
 using System;
 
+using FluentAssertions;
+
 namespace Machine.Specifications
 {
   namespace ExampleA
@@ -60,7 +62,7 @@ namespace Machine.Specifications
       exception = null;
 
     It should_throw_but_it_wont =()=> 
-      exception.ShouldNotBeNull();
+      exception.Should().NotBeNull();
 
     public void Reset()
     {
@@ -166,7 +168,7 @@ namespace Machine.Specifications
     Because it_happens = () =>
     {
       WhenInvoked = true;
-      exception = Catch.Exception(() => { throw new Exception(); });
+      exception = Exception(() => { throw new Exception(); });
     };
 
     It should_throw_an_exception = () =>
@@ -178,6 +180,20 @@ namespace Machine.Specifications
     {
       WhenInvoked = false;
       ItInvoked = false;
+    }
+
+    public static Exception Exception(Action throwingAction)
+    {
+      try
+      {
+        throwingAction();
+      }
+      catch (Exception exception)
+      {
+        return exception;
+      }
+
+      return null;
     }
   }
 
