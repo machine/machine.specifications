@@ -9,7 +9,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
   {
     readonly StringBuilder _console = new StringBuilder();
 
-    public List<string> Lines
+    public IEnumerable<string> Lines
     {
       get { return _console.ToString().Split(new[] { Environment.NewLine }, StringSplitOptions.None).ToList(); }
     }
