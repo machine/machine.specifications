@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+using FluentAssertions;
+
 using Machine.Specifications.Reporting.Generation.Spark;
 using Machine.Specifications.Reporting.Model;
 using Machine.Specifications.Reporting.Visitors;
@@ -32,7 +34,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
     Cleanup after = () => Writer.Dispose();
 
     It should_create_a_report =
-      () => Writer.ToString().ShouldNotBeEmpty();
+      () => Writer.ToString().Should().NotBeEmpty();
   }
 
   [Subject(typeof(SparkRenderer))]
@@ -119,7 +121,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
     Cleanup after = () => Writer.Dispose();
 
     It should_create_a_report =
-      () => Html.ShouldNotBeEmpty();
+      () => Html.Should().NotBeEmpty();
 
     It should_order_assemblies_by_assembly_name =
       () =>
@@ -127,7 +129,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
           var assembly1 = Html.IndexOf("assembly 1");
           var assembly2 = Html.IndexOf("assembly 2");
 
-          assembly1.ShouldBeLessThan(assembly2);
+          assembly1.Should().BeLessThan(assembly2);
         };
 
     It should_order_concerns_by_name =
@@ -136,7 +138,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
           var assembly1Concern1 = Html.IndexOf("a 1 concern 1");
           var assembly2Concern1 = Html.IndexOf("a 2 concern 1");
 
-          assembly1Concern1.ShouldBeLessThan(assembly2Concern1);
+          assembly1Concern1.Should().BeLessThan(assembly2Concern1);
         };
 
     It should_order_concerns_inside_assemblies_by_name =
@@ -145,7 +147,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
           var assembly1Concern1 = Html.IndexOf("a 1 concern 1");
           var assembly1Concern2 = Html.IndexOf("a 1 concern 2");
 
-          assembly1Concern1.ShouldBeLessThan(assembly1Concern2);
+          assembly1Concern1.Should().BeLessThan(assembly1Concern2);
         };
 
     It should_order_contexts_by_name =
@@ -154,7 +156,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
           var context1 = Html.IndexOf("a 1 c 1 context 1");
           var context2 = Html.IndexOf("a 1 c 1 context 2");
 
-          context1.ShouldBeLessThan(context2);
+          context1.Should().BeLessThan(context2);
         };
 
     It should_order_specifications_in_the_order_they_were_executed =
@@ -163,7 +165,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
           var spec1 = Html.IndexOf("a 1 c 1 c 1 specification 2");
           var spec2 = Html.IndexOf("a 1 c 1 c 1 specification 1");
 
-          spec1.ShouldBeLessThan(spec2);
+          spec1.Should().BeLessThan(spec2);
         };
 
     static void RunDefaultVisitors(Run run)

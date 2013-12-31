@@ -1,4 +1,6 @@
-﻿using Machine.Specifications.Reporting.Integration;
+﻿using FluentAssertions;
+
+using Machine.Specifications.Reporting.Integration;
 
 namespace Machine.Specifications.Reporting.Specs.Integration
 {
@@ -13,13 +15,13 @@ namespace Machine.Specifications.Reporting.Specs.Integration
     Because of = () => Writer.WriteError("test failed", "details");
 
     It should_report_an_error_string =
-      () => Written.ShouldEndWith("status=\'ERROR\']");
+      () => Written.Should().EndWith("status=\'ERROR\']");
 
     It should_report_the_error_message =
-      () => { Written.ShouldContain("test=\'test failed\'"); };
+      () => { Written.Should().Contain("test=\'test failed\'"); };
 
     It should_report_error_details =
-      () => { Written.ShouldContain("errorDetails=\'details\'"); };
+      () => { Written.Should().Contain("errorDetails=\'details\'"); };
   }
 
   [Subject(typeof(TeamCityServiceMessageWriter))]
@@ -36,12 +38,12 @@ namespace Machine.Specifications.Reporting.Specs.Integration
                                    "Details abc | ' \n \r ] \u0085 \u2028 \u2029");
 
     It should_escape_special__name__characters =
-      () => Written.ShouldContain("Name abc || |' |n |r |] |x |l |p");
+      () => Written.Should().Contain("Name abc || |' |n |r |] |x |l |p");
 
     It should_escape_special__message__characters =
-      () => Written.ShouldContain("Message abc || |' |n |r |] |x |l |p");
+      () => Written.Should().Contain("Message abc || |' |n |r |] |x |l |p");
 
     It should_escape_special__details__characters =
-      () => Written.ShouldContain("Details abc || |' |n |r |] |x |l |p");
+      () => Written.Should().Contain("Details abc || |' |n |r |] |x |l |p");
   }
 }

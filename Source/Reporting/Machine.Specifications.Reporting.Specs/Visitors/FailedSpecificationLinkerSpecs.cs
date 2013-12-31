@@ -1,5 +1,7 @@
 using System;
 
+using FluentAssertions;
+
 using Machine.Specifications.Reporting.Model;
 using Machine.Specifications.Reporting.Visitors;
 
@@ -45,27 +47,27 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
     Because of = () => Linker.Visit(Report);
 
     It should_not_assign_a__previous__link_to_the_report =
-      () => Report.PreviousFailed.ShouldBeNull();
+      () => Report.PreviousFailed.Should().BeNull();
 
     It should_assign_a__next__link_to_the_report =
-      () => Report.NextFailed.ShouldEqual(First);
+      () => Report.NextFailed.Should().Be(First);
 
     It should_assign_a__next__link_to_the_first_failed_spec =
-      () => First.NextFailed.ShouldEqual(Second);
+      () => First.NextFailed.Should().Be(Second);
 
     It should_not_assign_a__previous__link_to_the_first_failed_spec =
-      () => First.PreviousFailed.ShouldBeNull();
+      () => First.PreviousFailed.Should().BeNull();
 
     It should_assign_a__next__link_to_the_second_failed_spec =
-      () => Second.NextFailed.ShouldEqual(Last);
+      () => Second.NextFailed.Should().Be(Last);
 
     It should_assign_a__previous__link_to_the_second_failed_spec =
-      () => Second.PreviousFailed.ShouldEqual(First);
+      () => Second.PreviousFailed.Should().Be(First);
 
     It should_not_assign_a__next__link_to_the_last_failed_spec =
-      () => Last.NextFailed.ShouldBeNull();
+      () => Last.NextFailed.Should().BeNull();
 
     It should_assign_a__previous__link_to_the_last_failed_spec =
-      () => Last.PreviousFailed.ShouldEqual(Second);
+      () => Last.PreviousFailed.Should().Be(Second);
   }
 }

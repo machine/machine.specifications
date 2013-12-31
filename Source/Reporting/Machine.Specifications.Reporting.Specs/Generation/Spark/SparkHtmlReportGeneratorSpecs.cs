@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+using FluentAssertions;
+
 using Machine.Specifications.Reporting.Generation.Spark;
 using Machine.Specifications.Reporting.Model;
 using Machine.Specifications.Reporting.Visitors;
@@ -95,7 +97,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
       () => FileSystem.AssertWasCalled(x => x.DeleteIfFileExists(Arg<string>.Is.Anything));
 
     It should_create_a_report_file_as_specified =
-      () => ReportPathUsed.ShouldEqual(ReportPath);
+      () => ReportPathUsed.Should().Be(ReportPath);
 
     It should_render_one_report =
       () => Renderer.AssertWasCalled(x => x.Render(Arg<Run>.Is.Equal(Run), Arg<TextWriter>.Is.NotNull));
@@ -165,7 +167,7 @@ namespace Machine.Specifications.Reporting.Specs.Generation.Spark
                                        o => o.Repeat.Times(Run.Assemblies.Count() + 1));
 
     It should_create_a_reports_in_the_report_directory =
-      () => ReportPathsUsed.Each(x => x.ShouldStartWith(ReportDirectory));
+      () => ReportPathsUsed.Each(x => x.Should().StartWith(ReportDirectory));
 
     It should_render_one_report_for_every_assembly_that_was_run =
       () => Renderer.AssertWasCalled(x => x.Render(Arg<Run>.Matches(y => y.Assemblies.Count() == 1),
