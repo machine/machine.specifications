@@ -2,7 +2,7 @@
 
 :Build
 cls
-rake %*
+CALL bundle exec rake %*
 
 rem Bail if we're running a TeamCity build.
 if defined TEAMCITY_PROJECT_NAME goto Quit
