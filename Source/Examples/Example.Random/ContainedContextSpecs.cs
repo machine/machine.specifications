@@ -1,4 +1,6 @@
-﻿using Machine.Specifications;
+﻿using FluentAssertions;
+
+using Machine.Specifications;
 
 namespace Example.Random
 {
@@ -13,7 +15,7 @@ namespace Example.Random
 
     public class when_a_context_is_nested_inside_a_static_class
     {
-      It should_be_run = () => Foo.ShouldBeTrue();
+      It should_be_run = () => Foo.Should().BeTrue();
     }
   }
 
@@ -39,8 +41,8 @@ namespace Example.Random
       {
         It should_be_run = () =>
         {
-          Foo.ShouldBeTrue();
-          Bar.ShouldBeTrue();
+          Foo.Should().BeTrue();
+          Bar.Should().BeTrue();
         };
       }
     }

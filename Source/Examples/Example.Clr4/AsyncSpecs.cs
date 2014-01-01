@@ -2,6 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using FluentAssertions;
+
 using Machine.Specifications;
 
 namespace Example.Clr4
@@ -28,6 +30,6 @@ namespace Example.Clr4
     Because of = () => { Result = Worker.DoWorkAsync().Await(); };
 
     It should_wait_for_the_async_work_to_complete =
-      () => Result.ShouldEqual("done");
+      () => Result.Should().Be("done");
   }
 }

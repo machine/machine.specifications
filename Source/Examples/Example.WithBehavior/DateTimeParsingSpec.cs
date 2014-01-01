@@ -1,5 +1,7 @@
 using System;
 
+using FluentAssertions;
+
 using Machine.Specifications;
 
 // This is a rather contrived example, but I hope it shows what you can do with it.
@@ -39,6 +41,6 @@ namespace Example.WithBehavior
   {
     protected static DateTime ParsedDate;
 
-    It should_parse_the_expected_date = () => ParsedDate.ShouldEqual(new DateTime(2009, 1, 21));
+    It should_parse_the_expected_date = () => ParsedDate.Should().Be(new DateTime(2009, 1, 21));
   }
 }
