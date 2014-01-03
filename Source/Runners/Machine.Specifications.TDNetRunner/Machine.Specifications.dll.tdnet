@@ -1,5 +1,5 @@
 <TestRunner>
-       <FriendlyName>Machine.Specifications @configatron.version.full@</FriendlyName>
+       <FriendlyName><!-- WILL BE REPLACED BY AFTER BUILD--></FriendlyName>
        <AssemblyPath>Machine.Specifications.TDNetRunner.dll</AssemblyPath>
        <TypeName>Machine.Specifications.TDNetRunner.SpecificationRunner</TypeName>
 </TestRunner>

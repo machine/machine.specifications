@@ -83,10 +83,7 @@
     <None Include="InstallTDNetRunnerSilent.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Machine.Specifications.dll.tdnet">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Machine.Specifications.dll.tdnet.template" />
+    <None Include="Machine.Specifications.dll.tdnet" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -112,11 +109,17 @@
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
+  <!-- The after build task prepares the tdnet file -->
+  <Target Name="AfterBuild">
+	<GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+		<Output TaskParameter="Assemblies" ItemName="AssemblyInfo"/>
+	</GetAssemblyIdentity>
+    <Copy SourceFiles="$(ProjectDir)\Machine.Specifications.dll.tdnet" DestinationFiles="$(TargetDir)\Machine.Specifications.dll.tdnet" />
+    <XmlPoke XmlInputPath="$(TargetDir)\Machine.Specifications.dll.tdnet" Query="//ns:FriendlyName" Value="Machine.Specifications %(AssemblyInfo.Version)" Namespaces="&lt;Namespace Prefix='ns' Uri='' /&gt;" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
   </Target>
   -->
 </Project>
