@@ -71,6 +71,7 @@
     </Compile>
     <Compile Include="Annotations\ReSharperAttributes.cs" />
     <Compile Include="BehaviorsAttribute.cs" />
+    <Compile Include="Catch.cs" />
     <Compile Include="DelegateUsageAttribute.cs" />
     <Compile Include="Factories\BehaviorFactory.cs" />
     <Compile Include="Factories\ITagExtractor.cs" />
