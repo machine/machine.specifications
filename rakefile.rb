@@ -13,9 +13,9 @@ rescue LoadError
   exit 0
 end
 
-task :rebuild => [:clean, :configure, :restore, :build]
+task :rebuild => [ :clean, :configure, :restore, :build, :templates ]
 
-task :default => [:rebuild, :tests, :specs ]
+task :default => [ :rebuild, :tests, :specs ]
 
 desc "Prepares necessary configuration for build"
 task :configure do
@@ -42,21 +42,10 @@ task :configure do
   configatron.version.full = Configatron::Delayed.new do
     open("|Tools/GitFlowVersion/GitFlowVersion.exe").read().scan(/NugetVersion":"(.*)"/)[0][0][0,20]
   end
-  configatron.version.short = Configatron::Delayed.new do
-    open("|Tools/GitFlowVersion/GitFlowVersion.exe").read().scan(/ShortVersion":"(.*)"/)[0][0]
-  end
 
   configatron.configure_from_hash build_config
-  configatron.protect_all!
+  #configatron.protect_all!
   puts configatron.inspect
-  
-  #Write teamcity build number
-  puts "##teamcity[buildNumber '#{configatron.version.short}']"
-  
-  #Prepare templates
-  FileList.new('**/*.template').each do |template|
-    QuickTemplate.new(template).exec(configatron)
-  end
 end
 
 desc "Prepares the working directory for a new build"
@@ -75,7 +64,6 @@ task :clean do
   end
   FileUtils.rm_rf filesToClean
   
-  Dir.mkdir 'Build'
   Dir.mkdir 'Distribution'
   Dir.mkdir 'Specs'
 end
@@ -126,6 +114,13 @@ nunit :tests => [:rebuild] do |cmd|
 	"/nothread",
 	"/work=Specs"
   ]
+end
+
+task :templates do
+  #Prepare templates
+  FileList.new('**/*.template').each do |template|
+    QuickTemplate.new(template).exec(configatron)
+  end
 end
 
 desc "Package build artifacts as a NuGet package and a symbols package"
