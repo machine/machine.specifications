@@ -42,23 +42,9 @@ namespace Example.CustomDelegates
     };
 
     Because transfer_is_made =
-      () => exception = Exception(() => fromAccount.Transfer(2m, toAccount));
+      () => exception = Catch.Exception(() => fromAccount.Transfer(2m, toAccount));
 
     Then should_not_allow_the_transfer =
       () => exception.Should().BeOfType<Exception>();
-
-    public static Exception Exception(Action throwingAction)
-    {
-      try
-      {
-        throwingAction();
-      }
-      catch (Exception exception)
-      {
-        return exception;
-      }
-
-      return null;
-    }
   }
 }

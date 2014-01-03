@@ -76,7 +76,7 @@ namespace Machine.Specifications.Specs.Runner
   {
     static Exception exception;
 
-    Because of = () => { exception = Exception(Run<context_with_nested_behaviors>); };
+    Because of = () => { exception = Catch.Exception(Run<context_with_nested_behaviors>); };
 
     It should_fail = () => exception.Should().BeOfType<SpecificationUsageException>();
     It should_print_the_type_containing_the_nested_behaviors = () =>
@@ -89,7 +89,7 @@ namespace Machine.Specifications.Specs.Runner
   {
     static Exception exception;
 
-    Because of = () => { exception = Exception(Run<context_with_behaviors_without_behaviors_attribute>); };
+    Because of = () => { exception = Catch.Exception(Run<context_with_behaviors_without_behaviors_attribute>); };
 
     It should_fail = () => exception.Should().BeOfType<SpecificationUsageException>();
     It should_print_the_type_missing_the_attribute = () =>
@@ -102,7 +102,7 @@ namespace Machine.Specifications.Specs.Runner
   {
     static Exception exception;
 
-    Because of = () => { exception = Exception(Run<context_with_behaviors_with_establish>); };
+    Because of = () => { exception = Catch.Exception(Run<context_with_behaviors_with_establish>); };
 
     It should_fail = () => exception.Should().BeOfType<SpecificationUsageException>();
     It should_print_the_behaviors_with_the_establish = () =>
@@ -115,7 +115,7 @@ namespace Machine.Specifications.Specs.Runner
   {
     static Exception exception;
 
-    Because of = () => { exception = Exception(Run<context_with_behaviors_with_because>); };
+    Because of = () => { exception = Catch.Exception(Run<context_with_behaviors_with_because>); };
 
     It should_fail = () => exception.Should().BeOfType<SpecificationUsageException>();
     It should_print_the_behaviors_with_the_because = () =>
@@ -128,7 +128,7 @@ namespace Machine.Specifications.Specs.Runner
   {
     static Exception exception;
 
-    Because of = () => { exception = Exception(Run<context_missing_protected_fields_that_are_in_behaviors>); };
+    Because of = () => { exception = Catch.Exception(Run<context_missing_protected_fields_that_are_in_behaviors>); };
 
     It should_fail = () => exception.Should().BeOfType<SpecificationUsageException>();
     It should_print_the_behaviors_containing_missing_fields = () =>
@@ -143,7 +143,7 @@ namespace Machine.Specifications.Specs.Runner
   {
     static Exception exception;
 
-    Because of = () => { exception = Exception(Run<context_with_protected_fields_having_different_types_than_in_behaviors>); };
+    Because of = () => { exception = Catch.Exception(Run<context_with_protected_fields_having_different_types_than_in_behaviors>); };
 
     It should_fail = () => exception.Should().BeOfType<SpecificationUsageException>();
     It should_print_the_behaviors_containing_wrongly_typed_fields = () =>

@@ -70,6 +70,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="CatchSpecs.cs" />
     <Compile Include="ExceptionResultSpecs.cs" />
     <Compile Include="Explorers\AssemblyExplorerSpecs.cs" />
     <Compile Include="Factories\ContextFactorySpecs.cs" />

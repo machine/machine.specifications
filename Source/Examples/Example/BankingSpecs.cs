@@ -40,7 +40,7 @@ namespace Example
     };
 
     Because of =
-      () => exception = Exception(() => fromAccount.Transfer(2m, toAccount));
+      () => exception = Catch.Exception(() => fromAccount.Transfer(2m, toAccount));
 
     It should_not_allow_the_transfer =
       () => exception.Should().BeOfType<Exception>();
@@ -50,19 +50,5 @@ namespace Example
   {
     protected static Account fromAccount;
     protected static Account toAccount;
-
-    public static Exception Exception(Action throwingAction)
-    {
-      try
-      {
-        throwingAction();
-      }
-      catch (Exception exception)
-      {
-        return exception;
-      }
-
-      return null;
-    }
   }
 }

@@ -168,7 +168,7 @@ namespace Machine.Specifications
     Because it_happens = () =>
     {
       WhenInvoked = true;
-      exception = Exception(() => { throw new Exception(); });
+      exception = Catch.Exception(() => { throw new Exception(); });
     };
 
     It should_throw_an_exception = () =>
@@ -180,20 +180,6 @@ namespace Machine.Specifications
     {
       WhenInvoked = false;
       ItInvoked = false;
-    }
-
-    public static Exception Exception(Action throwingAction)
-    {
-      try
-      {
-        throwingAction();
-      }
-      catch (Exception exception)
-      {
-        return exception;
-      }
-
-      return null;
     }
   }
 

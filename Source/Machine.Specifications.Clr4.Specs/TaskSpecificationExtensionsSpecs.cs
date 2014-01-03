@@ -64,7 +64,7 @@ namespace Machine.Specifications.Clr4.Specs
   {
     static Exception exception;
 
-    Because of = () => exception = Exception(() => Delayed.Fail());
+    Because of = () => exception = Catch.Exception(() => Delayed.Fail());
 
     It should_not_capture_the_exception =
       () => exception.Should().BeNull();
@@ -75,7 +75,7 @@ namespace Machine.Specifications.Clr4.Specs
   {
     static Exception exception;
 
-    Because of = () => exception = Exception(() => Delayed.Fail().Await());
+    Because of = () => exception = Catch.Exception(() => Delayed.Fail().Await());
 
     It should_capture_the_first_exception =
       () => exception.Should().BeOfType<InvalidOperationException>();
@@ -86,7 +86,7 @@ namespace Machine.Specifications.Clr4.Specs
   {
     static Exception exception;
 
-    Because of = () => exception = Exception(() => Delayed.MultipleFails().Await());
+    Because of = () => exception = Catch.Exception(() => Delayed.MultipleFails().Await());
 
     It should_capture_the_aggregate_exception =
       () => exception.Should().BeOfType<AggregateException>();
@@ -97,34 +97,5 @@ namespace Machine.Specifications.Clr4.Specs
 
   public class AsyncSpecs
   {
-    // Redundant for necessary evil, see RunnerSpecs
-    public static Exception Exception(Action throwingAction)
-    {
-      try
-      {
-        throwingAction();
-      }
-      catch (Exception exception)
-      {
-        return exception;
-      }
-
-      return null;
-    }
-
-    // Redundant for necessary evil, see RunnerSpecs
-    public static Exception Exception<T>(Func<T> throwingFunc)
-    {
-      try
-      {
-        throwingFunc();
-      }
-      catch (Exception exception)
-      {
-        return exception;
-      }
-
-      return null;
-    }
   }
 }

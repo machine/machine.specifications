@@ -146,7 +146,7 @@ namespace Machine.Specifications.Specs.Runner
     Because of =
       () =>
       {
-        exception = Exception(Run<context_with_multiple_establish_clauses>);
+        exception = Catch.Exception(Run<context_with_multiple_establish_clauses>);
       };
 
     It should_fail =
@@ -163,7 +163,7 @@ namespace Machine.Specifications.Specs.Runner
     static Exception exception;
 
     Because of =
-      () => exception = Exception(Run<context_with_multiple_given_clauses>);
+      () => exception = Catch.Exception(Run<context_with_multiple_given_clauses>);
 
     It should_fail =
       () => exception.Should().BeOfType<SpecificationUsageException>();
@@ -536,34 +536,6 @@ namespace Machine.Specifications.Specs.Runner
     public static void Run<T>()
     {
       runner.RunMember(typeof(T).Assembly, typeof(T));
-    }
-
-    public static Exception Exception(Action throwingAction)
-    {
-      try
-      {
-        throwingAction();
-      }
-      catch (Exception exception)
-      {
-        return exception;
-      }
-
-      return null;
-    }
-
-    public static Exception Exception<T>(Func<T> throwingFunc)
-    {
-      try
-      {
-        throwingFunc();
-      }
-      catch (Exception exception)
-      {
-        return exception;
-      }
-
-      return null;
     }
   }
 }

@@ -40,7 +40,6 @@
     </Compile>
     <Compile Include="Annotations\ReSharperAttributes.cs" />
     <Compile Include="AssertComparer.cs" />
-    <Compile Include="Catch.cs" />
     <Compile Include="ComparerStrategies\ComparableComparer.cs" />
     <Compile Include="ComparerStrategies\ComparerFactory.cs" />
     <Compile Include="ComparerStrategies\ComparisionResult.cs" />
