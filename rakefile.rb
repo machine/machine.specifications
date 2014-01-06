@@ -42,6 +42,9 @@ task :configure do
   configatron.version.full = Configatron::Delayed.new do
     open("|Tools/GitFlowVersion/GitFlowVersion.exe").read().scan(/NugetVersion":"(.*)"/)[0][0][0,20]
   end
+  configatron.version.short = Configatron::Delayed.new do
+    open("|Tools/GitFlowVersion/GitFlowVersion.exe").read().scan(/ShortVersion":"(.*)"/)[0][0]
+  end  
 
   configatron.configure_from_hash build_config
   #configatron.protect_all!
@@ -117,6 +120,9 @@ nunit :tests => [:rebuild] do |cmd|
 end
 
 task :templates do
+  #Write teamcity build number
+  puts "##teamcity[buildNumber '#{configatron.version.short}']"
+  
   #Prepare templates
   FileList.new('**/*.template').each do |template|
     QuickTemplate.new(template).exec(configatron)
