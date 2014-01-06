@@ -1,7 +1,5 @@
 using System;
 
-using FluentAssertions;
-
 namespace Machine.Specifications.Specs
 {
   [Subject(typeof(Catch))]
@@ -18,7 +16,7 @@ namespace Machine.Specifications.Specs
       Because of = () => { Result = Catch.Exception(() => { throw AnException; }); };
 
       It should_return_the_same_exception =
-        () => Result.Should().BeSameAs(AnException);
+        () => Result.ShouldBeTheSameAs(AnException);
     }
 
     [Subject(typeof(Catch))]
@@ -30,10 +28,10 @@ namespace Machine.Specifications.Specs
       Because of = () => { Result = Catch.Exception(() => { ActionSideEffect = "hi"; }); };
 
       It should_access_the_propety =
-        () => ActionSideEffect.Should().Be("hi");
+        () => ActionSideEffect.ShouldEqual("hi");
 
       It should_return_null =
-        () => Result.Should().BeNull();
+        () => Result.ShouldBeNull();
     }
   }
 
@@ -63,7 +61,7 @@ namespace Machine.Specifications.Specs
       Because of = () => { Result = Catch.Exception(() => Dummy.ThrowingProperty); };
 
       It should_return_the_same_exception =
-        () => Result.Should().BeSameAs(Dummy.AnException);
+        () => Result.ShouldBeTheSameAs(Dummy.AnException);
     }
 
     [Subject(typeof(Catch))]
@@ -75,10 +73,10 @@ namespace Machine.Specifications.Specs
       Because of = () => { Result = Catch.Exception(() => PropertyValue = Dummy.NonThrowingProperty); };
 
       It should_access_the_propety =
-        () => PropertyValue.Should().Be("hi");
+        () => PropertyValue.ShouldEqual("hi");
 
       It should_return_null =
-        () => Result.Should().BeNull();
+        () => Result.ShouldBeNull();
     }
   }
 }
