@@ -2,7 +2,7 @@
 
 :Build
 cls
-"tools\Rake\bin\ruby.exe" "tools\Rake\bin\rake" %*
+CALL bundle exec rake %*
 
 rem Bail if we're running a TeamCity build.
 if defined TEAMCITY_PROJECT_NAME goto Quit

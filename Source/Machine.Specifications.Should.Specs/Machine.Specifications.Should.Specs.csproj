@@ -46,7 +46,6 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AssertionSpecs.cs" />
-    <Compile Include="CatchSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShouldBeLikeSpecs.cs" />
     <Compile Include="Utility\Internal\ErrorMessageSpecs.cs" />

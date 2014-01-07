@@ -1,12 +1,23 @@
-require 'rake'
-require 'rake/clean'
-require 'fileutils'
-require 'configatron'
-Dir.glob(File.join(File.dirname(__FILE__), 'tools/Rake/*.rb')).each do |f|
-  require f
-end
-include FileUtils
+begin
+  require 'bundler/setup'
+  require 'albacore'
+  require 'configatron'  
+  require 'fileutils'
+  require File.dirname(__FILE__) + "/Tools/Rake/quicktemplate.rb"
 
+rescue LoadError
+  puts 'Bundler and all the gems need to be installed prior to running this rake script. Installing...'
+  system("gem install bundler --source http://rubygems.org")
+  sh 'bundle install'
+  system("bundle exec rake", *ARGV)
+  exit 0
+end
+
+task :rebuild => [ :clean, :configure, :restore, :build, :templates ]
+
+task :default => [ :rebuild, :tests, :specs ]
+
+desc "Prepares necessary configuration for build"
 task :configure do
   project = "Machine.Specifications"
   target = ENV['target'] || 'Debug'
@@ -33,166 +44,111 @@ task :configure do
   end
   configatron.version.short = Configatron::Delayed.new do
     open("|Tools/GitFlowVersion/GitFlowVersion.exe").read().scan(/ShortVersion":"(.*)"/)[0][0]
-  end
+  end  
 
   configatron.configure_from_hash build_config
-  configatron.protect_all!
+  #configatron.protect_all!
   puts configatron.inspect
 end
 
-Rake::Task['configure'].invoke
-
-desc "Build and run specs"
-task :default => ['build:compile', 'tests:run', 'specs:run']
-
-CLEAN.clear
-CLEAN.include('teamcity-info.xml')
-CLEAN.include('Source/**/obj')
-CLEAN.include('Build')
-CLEAN.include('Distribution')
-CLEAN.include('Specs')
-CLEAN.include('**/*.template')
-# Clean template results.
-CLEAN.map! do |f|
+desc "Prepares the working directory for a new build"
+task :clean do
+  filesToClean = FileList.new
+  filesToClean.include('teamcity-info.xml')
+  filesToClean.include('Source/**/obj')
+  filesToClean.include('Build')
+  filesToClean.include('Distribution')
+  filesToClean.include('Specs')
+  filesToClean.include('**/*.template')
+  # Clean template results.
+  filesToClean.map! do |f|
   next f.ext if f.pathmap('%x') == '.template'
   f
-end
-
-namespace :generate do
+  end
+  FileUtils.rm_rf filesToClean
   
+  Dir.mkdir 'Distribution'
+  Dir.mkdir 'Specs'
+end
+
+task :restore do
+  nopts = %W(
+   Tools/Nuget/NuGet.exe restore ./Machine.Specifications.sln
+  )
+
+  sh(*nopts)
+end
+
+desc "Run a simple clean/build"
+msbuild :build do |msb|
+  msb.solution = "./Machine.Specifications.sln"
+  msb.targets = [:Clean, :Build]
+  msb.use :net4
+  msb.verbosity = :minimal
+  msb.properties = {
+     :Configuration => configatron.target,
+     :TrackFileAccess => false,
+     :SolutionDir => File.expand_path('.'),
+     :SignAssembly => configatron.sign_assembly,
+     :Platform => 'Any CPU'
+  }
+end
+
+task :specs  => [:rebuild] do
+  puts 'Running Specs...'
+
+  specs = FileList.new("#{configatron.out_dir}/Tests/*.Specs.dll").exclude(/Clr4/)
+  sh "#{configatron.out_dir}/mspec.exe", "--html", "Specs/#{configatron.project}.Specs.html", *(configatron.mspec_options + specs)
+
+  specs = FileList.new("#{configatron.out_dir}/Tests/*.Clr4.Specs.dll")
+  sh "#{configatron.out_dir}/mspec-clr4.exe", *(configatron.mspec_options + specs)
+
+  puts "Wrote specs to Specs/#{configatron.project}.Specs.html"
+end
+
+desc "Run all nunit tests"
+nunit :tests => [:rebuild] do |cmd|
+  cmd.command = "Source/packages/NUnit.Runners/tools/nunit-console-x86.exe"
+  cmd.assemblies = FileList.new("#{configatron.out_dir}/Tests/*.Tests.dll").to_a
+  #cmd.results_path = "Specs/test-report.xml"
+  #cmd.no_logo
+  cmd.parameters = [
+    "/framework=#{configatron.nunit_framework}",
+	"/nothread",
+	"/work=Specs"
+  ]
+end
+
+task :templates do
+  #Write teamcity build number
   puts "##teamcity[buildNumber '#{configatron.version.short}']"
-
-  desc 'Update the configuration files for the build'
-  task :config do
-    FileList.new('**/*.template').each do |template|
-      QuickTemplate.new(template).exec(configatron)
-    end
+  
+  #Prepare templates
+  FileList.new('**/*.template').each do |template|
+    QuickTemplate.new(template).exec(configatron)
   end
 end
 
-namespace :build do
-  desc "Compile everything"
-  task :compile => ['generate:config'] do
-    opts = {
-        :version => 'v4\Full',
-        :switches => { :verbosity => :minimal, :target => :Build },
-        :properties => {
-          :Configuration => configatron.target,
-          :TrackFileAccess => false,
-          :SolutionDir => File.expand_path('.')
-        }
-      }
+desc "Package build artifacts as a NuGet package and a symbols package"
+task :createpackage => [ :default ] do
+	opts = %W(
+	  Tools/Ripple/Ripple.exe create-packages --version #{configatron.version.full} --symbols --verbose --destination #{configatron.distribution.dir}
+	  )
 
-    def patch(project_file, config)
-      csproj = File.read project_file
-
-      patched = csproj.dup
-      config.each do |element, value|
-        patched.gsub!(/<#{element}>.*?<\/#{element}>/, "<#{element}>#{value}</#{element}>")
-      end
-
-      File.open(project_file, "w") { |file| file.write patched }
-
-      {
-        :file => project_file,
-        :original_contents => csproj
-      }
-    end
-
-    begin
-      nopts = %W(
-        Tools/Nuget/NuGet.exe restore ./Machine.Specifications.sln
-      )
-
-      sh(*nopts)
-	
-      csprojs = FileList.new('Source/**/*.csproj').map do |project|
-        patch project, { :SignAssembly => configatron.sign_assembly }
-      end
-
-      csprojs.each do |project|
-        MSBuild.compile opts.merge({ :project => project[:file] })
-      end
-
-      runner_configs = {
-        :x86         => { :TargetFrameworkVersion => 'v3.5', :PlatformTarget => 'x86',    :AssemblyName => 'mspec-x86' },
-        :AnyCPU      => { :TargetFrameworkVersion => 'v3.5', :PlatformTarget => 'AnyCPU', :AssemblyName => 'mspec' },
-        :clr4_x86    => { :TargetFrameworkVersion => 'v4.0', :PlatformTarget => 'x86',    :AssemblyName => 'mspec-x86-clr4' },
-        :clr4_AnyCPU => { :TargetFrameworkVersion => 'v4.0', :PlatformTarget => 'AnyCPU', :AssemblyName => 'mspec-clr4' }
-      }
-      console_runner = 'Source/Runners/Machine.Specifications.ConsoleRunner/Machine.Specifications.ConsoleRunner.csproj'
-
-      runner_configs.values.each do |config|
-        project = patch console_runner, config
-
-        # We need to remove obj, otherwise MSBuild will delete the build output from previous runner_config builds.
-        rm_rf File.join(File.dirname(console_runner), 'obj')
-
-        MSBuild.compile opts.merge({ :project => project[:file] })
-      end
-    ensure
-      csprojs.each do |project|
-        File.open(project[:file], "w") { |file| file.write project[:original_contents] }
-      end
-    end
-  end
-
-  desc "Rebuild everything"
-  task :rebuild => [ :clean, :compile ]
-end
-
-namespace :specs do
-  task :view => :run do
-    system "start Specs/#{configatron.project}.Specs.html"
-  end
-
-  desc "Run specifications"
-  task :run do
-    puts 'Running Specs...'
-
-    specs = FileList.new("#{configatron.out_dir}/Tests/*.Specs.dll").exclude(/Clr4/)
-    sh "#{configatron.out_dir}/mspec.exe", "--html", "Specs/#{configatron.project}.Specs.html", *(configatron.mspec_options + specs)
-
-    specs = FileList.new("#{configatron.out_dir}/Tests/*.Clr4.Specs.dll")
-    sh "#{configatron.out_dir}/mspec-clr4.exe", *(configatron.mspec_options + specs)
-
-    puts "Wrote specs to Specs/#{configatron.project}.Specs.html, run 'rake specs:view' to see them"
+  sh(*opts) do |ok, status|
+	ok or fail "Command failed with status (#{status.exitstatus})"
   end
 end
 
-namespace :tests do
-  desc "Run unit tests"
-  task :run do
-    puts 'Running NUnit tests...'
+desc "Publishes the NuGet package"
+task :publishpackage => [ :default ] do
+  raise "NuGet access key is missing, cannot publish" if configatron.nuget.key.nil?
 
-    tests = FileList.new("#{configatron.out_dir}/Tests/*.Tests.dll").to_a
-    runner = NUnitRunner.new :tool => 'Source/packages/NUnit.Runners/tools/nunit-console-x86.exe', :results => "Specs", :clr_version => configatron.nunit_framework
-    runner.execute tests
+  opts = %W(
+	Tools/Ripple/Ripple.exe publish #{configatron.version.full} #{configatron.nuget.key} --symbols --artifacts #{configatron.distribution.dir} --verbose         
+  )
+
+  sh(*opts) do |ok, status|
+	ok or fail "Command failed with status (#{status.exitstatus})"
   end
-end
-
-namespace :package do
-    namespace :nuget do
-    desc "Package build artifacts as a NuGet package and a symbols package"
-    task :create => [ 'build:rebuild', 'tests:run', 'specs:run' ] do
-		opts = %W(
-		  Tools/Ripple/Ripple.exe create-packages --version #{configatron.version.full} --symbols --verbose --destination #{configatron.distribution.dir}
-		  )
-
-		sh(*opts)
-    end
-
-    desc "Publishes the NuGet package"
-    task :publish => [ 'build:rebuild', 'tests:run', 'specs:run' ] do
-      raise "NuGet access key is missing, cannot publish" if configatron.nuget.key.nil?
-
-      opts = %W(
-        Tools/Ripple/Ripple.exe publish #{configatron.version.full} #{configatron.nuget.key} --symbols --artifacts #{configatron.distribution.dir} --verbose         
-      )
-
-      sh(*opts) do |ok, status|
-        ok or fail "Command failed with status (#{status.exitstatus})"
-    end
-	end
-	end
 end

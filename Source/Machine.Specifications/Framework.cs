@@ -8,6 +8,7 @@ namespace Machine.Specifications
 
   [AssertDelegate]
   public delegate void It();
+
   [BehaviorDelegate]
   public delegate void Behaves_like<TBehavior>();
 

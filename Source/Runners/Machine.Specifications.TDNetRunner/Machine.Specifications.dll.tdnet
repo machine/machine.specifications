@@ -1,0 +1,5 @@
+<TestRunner>
+       <FriendlyName><!-- WILL BE REPLACED BY AFTER BUILD--></FriendlyName>
+       <AssemblyPath>Machine.Specifications.TDNetRunner.dll</AssemblyPath>
+       <TypeName>Machine.Specifications.TDNetRunner.SpecificationRunner</TypeName>
+</TestRunner>

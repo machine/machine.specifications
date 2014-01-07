@@ -25,27 +25,22 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
     {
       using (ReadLockCookie.Create()) //Get a read lock so that it is safe to read the assembly
       {
-        foreach (var metadataTypeInfo in GetExportedTypes(assembly.GetTypes()))
+        foreach (var metadataTypeInfo in GetTypesIncludingNested(assembly.GetTypes()))
           this._assemblyExplorer.Explore(project, assembly, consumer, metadataTypeInfo);
       }
     }
 
-    private static IEnumerable<IMetadataTypeInfo> GetExportedTypes(IEnumerable<IMetadataTypeInfo> types)
+    private static IEnumerable<IMetadataTypeInfo> GetTypesIncludingNested(IEnumerable<IMetadataTypeInfo> types)
     {
-      foreach (var type in (types ?? Enumerable.Empty<IMetadataTypeInfo>()).Where(IsPublic))
+      foreach (var type in (types ?? Enumerable.Empty<IMetadataTypeInfo>()))
       {
-        foreach (var nestedType in GetExportedTypes(type.GetNestedTypes())) //getting nested classes too
+        foreach (var nestedType in GetTypesIncludingNested(type.GetNestedTypes())) //getting nested classes too
         {
           yield return nestedType;
         }
 
         yield return type;
       }
-    }
-
-    private static bool IsPublic(IMetadataTypeInfo type)
-    {
-      return (type.IsNested && type.IsNestedPublic) || type.IsPublic;
     }
 
     public IUnitTestProvider Provider
