@@ -29,7 +29,10 @@ task :configure do
     :nunit_framework => "net-3.5",
     :mspec_options => (["--teamcity"] if ENV.include?('TEAMCITY_PROJECT_NAME')) || []
   }
-
+  
+  configatron.solution = Configatron::Dynamic.new do
+    FileList.new("*.sln").to_a[0]
+  end
   configatron.nuget.key = Configatron::Dynamic.new do
     next File.read('NUGET_KEY') if File.readable?('NUGET_KEY')
   end
@@ -70,7 +73,7 @@ end
 
 task :restore do
   nopts = %W(
-   nuget restore ./Machine.Specifications.sln
+   nuget restore "#{configatron.solution}"
   )
 
   sh(*nopts)
@@ -78,7 +81,7 @@ end
 
 desc "Run a simple clean/build"
 msbuild :build do |msb|
-  msb.solution = "./Machine.Specifications.sln"
+  msb.solution = configatron.solution
   msb.targets = [:Clean, :Build]
   msb.use :net4
   msb.verbosity = :minimal
