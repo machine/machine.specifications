@@ -37,7 +37,7 @@ task :configure do
     next File.read('NUGET_KEY') if File.readable?('NUGET_KEY')
   end
   configatron.project = Configatron::Delayed.new do
-    "#{project}#{'-Signed' if configatron.sign_assembly}"
+    "#{configatron.solution.gsub(".sln", "")}#{'-Signed' if configatron.sign_assembly}"
   end
   configatron.distribution.dir = Configatron::Delayed.new do
     "Distribution/"
