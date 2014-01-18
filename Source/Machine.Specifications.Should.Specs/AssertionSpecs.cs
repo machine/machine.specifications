@@ -206,4 +206,72 @@ namespace Machine.Specifications.Should.Specs
     It should_print_the_func_description =
       () => Exception.Message.ShouldContain("Should match expression [x => (x > 50)], but does not.");
   }
+
+  [Subject(typeof(ShouldExtensionMethods))]
+  public class when_comparing_different_classes_with_equals_for_equality
+  {
+    Because of = () => FiveFrancs = new Franc(5, "CHF");
+    It should_equal_money_with_currency_set_to_francs = () => FiveFrancs.Equals(new Money(5, "CHF")).ShouldBeTrue();
+    static Franc FiveFrancs;
+  }
+
+  [Subject(typeof(ShouldExtensionMethods))]
+  public class when_comparing_different_classes_with_should_equal_for_equality
+  {
+    Because of = () => FiveFrancs = new Franc(5, "CHF");
+    It should_be_ten_francs_when_multiplied_by_2 = () => FiveFrancs.Times(2).ShouldEqual(Money.Franc(10));
+    It should_be_fifteen_francs_when_multiplied_by_3 = () => FiveFrancs.Times(3).ShouldEqual(Money.Franc(15));
+    static Franc FiveFrancs;
+  }
+
+  public class Money : IEquatable<Money>
+  {
+    readonly int _amount;
+    readonly string _currency;
+
+    public Money(int amount, string currency)
+    {
+      _amount = amount;
+      _currency = currency;
+    }
+
+    public Money Times(int multiplier)
+    {
+      return new Money(multiplier * _amount, _currency);
+    }
+
+    public static Money Franc(int amount)
+    {
+      return new Franc(amount, "CHF");
+    }
+
+    public bool Equals(Money other)
+    {
+      return _amount == other._amount && _currency == other._currency;
+    }
+
+    public override bool Equals(object obj)
+    {
+      if (ReferenceEquals(null, obj))
+        return false;
+      if (ReferenceEquals(this, obj))
+        return true;
+      return Equals(obj as Money);
+    }
+
+    public override int GetHashCode()
+    {
+      unchecked
+      {
+        return (_amount * 997) ^ _currency.GetHashCode();
+      }
+    }
+  }
+
+  public class Franc : Money 
+  {
+    public Franc(int amount, string currency) : base(amount, currency)
+    {
+    }
+  }
 }
