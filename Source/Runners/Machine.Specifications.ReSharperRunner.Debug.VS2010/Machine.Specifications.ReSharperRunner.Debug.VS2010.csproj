@@ -40,9 +40,11 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-
-  <Import Project="$(SolutionDir)\Tools\GitFlowVersion\build\GitFlowVersionTask.targets" />
+  
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -55,4 +57,5 @@
     <StartProgram>$(DevEnvDir)devenv.exe</StartProgram>
     <StartArguments>/rootsuffix mspec /ReSharper.Internal /ReSharper.Plugin "$(SolutionDir)\Build\Debug\Machine.Specifications.ReSharperRunner.8.0.dll"</StartArguments>
   </PropertyGroup>
+  <Import Project="..\..\..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets" Condition="Exists('..\..\..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets')" />
 </Project>

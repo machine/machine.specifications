@@ -124,7 +124,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\Tools\GitFlowVersion\build\GitFlowVersionTask.targets" />
+  
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -140,4 +140,5 @@
 copy /y "$(ProjectDir)..\Machine.Specifications.Reporting\$(OutDir)..\Machine.Specifications.Reporting.Templates.dll" "$(TargetDir)"
 if errorlevel 1 copy /y "$(ProjectDir)..\Machine.Specifications.Reporting\$(OutDir)Machine.Specifications.Reporting.Templates.dll" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\..\..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets" Condition="Exists('..\..\..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets')" />
 </Project>
