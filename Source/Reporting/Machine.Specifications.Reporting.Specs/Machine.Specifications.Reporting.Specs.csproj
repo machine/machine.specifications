@@ -58,10 +58,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluentAssertions">
-      <HintPath>..\..\packages\FluentAssertions\lib\net35\FluentAssertions.dll</HintPath>
+      <HintPath>..\..\..\packages\FluentAssertions.2.2.0.0\lib\net35\FluentAssertions.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks">
-      <HintPath>..\..\packages\RhinoMocks\lib\net\Rhino.Mocks.dll</HintPath>
+      <HintPath>..\..\..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -88,11 +88,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Examples\Example.Random\Example.Random.csproj">
       <Project>{1295C389-FCE4-4425-93E4-E4AE239B3E35}</Project>
-      <Name>Machine.Specifications.Example.Random</Name>
+      <Name>Example.Random</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Examples\Example\Example.csproj">
       <Project>{2C28C643-31A2-44CA-B762-953A963F6F61}</Project>
-      <Name>Machine.Specifications.Example</Name>
+      <Name>Example</Name>
     </ProjectReference>
     <ProjectReference Include="..\Machine.Specifications.Reporting\Machine.Specifications.Reporting.csproj">
       <Project>{490496AF-BEA5-4454-88B0-F73C62C22987}</Project>
@@ -121,10 +121,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ripple.dependencies.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\Tools\Ripple\RippleRestoreTask.targets" />
   <Import Project="$(SolutionDir)\Tools\GitFlowVersion\build\GitFlowVersionTask.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

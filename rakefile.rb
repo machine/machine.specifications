@@ -40,11 +40,8 @@ task :configure do
     "Distribution/"
   end
   configatron.version.full = Configatron::Delayed.new do
-    open("|Tools/GitFlowVersion/GitFlowVersion.exe").read().scan(/NugetVersion":"(.*)"/)[0][0][0,20]
+    `gitflowversion`.scan(/NugetVersion":"(.*)"/)[0][0][0,20]
   end
-  configatron.version.short = Configatron::Delayed.new do
-    open("|Tools/GitFlowVersion/GitFlowVersion.exe").read().scan(/ShortVersion":"(.*)"/)[0][0]
-  end  
 
   configatron.configure_from_hash build_config
   #configatron.protect_all!
@@ -73,7 +70,7 @@ end
 
 task :restore do
   nopts = %W(
-   Tools/Nuget/NuGet.exe restore ./Machine.Specifications.sln
+   nuget restore ./Machine.Specifications.sln
   )
 
   sh(*nopts)
@@ -108,7 +105,7 @@ end
 
 desc "Run all nunit tests"
 nunit :tests => [:rebuild] do |cmd|
-  cmd.command = "Source/packages/NUnit.Runners/tools/nunit-console-x86.exe"
+  cmd.command = "packages/NUnit.Runners.2.6.3/tools/nunit-console-x86.exe"
   cmd.assemblies = FileList.new("#{configatron.out_dir}/Tests/*.Tests.dll").to_a
   #cmd.results_path = "Specs/test-report.xml"
   #cmd.no_logo
@@ -120,9 +117,6 @@ nunit :tests => [:rebuild] do |cmd|
 end
 
 task :templates do
-  #Write teamcity build number
-  puts "##teamcity[buildNumber '#{configatron.version.short}']"
-  
   #Prepare templates
   FileList.new('**/*.template').each do |template|
     QuickTemplate.new(template).exec(configatron)
@@ -132,7 +126,7 @@ end
 desc "Package build artifacts as a NuGet package and a symbols package"
 task :createpackage => [ :default ] do
 	opts = %W(
-	  Tools/Ripple/Ripple.exe create-packages --version #{configatron.version.full} --symbols --verbose --destination #{configatron.distribution.dir}
+	  nuget pack "Misc/machine.specifications.nuspec" -Symbols -Verbosity detailed -OutputDirectory #{configatron.distribution.dir}
 	  )
 
   sh(*opts) do |ok, status|
@@ -145,7 +139,7 @@ task :publishpackage => [ :default ] do
   raise "NuGet access key is missing, cannot publish" if configatron.nuget.key.nil?
 
   opts = %W(
-	Tools/Ripple/Ripple.exe publish #{configatron.version.full} #{configatron.nuget.key} --symbols --artifacts #{configatron.distribution.dir} --verbose         
+	nuget push #{configatron.distribution.dir} #{configatron.nuget.key} -Verbosity detailed         
   )
 
   sh(*opts) do |ok, status|

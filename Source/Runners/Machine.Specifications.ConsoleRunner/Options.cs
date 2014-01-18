@@ -28,56 +28,53 @@ namespace Machine.Specifications.ConsoleRunner
       XmlPath = string.Empty;
     }
 
-    [Option(null, "xml", HelpText = "Outputs the XML report to the file referenced by the path")]
+    [Option("xml", HelpText = "Outputs the XML report to the file referenced by the path")]
     public string XmlPath { get; set; }
 
-    [Option(null,
-      "html",
+    [Option("html",
       HelpText = "Outputs the HTML report to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)")]
     public string HtmlPath { get; set; }
 
-    [Option("f",
+    [Option('f',
       "filter",
       HelpText = "Filter file specifying contexts to execute (full type name, one per line). Takes precedence over tags")]
     public string FilterFile { get; set; }
 
-    [Option("s",
+    [Option('s',
       "silent",
       HelpText = "Suppress progress output (print fatal errors, failures and summary)")]
     public bool Silent { get; set; }
 
-    [Option("p",
+    [Option('p',
       "progress",
       HelpText = "Print dotted progress output")]
     public bool Progress { get; set; }
 
-    [Option("c",
+    [Option('c',
       "no-color",
       HelpText = "Suppress colored console output")]
     public bool NoColor { get; set; }
 
-    [Option("t",
+    [Option('t',
       "timeinfo",
       HelpText = "Adds time-related information in HTML output")]
     public bool ShowTimeInformation { get; set; }
 
-    [Option(null,
-      "teamcity",
+    [Option("teamcity",
       HelpText = "Reporting for TeamCity CI integration (also auto-detected)")]
     public bool TeamCityIntegration { get; set; }
 
-    [Option(null,
-      "no-teamcity-autodetect",
+    [Option("no-teamcity-autodetect",
       HelpText = "Disables TeamCity autodetection")]
     public bool DisableTeamCityAutodetection { get; set; }
 
-    [OptionList("i",
+    [OptionList('i',
       "include",
       HelpText = "Execute all specifications in contexts with these comma delimited tags. Ex. -i \"foo,bar,foo_bar\"",
       Separator = ',')]
     public IList<string> IncludeTags { get; set; }
 
-    [OptionList("x",
+    [OptionList('x',
       "exclude",
       HelpText = "Exclude specifications in contexts with these comma delimited tags. Ex. -x \"foo,bar,foo_bar\"",
       Separator = ',')]
@@ -86,7 +83,7 @@ namespace Machine.Specifications.ConsoleRunner
     [ValueList(typeof(List<string>))]
     public IList<string> AssemblyFiles { get; set; }
 
-    [Option("w",
+    [Option('w',
       "wait",
       HelpText = "Wait for debugger to be attached")]
     public bool WaitForDebugger { get; set; }
@@ -125,7 +122,7 @@ namespace Machine.Specifications.ConsoleRunner
 
     public virtual bool ParseArguments(string[] args)
     {
-      return new CommandLineParser().ParseArguments(args, this, Console.Out);
+      return Parser.Default.ParseArguments(args, this);
     }
 
     public virtual RunOptions GetRunOptions()

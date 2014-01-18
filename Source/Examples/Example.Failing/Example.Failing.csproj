@@ -67,7 +67,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Example.BindingFailure.Ref\Example.BindingFailure.Ref.csproj">
       <Project>{2C33D385-9024-4346-8839-93CFF1AF227C}</Project>
-      <Name>Machine.Specifications.BindingFailure.Ref</Name>
+      <Name>Example.BindingFailure.Ref</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Machine.Specifications\Machine.Specifications.csproj">
       <Project>{CCD02629-1262-4F78-9E9F-AC97B942D0E7}</Project>
@@ -92,7 +92,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\Tools\Ripple\RippleRestoreTask.targets" />
   <Import Project="$(SolutionDir)\Tools\GitFlowVersion\build\GitFlowVersionTask.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
