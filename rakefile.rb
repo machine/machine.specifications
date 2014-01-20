@@ -129,7 +129,7 @@ end
 desc "Package build artifacts as a NuGet package and a symbols package"
 task :createpackage => [ :default ] do
 	opts = %W(
-	  nuget pack "Misc/machine.specifications.nuspec" -Symbols -Verbosity detailed -OutputDirectory #{configatron.distribution.dir}
+	  nuget pack "Misc/machine.specifications.nuspec" -Symbols -OutputDirectory #{configatron.distribution.dir}
 	  )
 
   sh(*opts) do |ok, status|
@@ -142,7 +142,7 @@ task :publishpackage => [ :createpackage ] do
   raise "NuGet access key is missing, cannot publish" if configatron.nuget.key.nil?
 
   opts = %W(
-	nuget push "#{configatron.distribution.dir}*.nupkg" #{configatron.nuget.key} -Verbosity detailed         
+	nuget push #{configatron.distribution.dir}*.nupkg #{configatron.nuget.key}       
   )
 
   sh(*opts) do |ok, status|
