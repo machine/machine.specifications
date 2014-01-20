@@ -33,9 +33,6 @@ task :configure do
   configatron.solution = Configatron::Dynamic.new do
     FileList.new("*.sln").to_a[0]
   end
-  configatron.nuget.key = Configatron::Dynamic.new do
-    next File.read('NUGET_KEY') if File.readable?('NUGET_KEY')
-  end
   configatron.project = Configatron::Delayed.new do
     "#{configatron.solution.gsub(".sln", "")}#{'-Signed' if configatron.sign_assembly}"
   end
@@ -128,24 +125,13 @@ end
 
 desc "Package build artifacts as a NuGet package and a symbols package"
 task :createpackage => [ :default ] do
-	opts = %W(
-	  nuget pack "Misc/machine.specifications.nuspec" -Symbols -OutputDirectory #{configatron.distribution.dir}
-	  )
+	FileList.new('**/*.nuspec').each do |nuspec|
+		opts = %W(
+			nuget pack #{nuspec} -Symbols -OutputDirectory #{configatron.distribution.dir}
+		)
 
-  sh(*opts) do |ok, status|
-	ok or fail "Command failed with status (#{status.exitstatus})"
-  end
-end
-
-desc "Publishes the NuGet package"
-task :publishpackage => [ :createpackage ] do
-  raise "NuGet access key is missing, cannot publish" if configatron.nuget.key.nil?
-
-  opts = %W(
-	nuget push #{configatron.distribution.dir}*.nupkg #{configatron.nuget.key}       
-  )
-
-  sh(*opts) do |ok, status|
-	ok or fail "Command failed with status (#{status.exitstatus})"
-  end
+		sh(*opts) do |ok, status|
+			ok or fail "Command failed with status (#{status.exitstatus})"
+		end
+	end
 end
