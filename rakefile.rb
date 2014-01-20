@@ -138,11 +138,11 @@ task :createpackage => [ :default ] do
 end
 
 desc "Publishes the NuGet package"
-task :publishpackage => [ :default ] do
+task :publishpackage => [ :createpackage ] do
   raise "NuGet access key is missing, cannot publish" if configatron.nuget.key.nil?
 
   opts = %W(
-	nuget push #{configatron.distribution.dir} #{configatron.nuget.key} -Verbosity detailed         
+	nuget push "#{configatron.distribution.dir}/*.nupkg" #{configatron.nuget.key} -Verbosity detailed         
   )
 
   sh(*opts) do |ok, status|
