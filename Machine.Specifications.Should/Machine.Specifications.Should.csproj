@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Fody.targets" />
+    <None Include="Machine.Specifications.Should.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
