@@ -1,6 +1,6 @@
 Machine.Specifications 0.7.0
 -----------------------------
-- ShouldEqual uses breaking comparer order. Type equality is checked last. (#200)
+- Machine.Specifications.Should has been moved to seperate repository and nuget.
 
 Machine.Specifications 0.6.2
 -----------------------------

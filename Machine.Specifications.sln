@@ -97,10 +97,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Issue157-Fail", "So
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Issue157-Success", "Source\Examples\Example.Issue157-Success\Example.Issue157-Success.csproj", "{79F44A49-3516-40F3-AC67-91EFA57B8119}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Should", "Source\Machine.Specifications.Should\Machine.Specifications.Should.csproj", "{4B86A9FC-4D07-40E3-AEB6-2898B5292972}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Should.Specs", "Source\Machine.Specifications.Should.Specs\Machine.Specifications.Should.Specs.csproj", "{B7E595D5-A988-4616-8548-87D3D691D28F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.NewCustomDelegates", "Source\Examples\Example.NewCustomDelegates\Example.NewCustomDelegates.csproj", "{844788DF-F12F-462F-BDE8-C46F8FFECD12}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.8.1", "Source\Runners\Machine.Specifications.ReSharperRunner.8.1\Machine.Specifications.ReSharperRunner.8.1.csproj", "{69C6A07F-2EAD-474C-90A6-3F1DA5A05460}"
@@ -262,14 +258,6 @@ Global
 		{79F44A49-3516-40F3-AC67-91EFA57B8119}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79F44A49-3516-40F3-AC67-91EFA57B8119}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79F44A49-3516-40F3-AC67-91EFA57B8119}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4B86A9FC-4D07-40E3-AEB6-2898B5292972}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4B86A9FC-4D07-40E3-AEB6-2898B5292972}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4B86A9FC-4D07-40E3-AEB6-2898B5292972}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4B86A9FC-4D07-40E3-AEB6-2898B5292972}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B7E595D5-A988-4616-8548-87D3D691D28F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B7E595D5-A988-4616-8548-87D3D691D28F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B7E595D5-A988-4616-8548-87D3D691D28F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B7E595D5-A988-4616-8548-87D3D691D28F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{844788DF-F12F-462F-BDE8-C46F8FFECD12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{844788DF-F12F-462F-BDE8-C46F8FFECD12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{844788DF-F12F-462F-BDE8-C46F8FFECD12}.Release|Any CPU.ActiveCfg = Release|Any CPU

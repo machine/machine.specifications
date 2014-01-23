@@ -17,17 +17,14 @@
 		<references> 
 			<group targetFramework="net45">
 				<reference file="Machine.Specifications.dll" />
-				<reference file="Machine.Specifications.Should.dll" />
 				<reference file="Machine.Specifications.Clr4.dll" />
 			</group>
 			<group targetFramework="net40">
 				<reference file="Machine.Specifications.dll" />
-				<reference file="Machine.Specifications.Should.dll" />
 				<reference file="Machine.Specifications.Clr4.dll" />
 			</group> 
 			<group>
 				<reference file="Machine.Specifications.dll" />
-				<reference file="Machine.Specifications.Should.dll" />
 			</group>
 		</references>
 	</metadata>
@@ -38,8 +35,6 @@
 		<!--<file src="..\Build\@configatron.target@\Machine.Specifications.tdnet" target="lib\net45" />-->
 		<file src="..\Build\@configatron.target@\Machine.Specifications.Clr4.dll" target="lib\net45" />
 		<file src="..\Build\@configatron.target@\Machine.Specifications.Clr4.pdb" target="lib\net45" />
-		<file src="..\Build\@configatron.target@\Machine.Specifications.Should.dll" target="lib\net45" />
-		<file src="..\Build\@configatron.target@\Machine.Specifications.Should.pdb" target="lib\net45" />
 		<file src="..\Build\@configatron.target@\Machine.Specifications.TDNetRunner.*" target="lib\net45" />
 
 		<!-- NET 4.0 -->
@@ -48,16 +43,12 @@
 		<!--<file src="..\Build\@configatron.target@\Machine.Specifications.tdnet" target="lib\net40" />-->
 		<file src="..\Build\@configatron.target@\Machine.Specifications.Clr4.dll" target="lib\net40" />
 		<file src="..\Build\@configatron.target@\Machine.Specifications.Clr4.pdb" target="lib\net40" />
-		<file src="..\Build\@configatron.target@\Machine.Specifications.Should.dll" target="lib\net40" />
-		<file src="..\Build\@configatron.target@\Machine.Specifications.Should.pdb" target="lib\net40" />
 		<file src="..\Build\@configatron.target@\Machine.Specifications.TDNetRunner.*" target="lib\net40" />
 
 		<!-- NET 2.0 -->
 		<file src="..\Build\@configatron.target@\Machine.Specifications.dll" target="lib\net20" />
 		<file src="..\Build\@configatron.target@\Machine.Specifications.pdb" target="lib\net20" />
 		<!--<file src="..\Build\@configatron.target@\Machine.Specifications.tdnet" target="lib\net20" />-->
-		<file src="..\Build\@configatron.target@\Machine.Specifications.Should.dll" target="lib\net20" />
-		<file src="..\Build\@configatron.target@\Machine.Specifications.Should.pdb" target="lib\net20" />
 		<file src="..\Build\@configatron.target@\Machine.Specifications.TDNetRunner.*" target="lib\net20" />
 		
 		<!-- Sources -->
