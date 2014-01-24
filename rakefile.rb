@@ -3,7 +3,7 @@ begin
   require 'albacore'
   require 'configatron'  
   require 'fileutils'
-  require File.dirname(__FILE__) + "/Tools/Rake/quicktemplate.rb"
+  require './quicktemplate.rb'
   require './rakefile.include.rb'
 
 rescue LoadError
