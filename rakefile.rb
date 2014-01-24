@@ -3,6 +3,7 @@ begin
   require 'albacore'
   require 'configatron'  
   require 'fileutils'
+  require './quicktemplate.rb'
   require './rakefile.include.rb'
 
 rescue LoadError
@@ -13,7 +14,7 @@ rescue LoadError
   exit 0
 end
 
-task :rebuild => [ :clean, :configure, :restore, :build ]
+task :rebuild => [ :clean, :configure, :restore, :build, :templates ]
 
 task :default => [ :rebuild ]
 

@@ -11,6 +11,7 @@
     <AssemblyName>Machine.Specifications.Should</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>false</SignAssembly>	
     <AssemblyOriginatorKeyFile>..\Machine.snk</AssemblyOriginatorKeyFile>
     <FodyPath>..\packages\Fody.1.19.1.0</FodyPath>
   </PropertyGroup>
@@ -32,9 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Machine.Specifications">
+    <Reference Include="Machine.Specifications" Condition="'$(SignAssembly)'=='false'">
       <HintPath>..\packages\Machine.Specifications.0.6.2\lib\net20\Machine.Specifications.dll</HintPath>
     </Reference>
+    <Reference Include="Machine.Specifications" Condition="'$(SignAssembly)'=='true'">
+      <HintPath>..\packages\Machine.Specifications-Signed.0.6.2\lib\net20\Machine.Specifications.dll</HintPath>
+    </Reference>	
     <Reference Include="Obsolete">
       <HintPath>..\packages\Obsolete.Fody.3.0.1.0\Lib\NET35\Obsolete.dll</HintPath>
       <Private>False</Private>
@@ -67,7 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Fody.targets" />
-    <None Include="Machine.Specifications.Should.nuspec" />
+    <None Include="Machine.Specifications.Should.nuspec.template" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

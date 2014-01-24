@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
-		<id>Machine.Specifications.Should</id>
+		<id>@configatron.project@</id>
 		<version>$version$</version>
-		<title>Machine.Specifications.Should</title>
+		<title>@configatron.project@</title>
 		<authors>Aaron Jensen, Alexander Groß, Daniel Marbach, et al.</authors>
 		<owners>Alexander Groß, Daniel Marbach</owners>
 		<summary>Machine.Specifications Should library</summary>

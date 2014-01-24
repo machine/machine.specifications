@@ -11,6 +11,8 @@
     <AssemblyName>Machine.Specifications.Should.Specs</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\Machine.snk</AssemblyOriginatorKeyFile>	
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,9 +36,12 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Machine.Specifications">
+    <Reference Include="Machine.Specifications" Condition="'$(SignAssembly)'=='false'">
       <HintPath>..\packages\Machine.Specifications.0.6.2\lib\net20\Machine.Specifications.dll</HintPath>
     </Reference>
+    <Reference Include="Machine.Specifications" Condition="'$(SignAssembly)'=='true'">
+      <HintPath>..\packages\Machine.Specifications-Signed.0.6.2\lib\net20\Machine.Specifications.dll</HintPath>
+    </Reference>	
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -74,7 +79,10 @@
   <Target Name="AfterBuild">
     <MakeDir Directories="$(SpecsFolder)" />
     <Exec 
-      Condition="'$(Configuration)' == 'Release'" 
+      Condition="'$(Configuration)' == 'Release' AND '$(SignAssembly)' == 'false'" 
       Command="$(SolutionDir)\packages\Machine.Specifications.0.6.2\tools\mspec.exe --progress --silent $(TargetPath) --html $(SpecsFolder)$(MSBuildProjectName).html" />
+	<Exec 
+      Condition="'$(Configuration)' == 'Release' AND '$(SignAssembly)' == 'true'" 
+      Command="$(SolutionDir)\packages\Machine.Specifications-Signed.0.6.2\tools\mspec.exe --progress --silent $(TargetPath) --html $(SpecsFolder)$(MSBuildProjectName).html" />
   </Target>
 </Project>
