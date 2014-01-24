@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
-		<id>@configatron.project@</id>
+		<id>Machine.Specifications.Should</id>
 		<version>$version$</version>
-		<title>@configatron.project@</title>
+		<title>Machine.Specifications.Should</title>
 		<authors>Aaron Jensen, Alexander Groß, Daniel Marbach, et al.</authors>
 		<owners>Alexander Groß, Daniel Marbach</owners>
 		<summary>Machine.Specifications Should library</summary>
@@ -14,11 +14,16 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<iconUrl>http://github.com/machine/machine.specifications/raw/master/Misc/Machine.Specifications-128x128.png</iconUrl>
 		<tags>test unit testing context specification bdd tdd mspec should</tags>
-		<references> 
+		<references>
 			<group>
 				<reference file="Machine.Specifications.Should.dll" />
 			</group>
 		</references>
+		<dependencies>
+			<group>
+				<dependency id="Machine.Specifications" version="(,1.0]" />
+			</group>
+		</dependencies>	
 	</metadata>
 	<files>
 		<!-- NET 4.5 -->

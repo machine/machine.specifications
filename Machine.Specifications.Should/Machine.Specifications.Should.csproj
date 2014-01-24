@@ -71,7 +71,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Fody.targets" />
-    <None Include="Machine.Specifications.Should.nuspec.template" />
+    <None Include="Machine.Specifications.Should-Unsigned.nuspec" />
+    <None Include="Machine.Specifications.Should-Signed.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -14,14 +14,17 @@ rescue LoadError
   exit 0
 end
 
-task :rebuild => [ :clean, :configure, :restore, :build, :templates ]
+task :rebuild => [ :clean, :configure, :restore, :build ]
 
 task :default => [ :rebuild ]
 
 desc "Package build artifacts as a NuGet package and a symbols package"
 task(:createpackage).clear
 task :createpackage => [ :default ] do
-	FileList.new('**/*.nuspec').exclude(/packages/).each do |nuspec|
+	nuspecs = FileList.new('**/*-Signed.nuspec') if configatron.sign_assembly
+	nuspecs = FileList.new('**/*-Unsigned.nuspec') unless configatron.sign_assembly
+	nuspecs.exclude(/packages/)
+	nuspecs.each do |nuspec|
 		opts = %W(
 			nuget pack #{nuspec} -Symbols -Version #{configatron.version.full} -OutputDirectory #{configatron.distribution.dir}
 		)
