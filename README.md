@@ -1,6 +1,6 @@
 # Machine.Specifications
 
-Machine.Specifications (MSpec) is a [context/specification][5] framework that removes language noise and simplifies tests. All it asks is that you accept the `= () =>`. Keep up with the [latest news and discussions][8] or follow the maintainer, [@agross](https://twitter.com/agross).
+Machine.Specifications (MSpec) is a [context/specification][5] framework that removes language noise and simplifies tests. All it asks is that you accept the `= () =>`. Keep up with the [latest news and discussions][8] or follow the maintainers, [@agross](https://twitter.com/agross), CTO of [GROSSWEBER](http://grossweber.com/en) and [@danielmarbach](https://twitter.com/danielmarbach), software developer at [bbv](http://www.bbv.ch/).
 
 [![NDepend supports the Machine.Specifications project](http://www.ndepend.com/res/PoweredByNDepend.png)](http://www.ndepend.com/)
 
