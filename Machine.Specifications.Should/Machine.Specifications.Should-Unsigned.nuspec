@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>Machine.Specifications.Should</id>
+		<version>$version$</version>
+		<title>Machine.Specifications.Should</title>
+		<authors>Aaron Jensen, Alexander Groß, Daniel Marbach, et al.</authors>
+		<owners>Alexander Groß, Daniel Marbach</owners>
+		<summary>Machine.Specifications Should library</summary>
+		<description>Machine.Specifications.Should is a should library for the Context/Specification framework Machine.Specifications</description>
+		<language>en-US</language>
+		<projectUrl>http://github.com/machine/machine.specifications.should</projectUrl>
+		<licenseUrl>http://github.com/machine/machine.specifications.should/blob/master/License.txt</licenseUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<iconUrl>http://github.com/machine/machine.specifications/raw/master/Misc/Machine.Specifications-128x128.png</iconUrl>
+		<tags>test unit testing context specification bdd tdd mspec should</tags>
+		<references>
+			<group>
+				<reference file="Machine.Specifications.Should.dll" />
+			</group>
+		</references>
+		<dependencies>
+			<group>
+				<dependency id="Machine.Specifications" version="(,1.0]" />
+			</group>
+		</dependencies>	
+	</metadata>
+	<files>
+		<!-- NET 4.5 -->
+		<file src="..\Build\Release\Machine.Specifications.Should.dll" target="lib\net45" />
+		<file src="..\Build\Release\Machine.Specifications.Should.pdb" target="lib\net45" />
+
+		<!-- NET 4.0 -->
+		<file src="..\Build\Release\Machine.Specifications.Should.dll" target="lib\net40" />
+		<file src="..\Build\Release\Machine.Specifications.Should.pdb" target="lib\net40" />
+
+		<!-- NET 2.0 -->
+		<file src="..\Build\Release\Machine.Specifications.Should.dll" target="lib\net20" />
+		<file src="..\Build\Release\Machine.Specifications.Should.pdb" target="lib\net20" />
+		
+		<!-- Sources -->
+		<file src="..\**\*.cs" target="src" exclude="..\Examples\**;..\*.Specs\**;..\*.Tests\**;..\**\*.Specs\**"/>
+		
+    <file src="..\License.txt" />
+	</files>  
+</package>

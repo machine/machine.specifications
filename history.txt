@@ -1,0 +1,3 @@
+Machine.Specifications.Should 0.7.0
+-----------------------------
+- ShouldEqual uses breaking comparer order. Type equality is checked last. (#200)
