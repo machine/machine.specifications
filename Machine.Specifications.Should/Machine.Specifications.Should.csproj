@@ -34,10 +34,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Machine.Specifications" Condition="'$(SignAssembly)'=='false'">
-      <HintPath>..\packages\Machine.Specifications.0.6.2\lib\net20\Machine.Specifications.dll</HintPath>
+      <HintPath>..\packages\Machine.Specifications.0.7.0\lib\net20\Machine.Specifications.dll</HintPath>
     </Reference>
     <Reference Include="Machine.Specifications" Condition="'$(SignAssembly)'=='true'">
-      <HintPath>..\packages\Machine.Specifications-Signed.0.6.2\lib\net20\Machine.Specifications.dll</HintPath>
+      <HintPath>..\packages\Machine.Specifications-Signed.0.7.0\lib\net20\Machine.Specifications.dll</HintPath>
     </Reference>	
     <Reference Include="Obsolete">
       <HintPath>..\packages\Obsolete.Fody.3.0.1.0\Lib\NET35\Obsolete.dll</HintPath>
