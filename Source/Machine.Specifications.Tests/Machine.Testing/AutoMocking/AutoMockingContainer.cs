@@ -10,6 +10,7 @@ using Rhino.Mocks;
 
 namespace Machine.Testing.AutoMocking
 {
+  [ObsoleteEx(Message = "Use FluentAssertions or Mocking library of choice directly", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
   public class AutoMockingContainer : MachineContainer
   {
     private readonly MockingDependencyResolver _mockingDependencyResolver;
@@ -30,6 +31,8 @@ namespace Machine.Testing.AutoMocking
       return _mockingDependencyResolver.Get<TService>();
     }
   }
+
+  [ObsoleteEx(Message = "Use FluentAssertions or Mocking library of choice directly", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
   public class MockingDependencyResolverFactory : DefaultContainerInfrastructureFactory
   {
     private readonly MockingDependencyResolver _mockingDependencyResolver;

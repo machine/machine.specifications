@@ -1,3 +1,5 @@
+using FluentAssertions;
+
 using Machine.Specifications.Reporting.Model;
 using Machine.Specifications.Reporting.Visitors;
 
@@ -43,27 +45,27 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
     Because of = () => Linker.Visit(Report);
 
     It should_not_assign_a__previous__link_to_the_report =
-      () => Report.PreviousNotImplemented.ShouldBeNull();
+      () => Report.PreviousNotImplemented.Should().BeNull();
 
     It should_assign_a__next__link_to_the_report =
-      () => Report.NextNotImplemented.ShouldEqual(First);
+      () => Report.NextNotImplemented.Should().Be(First);
 
     It should_assign_a__next__link_to_the_first_not_implemented_spec =
-      () => First.NextNotImplemented.ShouldEqual(Second);
+      () => First.NextNotImplemented.Should().Be(Second);
 
     It should_not_assign_a__previous__link_to_the_first_not_implemented_spec =
-      () => First.PreviousNotImplemented.ShouldBeNull();
+      () => First.PreviousNotImplemented.Should().BeNull();
 
     It should_assign_a__next__link_to_the_second_not_implemented_spec =
-      () => Second.NextNotImplemented.ShouldEqual(Last);
+      () => Second.NextNotImplemented.Should().Be(Last);
 
     It should_assign_a__previous__link_to_the_second_not_implemented_spec =
-      () => Second.PreviousNotImplemented.ShouldEqual(First);
+      () => Second.PreviousNotImplemented.Should().Be(First);
 
     It should_not_assign_a__next__link_to_the_last_not_implemented_spec =
-      () => Last.NextNotImplemented.ShouldBeNull();
+      () => Last.NextNotImplemented.Should().BeNull();
 
     It should_assign_a__previous__link_to_the_last_not_implemented_spec =
-      () => Last.PreviousNotImplemented.ShouldEqual(Second);
+      () => Last.PreviousNotImplemented.Should().Be(Second);
   }
 }

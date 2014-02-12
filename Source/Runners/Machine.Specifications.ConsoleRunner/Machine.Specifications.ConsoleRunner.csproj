@@ -57,7 +57,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommandLine">
-      <HintPath>..\..\packages\CommandLine\lib\CommandLine.dll</HintPath>
+      <HintPath>..\..\..\packages\CommandLineParser.1.9.71\lib\net35\CommandLine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -123,16 +123,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project=".\Machine.Specifications.ConsoleRunner.targets" />  
-  <Import Project="$(SolutionDir)\Tools\Ripple\RippleRestoreTask.targets" />
-  <Import Project="$(SolutionDir)\Tools\GitFlowVersion\build\GitFlowVersionTask.targets" />
+  <Import Project=".\Machine.Specifications.ConsoleRunner.targets" />
+  
   <PropertyGroup>
     <PostBuildEvent>if "$(TargetFrameworkVersion)" NEQ "v4.0" (
   del "$(TargetPath).config"
 )</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\..\..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets" Condition="Exists('..\..\..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

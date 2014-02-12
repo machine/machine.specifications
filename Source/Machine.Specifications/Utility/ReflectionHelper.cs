@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using Machine.Specifications.Sdk;
+
 namespace Machine.Specifications.Utility
 {
   public static class ReflectionHelper
@@ -20,44 +22,43 @@ namespace Machine.Specifications.Utility
         .Where(x => !x.IsPrivate);
     }
 
-    public static IEnumerable<FieldInfo> GetInstanceFieldsOfUsage(this Type type, DelegateUsage usage)
+    public static IEnumerable<FieldInfo> GetInstanceFieldsOfUsage(this Type type, AttributeFullName attributeFullName)
     {
-      return GetInstanceFields(type).Where(x => GetDelegateUsage(x) == usage);
+      return GetInstanceFields(type).Where(x => GetDelegateUsage(x) == attributeFullName);
     }
 
-    public static IEnumerable<FieldInfo> GetInstanceFieldsOfUsage(this Type type, params DelegateUsage[] usages)
+    public static IEnumerable<FieldInfo> GetInstanceFieldsOfUsage(this Type type, params AttributeFullName[] attributeFullNames)
     {
-      if (usages == null || usages.Length == 0)
+      if (attributeFullNames == null || attributeFullNames.Length == 0)
       {
-        throw new ArgumentNullException("usages");
+        throw new ArgumentNullException("attributeFullNames");
       }
 
       var fields = GetInstanceFields(type);
-      return usages.Aggregate(Enumerable.Empty<FieldInfo>(),
+      return attributeFullNames.Aggregate(Enumerable.Empty<FieldInfo>(),
                               (current, usage) => current.Union(fields.Where(x => GetDelegateUsage(x) == usage)));
     }
 
     public static FieldInfo GetStaticProtectedOrInheritedFieldNamed(this Type type, string fieldName)
     {
-      return type.GetStaticProtectedOrInheritedFields().Where(x => x.Name == fieldName).SingleOrDefault();
+      return type.GetStaticProtectedOrInheritedFields().SingleOrDefault(x => x.Name == fieldName);
     }
 
-    public static bool IsOfUsage(this FieldInfo fieldInfo, DelegateUsage usage)
+    public static bool IsOfUsage(this FieldInfo fieldInfo, AttributeFullName attributeFullName)
     {
-      return GetDelegateUsage(fieldInfo) == usage;
+      return GetDelegateUsage(fieldInfo) == attributeFullName;
     }
 
-    static DelegateUsage? GetDelegateUsage(this FieldInfo fieldInfo)
+    static AttributeFullName GetDelegateUsage(this FieldInfo fieldInfo)
     {
       var fieldType = fieldInfo.FieldType;
 
-      var attrs = fieldType.GetCustomAttributes(typeof(DelegateUsageAttribute), false);
-      if (attrs.Length == 0)
+      var attributeFullName = fieldType.GetCustomDelegateAttributeFullName();
+      if (attributeFullName == null)
       {
         return null;
       }
 
-      var usage = ((DelegateUsageAttribute) attrs[0]).DelegateUsage;
       var invoke = fieldType.GetMethod("Invoke");
 
       // Do some validation to prevent messages with no indication of the cause of the problem later on.
@@ -69,40 +70,32 @@ namespace Machine.Specifications.Utility
       if (invoke.GetParameters().Length != 0)
       {
         throw new InvalidOperationException(string.Format("{0} delegates require 0 parameters, {1} has {2}.",
-                                                          usage,
+                                                          attributeFullName,
                                                           fieldType,
                                                           invoke.GetParameters().Length));
       }
 
-      switch (usage)
+      if (attributeFullName is BehaviorAttributeFullName)
       {
-        case DelegateUsage.Behavior:
-          if (!fieldType.IsGenericType)
-          {
-            throw new InvalidOperationException(
-              string.Format("{0} delegates need to be generic types with 1 parameter. {1} is not a generic type.",
-                            usage,
-                            fieldType));
-          }
+        if (!fieldType.IsGenericType)
+        {
+          throw new InvalidOperationException(
+            string.Format("{0} delegates need to be generic types with 1 parameter. {1} is not a generic type.",
+                          attributeFullName,
+                          fieldType));
+        }
 
-          if (fieldType.GetGenericArguments().Length != 1)
-          {
-            throw new InvalidOperationException(
-              string.Format("{0} delegates need to be generic types with 1 parameter. {1} has {2} parameters.",
-                            usage,
-                            fieldType,
-                            fieldType.GetGenericParameterConstraints().Length));
-          }
-          break;
-        case DelegateUsage.Setup:
-        case DelegateUsage.Act:
-        case DelegateUsage.Assert:
-        case DelegateUsage.Cleanup:
-          // Only the parameters need to be validated.
-          break;
+        if (fieldType.GetGenericArguments().Length != 1)
+        {
+          throw new InvalidOperationException(
+            string.Format("{0} delegates need to be generic types with 1 parameter. {1} has {2} parameters.",
+                          attributeFullName,
+                          fieldType,
+                          fieldType.GetGenericParameterConstraints().Length));
+        }
       }
 
-      return usage;
+      return attributeFullName;
     }
   }
 }

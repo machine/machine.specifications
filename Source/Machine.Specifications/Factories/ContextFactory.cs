@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 
 using Machine.Specifications.Model;
+using Machine.Specifications.Sdk;
 using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Factories
@@ -22,7 +23,7 @@ namespace Machine.Specifications.Factories
 
     public Context CreateContextFrom(object instance, FieldInfo fieldInfo)
     {
-      if (fieldInfo.IsOfUsage(DelegateUsage.Assert))
+      if (fieldInfo.IsOfUsage(new AssertDelegateAttributeFullName()))
       {
         return CreateContextFrom(instance, new[] { fieldInfo });
       }
@@ -32,7 +33,7 @@ namespace Machine.Specifications.Factories
     public Context CreateContextFrom(object instance)
     {
       var type = instance.GetType();
-      var fieldInfos = type.GetInstanceFieldsOfUsage(DelegateUsage.Assert, DelegateUsage.Behavior);
+      var fieldInfos = type.GetInstanceFieldsOfUsage(new AssertDelegateAttributeFullName(), new BehaviorDelegateAttributeFullName());
       return CreateContextFrom(instance, fieldInfos);
     }
 
@@ -43,12 +44,12 @@ namespace Machine.Specifications.Factories
       var itFieldInfos = new List<FieldInfo>();
       var itShouldBehaveLikeFieldInfos = new List<FieldInfo>();
 
-      var contextClauses = ExtractPrivateFieldValues(instance, true, DelegateUsage.Setup);
+      var contextClauses = ExtractPrivateFieldValues(instance, true, new SetupDelegateAttributeFullName());
       contextClauses.Reverse();
 
-      var cleanupClauses = ExtractPrivateFieldValues(instance, true, DelegateUsage.Cleanup);
+      var cleanupClauses = ExtractPrivateFieldValues(instance, true, new CleanupDelegateAttributeFullName());
 
-      var becauses = ExtractPrivateFieldValues(instance, false, DelegateUsage.Act);
+      var becauses = ExtractPrivateFieldValues(instance, false, new ActDelegateAttributeFullName());
       becauses.Reverse();
 
       if (becauses.Count > _allowedNumberOfBecauseBlocks)
@@ -62,7 +63,7 @@ namespace Machine.Specifications.Factories
       var concern = ExtractSubject(type);
       var isSetupForEachSpec = IsSetupForEachSpec(type);
 
-      var isIgnored = type.HasAttribute<IgnoreAttribute>();
+      var isIgnored = type.HasAttribute(new IgnoreAttributeFullName());
       var tags = ExtractTags(type);
       var context = new Context(type,
                                 instance,
@@ -77,13 +78,13 @@ namespace Machine.Specifications.Factories
       foreach (var info in fieldInfos)
       {
         if (acceptedSpecificationFields.Contains(info) &&
-            info.IsOfUsage(DelegateUsage.Assert))
+            info.IsOfUsage(new AssertDelegateAttributeFullName()))
         {
           itFieldInfos.Add(info);
         }
 
         if (acceptedSpecificationFields.Contains(info) &&
-            info.IsOfUsage(DelegateUsage.Behavior))
+            info.IsOfUsage(new BehaviorDelegateAttributeFullName()))
         {
           itShouldBehaveLikeFieldInfos.Add(info);
         }
@@ -153,7 +154,7 @@ namespace Machine.Specifications.Factories
       }
     }
 
-    static void CollectDetailsOf<T>(Type target, Func<object> instanceResolver, ICollection<T> items, bool ensureMaximumOfOne, DelegateUsage usage)
+    static void CollectDetailsOf<T>(Type target, Func<object> instanceResolver, ICollection<T> items, bool ensureMaximumOfOne, AttributeFullName attributeFullName)
     {
       if (target == typeof(Object) || target == null)
       {
@@ -173,7 +174,7 @@ namespace Machine.Specifications.Factories
           return;
         }
 
-        var fields = target.GetInstanceFieldsOfUsage(usage);
+        var fields = target.GetInstanceFieldsOfUsage(attributeFullName);
 
         if (ensureMaximumOfOne && fields.Count() > 1)
         {
@@ -189,10 +190,10 @@ namespace Machine.Specifications.Factories
           items.Add(val);
         }
 
-        CollectDetailsOf(target.BaseType, () => instance, items, ensureMaximumOfOne, usage);
+        CollectDetailsOf(target.BaseType, () => instance, items, ensureMaximumOfOne, attributeFullName);
       }
 
-      CollectDetailsOf(target.DeclaringType, () => Activator.CreateInstance(target.DeclaringType), items, ensureMaximumOfOne, usage);
+      CollectDetailsOf(target.DeclaringType, () => Activator.CreateInstance(target.DeclaringType), items, ensureMaximumOfOne, attributeFullName);
     }
 
     static bool IsStatic(Type target)
@@ -200,11 +201,11 @@ namespace Machine.Specifications.Factories
       return target.IsAbstract && target.IsSealed;
     }
 
-    static List<Delegate> ExtractPrivateFieldValues(object instance, bool ensureMaximumOfOne, DelegateUsage usage)
+    static List<Delegate> ExtractPrivateFieldValues(object instance, bool ensureMaximumOfOne, AttributeFullName attributeFullName)
     {
       var delegates = new List<Delegate>();
       var type = instance.GetType();
-      CollectDetailsOf(type, () => instance, delegates, ensureMaximumOfOne, usage);
+      CollectDetailsOf(type, () => instance, delegates, ensureMaximumOfOne, attributeFullName);
 
       return delegates;
     }

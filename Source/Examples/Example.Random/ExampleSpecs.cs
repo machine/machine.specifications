@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Reflection;
 
+using FluentAssertions;
+
 using Machine.Specifications;
 
 namespace Example.Random
@@ -126,37 +128,37 @@ namespace Example.Random
   public class parent_context
   {
     It should_be_able_to_assert_something = () =>
-      true.ShouldBeTrue();
+      true.Should().BeTrue();
 
     public class nested_context
     {
       It should_be_able_to_assert_something_else = () =>
-        false.ShouldBeFalse();
+        false.Should().BeFalse();
     }
 
     public class nested_context_inheriting_another_concern : context_with_subject
     {
       It should_be_able_to_assert_something_else = () =>
-        false.ShouldBeFalse();
+        false.Should().BeFalse();
     }
 
     [Subject(typeof(int), "Nested description")]
     public class nested_context_inheriting_and_owning_a_concern : context_with_subject
     {
       It should_be_able_to_assert_something_else = () =>
-        false.ShouldBeFalse();
+        false.Should().BeFalse();
     }
   }
 
   public class parent_context_without_concern
   {
     It should_be_able_to_assert_something = () =>
-      true.ShouldBeTrue();
+      true.Should().BeTrue();
 
     public class nested_context
     {
       It should_be_able_to_assert_something_else = () =>
-        false.ShouldBeFalse();
+        false.Should().BeFalse();
     }
   }
 

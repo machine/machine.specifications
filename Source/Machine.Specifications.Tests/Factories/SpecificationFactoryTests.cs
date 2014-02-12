@@ -1,7 +1,11 @@
 using System;
 using System.Linq;
 using System.Reflection;
+
+using FluentAssertions;
+
 using Machine.Specifications.Model;
+using Machine.Specifications.Sdk;
 using Machine.Specifications.Utility;
 using Machine.Testing;
 using NUnit.Framework;
@@ -19,13 +23,13 @@ namespace Machine.Specifications.Factories
     [Test]
     public void ShouldHaveCorrectItClause()
     {
-      specification.Name.ShouldEqual("is a specification");
+      specification.Name.Should().Be("is a specification");
     }
 
     [Test]
     public void ShouldHaveFieldInfo()
     {
-      specification.FieldInfo.Name.ShouldEqual("is_a_specification");
+      specification.FieldInfo.Name.Should().Be("is_a_specification");
     }
   }
 
@@ -35,7 +39,7 @@ namespace Machine.Specifications.Factories
     [Test]
     public void ShouldHaveCorrectItClause()
     {
-      specification.Name.ShouldEqual("should throw an exception");
+      specification.Name.Should().Be("should throw an exception");
     }
   }
 
@@ -45,7 +49,7 @@ namespace Machine.Specifications.Factories
     [Test]
     public void ShouldCreateUnknownSpecification()
     {
-      specification.IsDefined.ShouldBeFalse();
+      specification.IsDefined.Should().BeFalse();
     }
   }
 
@@ -55,7 +59,7 @@ namespace Machine.Specifications.Factories
     public override void BeforeEachTest()
     {
       Type type = typeof(ContextWithEmptySpecification);
-      FieldInfo field = type.GetInstanceFieldsOfUsage(DelegateUsage.Assert).First();
+      FieldInfo field = type.GetInstanceFieldsOfUsage(new AssertDelegateAttributeFullName()).First();
       ContextFactory factory = new ContextFactory();
       var context = factory.CreateContextFrom(new ContextWithEmptySpecification());
 
@@ -69,7 +73,7 @@ namespace Machine.Specifications.Factories
     public override void BeforeEachTest()
     {
       Type type = typeof(ContextWithSingleSpecification);
-      FieldInfo field = type.GetInstanceFieldsOfUsage(DelegateUsage.Assert).First();
+      FieldInfo field = type.GetInstanceFieldsOfUsage(new AssertDelegateAttributeFullName()).First();
       ContextFactory factory = new ContextFactory();
       var context = factory.CreateContextFrom(new ContextWithSingleSpecification());
 
@@ -83,7 +87,7 @@ namespace Machine.Specifications.Factories
     public override void BeforeEachTest()
     {
       Type type = typeof(ContextWithThrowingSpecification);
-      FieldInfo field = type.GetInstanceFieldsOfUsage(DelegateUsage.Assert).First();
+      FieldInfo field = type.GetInstanceFieldsOfUsage(new AssertDelegateAttributeFullName()).First();
       ContextFactory factory = new ContextFactory();
       var context = factory.CreateContextFrom(new ContextWithThrowingSpecification());
 

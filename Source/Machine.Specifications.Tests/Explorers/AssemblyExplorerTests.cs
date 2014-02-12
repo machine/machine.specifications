@@ -4,6 +4,8 @@ using System.Reflection;
 
 using Example;
 
+using FluentAssertions;
+
 using Machine.Testing;
 using NUnit.Framework;
 
@@ -22,14 +24,14 @@ namespace Machine.Specifications.Explorers
     [Test]
     public void ShouldReturnThreeContexts()
     {
-      specifications.Count().ShouldEqual(3);
+      specifications.Count().Should().Be(3);
     }
 
     [Test]
     public void ShouldReturnThreeContextsNamedCorrectly()
     {
       var names = specifications.Select(x => x.Name).OrderBy(x => x).ToList();
-      names.ShouldContainOnly(
+      names.Should().BeEquivalentTo(
         new[]
     {
       "when a customer first views the account summary page",
@@ -53,14 +55,14 @@ namespace Machine.Specifications.Explorers
     [Test]
     public void ShouldReturnTwoContexts()
     {
-      descriptions.Count().ShouldEqual(2);
+      descriptions.Count().Should().Be(2);
     }
 
     [Test]
     public void ShouldReturnTwoContextsNamedCorrectly()
     {
       var names = descriptions.Select(x => x.Name).ToList();
-      names.ShouldContainOnly(
+      names.Should().BeEquivalentTo(
         "InExampleA 1",
         "InExampleA 2");
     }
@@ -79,13 +81,13 @@ namespace Machine.Specifications.Explorers
     [Test]
     public void ShouldReturnAContext()
     {
-      context.ShouldNotBeNull();
+      context.Should().NotBeNull();
     }
 
     [Test]
     public void ShouldReturnCorrectName()
     {
-      context.Name.ShouldEqual("InExampleC 1");
+      context.Name.Should().Be("InExampleC 1");
     }
   }
 
@@ -104,19 +106,19 @@ namespace Machine.Specifications.Explorers
     [Test]
     public void ShouldReturnAContext()
     {
-      context.ShouldNotBeNull();
+      context.Should().NotBeNull();
     }
 
     [Test]
     public void ShouldReturnOneSpecification()
     {
-      context.Specifications.Count().ShouldEqual(1);
+      context.Specifications.Count().Should().Be(1);
     }
 
     [Test]
     public void ShouldReturnOneSpecificationNamedCorrectly()
     {
-      context.Specifications.First().Name.ShouldEqual("is spec 1");
+      context.Specifications.First().Name.Should().Be("is spec 1");
     }
   }
 
@@ -131,20 +133,20 @@ namespace Machine.Specifications.Explorers
       descriptions = Target.FindContextsIn(typeof(Account).Assembly);
       context =
         descriptions.Where(x => x.Name == "when transferring between two accounts").FirstOrDefault();
-      context.ShouldNotBeNull();
+      context.Should().NotBeNull();
     }
 
     [Test]
     public void ShouldHaveTwoSpecifications()
     {
-      context.Specifications.Count().ShouldEqual(2);
+      context.Specifications.Count().Should().Be(2);
     }
 
     [Test]
     public void ShouldHaveSpecificationsWithCorrectItClauses()
     {
       var names = context.Specifications.Select(x => x.Name).ToList();
-      names.ShouldContainOnly(
+      names.Should().BeEquivalentTo(
         "should debit the from account by the amount transferred",
         "should credit the to account by the amount transferred");
     }
@@ -164,7 +166,7 @@ namespace Machine.Specifications.Explorers
     [Test]
     public void ShouldHaveOneAssemblyContext()
     {
-      assemblyContexts.Count.ShouldEqual(1);
+      assemblyContexts.Count.Should().Be(1);
     }
   }
 

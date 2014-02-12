@@ -2,6 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using FluentAssertions;
+
 namespace Machine.Specifications.Clr4.Specs
 {
   public static class Delayed
@@ -36,60 +38,64 @@ namespace Machine.Specifications.Clr4.Specs
   }
 
   [Subject(typeof(TaskSpecificationExtensions))]
-  public class when_an_async_operation_runs_without_await
+  public class when_an_async_operation_runs_without_await : AsyncSpecs
   {
     static Task<string> Result;
 
     Because of = () => { Result = Delayed.Echo("result"); };
 
     It should_not_wait_for_completion =
-      () => Result.IsCompleted.ShouldBeFalse();
+      () => Result.IsCompleted.Should().BeFalse();
   }
 
   [Subject(typeof(TaskSpecificationExtensions))]
-  public class when_an_async_operation_runs_with_await
+  public class when_an_async_operation_runs_with_await : AsyncSpecs
   {
     static string Result;
 
     Because of = () => { Result = Delayed.Echo("result").Await(); };
 
     It should_wait_for_completion =
-      () => Result.ShouldEqual("result");
+      () => Result.Should().Be("result");
   }
 
   [Subject(typeof(TaskSpecificationExtensions), "exception")]
-  public class when_an_async_operation_fails_without_await
+  public class when_an_async_operation_fails_without_await : AsyncSpecs
   {
-    static Exception Exception;
+    static Exception exception;
 
-    Because of = () => Exception = Catch.Exception(() => Delayed.Fail());
+    Because of = () => exception = Catch.Exception(() => Delayed.Fail());
 
     It should_not_capture_the_exception =
-      () => Exception.ShouldBeNull();
+      () => exception.Should().BeNull();
   }
 
   [Subject(typeof(TaskSpecificationExtensions), "exception")]
-  public class when_a_single_async_operation_fails_with_await
+  public class when_a_single_async_operation_fails_with_await : AsyncSpecs
   {
-    static Exception Exception;
+    static Exception exception;
 
-    Because of = () => Exception = Catch.Exception(() => Delayed.Fail().Await());
+    Because of = () => exception = Catch.Exception(() => Delayed.Fail().Await());
 
     It should_capture_the_first_exception =
-      () => Exception.ShouldBeOfType<InvalidOperationException>();
+      () => exception.Should().BeOfType<InvalidOperationException>();
   }
 
   [Subject(typeof(TaskSpecificationExtensions), "exception")]
-  public class when_multiple_async_operations_fail_with_await
+  public class when_multiple_async_operations_fail_with_await : AsyncSpecs
   {
-    static Exception Exception;
+    static Exception exception;
 
-    Because of = () => Exception = Catch.Exception(() => Delayed.MultipleFails().Await());
+    Because of = () => exception = Catch.Exception(() => Delayed.MultipleFails().Await());
 
     It should_capture_the_aggregate_exception =
-      () => Exception.ShouldBeOfType<AggregateException>();
+      () => exception.Should().BeOfType<AggregateException>();
 
     It should_capture_all_inner_exceptions =
-      () => ((AggregateException) Exception).InnerExceptions.Count.ShouldEqual(2);
+      () => ((AggregateException)exception).InnerExceptions.Count.Should().Be(2);
+  }
+
+  public class AsyncSpecs
+  {
   }
 }

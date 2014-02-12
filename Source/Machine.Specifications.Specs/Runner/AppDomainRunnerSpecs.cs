@@ -6,6 +6,8 @@ using Example;
 using Example.CleanupFailure;
 using Example.Random;
 
+using FluentAssertions;
+
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
 
@@ -29,7 +31,7 @@ namespace Machine.Specifications.Specs.Runner
       runner.RunAssembly(typeof(Account).Assembly);
 
     It should_run_them_all = () =>
-      listener.SpecCount.ShouldEqual(6);
+      listener.SpecCount.Should().Be(6);
   }
 
   public class when_running_specs_in_an_assembly_with_a_reference_that_cannot_be_bound : running_specs
@@ -49,10 +51,10 @@ namespace Machine.Specifications.Specs.Runner
     Because of = () => runner.RunAssembly(Assembly.LoadFrom(SpecAssembly));
 
     It should_fail =
-      () => listener.LastFatalError.ShouldNotBeNull();
+      () => listener.LastFatalError.Should().NotBeNull();
 
     It should_record_that_the_referenced_assembly_could_not_be_found =
-      () => listener.LastFatalError.FullTypeName.ShouldEqual(typeof(FileNotFoundException).FullName);
+      () => listener.LastFatalError.FullTypeName.Should().Be(typeof(FileNotFoundException).FullName);
 
     static string GetPath(string path)
     {
@@ -69,7 +71,7 @@ namespace Machine.Specifications.Specs.Runner
     Because of = () => runner.RunAssembly(Assembly.LoadFrom(SpecAssembly));
 
     It should_succeed =
-      () => true.ShouldBeTrue();
+      () => true.Should().BeTrue();
     
     static string GetPath(string path)
     {
@@ -84,7 +86,7 @@ namespace Machine.Specifications.Specs.Runner
       runner.RunAssembly(typeof(cleanup_failure).Assembly);
 
     It should_cause_a_fatal_error = () =>
-      listener.LastFatalError.ShouldNotBeNull();
+      listener.LastFatalError.Should().NotBeNull();
 
   }
 
@@ -94,7 +96,7 @@ namespace Machine.Specifications.Specs.Runner
       runner.RunNamespace(typeof(Account).Assembly, "Example");
 
     It should_run_them_all = () =>
-      listener.SpecCount.ShouldEqual(6);
+      listener.SpecCount.Should().Be(6);
   }
 
   public class when_running_specs_by_member : running_specs
@@ -103,7 +105,7 @@ namespace Machine.Specifications.Specs.Runner
       runner.RunMember(typeof(Account).Assembly, typeof(when_transferring_an_amount_larger_than_the_balance_of_the_from_account).GetField("should_not_allow_the_transfer", BindingFlags.NonPublic | BindingFlags.Instance));
 
     It should_run = () =>
-      listener.SpecCount.ShouldEqual(1);
+      listener.SpecCount.Should().Be(1);
   }
 
   public class when_running_a_nested_context_by_member : running_specs
@@ -112,7 +114,7 @@ namespace Machine.Specifications.Specs.Runner
       runner.RunMember(typeof(Container).Assembly, typeof(Container.nested_context));
 
     It should_run = () =>
-      listener.SpecCount.ShouldEqual(1);
+      listener.SpecCount.Should().Be(1);
   }
 
   public class when_running_specs_of_a_nested_context_by_member : running_specs
@@ -121,7 +123,7 @@ namespace Machine.Specifications.Specs.Runner
       runner.RunMember(typeof(Container).Assembly, typeof(Container.nested_context).GetField("should_be_run", BindingFlags.NonPublic | BindingFlags.Instance));
 
     It should_run = () =>
-      listener.SpecCount.ShouldEqual(1);
+      listener.SpecCount.Should().Be(1);
   }
 
   public class TestListener : ISpecificationRunListener

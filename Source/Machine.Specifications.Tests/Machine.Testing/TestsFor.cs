@@ -27,12 +27,14 @@ namespace Machine.Testing
     [ThreadStatic]
     static int _currentEventId = 0;
 
+    [ObsoleteEx(Message = "Use FluentAssertions or Mocking library of choice directly", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
     public enum With
     {
       Stub,
       StrictMock
     }
 
+    [ObsoleteEx(Message = "Use FluentAssertions or Mocking library of choice directly", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
     public AutoMockingContainer Container
     {
       get { return _container; }
@@ -47,16 +49,19 @@ namespace Machine.Testing
       }
     }
 
+    [ObsoleteEx(Message = "Use FluentAssertions or Mocking library of choice directly", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
     public MockRepository Mocks
     {
       get { return _mocks; }
     }
 
+    [ObsoleteEx(Message = "Use FluentAssertions or Mocking library of choice directly", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
     public IDisposable Record
     {
       get { return Mocks.Record(); }
     }
 
+    [ObsoleteEx(Message = "Use FluentAssertions or Mocking library of choice directly", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
     public IDisposable Playback
     {
       get
@@ -66,6 +71,7 @@ namespace Machine.Testing
       }
     }
 
+    [ObsoleteEx(Message = "Use FluentAssertions or Mocking library of choice directly", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
     public IDisposable PlaybackOnly
     {
       get
@@ -77,6 +83,7 @@ namespace Machine.Testing
       }
     }
 
+    [ObsoleteEx(Message = "Use FluentAssertions or Mocking library of choice directly", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
     class EventFireExpectation
     {
       bool _wasFired;
@@ -100,6 +107,7 @@ namespace Machine.Testing
       }
     }
 
+    [ObsoleteEx(Message = "Use FluentAssertions or Mocking library of choice directly", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
     class PlaybackAndVerifyEvents : IDisposable
     {
       readonly TestsFor<TType> _tests;
@@ -118,6 +126,7 @@ namespace Machine.Testing
       }
     }
 
+    [ObsoleteEx(Message = "Use FluentAssertions or Mocking library of choice directly", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
     public void VerifyEvents()
     {
       foreach (var pair in _eventsToVerify)
@@ -159,6 +168,7 @@ namespace Machine.Testing
     {
     }
 
+    [ObsoleteEx(Message = "Use FluentAssertions or Mocking library of choice directly", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
     public void Override<T>(With what)
     {
       switch (what)
@@ -174,11 +184,13 @@ namespace Machine.Testing
       }
     }
 
+    [ObsoleteEx(Message = "Use FluentAssertions or Mocking library of choice directly", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
     public void Override<T>(T service)
     {
       _overrides.Add(typeof(T), service);
     }
 
+    [ObsoleteEx(Message = "Use FluentAssertions or Mocking library of choice directly", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
     public T The<T>()
     {
       if (_overrides.ContainsKey(typeof(T)))
@@ -188,6 +200,7 @@ namespace Machine.Testing
       return _container.Get<T>();
     }
 
+    [ObsoleteEx(Message = "Use FluentAssertions or Mocking library of choice directly", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
     public void FireEventOn<T>(params object[] args)
     {
       if (!_raisers.ContainsKey(typeof(T)))
@@ -201,6 +214,7 @@ namespace Machine.Testing
       _raisers[typeof(T)].Raise(list.ToArray());
     }
 
+    [ObsoleteEx(Message = "Use FluentAssertions or Mocking library of choice directly", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
     public void PrimeEventFiringOn<T>(Action<T> eventPlusEqualNull)
     {
       if (_raisers.ContainsKey(typeof(T)))
@@ -215,11 +229,13 @@ namespace Machine.Testing
       _raisers[typeof(T)] = LastCall.GetEventRaiser();
     }
 
+    [ObsoleteEx(Message = "Use FluentAssertions or Mocking library of choice directly", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
     static void RegisterEventFiring(int eventId)
     {
       _eventsToVerify[eventId].WasFired = true;
     }
 
+    [ObsoleteEx(Message = "Use FluentAssertions or Mocking library of choice directly", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
     public T NewEventFireExpectation<T>() where T : class
     {
       _eventsToVerify[_currentEventId] = new EventFireExpectation(typeof(T).Name);

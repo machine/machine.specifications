@@ -1,5 +1,7 @@
 ﻿using System.Dynamic;
 
+using FluentAssertions;
+
 using Machine.Specifications;
 
 namespace Example.Clr4
@@ -11,6 +13,6 @@ namespace Example.Clr4
 		Because of = () => { ExpandoObject = new ExpandoObject(); };
 
 		It should_be_able_to_use_components_that_are_available_in_the_target_framework =
-			() => ExpandoObject.ShouldNotBeNull();
+			() => ExpandoObject.Should().NotBeNull();
 	}
 }

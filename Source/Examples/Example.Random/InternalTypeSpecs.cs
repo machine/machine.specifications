@@ -1,4 +1,6 @@
-﻿using Machine.Specifications;
+﻿using FluentAssertions;
+
+using Machine.Specifications;
 
 namespace Example.Random.Internal
 {
@@ -7,7 +9,7 @@ namespace Example.Random.Internal
   class when_a_context_is_internal
   {
     It should_work =
-      () => true.ShouldBeTrue();
+      () => true.Should().BeTrue();
   }
 
   [Subject("Internal types")]
@@ -29,6 +31,6 @@ namespace Example.Random.Internal
 #pragma warning restore 0649
 
     It should_work =
-      () => MSpecRocks.ShouldBeTrue();
+      () => MSpecRocks.Should().BeTrue();
   }
 }

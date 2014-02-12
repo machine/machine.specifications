@@ -4,6 +4,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
+using FluentAssertions;
+
 using Machine.Specifications.ConsoleRunner.Properties;
 
 namespace Machine.Specifications.ConsoleRunner.Specs
@@ -20,7 +22,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       program.Run(new string[] {});
 
     It should_print_usage_statement = ()=>
-      console.Lines.ShouldContain(Options.Usage());
+      console.Lines.Should().Contain(Options.Usage());
   }
 
   [Subject("Console runner")]
@@ -31,28 +33,28 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       () => program.Run(new [] { GetPath("Example.dll") });
 
     It should_write_the_assembly_name =
-      () => console.Lines.ShouldContain(l => l.Contains("Example"));
+      () => console.Lines.Should().Contain(l => l.Contains("Example"));
 
     It should_write_the_specifications =
-      () => console.Lines.ShouldContain(
+      () => console.Lines.Should().Contain(
         "» should debit the from account by the amount transferred",
         "» should credit the to account by the amount transferred",
         "» should not allow the transfer");
 
     It should_write_the_contexts =
-      () => console.Lines.ShouldContain(
+      () => console.Lines.Should().Contain(
         "Account Funds transfer, when transferring between two accounts",
         "Account Funds transfer, when transferring an amount larger than the balance of the from account"
         );
 
     It should_write_the_count_of_contexts =
-      () => console.Lines.ShouldContain(l => l.Contains("Contexts: 3"));
+      () => console.Lines.Should().Contain(l => l.Contains("Contexts: 3"));
 
     It should_write_the_count_of_specifications =
-      () => console.Lines.ShouldContain(l => l.Contains("Specifications: 6"));
+      () => console.Lines.Should().Contain(l => l.Contains("Specifications: 6"));
 
     It should_write_the_run_time =
-      () => console.Lines.ShouldContain(l => l.Contains("Time: "));
+      () => console.Lines.Should().Contain(l => l.Contains("Time: "));
   }
 
   [Subject("Console runner")]
@@ -63,22 +65,22 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       () => program.Run(new [] { GetPath("Example.dll"), "--silent" });
 
     It should_not_write_the_assembly_name =
-      () => console.Lines.ShouldNotContain(l => l.Contains("Example"));
+      () => console.Lines.Should().NotContain(l => l.Contains("Example"));
 
     It should_not_write_the_contexts =
-      () => console.Lines.ShouldEachConformTo(l => !l.StartsWith("Account Funds transfer"));
+      () => console.Lines.Should().Match(l => !l.All(_ => _.StartsWith("Account Funds transfer")));
 
     It should_not_write_the_specifications =
-      () => console.Lines.ShouldEachConformTo(l => !l.StartsWith("» should"));
+      () => console.Lines.Should().Match(l => !l.All(_ => _.StartsWith("» should")));
 
     It should_write_the_count_of_contexts =
-      () => console.Lines.ShouldContain(l => l.Contains("Contexts: 3"));
+      () => console.Lines.Should().Contain(l => l.Contains("Contexts: 3"));
 
     It should_write_the_count_of_specifications =
-      () => console.Lines.ShouldContain(l => l.Contains("Specifications: 6"));
+      () => console.Lines.Should().Contain(l => l.Contains("Specifications: 6"));
 
     It should_write_the_run_time =
-      () => console.Lines.ShouldContain(l => l.Contains("Time: "));
+      () => console.Lines.Should().Contain(l => l.Contains("Time: "));
   }
 
   [Subject("Console runner")]
@@ -89,25 +91,25 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       () => program.Run(new [] { GetPath("Example.dll"), "--progress" });
 
     It should_write_the_assembly_name =
-      () => console.Lines.ShouldContain(l => l.Contains("Example"));
+      () => console.Lines.Should().Contain(l => l.Contains("Example"));
 
     It should_not_write_the_contexts =
-      () => console.Lines.ShouldEachConformTo(l => !l.StartsWith("Account Funds transfer"));
+      () => console.Lines.Should().Match(l => !l.All(_ => _.StartsWith("Account Funds transfer")));
 
     It should_not_write_the_specifications =
-      () => console.Lines.ShouldEachConformTo(l => !l.StartsWith("» should"));
+      () => console.Lines.Should().Match(l => !l.All(_ => _.StartsWith("» should")));
 
     It should_write_the_specification_results =
-      () => console.Lines.ShouldContain("...***");
+      () => console.Lines.Should().Contain("...***");
 
     It should_write_the_count_of_contexts =
-      () => console.Lines.ShouldContain(l => l.Contains("Contexts: 3"));
+      () => console.Lines.Should().Contain(l => l.Contains("Contexts: 3"));
 
     It should_write_the_count_of_specifications =
-      () => console.Lines.ShouldContain(l => l.Contains("Specifications: 6"));
+      () => console.Lines.Should().Contain(l => l.Contains("Specifications: 6"));
 
     It should_write_the_run_time =
-      () => console.Lines.ShouldContain(l => l.Contains("Time: "));
+      () => console.Lines.Should().Contain(l => l.Contains("Time: "));
   }
 
   [Subject("Console runner")]
@@ -121,10 +123,10 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       exitCode = program.Run(new[] { missingAssemblyName });
 
     It should_output_an_error_message_with_the_name_of_the_missing_assembly = ()=>
-      console.Lines.ShouldContain(string.Format(Resources.MissingAssemblyError, missingAssemblyName));
+      console.Lines.Should().Contain(string.Format(Resources.MissingAssemblyError, missingAssemblyName));
 
     It should_return_the_Error_exit_code = ()=>
-      exitCode.ShouldEqual(ExitCode.Error);
+      exitCode.Should().Be(ExitCode.Error);
   }
 
   [Subject("Console runner")]
@@ -136,16 +138,16 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       () => exitCode = program.Run(new[] { GetPath("Example.Failing.dll") });
 
     It should_write_the_failure =
-      () => console.Lines.ShouldContain(l => l.Contains("Exception"));
+      () => console.Lines.Should().Contain(l => l.Contains("Exception"));
 
     It should_write_the_count_of_failed_specifications =
-      () => console.Lines.ShouldContain(l => l.Contains("1 failed"));
+      () => console.Lines.Should().Contain(l => l.Contains("1 failed"));
 
     It should_return_the_Failure_exit_code =
-      () => exitCode.ShouldEqual(ExitCode.Failure);
+      () => exitCode.Should().Be(ExitCode.Failure);
 
     It should_separate_failures_from_the_rest_of_the_test_run =
-      () => console.Output.ShouldMatch(String.Format("\\S{0}{0}{0}Failures:{0}{0}\\S", Regex.Escape(Environment.NewLine)));
+      () => console.Output.Should().MatchRegex(String.Format("\\S{0}{0}{0}Failures:{0}{0}\\S", Regex.Escape(Environment.NewLine)));
   }
 
   [Subject("Console runner")]
@@ -157,19 +159,19 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       () => exitCode = program.Run(new[] { GetPath("Example.Failing.dll"), "--silent", "--exclude", "example" });
 
     It should_write_the_count_of_failed_specifications =
-      () => console.Lines.ShouldContain(l => l.Contains("1 failed"));
+      () => console.Lines.Should().Contain(l => l.Contains("1 failed"));
 
     It should_return_the_failure_exit_code =
-      () => exitCode.ShouldEqual(ExitCode.Failure);
+      () => exitCode.Should().Be(ExitCode.Failure);
 
     It should_write_a_summary_of_failing_specifications =
-      () => console.Lines.ShouldContain("Failures:", "Scott Bellware, at any given moment", "» will fail (FAIL)");
+      () => console.Lines.Should().Contain("Failures:", "Scott Bellware, at any given moment", "» will fail (FAIL)");
 
     It should_write_failure_stack_traces =
-      () => console.Lines.ShouldContain(l => l.Contains("hi scott, love you, miss you."));
+      () => console.Lines.Should().Contain(l => l.Contains("hi scott, love you, miss you."));
 
     It should_separate_failures_from_the_rest_of_the_test_run =
-      () => console.Output.ShouldMatch(String.Format("\\S{0}{0}Failures:{0}{0}\\S", Regex.Escape(Environment.NewLine)));
+      () => console.Output.Should().MatchRegex(String.Format("\\S{0}{0}Failures:{0}{0}\\S", Regex.Escape(Environment.NewLine)));
   }
 
   [Subject("Console runner")]
@@ -181,22 +183,22 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       () => exitCode = program.Run(new[] { GetPath("Example.Failing.dll"), "--progress", "--exclude", "example" });
 
     It should_write_failed_specification_results =
-      () => console.Lines.ShouldContain("F");
+      () => console.Lines.Should().Contain("F");
 
     It should_write_the_count_of_failed_specifications =
-      () => console.Lines.ShouldContain(l => l.Contains("1 failed"));
+      () => console.Lines.Should().Contain(l => l.Contains("1 failed"));
 
     It should_return_the_failure_exit_code =
-      () => exitCode.ShouldEqual(ExitCode.Failure);
+      () => exitCode.Should().Be(ExitCode.Failure);
 
     It should_write_a_summary_of_failing_specifications =
-      () => console.Lines.ShouldContain("Failures:", "Scott Bellware, at any given moment", "» will fail (FAIL)");
+      () => console.Lines.Should().Contain("Failures:", "Scott Bellware, at any given moment", "» will fail (FAIL)");
 
     It should_write_failure_stack_traces =
-      () => console.Lines.ShouldContain(l => l.Contains("hi scott, love you, miss you."));
+      () => console.Lines.Should().Contain(l => l.Contains("hi scott, love you, miss you."));
 
     It should_separate_failures_from_the_rest_of_the_test_run =
-      () => console.Output.ShouldMatch(String.Format("\\S{0}{0}{0}Failures:{0}{0}\\S", Regex.Escape(Environment.NewLine)));
+      () => console.Output.Should().MatchRegex(String.Format("\\S{0}{0}{0}Failures:{0}{0}\\S", Regex.Escape(Environment.NewLine)));
   }
 
   [Subject("Console runner")]
@@ -206,10 +208,10 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       program.Run(new [] { GetPath("Example.dll"), "--include", "failure"});
 
     It should_execute_specs_with_the_included_tag = () =>
-      console.Lines.ShouldContain(l => l.Contains("Account Funds transfer, when transferring an amount larger than the balance of the from account"));
+      console.Lines.Should().Contain(l => l.Contains("Account Funds transfer, when transferring an amount larger than the balance of the from account"));
 
     It should_not_execute_specs_that_are_not_included = () =>
-      console.Lines.ShouldNotContain("Account Funds transfer, when transferring between two accounts");
+      console.Lines.Should().NotContain("Account Funds transfer, when transferring between two accounts");
   }
 
   [Subject("Console runner")]
@@ -219,12 +221,12 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       program.Run(new[] { GetPath(@"ExternalFile\Example.UsingExternalFile.dll") });
 
     It should_pass_the_specification_which_depends_on_external_file = () =>
-      console.Lines.ShouldContain(
+      console.Lines.Should().Contain(
         "External resources usage, when using file copied to assembly output directory",
         "» should be able to locate it by relative path");
 
     It should_pass_all_specifications = () =>
-      console.Lines.ShouldNotContain("failed");
+      console.Lines.Should().NotContain("failed");
   }
   
   [Subject("Console runner")]
@@ -237,7 +239,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       ExitCode = program.Run(new[] { GetPath(@"Issue157\Example.Issue157-Fail.dll"), GetPath(@"Issue157\Example.Issue157-Success.dll") });
 
     It should_fail_the_run = () =>
-      ExitCode.ShouldNotEqual(ExitCode.Success);
+      ExitCode.Should().NotBe(ExitCode.Success);
   }
   
   [Subject("Console runner")]
@@ -250,7 +252,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       ExitCode = program.Run(new[] { GetPath(@"Issue157\Example.Issue157-Success.dll"), GetPath(@"Issue157\Example.Issue157-Fail.dll") });
 
     It should_fail_the_run = () =>
-      ExitCode.ShouldNotEqual(ExitCode.Success);
+      ExitCode.Should().NotBe(ExitCode.Success);
   }
   
   [Subject("Console runner")]
@@ -262,7 +264,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       ExitCode = program.Run(new[] { GetPath(@"Example.dll"), GetPath(@"Example.Failing.dll") });
 
     It should_write_the_summary_once = () =>
-      console.Lines.Count(x => x.StartsWith("Contexts: ")).ShouldEqual(1);
+      console.Lines.Count(x => x.StartsWith("Contexts: ")).Should().Be(1);
   }
 
   public class ConsoleRunnerSpecs

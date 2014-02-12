@@ -1,5 +1,7 @@
 using Example.Random;
 
+using FluentAssertions;
+
 using Machine.Specifications.Reporting.Generation;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
@@ -23,6 +25,6 @@ namespace Machine.Specifications.Reporting.Specs
     Because of = () => runner.RunAssembly(typeof(context_with_behaviors).Assembly);
 
     It should_collect_behavior_specifications_and_context_specifications =
-      () => reportListener.ResultsBySpecification.Count.ShouldEqual(3);
+      () => reportListener.ResultsBySpecification.Count.Should().Be(3);
   }
 }

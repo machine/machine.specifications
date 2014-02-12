@@ -6,16 +6,7 @@ namespace Machine.Specifications
   {
     public static Exception Exception(Action throwingAction)
     {
-      try
-      {
-        throwingAction();
-      }
-      catch (Exception exception)
-      {
-        return exception;
-      }
-
-      return null;
+      return Only<Exception>(throwingAction);
     }
 
     public static Exception Exception<T>(Func<T> throwingFunc)
@@ -25,6 +16,21 @@ namespace Machine.Specifications
         throwingFunc();
       }
       catch (Exception exception)
+      {
+        return exception;
+      }
+
+      return null;
+    }
+
+    public static TException Only<TException>(Action throwingAction)
+      where TException : Exception
+    {
+      try
+      {
+        throwingAction();
+      }
+      catch (TException exception)
       {
         return exception;
       }

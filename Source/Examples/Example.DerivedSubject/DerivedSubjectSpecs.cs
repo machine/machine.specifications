@@ -1,5 +1,7 @@
 ﻿using System;
 
+using FluentAssertions;
+
 using Machine.Specifications;
 
 namespace Example.DerivedSubject
@@ -34,10 +36,10 @@ namespace Example.DerivedSubject
         fromAccount.Transfer(1m, toAccount);
 
       It should_debit_the_from_account_by_the_amount_transferred = () =>
-        fromAccount.Balance.ShouldEqual(0m);
+        fromAccount.Balance.Should().Be(0m);
 
       It should_credit_the_to_account_by_the_amount_transferred = () =>
-        toAccount.Balance.ShouldEqual(2m);
+        toAccount.Balance.Should().Be(2m);
   }
 
   [Subject(typeof(Account), "Funds transfer")]
@@ -48,10 +50,10 @@ namespace Example.DerivedSubject
         fromAccount.Transfer(1m, toAccount);
 
       It should_debit_the_from_account_by_the_amount_transferred = () =>
-        fromAccount.Balance.ShouldEqual(0m);
+        fromAccount.Balance.Should().Be(0m);
 
       It should_credit_the_to_account_by_the_amount_transferred = () =>
-        toAccount.Balance.ShouldEqual(2m);
+        toAccount.Balance.Should().Be(2m);
   }
 
   public abstract class AccountSpecs

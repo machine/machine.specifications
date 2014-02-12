@@ -1,6 +1,7 @@
 using System.Reflection;
 
 using Machine.Specifications.Model;
+using Machine.Specifications.Sdk;
 using Machine.Specifications.Utility;
 using Machine.Specifications.Utility.Internal;
 using System;
@@ -11,7 +12,7 @@ namespace Machine.Specifications.Factories
   {
     public Specification CreateSpecification(Context context, FieldInfo specificationField)
     {
-      bool isIgnored = context.IsIgnored || specificationField.HasAttribute<IgnoreAttribute>();
+      bool isIgnored = context.IsIgnored || specificationField.HasAttribute(new IgnoreAttributeFullName());
       var it = (Delegate) specificationField.GetValue(context.Instance);
       string name = specificationField.Name.ToFormat();
 
@@ -20,7 +21,7 @@ namespace Machine.Specifications.Factories
 
     public Specification CreateSpecificationFromBehavior(Behavior behavior, FieldInfo specificationField)
     {
-      bool isIgnored = behavior.IsIgnored || specificationField.HasAttribute<IgnoreAttribute>();
+      bool isIgnored = behavior.IsIgnored || specificationField.HasAttribute(new IgnoreAttributeFullName());
       var it = (Delegate) specificationField.GetValue(behavior.Instance);
       string name = specificationField.Name.ToFormat();
 

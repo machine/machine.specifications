@@ -1,3 +1,12 @@
+Machine.Specifications 0.7.0
+-----------------------------
+- Machine.Specifications.Should has been moved to seperate repository and nuget.
+
+Machine.Specifications 0.6.2
+-----------------------------
+- Enable support for internal specs
+- Enable support for private nested specs
+
 Machine.Specifications 0.6.1
 -----------------------------
 - Nuget package adds proper references for .NET 4.0 and 4.5

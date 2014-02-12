@@ -2,6 +2,8 @@
 
 using Example.Random;
 
+using FluentAssertions;
+
 using Machine.Specifications.Factories;
 using Machine.Specifications.Model;
 
@@ -19,10 +21,10 @@ namespace Machine.Specifications.Specs.Factories
     };
 
     It should_capture_the_concerns_type =
-      () => newContext.Subject.Type.ShouldEqual(typeof(int));
+      () => newContext.Subject.Type.Should().Be<int>();
 
     It should_capture_the_concerns_description =
-      () => newContext.Subject.Description.ShouldEqual("Some description");
+      () => newContext.Subject.Description.Should().Be("Some description");
   }
 
   [Subject(typeof(ContextFactory))]
@@ -37,7 +39,7 @@ namespace Machine.Specifications.Specs.Factories
     };
 
     It should_capture_the_base_concerns_subject_details =
-      () => newContext.Subject.Type.ShouldEqual(typeof(int));
+      () => newContext.Subject.Type.Should().Be<int>();
   }
 
   [Subject(typeof(ContextFactory))]
@@ -51,7 +53,7 @@ namespace Machine.Specifications.Specs.Factories
     public class and_the_parent_context_has_context_blocks
     {
       It should_run_the_parent_context_blocks_prior_to_the_nested_context_blocks =
-        () => outerContextRan.ShouldBeTrue();
+        () => outerContextRan.Should().BeTrue();
     }
 
     static bool outerContextRan;
@@ -67,10 +69,10 @@ namespace Machine.Specifications.Specs.Factories
     };
 
     It should_contain_the_details_created_by_the_context_detail_factory =
-      () => new_context.Specifications.Count().ShouldEqual(1);
+      () => new_context.Specifications.Count().Should().Be(1);
 
     It should_take_the_subject_from_the_outer_class =
-      () => new_context.Subject.FullConcern.ShouldEqual("Int32 Parent description");
+      () => new_context.Subject.FullConcern.Should().Be("Int32 Parent description");
 
     static Context new_context;
   }
@@ -85,7 +87,7 @@ namespace Machine.Specifications.Specs.Factories
     };
 
     It should_take_the_subject_from_the_inherited_concern =
-      () => new_context.Subject.FullConcern.ShouldEqual("Int32 Some description");
+      () => new_context.Subject.FullConcern.Should().Be("Int32 Some description");
 
     static Context new_context;
   }
@@ -100,7 +102,7 @@ namespace Machine.Specifications.Specs.Factories
     };
 
     It should_take_the_owned_concern =
-      () => new_context.Subject.FullConcern.ShouldEqual("Int32 Nested description");
+      () => new_context.Subject.FullConcern.Should().Be("Int32 Nested description");
 
     static Context new_context;
   }
@@ -119,7 +121,7 @@ namespace Machine.Specifications.Specs.Factories
     };
 
     It should_be_able_to_be_created_successfully_if_a_testing_tool_has_specified_to_override_the_allowed_number_of_because_blocks =
-      () => new_context.ShouldNotBeNull();
+      () => new_context.Should().NotBeNull();
 
     static Context new_context;
   }
@@ -134,7 +136,7 @@ namespace Machine.Specifications.Specs.Factories
     };
 
     It should_have_no_concern =
-      () => new_context.Subject.ShouldBeNull();
+      () => new_context.Subject.Should().BeNull();
 
     static Context new_context;
   }
@@ -151,7 +153,7 @@ namespace Machine.Specifications.Specs.Factories
     };
 
     It should_capture_the_tags =
-      () => newContext.Tags.ShouldContainOnly(new Tag(tag2.example),
+      () => newContext.Tags.Should().BeEquivalentTo(new Tag(tag2.example),
                                               new Tag(tag2.some_other_tag),
                                               new Tag(tag2.one_more_tag));
   }
@@ -168,6 +170,6 @@ namespace Machine.Specifications.Specs.Factories
     };
 
     It should_capture_the_tags_once =
-      () => newContext.Tags.Count().ShouldEqual(1);
+      () => newContext.Tags.Count().Should().Be(1);
   }
 }

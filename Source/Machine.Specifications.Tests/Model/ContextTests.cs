@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+
+using FluentAssertions;
+
 using NUnit.Framework;
 
 namespace Machine.Specifications.Model
@@ -18,13 +21,13 @@ namespace Machine.Specifications.Model
     [Test]
     public void ShouldHaveException()
     {
-      results.First().Exception.ShouldNotBeNull();
+      results.First().Exception.Should().NotBeNull();
     }
 
     [Test]
     public void ShouldFail()
     {
-      results.First().Passed.ShouldBeFalse();
+      results.First().Passed.Should().BeFalse();
     }
   }
 
@@ -42,13 +45,13 @@ namespace Machine.Specifications.Model
     [Test]
     public void ShouldNotCallIt()
     {
-      ContextWithThrowingWhenAndPassingSpecification.ItInvoked.ShouldBeFalse();
+      ContextWithThrowingWhenAndPassingSpecification.ItInvoked.Should().BeFalse();
     }
 
     [Test]
     public void ShouldFail()
     {
-      results.First().Passed.ShouldBeFalse();
+      results.First().Passed.Should().BeFalse();
     }
   }
 
@@ -64,7 +67,7 @@ namespace Machine.Specifications.Model
     [Test]
     public void ShouldCallIt()
     {
-      ContextWithEmptyWhen.ItInvoked.ShouldBeTrue();
+      ContextWithEmptyWhen.ItInvoked.Should().BeTrue();
     }
   }
 
@@ -82,19 +85,19 @@ namespace Machine.Specifications.Model
     [Test]
     public void ShouldNotCallWhen()
     {
-      ContextWithEmptySpecification.WhenInvoked.ShouldBeFalse();
+      ContextWithEmptySpecification.WhenInvoked.Should().BeFalse();
     }
 
     [Test]
     public void ShouldHaveNotImplementedResult()
     {
-      results.First().Status.ShouldEqual(Status.NotImplemented);
+      results.First().Status.Should().Be(Status.NotImplemented);
     }
     
     [Test]
     public void ShouldHaveFailedResult()
     {
-      results.First().Passed.ShouldBeFalse();
+      results.First().Passed.Should().BeFalse();
     }
   }
 
@@ -111,19 +114,19 @@ namespace Machine.Specifications.Model
     [Test]
     public void ShouldEstablishContext()
     {
-      ContextWithSingleSpecification.BecauseInvoked.ShouldBeTrue();
+      ContextWithSingleSpecification.BecauseInvoked.Should().BeTrue();
     }
 
     [Test]
     public void ShouldCallBeforeEach()
     {
-      ContextWithSingleSpecification.ContextInvoked.ShouldBeTrue();
+      ContextWithSingleSpecification.ContextInvoked.Should().BeTrue();
     }
 
     [Test]
     public void ShouldCleanup()
     {
-      ContextWithSingleSpecification.CleanupInvoked.ShouldBeTrue();
+      ContextWithSingleSpecification.CleanupInvoked.Should().BeTrue();
     }
   }
 }

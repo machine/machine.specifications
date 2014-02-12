@@ -1,5 +1,7 @@
 using System;
 
+using FluentAssertions;
+
 namespace Machine.Specifications
 {
   namespace ExampleA
@@ -60,7 +62,7 @@ namespace Machine.Specifications
       exception = null;
 
     It should_throw_but_it_wont =()=> 
-      exception.ShouldNotBeNull();
+      exception.Should().NotBeNull();
 
     public void Reset()
     {
