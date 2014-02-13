@@ -20,7 +20,7 @@ namespace Machine.Specifications.Should.Specs.Utility.Internal
           () => Exception.Message.ShouldEqual(ExpectedMessage);
 
         It should_be_a_specification_exception =
-          () => Exception.ShouldBeOfType<SpecificationException>();
+          () => Exception.ShouldBeOfExactType<SpecificationException>();
 
         const string Expected =
           "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
