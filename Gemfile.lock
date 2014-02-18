@@ -11,7 +11,7 @@ GEM
     mini_portile (0.5.2)
     nokogiri (1.6.1-x86-mingw32)
       mini_portile (~> 0.5.0)
-    nuget (2.7.41115.310)
+    nuget (2.8.50126.400)
     rake (10.1.1)
     rubyzip (1.1.0)
     yamler (0.1.0)
@@ -20,8 +20,8 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
-  albacore (~> 1.0.rc)
-  configatron
+  albacore (= 1.0.0.rc.2)
+  configatron (= 2.13.0)
   gitflowversion
   nuget
   rake
