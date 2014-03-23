@@ -183,7 +183,7 @@ public class When_authenticating_a_user_fails_due_to_bad_credentials
     Because of = () => Exception = Catch.Exception(() => Subject.Authenticate("username", "password"));
 
     It should_fail = () => Exception.ShouldBeOfType<AuthenticationFailedException>();
-    It should_have_a_specific_reason = () => Exception.Message.ShouldContain("credentials")
+    It should_have_a_specific_reason = () => Exception.Message.ShouldContain("credentials");
 
     static SecurityService Subject;
     static Exception Exception;
