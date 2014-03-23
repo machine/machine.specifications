@@ -77,7 +77,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.CustomDelegates", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.dotCoverRunner.2.5", "Source\Runners\Machine.Specifications.dotCoverRunner.2.5\Machine.Specifications.dotCoverRunner.2.5.csproj", "{D94FE7E7-C389-4698-8633-87C75F5FBD96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.8.0", "Source\Runners\Machine.Specifications.ReSharperRunner.8.0\Machine.Specifications.ReSharperRunner.8.0.csproj", "{DFD90CB9-4192-4677-9AAC-3277C65B878E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharper.Runner.8.0", "Source\Runners\Machine.Specifications.ReSharper.Runner\Machine.Specifications.ReSharper.Runner.8.0.csproj", "{DFD90CB9-4192-4677-9AAC-3277C65B878E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Issue146-NoMSpecDll", "Source\Examples\Example.Issue146-NoMSpecDll\Example.Issue146-NoMSpecDll.csproj", "{5C5A9E20-C87B-43AD-BE01-AEB3EF6266AD}"
 EndProject
@@ -85,18 +85,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Issue157-Fail", "So
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Issue157-Success", "Source\Examples\Example.Issue157-Success\Example.Issue157-Success.csproj", "{79F44A49-3516-40F3-AC67-91EFA57B8119}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.8.1", "Source\Runners\Machine.Specifications.ReSharperRunner.8.1\Machine.Specifications.ReSharperRunner.8.1.csproj", "{69C6A07F-2EAD-474C-90A6-3F1DA5A05460}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharper.Runner.8.1", "Source\Runners\Machine.Specifications.ReSharper.Runner\Machine.Specifications.ReSharper.Runner.8.1.csproj", "{69C6A07F-2EAD-474C-90A6-3F1DA5A05460}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.dotCoverRunner.2.6", "Source\Runners\Machine.Specifications.dotCoverRunner.2.6\Machine.Specifications.dotCoverRunner.2.6.csproj", "{3D75FF4A-35C2-4D08-8397-989DE4B89076}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.dotCover.Runner.2.6", "Source\Runners\Machine.Specifications.Resharper.Runner\Machine.Specifications.dotCover.Runner.2.6.csproj", "{3D75FF4A-35C2-4D08-8397-989DE4B89076}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{748954AB-AD72-4C29-9920-1709A5C2B5BF}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharperRunner.8.2", "Source\Runners\Machine.Specifications.ReSharperRunner.8.2\Machine.Specifications.ReSharperRunner.8.2.csproj", "{349DD3E5-2326-4457-AF79-F96BE2E0B0A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharper.Runner.8.2", "Source\Runners\Machine.Specifications.ReSharper.Runner\Machine.Specifications.ReSharper.Runner.8.2.csproj", "{349DD3E5-2326-4457-AF79-F96BE2E0B0A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.dotCoverRunner.2.7", "Source\Runners\Machine.Specifications.dotCoverRunner.2.7\Machine.Specifications.dotCoverRunner.2.7.csproj", "{783784C0-B842-4FC9-A941-B926C59FDF1F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.dotCover.Runner.2.7", "Source\Runners\Machine.Specifications.Resharper.Runner\Machine.Specifications.dotCover.Runner.2.7.csproj", "{783784C0-B842-4FC9-A941-B926C59FDF1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
