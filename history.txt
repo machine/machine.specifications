@@ -1,3 +1,10 @@
+Machine.Specifications 0.8.0
+-----------------------------
+- Resharper 8.2 support
+- dotCover 2.7 support
+- dotCover 2.0 to 2.2 support dropped
+- Resharper 6.0 to 7.0 support dropped
+
 Machine.Specifications 0.7.0
 -----------------------------
 - Machine.Specifications.Should has been moved to seperate repository and nuget.
