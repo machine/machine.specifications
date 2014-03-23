@@ -10,18 +10,22 @@ You can download the [unsigned binaries][1] (<strong>recommended</strong>) or th
 
 ```bash
 cmd> nuget install Machine.Specifications
+cmd> nuget install Machine.Specifications.Should
 
 # or:
 cmd> nuget install Machine.Specifications-Signed
+cmd> nuget install Machine.Specifications.Should-Signed
 ```
 
 Or use the Package Manager console in Visual Studio:
 
 ```powershell
 PM> Install-Package Machine.Specifications
+PM> Install-Package Machine.Specifications.Should
 
 # or:
 PM> Install-Package Machine.Specifications-Signed
+PM> Install-Package Machine.Specifications.Should-Signed
 ```
 
 # Usage
@@ -179,7 +183,7 @@ public class When_authenticating_a_user_fails_due_to_bad_credentials
     Because of = () => Exception = Catch.Exception(() => Subject.Authenticate("username", "password"));
 
     It should_fail = () => Exception.ShouldBeOfType<AuthenticationFailedException>();
-    It should_have_a_specific_reason = () => Exception.Message.ShouldContain("credentials")
+    It should_have_a_specific_reason = () => Exception.Message.ShouldContain("credentials");
 
     static SecurityService Subject;
     static Exception Exception;

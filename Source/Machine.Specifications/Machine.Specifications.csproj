@@ -37,7 +37,6 @@
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <FodyPath>..\..\packages\Fody.1.19.1.0</FodyPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -59,8 +58,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Obsolete">
-      <HintPath>..\..\packages\Obsolete.Fody.3.0.1.0\Lib\NET35\Obsolete.dll</HintPath>
+    <Reference Include="Obsolete, Version=3.0.2.0, Culture=neutral, PublicKeyToken=1ca091877d12ca03, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Obsolete.Fody.3.0.2.0\Lib\NET35\Obsolete.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -73,7 +73,7 @@
     <Compile Include="Annotations\ReSharperAttributes.cs" />
     <Compile Include="BehaviorsAttribute.cs" />
     <Compile Include="Catch.cs" />
-    <Compile Include="DelegateUsageAttribute.cs" />
+    <Compile Include="DelegateAttributes.cs" />
     <Compile Include="Factories\BehaviorFactory.cs" />
     <Compile Include="Factories\ITagExtractor.cs" />
     <Compile Include="ICleanupAfterEveryContextInAssembly.cs" />
@@ -159,14 +159,18 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Fody.targets" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  
-  <Import Project="Fody.targets" />
   <Import Project="..\..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets" Condition="Exists('..\..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets')" />
+  <Import Project="..\..\packages\Fody.1.22.1\build\Fody.targets" Condition="Exists('..\..\packages\Fody.1.22.1\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\Fody.1.22.1\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Fody.1.22.1\build\Fody.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
