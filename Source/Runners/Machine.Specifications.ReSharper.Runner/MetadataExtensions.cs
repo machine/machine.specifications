@@ -77,13 +77,20 @@ namespace Machine.Specifications.ReSharperRunner
       return string.Join(" ", parameterNames);
     }
 
-    private static IList<IMetadataCustomAttribute> GetSubjectAttributes(IMetadataEntity type, SubjectAttributeFullName subjectAttributeFullName)
+    private static IList<IMetadataCustomAttribute> GetSubjectAttributes(IMetadataEntity metadataEntity, SubjectAttributeFullName subjectAttributeFullName)
     {
-      return type.CustomAttributes
-                 .Where(attribute => attribute
-                   .AndAllBaseTypes()
-                   .Any(i => i.FullyQualifiedName == subjectAttributeFullName))
-                   .ToList();
+      var derivedAndBaseTypes = metadataEntity.AndAllBaseTypes();
+
+      foreach (var type in derivedAndBaseTypes)
+      {
+        var attributes = type.CustomAttributes.ToList().Where(x => x.GetCustomAttributes(subjectAttributeFullName) != null);
+        if (attributes.Any())
+        {
+           return attributes.ToList();
+        }
+      }
+
+      return new List<IMetadataCustomAttribute>();
     }
 
     public static ICollection<string> GetTags(this IMetadataEntity type)
