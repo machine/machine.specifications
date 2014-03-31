@@ -94,7 +94,7 @@ namespace Machine.Specifications
             return expected;
         }
 
-        [ObsoleteEx(Message = "This method behaved like `ShouldBeAssignableTo` which is missleading. For exact type comparison use `ShouldBeOfExactType`, for assignability verification use `ShouldBeAssignableTo`. Redesigned because of #171.", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
+        [ObsoleteEx(Message = "This method behaved like `ShouldBeAssignableTo` which is misleading. For exact type comparison use `ShouldBeOfExactType`, for assignability verification use `ShouldBeAssignableTo`. Redesigned because of #171.", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
         public static void ShouldBeOfType(this object actual, Type expected)
         {
             if (actual == null)
@@ -110,13 +110,13 @@ namespace Machine.Specifications
             }
         }
 
-        [ObsoleteEx(Message = "This method behaved like `ShouldBeAssignableTo` which is missleading. For exact type comparison use `ShouldBeOfExactType`, for assignability verification use `ShouldBeAssignableTo`. Redesigned because of #171.", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
+        [ObsoleteEx(Message = "This method behaved like `ShouldBeAssignableTo` which is misleading. For exact type comparison use `ShouldBeOfExactType`, for assignability verification use `ShouldBeAssignableTo`. Redesigned because of #171.", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
         public static void ShouldBeOfType<T>(this object actual)
         {
             actual.ShouldBeOfType(typeof(T));
         }
 
-        [ObsoleteEx(Message = "This method behaved like `ShouldBeAssignableTo` which is missleading. For exact type comparison use `ShouldBeOfExactType`, for assignability verification use `ShouldBeAssignableTo`. Redesigned because of #171.", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
+        [ObsoleteEx(Message = "This method behaved like `ShouldBeAssignableTo` which is misleading. For exact type comparison use `ShouldBeOfExactType`, for assignability verification use `ShouldBeAssignableTo`. Redesigned because of #171.", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
         public static void ShouldBe(this object actual, Type expected)
         {
             actual.ShouldBeOfType(expected);
