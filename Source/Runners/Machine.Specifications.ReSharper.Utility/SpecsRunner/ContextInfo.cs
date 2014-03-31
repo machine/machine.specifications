@@ -1,9 +1,10 @@
 ﻿namespace Machine.Specifications.Runner.Utility.SpecsRunner
 {
     using System;
+    using System.Xml.Linq;
 
     [Serializable]
-    public class RemoteContextInfo
+    public class ContextInfo
     {
         public string Name { get; private set; }
         public string Concern { get; private set; }
@@ -28,11 +29,11 @@
 
         public string CapturedOutput { get; set; }
 
-        public RemoteContextInfo()
+        public ContextInfo()
         {
         }
 
-        public RemoteContextInfo(string name, string concern, string typeName, string @namespace, string assemblyName)
+        public ContextInfo(string name, string concern, string typeName, string @namespace, string assemblyName)
         {
             this.Concern = concern;
             this.Name = name;
@@ -53,7 +54,7 @@
                 return true;
             }
 
-            if (obj.GetType() != typeof(RemoteContextInfo))
+            if (obj.GetType() != typeof(ContextInfo))
             {
                 return false;
             }
@@ -74,6 +75,22 @@
 
                 return hash;
             }
+        }
+
+        public static ContextInfo Parse(string contextInfoXml)
+        {
+            var document = XDocument.Parse(contextInfoXml);
+            var name = document.SafeGet<string>("/contextinfo/name");
+            var concern = document.SafeGet<string>("/contextinfo/concern");
+            var typeName = document.SafeGet<string>("/contextinfo/typename");
+            var @namespace = document.SafeGet<string>("/contextinfo/namespace");
+            var assemblyName = document.SafeGet<string>("/contextinfo/assemblyname");
+            var capturedoutput = document.SafeGet<string>("/contextinfo/capturedoutput");
+
+            return new ContextInfo(name, concern, typeName, @namespace, assemblyName)
+                       {
+                           CapturedOutput = capturedoutput,
+                       };
         }
     }
 
