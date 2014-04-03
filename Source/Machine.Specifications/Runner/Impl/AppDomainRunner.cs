@@ -186,6 +186,24 @@ namespace Machine.Specifications.Runner.Impl
         return configFile;
       }
 
+      var dirName = Path.GetDirectoryName(assembly.Location);
+      if (string.IsNullOrEmpty(dirName))
+      {
+        return null;
+      }
+
+      var parent = Directory.GetParent(dirName);
+      if (parent == null || string.IsNullOrEmpty(parent.FullName))
+      {
+        return null;
+      }
+
+      configFile = parent.FullName + @"\web.config";
+      if (File.Exists(configFile))
+      {
+        return configFile;
+      }
+
       return null;
     }
 
