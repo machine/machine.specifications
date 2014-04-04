@@ -4,7 +4,7 @@ using System.Xml;
 namespace Machine.Specifications.ReSharperRunner.Tasks
 {
   [Serializable]
-  class ContextSpecificationTask : Task, IEquatable<ContextSpecificationTask>
+  public class ContextSpecificationTask : Task, IEquatable<ContextSpecificationTask>
   {
     public ContextSpecificationTask(XmlElement element) : base(element)
     {
@@ -22,9 +22,9 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
       SpecificationFieldName = specificationFieldName;
     }
 
-    public string ContextTypeName { get; private set; }
-
-    public string SpecificationFieldName { get; private set; }
+    public override string ContextTypeName { get; set; }
+    public override string BehaviorTypeName { get; set; }
+    public override string SpecificationFieldName { get; set; }
 
     public override bool IsMeaningfulTask
     {

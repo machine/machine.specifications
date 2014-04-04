@@ -18,7 +18,7 @@ namespace Machine.Specifications.Runner.Utility
             var mspecAssemblyName = GetMSpecAssemblyName(specAssemblyName);
             var testAssembly = Assembly.Load(AssemblyName.GetAssemblyName(Path.GetFullPath(specAssemblyName)));
 
-            CreateObject(mspecAssemblyName, "Machine.Specifications.Sdk.RunTests", listener, contextList, testAssembly);
+            CreateObject(mspecAssemblyName, "Machine.Specifications.Sdk.RunSpecs", listener, contextList, testAssembly);
         }
 
         public void RunSpecAssembly(string specAssemblyName, IRemoteSpecificationRunListener listener, RemoteRunOptions options)
@@ -29,7 +29,7 @@ namespace Machine.Specifications.Runner.Utility
 
             var mspecAssemblyName = GetMSpecAssemblyName(specAssemblyName);
             var testAssembly = Assembly.Load(AssemblyName.GetAssemblyName(Path.GetFullPath(specAssemblyName)));
-            CreateObject(mspecAssemblyName, "Machine.Specifications.Sdk.RunTests", listener, includeTags, excludeTags, filters, testAssembly);
+            CreateObject(mspecAssemblyName, "Machine.Specifications.Sdk.RunSpecs", listener, includeTags, excludeTags, filters, testAssembly);
         }
 
         public void RunSpecAssemblies(IEnumerable<string> testAssemblyNames, IRemoteSpecificationRunListener listener, RemoteRunOptions options)

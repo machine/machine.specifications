@@ -11,7 +11,7 @@ namespace Machine.Specifications
                 new XElement(
                     "result",
                     new XElement("status", result.Status.ToString()),
-                    new XElement("exception", result.Exception.ToXmlInternal()),
+                    new XElement("exception", result.Exception != null ? result.Exception.ToXmlInternal() : null),
                     result.SupplementsToXml())
                     .ToString();
         }

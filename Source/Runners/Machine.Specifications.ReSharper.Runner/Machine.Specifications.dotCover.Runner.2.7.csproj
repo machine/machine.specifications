@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -84,38 +84,13 @@
     </Compile>
     <Compile Include="..\ProductInfo.dotCover.2.7.cs">
       <Link>Properties\ProductInfo.dotCover.2.7.cs</Link>
-    </Compile>	
-    <Compile Include="EnumerableExtensions.cs" />
-    <Compile Include="Explorers\AssemblyExplorer.cs" />
-    <Compile Include="Explorers\ElementHandlers\BehaviorElementHandler.cs" />
-    <Compile Include="Explorers\ElementHandlers\ContextElementHandler.cs" />
-    <Compile Include="Explorers\ElementHandlers\ContextSpecificationElementHandler.cs" />
-    <Compile Include="Explorers\ElementHandlers\IElementHandler.cs" />
-    <Compile Include="Explorers\FileExplorer.cs" />
-    <Compile Include="Explorers\MspecTestFileExplorer.cs" />
-    <Compile Include="Explorers\MSpecTestMetadataExplorer.cs" />
-    <Compile Include="Factories\BehaviorFactory.cs" />
-    <Compile Include="Factories\BehaviorSpecificationFactory.cs" />
-    <Compile Include="Factories\ContextCache.cs" />
-    <Compile Include="Factories\ContextFactory.cs" />
-    <Compile Include="Factories\ContextSpecificationFactory.cs" />
-    <Compile Include="Factories\ElementFactories.cs" />
-    <Compile Include="Factories\UnitTestTaskFactory.cs" />
-    <Compile Include="MetadataExtensions.cs" />
-    <Compile Include="MSpecElementNaming.cs" />
-    <Compile Include="MSpecUnitTestElementComparer.cs" />
-    <Compile Include="MSpecUnitTestElementSerializer.cs" />
-    <Compile Include="MSpecUnitTestPresenter.cs" />
-    <Compile Include="MSpecUnitTestProvider.cs" />
-    <Compile Include="NormalizedTypeName.cs" />
-    <Compile Include="Presentation\BehaviorElement.cs" />
-    <Compile Include="Presentation\BehaviorSpecificationElement.cs" />
-    <Compile Include="Presentation\ContextElement.cs" />
-    <Compile Include="Presentation\ContextSpecificationElement.cs" />
-    <Compile Include="Presentation\Element.cs" />
-    <Compile Include="Presentation\FieldElement.cs" />
-    <Compile Include="Presentation\ISerializableElement.cs" />
-    <Compile Include="Presentation\Presenter.cs" />
+    </Compile>
+    <Compile Include="ExceptionResultConverter.cs" />
+    <Compile Include="ISetTempFolderPathStrategy.cs" />
+    <Compile Include="ISimpleClientController.cs" />
+    <Compile Include="ISimpleRemoteTaskServer.cs" />
+    <Compile Include="MSpecTestAssemblyTask.cs" />
+    <Compile Include="PerAssemblyRunListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>
       </SubType>
@@ -125,27 +100,18 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="PsiExtensions.cs" />
-    <Compile Include="Runners\ExceptionResultConverter.cs" />
-    <Compile Include="Runners\Notifications\AssemblyRemoteTaskNotification.cs" />
-    <Compile Include="Runners\Notifications\BehaviorSpecificationRemoteTaskNotification.cs" />
-    <Compile Include="Runners\Notifications\ContextRemoteTaskNotification.cs" />
-    <Compile Include="Runners\Notifications\ContextSpecificationRemoteTaskNotification.cs" />
-    <Compile Include="Runners\Notifications\RemoteTaskNotification.cs" />
-    <Compile Include="Runners\Notifications\RemoteTaskNotificationFactory.cs" />
-    <Compile Include="Runners\Notifications\SilentRemoteTaskNotification.cs" />
-    <Compile Include="Runners\PerAssemblyRunListener.cs" />
-    <Compile Include="Runners\RecursiveMSpecTaskRunner.cs" />
-    <Compile Include="Runners\VersionCompatibilityChecker.cs" />
-    <Compile Include="Shims\Cache.cs" />
-    <Compile Include="Shims\ICache.cs" />
-    <Compile Include="Shims\IPsi.cs" />
-    <Compile Include="Shims\Psi.cs" />
+    <Compile Include="RecursiveMSpecTaskRunner.cs" />
+    <Compile Include="RemoteTaskServer.cs" />
+    <Compile Include="SimpleClientControllerFactory.cs" />
+    <Compile Include="SimpleRemoteTaskServer.cs" />
+    <Compile Include="SimpleRemoteTaskServerFactory.cs" />
+    <Compile Include="TaskProvider.cs" />
     <Compile Include="Tasks\BehaviorSpecificationTask.cs" />
     <Compile Include="Tasks\ContextSpecificationTask.cs" />
     <Compile Include="Tasks\ContextTask.cs" />
     <Compile Include="Tasks\RunAssemblyTask.cs" />
     <Compile Include="Tasks\Task.cs" />
+    <Compile Include="TestRunner.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="InstallDotCoverRunner.2.7.bat">
@@ -167,9 +133,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Machine.Specifications\Machine.Specifications.csproj">
-      <Project>{ccd02629-1262-4f78-9e9f-ac97b942d0e7}</Project>
-      <Name>Machine.Specifications</Name>
+    <ProjectReference Include="..\Machine.Specifications.ReSharper.Utility\Machine.Specifications.Runner.Utility.csproj">
+      <Project>{ed308706-7c33-48b7-ad12-9f8ec88c63a9}</Project>
+      <Name>Machine.Specifications.Runner.Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
