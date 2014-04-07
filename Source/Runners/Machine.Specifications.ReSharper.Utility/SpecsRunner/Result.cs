@@ -62,6 +62,13 @@
             }
 
             var document = XDocument.Parse(exceptionResultXml);
+            var exceptionresult = document.Element("exceptionresult");
+
+            if (exceptionresult == null || exceptionresult.IsEmpty)
+            {
+                return null;
+            }
+
             var fulltypename = document.SafeGet<string>("/exceptionresult/fulltypename");
             var typename = document.SafeGet<string>("/exceptionresult/typename");
             var message = document.SafeGet<string>("/exceptionresult/message");

@@ -117,7 +117,7 @@
         }
     }
 
-    public class when_remote_run_listener_observes_a_run : remote_run
+    public class when_remote_run_listener_observes_a_failed_run : remote_run
     {
         static AssemblyInfo assemblyInfo;
 
@@ -155,6 +155,41 @@
         It should_context_start = () => contextStart.ShouldBeEquivalentTo(contexInfo);
         It should_context_end = () => contextEnd.ShouldBeEquivalentTo(contexInfo);
         It should_fatal_error = () => fatalError.ShouldBeEquivalentTo(exceptionResult, c => c.IncludingNestedObjects());
+        It should_specification_start = () => specificationStart.ShouldBeEquivalentTo(specificationInfo);
+        It should_specification_end = () => specificationEnd.ShouldBeEquivalentTo(specificationInfo);
+        It should_specification_end_result = () => specificationEndResult.ShouldBeEquivalentTo(result, c => c.IncludingNestedObjects().Excluding(r => r.Status));
+        It should_assembly_start = () => assemblyStart.ShouldBeEquivalentTo(assemblyInfo);
+        It should_assembly_end = () => assemblyEnd.ShouldBeEquivalentTo(assemblyInfo);
+    }
+
+    public class when_remote_run_listener_observes_a_successful_run : remote_run
+    {
+        static AssemblyInfo assemblyInfo;
+
+        static SpecificationInfo specificationInfo;
+
+        static ExceptionResult exceptionResult;
+
+        static Result result;
+
+        static ContextInfo contexInfo;
+
+        Establish ctx = () =>
+        {
+            exceptionResult = null; // empty exception result
+            assemblyInfo = new AssemblyInfo("assembly", "location");
+            specificationInfo = new SpecificationInfo("leader", "name", "containingType", "fieldName");
+            result = Result.Pass();
+            contexInfo = new ContextInfo("name", "concern", "typeName", "namespace", "assemblyname");
+        };
+
+        Because of = () => adapter.Run(assemblyInfo, specificationInfo, result, exceptionResult, contexInfo);
+
+        It should_run_start = () => runStart.Should().BeTrue();
+        It should_run_end = () => runEnd.Should().BeTrue();
+        It should_context_start = () => contextStart.ShouldBeEquivalentTo(contexInfo);
+        It should_context_end = () => contextEnd.ShouldBeEquivalentTo(contexInfo);
+        It should_fatal_error = () => fatalError.Should().BeNull();
         It should_specification_start = () => specificationStart.ShouldBeEquivalentTo(specificationInfo);
         It should_specification_end = () => specificationEnd.ShouldBeEquivalentTo(specificationInfo);
         It should_specification_end_result = () => specificationEndResult.ShouldBeEquivalentTo(result, c => c.IncludingNestedObjects().Excluding(r => r.Status));

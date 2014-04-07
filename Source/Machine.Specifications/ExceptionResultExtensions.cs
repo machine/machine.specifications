@@ -13,6 +13,11 @@ namespace Machine.Specifications
 
         internal static XElement ToXmlInternal(this ExceptionResult exceptionResult)
         {
+            if (exceptionResult == null)
+            {
+                return new XElement("exceptionresult");
+            }
+
             return new XElement("exceptionresult",
                 new XElement("fulltypename", exceptionResult.FullTypeName),
                 new XElement("typename", exceptionResult.TypeName),

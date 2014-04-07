@@ -4,4 +4,8 @@ copy /y Machine.Specifications.dll "%APPDATA%\JetBrains\dotCover\v2.7\Plugins\ms
 copy /y Machine.Specifications.pdb "%APPDATA%\JetBrains\dotCover\v2.7\Plugins\mspec" > NUL
 copy /y Machine.Specifications.dotCoverRunner.2.7.dll "%APPDATA%\JetBrains\dotCover\v2.7\Plugins\mspec"
 copy /y Machine.Specifications.dotCoverRunner.2.7.pdb "%APPDATA%\JetBrains\dotCover\v2.7\Plugins\mspec" > NUL
+copy /y Machine.Specifications.dotCoverProvider.2.7.dll "%APPDATA%\JetBrains\dotCover\v2.7\Plugins\mspec"
+copy /y Machine.Specifications.dotCoverProvider.2.7.pdb "%APPDATA%\JetBrains\dotCover\v2.7\Plugins\mspec" > NUL
+copy /y Machine.Specifications.Runner.Utility.dll "%APPDATA%\JetBrains\dotCover\v2.7\Plugins\mspec"
+copy /y Machine.Specifications.Runner.Utility.pdb "%APPDATA%\JetBrains\dotCover\v2.7\Plugins\mspec" > NUL
 pause

@@ -8,4 +8,8 @@ copy /y Machine.Specifications.dll "%APPDATA%\JetBrains\ReSharper\v8.2\Plugins\m
 copy /y Machine.Specifications.pdb "%APPDATA%\JetBrains\ReSharper\v8.2\Plugins\mspec" > NUL
 copy /y Machine.Specifications.ReSharperRunner.8.2.dll "%APPDATA%\JetBrains\ReSharper\v8.2\Plugins\mspec"
 copy /y Machine.Specifications.ReSharperRunner.8.2.pdb "%APPDATA%\JetBrains\ReSharper\v8.2\Plugins\mspec" > NUL
+copy /y Machine.Specifications.ReSharperProvider.8.2.dll "%APPDATA%\JetBrains\ReSharper\v8.2\Plugins\mspec"
+copy /y Machine.Specifications.ReSharperProvider.8.2.pdb "%APPDATA%\JetBrains\ReSharper\v8.2\Plugins\mspec" > NUL
+copy /y Machine.Specifications.Runner.Utility.dll "%APPDATA%\JetBrains\ReSharper\v8.2\Plugins\mspec"
+copy /y Machine.Specifications.Runner.Utility.pdb "%APPDATA%\JetBrains\ReSharper\v8.2\Plugins\mspec" > NUL
 pause
