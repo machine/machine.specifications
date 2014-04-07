@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+#if CLEAN_EXCEPTION_STACK_TRACE
+using System.Text.RegularExpressions;
+#endif
+
 namespace Machine.Specifications
 {
     public enum Status
