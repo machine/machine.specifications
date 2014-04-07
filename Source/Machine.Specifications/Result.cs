@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 
 #if CLEAN_EXCEPTION_STACK_TRACE
+using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Linq;
 #endif
 
 namespace Machine.Specifications
