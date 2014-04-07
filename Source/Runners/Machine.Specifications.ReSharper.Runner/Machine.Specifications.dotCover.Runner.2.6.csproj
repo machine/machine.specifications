@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Machine.Specifications.dotCoverRunner</RootNamespace>
-    <AssemblyName>Machine.Specifications.dotCoverRunner.2.6</AssemblyName>
+    <AssemblyName>Machine.Specifications.dotCover.Runner.2.6</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
