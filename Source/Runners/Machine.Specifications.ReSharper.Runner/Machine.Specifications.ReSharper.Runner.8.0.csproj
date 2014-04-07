@@ -80,13 +80,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.Machine.Specifications.ReSharper.Runner.8.0.config" />
-    <None Include="Resources\Machine.Specifications.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Logo.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Machine.Specifications-16x16.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
