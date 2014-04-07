@@ -93,6 +93,7 @@
     <Compile Include="Shims\Psi.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Machine.Specifications.ReSharper.Provider.8.0.csproj.user" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Machine.Specifications\Machine.Specifications.csproj">
@@ -108,7 +109,6 @@
     <None Include="InstallResharperRunner.8.1.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="packages.resharper.provider.8.1.config" />
     <None Include="Resources\Logo.ico" />
     <None Include="Resources\Machine.Specifications-16x16.png" />
     <None Include="Resources\Machine.Specifications.ico" />

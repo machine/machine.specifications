@@ -134,7 +134,7 @@
     <None Include="InstallDotCoverRunner.2.6.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="packages.dotcover.provider.2.6.config" />
+    <None Include="packages.Machine.Specifications.dotCover.Provider.2.6.config" />
     <None Include="Resources\Machine.Specifications.ico" />
   </ItemGroup>
   <ItemGroup>

@@ -96,7 +96,7 @@
     <None Include="InstallResharperRunner.8.0.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="packages.resharper.provider.8.0.config" />
+    <None Include="packages.Machine.Specifications.ReSharper.Provider.8.0.config" />
     <None Include="Resources\Machine.Specifications.ico" />
   </ItemGroup>
   <ItemGroup>
