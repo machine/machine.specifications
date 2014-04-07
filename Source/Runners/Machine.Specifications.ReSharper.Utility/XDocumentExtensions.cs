@@ -1,10 +1,10 @@
-﻿namespace Machine.Specifications.Runner.Utility.SpecsRunner
-{
-    using System;
-    using System.Xml.Linq;
-    using System.Xml.XPath;
+﻿using System;
+using System.Xml.Linq;
+using System.Xml.XPath;
 
-    public static class XDocumentExtensions
+namespace Machine.Specifications.Runner.Utility
+{
+    internal static class XDocumentExtensions
     {
         public static T SafeGet<T>(this XDocument element, string xpath)
         {

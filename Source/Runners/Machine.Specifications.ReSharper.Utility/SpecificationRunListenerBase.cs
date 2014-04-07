@@ -1,6 +1,6 @@
-﻿namespace Machine.Specifications.Runner.Utility.SpecsRunner
+﻿namespace Machine.Specifications.Runner.Utility
 {
-    public class RemoteSpecificationRunListenerBase : IRemoteSpecificationRunListener
+    public class SpecificationRunListenerBase : ISpecificationRunListener
     {
         protected virtual void OnAssemblyStart(AssemblyInfo assemblyInfo)
         {
@@ -38,47 +38,47 @@
         {
         }
 
-        void IRemoteSpecificationRunListener.OnAssemblyStart(string assemblyInfoXml)
+        void ISpecificationRunListener.OnAssemblyStart(string assemblyInfoXml)
         {
             this.OnAssemblyStart(AssemblyInfo.Parse(assemblyInfoXml));
         }
 
-        void IRemoteSpecificationRunListener.OnAssemblyEnd(string assemblyInfoXml)
+        void ISpecificationRunListener.OnAssemblyEnd(string assemblyInfoXml)
         {
             this.OnAssemblyEnd(AssemblyInfo.Parse(assemblyInfoXml));
         }
 
-        void IRemoteSpecificationRunListener.OnRunStart()
+        void ISpecificationRunListener.OnRunStart()
         {
             this.OnRunStart();
         }
 
-        void IRemoteSpecificationRunListener.OnRunEnd()
+        void ISpecificationRunListener.OnRunEnd()
         {
             this.OnRunEnd();
         }
 
-        void IRemoteSpecificationRunListener.OnContextStart(string contextInfoXml)
+        void ISpecificationRunListener.OnContextStart(string contextInfoXml)
         {
             this.OnContextStart(ContextInfo.Parse(contextInfoXml));
         }
 
-        void IRemoteSpecificationRunListener.OnContextEnd(string contextInfoXml)
+        void ISpecificationRunListener.OnContextEnd(string contextInfoXml)
         {
             this.OnContextEnd(ContextInfo.Parse(contextInfoXml));
         }
 
-        void IRemoteSpecificationRunListener.OnSpecificationStart(string specificationInfoXml)
+        void ISpecificationRunListener.OnSpecificationStart(string specificationInfoXml)
         {
             this.OnSpecificationStart(SpecificationInfo.Parse(specificationInfoXml));
         }
 
-        void IRemoteSpecificationRunListener.OnSpecificationEnd(string specificationInfoXml, string resultXml)
+        void ISpecificationRunListener.OnSpecificationEnd(string specificationInfoXml, string resultXml)
         {
             this.OnSpecificationEnd(SpecificationInfo.Parse(specificationInfoXml), Result.Parse(resultXml));
         }
 
-        void IRemoteSpecificationRunListener.OnFatalError(string exceptionResultXml)
+        void ISpecificationRunListener.OnFatalError(string exceptionResultXml)
         {
             this.OnFatalError(ExceptionResult.Parse(exceptionResultXml));
         }

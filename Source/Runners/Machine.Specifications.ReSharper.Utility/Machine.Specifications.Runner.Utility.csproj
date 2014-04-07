@@ -44,23 +44,23 @@
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="SpecsRunner\AssemblyInfo.cs" />
-    <Compile Include="SpecsRunner\RemoteSpecificationRunListenerBase.cs" />
-    <Compile Include="SpecsRunner\XDocumentExtensions.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="SpecificationRunListenerBase.cs" />
+    <Compile Include="XDocumentExtensions.cs" />
     <Compile Include="VersionResilentSpecRunner.cs" />
     <Compile Include="IVersionResilentSpecRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>
       </SubType>
     </Compile>
-    <None Include="SpecsRunner\AggregateRunListener.cs" />
-    <Compile Include="SpecsRunner\IRemoteSpecificationRunListener.cs" />
-    <Compile Include="SpecsRunner\RandomExtensionMethods.cs" />
-    <Compile Include="SpecsRunner\ContextInfo.cs" />
-    <Compile Include="SpecsRunner\Result.cs" />
-    <Compile Include="SpecsRunner\RemoteRunOptions.cs" />
-    <Compile Include="SpecsRunner\SpecificationInfo.cs" />
-    <None Include="SpecsRunner\TimerRunListener.cs" />
+    <Compile Include="AggregateRunListener.cs" />
+    <Compile Include="ISpecificationRunListener.cs" />
+    <Compile Include="RandomExtensionMethods.cs" />
+    <Compile Include="ContextInfo.cs" />
+    <Compile Include="Result.cs" />
+    <Compile Include="RemoteRunOptions.cs" />
+    <Compile Include="SpecificationInfo.cs" />
+    <Compile Include="TimerRunListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

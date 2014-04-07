@@ -1,8 +1,8 @@
-﻿namespace Machine.Specifications.Runner.Utility.SpecsRunner
-{
-    using System;
-    using System.Xml.Linq;
+﻿using System;
+using System.Xml.Linq;
 
+namespace Machine.Specifications.Runner.Utility
+{
     [Serializable]
     public class AssemblyInfo
     {

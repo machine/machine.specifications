@@ -1,3 +1,5 @@
+using Machine.Specifications.Runner.Utility;
+
 namespace Machine.Specifications.ReSharperRunner
 {
     using System;
@@ -6,9 +8,8 @@ namespace Machine.Specifications.ReSharperRunner
     using JetBrains.ReSharper.TaskRunnerFramework;
 
     using Machine.Specifications.ReSharperRunner.Tasks;
-    using Machine.Specifications.Runner.Utility.SpecsRunner;
 
-    public class PerAssemblyRunListener : RemoteSpecificationRunListenerBase
+    public class PerAssemblyRunListener : SpecificationRunListenerBase
     {
         private readonly RemoteTaskServer _server;
         private readonly TaskProvider _taskProvider;

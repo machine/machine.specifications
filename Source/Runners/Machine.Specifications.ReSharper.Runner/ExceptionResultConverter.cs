@@ -1,11 +1,11 @@
-﻿namespace Machine.Specifications.ReSharperRunner
+﻿using Machine.Specifications.Runner.Utility;
+
+namespace Machine.Specifications.ReSharperRunner
 {
     using System.Collections.Generic;
     using System.Reflection;
 
     using JetBrains.ReSharper.TaskRunnerFramework;
-
-    using Machine.Specifications.Runner.Utility.SpecsRunner;
 
     public static class ExceptionResultConverter
   {

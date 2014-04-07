@@ -6,14 +6,12 @@ using System.Reflection;
 
 namespace Machine.Specifications.Runner.Utility
 {
-    using Machine.Specifications.Runner.Utility.SpecsRunner;
-
     /// <summary>
     /// Dynamically gets the mspec assembly, and handsover tests to the mspec sdk by using reflection calls
     /// </summary>
     public class VersionResilentSpecRunner : IVersionResilentSpecRunner
     {
-        public void RunSpecs(string specAssemblyName, IRemoteSpecificationRunListener listener, IEnumerable<string> contextList)
+        public void RunSpecs(string specAssemblyName, ISpecificationRunListener listener, IEnumerable<string> contextList)
         {
             var mspecAssemblyName = GetMSpecAssemblyName(specAssemblyName);
             var testAssembly = Assembly.Load(AssemblyName.GetAssemblyName(Path.GetFullPath(specAssemblyName)));
@@ -21,7 +19,7 @@ namespace Machine.Specifications.Runner.Utility
             CreateObject(mspecAssemblyName, "Machine.Specifications.Sdk.RunSpecs", listener, contextList, testAssembly);
         }
 
-        public void RunSpecAssembly(string specAssemblyName, IRemoteSpecificationRunListener listener, RemoteRunOptions options)
+        public void RunSpecAssembly(string specAssemblyName, ISpecificationRunListener listener, RemoteRunOptions options)
         {
             IEnumerable<string> includeTags = options.IncludeTags;
             IEnumerable<string> excludeTags = options.ExcludeTags;
@@ -32,7 +30,7 @@ namespace Machine.Specifications.Runner.Utility
             CreateObject(mspecAssemblyName, "Machine.Specifications.Sdk.RunSpecs", listener, includeTags, excludeTags, filters, testAssembly);
         }
 
-        public void RunSpecAssemblies(IEnumerable<string> testAssemblyNames, IRemoteSpecificationRunListener listener, RemoteRunOptions options)
+        public void RunSpecAssemblies(IEnumerable<string> testAssemblyNames, ISpecificationRunListener listener, RemoteRunOptions options)
         {
             IEnumerable<string> includeTags = options.IncludeTags;
             IEnumerable<string> excludeTags = options.ExcludeTags;

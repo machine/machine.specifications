@@ -1,52 +1,52 @@
-﻿namespace Machine.Specifications.Runner.Utility.SpecsRunner
-{
-    using System.Collections.Generic;
-    using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 
-    public class TimingRunListener : IRemoteSpecificationRunListener
+namespace Machine.Specifications.Runner.Utility
+{
+    public class TimingRunListener : SpecificationRunListenerBase
     {
         readonly Stopwatch _assemblyTimer = new Stopwatch();
-        readonly Dictionary<RemoteAssemblyInfo, long> _assemblyTimes = new Dictionary<RemoteAssemblyInfo, long>();
+        readonly Dictionary<AssemblyInfo, long> _assemblyTimes = new Dictionary<AssemblyInfo, long>();
         readonly Stopwatch _contextTimer = new Stopwatch();
-        readonly Dictionary<RemoteContextInfo, long> _contextTimes = new Dictionary<RemoteContextInfo, long>();
+        readonly Dictionary<ContextInfo, long> _contextTimes = new Dictionary<ContextInfo, long>();
         readonly Stopwatch _runTimer = new Stopwatch();
         readonly Stopwatch _specificationTimer = new Stopwatch();
-        readonly Dictionary<RemoteSpecificationInfo, long> _specificationTimes = new Dictionary<RemoteSpecificationInfo, long>();
+        readonly Dictionary<SpecificationInfo, long> _specificationTimes = new Dictionary<SpecificationInfo, long>();
 
-        public void OnRunStart()
+        protected override void OnRunStart()
         {
             this._runTimer.Restart();
         }
 
-        public void OnRunEnd()
+        protected override void OnRunEnd()
         {
             this._runTimer.Stop();
         }
 
-        public void OnAssemblyStart(RemoteAssemblyInfo assembly)
+        protected override void OnAssemblyStart(AssemblyInfo assembly)
         {
             this._assemblyTimer.Restart();
         }
 
-        public void OnAssemblyEnd(RemoteAssemblyInfo assembly)
+        protected override void OnAssemblyEnd(AssemblyInfo assembly)
         {
             this._assemblyTimer.Stop();
             this._assemblyTimes[assembly] = this._assemblyTimer.ElapsedMilliseconds;
         }
 
-        public void OnContextStart(RemoteContextInfo context)
+        protected override void OnContextStart(ContextInfo context)
         {
             this._contextTimer.Restart();
             this._specificationTimer.Restart();
         }
 
-        public void OnContextEnd(RemoteContextInfo context)
+        protected override void OnContextEnd(ContextInfo context)
         {
             this._contextTimer.Stop();
             this._contextTimes[context] = this._contextTimer.ElapsedMilliseconds;
         }
 
-        public void OnSpecificationStart(RemoteSpecificationInfo specification)
+        protected override void OnSpecificationStart(SpecificationInfo specification)
         {
             if (!this._specificationTimer.IsRunning)
             {
@@ -54,17 +54,17 @@
             }
         }
 
-        public void OnSpecificationEnd(RemoteSpecificationInfo specification, RemoteResult result)
+        protected override void OnSpecificationEnd(SpecificationInfo specification, Result result)
         {
             this._specificationTimer.Stop();
             this._specificationTimes[specification] = this._specificationTimer.ElapsedMilliseconds;
         }
 
-        public void OnFatalError(RemoteExceptionResult exception)
+        protected override void OnFatalError(ExceptionResult exception)
         {
         }
 
-        public long GetSpecificationTime(RemoteSpecificationInfo specificationInfo)
+        public long GetSpecificationTime(SpecificationInfo specificationInfo)
         {
             if (this._specificationTimes.ContainsKey(specificationInfo))
             {
@@ -74,7 +74,7 @@
             return -1;
         }
 
-        public long GetContextTime(RemoteContextInfo contextInfo)
+        public long GetContextTime(ContextInfo contextInfo)
         {
             if (this._contextTimes.ContainsKey(contextInfo))
             {
@@ -84,7 +84,7 @@
             return -1;
         }
 
-        public long GetAssemblyTime(RemoteAssemblyInfo assemblyInfo)
+        public long GetAssemblyTime(AssemblyInfo assemblyInfo)
         {
             if (this._assemblyTimes.ContainsKey(assemblyInfo))
             {

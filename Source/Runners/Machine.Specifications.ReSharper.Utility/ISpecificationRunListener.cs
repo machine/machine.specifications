@@ -1,6 +1,6 @@
-﻿namespace Machine.Specifications.Runner.Utility.SpecsRunner
+﻿namespace Machine.Specifications.Runner.Utility
 {
-    public interface IRemoteSpecificationRunListener
+    public interface ISpecificationRunListener
     {
         void OnAssemblyStart(string assemblyInfoXml);
         void OnAssemblyEnd(string assemblyInfoXml);

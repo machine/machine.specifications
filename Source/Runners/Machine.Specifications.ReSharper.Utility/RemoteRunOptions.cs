@@ -1,8 +1,8 @@
-﻿namespace Machine.Specifications.Runner.Utility.SpecsRunner
-{
-    using System;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+namespace Machine.Specifications.Runner.Utility
+{
     [Serializable]
     public class RemoteRunOptions
     {

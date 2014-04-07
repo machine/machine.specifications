@@ -1,22 +1,24 @@
-﻿namespace Machine.Specifications.Specs.Runner
+﻿using Machine.Specifications.Runner.Utility;
+
+namespace Machine.Specifications.Specs.Runner
 {
     using System;
     using System.Collections.Generic;
 
     using FluentAssertions;
 
-    using Machine.Specifications.Runner.Utility.SpecsRunner;
-    using Machine.Specifications.Sdk;
-    using AssemblyInfo = Machine.Specifications.Runner.AssemblyInfo;
-    using RunnerAssemblyInfo = Machine.Specifications.Runner.Utility.SpecsRunner.AssemblyInfo;
-    using RunnerContextInfo = Machine.Specifications.Runner.Utility.SpecsRunner.ContextInfo;
-    using ContextInfo = Machine.Specifications.Runner.ContextInfo;
-    using ExceptionResult = Machine.Specifications.ExceptionResult;
-    using RunnerExceptionResult = Machine.Specifications.Runner.Utility.SpecsRunner.ExceptionResult;
-    using Result = Machine.Specifications.Result;
-    using RunnerResult = Specifications.Runner.Utility.SpecsRunner.Result;
-    using SpecificationInfo = Machine.Specifications.Runner.SpecificationInfo;
-    using RunnerSpecificationInfo = Specifications.Runner.Utility.SpecsRunner.SpecificationInfo;
+    using Specifications.Runner.Utility;
+    using Sdk;
+    using AssemblyInfo = Specifications.Runner.AssemblyInfo;
+    using RunnerAssemblyInfo = AssemblyInfo;
+    using RunnerContextInfo = ContextInfo;
+    using ContextInfo = Specifications.Runner.ContextInfo;
+    using ExceptionResult = ExceptionResult;
+    using RunnerExceptionResult = Specifications.Runner.Utility.ExceptionResult;
+    using Result = Result;
+    using RunnerResult = Specifications.Runner.Utility.Result;
+    using SpecificationInfo = Specifications.Runner.SpecificationInfo;
+    using RunnerSpecificationInfo = Specifications.Runner.Utility.SpecificationInfo;
 
     public class remote_run
     {
@@ -67,7 +69,7 @@
             }
         }
 
-        private class Listener : RemoteSpecificationRunListenerBase
+        private class Listener : SpecificationRunListenerBase
         {
             protected override void OnAssemblyStart(RunnerAssemblyInfo assemblyInfo)
             {
