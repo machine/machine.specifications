@@ -1,112 +1,112 @@
 ﻿using System.Collections.Generic;
-
-using Machine.Specifications.Runner;
+using Machine.Specifications.Runner.Utility;
 
 namespace Machine.Specifications.Reporting.Model
 {
-  public class Specification : ISpecificationNode, ILinkTarget, ILinkToCanFail, ILinkToNotImplemented, ILinkToIgnored
-  {
-    readonly ExceptionResult _exception;
-    readonly string _name;
-    readonly string _leader;
-    readonly Status _status;
-    readonly IDictionary<string, IDictionary<string, string>> _supplements;
-    readonly string _capturedOutput;
-
-    public Specification(string leader, string name, Result result)
+    public class Specification : ISpecificationNode, ILinkTarget, ILinkToCanFail, ILinkToNotImplemented, ILinkToIgnored
     {
-      _leader = leader;
-      _status = result.Status;
-      _exception = result.Exception;
-      _supplements = result.Supplements;
-      _name = name;
-    }
+        readonly ExceptionResult _exception;
+        readonly string _name;
+        readonly string _leader;
+        readonly Status _status;
+        readonly IDictionary<string, IDictionary<string, string>> _supplements;
+        readonly string _capturedOutput;
 
-    public Specification(SpecificationInfo specification, Result result) : this(specification.Leader, specification.Name, result)
-    {
-      _capturedOutput = specification.CapturedOutput;
-    }
+        public Specification(string leader, string name, Result result)
+        {
+            _leader = leader;
+            _status = result.Status;
+            _exception = result.Exception;
+            _supplements = result.Supplements;
+            _name = name;
+        }
 
-    public string Id
-    {
-      get;
-      set;
-    }
+        public Specification(SpecificationInfo specification, Result result)
+            : this(specification.Leader, specification.Name, result)
+        {
+            _capturedOutput = specification.CapturedOutput;
+        }
 
-    public string Leader
-    {
-      get { return _leader; }
-    }
+        public string Id
+        {
+            get;
+            set;
+        }
 
-    public Status Status
-    {
-      get { return _status; }
-    }
+        public string Leader
+        {
+            get { return _leader; }
+        }
 
-    public string Name
-    {
-      get { return _name; }
-    }
+        public Status Status
+        {
+            get { return _status; }
+        }
 
-    public string CapturedOutput
-    {
-      get { return _capturedOutput; }
-    }
+        public string Name
+        {
+            get { return _name; }
+        }
 
-    public ExceptionResult Exception
-    {
-      get { return _exception; }
-    }
+        public string CapturedOutput
+        {
+            get { return _capturedOutput; }
+        }
 
-    public IDictionary<string, IDictionary<string, string>> Supplements
-    {
-      get { return _supplements; }
-    }
+        public ExceptionResult Exception
+        {
+            get { return _exception; }
+        }
 
-    public void Accept(ISpecificationVisitor visitor)
-    {
-      visitor.Visit(this);
-    }
+        public IDictionary<string, IDictionary<string, string>> Supplements
+        {
+            get { return _supplements; }
+        }
 
-    public IEnumerable<ISpecificationNode> Children
-    {
-      get { yield break; }
-    }
+        public void Accept(ISpecificationVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
 
-    public ILinkTarget NextFailed
-    {
-      get;
-      set;
-    }
+        public IEnumerable<ISpecificationNode> Children
+        {
+            get { yield break; }
+        }
 
-    public ILinkTarget PreviousFailed
-    {
-      get;
-      set;
-    }
+        public ILinkTarget NextFailed
+        {
+            get;
+            set;
+        }
 
-    public ILinkTarget NextNotImplemented
-    {
-      get;
-      set;
-    }
+        public ILinkTarget PreviousFailed
+        {
+            get;
+            set;
+        }
 
-    public ILinkTarget PreviousNotImplemented
-    {
-      get;
-      set;
-    }
+        public ILinkTarget NextNotImplemented
+        {
+            get;
+            set;
+        }
 
-    public ILinkTarget NextIgnored
-    {
-      get;
-      set;
-    }
+        public ILinkTarget PreviousNotImplemented
+        {
+            get;
+            set;
+        }
 
-    public ILinkTarget PreviousIgnored
-    {
-      get;
-      set;
+        public ILinkTarget NextIgnored
+        {
+            get;
+            set;
+        }
+
+        public ILinkTarget PreviousIgnored
+        {
+            get;
+            set;
+        }
     }
-  }
 }

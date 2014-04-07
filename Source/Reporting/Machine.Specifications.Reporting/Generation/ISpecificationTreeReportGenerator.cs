@@ -2,8 +2,8 @@
 
 namespace Machine.Specifications.Reporting.Generation
 {
-  public interface ISpecificationTreeReportGenerator
-  {
-    void GenerateReport(Run run);
-  }
+    public interface ISpecificationTreeReportGenerator
+    {
+        void GenerateReport(Run run);
+    }
 }

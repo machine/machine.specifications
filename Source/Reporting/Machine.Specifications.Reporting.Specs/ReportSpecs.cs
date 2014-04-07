@@ -1,60 +1,61 @@
 using System;
 
 using Machine.Specifications.Reporting.Model;
+using Machine.Specifications.Runner.Utility;
 
 namespace Machine.Specifications.Reporting.Specs
 {
-  public class ReportSpecs
-  {
-    protected static Run Run(params Assembly[] assemblies)
+    public class ReportSpecs
     {
-      return new Run(assemblies);
-    }
-
-    protected static Assembly Assembly(string name, params Concern[] concerns)
-    {
-      return new Assembly(name, concerns);
-    }
-
-    protected static Concern Concern(string name, params Context[] contexts)
-    {
-      return new Concern(name, contexts);
-    }
-
-    protected static Context Context(string name, params Specification[] specifications)
-    {
-      return new Context(name, specifications);
-    }
-
-    protected static Specification Spec(string leader, string name, Result result)
-    {
-      return new Specification(leader, name, result) { Id = Guid.NewGuid().ToString() };
-    }
-
-    protected static Exception PrepareException()
-    {
-      try
-      {
-        try
+        protected static Run Run(params Assembly[] assemblies)
         {
-          SomeAction();
+            return new Run(assemblies);
         }
-        catch (Exception ex)
+
+        protected static Assembly Assembly(string name, params Concern[] concerns)
         {
-          throw new InvalidOperationException("something bad happened", ex);
+            return new Assembly(name, concerns);
         }
-      }
-      catch (Exception ex)
-      {
-        return ex;
-      }
 
-      return null;
-    }
+        protected static Concern Concern(string name, params Context[] contexts)
+        {
+            return new Concern(name, contexts);
+        }
 
-    static void SomeAction()
-    {
-      throw new NotImplementedException();
+        protected static Context Context(string name, params Specification[] specifications)
+        {
+            return new Context(name, specifications);
+        }
+
+        protected static Specification Spec(string leader, string name, Result result)
+        {
+            return new Specification(leader, name, result) { Id = Guid.NewGuid().ToString() };
+        }
+
+        protected static Exception PrepareException()
+        {
+            try
+            {
+                try
+                {
+                    SomeAction();
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException("something bad happened", ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+
+            return null;
+        }
+
+        static void SomeAction()
+        {
+            throw new NotImplementedException();
+        }
     }
-  }
 }

@@ -1,55 +1,55 @@
 ﻿namespace Machine.Specifications.Reporting.Model
 {
-  public interface ILinkTarget
-  {
-    string Id
+    public interface ILinkTarget
     {
-      get;
-    }
-  }
-
-  public interface ILinkToCanFail
-  {
-    ILinkTarget NextFailed
-    {
-      get;
-      set;
+        string Id
+        {
+            get;
+        }
     }
 
-    ILinkTarget PreviousFailed
+    public interface ILinkToCanFail
     {
-      get;
-      set;
-    }
-  }
+        ILinkTarget NextFailed
+        {
+            get;
+            set;
+        }
 
-  public interface ILinkToNotImplemented
-  {
-    ILinkTarget NextNotImplemented
-    {
-      get;
-      set;
-    }
-
-    ILinkTarget PreviousNotImplemented
-    {
-      get;
-      set;
-    }
-  }
-  
-  public interface ILinkToIgnored
-  {
-    ILinkTarget NextIgnored
-    {
-      get;
-      set;
+        ILinkTarget PreviousFailed
+        {
+            get;
+            set;
+        }
     }
 
-    ILinkTarget PreviousIgnored
+    public interface ILinkToNotImplemented
     {
-      get;
-      set;
+        ILinkTarget NextNotImplemented
+        {
+            get;
+            set;
+        }
+
+        ILinkTarget PreviousNotImplemented
+        {
+            get;
+            set;
+        }
     }
-  }
+
+    public interface ILinkToIgnored
+    {
+        ILinkTarget NextIgnored
+        {
+            get;
+            set;
+        }
+
+        ILinkTarget PreviousIgnored
+        {
+            get;
+            set;
+        }
+    }
 }

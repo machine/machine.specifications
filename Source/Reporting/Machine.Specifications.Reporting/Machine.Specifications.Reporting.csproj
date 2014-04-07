@@ -72,6 +72,7 @@
     <Compile Include="Generation\Spark\SparkRenderer.cs" />
     <Compile Include="Generation\Spark\SparkViewEngineFactory.cs" />
     <Compile Include="Generation\Spark\SparkView.cs" />
+    <Compile Include="Generation\SpecificationTreeMapping.cs" />
     <Compile Include="Generation\Xml\GenerateXmlReportListener.cs" />
     <Compile Include="Integration\TeamCityReporter.cs" />
     <Compile Include="Integration\TeamCityServiceMessageWriter.cs" />
@@ -101,12 +102,6 @@
     <Compile Include="Visitors\IgnoredSpecificationLinker.cs" />
     <Compile Include="Visitors\LinkerExtensions.cs" />
     <Compile Include="Visitors\NotImplementedSpecificationLinker.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Machine.Specifications\Machine.Specifications.csproj">
-      <Project>{CCD02629-1262-4F78-9E9F-AC97B942D0E7}</Project>
-      <Name>Machine.Specifications</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Generation\Spark\Templates\_CapturedOutput.spark">
@@ -155,8 +150,13 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Runners\Machine.Specifications.ReSharper.Utility\Machine.Specifications.Runner.Utility.csproj">
+      <Project>{ed308706-7c33-48b7-ad12-9f8ec88c63a9}</Project>
+      <Name>Machine.Specifications.Runner.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

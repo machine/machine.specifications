@@ -3,55 +3,55 @@ using System.IO;
 
 namespace Machine.Specifications.Reporting
 {
-  public interface IFileSystem
-  {
-    bool IsValidPathToDirectory(string path);
-    void EnsureDirectoryExists(string path);
-    bool IsValidPathToFile(string path);
-    void DeleteIfFileExists(string path);
-    void Move(string source, string destination);
-  }
-
-  internal class FileSystem : IFileSystem
-  {
-    public bool IsValidPathToDirectory(string path)
+    public interface IFileSystem
     {
-      try
-      {
-        return Directory.Exists(path);
-      }
-      catch (NullReferenceException)
-      {
-        return false;
-      }
+        bool IsValidPathToDirectory(string path);
+        void EnsureDirectoryExists(string path);
+        bool IsValidPathToFile(string path);
+        void DeleteIfFileExists(string path);
+        void Move(string source, string destination);
     }
 
-    public void EnsureDirectoryExists(string path)
+    internal class FileSystem : IFileSystem
     {
-      if (Directory.Exists(path))
-      {
-        return;
-      }
+        public bool IsValidPathToDirectory(string path)
+        {
+            try
+            {
+                return Directory.Exists(path);
+            }
+            catch (NullReferenceException)
+            {
+                return false;
+            }
+        }
 
-      Directory.CreateDirectory(path);
-    }
+        public void EnsureDirectoryExists(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                return;
+            }
 
-    public bool IsValidPathToFile(string path)
-    {
-      return IsValidPathToDirectory(new FileInfo(path).DirectoryName);
-    }
+            Directory.CreateDirectory(path);
+        }
 
-    public void DeleteIfFileExists(string path)
-    {
-      if (File.Exists(path))
-      {
-        File.Delete(path);
-      }
-    }
+        public bool IsValidPathToFile(string path)
+        {
+            return IsValidPathToDirectory(new FileInfo(path).DirectoryName);
+        }
 
-    public void Move(string source, string destination)
-    {
-      File.Move(source, destination);
+        public void DeleteIfFileExists(string path)
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+        }
+
+        public void Move(string source, string destination)
+        {
+            File.Move(source, destination);
+        }
     }
-  }
 }
