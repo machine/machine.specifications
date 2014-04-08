@@ -114,7 +114,7 @@
     <Compile Include="Sdk\DelegateAttributeFullName.cs" />
     <Compile Include="Sdk\IgnoreAttributeFullName.cs" />
     <Compile Include="Sdk\RemoteRunListener.cs" />
-    <Compile Include="Sdk\RunTests.cs" />
+    <Compile Include="Sdk\RunSpecs.cs" />
     <Compile Include="Sdk\SetupDelegateAttributeFullName.cs" />
     <Compile Include="Sdk\SubjectAttributeFullName.cs" />
     <Compile Include="Sdk\TagsAttributeFullName.cs" />

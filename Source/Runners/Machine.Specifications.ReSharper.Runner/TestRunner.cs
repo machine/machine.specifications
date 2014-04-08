@@ -6,8 +6,8 @@
 
     using JetBrains.ReSharper.TaskRunnerFramework;
 
-    using Machine.Specifications.ReSharperRunner.Tasks;
-    using Machine.Specifications.Runner.Utility;
+    using Tasks;
+    using Runner.Utility;
 
     public class TestRunner
     {
@@ -27,16 +27,16 @@
             {
                 // Use the assembly in the folder that the user has specified, or, if not, use the assembly location
                 var assemblyFolder = GetAssemblyFolder(this._configuration, assemblyTask);
-                var assemblyPath = Path.Combine(assemblyFolder, GetFileName(assemblyTask.AssemblyLocation));
+                var assemblyPath = new SpecAssemblyPath(Path.Combine(assemblyFolder, GetFileName(assemblyTask.AssemblyLocation)));
 
                 Environment.CurrentDirectory = assemblyFolder;
 
-                using (IVersionResilentSpecRunner versionResilentSpecRunner = new VersionResilentSpecRunner())
-                {
-                    var listener = new PerAssemblyRunListener(this._server, taskProvider);
-                    var contextList = taskProvider.ContextNames.ToList();
-                    versionResilentSpecRunner.RunSpecs(assemblyPath, listener, contextList);
-                }
+                IVersionResilentSpecRunner versionResilentSpecRunner = new VersionResilentSpecRunner();
+                var listener = new PerAssemblyRunListener(this._server, taskProvider);
+                var contextList = taskProvider.ContextNames.ToList();
+                var runOptions = RunOptions.Custom.RunOnly(contextList);
+
+                versionResilentSpecRunner.RunSpecAssemblies(new[] { assemblyPath }, listener, runOptions);
             }
             finally
             {

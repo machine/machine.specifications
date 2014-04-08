@@ -29,7 +29,7 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
             Report = Run(Assembly("assembly 1",
                                   Concern("a 1 concern 1",
                                           Context("a 1 c 1 context 1",
-                                                  Spec("it", "a 1 c 1 c 1 specification 2", Result.Pass())
+                                                  Spec("it", "a 1 c 1 c 1 specification 2", Runner.Utility.Result.Pass())
                                             )
                                     )
                            ));
@@ -56,7 +56,7 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
               Preparation.Initialize(new VisitorContext { ResourcePathCreator = () => @"C:\report\resources" });
 
               Images = Spec("it", "a 1 c 1 c 1 specification 1",
-                            Result.Supplement(Result.Pass(),
+                            Runner.Utility.Result.Supplement(Runner.Utility.Result.Pass(),
                                               "Images",
                                               new Dictionary<string, string>
                                         {
@@ -65,7 +65,7 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
                                         }));
 
               HtmlFiles = Spec("it", "a 2 c 1 c 1 specification 1",
-                               Result.Supplement(Result.Pass(),
+                               Runner.Utility.Result.Supplement(Runner.Utility.Result.Pass(),
                                                  "HTML",
                                                  new Dictionary<string, string>
                                            {
@@ -74,7 +74,7 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
                                            }));
 
               Texts = Spec("it", "a 2 c 1 c 2 specification 1",
-                           Result.Supplement(Result.Pass(),
+                           Runner.Utility.Result.Supplement(Runner.Utility.Result.Pass(),
                                              "Text",
                                              new Dictionary<string, string>
                                        {
@@ -86,18 +86,18 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
                                     Concern("a 1 concern 1",
                                             Context("a 1 c 1 context 1",
                                                     Images,
-                                                    Spec("it", "a 1 c 1 c 1 specification 2", Result.Pass())
+                                                    Spec("it", "a 1 c 1 c 1 specification 2", Runner.Utility.Result.Pass())
                                               )
                                       )
                              ),
                            Assembly("assembly 2",
                                     Concern("a 2 concern 1",
                                             Context("a 2 c 1 context 1",
-                                                    Spec("it", "a 2 c 1 c 1 specification 2", Result.Pass()),
+                                                    Spec("it", "a 2 c 1 c 1 specification 2", Runner.Utility.Result.Pass()),
                                                     HtmlFiles),
                                             Context("a 2 c 1 context 2",
                                                     Texts,
-                                                    Spec("it", "a 2 c 1 c 2 specification 2", Result.Pass())))));
+                                                    Spec("it", "a 2 c 1 c 2 specification 2", Runner.Utility.Result.Pass())))));
           };
 
         Because of = () => Preparation.Visit(Report);
@@ -131,7 +131,7 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
               Preparation.Initialize(new VisitorContext { ResourcePathCreator = () => @"C:\report\resources" });
 
               Failing = Spec("it", "a 1 c 1 c 1 specification 1",
-                             Result.Supplement(Result.Pass(),
+                             Runner.Utility.Result.Supplement(Runner.Utility.Result.Pass(),
                                                "Failing Images and Text",
                                                new Dictionary<string, string>
                                          {
@@ -189,7 +189,7 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
               Preparation.Initialize(new VisitorContext { ResourcePathCreator = () => @"C:\report\resources" });
 
               Failing = Spec("it", "a 1 c 1 c 1 specification 1",
-                             Result.Supplement(Result.Pass(),
+                             Runner.Utility.Result.Supplement(Runner.Utility.Result.Pass(),
                                                "Failing Images and Text",
                                                new Dictionary<string, string>
                                          {

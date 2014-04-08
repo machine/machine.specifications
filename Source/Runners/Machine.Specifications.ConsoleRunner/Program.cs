@@ -104,9 +104,8 @@ namespace Machine.Specifications.ConsoleRunner
 
                 var listener = new AggregateRunListener(listeners);
 
-                // TODO: Dispose!!
                 IVersionResilentSpecRunner specificationRunner = new VersionResilentSpecRunner();
-                var assemblies = new List<string>();
+                var assemblies = new List<SpecAssemblyPath>();
                 foreach (string assemblyName in options.AssemblyFiles)
                 {
                     if (!File.Exists(assemblyName))
@@ -121,7 +120,7 @@ namespace Machine.Specifications.ConsoleRunner
                         continue;
                     }
 
-                    assemblies.Add(assemblyName);
+                    assemblies.Add(new SpecAssemblyPath(assemblyName));
                 }
 
                 if (options.WaitForDebugger)
@@ -134,8 +133,7 @@ namespace Machine.Specifications.ConsoleRunner
                     }
                 }
 
-                // TODO: RunOptions!!
-                specificationRunner.RunSpecAssemblies(assemblies, listener, null);
+                specificationRunner.RunSpecAssemblies(assemblies, listener, options.GetRunOptions());
             }
             catch (Exception ex)
             {

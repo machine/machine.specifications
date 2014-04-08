@@ -11,34 +11,11 @@ namespace Machine.Specifications.Runner.Utility
     /// </summary>
     public class VersionResilentSpecRunner : IVersionResilentSpecRunner
     {
-        public void RunSpecs(string specAssemblyName, ISpecificationRunListener listener, IEnumerable<string> contextList)
+        public void RunSpecAssemblies(IEnumerable<SpecAssemblyPath> specAssemblyPaths, ISpecificationRunListener listener, RunOptions options)
         {
-            var mspecAssemblyName = GetMSpecAssemblyName(specAssemblyName);
-            var testAssembly = Assembly.Load(AssemblyName.GetAssemblyName(Path.GetFullPath(specAssemblyName)));
-
-            CreateObject(mspecAssemblyName, "Machine.Specifications.Sdk.RunSpecs", listener, contextList, testAssembly);
-        }
-
-        public void RunSpecAssembly(string specAssemblyName, ISpecificationRunListener listener, RemoteRunOptions options)
-        {
-            IEnumerable<string> includeTags = options.IncludeTags;
-            IEnumerable<string> excludeTags = options.ExcludeTags;
-            IEnumerable<string> filters = options.Filters;
-
-            var mspecAssemblyName = GetMSpecAssemblyName(specAssemblyName);
-            var testAssembly = Assembly.Load(AssemblyName.GetAssemblyName(Path.GetFullPath(specAssemblyName)));
-            CreateObject(mspecAssemblyName, "Machine.Specifications.Sdk.RunSpecs", listener, includeTags, excludeTags, filters, testAssembly);
-        }
-
-        public void RunSpecAssemblies(IEnumerable<string> testAssemblyNames, ISpecificationRunListener listener, RemoteRunOptions options)
-        {
-            IEnumerable<string> includeTags = options.IncludeTags;
-            IEnumerable<string> excludeTags = options.ExcludeTags;
-            IEnumerable<string> filters = options.Filters;
-
-            var mspecAssemblyName = GetMSpecAssemblyName(testAssemblyNames.First());
-            var testAssemblyList = testAssemblyNames.Select(x => Assembly.Load(AssemblyName.GetAssemblyName(Path.GetFullPath(x)))).ToList();
-            CreateObject(mspecAssemblyName, "Machine.Specifications.Sdk.RunTests", listener, includeTags, excludeTags, filters, testAssemblyList);
+            string mspecAssemblyName = GetMSpecAssemblyName(specAssemblyPaths.First());
+            List<Assembly> testAssemblyList = specAssemblyPaths.Select(x => Assembly.Load(AssemblyName.GetAssemblyName(Path.GetFullPath(x)))).ToList();
+            CreateObject(mspecAssemblyName, "Machine.Specifications.Sdk.RunSpecs", listener, options.ToXml(), testAssemblyList);
         }
 
         object CreateObject(string mspecAssemblyName, string typeName, params object[] args)
@@ -92,11 +69,6 @@ namespace Machine.Specifications.Runner.Utility
             }
 
             return mspecAssemblyName.FullName;
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
         }
     }
 }

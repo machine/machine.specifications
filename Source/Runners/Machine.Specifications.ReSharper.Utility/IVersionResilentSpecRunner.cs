@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Machine.Specifications.Runner.Utility
 {
-    public interface IVersionResilentSpecRunner : IDisposable
+    public interface IVersionResilentSpecRunner
     {
-        void RunSpecs(string specAssemblyName, ISpecificationRunListener listener, IEnumerable<string> contextList);
-
-        void RunSpecAssemblies(IEnumerable<string> testAssemblyNames, ISpecificationRunListener listener, RemoteRunOptions options);
-
-        void RunSpecAssembly(string specAssemblyName, ISpecificationRunListener listener, RemoteRunOptions options);
+        void RunSpecAssemblies(IEnumerable<SpecAssemblyPath> specAssemblyPaths, ISpecificationRunListener listener, RunOptions options);
     }
 }

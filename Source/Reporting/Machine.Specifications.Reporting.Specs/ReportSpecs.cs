@@ -1,7 +1,6 @@
 using System;
 
 using Machine.Specifications.Reporting.Model;
-using Machine.Specifications.Runner.Utility;
 
 namespace Machine.Specifications.Reporting.Specs
 {
@@ -27,7 +26,7 @@ namespace Machine.Specifications.Reporting.Specs
             return new Context(name, specifications);
         }
 
-        protected static Specification Spec(string leader, string name, Result result)
+        protected static Specification Spec(string leader, string name, Runner.Utility.Result result)
         {
             return new Specification(leader, name, result) { Id = Guid.NewGuid().ToString() };
         }

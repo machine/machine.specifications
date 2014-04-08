@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,15 @@ namespace Machine.Specifications.Runner.Utility
         public string Message { get; private set; }
         public string StackTrace { get; private set; }
         public ExceptionResult InnerExceptionResult { get; set; }
+
+        public ExceptionResult(Exception exception)
+            : this(exception.GetType().FullName, exception.GetType().Name, exception.Message, exception.StackTrace, null)
+        {
+            if (exception.InnerException != null)
+            {
+                InnerExceptionResult = new ExceptionResult(exception.InnerException);
+            }
+        }
 
         public ExceptionResult(string fullTypeName, string typeName, string message, string stackTrace, ExceptionResult innerExceptionResult)
         {
@@ -100,6 +110,12 @@ namespace Machine.Specifications.Runner.Utility
             this._status = status;
         }
 
+        private Result(Exception exception)
+        {
+            _status = Status.Failing;
+            this.Exception = new ExceptionResult(exception);
+        }
+
         private Result(Result result, string supplementName, IDictionary<string, string> supplement)
         {
             this._status = result.Status;
@@ -144,6 +160,31 @@ namespace Machine.Specifications.Runner.Utility
         {
             get { return this._status; }
             set { this._status = value; }
+        }
+
+        public static Result Pass()
+        {
+            return new Result(Status.Passing);
+        }
+
+        public static Result Ignored()
+        {
+            return new Result(Status.Ignored);
+        }
+
+        public static Result NotImplemented()
+        {
+            return new Result(Status.NotImplemented);
+        }
+
+        public static Result Supplement(Result result, string supplementName, IDictionary<string, string> supplement)
+        {
+            return new Result(result, supplementName, supplement);
+        }
+
+        public static Result Failure(Exception exception)
+        {
+            return new Result(exception);
         }
 
         public static Result Parse(string resultXml)

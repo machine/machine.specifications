@@ -45,6 +45,8 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="RunOptionsExtensions.cs" />
+    <Compile Include="SpecAssemblyPath.cs" />
     <Compile Include="SpecificationRunListenerBase.cs" />
     <Compile Include="XDocumentExtensions.cs" />
     <Compile Include="VersionResilentSpecRunner.cs" />
@@ -58,7 +60,7 @@
     <Compile Include="RandomExtensionMethods.cs" />
     <Compile Include="ContextInfo.cs" />
     <Compile Include="Result.cs" />
-    <Compile Include="RemoteRunOptions.cs" />
+    <Compile Include="RunOptions.cs" />
     <Compile Include="SpecificationInfo.cs" />
     <Compile Include="TimerRunListener.cs" />
   </ItemGroup>

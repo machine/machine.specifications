@@ -93,7 +93,7 @@ namespace Machine.Specifications.Sdk
             {
                 if (runnerType == null)
                 {
-                    runnerType = this._listener.GetType().GetInterfaces().Single(t => t.Name == "IRemoteSpecificationRunListener");
+                    runnerType = this._listener.GetType().GetInterfaces().Single(t => t.Name == typeof(ISpecificationRunListener).Name);
                 }
 
                 MethodInfo method = runnerType.GetMethod(methodName);

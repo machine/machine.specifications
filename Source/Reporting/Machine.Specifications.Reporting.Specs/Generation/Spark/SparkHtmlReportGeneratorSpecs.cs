@@ -7,7 +7,6 @@ using FluentAssertions;
 
 using Machine.Specifications.Reporting.Generation.Spark;
 using Machine.Specifications.Reporting.Model;
-using Machine.Specifications.Reporting.Visitors;
 using Machine.Specifications.Utility;
 
 using Rhino.Mocks;

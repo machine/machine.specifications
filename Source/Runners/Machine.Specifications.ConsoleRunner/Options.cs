@@ -6,7 +6,7 @@ using System.Text;
 using CommandLine;
 
 using Machine.Specifications.ConsoleRunner.Properties;
-using Machine.Specifications.Runner;
+using Machine.Specifications.Runner.Utility;
 
 namespace Machine.Specifications.ConsoleRunner
 {
@@ -125,16 +125,18 @@ namespace Machine.Specifications.ConsoleRunner
             return Parser.Default.ParseArguments(args, this);
         }
 
-        // TODO: Reactivate
-        //public virtual RunOptions GetRunOptions()
-        //{
-        //    var filters = new string[0];
-        //    if (!String.IsNullOrEmpty(FilterFile))
-        //    {
-        //        filters = File.ReadAllLines(FilterFile, Encoding.UTF8);
-        //    }
+        public virtual RunOptions GetRunOptions()
+        {
+            var filters = new string[0];
+            if (!String.IsNullOrEmpty(FilterFile))
+            {
+                filters = File.ReadAllLines(FilterFile, Encoding.UTF8);
+            }
 
-        //    return new RunOptions(IncludeTags ?? new string[0], ExcludeTags ?? new string[0], filters);
-        //}
+            return RunOptions.Custom
+                .Include(IncludeTags ?? new string[0])
+                .Exclude(ExcludeTags ?? new string[0])
+                .FilterBy(filters);
+        }
     }
 }
