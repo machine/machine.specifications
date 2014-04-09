@@ -65,6 +65,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs">
@@ -74,12 +76,16 @@
     <Compile Include="BehaviorsAttribute.cs" />
     <Compile Include="Catch.cs" />
     <Compile Include="DelegateAttributes.cs" />
+    <Compile Include="ExceptionResultExtensions.cs" />
     <Compile Include="Factories\BehaviorFactory.cs" />
     <Compile Include="Factories\ITagExtractor.cs" />
     <Compile Include="ICleanupAfterEveryContextInAssembly.cs" />
     <Compile Include="Model\Behavior.cs" />
     <Compile Include="Model\BehaviorSpecification.cs" />
+    <Compile Include="ResultExtensions.cs" />
     <Compile Include="Runner\AggregateRunListener.cs" />
+    <Compile Include="Runner\AssemblyInfoExtensions.cs" />
+    <Compile Include="Runner\ContextInfoExtensions.cs" />
     <Compile Include="Runner\Impl\InvokeOnce.cs" />
     <Compile Include="Runner\Impl\Listener\AssemblyContextRunListener.cs" />
     <Compile Include="Runner\Impl\AssemblyRunner.cs" />
@@ -97,6 +103,7 @@
     <Compile Include="Model\Tag.cs" />
     <Compile Include="Runner\RunListenerBase.cs" />
     <Compile Include="Runner\RunOptions.cs" />
+    <Compile Include="Runner\SpecificationInfoExtensions.cs" />
     <Compile Include="Runner\TimingRunListener.cs" />
     <Compile Include="Sdk\ActDelegateAttributeFullName.cs" />
     <Compile Include="Sdk\AssertDelegateAttributeFullName.cs" />
@@ -106,6 +113,8 @@
     <Compile Include="Sdk\CleanupDelegateAttributeFullName.cs" />
     <Compile Include="Sdk\DelegateAttributeFullName.cs" />
     <Compile Include="Sdk\IgnoreAttributeFullName.cs" />
+    <Compile Include="Sdk\RemoteRunListener.cs" />
+    <Compile Include="Sdk\RunSpecs.cs" />
     <Compile Include="Sdk\SetupDelegateAttributeFullName.cs" />
     <Compile Include="Sdk\SubjectAttributeFullName.cs" />
     <Compile Include="Sdk\TagsAttributeFullName.cs" />

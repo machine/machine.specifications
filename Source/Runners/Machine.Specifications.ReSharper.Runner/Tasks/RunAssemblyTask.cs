@@ -4,7 +4,7 @@ using System.Xml;
 namespace Machine.Specifications.ReSharperRunner.Tasks
 {
   [Serializable]
-  class RunAssemblyTask : Task, IEquatable<RunAssemblyTask>
+  public class RunAssemblyTask : Task, IEquatable<RunAssemblyTask>
   {
     public RunAssemblyTask(XmlElement element) : base(element)
     {
@@ -29,6 +29,10 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
 
       return Equals(AssemblyLocation, other.AssemblyLocation);
     }
+
+    public override string ContextTypeName { get; set; }
+    public override string BehaviorTypeName { get; set; }
+    public override string SpecificationFieldName { get; set; }
 
     public override bool Equals(object other)
     {

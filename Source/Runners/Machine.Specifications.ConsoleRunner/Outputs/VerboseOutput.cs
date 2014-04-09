@@ -1,80 +1,80 @@
-using Machine.Specifications.Runner;
+using Machine.Specifications.Runner.Utility;
 
 namespace Machine.Specifications.ConsoleRunner.Outputs
 {
-  struct FailedSpecification
-  {
-    public Result Result;
-    public SpecificationInfo Specification;
-  }
-
-  class VerboseOutput : IOutput
-  {
-    readonly IConsole _console;
-
-    public VerboseOutput(IConsole console)
+    struct FailedSpecification
     {
-      _console = console;
+        public Result Result;
+        public SpecificationInfo Specification;
     }
 
-    public void RunStart()
+    class VerboseOutput : IOutput
     {
-    }
+        readonly IConsole _console;
 
-    public void RunEnd()
-    {
-      EmptyLine();
-    }
+        public VerboseOutput(IConsole console)
+        {
+            _console = console;
+        }
 
-    public void AssemblyStart(AssemblyInfo assembly)
-    {
-      EmptyLine();
-      _console.WriteLine("Specs in " + assembly.Name + ":");
-    }
+        public void RunStart()
+        {
+        }
 
-    public void AssemblyEnd(AssemblyInfo assembly)
-    {
-    }
+        public void RunEnd()
+        {
+            EmptyLine();
+        }
 
-    public void ContextStart(ContextInfo context)
-    {
-      EmptyLine();
-      _console.WriteLine(context.FullName);
-    }
+        public void AssemblyStart(AssemblyInfo assembly)
+        {
+            EmptyLine();
+            _console.WriteLine("Specs in " + assembly.Name + ":");
+        }
 
-    public void ContextEnd(ContextInfo context)
-    {
-    }
+        public void AssemblyEnd(AssemblyInfo assembly)
+        {
+        }
 
-    public void SpecificationStart(SpecificationInfo specification)
-    {
-      _console.Write("» " + specification.Name);
-    }
+        public void ContextStart(ContextInfo context)
+        {
+            EmptyLine();
+            _console.WriteLine(context.FullName);
+        }
 
-    public void Passing(SpecificationInfo specification)
-    {
-      EmptyLine();
-    }
+        public void ContextEnd(ContextInfo context)
+        {
+        }
 
-    public void NotImplemented(SpecificationInfo specification)
-    {
-      _console.WriteLine(" (NOT IMPLEMENTED)");
-    }
+        public void SpecificationStart(SpecificationInfo specification)
+        {
+            _console.Write("» " + specification.Name);
+        }
 
-    public void Ignored(SpecificationInfo specification)
-    {
-      _console.WriteLine(" (IGNORED)");
-    }
+        public void Passing(SpecificationInfo specification)
+        {
+            EmptyLine();
+        }
 
-    public void Failed(SpecificationInfo specification, Result result)
-    {
-      _console.WriteLine(" (FAIL)");
-      _console.WriteLine(result.Exception.ToString());
-    }
+        public void NotImplemented(SpecificationInfo specification)
+        {
+            _console.WriteLine(" (NOT IMPLEMENTED)");
+        }
 
-    void EmptyLine()
-    {
-      _console.WriteLine("");
+        public void Ignored(SpecificationInfo specification)
+        {
+            _console.WriteLine(" (IGNORED)");
+        }
+
+        public void Failed(SpecificationInfo specification, Result result)
+        {
+            _console.WriteLine(" (FAIL)");
+            _console.WriteLine(result.Exception.ToString());
+        }
+
+        void EmptyLine()
+        {
+            _console.WriteLine("");
+        }
     }
-  }
 }

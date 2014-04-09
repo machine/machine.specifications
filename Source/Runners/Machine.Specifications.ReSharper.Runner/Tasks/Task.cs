@@ -6,7 +6,7 @@ using JetBrains.ReSharper.TaskRunnerFramework;
 namespace Machine.Specifications.ReSharperRunner.Tasks
 {
   [Serializable]
-  abstract class Task : RemoteTask, IEquatable<Task>
+  public abstract class Task : RemoteTask, IEquatable<Task>
   {
     readonly string _assemblyLocation;
 
@@ -20,6 +20,10 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
     {
       _assemblyLocation = assemblyLocation;
     }
+
+    public abstract string ContextTypeName { get; set; }
+    public abstract string BehaviorTypeName { get; set; }
+    public abstract string SpecificationFieldName { get; set; }
 
     public string AssemblyLocation
     {
@@ -58,6 +62,11 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
     {
       unchecked
       {
+//#if !RESHARPER_8
+//        var result = base.GetHashCode();
+//#else
+//        var result = Id.GetHashCode();
+//#endif
         var result = Id.GetHashCode();
         result = (result * 397) ^ AssemblyLocation.GetHashCode();
         return result;

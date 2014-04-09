@@ -2,30 +2,30 @@ using System;
 
 namespace Machine.Specifications.Reporting.Model
 {
-  public class Meta
-  {
-    public DateTime GeneratedAt
+    public class Meta
     {
-      get;
-      set;
-    }
+        public DateTime GeneratedAt
+        {
+            get;
+            set;
+        }
 
-    public bool ShouldGenerateTimeInfo
-    {
-      get;
-      set;
-    }
+        public bool ShouldGenerateTimeInfo
+        {
+            get;
+            set;
+        }
 
-    public bool ShouldGenerateIndexLink
-    {
-      get;
-      set;
-    }
+        public bool ShouldGenerateIndexLink
+        {
+            get;
+            set;
+        }
 
-    public string IndexLink
-    {
-      get;
-      set;
+        public string IndexLink
+        {
+            get;
+            set;
+        }
     }
-  }
 }

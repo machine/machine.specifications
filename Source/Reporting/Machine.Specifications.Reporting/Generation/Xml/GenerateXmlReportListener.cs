@@ -1,4 +1,4 @@
-using Machine.Specifications.Runner;
+using Machine.Specifications.Runner.Utility;
 
 namespace Machine.Specifications.Reporting.Generation.Xml
 {
@@ -15,7 +15,7 @@ namespace Machine.Specifications.Reporting.Generation.Xml
       _timer = timer;
     }
 
-    public override void OnRunEnd()
+    protected override void OnRunEnd()
     {
       base.OnRunEnd();
       var reportGenerator = new XmlReportGenerator(_xmlPath,

@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\..\packages\JetBrains.ReSharper.SDK.8.0.1243\build\JetBrains.ReSharper.SDK.Props" Condition="Exists('..\..\..\packages\JetBrains.ReSharper.SDK.8.0.1243\build\JetBrains.ReSharper.SDK.Props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8DAC8C3F-9373-49DF-93F9-5397FF374D93}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Machine.Specifications.ReSharperProvider</RootNamespace>
+    <AssemblyName>Machine.Specifications.ReSharper.Provider.8.0</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\Build\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;RESHARPER_8</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\Build\Release\</OutputPath>
+    <DefineConstants>TRACE;RESHARPER_8</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\ProductInfo.ReSharper.8.0.cs">
+      <Link>Properties\ProductInfo.ReSharper.8.0.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>
+      </SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="Explorers\AssemblyExplorer.cs" />
+    <Compile Include="Explorers\ElementHandlers\BehaviorElementHandler.cs" />
+    <Compile Include="Explorers\ElementHandlers\ContextElementHandler.cs" />
+    <Compile Include="Explorers\ElementHandlers\ContextSpecificationElementHandler.cs" />
+    <Compile Include="Explorers\ElementHandlers\IElementHandler.cs" />
+    <Compile Include="Explorers\FileExplorer.cs" />
+    <Compile Include="Explorers\MspecTestFileExplorer.cs" />
+    <Compile Include="Explorers\MSpecTestMetadataExplorer.cs" />
+    <Compile Include="Factories\BehaviorFactory.cs" />
+    <Compile Include="Factories\BehaviorSpecificationFactory.cs" />
+    <Compile Include="Factories\ContextCache.cs" />
+    <Compile Include="Factories\ContextFactory.cs" />
+    <Compile Include="Factories\ContextSpecificationFactory.cs" />
+    <Compile Include="Factories\ElementFactories.cs" />
+    <Compile Include="Factories\UnitTestTaskFactory.cs" />
+    <Compile Include="MetadataExtensions.cs" />
+    <Compile Include="MSpecElementNaming.cs" />
+    <Compile Include="MSpecUnitTestElementComparer.cs" />
+    <Compile Include="MSpecUnitTestPresenter.cs" />
+    <Compile Include="MSpecUnitTestProvider.cs" />
+    <Compile Include="NormalizedTypeName.cs" />
+    <Compile Include="Presentation\BehaviorElement.cs" />
+    <Compile Include="Presentation\BehaviorSpecificationElement.cs" />
+    <Compile Include="Presentation\ContextElement.cs" />
+    <Compile Include="Presentation\ContextSpecificationElement.cs" />
+    <Compile Include="Presentation\Element.cs" />
+    <Compile Include="Presentation\FieldElement.cs" />
+    <Compile Include="Presentation\ISerializableElement.cs" />
+    <Compile Include="Presentation\Presenter.cs" />
+    <Compile Include="PsiExtensions.cs" />
+    <Compile Include="Shims\Cache.cs" />
+    <Compile Include="Shims\ICache.cs" />
+    <Compile Include="Shims\IPsi.cs" />
+    <Compile Include="Shims\Psi.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="InstallResharperRunner.8.0.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.Machine.Specifications.ReSharper.Provider.8.0.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Machine.Specifications\Machine.Specifications.csproj">
+      <Project>{ccd02629-1262-4f78-9e9f-ac97b942d0e7}</Project>
+      <Name>Machine.Specifications</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Machine.Specifications.ReSharper.Runner\Machine.Specifications.ReSharper.Runner.8.0.csproj">
+      <Project>{dfd90cb9-4192-4677-9aac-3277c65b878e}</Project>
+      <Name>Machine.Specifications.ReSharper.Runner.8.0</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\..\packages\JetBrains.ReSharper.SDK.8.0.1243\build\JetBrains.ReSharper.SDK.Targets" Condition="Exists('..\..\..\packages\JetBrains.ReSharper.SDK.8.0.1243\build\JetBrains.ReSharper.SDK.Targets')" />
+  <Import Project="..\..\..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets" Condition="Exists('..\..\..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
