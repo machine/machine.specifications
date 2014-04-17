@@ -662,7 +662,7 @@ entire list: {1}",
             ObjectGraphHelper.INode expectedNode = null;
             var nodeType = typeof(ObjectGraphHelper.LiteralNode);
 
-            if (expected != null)
+            if (obj != null && expected != null)
             {
                 expectedNode = ObjectGraphHelper.GetGraph(expected);
                 nodeType = expectedNode.GetType();

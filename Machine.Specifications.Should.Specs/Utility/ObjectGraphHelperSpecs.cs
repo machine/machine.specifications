@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Machine.Specifications.Utility;
@@ -166,6 +167,45 @@ namespace Machine.Specifications.Should.Specs.Utility
         }
     }
 
+    [Subject(typeof(ObjectGraphHelper))]
+    class when_expected_Inner_value_is_null
+    {
+        static Model _actualModel;
+        static Exception _thrownException;
+
+        Establish ctx = () => { _actualModel = new Model {Inner = new InnerModel()}; };
+
+        Because of = () => _thrownException = Catch.Only<SpecificationException>(() => _actualModel.ShouldBeLike(new Model() { Inner = null }));
+
+        It should_throw_specification_exception = () => _thrownException.ShouldBeOfExactType<SpecificationException>();
+    }
+
+    [Subject(typeof(ObjectGraphHelper))]
+    class when_actual_Inner_value_is_null
+    {
+        static Model _actualModel;
+        static Exception _thrownException;
+
+        Establish ctx = () => { _actualModel = new Model { Inner = null }; };
+
+        Because of = () => _thrownException = Catch.Only<SpecificationException>(() => _actualModel.ShouldBeLike(new Model() { Inner = new InnerModel() }));
+
+        It should_throw_specification_exception = () => _thrownException.ShouldBeOfExactType<SpecificationException>();
+    }
+
+    [Subject(typeof(ObjectGraphHelper))]
+    class when_actual_and_expected_value_are_null
+    {
+        static Model _actualModel;
+        static Exception _thrownException;
+
+        Establish ctx = () => { _actualModel = new Model { Inner = null }; };
+
+        Because of = () => _thrownException = Catch.Only<SpecificationException>(() => _actualModel.ShouldBeLike(new Model() { Inner = null }));
+
+        It should_throw_specification_exception = () => _thrownException.ShouldBeNull();
+    }
+
     class ObjectWithField
     {
         public string Field;
@@ -186,4 +226,11 @@ namespace Machine.Specifications.Should.Specs.Utility
         public string Field;
         public string Property { get; set; }
     }
+
+    public class Model
+    {
+        public InnerModel Inner { get; set; }
+    }
+
+    public class InnerModel { }
 }
