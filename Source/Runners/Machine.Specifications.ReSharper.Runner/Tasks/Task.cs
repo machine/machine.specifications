@@ -62,11 +62,6 @@ namespace Machine.Specifications.ReSharperRunner.Tasks
     {
       unchecked
       {
-//#if !RESHARPER_8
-//        var result = base.GetHashCode();
-//#else
-//        var result = Id.GetHashCode();
-//#endif
         var result = Id.GetHashCode();
         result = (result * 397) ^ AssemblyLocation.GetHashCode();
         return result;

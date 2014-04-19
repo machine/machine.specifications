@@ -4,6 +4,7 @@ del "%APPDATA%\JetBrains\ReSharper\v8.2\vs12.0\Plugins\Machine.Specifications.*"
 
 mkdir "%APPDATA%\JetBrains\ReSharper\v8.2\Plugins" 2> NUL
 mkdir "%APPDATA%\JetBrains\ReSharper\v8.2\Plugins\mspec" 2> NUL
+del "%APPDATA%\JetBrains\ReSharper\v8.2\Plugins\mspec\*.*" 2> NUL
 copy /y Machine.Specifications.dll "%APPDATA%\JetBrains\ReSharper\v8.2\Plugins\mspec"
 copy /y Machine.Specifications.pdb "%APPDATA%\JetBrains\ReSharper\v8.2\Plugins\mspec" > NUL
 copy /y Machine.Specifications.ReSharper.Runner.8.2.dll "%APPDATA%\JetBrains\ReSharper\v8.2\Plugins\mspec"
