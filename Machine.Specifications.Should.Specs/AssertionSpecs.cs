@@ -98,7 +98,7 @@ namespace Machine.Specifications.Should.Specs
           () => SpecException = Catch.Exception(() => AList.ShouldContain(AnotherList));
 
         It should_fail_the__ShouldContains__assertion =
-          () => SpecException.ShouldBeOfType<SpecificationException>();
+          () => SpecException.ShouldBeOfExactType<SpecificationException>();
     }
 
     [Subject(typeof(ShouldExtensionMethods))]
@@ -110,16 +110,16 @@ namespace Machine.Specifications.Should.Specs
           () => AString = null;
 
         It should_fail_the__ShouldBeEmpty__assertion =
-          () => Catch.Exception(() => AString.ShouldBeEmpty()).ShouldBeOfType<SpecificationException>();
+          () => Catch.Exception(() => AString.ShouldBeEmpty()).ShouldBeOfExactType<SpecificationException>();
 
         It should_fail_the__ShouldNotBeEmpty__assertion =
-          () => Catch.Exception(() => AString.ShouldNotBeEmpty()).ShouldBeOfType<SpecificationException>();
+          () => Catch.Exception(() => AString.ShouldNotBeEmpty()).ShouldBeOfExactType<SpecificationException>();
 
         It should_pass_the__ShouldBeNull__assertion =
           () => Catch.Exception(() => AString.ShouldBeNull()).ShouldBeNull();
 
         It should_fail_the__ShouldNotBeNull__assertion =
-          () => Catch.Exception(() => AString.ShouldNotBeNull()).ShouldBeOfType<SpecificationException>();
+          () => Catch.Exception(() => AString.ShouldNotBeNull()).ShouldBeOfExactType<SpecificationException>();
     }
 
     [Subject(typeof(ShouldExtensionMethods))]
@@ -134,10 +134,10 @@ namespace Machine.Specifications.Should.Specs
           () => Catch.Exception(() => AString.ShouldBeEmpty()).ShouldBeNull();
 
         It should_fail_the__ShouldNotBeEmpty__assertion =
-          () => Catch.Exception(() => AString.ShouldNotBeEmpty()).ShouldBeOfType<SpecificationException>();
+          () => Catch.Exception(() => AString.ShouldNotBeEmpty()).ShouldBeOfExactType<SpecificationException>();
 
         It should_fail_the__ShouldBeNull__assertion =
-          () => Catch.Exception(() => AString.ShouldBeNull()).ShouldBeOfType<SpecificationException>();
+          () => Catch.Exception(() => AString.ShouldBeNull()).ShouldBeOfExactType<SpecificationException>();
 
         It should_pass_the__ShouldNotBeNull__assertion =
           () => Catch.Exception(() => AString.ShouldNotBeNull()).ShouldBeNull();
@@ -152,13 +152,13 @@ namespace Machine.Specifications.Should.Specs
           () => AString = "hey";
 
         It should_fail_the__ShouldBeEmpty__assertion =
-          () => Catch.Exception(() => AString.ShouldBeEmpty()).ShouldBeOfType<SpecificationException>();
+          () => Catch.Exception(() => AString.ShouldBeEmpty()).ShouldBeOfExactType<SpecificationException>();
 
         It should_pass_the__ShouldNotBeEmpty__assertion =
           () => Catch.Exception(() => AString.ShouldNotBeEmpty()).ShouldBeNull();
 
         It should_fail_the__ShouldBeNull__assertion =
-          () => Catch.Exception(() => AString.ShouldBeNull()).ShouldBeOfType<SpecificationException>();
+          () => Catch.Exception(() => AString.ShouldBeNull()).ShouldBeOfExactType<SpecificationException>();
 
         It should_pass_the__ShouldNotBeNull__assertion =
           () => Catch.Exception(() => AString.ShouldNotBeNull()).ShouldBeNull();
@@ -173,7 +173,7 @@ namespace Machine.Specifications.Should.Specs
         Establish context = () => { AString = null; };
 
         Because of =
-          () => Exception = (SpecificationException)Catch.Exception(() => AString.ShouldBeOfType<int>());
+          () => Exception = (SpecificationException)Catch.Exception(() => AString.ShouldBeOfExactType<int>());
 
         It should_report_the_requested_type =
           () => Exception.Message.ShouldStartWith("Should be of type System.Int32");

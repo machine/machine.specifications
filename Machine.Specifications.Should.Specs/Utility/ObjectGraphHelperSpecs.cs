@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Machine.Specifications.Utility;
@@ -23,7 +24,7 @@ namespace Machine.Specifications.Should.Specs.Utility
             It should_retrieve_value = () => ((ObjectGraphHelper.KeyValueNode)_result).KeyValues
                                                  .Where(m => m.Name == "Property").Single().ValueGetter().ShouldEqual("value");
 
-            It should_return_a_key_value_node = () => _result.ShouldBeOfType<ObjectGraphHelper.KeyValueNode>();
+            It should_return_a_key_value_node = () => _result.ShouldBeOfExactType<ObjectGraphHelper.KeyValueNode>();
         }
 
         public class with_field
@@ -43,7 +44,7 @@ namespace Machine.Specifications.Should.Specs.Utility
             It should_retrieve_value = () => ((ObjectGraphHelper.KeyValueNode)_result).KeyValues
                                                  .Where(m => m.Name == "Field").Single().ValueGetter().ShouldEqual("value");
 
-            It should_return_a_key_value_node = () => _result.ShouldBeOfType<ObjectGraphHelper.KeyValueNode>();
+            It should_return_a_key_value_node = () => _result.ShouldBeOfExactType<ObjectGraphHelper.KeyValueNode>();
         }
 
         public class with_readonly_field
@@ -58,7 +59,7 @@ namespace Machine.Specifications.Should.Specs.Utility
             It should_retrieve_value = () => ((ObjectGraphHelper.KeyValueNode)_result).KeyValues
                                                  .Where(m => m.Name == "Field").Single().ValueGetter().ShouldEqual("value");
 
-            It should_return_a_key_value_node = () => _result.ShouldBeOfType<ObjectGraphHelper.KeyValueNode>();
+            It should_return_a_key_value_node = () => _result.ShouldBeOfExactType<ObjectGraphHelper.KeyValueNode>();
         }
 
         public class with_property_and_field
@@ -85,7 +86,7 @@ namespace Machine.Specifications.Should.Specs.Utility
             It should_retrieve_property_value = () => ((ObjectGraphHelper.KeyValueNode)_result).KeyValues
                                                           .Where(m => m.Name == "Property").Single().ValueGetter().ShouldEqual("value1");
 
-            It should_return_a_key_value_node = () => _result.ShouldBeOfType<ObjectGraphHelper.KeyValueNode>();
+            It should_return_a_key_value_node = () => _result.ShouldBeOfExactType<ObjectGraphHelper.KeyValueNode>();
         }
     }
 
@@ -101,7 +102,7 @@ namespace Machine.Specifications.Should.Specs.Utility
         {
             Establish ctx = () => _array = new string[] { };
 
-            It should_return_an_array_node = () => _result.ShouldBeOfType<ObjectGraphHelper.SequenceNode>();
+            It should_return_an_array_node = () => _result.ShouldBeOfExactType<ObjectGraphHelper.SequenceNode>();
             It should_be_empty = () => ((ObjectGraphHelper.SequenceNode)_result).ValueGetters.ShouldBeEmpty();
         }
 
@@ -109,7 +110,7 @@ namespace Machine.Specifications.Should.Specs.Utility
         {
             Establish ctx = () => _array = new[] { "value1", "value2" };
 
-            It should_return_an_array_node = () => _result.ShouldBeOfType<ObjectGraphHelper.SequenceNode>();
+            It should_return_an_array_node = () => _result.ShouldBeOfExactType<ObjectGraphHelper.SequenceNode>();
             It should_contain_value1 = () => ((ObjectGraphHelper.SequenceNode)_result).ValueGetters.ElementAt(0)().ShouldEqual("value1");
             It should_contain_value2 = () => ((ObjectGraphHelper.SequenceNode)_result).ValueGetters.ElementAt(1)().ShouldEqual("value2");
         }
@@ -127,7 +128,7 @@ namespace Machine.Specifications.Should.Specs.Utility
         {
             Establish ctx = () => _sequence = new List<string>();
 
-            It should_return_an_array_node = () => _result.ShouldBeOfType<ObjectGraphHelper.SequenceNode>();
+            It should_return_an_array_node = () => _result.ShouldBeOfExactType<ObjectGraphHelper.SequenceNode>();
             It should_be_empty = () => ((ObjectGraphHelper.SequenceNode)_result).ValueGetters.ShouldBeEmpty();
         }
 
@@ -135,7 +136,7 @@ namespace Machine.Specifications.Should.Specs.Utility
         {
             Establish ctx = () => _sequence = new List<string> { "value1", "value2" };
 
-            It should_return_an_array_node = () => _result.ShouldBeOfType<ObjectGraphHelper.SequenceNode>();
+            It should_return_an_array_node = () => _result.ShouldBeOfExactType<ObjectGraphHelper.SequenceNode>();
             It should_contain_value1 = () => ((ObjectGraphHelper.SequenceNode)_result).ValueGetters.ElementAt(0)().ShouldEqual("value1");
             It should_contain_value2 = () => ((ObjectGraphHelper.SequenceNode)_result).ValueGetters.ElementAt(1)().ShouldEqual("value2");
         }
@@ -153,7 +154,7 @@ namespace Machine.Specifications.Should.Specs.Utility
         {
             Establish ctx = () => _literal = "value";
 
-            It should_return_a_literal_node = () => _result.ShouldBeOfType<ObjectGraphHelper.LiteralNode>();
+            It should_return_a_literal_node = () => _result.ShouldBeOfExactType<ObjectGraphHelper.LiteralNode>();
             It should_have_value = () => ((ObjectGraphHelper.LiteralNode)_result).Value.ShouldEqual("value");
         }
 
@@ -161,9 +162,48 @@ namespace Machine.Specifications.Should.Specs.Utility
         {
             Establish ctx = () => _literal = 5;
 
-            It should_return_a_literal_node = () => _result.ShouldBeOfType<ObjectGraphHelper.LiteralNode>();
+            It should_return_a_literal_node = () => _result.ShouldBeOfExactType<ObjectGraphHelper.LiteralNode>();
             It should_have_value = () => ((ObjectGraphHelper.LiteralNode)_result).Value.ShouldEqual(5);
         }
+    }
+
+    [Subject(typeof(ObjectGraphHelper))]
+    class when_expected_Inner_value_is_null
+    {
+        static Model _actualModel;
+        static Exception _thrownException;
+
+        Establish ctx = () => { _actualModel = new Model {Inner = new InnerModel()}; };
+
+        Because of = () => _thrownException = Catch.Only<SpecificationException>(() => _actualModel.ShouldBeLike(new Model() { Inner = null }));
+
+        It should_throw_specification_exception = () => _thrownException.ShouldBeOfExactType<SpecificationException>();
+    }
+
+    [Subject(typeof(ObjectGraphHelper))]
+    class when_actual_Inner_value_is_null
+    {
+        static Model _actualModel;
+        static Exception _thrownException;
+
+        Establish ctx = () => { _actualModel = new Model { Inner = null }; };
+
+        Because of = () => _thrownException = Catch.Only<SpecificationException>(() => _actualModel.ShouldBeLike(new Model() { Inner = new InnerModel() }));
+
+        It should_throw_specification_exception = () => _thrownException.ShouldBeOfExactType<SpecificationException>();
+    }
+
+    [Subject(typeof(ObjectGraphHelper))]
+    class when_actual_and_expected_value_are_null
+    {
+        static Model _actualModel;
+        static Exception _thrownException;
+
+        Establish ctx = () => { _actualModel = new Model { Inner = null }; };
+
+        Because of = () => _thrownException = Catch.Only<SpecificationException>(() => _actualModel.ShouldBeLike(new Model() { Inner = null }));
+
+        It should_throw_specification_exception = () => _thrownException.ShouldBeNull();
     }
 
     class ObjectWithField
@@ -186,4 +226,11 @@ namespace Machine.Specifications.Should.Specs.Utility
         public string Field;
         public string Property { get; set; }
     }
+
+    public class Model
+    {
+        public InnerModel Inner { get; set; }
+    }
+
+    public class InnerModel { }
 }

@@ -34,7 +34,7 @@ namespace Machine.Specifications.Should.Specs
   But was:  ""test""
   ---------------^");
 
-            It should_throw = () => Exception.ShouldBeOfType<SpecificationException>();
+            It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
         }
 
         public class with_missing_key
@@ -46,7 +46,7 @@ namespace Machine.Specifications.Should.Specs
   Expected: ""other""
   But was:  Not Defined");
 
-            It should_throw = () => Exception.ShouldBeOfType<SpecificationException>();
+            It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
         }
 
         public class with_multiple_errors
@@ -71,7 +71,7 @@ namespace Machine.Specifications.Should.Specs
   Expected: ""other""
   But was:  Not Defined");
 
-            It should_throw = () => Exception.ShouldBeOfType<SpecificationException>();
+            It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
         }
     }
 
@@ -108,7 +108,7 @@ namespace Machine.Specifications.Should.Specs
   But was:  ""value2""
   ----------------^");
 
-            It should_throw = () => Exception.ShouldBeOfType<SpecificationException>();
+            It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
         }
 
         public class with_incorrect_length
@@ -120,7 +120,7 @@ namespace Machine.Specifications.Should.Specs
   Expected: Sequence length of 1
   But was:  2");
 
-            It should_throw = () => Exception.ShouldBeOfType<SpecificationException>();
+            It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
         }
     }
 
@@ -190,7 +190,7 @@ namespace Machine.Specifications.Should.Specs
   Expected: [7]
   But was:  [5]");
 
-            It should_throw = () => Exception.ShouldBeOfType<SpecificationException>();
+            It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
         }
 
         public class with_missing_value
@@ -215,7 +215,7 @@ namespace Machine.Specifications.Should.Specs
   Expected: ""value3""
   But was:  Not Defined");
 
-            It should_throw = () => Exception.ShouldBeOfType<SpecificationException>();
+            It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
         }
     }
 
@@ -248,7 +248,7 @@ namespace Machine.Specifications.Should.Specs
 
             Because of = () => { Exception = Catch.Exception(() => Obj1.ShouldBeLike(Obj2)); };
 
-            It should_throw = () => Exception.ShouldBeOfType<SpecificationException>();
+            It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
 
             It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop1"":
   Expected string length 9 but was 4. Strings differ at index 0.
@@ -263,7 +263,7 @@ namespace Machine.Specifications.Should.Specs
 
             Because of = () => { Exception = Catch.Exception(() => Obj1.ShouldBeLike(Obj2)); };
 
-            It should_throw_a_specification_exception = () => Exception.ShouldBeOfType<SpecificationException>();
+            It should_throw_a_specification_exception = () => Exception.ShouldBeOfExactType<SpecificationException>();
 
             It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop1"":
   Expected: [null]
@@ -300,7 +300,7 @@ namespace Machine.Specifications.Should.Specs
 
             Because of = () => { Exception = Catch.Exception(() => Obj1.ShouldBeLike(Obj2)); };
 
-            It should_throw = () => Exception.ShouldBeOfType<SpecificationException>();
+            It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
 
             It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop1[0]"":
   Expected: [2]
@@ -324,7 +324,7 @@ namespace Machine.Specifications.Should.Specs
                 Exception = Catch.Exception(() => Obj1.ShouldBeLike(Obj2));
             };
 
-            It should_throw_a_specification_exception = () => Exception.ShouldBeOfType<SpecificationException>();
+            It should_throw_a_specification_exception = () => Exception.ShouldBeOfExactType<SpecificationException>();
 
             It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop1"":
   Expected: [null]
@@ -345,7 +345,7 @@ namespace Machine.Specifications.Should.Specs
                 Exception = Catch.Exception(() => Obj2.ShouldBeLike(Obj1));
             };
 
-            It should_throw_a_specification_exception = () => Exception.ShouldBeOfType<SpecificationException>();
+            It should_throw_a_specification_exception = () => Exception.ShouldBeOfExactType<SpecificationException>();
 
             It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop1"":
   Expected: System.Int32[]:
@@ -408,7 +408,7 @@ namespace Machine.Specifications.Should.Specs
 
             Because of = () => exception = Catch.Exception(() => first.ShouldBeLike(second));
 
-            It should_throw = () => exception.ShouldBeOfType<SpecificationException>();
+            It should_throw = () => exception.ShouldBeOfExactType<SpecificationException>();
 
             It should_contain_message = () => exception.Message.ShouldEqual(@"""Prop2[0]"":
   Expected: [3]
@@ -435,7 +435,7 @@ namespace Machine.Specifications.Should.Specs
 
             Because of = () => exception = Catch.Exception(() => first.ShouldBeLike(second));
 
-            It should_throw = () => exception.ShouldBeOfType<SpecificationException>();
+            It should_throw = () => exception.ShouldBeOfExactType<SpecificationException>();
 
             It should_contain_message = () => exception.Message.ShouldEqual(@"""Prop3"":
   Expected: [null]
