@@ -11,9 +11,9 @@
     <AssemblyName>Machine.Specifications.Should</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>false</SignAssembly>	
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>..\Machine.snk</AssemblyOriginatorKeyFile>
-    <FodyPath>..\packages\Fody.1.19.1.0</FodyPath>
+    <NuGetPackageImportStamp>428778d0</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,13 +34,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Machine.Specifications" Condition="'$(SignAssembly)'=='false'">
-      <HintPath>..\packages\Machine.Specifications.0.7.0\lib\net20\Machine.Specifications.dll</HintPath>
+      <HintPath>..\packages\Machine.Specifications.0.8.1\lib\net20\Machine.Specifications.dll</HintPath>
     </Reference>
     <Reference Include="Machine.Specifications" Condition="'$(SignAssembly)'=='true'">
-      <HintPath>..\packages\Machine.Specifications-Signed.0.7.0\lib\net20\Machine.Specifications.dll</HintPath>
+      <HintPath>..\packages\Machine.Specifications-Signed.0.8.1\lib\net20\Machine.Specifications.dll</HintPath>
     </Reference>	
     <Reference Include="Obsolete">
-      <HintPath>..\packages\Obsolete.Fody.3.0.1.0\Lib\NET35\Obsolete.dll</HintPath>
+      <HintPath>..\packages\Obsolete.Fody.3.1.0.0\Lib\NET35\Obsolete.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -70,7 +70,6 @@
     <Compile Include="Utility\ObjectGraphHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Fody.targets" />
     <None Include="Machine.Specifications.Should-Unsigned.nuspec" />
     <None Include="Machine.Specifications.Should-Signed.nuspec" />
     <None Include="packages.config" />
@@ -80,7 +79,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets" Condition="Exists('..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets')" />
-  <Import Project="Fody.targets" />
+  <Import Project="..\packages\Fody.1.23.2\build\Fody.targets" Condition="Exists('..\packages\Fody.1.23.2\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Fody.1.23.2\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.1.23.2\build\Fody.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
