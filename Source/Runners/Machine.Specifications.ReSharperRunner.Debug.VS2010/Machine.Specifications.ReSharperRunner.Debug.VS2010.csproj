@@ -55,7 +55,7 @@
   <PropertyGroup>
     <StartAction>Program</StartAction>
     <StartProgram>$(DevEnvDir)devenv.exe</StartProgram>
-    <StartArguments>/rootsuffix mspec /ReSharper.Internal /ReSharper.Plugin "$(SolutionDir)\Build\Debug\Machine.Specifications.ReSharperRunner.8.0.dll"</StartArguments>
+    <StartArguments>/rootsuffix mspec /ReSharper.Internal /ReSharper.Plugin "$(SolutionDir)\Build\Debug\Machine.Specifications.ReSharper.Runner.8.2.dll";"$(SolutionDir)\Build\Debug\Machine.Specifications.ReSharper.Provider.8.2.dll";"$(SolutionDir)\Build\Debug\Machine.Specifications.Runner.Utility.dll";"$(SolutionDir)\Build\Debug\Machine.Specifications.dll"</StartArguments>
   </PropertyGroup>
   <Import Project="..\..\..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets" Condition="Exists('..\..\..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets')" />
 </Project>
