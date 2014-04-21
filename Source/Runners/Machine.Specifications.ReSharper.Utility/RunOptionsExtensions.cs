@@ -34,7 +34,7 @@ namespace Machine.Specifications.Runner.Utility
 
         private static void AppendContexts(XElement root, RunOptions runOptions)
         {
-            AppendItems(root, runOptions.Filters, "contexts", "context");
+            AppendItems(root, runOptions.Contexts, "contexts", "context");
         }
 
         private static void AppendItems(XElement root, IEnumerable<string> items, string itemsElementName, string itemElementName)
