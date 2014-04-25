@@ -9,17 +9,17 @@ using Machine.Specifications.Runner.Impl.Listener;
 
 namespace Machine.Specifications.Runner.Impl
 {
-  class AssemblyRunner
-  {
-    readonly ISpecificationRunListener _listener;
-    readonly RunOptions _options;
-    Action<Assembly> _assemblyStart;
-    Action<Assembly> _assemblyEnd;
-
-    public AssemblyRunner(ISpecificationRunListener listener, RunOptions options)
+    internal class AssemblyRunner
     {
-      var state = new RedirectOutputState();
-      _listener = new AggregateRunListener(new[]
+        readonly ISpecificationRunListener _listener;
+        readonly RunOptions _options;
+        Action<Assembly> _assemblyStart;
+        Action<Assembly> _assemblyEnd;
+
+        public AssemblyRunner(ISpecificationRunListener listener, RunOptions options)
+        {
+            var state = new RedirectOutputState();
+            _listener = new AggregateRunListener(new[]
                                            {
                                              new AssemblyLocationAwareListener(),
                                              new SetUpRedirectOutputRunListener(state),
@@ -27,90 +27,90 @@ namespace Machine.Specifications.Runner.Impl
                                              new TearDownRedirectOutputRunListener(state),
                                              new AssemblyContextRunListener()
                                            });
-      _options = options;
+            _options = options;
 
-      _assemblyStart = OnAssemblyStart;
-      _assemblyEnd = OnAssemblyEnd;
-    }
-
-    public void Run(Assembly assembly, IEnumerable<Context> contexts)
-    {
-      var hasExecutableSpecifications = false;
-
-      try
-      {
-        hasExecutableSpecifications = contexts.Any(x => x.HasExecutableSpecifications);
-
-        var explorer = new AssemblyExplorer();
-        var globalCleanups = explorer.FindAssemblyWideContextCleanupsIn(assembly).ToList();
-        var specificationSupplements = explorer.FindSpecificationSupplementsIn(assembly).ToList();
-
-        if (hasExecutableSpecifications)
-        {
-          _assemblyStart(assembly);
+            _assemblyStart = OnAssemblyStart;
+            _assemblyEnd = OnAssemblyEnd;
         }
 
-        foreach (var context in contexts)
+        public void Run(Assembly assembly, IEnumerable<Context> contexts)
         {
-          RunContext(context, globalCleanups, specificationSupplements);
+            var hasExecutableSpecifications = false;
+
+            try
+            {
+                hasExecutableSpecifications = contexts.Any(x => x.HasExecutableSpecifications);
+
+                var explorer = new AssemblyExplorer();
+                var globalCleanups = explorer.FindAssemblyWideContextCleanupsIn(assembly).ToList();
+                var specificationSupplements = explorer.FindSpecificationSupplementsIn(assembly).ToList();
+
+                if (hasExecutableSpecifications)
+                {
+                    _assemblyStart(assembly);
+                }
+
+                foreach (var context in contexts)
+                {
+                    RunContext(context, globalCleanups, specificationSupplements);
+                }
+            }
+            catch (Exception err)
+            {
+                _listener.OnFatalError(new ExceptionResult(err));
+            }
+            finally
+            {
+                if (hasExecutableSpecifications)
+                {
+                    _assemblyEnd(assembly);
+                }
+            }
         }
-      }
-      catch (Exception err)
-      {
-        _listener.OnFatalError(new ExceptionResult(err));
-      }
-      finally
-      {
-        if (hasExecutableSpecifications)
+
+        void OnAssemblyStart(Assembly assembly)
         {
-          _assemblyEnd(assembly);
+            try
+            {
+                _listener.OnAssemblyStart(assembly.GetInfo());
+            }
+            catch (Exception err)
+            {
+                _listener.OnFatalError(new ExceptionResult(err));
+            }
         }
-      }
-    }
 
-    void OnAssemblyStart(Assembly assembly)
-    {
-      try
-      {
-        _listener.OnAssemblyStart(assembly.GetInfo());
-      }
-      catch (Exception err)
-      {
-        _listener.OnFatalError(new ExceptionResult(err));
-      }
-    }
+        void OnAssemblyEnd(Assembly assembly)
+        {
+            try
+            {
+                _listener.OnAssemblyEnd(assembly.GetInfo());
+            }
+            catch (Exception err)
+            {
+                _listener.OnFatalError(new ExceptionResult(err));
+            }
+        }
 
-    void OnAssemblyEnd(Assembly assembly)
-    {
-      try
-      {
-        _listener.OnAssemblyEnd(assembly.GetInfo());
-      }
-      catch (Exception err)
-      {
-        _listener.OnFatalError(new ExceptionResult(err));
-      }
-    }
+        public void StartExplicitRunScope(Assembly assembly)
+        {
+            _assemblyStart = x => { };
+            _assemblyEnd = x => { };
 
-    public void StartExplicitRunScope(Assembly assembly)
-    {
-      _assemblyStart = x => {};
-      _assemblyEnd = x => {};
+            OnAssemblyStart(assembly);
+        }
 
-      OnAssemblyStart(assembly);
-    }
+        public void EndExplicitRunScope(Assembly assembly)
+        {
+            OnAssemblyEnd(assembly);
+        }
 
-    public void EndExplicitRunScope(Assembly assembly)
-    {
-      OnAssemblyEnd(assembly);
+        void RunContext(Context context,
+                        IEnumerable<ICleanupAfterEveryContextInAssembly> globalCleanups,
+                        IEnumerable<ISupplementSpecificationResults> supplements)
+        {
+            var runner = ContextRunnerFactory.GetContextRunnerFor(context);
+            runner.Run(context, _listener, _options, globalCleanups, supplements);
+        }
     }
-
-    void RunContext(Context context,
-                    IEnumerable<ICleanupAfterEveryContextInAssembly> globalCleanups,
-                    IEnumerable<ISupplementSpecificationResults> supplements)
-    {
-      var runner = ContextRunnerFactory.GetContextRunnerFor(context);
-      runner.Run(context, _listener, _options, globalCleanups, supplements);
-    }
-  }
 }

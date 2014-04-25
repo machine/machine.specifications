@@ -5,43 +5,43 @@ using System.Text;
 
 namespace Machine.Specifications.Model
 {
-  public class Subject
-  {
-    readonly string _description;
-    readonly Type _type;
-
-    public Type Type
+    public class Subject
     {
-      get { return _type; }
-    }
+        readonly string _description;
+        readonly Type _type;
 
-    public string Description
-    {
-      get { return _description; }
-    }
-
-    public string FullConcern
-    {
-      get
-      {
-        if (_type == null)
+        public Type Type
         {
-          return _description;
+            get { return _type; }
         }
 
-        if (_description == null)
+        public string Description
         {
-          return _type.Name;
+            get { return _description; }
         }
 
-        return _type.Name + " " + _description;
-      }
-    }
+        public string FullConcern
+        {
+            get
+            {
+                if (_type == null)
+                {
+                    return _description;
+                }
 
-    public Subject(Type type, string description)
-    {
-      _type = type;
-      _description = description;
+                if (_description == null)
+                {
+                    return _type.Name;
+                }
+
+                return _type.Name + " " + _description;
+            }
+        }
+
+        public Subject(Type type, string description)
+        {
+            _type = type;
+            _description = description;
+        }
     }
-  }
 }

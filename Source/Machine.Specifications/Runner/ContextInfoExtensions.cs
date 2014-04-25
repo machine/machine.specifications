@@ -2,7 +2,7 @@
 {
     using System.Xml.Linq;
 
-    public static class ContextInfoExtensions
+    internal static class ContextInfoExtensions
     {
         public static string ToXml(this ContextInfo contextInfo)
         {

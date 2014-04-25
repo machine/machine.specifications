@@ -4,28 +4,28 @@ using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Runner.Impl.Listener.Redirection
 {
-  class ForwardingTraceListener : TraceListener
-  {
-    readonly TraceListener[] _inner;
-
-    public ForwardingTraceListener(TraceListener[] inner)
+    internal class ForwardingTraceListener : TraceListener
     {
-      _inner = inner;
-    }
+        readonly TraceListener[] _inner;
 
-    public override void Fail(string message, string detailMessage)
-    {
-      _inner.Each(x => x.Fail(message, detailMessage));
-    }
+        public ForwardingTraceListener(TraceListener[] inner)
+        {
+            _inner = inner;
+        }
 
-    public override void WriteLine(string message)
-    {
-      _inner.Each(x => x.WriteLine(message));
-    }
+        public override void Fail(string message, string detailMessage)
+        {
+            _inner.Each(x => x.Fail(message, detailMessage));
+        }
 
-    public override void Write(string message)
-    {
-      _inner.Each(x => x.Write(message));
+        public override void WriteLine(string message)
+        {
+            _inner.Each(x => x.WriteLine(message));
+        }
+
+        public override void Write(string message)
+        {
+            _inner.Each(x => x.Write(message));
+        }
     }
-  }
 }

@@ -4,51 +4,51 @@ using System;
 
 namespace Machine.Specifications.Model
 {
-  public class Behavior
-  {
-    readonly Context _context;
-    readonly object _instance;
-    readonly List<Specification> _specifications;
-    readonly string _leader;
-
-    public Behavior(Type fieldType, object instance, Context context, bool isIgnored)
+    public class Behavior
     {
-      _leader = fieldType.ToFormat();
-      _instance = instance;
-      _context = context;
-      IsIgnored = isIgnored;
-      _specifications = new List<Specification>();
-    }
+        readonly Context _context;
+        readonly object _instance;
+        readonly List<Specification> _specifications;
+        readonly string _leader;
 
-    public string Leader
-    {
-      get { return _leader; }
-    }
+        public Behavior(Type fieldType, object instance, Context context, bool isIgnored)
+        {
+            _leader = fieldType.ToFormat();
+            _instance = instance;
+            _context = context;
+            IsIgnored = isIgnored;
+            _specifications = new List<Specification>();
+        }
 
-    public bool IsIgnored
-    {
-      get;
-      private set;
-    }
+        public string Leader
+        {
+            get { return _leader; }
+        }
 
-    public object Instance
-    {
-      get { return _instance; }
-    }
+        public bool IsIgnored
+        {
+            get;
+            private set;
+        }
 
-    public IEnumerable<Specification> Specifications
-    {
-      get { return _specifications; }
-    }
+        public object Instance
+        {
+            get { return _instance; }
+        }
 
-    public Context Context
-    {
-      get { return _context; }
-    }
+        public IEnumerable<Specification> Specifications
+        {
+            get { return _specifications; }
+        }
 
-    public void AddSpecification(Specification specification)
-    {
-      _specifications.Add(specification);
+        public Context Context
+        {
+            get { return _context; }
+        }
+
+        public void AddSpecification(Specification specification)
+        {
+            _specifications.Add(specification);
+        }
     }
-  }
 }

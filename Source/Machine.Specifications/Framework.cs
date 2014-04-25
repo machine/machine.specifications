@@ -1,17 +1,17 @@
 namespace Machine.Specifications
 {
-  [SetupDelegate]
-  public delegate void Establish();
+    [SetupDelegate]
+    public delegate void Establish();
 
-  [ActDelegate]
-  public delegate void Because();
+    [ActDelegate]
+    public delegate void Because();
 
-  [AssertDelegate]
-  public delegate void It();
+    [AssertDelegate]
+    public delegate void It();
 
-  [BehaviorDelegate]
-  public delegate void Behaves_like<TBehavior>();
+    [BehaviorDelegate]
+    public delegate void Behaves_like<TBehavior>();
 
-  [CleanupDelegate]
-  public delegate void Cleanup();
+    [CleanupDelegate]
+    public delegate void Cleanup();
 }

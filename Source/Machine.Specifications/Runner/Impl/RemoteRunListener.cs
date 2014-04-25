@@ -3,65 +3,65 @@ using System.Security;
 
 namespace Machine.Specifications.Runner.Impl
 {
-  [Serializable]
-  class RemoteRunListener : MarshalByRefObject, ISpecificationRunListener
-  {
-    readonly ISpecificationRunListener _listener;
-
-    public RemoteRunListener(ISpecificationRunListener listener)
+    [Serializable]
+    internal class RemoteRunListener : MarshalByRefObject, ISpecificationRunListener
     {
-      _listener = listener;
-    }
+        readonly ISpecificationRunListener _listener;
 
-    public void OnRunStart()
-    {
-      _listener.OnRunStart();
-    }
+        public RemoteRunListener(ISpecificationRunListener listener)
+        {
+            _listener = listener;
+        }
 
-    public void OnRunEnd()
-    {
-      _listener.OnRunEnd();
-    }
+        public void OnRunStart()
+        {
+            _listener.OnRunStart();
+        }
 
-    public void OnAssemblyStart(AssemblyInfo assembly)
-    {
-      _listener.OnAssemblyStart(assembly);
-    }
+        public void OnRunEnd()
+        {
+            _listener.OnRunEnd();
+        }
 
-    public void OnAssemblyEnd(AssemblyInfo assembly)
-    {
-      _listener.OnAssemblyEnd(assembly);
-    }
+        public void OnAssemblyStart(AssemblyInfo assembly)
+        {
+            _listener.OnAssemblyStart(assembly);
+        }
 
-    public void OnContextStart(ContextInfo context)
-    {
-      _listener.OnContextStart(context);
-    }
+        public void OnAssemblyEnd(AssemblyInfo assembly)
+        {
+            _listener.OnAssemblyEnd(assembly);
+        }
 
-    public void OnContextEnd(ContextInfo context)
-    {
-      _listener.OnContextEnd(context);
-    }
+        public void OnContextStart(ContextInfo context)
+        {
+            _listener.OnContextStart(context);
+        }
 
-    public void OnSpecificationStart(SpecificationInfo specification)
-    {
-      _listener.OnSpecificationStart(specification);
-    }
+        public void OnContextEnd(ContextInfo context)
+        {
+            _listener.OnContextEnd(context);
+        }
 
-    public void OnSpecificationEnd(SpecificationInfo specification, Result result)
-    {
-      _listener.OnSpecificationEnd(specification, result);
-    }
+        public void OnSpecificationStart(SpecificationInfo specification)
+        {
+            _listener.OnSpecificationStart(specification);
+        }
 
-    public void OnFatalError(ExceptionResult exception)
-    {
-      _listener.OnFatalError(exception);
-    }
+        public void OnSpecificationEnd(SpecificationInfo specification, Result result)
+        {
+            _listener.OnSpecificationEnd(specification, result);
+        }
 
-    [SecurityCritical]
-    public override object InitializeLifetimeService()
-    {
-      return null;
+        public void OnFatalError(ExceptionResult exception)
+        {
+            _listener.OnFatalError(exception);
+        }
+
+        [SecurityCritical]
+        public override object InitializeLifetimeService()
+        {
+            return null;
+        }
     }
-  }
 }

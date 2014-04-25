@@ -7,72 +7,72 @@ using Machine.Specifications.Sdk;
 
 namespace Machine.Specifications.Utility
 {
-  public static class RandomExtensionMethods
-  {
-    public static void Each<T>(this IEnumerable<T> enumerable, Action<T> action)
+    public static class RandomExtensionMethods
     {
-      foreach (var t in enumerable)
-      {
-        action(t);
-      }
+        public static void Each<T>(this IEnumerable<T> enumerable, Action<T> action)
+        {
+            foreach (var t in enumerable)
+            {
+                action(t);
+            }
+        }
+
+        internal static void InvokeAll(this IEnumerable<Delegate> contextActions, params object[] args)
+        {
+            contextActions.AllNonNull().Select<Delegate, Action>(x => () => x.DynamicInvoke(args)).InvokeAll();
+        }
+
+        static IEnumerable<T> AllNonNull<T>(this IEnumerable<T> elements) where T : class
+        {
+            return elements.Where(x => x != null);
+        }
+
+        static void InvokeAll(this IEnumerable<Action> actions)
+        {
+            actions.Each(x => x());
+        }
+
+        internal static bool HasAttribute<TAttributeFullName>(this ICustomAttributeProvider attributeProvider, TAttributeFullName attributeFullName)
+          where TAttributeFullName : AttributeFullName
+        {
+            var attributeType = Type.GetType(attributeFullName.FullName);
+            return attributeProvider.GetCustomAttributes(attributeType, true).Any();
+        }
+
+        internal static AttributeFullName GetCustomDelegateAttributeFullName(this Type type)
+        {
+            // TODO: Make smarter
+            var attributeType = Type.GetType(new ActDelegateAttributeFullName());
+            if (type.GetCustomAttributes(attributeType, false).Any())
+            {
+                return new ActDelegateAttributeFullName();
+            }
+
+            attributeType = Type.GetType(new AssertDelegateAttributeFullName());
+            if (type.GetCustomAttributes(attributeType, false).Any())
+            {
+                return new AssertDelegateAttributeFullName();
+            }
+
+            attributeType = Type.GetType(new BehaviorDelegateAttributeFullName());
+            if (type.GetCustomAttributes(attributeType, false).Any())
+            {
+                return new BehaviorDelegateAttributeFullName();
+            }
+
+            attributeType = Type.GetType(new CleanupDelegateAttributeFullName());
+            if (type.GetCustomAttributes(attributeType, false).Any())
+            {
+                return new CleanupDelegateAttributeFullName();
+            }
+
+            attributeType = Type.GetType(new SetupDelegateAttributeFullName());
+            if (type.GetCustomAttributes(attributeType, false).Any())
+            {
+                return new SetupDelegateAttributeFullName();
+            }
+
+            return null;
+        }
     }
-
-    internal static void InvokeAll(this IEnumerable<Delegate> contextActions, params object[] args)
-    {
-      contextActions.AllNonNull().Select<Delegate, Action>(x => () => x.DynamicInvoke(args)).InvokeAll();
-    }
-
-    static IEnumerable<T> AllNonNull<T>(this IEnumerable<T> elements) where T : class
-    {
-      return elements.Where(x => x != null);
-    }
-
-    static void InvokeAll(this IEnumerable<Action> actions)
-    {
-      actions.Each(x => x());
-    }
-
-    internal static bool HasAttribute<TAttributeFullName>(this ICustomAttributeProvider attributeProvider, TAttributeFullName attributeFullName)
-      where TAttributeFullName : AttributeFullName
-    {
-      var attributeType = Type.GetType(attributeFullName.FullName);
-      return attributeProvider.GetCustomAttributes(attributeType, true).Any();
-    }
-
-    internal static AttributeFullName GetCustomDelegateAttributeFullName(this Type type)
-    {
-      // TODO: Make smarter
-      var attributeType = Type.GetType(new ActDelegateAttributeFullName());
-      if (type.GetCustomAttributes(attributeType, false).Any())
-      {
-        return new ActDelegateAttributeFullName();
-      }
-
-      attributeType = Type.GetType(new AssertDelegateAttributeFullName());
-      if (type.GetCustomAttributes(attributeType, false).Any())
-      {
-        return new AssertDelegateAttributeFullName();
-      }
-
-      attributeType = Type.GetType(new BehaviorDelegateAttributeFullName());
-      if (type.GetCustomAttributes(attributeType, false).Any())
-      {
-        return new BehaviorDelegateAttributeFullName();
-      }
-
-      attributeType = Type.GetType(new CleanupDelegateAttributeFullName());
-      if (type.GetCustomAttributes(attributeType, false).Any())
-      {
-        return new CleanupDelegateAttributeFullName();
-      }
-
-      attributeType = Type.GetType(new SetupDelegateAttributeFullName());
-      if (type.GetCustomAttributes(attributeType, false).Any())
-      {
-        return new SetupDelegateAttributeFullName();
-      }
-
-      return null;
-    }
-  }
 }

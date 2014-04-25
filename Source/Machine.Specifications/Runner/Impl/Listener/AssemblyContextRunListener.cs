@@ -7,28 +7,28 @@ using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Runner.Impl.Listener
 {
-  class AssemblyContextRunListener : RunListenerBase
-  {
-    readonly IList<IAssemblyContext> _executedAssemblyContexts = new List<IAssemblyContext>();
-    readonly AssemblyExplorer _explorer = new AssemblyExplorer();
-
-    public override void OnAssemblyStart(AssemblyInfo assembly)
+    internal class AssemblyContextRunListener : RunListenerBase
     {
-      var asm = Assembly.LoadFrom(assembly.Location);
+        readonly IList<IAssemblyContext> _executedAssemblyContexts = new List<IAssemblyContext>();
+        readonly AssemblyExplorer _explorer = new AssemblyExplorer();
 
-      var assemblyContexts = _explorer.FindAssemblyContextsIn(asm);
-      assemblyContexts.Each(assemblyContext =>
-      {
-        assemblyContext.OnAssemblyStart();
-        _executedAssemblyContexts.Add(assemblyContext);
-      });
-    }
+        public override void OnAssemblyStart(AssemblyInfo assembly)
+        {
+            var asm = Assembly.LoadFrom(assembly.Location);
 
-    public override void OnAssemblyEnd(AssemblyInfo assembly)
-    {
-      _executedAssemblyContexts
-        .Reverse()
-        .Each(assemblyContext => assemblyContext.OnAssemblyComplete());
+            var assemblyContexts = _explorer.FindAssemblyContextsIn(asm);
+            assemblyContexts.Each(assemblyContext =>
+            {
+                assemblyContext.OnAssemblyStart();
+                _executedAssemblyContexts.Add(assemblyContext);
+            });
+        }
+
+        public override void OnAssemblyEnd(AssemblyInfo assembly)
+        {
+            _executedAssemblyContexts
+              .Reverse()
+              .Each(assemblyContext => assemblyContext.OnAssemblyComplete());
+        }
     }
-  }
 }

@@ -3,7 +3,7 @@ namespace Machine.Specifications
     using System.Collections.Generic;
     using System.Xml.Linq;
 
-    public static class ResultExtensions
+    internal static class ResultExtensions
     {
         public static string ToXml(this Result result)
         {

@@ -2,7 +2,7 @@ namespace Machine.Specifications
 {
     using System.Xml.Linq;
 
-    public static class ExceptionResultExtensions
+    internal static class ExceptionResultExtensions
     {
         public static string ToXml(this ExceptionResult exceptionResult)
         {
@@ -18,7 +18,8 @@ namespace Machine.Specifications
                 return new XElement("exceptionresult");
             }
 
-            return new XElement("exceptionresult",
+            return new XElement(
+                "exceptionresult",
                 new XElement("fulltypename", exceptionResult.FullTypeName),
                 new XElement("typename", exceptionResult.TypeName),
                 new XElement("message", exceptionResult.Message),

@@ -2,25 +2,25 @@ using System;
 
 namespace Machine.Specifications.Runner.Impl
 {
-  class InvokeOnce
-  {
-    readonly Action _invocation;
-    public bool WasInvoked { get; private set; }
-
-    public InvokeOnce(Action invocation)
+    internal class InvokeOnce
     {
-      _invocation = invocation;
-    }
+        readonly Action _invocation;
+        public bool WasInvoked { get; private set; }
 
-    public void Invoke()
-    {
-      if (WasInvoked)
-      {
-        return;
-      }
+        public InvokeOnce(Action invocation)
+        {
+            _invocation = invocation;
+        }
 
-      WasInvoked = true;
-      _invocation();
+        public void Invoke()
+        {
+            if (WasInvoked)
+            {
+                return;
+            }
+
+            WasInvoked = true;
+            _invocation();
+        }
     }
-  }
 }

@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Machine.Specifications
 {
-  [AttributeUsage(AttributeTargets.Class, Inherited = true)]
-  public class SetupForEachSpecification : Attribute
-  {
-  }
+    [AttributeUsage(AttributeTargets.Class, Inherited = true)]
+    public class SetupForEachSpecification : Attribute
+    {
+    }
 }

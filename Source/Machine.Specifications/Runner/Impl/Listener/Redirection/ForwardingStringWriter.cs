@@ -7,33 +7,33 @@ using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Runner.Impl.Listener.Redirection
 {
-  class ForwardingStringWriter : TextWriter
-  {
-    readonly TextWriter[] _inner;
-
-    public ForwardingStringWriter(TextWriter[] inner)
-      : base(CultureInfo.CurrentCulture)
+    internal class ForwardingStringWriter : TextWriter
     {
-      _inner = inner;
-    }
+        readonly TextWriter[] _inner;
 
-    public override Encoding Encoding
-    {
-      get
-      {
-        var first = _inner.FirstOrDefault();
-        if (first == null)
+        public ForwardingStringWriter(TextWriter[] inner)
+            : base(CultureInfo.CurrentCulture)
         {
-          return Encoding.Default;
+            _inner = inner;
         }
 
-        return first.Encoding;
-      }
-    }
+        public override Encoding Encoding
+        {
+            get
+            {
+                var first = _inner.FirstOrDefault();
+                if (first == null)
+                {
+                    return Encoding.Default;
+                }
 
-    public override void Write(char value)
-    {
-      _inner.Each(x => x.Write(value));
+                return first.Encoding;
+            }
+        }
+
+        public override void Write(char value)
+        {
+            _inner.Each(x => x.Write(value));
+        }
     }
-  }
 }
