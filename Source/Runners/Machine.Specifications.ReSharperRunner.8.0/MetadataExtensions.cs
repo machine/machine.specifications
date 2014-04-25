@@ -79,18 +79,9 @@ namespace Machine.Specifications.ReSharperRunner
 
     private static IList<IMetadataCustomAttribute> GetSubjectAttributes(IMetadataEntity metadataEntity, SubjectAttributeFullName subjectAttributeFullName)
     {
-      var derivedAndBaseTypes = metadataEntity.AndAllBaseTypes();
-
-      foreach (var type in derivedAndBaseTypes)
-      {
-        var attributes = type.CustomAttributes.ToList().Where(x => x.GetCustomAttributes(subjectAttributeFullName) != null);
-        if (attributes.Any())
-        {
-           return attributes.ToList();
-        }
-      }
-
-      return new List<IMetadataCustomAttribute>();
+        return metadataEntity.AndAllBaseTypes()
+            .SelectMany(x => x.GetCustomAttributes(new SubjectAttributeFullName()))
+            .ToList();
     }
 
     public static ICollection<string> GetTags(this IMetadataEntity type)
