@@ -117,10 +117,6 @@
       <Project>{CCD02629-1262-4F78-9E9F-AC97B942D0E7}</Project>
       <Name>Machine.Specifications</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Runners\Machine.Specifications.ReSharper.Utility\Machine.Specifications.Runner.Utility.csproj">
-      <Project>{ED308706-7C33-48B7-AD12-9F8EC88C63A9}</Project>
-      <Name>Machine.Specifications.Runner.Utility</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

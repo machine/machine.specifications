@@ -93,10 +93,6 @@
       <Project>{490496AF-BEA5-4454-88B0-F73C62C22987}</Project>
       <Name>Machine.Specifications.Reporting</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Machine.Specifications.ReSharper.Utility\Machine.Specifications.Runner.Utility.csproj">
-      <Project>{ed308706-7c33-48b7-ad12-9f8ec88c63a9}</Project>
-      <Name>Machine.Specifications.Runner.Utility</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

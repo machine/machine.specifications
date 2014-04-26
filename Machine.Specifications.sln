@@ -98,8 +98,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.dotCover.Runner.2.7", "Source\Runners\Machine.Specifications.Resharper.Runner\Machine.Specifications.dotCover.Runner.2.7.csproj", "{783784C0-B842-4FC9-A941-B926C59FDF1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Runner.Utility", "Source\Runners\Machine.Specifications.ReSharper.Utility\Machine.Specifications.Runner.Utility.csproj", "{ED308706-7C33-48B7-AD12-9F8EC88C63A9}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharper.Provider.8.0", "Source\Runners\Machine.Specifications.ReSharper.Provider\Machine.Specifications.ReSharper.Provider.8.0.csproj", "{8DAC8C3F-9373-49DF-93F9-5397FF374D93}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ReSharper.Provider.8.1", "Source\Runners\Machine.Specifications.ReSharper.Provider\Machine.Specifications.ReSharper.Provider.8.1.csproj", "{5AB94397-11FD-406F-9C9F-C63B32DE742F}"
@@ -256,10 +254,6 @@ Global
 		{783784C0-B842-4FC9-A941-B926C59FDF1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{783784C0-B842-4FC9-A941-B926C59FDF1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{783784C0-B842-4FC9-A941-B926C59FDF1F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ED308706-7C33-48B7-AD12-9F8EC88C63A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ED308706-7C33-48B7-AD12-9F8EC88C63A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ED308706-7C33-48B7-AD12-9F8EC88C63A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ED308706-7C33-48B7-AD12-9F8EC88C63A9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8DAC8C3F-9373-49DF-93F9-5397FF374D93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8DAC8C3F-9373-49DF-93F9-5397FF374D93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DAC8C3F-9373-49DF-93F9-5397FF374D93}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -310,7 +304,6 @@ Global
 		{3D75FF4A-35C2-4D08-8397-989DE4B89076} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
 		{349DD3E5-2326-4457-AF79-F96BE2E0B0A0} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
 		{783784C0-B842-4FC9-A941-B926C59FDF1F} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
-		{ED308706-7C33-48B7-AD12-9F8EC88C63A9} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
 		{8DAC8C3F-9373-49DF-93F9-5397FF374D93} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
 		{5AB94397-11FD-406F-9C9F-C63B32DE742F} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}
 		{349DD3E5-2326-4457-AF79-F96BE2E0B0A1} = {3D475ECE-C800-4087-8FC5-B9A13E76ABC4}

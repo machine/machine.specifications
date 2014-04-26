@@ -98,10 +98,6 @@
       <Project>{ccd02629-1262-4f78-9e9f-ac97b942d0e7}</Project>
       <Name>Machine.Specifications</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Runners\Machine.Specifications.ReSharper.Utility\Machine.Specifications.Runner.Utility.csproj">
-      <Project>{ed308706-7c33-48b7-ad12-9f8ec88c63a9}</Project>
-      <Name>Machine.Specifications.Runner.Utility</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Machine.Specifications.Reporting\Machine.Specifications.Reporting.csproj">
       <Project>{490496AF-BEA5-4454-88B0-F73C62C22987}</Project>
       <Name>Machine.Specifications.Reporting</Name>

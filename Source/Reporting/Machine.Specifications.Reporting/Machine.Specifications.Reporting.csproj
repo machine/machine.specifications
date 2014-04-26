@@ -150,12 +150,6 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Runners\Machine.Specifications.ReSharper.Utility\Machine.Specifications.Runner.Utility.csproj">
-      <Project>{ed308706-7c33-48b7-ad12-9f8ec88c63a9}</Project>
-      <Name>Machine.Specifications.Runner.Utility</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

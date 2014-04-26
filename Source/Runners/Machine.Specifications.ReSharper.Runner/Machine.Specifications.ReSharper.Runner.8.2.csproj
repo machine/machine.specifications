@@ -76,12 +76,6 @@
     <Compile Include="TestRunner.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Machine.Specifications.ReSharper.Utility\Machine.Specifications.Runner.Utility.csproj">
-      <Project>{ed308706-7c33-48b7-ad12-9f8ec88c63a9}</Project>
-      <Name>Machine.Specifications.Runner.Utility</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="InstallResharperRunner.8.2.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
