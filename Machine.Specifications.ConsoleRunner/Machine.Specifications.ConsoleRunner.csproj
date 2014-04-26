@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Machine.Specifications.Runner.Console.nuspec" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
