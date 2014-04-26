@@ -17,3 +17,19 @@ end
 task :rebuild => [ :clean, :configure, :restore, :build ]
 
 task :default => [ :rebuild ]
+
+desc "Package build artifacts as a NuGet package and a symbols package"
+task(:createpackage).clear
+task :createpackage => [ :default ] do
+	nuspecs = FileList.new('**/*.nuspec')
+	nuspecs.exclude(/packages/)
+	nuspecs.each do |nuspec|
+		opts = %W(
+			nuget pack #{nuspec} -Symbols -Version #{configatron.version.full} -OutputDirectory #{configatron.distribution.dir}
+		)
+
+		sh(*opts) do |ok, status|
+			ok or fail "Command failed with status (#{status.exitstatus})"
+		end
+	end
+end
