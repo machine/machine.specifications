@@ -21,7 +21,7 @@
 		</references>
 		<dependencies>
 			<group>
-				<dependency id="Machine.Specifications.Runner.Utility" />
+				<dependency id="Machine.Specifications.Runner.Utility" version="[0.2, 1.0)" />
 			</group>
 		</dependencies>		
 	</metadata>
