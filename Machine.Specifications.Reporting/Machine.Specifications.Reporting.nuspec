@@ -21,7 +21,7 @@
 		</references>
 		<dependencies>
 			<group>
-				<dependency id="Machine.Specifications.Runner.Utility" version="[0.2, 1.0)" />
+				<dependency id="Machine.Specifications.Runner.Utility" version="[0.1, 1.0)" />
 				<dependency id="Spark" version="[1.7, 2.0)" />
 			</group>
 		</dependencies>		
