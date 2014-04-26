@@ -135,6 +135,7 @@
     <None Include="Generation\Spark\Templates\_ToggleVisibility.spark">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Machine.Specifications.Reporting.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
