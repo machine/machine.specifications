@@ -59,6 +59,9 @@
     <Reference Include="CommandLine">
       <HintPath>..\..\..\packages\CommandLineParser.1.9.71\lib\net35\CommandLine.dll</HintPath>
     </Reference>
+    <Reference Include="Machine.Specifications.Reporting">
+      <HintPath>..\..\..\packages\Machine.Specifications.Reporting.0.2.0-Unstable0005\lib\net20\Machine.Specifications.Reporting.dll</HintPath>
+    </Reference>
     <Reference Include="Machine.Specifications.Runner.Utility, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Machine.Specifications.Runner.Utility.0.2.0-Unstable0004\lib\net20\Machine.Specifications.Runner.Utility.dll</HintPath>
@@ -91,12 +94,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Reporting\Machine.Specifications.Reporting\Machine.Specifications.Reporting.csproj">
-      <Project>{490496AF-BEA5-4454-88B0-F73C62C22987}</Project>
-      <Name>Machine.Specifications.Reporting</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
