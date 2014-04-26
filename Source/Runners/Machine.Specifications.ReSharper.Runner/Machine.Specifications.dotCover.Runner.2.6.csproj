@@ -73,6 +73,10 @@
     <Reference Include="JetBrains.PsiFeatures.dotCover.UnitTestFramework">
       <HintPath>..\..\..\Libraries\dotCover\2.6\JetBrains.PsiFeatures.dotCover.UnitTestFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Machine.Specifications.Runner.Utility, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Machine.Specifications.Runner.Utility.0.2.0-Unstable0004\lib\net20\Machine.Specifications.Runner.Utility.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />

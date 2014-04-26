@@ -4,21 +4,19 @@ namespace Machine.Specifications.Specs.Runner
 {
     using System;
     using System.Collections.Generic;
-
     using FluentAssertions;
-
     using Specifications.Runner.Utility;
     using Sdk;
     using AssemblyInfo = Specifications.Runner.AssemblyInfo;
-    using RunnerAssemblyInfo = AssemblyInfo;
-    using RunnerContextInfo = ContextInfo;
     using ContextInfo = Specifications.Runner.ContextInfo;
     using ExceptionResult = ExceptionResult;
-    using RunnerExceptionResult = Specifications.Runner.Utility.ExceptionResult;
     using Result = Result;
+    using RunnerAssemblyInfo = AssemblyInfo;
+    using RunnerContextInfo = ContextInfo;
+    using RunnerExceptionResult = Specifications.Runner.Utility.ExceptionResult;
     using RunnerResult = Specifications.Runner.Utility.Result;
-    using SpecificationInfo = Specifications.Runner.SpecificationInfo;
     using RunnerSpecificationInfo = Specifications.Runner.Utility.SpecificationInfo;
+    using SpecificationInfo = Specifications.Runner.SpecificationInfo;
 
     public class remote_run
     {

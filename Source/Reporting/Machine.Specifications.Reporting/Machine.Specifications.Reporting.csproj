@@ -54,6 +54,10 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Machine.Specifications.Runner.Utility, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Machine.Specifications.Runner.Utility.0.2.0-Unstable0004\lib\net20\Machine.Specifications.Runner.Utility.dll</HintPath>
+    </Reference>
     <Reference Include="Spark">
       <HintPath>..\..\..\packages\Spark.1.7.5.3\lib\NET35\Spark.dll</HintPath>
     </Reference>
