@@ -1,3 +1,8 @@
+Machine.Specifications 0.8.2
+-----------------------------
+- Fixes specs not being loaded into Resharper
+- Fixes specs only temporarily shown when base class has tags attribute
+
 Machine.Specifications 0.8.1
 -----------------------------
 - Support subject attribute on derived and base class in Resharper Runner

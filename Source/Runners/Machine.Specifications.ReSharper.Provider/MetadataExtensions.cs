@@ -1,16 +1,18 @@
-﻿namespace Machine.Specifications.ReSharperProvider
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+
+using JetBrains.Metadata.Reader.API;
+using JetBrains.ReSharper.Psi;
+using JetBrains.Util;
+
+using Machine.Specifications.Sdk;
+
+namespace Machine.Specifications.ReSharperRunner
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
-    using JetBrains.Metadata.Reader.API;
-    using JetBrains.ReSharper.Psi;
-
-    using Machine.Specifications.Sdk;
-
-    internal static partial class MetadataExtensions
+  internal static partial class MetadataExtensions
   {
     public static bool IsContext(this IMetadataTypeInfo type)
     {
@@ -77,18 +79,9 @@
 
     private static IList<IMetadataCustomAttribute> GetSubjectAttributes(IMetadataEntity metadataEntity, SubjectAttributeFullName subjectAttributeFullName)
     {
-      var derivedAndBaseTypes = metadataEntity.AndAllBaseTypes();
-
-      foreach (var type in derivedAndBaseTypes)
-      {
-        var attributes = type.CustomAttributes.ToList().Where(x => x.GetCustomAttributes(subjectAttributeFullName) != null);
-        if (attributes.Any())
-        {
-           return attributes.ToList();
-        }
-      }
-
-      return new List<IMetadataCustomAttribute>();
+        return metadataEntity.AndAllBaseTypes()
+            .SelectMany(x => x.GetCustomAttributes(new SubjectAttributeFullName()))
+            .ToList();
     }
 
     public static ICollection<string> GetTags(this IMetadataEntity type)

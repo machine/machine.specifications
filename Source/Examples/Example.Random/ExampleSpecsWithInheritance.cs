@@ -2,6 +2,8 @@ using Machine.Specifications;
 
 namespace Example.Random
 {
+  [Subject("Context that inherits")]
+  [Tags(tag.example)]
   public abstract class context_that_inherits
   {
     public static int BaseEstablishRunCount;
@@ -12,7 +14,6 @@ namespace Example.Random
     It should_not_be_executed = () => { };
   }
 
-  [Tags(tag.example)]
   public class context_with_inherited_specifications : context_that_inherits
   {
     public static int BecauseClauseRunCount;
@@ -27,7 +28,6 @@ namespace Example.Random
   }
 
   [SetupForEachSpecification]
-  [Tags(tag.example)]
   public class context_with_inherited_specifications_and_setup_for_each : context_that_inherits
   {
     public static int BecauseClauseRunCount;
