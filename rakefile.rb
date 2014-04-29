@@ -16,7 +16,7 @@ end
 
 task :rebuild => [ :clean, :configure, :restore, :build ]
 
-task :default => [ :rebuild ]
+task :default => [ :rebuild, :specs ]
 
 desc "Package build artifacts as a NuGet package and a symbols package"
 task(:createpackage).clear
