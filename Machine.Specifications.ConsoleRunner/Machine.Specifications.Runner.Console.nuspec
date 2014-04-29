@@ -21,8 +21,9 @@
 		
 		<file src="..\License.txt" />
 		<file src="..\Build\Release\mspec*" target="tools" exclude="..\Build\Release\*.vshost*;..\Build\Release\*.pdb"/>
-		<file src="..\Build\Release\Machine.Specifications.Runner.Utility" target="tools"/>
-		<file src="..\Build\Release\Machine.Specifications.Reporting" target="tools"/>
+		<file src="..\Build\Release\Machine.Specifications.Runner.Utility.dll" target="tools"/>
+		<file src="..\Build\Release\Machine.Specifications.Reporting.dll" target="tools"/>
+		<file src="..\Build\Release\Machine.Specifications.Reporting.Templates.dll" target="tools"/>
 		<file src="..\Build\Release\Spark.dll" target="tools"/>
 		<file src="..\Build\Release\CommandLine.dll" target="tools"/>
 	</files>  		
