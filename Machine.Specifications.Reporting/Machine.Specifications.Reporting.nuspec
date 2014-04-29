@@ -17,6 +17,7 @@
 		<references>
 			<group>
 				<reference file="Machine.Specifications.Reporting.dll" />
+				<reference file="Machine.Specifications.Reporting.Templates.dll" />
 			</group>
 		</references>
 		<dependencies>
@@ -30,14 +31,17 @@
 		<!-- NET 4.5 -->
 		<file src="..\Build\Release\Machine.Specifications.Reporting.dll" target="lib\net45" />
 		<file src="..\Build\Release\Machine.Specifications.Reporting.pdb" target="lib\net45" />
+		<file src="..\Build\Release\Machine.Specifications.Reporting.Templates.dll" target="lib\net45" />
 
 		<!-- NET 4.0 -->
 		<file src="..\Build\Release\Machine.Specifications.Reporting.dll" target="lib\net40" />
 		<file src="..\Build\Release\Machine.Specifications.Reporting.pdb" target="lib\net40" />
+		<file src="..\Build\Release\Machine.Specifications.Reporting.Templates.dll" target="lib\net40" />
 
 		<!-- NET 2.0 -->
 		<file src="..\Build\Release\Machine.Specifications.Reporting.dll" target="lib\net20" />
 		<file src="..\Build\Release\Machine.Specifications.Reporting.pdb" target="lib\net20" />
+		<file src="..\Build\Release\Machine.Specifications.Reporting.Templates.dll" target="lib\net20" />
 		
 		<!-- Sources -->
 		<file src="..\**\*.cs" target="src" exclude="..\Examples\**;..\*.Specs\**;..\*.Tests\**;..\**\*.Specs\**"/>
