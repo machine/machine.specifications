@@ -3,19 +3,19 @@ using JetBrains.ReSharper.Psi;
 
 namespace Machine.Specifications.ReSharperRunner.Shims
 {
-  [SolutionComponent]
-  class Psi : IPsi
-  {
-    readonly PsiModuleManager _psiModuleManager;
-
-    public Psi(PsiModuleManager psiModuleManager)
+    [SolutionComponent]
+    class Psi : IPsi
     {
-      _psiModuleManager = psiModuleManager;
-    }
+        readonly PsiModuleManager _psiModuleManager;
 
-    public IPsiModule GetPrimaryPsiModule(IModule module)
-    {
-      return _psiModuleManager.GetPrimaryPsiModule(module);
+        public Psi(PsiModuleManager psiModuleManager)
+        {
+            _psiModuleManager = psiModuleManager;
+        }
+
+        public IPsiModule GetPrimaryPsiModule(IModule module)
+        {
+            return _psiModuleManager.GetPrimaryPsiModule(module);
+        }
     }
-  }
 }

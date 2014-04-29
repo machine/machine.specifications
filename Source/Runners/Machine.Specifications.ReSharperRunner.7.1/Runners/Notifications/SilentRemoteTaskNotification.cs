@@ -4,21 +4,21 @@ using JetBrains.ReSharper.TaskRunnerFramework;
 
 namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
 {
-  internal class SilentRemoteTaskNotification : RemoteTaskNotification
-  {
-    public override IEnumerable<RemoteTask> RemoteTasks
+    internal class SilentRemoteTaskNotification : RemoteTaskNotification
     {
-      get { yield break; }
-    }
+        public override IEnumerable<RemoteTask> RemoteTasks
+        {
+            get { yield break; }
+        }
 
-    public override bool Matches(object infoFromRunner, object maybeContext)
-    {
-      return false;
-    }
+        public override bool Matches(object infoFromRunner, object maybeContext)
+        {
+            return false;
+        }
 
-    public override string ToString()
-    {
-      return "Silent";
+        public override string ToString()
+        {
+            return "Silent";
+        }
     }
-  }
 }

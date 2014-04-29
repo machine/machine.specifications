@@ -12,97 +12,97 @@ using Machine.Specifications.ReSharperRunner.Runners;
 
 namespace Machine.Specifications.ReSharperRunner
 {
-  [UnitTestProvider]
-  public class MSpecUnitTestProvider : IUnitTestProvider
-  {
-    const string ProviderId = "Machine.Specifications";
-
-    readonly UnitTestElementComparer _unitTestElementComparer = new UnitTestElementComparer(typeof(ContextElement),
-                                                                                            typeof(BehaviorElement),
-                                                                                            typeof(BehaviorSpecificationElement),
-                                                                                            typeof(ContextSpecificationElement));
-
-    public MSpecUnitTestProvider()
+    [UnitTestProvider]
+    public class MSpecUnitTestProvider : IUnitTestProvider
     {
-      Debug.Listeners.Add(new DefaultTraceListener());
-    }
+        const string ProviderId = "Machine.Specifications";
 
-    public string ID
-    {
-      get { return ProviderId; }
-    }
+        readonly UnitTestElementComparer _unitTestElementComparer = new UnitTestElementComparer(typeof(ContextElement),
+                                                                                                typeof(BehaviorElement),
+                                                                                                typeof(BehaviorSpecificationElement),
+                                                                                                typeof(ContextSpecificationElement));
 
-    public string Name
-    {
-      get { return ID; }
-    }
+        public MSpecUnitTestProvider()
+        {
+            Debug.Listeners.Add(new DefaultTraceListener());
+        }
 
-    public Image Icon
-    {
-      get { return Resources.Logo; }
-    }
+        public string ID
+        {
+            get { return ProviderId; }
+        }
 
-    public void ExploreSolution(ISolution solution, UnitTestElementConsumer consumer)
-    {
-    }
+        public string Name
+        {
+            get { return ID; }
+        }
 
-    public void ExploreExternal(UnitTestElementConsumer consumer)
-    {
-    }
+        public Image Icon
+        {
+            get { return Resources.Logo; }
+        }
 
-    public RemoteTaskRunnerInfo GetTaskRunnerInfo()
-    {
+        public void ExploreSolution(ISolution solution, UnitTestElementConsumer consumer)
+        {
+        }
+
+        public void ExploreExternal(UnitTestElementConsumer consumer)
+        {
+        }
+
+        public RemoteTaskRunnerInfo GetTaskRunnerInfo()
+        {
 #if !RESHARPER_8
-      return new RemoteTaskRunnerInfo(typeof(RecursiveMSpecTaskRunner));
+            return new RemoteTaskRunnerInfo(typeof(RecursiveMSpecTaskRunner));
 #else
       return new RemoteTaskRunnerInfo(ID, typeof(RecursiveMSpecTaskRunner));
 #endif
+        }
+
+        public int CompareUnitTestElements(IUnitTestElement x, IUnitTestElement y)
+        {
+            return _unitTestElementComparer.Compare(x, y);
+        }
+
+        public bool IsElementOfKind(IUnitTestElement element, UnitTestElementKind elementKind)
+        {
+            switch (elementKind)
+            {
+                case UnitTestElementKind.Test:
+                    return element is ContextSpecificationElement || element is BehaviorSpecificationElement;
+                case UnitTestElementKind.TestContainer:
+                    return element is ContextElement || element is BehaviorElement;
+                case UnitTestElementKind.TestStuff:
+                    return element is ContextSpecificationElement || element is BehaviorSpecificationElement ||
+                           element is ContextElement || element is BehaviorElement;
+                case UnitTestElementKind.Unknown:
+                    return !(element is ContextSpecificationElement || element is BehaviorSpecificationElement ||
+                             element is ContextElement || element is BehaviorElement);
+            }
+
+            return false;
+        }
+
+        public bool IsElementOfKind(IDeclaredElement declaredElement, UnitTestElementKind elementKind)
+        {
+            switch (elementKind)
+            {
+                case UnitTestElementKind.Test:
+                    return declaredElement.IsSpecification();
+                case UnitTestElementKind.TestContainer:
+                    return declaredElement.IsContext() || declaredElement.IsBehavior();
+                case UnitTestElementKind.TestStuff:
+                    return declaredElement.IsSpecification() || declaredElement.IsContext() || declaredElement.IsBehavior();
+                case UnitTestElementKind.Unknown:
+                    return !(declaredElement.IsSpecification() || declaredElement.IsContext() || declaredElement.IsBehavior());
+            }
+
+            return false;
+        }
+
+        public bool IsSupported(IHostProvider hostProvider)
+        {
+            return true;
+        }
     }
-
-    public int CompareUnitTestElements(IUnitTestElement x, IUnitTestElement y)
-    {
-      return _unitTestElementComparer.Compare(x, y);
-    }
-
-    public bool IsElementOfKind(IUnitTestElement element, UnitTestElementKind elementKind)
-    {
-      switch (elementKind)
-      {
-        case UnitTestElementKind.Test:
-          return element is ContextSpecificationElement || element is BehaviorSpecificationElement;
-        case UnitTestElementKind.TestContainer:
-          return element is ContextElement || element is BehaviorElement;
-        case UnitTestElementKind.TestStuff:
-          return element is ContextSpecificationElement || element is BehaviorSpecificationElement ||
-                 element is ContextElement || element is BehaviorElement;
-        case UnitTestElementKind.Unknown:
-          return !(element is ContextSpecificationElement || element is BehaviorSpecificationElement ||
-                   element is ContextElement || element is BehaviorElement);
-      }
-
-      return false;
-    }
-
-    public bool IsElementOfKind(IDeclaredElement declaredElement, UnitTestElementKind elementKind)
-    {
-      switch (elementKind)
-      {
-        case UnitTestElementKind.Test:
-          return declaredElement.IsSpecification();
-        case UnitTestElementKind.TestContainer:
-          return declaredElement.IsContext() || declaredElement.IsBehavior();
-        case UnitTestElementKind.TestStuff:
-          return declaredElement.IsSpecification() || declaredElement.IsContext() || declaredElement.IsBehavior();
-        case UnitTestElementKind.Unknown:
-          return !(declaredElement.IsSpecification() || declaredElement.IsContext() || declaredElement.IsBehavior());
-      }
-
-      return false;
-    }
-
-    public bool IsSupported(IHostProvider hostProvider)
-    {
-      return true;
-    }
-  }
 }

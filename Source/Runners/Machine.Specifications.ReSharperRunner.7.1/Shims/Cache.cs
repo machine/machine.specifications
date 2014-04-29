@@ -4,19 +4,19 @@ using JetBrains.ReSharper.Psi.Caches;
 
 namespace Machine.Specifications.ReSharperRunner.Shims
 {
-  [SolutionComponent]
-  public class Cache : ICache
-  {
-    readonly CacheManager _cacheManager;
-
-    public Cache(CacheManager cacheManager)
+    [SolutionComponent]
+    public class Cache : ICache
     {
-      _cacheManager = cacheManager;
-    }
+        readonly CacheManager _cacheManager;
 
-    public IDeclarationsCache GetDeclarationsCache(IPsiModule psiModule, bool withReferences, bool caseSensitive)
-    {
-      return _cacheManager.GetDeclarationsCache(psiModule, withReferences, caseSensitive);
+        public Cache(CacheManager cacheManager)
+        {
+            _cacheManager = cacheManager;
+        }
+
+        public IDeclarationsCache GetDeclarationsCache(IPsiModule psiModule, bool withReferences, bool caseSensitive)
+        {
+            return _cacheManager.GetDeclarationsCache(psiModule, withReferences, caseSensitive);
+        }
     }
-  }
 }

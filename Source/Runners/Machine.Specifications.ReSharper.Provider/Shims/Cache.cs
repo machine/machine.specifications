@@ -5,18 +5,18 @@
     using JetBrains.ReSharper.Psi.Modules;
 
     [SolutionComponent]
-  public class Cache : ICache
-  {
-    readonly ISymbolCache _cache;
-
-    public Cache(ISymbolCache cache)
+    public class Cache : ICache
     {
-      this._cache = cache;
-    }
+        readonly ISymbolCache _cache;
 
-    public ISymbolScope GetDeclarationsCache(IPsiModule psiModule, bool withReferences, bool caseSensitive)
-    {
-      return this._cache.GetSymbolScope(LibrarySymbolScope.FULL, caseSensitive, psiModule.GetContextFromModule());
+        public Cache(ISymbolCache cache)
+        {
+            this._cache = cache;
+        }
+
+        public ISymbolScope GetDeclarationsCache(IPsiModule psiModule, bool withReferences, bool caseSensitive)
+        {
+            return this._cache.GetSymbolScope(LibrarySymbolScope.FULL, caseSensitive, psiModule.GetContextFromModule());
+        }
     }
-  }
 }

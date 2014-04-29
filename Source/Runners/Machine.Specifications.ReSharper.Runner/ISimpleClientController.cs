@@ -3,29 +3,29 @@
     using JetBrains.ReSharper.TaskRunnerFramework;
 
     public interface ISimpleClientController
-  {
-    void TaskRunStarting();
-    void TaskStarting(RemoteTask remoteTask);
-    void TaskFinished(RemoteTask remoteTask);
-    void TaskRunFinished();
-  }
-
-  public class NullSimpleClientController : ISimpleClientController
-  {
-    public void TaskRunStarting()
     {
+        void TaskRunStarting();
+        void TaskStarting(RemoteTask remoteTask);
+        void TaskFinished(RemoteTask remoteTask);
+        void TaskRunFinished();
     }
 
-    public void TaskStarting(RemoteTask remoteTask)
+    public class NullSimpleClientController : ISimpleClientController
     {
-    }
+        public void TaskRunStarting()
+        {
+        }
 
-    public void TaskFinished(RemoteTask remoteTask)
-    {
-    }
+        public void TaskStarting(RemoteTask remoteTask)
+        {
+        }
 
-    public void TaskRunFinished()
-    {
+        public void TaskFinished(RemoteTask remoteTask)
+        {
+        }
+
+        public void TaskRunFinished()
+        {
+        }
     }
-  }
 }

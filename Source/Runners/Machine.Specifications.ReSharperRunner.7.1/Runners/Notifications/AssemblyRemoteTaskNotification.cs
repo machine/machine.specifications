@@ -9,43 +9,43 @@ using Machine.Specifications.Runner;
 
 namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
 {
-  class AssemblyRemoteTaskNotification : RemoteTaskNotification
-  {
-    readonly TaskExecutionNode _node;
-    readonly RunAssemblyTask _task;
-
-    public AssemblyRemoteTaskNotification(TaskExecutionNode node)
+    class AssemblyRemoteTaskNotification : RemoteTaskNotification
     {
-      _node = node;
-      _task = (RunAssemblyTask) node.RemoteTask;
-    }
+        readonly TaskExecutionNode _node;
+        readonly RunAssemblyTask _task;
 
-    string Location
-    {
-      get { return _task.AssemblyLocation; }
-    }
+        public AssemblyRemoteTaskNotification(TaskExecutionNode node)
+        {
+            _node = node;
+            _task = (RunAssemblyTask)node.RemoteTask;
+        }
 
-    public override IEnumerable<RemoteTask> RemoteTasks
-    {
-      get { yield return _node.RemoteTask; }
-    }
+        string Location
+        {
+            get { return _task.AssemblyLocation; }
+        }
 
-    public override bool Matches(object infoFromRunner, object maybeContext)
-    {
-      var assembly = infoFromRunner as AssemblyInfo;
-      if (assembly == null)
-      {
-        return false;
-      }
+        public override IEnumerable<RemoteTask> RemoteTasks
+        {
+            get { yield return _node.RemoteTask; }
+        }
 
-      return Location == assembly.Location;
-    }
+        public override bool Matches(object infoFromRunner, object maybeContext)
+        {
+            var assembly = infoFromRunner as AssemblyInfo;
+            if (assembly == null)
+            {
+                return false;
+            }
 
-    public override string ToString()
-    {
-      return String.Format("Assembly {0} with {1} remote tasks",
-                           Location,
-                           RemoteTasks.Count());
+            return Location == assembly.Location;
+        }
+
+        public override string ToString()
+        {
+            return String.Format("Assembly {0} with {1} remote tasks",
+                                 Location,
+                                 RemoteTasks.Count());
+        }
     }
-  }
 }

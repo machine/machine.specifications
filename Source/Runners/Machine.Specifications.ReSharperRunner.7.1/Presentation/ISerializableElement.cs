@@ -2,8 +2,8 @@
 
 namespace Machine.Specifications.ReSharperRunner.Presentation
 {
-  public interface ISerializableElement
-  {
-    void WriteToXml(XmlElement parent);
-  }
+    public interface ISerializableElement
+    {
+        void WriteToXml(XmlElement parent);
+    }
 }

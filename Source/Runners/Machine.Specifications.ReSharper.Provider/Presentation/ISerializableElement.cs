@@ -3,7 +3,7 @@
     using System.Xml;
 
     public interface ISerializableElement
-  {
-    void WriteToXml(XmlElement parent);
-  }
+    {
+        void WriteToXml(XmlElement parent);
+    }
 }

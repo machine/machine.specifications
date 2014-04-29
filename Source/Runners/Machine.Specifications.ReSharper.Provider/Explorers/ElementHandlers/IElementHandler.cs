@@ -6,9 +6,9 @@ namespace Machine.Specifications.ReSharperProvider.Explorers.ElementHandlers
     using JetBrains.ReSharper.UnitTestFramework;
 
     internal interface IElementHandler
-  {
-    bool Accepts(ITreeNode element);
-    IEnumerable<UnitTestElementDisposition> AcceptElement(string assemblyPath, IFile file, ITreeNode element);
-    void Cleanup(ITreeNode element);
-  }
+    {
+        bool Accepts(ITreeNode element);
+        IEnumerable<UnitTestElementDisposition> AcceptElement(string assemblyPath, IFile file, ITreeNode element);
+        void Cleanup(ITreeNode element);
+    }
 }

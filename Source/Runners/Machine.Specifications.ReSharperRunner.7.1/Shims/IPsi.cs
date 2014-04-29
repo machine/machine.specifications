@@ -7,8 +7,8 @@ using JetBrains.ReSharper.Psi;
 
 namespace Machine.Specifications.ReSharperRunner.Shims
 {
-  public interface IPsi
-  {
-    IPsiModule GetPrimaryPsiModule(IModule module);
-  }
+    public interface IPsi
+    {
+        IPsiModule GetPrimaryPsiModule(IModule module);
+    }
 }

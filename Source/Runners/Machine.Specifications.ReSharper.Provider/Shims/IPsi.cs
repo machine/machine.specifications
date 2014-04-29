@@ -4,7 +4,7 @@
     using JetBrains.ReSharper.Psi.Modules;
 
     public interface IPsi
-  {
-    IPsiModule GetPrimaryPsiModule(IModule module);
-  }
+    {
+        IPsiModule GetPrimaryPsiModule(IModule module);
+    }
 }

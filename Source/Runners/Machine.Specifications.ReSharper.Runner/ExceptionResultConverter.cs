@@ -8,33 +8,33 @@ namespace Machine.Specifications.ReSharperRunner
     using JetBrains.ReSharper.TaskRunnerFramework;
 
     public static class ExceptionResultConverter
-  {
-    public static TaskException[] ConvertExceptions(ExceptionResult exception, out string message)
     {
-        ExceptionResult current;
-      if ((exception.FullTypeName == typeof(TargetInvocationException).FullName) && (exception.InnerExceptionResult != null))
-      {
-        current = exception.InnerExceptionResult;
-      }
-      else
-      {
-        current = exception;
-      }
-
-      message = null;
-      var exceptions = new List<TaskException>();
-      while (current != null)
-      {
-        if (message == null)
+        public static TaskException[] ConvertExceptions(ExceptionResult exception, out string message)
         {
-          message = string.Format("{0}: {1}", current.FullTypeName, current.Message);
+            ExceptionResult current;
+            if ((exception.FullTypeName == typeof(TargetInvocationException).FullName) && (exception.InnerExceptionResult != null))
+            {
+                current = exception.InnerExceptionResult;
+            }
+            else
+            {
+                current = exception;
+            }
+
+            message = null;
+            var exceptions = new List<TaskException>();
+            while (current != null)
+            {
+                if (message == null)
+                {
+                    message = string.Format("{0}: {1}", current.FullTypeName, current.Message);
+                }
+
+                exceptions.Add(new TaskException(current.FullTypeName, current.Message, current.StackTrace));
+                current = current.InnerExceptionResult;
+            }
+
+            return exceptions.ToArray();
         }
-
-        exceptions.Add(new TaskException(current.FullTypeName, current.Message, current.StackTrace));
-        current = current.InnerExceptionResult;
-      }
-
-      return exceptions.ToArray();
     }
-  }
 }

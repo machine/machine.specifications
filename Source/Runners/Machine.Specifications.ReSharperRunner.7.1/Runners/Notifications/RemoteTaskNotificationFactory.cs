@@ -4,33 +4,33 @@ using Machine.Specifications.ReSharperRunner.Tasks;
 
 namespace Machine.Specifications.ReSharperRunner.Runners.Notifications
 {
-  class RemoteTaskNotificationFactory
-  {
-    public RemoteTaskNotification CreateTaskNotification(TaskExecutionNode node)
+    class RemoteTaskNotificationFactory
     {
-      var remoteTask = node.RemoteTask;
+        public RemoteTaskNotification CreateTaskNotification(TaskExecutionNode node)
+        {
+            var remoteTask = node.RemoteTask;
 
-      if (remoteTask is RunAssemblyTask)
-      {
-        return new AssemblyRemoteTaskNotification(node);
-      }
-      
-      if (remoteTask is ContextTask)
-      {
-        return new ContextRemoteTaskNotification(node);
-      }
+            if (remoteTask is RunAssemblyTask)
+            {
+                return new AssemblyRemoteTaskNotification(node);
+            }
 
-      if (remoteTask is ContextSpecificationTask)
-      {
-        return new ContextSpecificationRemoteTaskNotification(node);
-      }
+            if (remoteTask is ContextTask)
+            {
+                return new ContextRemoteTaskNotification(node);
+            }
 
-      if (remoteTask is BehaviorSpecificationTask)
-      {
-        return new BehaviorSpecificationRemoteTaskNotification(node);
-      }
+            if (remoteTask is ContextSpecificationTask)
+            {
+                return new ContextSpecificationRemoteTaskNotification(node);
+            }
 
-      return new SilentRemoteTaskNotification();
+            if (remoteTask is BehaviorSpecificationTask)
+            {
+                return new BehaviorSpecificationRemoteTaskNotification(node);
+            }
+
+            return new SilentRemoteTaskNotification();
+        }
     }
-  }
 }
