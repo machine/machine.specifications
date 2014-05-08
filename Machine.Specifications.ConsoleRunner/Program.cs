@@ -104,8 +104,8 @@ namespace Machine.Specifications.ConsoleRunner
 
                 var listener = new AggregateRunListener(listeners);
 
-                IVersionResilentSpecRunner specificationRunner = new VersionResilentSpecRunner();
-                var assemblies = new List<SpecAssemblyPath>();
+                ISpecificationRunner specificationRunner = new SpecificationRunner();
+                var assemblies = new List<AssemblyPath>();
                 foreach (string assemblyName in options.AssemblyFiles)
                 {
                     if (!File.Exists(assemblyName))
@@ -116,11 +116,11 @@ namespace Machine.Specifications.ConsoleRunner
                     var excludedAssemblies = new[] { "Machine.Specifications.dll", "Machine.Specifications.Clr4.dll" };
                     if (excludedAssemblies.Any(x => Path.GetFileName(assemblyName) == x))
                     {
-                        _console.WriteLine("Warning: Excluded {0} from the test run because the file name matches either of these: {1}", assemblyName, String.Join(", ", excludedAssemblies));
+                        _console.WriteLine("Warning: Excluded {0} from the test run because the file name matches either of these: {1}", assemblyName, string.Join(", ", excludedAssemblies));
                         continue;
                     }
 
-                    assemblies.Add(new SpecAssemblyPath(assemblyName));
+                    assemblies.Add(new AssemblyPath(assemblyName));
                 }
 
                 if (options.WaitForDebugger)
@@ -133,7 +133,7 @@ namespace Machine.Specifications.ConsoleRunner
                     }
                 }
 
-                specificationRunner.RunSpecAssemblies(assemblies, listener, options.GetRunOptions());
+                specificationRunner.RunAssemblies(assemblies, listener, options.GetRunOptions());
             }
             catch (Exception ex)
             {
