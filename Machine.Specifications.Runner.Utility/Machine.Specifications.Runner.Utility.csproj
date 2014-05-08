@@ -48,11 +48,11 @@
     <Compile Include="FullNames.cs" />
     <Compile Include="Naming.cs" />
     <Compile Include="RunOptionsExtensions.cs" />
-    <Compile Include="SpecAssemblyPath.cs" />
+    <Compile Include="AssemblyPath.cs" />
     <Compile Include="SpecificationRunListenerBase.cs" />
     <Compile Include="XDocumentExtensions.cs" />
-    <Compile Include="VersionResilentSpecRunner.cs" />
-    <Compile Include="IVersionResilentSpecRunner.cs" />
+    <Compile Include="SpecificationRunner.cs" />
+    <Compile Include="ISpecificationRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>
       </SubType>

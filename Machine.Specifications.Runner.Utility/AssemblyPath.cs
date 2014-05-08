@@ -3,11 +3,11 @@ using System.IO;
 
 namespace Machine.Specifications.Runner.Utility
 {
-    public class SpecAssemblyPath
+    public class AssemblyPath
     {
         private readonly string specAssemblyPath;
 
-        public SpecAssemblyPath(string specAssemblyPath)
+        public AssemblyPath(string specAssemblyPath)
         {
             this.specAssemblyPath = specAssemblyPath;
             if (!File.Exists(specAssemblyPath))
@@ -21,7 +21,7 @@ namespace Machine.Specifications.Runner.Utility
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((SpecAssemblyPath) obj);
+            return Equals((AssemblyPath) obj);
         }
 
         public override int GetHashCode()
@@ -29,22 +29,22 @@ namespace Machine.Specifications.Runner.Utility
             return specAssemblyPath.GetHashCode();
         }
 
-        protected bool Equals(SpecAssemblyPath other)
+        protected bool Equals(AssemblyPath other)
         {
             return string.Equals(specAssemblyPath, other.specAssemblyPath);
         }
 
-        public static bool operator ==(SpecAssemblyPath left, SpecAssemblyPath right)
+        public static bool operator ==(AssemblyPath left, AssemblyPath right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(SpecAssemblyPath left, SpecAssemblyPath right)
+        public static bool operator !=(AssemblyPath left, AssemblyPath right)
         {
             return !Equals(left, right);
         }
 
-        public static implicit operator string(SpecAssemblyPath path)
+        public static implicit operator string(AssemblyPath path)
         {
             return path.specAssemblyPath;
         }
