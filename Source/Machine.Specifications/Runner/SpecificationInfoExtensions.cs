@@ -4,7 +4,7 @@ namespace Machine.Specifications.Runner
 
     internal static class SpecificationInfoExtensions
     {
-        public static string ToXml(this SpecificationInfo specificationInfo)
+        public static XElement ToXml(this SpecificationInfo specificationInfo)
         {
             return new XElement(
                 "specificationinfo",
@@ -12,8 +12,7 @@ namespace Machine.Specifications.Runner
                 new XElement("name", specificationInfo.Name),
                 new XElement("containingtype", specificationInfo.ContainingType),
                 new XElement("fieldname", specificationInfo.FieldName),
-                new XElement("captureoutput", specificationInfo.CapturedOutput))
-                .ToString();
+                new XElement("captureoutput", specificationInfo.CapturedOutput));
         }
     }
 }

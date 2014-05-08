@@ -1,124 +1,108 @@
-﻿using Machine.Specifications.Runner;
+﻿using System.Collections;
+using System.Runtime.Remoting.Messaging;
+using System.Security.Permissions;
+using System.Xml.Linq;
+using Machine.Specifications.Runner;
+using Machine.Specifications.Runner.Impl;
 
 namespace Machine.Specifications.Sdk
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using System.Reflection;
 
-    public abstract class RemoteToInternalSpecificationRunListenerAdapter : ISpecificationRunListener
+    public abstract class RemoteToInternalSpecificationRunListenerAdapter : MarshalByRefObject, ISpecificationRunListener
     {
-        private static readonly object locker = new object();
+        private readonly IMessageSink _listener;
 
-        private static Type runnerType;
-
-        private static readonly Dictionary<string, Delegate> methodCache = new Dictionary<string, Delegate>();
-
-        private readonly object _listener;
-
-        protected RemoteToInternalSpecificationRunListenerAdapter(object listener)
+        protected RemoteToInternalSpecificationRunListenerAdapter(object listener, string runOptionsXml)
         {
-            _listener = listener;
+            _listener = (IMessageSink)listener;
+            
+            this.RunOptions = RunOptions.Parse(runOptionsXml);
+            this.Runner = new DefaultRunner(this, RunOptions);
         }
+
+        protected RunOptions RunOptions { get; private set; }
+
+        protected ISpecificationRunner Runner { get; private set; }
 
         public void OnAssemblyStart(AssemblyInfo assemblyInfo)
         {
-            var methodToInvoke = this.GetOrCacheDelegate("OnAssemblyStart");
+            var root = new XElement("listener", new XElement("onassemblystart", assemblyInfo.ToXml()));
 
-            methodToInvoke.DynamicInvoke(this._listener, assemblyInfo.ToXml());
+            this._listener.SyncProcessMessage(new RemoteListenerMessage(root));
         }
 
         public void OnAssemblyEnd(AssemblyInfo assemblyInfo)
         {
-            var methodToInvoke = this.GetOrCacheDelegate("OnAssemblyEnd");
+            var root = new XElement("listener", new XElement("onassemblyend", assemblyInfo.ToXml()));
 
-            methodToInvoke.DynamicInvoke(this._listener, assemblyInfo.ToXml());
+            this._listener.SyncProcessMessage(new RemoteListenerMessage(root));
         }
 
         public void OnRunStart()
         {
-            var methodToInvoke = this.GetOrCacheDelegate("OnRunStart");
+            var root = new XElement("listener", new XElement("onrunstart"));
 
-            methodToInvoke.DynamicInvoke(this._listener);
+            this._listener.SyncProcessMessage(new RemoteListenerMessage(root));
         }
 
         public void OnRunEnd()
         {
-            var methodToInvoke = this.GetOrCacheDelegate("OnRunEnd");
+            var root = new XElement("listener", new XElement("onrunend"));
 
-            methodToInvoke.DynamicInvoke(this._listener);
+            this._listener.SyncProcessMessage(new RemoteListenerMessage(root));
         }
 
         public void OnContextStart(ContextInfo context)
         {
-            var methodToInvoke = this.GetOrCacheDelegate("OnContextStart");
+            var root = new XElement("listener", new XElement("oncontextstart", context.ToXml()));
 
-            methodToInvoke.DynamicInvoke(this._listener, context.ToXml());
+            this._listener.SyncProcessMessage(new RemoteListenerMessage(root));
         }
 
         public void OnContextEnd(ContextInfo context)
         {
-            var methodToInvoke = this.GetOrCacheDelegate("OnContextEnd");
+            var root = new XElement("listener", new XElement("oncontextend", context.ToXml()));
 
-            methodToInvoke.DynamicInvoke(this._listener, context.ToXml());
+            this._listener.SyncProcessMessage(new RemoteListenerMessage(root));
         }
 
         public void OnSpecificationStart(SpecificationInfo specification)
         {
-            var methodToInvoke = this.GetOrCacheDelegate("OnSpecificationStart");
+            var root = new XElement("listener", new XElement("onspecificationstart", specification.ToXml()));
 
-            methodToInvoke.DynamicInvoke(this._listener, specification.ToXml());
+            this._listener.SyncProcessMessage(new RemoteListenerMessage(root));
         }
 
         public void OnSpecificationEnd(SpecificationInfo specification, Result result)
         {
-            var methodToInvoke = this.GetOrCacheDelegate("OnSpecificationEnd");
+            var root = new XElement("listener", new XElement("onspecificationend", specification.ToXml(), result.ToXml()));
 
-            methodToInvoke.DynamicInvoke(this._listener, specification.ToXml(), result.ToXml());
+            this._listener.SyncProcessMessage(new RemoteListenerMessage(root));
         }
 
         public void OnFatalError(ExceptionResult exception)
         {
-            var methodToInvoke = this.GetOrCacheDelegate("OnFatalError");
+            var root = new XElement("listener", new XElement("onfatalerror", exception.ToXml()));
 
-            methodToInvoke.DynamicInvoke(this._listener, exception.ToXml());
+            this._listener.SyncProcessMessage(new RemoteListenerMessage(root));
         }
 
-        private Delegate GetOrCacheDelegate(string methodName)
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.Infrastructure)]
+        public override object InitializeLifetimeService()
         {
-            Delegate methodToInvoke;
-            if (!methodCache.TryGetValue(methodName, out methodToInvoke))
+            return null;
+        }
+
+        private class RemoteListenerMessage : MarshalByRefObject, IMessage
+        {
+            public RemoteListenerMessage(XElement root)
             {
-                if (runnerType == null)
-                {
-                    runnerType = this._listener.GetType().GetInterfaces().Single(t => t.Name == typeof(ISpecificationRunListener).Name);
-                }
-
-                MethodInfo method = runnerType.GetMethod(methodName);
-
-                int parameterCount = 0;
-                var instanceParameter = Expression.Parameter(runnerType, "instance");
-                var parameterExpressions = new List<ParameterExpression> { instanceParameter };
-                var callExpressions = new List<Expression>();
-                foreach (var parameter in method.GetParameters())
-                {
-                    ParameterExpression parameterExpression = Expression.Parameter(typeof(string), string.Format("arg{0}", parameterCount++));
-                    parameterExpressions.Add(parameterExpression);
-                    callExpressions.Add(Expression.Convert(parameterExpression, parameter.ParameterType));
-                }
-                var methodCall = Expression.Call(instanceParameter, method, callExpressions);
-                var action = Expression.Lambda(methodCall, parameterExpressions.ToArray()).Compile();
-
-                methodToInvoke = action;
-
-                lock (locker)
-                {
-                    methodCache[methodName] = action;
-                }
+                this.Properties = new Dictionary<string, string> { { "data", root.ToString() } };
             }
-            return methodToInvoke;
+
+            public IDictionary Properties { get; private set; }
         }
     }
 }

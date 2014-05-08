@@ -62,7 +62,7 @@ namespace Machine.Specifications.Specs.Runner
         private class TestableRemoteToInternalSpecificationRunListenerAdapter : RemoteToInternalSpecificationRunListenerAdapter
         {
             public TestableRemoteToInternalSpecificationRunListenerAdapter(object listener)
-                : base(listener)
+                : base(listener, Specifications.Runner.Utility.RunOptions.Default.ToXml())
             {
             }
         }

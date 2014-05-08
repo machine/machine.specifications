@@ -4,14 +4,7 @@ namespace Machine.Specifications
 
     internal static class ExceptionResultExtensions
     {
-        public static string ToXml(this ExceptionResult exceptionResult)
-        {
-            return exceptionResult
-                .ToXmlInternal()
-                .ToString();
-        }
-
-        internal static XElement ToXmlInternal(this ExceptionResult exceptionResult)
+        public static XElement ToXml(this ExceptionResult exceptionResult)
         {
             if (exceptionResult == null)
             {
@@ -24,7 +17,7 @@ namespace Machine.Specifications
                 new XElement("typename", exceptionResult.TypeName),
                 new XElement("message", exceptionResult.Message),
                 new XElement("stacktrace", exceptionResult.StackTrace),
-                new XElement("innerexceptionresult", exceptionResult.InnerExceptionResult != null ? ToXmlInternal(exceptionResult.InnerExceptionResult) : null));
+                new XElement("innerexceptionresult", exceptionResult.InnerExceptionResult != null ? ToXml(exceptionResult.InnerExceptionResult) : null));
         }
     }
 }

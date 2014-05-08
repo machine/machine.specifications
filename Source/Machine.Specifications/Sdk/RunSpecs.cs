@@ -7,29 +7,27 @@ using Machine.Specifications.Runner.Impl;
 
 namespace Machine.Specifications.Sdk
 {
-    public class RunSpecs : RemoteToInternalSpecificationRunListenerAdapter
+    public sealed class RunSpecs : RemoteToInternalSpecificationRunListenerAdapter
     {
-        public RunSpecs(object listener, string runOptionsXml, IEnumerable<Assembly> testAssemblies)
-            : base(listener)
+        public RunSpecs(object listener, string runOptionsXml, string assemblyPath)
+            : base(listener, runOptionsXml)
         {
-            var runOptions = RunOptions.Parse(runOptionsXml);
-            var runner = new AppDomainRunner(this, runOptions);
+            var assembly = Assembly.LoadFile(assemblyPath);
 
-            if (runOptions.Contexts.Any())
+            if (RunOptions.Contexts.Any())
             {
-                Assembly testAssembly = testAssemblies.Single();
-                runner.StartRun(testAssembly);
+                Runner.StartRun(assembly);
 
-                foreach (var contextClass in runOptions.Contexts.Select(testAssembly.GetType))
+                foreach (var contextClass in RunOptions.Contexts.Select(assembly.GetType))
                 {
-                    runner.RunMember(testAssembly, contextClass);
+                    Runner.RunMember(assembly, contextClass);
                 }
 
-                runner.EndRun(testAssembly);
+                Runner.EndRun(assembly);
             }
             else
             {
-                runner.RunAssemblies(testAssemblies);
+                Runner.RunAssembly(assembly);
             }
         }
     }

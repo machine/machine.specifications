@@ -4,7 +4,7 @@
 
     internal static class ContextInfoExtensions
     {
-        public static string ToXml(this ContextInfo contextInfo)
+        public static XElement ToXml(this ContextInfo contextInfo)
         {
             return
                 new XElement(
@@ -16,8 +16,7 @@
                     new XElement("assemblyname", contextInfo.AssemblyName),
                     new XElement("assemblyname", contextInfo.AssemblyName),
                     new XElement("fullname", contextInfo.FullName),
-                    new XElement("captureoutput", contextInfo.CapturedOutput))
-                .ToString();
+                    new XElement("captureoutput", contextInfo.CapturedOutput));
         }
     }
 }
