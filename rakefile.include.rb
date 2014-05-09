@@ -17,7 +17,7 @@ task :configure do
     "#{configatron.solution.gsub(".sln", "")}#{'-Signed' if configatron.sign_assembly}"
   end
   configatron.distribution.dir = Configatron::Delayed.new do
-    "Distribution/"
+    ENV.include?('TEAMCITY_PROJECT_NAME') ? "Distribution/" : "../nugets"
   end
   configatron.version.full = Configatron::Delayed.new do
     `gitflowversion`.scan(/NugetVersion":"(.*)"/)[0][0][0,20]

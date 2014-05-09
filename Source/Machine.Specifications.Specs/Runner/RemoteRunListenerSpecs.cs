@@ -69,48 +69,48 @@ namespace Machine.Specifications.Specs.Runner
 
         private class Listener : SpecificationRunListenerBase
         {
-            protected override void OnAssemblyStart(RunnerAssemblyInfo assemblyInfo)
+            public override void OnAssemblyStart(RunnerAssemblyInfo assemblyInfo)
             {
                 assemblyStart = assemblyInfo;
             }
 
-            protected override void OnAssemblyEnd(RunnerAssemblyInfo assemblyInfo)
+            public override void OnAssemblyEnd(RunnerAssemblyInfo assemblyInfo)
             {
                 assemblyEnd = assemblyInfo;
             }
 
-            protected override void OnSpecificationEnd(RunnerSpecificationInfo specificationInfo, RunnerResult result)
+            public override void OnSpecificationEnd(RunnerSpecificationInfo specificationInfo, RunnerResult result)
             {
                 specificationEnd = specificationInfo;
                 specificationEndResult = result;
             }
 
-            protected override void OnSpecificationStart(RunnerSpecificationInfo specificationInfo)
+            public override void OnSpecificationStart(RunnerSpecificationInfo specificationInfo)
             {
                 specificationStart = specificationInfo;
             }
 
-            protected override void OnContextStart(RunnerContextInfo contextInfo)
+            public override void OnContextStart(RunnerContextInfo contextInfo)
             {
                 contextStart = contextInfo;
             }
 
-            protected override void OnContextEnd(RunnerContextInfo contextInfo)
+            public override void OnContextEnd(RunnerContextInfo contextInfo)
             {
                 contextEnd = contextInfo;
             }
 
-            protected override void OnRunStart()
+            public override void OnRunStart()
             {
                 runStart = true;
             }
 
-            protected override void OnRunEnd()
+            public override void OnRunEnd()
             {
                 runEnd = true;
             }
 
-            protected override void OnFatalError(RunnerExceptionResult exceptionResult)
+            public override void OnFatalError(RunnerExceptionResult exceptionResult)
             {
                 fatalError = exceptionResult;
             }
