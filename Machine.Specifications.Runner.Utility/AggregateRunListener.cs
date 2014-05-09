@@ -7,7 +7,7 @@ namespace Machine.Specifications.Runner.Utility
     /// Aggregates several listeners and enebales to subscribe more than one listener. Its for example
     /// used to subscribe a TimerListener and a runListener like a PerAssemblyRunLitener
     /// </summary>
-    public class AggregateRunListener : ISpecificationRunListener
+    public class AggregateRunListener : SpecificationRunListenerBase
     {
         private readonly IEnumerable<ISpecificationRunListener> reversedListeners;
         private readonly List<ISpecificationRunListener> listeners;
@@ -18,49 +18,49 @@ namespace Machine.Specifications.Runner.Utility
             this.reversedListeners = Enumerable.Reverse(this.listeners);
         }
 
-        public void OnAssemblyStart(string assemblyInfoXml)
+        public override void OnAssemblyStart(AssemblyInfo assemblyInfo)
         {
-            this.listeners.Each(listener => listener.OnAssemblyStart(assemblyInfoXml));
+            this.listeners.Each(listener => listener.OnAssemblyStart(assemblyInfo));
         }
 
-        public void OnAssemblyEnd(string assemblyInfoXml)
+        public override void OnAssemblyEnd(AssemblyInfo assemblyInfo)
         {
-            this.reversedListeners.Each(listener => listener.OnAssemblyEnd(assemblyInfoXml));
+            this.listeners.Each(listener => listener.OnAssemblyEnd(assemblyInfo));
         }
 
-        public void OnRunStart()
+        public override void OnRunStart()
         {
             this.listeners.Each(listener => listener.OnRunStart());
         }
 
-        public void OnRunEnd()
+        public override void OnRunEnd()
         {
             this.reversedListeners.Each(listener => listener.OnRunEnd());
         }
 
-        public void OnContextStart(string contextInfoXml)
+        public override void OnContextStart(ContextInfo contextInfo)
         {
-            this.listeners.Each(listener => listener.OnContextStart(contextInfoXml));
+            this.listeners.Each(listener => listener.OnContextStart(contextInfo));
         }
 
-        public void OnContextEnd(string contextInfoXml)
+        public override void OnContextEnd(ContextInfo contextInfo)
         {
-            this.reversedListeners.Each(listener => listener.OnContextEnd(contextInfoXml));
+            this.listeners.Each(listener => listener.OnContextEnd(contextInfo));
         }
 
-        public void OnSpecificationStart(string specificationInfoXml)
+        public override void OnSpecificationStart(SpecificationInfo specificationInfo)
         {
-            this.listeners.Each(listener => listener.OnSpecificationStart(specificationInfoXml));
+            this.listeners.Each(listener => listener.OnSpecificationStart(specificationInfo));
         }
 
-        public void OnSpecificationEnd(string specificationInfoXml, string resultXml)
+        public override void OnSpecificationEnd(SpecificationInfo specificationInfo, Result result)
         {
-            this.reversedListeners.Each(listener => listener.OnSpecificationEnd(specificationInfoXml, resultXml));
+            this.reversedListeners.Each(listener => listener.OnSpecificationEnd(specificationInfo, result));
         }
 
-        public void OnFatalError(string exceptionResultXml)
+        public override void OnFatalError(ExceptionResult exceptionResult)
         {
-            this.listeners.Each(listener => listener.OnFatalError(exceptionResultXml));
+            this.listeners.Each(listener => listener.OnFatalError(exceptionResult));
         }
     }
 }

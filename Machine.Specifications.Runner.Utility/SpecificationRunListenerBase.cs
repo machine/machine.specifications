@@ -8,88 +8,47 @@ using System.Xml.XPath;
 
 namespace Machine.Specifications.Runner.Utility
 {
+    /// <summary>
+    /// The specification run listener base is a base class which takes the burden to implement IMessageSink and translates
+    /// information about specification execution over app domain boundaries.
+    /// </summary>
     [Serializable]
     public class SpecificationRunListenerBase : MarshalByRefObject, ISpecificationRunListener, IMessageSink
     {
-        protected virtual void OnAssemblyStart(AssemblyInfo assemblyInfo)
+        public virtual void OnAssemblyStart(AssemblyInfo assemblyInfo)
         {
         }
 
-        protected virtual void OnAssemblyEnd(AssemblyInfo assemblyInfo)
+        public virtual void OnAssemblyEnd(AssemblyInfo assemblyInfo)
         {
         }
 
-        protected virtual void OnRunStart()
+        public virtual void OnRunStart()
         {
         }
 
-        protected virtual void OnRunEnd()
+        public virtual void OnRunEnd()
         {
         }
 
-        protected virtual void OnContextStart(ContextInfo contextInfo)
+        public virtual void OnContextStart(ContextInfo contextInfo)
         {
         }
 
-        protected virtual void OnContextEnd(ContextInfo contextInfo)
+        public virtual void OnContextEnd(ContextInfo contextInfo)
         {
         }
 
-        protected virtual void OnSpecificationStart(SpecificationInfo specificationInfo)
+        public virtual void OnSpecificationStart(SpecificationInfo specificationInfo)
         {
         }
 
-        protected virtual void OnSpecificationEnd(SpecificationInfo specificationInfo, Result result)
+        public virtual void OnSpecificationEnd(SpecificationInfo specificationInfo, Result result)
         {
         }
 
-        protected virtual void OnFatalError(ExceptionResult exceptionResult)
+        public virtual void OnFatalError(ExceptionResult exceptionResult)
         {
-        }
-
-        void ISpecificationRunListener.OnAssemblyStart(string assemblyInfoXml)
-        {
-            this.OnAssemblyStart(AssemblyInfo.Parse(assemblyInfoXml));
-        }
-
-        void ISpecificationRunListener.OnAssemblyEnd(string assemblyInfoXml)
-        {
-            this.OnAssemblyEnd(AssemblyInfo.Parse(assemblyInfoXml));
-        }
-
-        void ISpecificationRunListener.OnRunStart()
-        {
-            this.OnRunStart();
-        }
-
-        void ISpecificationRunListener.OnRunEnd()
-        {
-            this.OnRunEnd();
-        }
-
-        void ISpecificationRunListener.OnContextStart(string contextInfoXml)
-        {
-            this.OnContextStart(ContextInfo.Parse(contextInfoXml));
-        }
-
-        void ISpecificationRunListener.OnContextEnd(string contextInfoXml)
-        {
-            this.OnContextEnd(ContextInfo.Parse(contextInfoXml));
-        }
-
-        void ISpecificationRunListener.OnSpecificationStart(string specificationInfoXml)
-        {
-            this.OnSpecificationStart(SpecificationInfo.Parse(specificationInfoXml));
-        }
-
-        void ISpecificationRunListener.OnSpecificationEnd(string specificationInfoXml, string resultXml)
-        {
-            this.OnSpecificationEnd(SpecificationInfo.Parse(specificationInfoXml), Result.Parse(resultXml));
-        }
-
-        void ISpecificationRunListener.OnFatalError(string exceptionResultXml)
-        {
-            this.OnFatalError(ExceptionResult.Parse(exceptionResultXml));
         }
 
         [SecurityCritical]
@@ -115,10 +74,10 @@ namespace Machine.Specifications.Runner.Utility
             switch (element.Name.ToString())
             {
                 case "onassemblystart":
-                    listener.OnAssemblyStart(element.XPathSelectElement("//onassemblystart/*").ToString());
+                    listener.OnAssemblyStart(AssemblyInfo.Parse(element.XPathSelectElement("//onassemblystart/*").ToString()));
                     break;
                 case "onassemblyend":
-                    listener.OnAssemblyEnd(element.XPathSelectElement("//onassemblyend/*").ToString());
+                    listener.OnAssemblyEnd(AssemblyInfo.Parse(element.XPathSelectElement("//onassemblyend/*").ToString()));
                     break;
                 case "onrunstart":
                     listener.OnRunStart();
@@ -127,21 +86,21 @@ namespace Machine.Specifications.Runner.Utility
                     listener.OnRunEnd();
                     break;
                 case "oncontextstart":
-                    listener.OnContextStart(element.XPathSelectElement("//oncontextstart/*").ToString());
+                    listener.OnContextStart(ContextInfo.Parse(element.XPathSelectElement("//oncontextstart/*").ToString()));
                     break;
                 case "oncontextend":
-                    listener.OnContextEnd(element.XPathSelectElement("//oncontextend/*").ToString());
+                    listener.OnContextEnd(ContextInfo.Parse(element.XPathSelectElement("//oncontextend/*").ToString()));
                     break;
                 case "onspecificationstart":
-                    listener.OnSpecificationStart(element.XPathSelectElement("//onspecificationstart/*").ToString());
+                    listener.OnSpecificationStart(SpecificationInfo.Parse(element.XPathSelectElement("//onspecificationstart/*").ToString()));
                     break;
                 case "onspecificationend":
                     listener.OnSpecificationEnd(
-                        element.XPathSelectElement("//onspecificationend/specificationinfo").ToString(), 
-                        element.XPathSelectElement("//onspecificationend/result").ToString());
+                        SpecificationInfo.Parse(element.XPathSelectElement("//onspecificationend/specificationinfo").ToString()), 
+                        Result.Parse(element.XPathSelectElement("//onspecificationend/result").ToString()));
                     break;
                 case "onfatalerror":
-                    listener.OnFatalError(element.XPathSelectElement("//onfatalerror/*").ToString());
+                    listener.OnFatalError(ExceptionResult.Parse(element.XPathSelectElement("//onfatalerror/*").ToString()));
                     break;
             }
 

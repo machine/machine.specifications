@@ -13,40 +13,40 @@ namespace Machine.Specifications.Runner.Utility
         readonly Stopwatch _specificationTimer = new Stopwatch();
         readonly Dictionary<SpecificationInfo, long> _specificationTimes = new Dictionary<SpecificationInfo, long>();
 
-        protected override void OnRunStart()
+        public override void OnRunStart()
         {
             this._runTimer.Restart();
         }
 
-        protected override void OnRunEnd()
+        public override void OnRunEnd()
         {
             this._runTimer.Stop();
         }
 
-        protected override void OnAssemblyStart(AssemblyInfo assembly)
+        public override void OnAssemblyStart(AssemblyInfo assembly)
         {
             this._assemblyTimer.Restart();
         }
 
-        protected override void OnAssemblyEnd(AssemblyInfo assembly)
+        public override void OnAssemblyEnd(AssemblyInfo assembly)
         {
             this._assemblyTimer.Stop();
             this._assemblyTimes[assembly] = this._assemblyTimer.ElapsedMilliseconds;
         }
 
-        protected override void OnContextStart(ContextInfo context)
+        public override void OnContextStart(ContextInfo context)
         {
             this._contextTimer.Restart();
             this._specificationTimer.Restart();
         }
 
-        protected override void OnContextEnd(ContextInfo context)
+        public override void OnContextEnd(ContextInfo context)
         {
             this._contextTimer.Stop();
             this._contextTimes[context] = this._contextTimer.ElapsedMilliseconds;
         }
 
-        protected override void OnSpecificationStart(SpecificationInfo specification)
+        public override void OnSpecificationStart(SpecificationInfo specification)
         {
             if (!this._specificationTimer.IsRunning)
             {
@@ -54,13 +54,13 @@ namespace Machine.Specifications.Runner.Utility
             }
         }
 
-        protected override void OnSpecificationEnd(SpecificationInfo specification, Result result)
+        public override void OnSpecificationEnd(SpecificationInfo specification, Result result)
         {
             this._specificationTimer.Stop();
             this._specificationTimes[specification] = this._specificationTimer.ElapsedMilliseconds;
         }
 
-        protected override void OnFatalError(ExceptionResult exception)
+        public override void OnFatalError(ExceptionResult exception)
         {
         }
 
