@@ -79,7 +79,7 @@ namespace Machine.Specifications.Runner.Utility
 
             if (Directory.Exists(cachePath))
             {
-                Directory.Delete(cachePath);
+                Directory.Delete(cachePath, true);
             }
         }
 
