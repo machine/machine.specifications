@@ -13,7 +13,7 @@
             set;
         }
 
-        protected override void OnRunEnd()
+        public override void OnRunEnd()
         {
             base.OnRunEnd();
 

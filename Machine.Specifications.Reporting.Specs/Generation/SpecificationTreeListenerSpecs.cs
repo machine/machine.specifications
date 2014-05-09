@@ -12,19 +12,19 @@ namespace Machine.Specifications.Reporting.Specs.Generation
     [Subject(typeof(SpecificationTreeListener))]
     public class when_getting_a_tree_from_a_spec_run
     {
-        static IVersionResilentSpecRunner runner;
-        static SpecAssemblyPath specAssemblyPath;
+        static ISpecificationRunner runner;
+        static AssemblyPath specAssemblyPath;
         static SpecificationTreeListener listener;
 
         Establish context = () =>
           {
               listener = new SpecificationTreeListener();
-              runner = new VersionResilentSpecRunner();
-              specAssemblyPath = new SpecAssemblyPath(typeof (when_a_customer_first_views_the_account_summary_page).Assembly.Location);
+              runner = new SpecificationRunner();
+              specAssemblyPath = new AssemblyPath(typeof (when_a_customer_first_views_the_account_summary_page).Assembly.Location);
           };
 
         Because of =
-          () => runner.RunSpecAssemblies(new [] { specAssemblyPath }, listener, RunOptions.Default);
+          () => runner.RunAssemblies(new [] { specAssemblyPath }, listener, RunOptions.Default);
 
         It should_set_the_total_specifications =
           () => listener.Run.TotalSpecifications.Should().Be(6);

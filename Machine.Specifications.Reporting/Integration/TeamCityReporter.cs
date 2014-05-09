@@ -24,12 +24,12 @@ namespace Machine.Specifications.Reporting.Integration
             get { return _failureOccurred; }
         }
 
-        protected override void OnAssemblyStart(AssemblyInfo assembly)
+        public override void OnAssemblyStart(AssemblyInfo assembly)
         {
             _writer.WriteProgressStart("Running specifications in " + assembly.Name);
         }
 
-        protected override void OnAssemblyEnd(AssemblyInfo assembly)
+        public override void OnAssemblyEnd(AssemblyInfo assembly)
         {
             if (!string.IsNullOrEmpty(_currentNamespace))
             {
@@ -38,17 +38,17 @@ namespace Machine.Specifications.Reporting.Integration
             _writer.WriteProgressFinish("Running specifications in " + assembly.Name);
         }
 
-        protected override void OnRunStart()
+        public override void OnRunStart()
         {
             _writer.WriteProgressStart("Running specifications.");
         }
 
-        protected override void OnRunEnd()
+        public override void OnRunEnd()
         {
             _writer.WriteProgressFinish("Running specifications.");
         }
 
-        protected override void OnContextStart(ContextInfo context)
+        public override void OnContextStart(ContextInfo context)
         {
             if (context.Namespace != _currentNamespace)
             {
@@ -62,17 +62,17 @@ namespace Machine.Specifications.Reporting.Integration
             _currentContext = context.FullName;
         }
 
-        protected override void OnContextEnd(ContextInfo context)
+        public override void OnContextEnd(ContextInfo context)
         {
             _currentContext = "";
         }
 
-        protected override void OnSpecificationStart(SpecificationInfo specification)
+        public override void OnSpecificationStart(SpecificationInfo specification)
         {
             _writer.WriteTestStarted(GetSpecificationName(specification), false);
         }
 
-        protected override void OnSpecificationEnd(SpecificationInfo specification, Result result)
+        public override void OnSpecificationEnd(SpecificationInfo specification, Result result)
         {
             switch (result.Status)
             {
@@ -103,7 +103,7 @@ namespace Machine.Specifications.Reporting.Integration
             _writer.WriteTestFinished(GetSpecificationName(specification), duration);
         }
 
-        protected override void OnFatalError(ExceptionResult exception)
+        public override void OnFatalError(ExceptionResult exception)
         {
             _writer.WriteError(exception.Message, exception.ToString());
             _failureOccurred = true;

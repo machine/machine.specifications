@@ -15,7 +15,7 @@ namespace Machine.Specifications.Reporting.Generation.Xml
       _timer = timer;
     }
 
-    protected override void OnRunEnd()
+    public override void OnRunEnd()
     {
       base.OnRunEnd();
       var reportGenerator = new XmlReportGenerator(_xmlPath,

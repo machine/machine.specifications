@@ -35,49 +35,33 @@ namespace Machine.Specifications.Reporting.Generation
             get { return _contextsByAssembly; }
         }
 
-        protected override void OnAssemblyStart(AssemblyInfo assembly)
+        public override void OnAssemblyStart(AssemblyInfo assembly)
         {
             _currentAssembly = assembly;
             _contextsByAssembly.Add(_currentAssembly, new List<ContextInfo>());
         }
 
-        protected override void OnAssemblyEnd(AssemblyInfo assembly)
+        public override void OnAssemblyEnd(AssemblyInfo assembly)
         {
             _currentAssembly.CapturedOutput = assembly.CapturedOutput;
         }
 
-        protected override void OnRunStart()
-        {
-        }
-
-        protected override void OnRunEnd()
-        {
-        }
-
-        protected override void OnContextStart(ContextInfo context)
+        public override void OnContextStart(ContextInfo context)
         {
             _contextsByAssembly[_currentAssembly].Add(context);
             _currentContext = context;
             _specificationsByContext.Add(_currentContext, new List<SpecificationInfo>());
         }
 
-        protected override void OnContextEnd(ContextInfo context)
+        public override void OnContextEnd(ContextInfo context)
         {
             _currentContext.CapturedOutput = context.CapturedOutput;
         }
 
-        protected override void OnSpecificationStart(SpecificationInfo specification)
-        {
-        }
-
-        protected override void OnSpecificationEnd(SpecificationInfo specification, Result result)
+        public override void OnSpecificationEnd(SpecificationInfo specification, Result result)
         {
             _specificationsByContext[_currentContext].Add(specification);
             _resultsBySpecification.Add(specification, result);
-        }
-
-        protected override void OnFatalError(ExceptionResult exception)
-        {
         }
     }
 }

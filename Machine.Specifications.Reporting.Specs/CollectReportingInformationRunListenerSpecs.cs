@@ -11,21 +11,21 @@ namespace Machine.Specifications.Reporting.Specs
     [Subject(typeof(CollectReportingInformationRunListener))]
     public class when_running_two_contexts_that_use_the_same_behavior
     {
-        static IVersionResilentSpecRunner runner;
+        static ISpecificationRunner runner;
         static CollectReportingInformationRunListener reportListener;
         static RunOptions runOptions;
-        static SpecAssemblyPath specAssemblyPath;
+        static AssemblyPath specAssemblyPath;
 
         Establish context = () =>
           {
               reportListener = new CollectReportingInformationRunListener();
               runOptions = RunOptions.Custom.Include(new[] { "behavior usage" });
-              specAssemblyPath = new SpecAssemblyPath(typeof (context_with_behaviors).Assembly.Location);
+              specAssemblyPath = new AssemblyPath(typeof (context_with_behaviors).Assembly.Location);
 
-              runner = new VersionResilentSpecRunner();
+              runner = new SpecificationRunner();
           };
 
-        Because of = () => runner.RunSpecAssemblies(new[] { specAssemblyPath }, reportListener, runOptions);
+        Because of = () => runner.RunAssemblies(new[] { specAssemblyPath }, reportListener, runOptions);
 
         It should_collect_behavior_specifications_and_context_specifications =
           () => reportListener.ResultsBySpecification.Count.Should().Be(3);

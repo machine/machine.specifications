@@ -20,22 +20,22 @@ namespace Machine.Specifications.Reporting.Generation
             get { return _run; }
         }
 
-        protected override void OnRunStart()
+        public override void OnRunStart()
         {
             _nextId = 1;
         }
 
-        protected override void OnRunEnd()
+        public override void OnRunEnd()
         {
             _run = new Run(_assemblies);
         }
 
-        protected override void OnAssemblyStart(AssemblyInfo assembly)
+        public override void OnAssemblyStart(AssemblyInfo assembly)
         {
             _concernsToContexts = new Dictionary<string, List<Context>>();
         }
 
-        protected override void OnAssemblyEnd(AssemblyInfo assembly)
+        public override void OnAssemblyEnd(AssemblyInfo assembly)
         {
             var concerns = CreateConcerns();
 
@@ -47,12 +47,12 @@ namespace Machine.Specifications.Reporting.Generation
             return _concernsToContexts.Select(x => new Concern(x.Key, x.Value));
         }
 
-        protected override void OnContextStart(ContextInfo context)
+        public override void OnContextStart(ContextInfo context)
         {
             _specifications = new List<Specification>();
         }
 
-        protected override void OnContextEnd(ContextInfo context)
+        public override void OnContextEnd(ContextInfo context)
         {
             if (!_concernsToContexts.ContainsKey(context.Concern))
             {
@@ -62,17 +62,9 @@ namespace Machine.Specifications.Reporting.Generation
             _concernsToContexts[context.Concern].Add(context.ToNode(_specifications));
         }
 
-        protected override void OnSpecificationStart(SpecificationInfo specification)
-        {
-        }
-
-        protected override void OnSpecificationEnd(SpecificationInfo specification, Result result)
+        public override void OnSpecificationEnd(SpecificationInfo specification, Result result)
         {
             _specifications.Add(AssignId(specification.ToNode(result)));
-        }
-
-        protected override void OnFatalError(ExceptionResult exception)
-        {
         }
 
         Specification AssignId(Specification node)
