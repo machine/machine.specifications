@@ -11,6 +11,7 @@ namespace Machine.Specifications.Runner.Utility
         public IEnumerable<string> ExcludeTags { get; protected set; }
         public IEnumerable<string> Filters { get; protected set; }
         public IEnumerable<string> Contexts { get; protected set; }
+        public string ShadowCopyCachePath { get; protected set; }
 
         private RunOptions()
         {
@@ -54,6 +55,12 @@ namespace Machine.Specifications.Runner.Utility
             {
                 this.Filters = filters;
 
+                return this;
+            }
+
+            public RunOptionsBuilder ShadowCopyTo(string cachePath)
+            {
+                this.ShadowCopyCachePath = cachePath;
                 return this;
             }
         }

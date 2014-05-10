@@ -14,6 +14,8 @@ namespace Machine.Specifications.Runner.Utility
             AppendFilters(root, runOptions);
             AppendContexts(root, runOptions);
 
+            root.Add(new XElement("ShadowCopyCachePath", runOptions.ShadowCopyCachePath));
+
             return root.ToString();
         }
 

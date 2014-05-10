@@ -21,7 +21,7 @@ namespace Machine.Specifications.Runner.Utility
                 {
                     string specAssemblyPath = Path.GetFullPath(assemblyPath);
 
-                    appDomain = CreateAppDomain(specAssemblyPath, true);
+                    appDomain = CreateAppDomain(specAssemblyPath, options.ShadowCopyCachePath);
 
                     AssemblyName mspecAssemblyName = GetMspecAssemblyName(specAssemblyPath);
 
@@ -75,27 +75,34 @@ namespace Machine.Specifications.Runner.Utility
 
             var cachePath = appDomain.SetupInformation.CachePath;
 
-            AppDomain.Unload(appDomain);
-
-            if (Directory.Exists(cachePath))
+            try
             {
-                Directory.Delete(cachePath, true);
+                AppDomain.Unload(appDomain);
+
+                if (cachePath != null)
+                {
+                    Directory.Delete(cachePath, true);
+                }
+            }
+            catch
+            {
+                // This is OK for cleanup
             }
         }
 
-        private static AppDomain CreateAppDomain(string specAssemblyPath, bool shadowCopy)
+        private static AppDomain CreateAppDomain(string specAssemblyPath, string shadowCopyCachePath)
         {
             var setup = new AppDomainSetup
             {
                 ApplicationBase = Path.GetDirectoryName(specAssemblyPath),
-                ApplicationName = Guid.NewGuid().ToString()
+                ApplicationName = string.Format("Machine Specifications Runner for {0}", Path.GetFileName(specAssemblyPath))
             };
 
-            if (shadowCopy)
+            if (!string.IsNullOrEmpty(shadowCopyCachePath))
             {
                 setup.ShadowCopyFiles = "true";
                 setup.ShadowCopyDirectories = setup.ApplicationBase;
-                setup.CachePath = Path.Combine(Path.GetTempPath(), setup.ApplicationName);
+                setup.CachePath = shadowCopyCachePath;
             }
 
             setup.ConfigurationFile = GetConfigFile(specAssemblyPath);
