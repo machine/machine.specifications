@@ -111,7 +111,7 @@ namespace Machine.Specifications.Runner.Utility
                     try
                     {
                         string specAssemblyPath = Path.GetFullPath(assemblyPath);
-
+                        IEnumerable<string> specAssemblyPaths = new[] { specAssemblyPath };
                         appDomain = CreateAppDomain(specAssemblyPath, options.ShadowCopyCachePath);
 
                         AssemblyName mspecAssemblyName = GetMspecAssemblyName(specAssemblyPath);
@@ -122,7 +122,7 @@ namespace Machine.Specifications.Runner.Utility
                             false,
                             0,
                             null,
-                            new object[] { listener, options.ToXml(), new string[] { specAssemblyPath } },
+                            new object[] { listener, options.ToXml(), specAssemblyPaths },
                             null,
                             null,
                             null);
