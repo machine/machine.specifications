@@ -2,20 +2,18 @@
 using System.Linq;
 using System.Reflection;
 
-using Machine.Specifications.Runner;
-using Machine.Specifications.Runner.Impl;
-
 namespace Machine.Specifications.Sdk
 {
     public sealed class RunSpecs : RemoteToInternalSpecificationRunListenerAdapter
     {
-        public RunSpecs(object listener, string runOptionsXml, string assemblyPath)
+        public RunSpecs(object listener, string runOptionsXml, IEnumerable<string> assemblyPaths)
             : base(listener, runOptionsXml)
         {
-            var assembly = Assembly.LoadFile(assemblyPath);
+            var assemblies = assemblyPaths.Select(Assembly.LoadFile);
 
             if (RunOptions.Contexts.Any())
             {
+                var assembly = assemblies.Single();
                 Runner.StartRun(assembly);
 
                 foreach (var contextClass in RunOptions.Contexts.Select(assembly.GetType))
@@ -27,7 +25,7 @@ namespace Machine.Specifications.Sdk
             }
             else
             {
-                Runner.RunAssembly(assembly);
+                Runner.RunAssemblies(assemblies);
             }
         }
     }

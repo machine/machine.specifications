@@ -60,9 +60,6 @@
 		<file src="..\History.txt" target="tools" />
 		<file src="..\Build\@configatron.target@\Install*" target="tools" exclude="..\Build\@configatron.target@\*.InstallLog" />
 		<file src="..\Build\@configatron.target@\Machine.*" target="tools" exclude="..\Build\@configatron.target@\*.pdb;..\Build\@configatron.target@\*.InstallLog;..\Build\@configatron.target@\*.InstallState"/>
-		<file src="..\Build\@configatron.target@\mspec*" target="tools" exclude="..\Build\@configatron.target@\*.vshost*;..\Build\@configatron.target@\*.pdb"/>
-		<file src="..\Build\@configatron.target@\Spark.dll" target="tools"/>
-		<file src="..\Build\@configatron.target@\CommandLine.dll" target="tools"/>
 		<file src="..\Build\@configatron.target@\Testdriven.Framework.dll" target="tools"/>
 	</files>  
 </package>
