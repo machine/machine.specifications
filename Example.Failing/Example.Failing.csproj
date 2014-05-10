@@ -56,7 +56,7 @@
   <ItemGroup>
     <Reference Include="Machine.Specifications, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Machine.Specifications.0.9.0-Unstable0027\lib\net20\Machine.Specifications.dll</HintPath>
+      <HintPath>..\packages\Machine.Specifications.0.9.0-Unstable0043\lib\net20\Machine.Specifications.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

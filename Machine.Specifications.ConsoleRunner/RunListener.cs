@@ -33,17 +33,17 @@ namespace Machine.Specifications.ConsoleRunner
             get { return _failureOccurred || _failedSpecificationCount > 0; }
         }
 
-        protected override void OnAssemblyStart(AssemblyInfo assembly)
+        public override void OnAssemblyStart(AssemblyInfo assembly)
         {
             _output.AssemblyStart(assembly);
         }
 
-        protected override void OnAssemblyEnd(AssemblyInfo assembly)
+        public override void OnAssemblyEnd(AssemblyInfo assembly)
         {
             _output.AssemblyEnd(assembly);
         }
 
-        protected override void OnRunStart()
+        public override void OnRunStart()
         {
             _output.RunStart();
 
@@ -55,7 +55,7 @@ namespace Machine.Specifications.ConsoleRunner
             _passedSpecificationCount = 0;
         }
 
-        protected override void OnRunEnd()
+        public override void OnRunEnd()
         {
             _output.RunEnd();
 
@@ -83,24 +83,24 @@ namespace Machine.Specifications.ConsoleRunner
             _console.WriteLine(line);
         }
 
-        protected override void OnContextStart(ContextInfo context)
+        public override void OnContextStart(ContextInfo context)
         {
             _currentContext = context;
             _output.ContextStart(context);
         }
 
-        protected override void OnContextEnd(ContextInfo context)
+        public override void OnContextEnd(ContextInfo context)
         {
             _output.ContextEnd(context);
             _contextCount += 1;
         }
 
-        protected override void OnSpecificationStart(SpecificationInfo specification)
+        public override void OnSpecificationStart(SpecificationInfo specification)
         {
             _output.SpecificationStart(specification);
         }
 
-        protected override void OnSpecificationEnd(SpecificationInfo specification, Result result)
+        public override void OnSpecificationEnd(SpecificationInfo specification, Result result)
         {
             _specificationCount += 1;
             switch (result.Status)
@@ -125,7 +125,7 @@ namespace Machine.Specifications.ConsoleRunner
             }
         }
 
-        protected override void OnFatalError(ExceptionResult exception)
+        public override void OnFatalError(ExceptionResult exception)
         {
             _failureOccurred = true;
             _console.WriteLine("");
