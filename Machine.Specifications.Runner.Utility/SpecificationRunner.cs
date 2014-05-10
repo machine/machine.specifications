@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Security;
 using System.Security.Permissions;
@@ -14,42 +15,13 @@ namespace Machine.Specifications.Runner.Utility
     {
         public void RunAssemblies(IEnumerable<AssemblyPath> assemblyPaths, ISpecificationRunListener listener, RunOptions options)
         {
-            foreach (AssemblyPath assemblyPath in assemblyPaths)
+            if (options.SeperateAppDomain)
             {
-                AppDomain appDomain = null;
-                try
-                {
-                    string specAssemblyPath = Path.GetFullPath(assemblyPath);
-
-                    appDomain = CreateAppDomain(specAssemblyPath, options.ShadowCopyCachePath);
-
-                    AssemblyName mspecAssemblyName = GetMspecAssemblyName(specAssemblyPath);
-
-                    var runspecs = appDomain.CreateInstanceAndUnwrap(
-                        mspecAssemblyName.FullName,
-                        "Machine.Specifications.Sdk.RunSpecs",
-                        false,
-                        0,
-                        null,
-                        new object[] { listener, options.ToXml(), specAssemblyPath },
-                        null,
-                        null,
-                        null);
-                }
-                catch (TargetInvocationException ex)
-                {
-                    UnloadAppDomain(appDomain);
-
-                    RethrowWithNoStackTraceLoss(ex.InnerException);
-                }
-                catch (Exception)
-                {
-                    UnloadAppDomain(appDomain);
-
-                    throw;
-                }
-
-                UnloadAppDomain(appDomain);
+                new SeperateAppDomain(assemblyPaths, listener, options);
+            }
+            else
+            {
+                new OneAppDomain(assemblyPaths, listener, options);
             }
         }
 
@@ -129,5 +101,90 @@ namespace Machine.Specifications.Runner.Utility
             throw ex;
         }
 
+        private class SeperateAppDomain
+        {
+            public SeperateAppDomain(IEnumerable<AssemblyPath> assemblyPaths, ISpecificationRunListener listener, RunOptions options)
+            {
+                foreach (AssemblyPath assemblyPath in assemblyPaths)
+                {
+                    AppDomain appDomain = null;
+                    try
+                    {
+                        string specAssemblyPath = Path.GetFullPath(assemblyPath);
+
+                        appDomain = CreateAppDomain(specAssemblyPath, options.ShadowCopyCachePath);
+
+                        AssemblyName mspecAssemblyName = GetMspecAssemblyName(specAssemblyPath);
+
+                        var runspecs = appDomain.CreateInstanceAndUnwrap(
+                            mspecAssemblyName.FullName,
+                            "Machine.Specifications.Sdk.RunSpecs",
+                            false,
+                            0,
+                            null,
+                            new object[] { listener, options.ToXml(), new string[] { specAssemblyPath } },
+                            null,
+                            null,
+                            null);
+                    }
+                    catch (TargetInvocationException ex)
+                    {
+                        UnloadAppDomain(appDomain);
+
+                        RethrowWithNoStackTraceLoss(ex.InnerException);
+                    }
+                    catch (Exception)
+                    {
+                        UnloadAppDomain(appDomain);
+
+                        throw;
+                    }
+
+                    UnloadAppDomain(appDomain);
+                }
+            }
+        }
+
+        private class OneAppDomain
+        {
+            public OneAppDomain(IEnumerable<AssemblyPath> assemblyPaths, ISpecificationRunListener listener, RunOptions options)
+            {
+                AppDomain appDomain = null;
+                try
+                {
+                    IEnumerable<string> specAssemblyPaths = assemblyPaths.Select(p => Path.GetFullPath(p));
+                    string specAssemblyPath = Path.GetFullPath(specAssemblyPaths.First());
+
+                    appDomain = CreateAppDomain(specAssemblyPath, options.ShadowCopyCachePath);
+
+                    AssemblyName mspecAssemblyName = GetMspecAssemblyName(specAssemblyPath);
+
+                    var runspecs = appDomain.CreateInstanceAndUnwrap(
+                        mspecAssemblyName.FullName,
+                        "Machine.Specifications.Sdk.RunSpecs",
+                        false,
+                        0,
+                        null,
+                        new object[] { listener, options.ToXml(), specAssemblyPaths },
+                        null,
+                        null,
+                        null);
+                }
+                catch (TargetInvocationException ex)
+                {
+                    UnloadAppDomain(appDomain);
+
+                    RethrowWithNoStackTraceLoss(ex.InnerException);
+                }
+                catch (Exception)
+                {
+                    UnloadAppDomain(appDomain);
+
+                    throw;
+                }
+
+                UnloadAppDomain(appDomain);
+            }
+        }
     }
 }
