@@ -152,7 +152,7 @@ namespace Machine.Specifications.Runner.Utility
                 AppDomain appDomain = null;
                 try
                 {
-                    IEnumerable<string> specAssemblyPaths = assemblyPaths.Select(p => Path.GetFullPath(p));
+                    IEnumerable<string> specAssemblyPaths = assemblyPaths.Select(p => Path.GetFullPath(p)).ToList();
                     string specAssemblyPath = Path.GetFullPath(specAssemblyPaths.First());
 
                     appDomain = CreateAppDomain(specAssemblyPath, options.ShadowCopyCachePath);
