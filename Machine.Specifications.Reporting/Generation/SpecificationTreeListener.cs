@@ -7,7 +7,7 @@ using Machine.Specifications.Runner.Utility;
 
 namespace Machine.Specifications.Reporting.Generation
 {
-    public class SpecificationTreeListener : SpecificationRunListenerBase
+    public class SpecificationTreeListener : ISpecificationRunListener
     {
         Run _run;
         int _nextId;
@@ -20,22 +20,22 @@ namespace Machine.Specifications.Reporting.Generation
             get { return _run; }
         }
 
-        public override void OnRunStart()
+        public void OnRunStart()
         {
             _nextId = 1;
         }
 
-        public override void OnRunEnd()
+        public virtual void OnRunEnd()
         {
             _run = new Run(_assemblies);
         }
 
-        public override void OnAssemblyStart(AssemblyInfo assembly)
+        public void OnAssemblyStart(AssemblyInfo assembly)
         {
             _concernsToContexts = new Dictionary<string, List<Context>>();
         }
 
-        public override void OnAssemblyEnd(AssemblyInfo assembly)
+        public void OnAssemblyEnd(AssemblyInfo assembly)
         {
             var concerns = CreateConcerns();
 
@@ -47,12 +47,12 @@ namespace Machine.Specifications.Reporting.Generation
             return _concernsToContexts.Select(x => new Concern(x.Key, x.Value));
         }
 
-        public override void OnContextStart(ContextInfo context)
+        public void OnContextStart(ContextInfo context)
         {
             _specifications = new List<Specification>();
         }
 
-        public override void OnContextEnd(ContextInfo context)
+        public void OnContextEnd(ContextInfo context)
         {
             if (!_concernsToContexts.ContainsKey(context.Concern))
             {
@@ -62,9 +62,16 @@ namespace Machine.Specifications.Reporting.Generation
             _concernsToContexts[context.Concern].Add(context.ToNode(_specifications));
         }
 
-        public override void OnSpecificationEnd(SpecificationInfo specification, Result result)
+        public void OnSpecificationStart(SpecificationInfo specificationInfo)
         {
-            _specifications.Add(AssignId(specification.ToNode(result)));
+        }
+
+        public void OnSpecificationEnd(SpecificationInfo specification, Result result)
+        {
+        }
+
+        public void OnFatalError(ExceptionResult exceptionResult)
+        {
         }
 
         Specification AssignId(Specification node)

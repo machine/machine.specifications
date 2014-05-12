@@ -22,10 +22,10 @@ namespace Machine.Specifications.Reporting.Specs
               runOptions = RunOptions.Custom.Include(new[] { "behavior usage" });
               specAssemblyPath = new AssemblyPath(typeof (context_with_behaviors).Assembly.Location);
 
-              runner = new SpecificationRunner();
+              runner = new AppDomainRunner(reportListener, runOptions);
           };
 
-        Because of = () => runner.RunAssemblies(new[] { specAssemblyPath }, reportListener, runOptions);
+        Because of = () => runner.RunAssemblies(new[] { specAssemblyPath });
 
         It should_collect_behavior_specifications_and_context_specifications =
           () => reportListener.ResultsBySpecification.Count.Should().Be(3);

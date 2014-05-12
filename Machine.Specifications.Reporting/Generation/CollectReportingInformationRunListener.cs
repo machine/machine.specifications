@@ -3,7 +3,7 @@ using Machine.Specifications.Runner.Utility;
 
 namespace Machine.Specifications.Reporting.Generation
 {
-    public class CollectReportingInformationRunListener : SpecificationRunListenerBase
+    public class CollectReportingInformationRunListener : ISpecificationRunListener
     {
         AssemblyInfo _currentAssembly;
         ContextInfo _currentContext;
@@ -35,33 +35,49 @@ namespace Machine.Specifications.Reporting.Generation
             get { return _contextsByAssembly; }
         }
 
-        public override void OnAssemblyStart(AssemblyInfo assembly)
+        public void OnAssemblyStart(AssemblyInfo assembly)
         {
             _currentAssembly = assembly;
             _contextsByAssembly.Add(_currentAssembly, new List<ContextInfo>());
         }
 
-        public override void OnAssemblyEnd(AssemblyInfo assembly)
+        public void OnAssemblyEnd(AssemblyInfo assembly)
         {
             _currentAssembly.CapturedOutput = assembly.CapturedOutput;
         }
 
-        public override void OnContextStart(ContextInfo context)
+        public void OnRunStart()
+        {
+        }
+
+        public virtual void OnRunEnd()
+        {
+        }
+
+        public void OnContextStart(ContextInfo context)
         {
             _contextsByAssembly[_currentAssembly].Add(context);
             _currentContext = context;
             _specificationsByContext.Add(_currentContext, new List<SpecificationInfo>());
         }
 
-        public override void OnContextEnd(ContextInfo context)
+        public void OnContextEnd(ContextInfo context)
         {
             _currentContext.CapturedOutput = context.CapturedOutput;
         }
 
-        public override void OnSpecificationEnd(SpecificationInfo specification, Result result)
+        public void OnSpecificationStart(SpecificationInfo specificationInfo)
+        {
+        }
+
+        public void OnSpecificationEnd(SpecificationInfo specification, Result result)
         {
             _specificationsByContext[_currentContext].Add(specification);
             _resultsBySpecification.Add(specification, result);
+        }
+
+        public void OnFatalError(ExceptionResult exceptionResult)
+        {
         }
     }
 }

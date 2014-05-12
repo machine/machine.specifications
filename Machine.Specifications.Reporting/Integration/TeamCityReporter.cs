@@ -3,7 +3,7 @@ using Machine.Specifications.Runner.Utility;
 
 namespace Machine.Specifications.Reporting.Integration
 {
-    public class TeamCityReporter : SpecificationRunListenerBase
+    public class TeamCityReporter : ISpecificationRunListener
     {
         readonly TimingRunListener _timingListener;
 
@@ -24,12 +24,12 @@ namespace Machine.Specifications.Reporting.Integration
             get { return _failureOccurred; }
         }
 
-        public override void OnAssemblyStart(AssemblyInfo assembly)
+        public void OnAssemblyStart(AssemblyInfo assembly)
         {
             _writer.WriteProgressStart("Running specifications in " + assembly.Name);
         }
 
-        public override void OnAssemblyEnd(AssemblyInfo assembly)
+        public void OnAssemblyEnd(AssemblyInfo assembly)
         {
             if (!string.IsNullOrEmpty(_currentNamespace))
             {
@@ -38,17 +38,17 @@ namespace Machine.Specifications.Reporting.Integration
             _writer.WriteProgressFinish("Running specifications in " + assembly.Name);
         }
 
-        public override void OnRunStart()
+        public void OnRunStart()
         {
             _writer.WriteProgressStart("Running specifications.");
         }
 
-        public override void OnRunEnd()
+        public void OnRunEnd()
         {
             _writer.WriteProgressFinish("Running specifications.");
         }
 
-        public override void OnContextStart(ContextInfo context)
+        public void OnContextStart(ContextInfo context)
         {
             if (context.Namespace != _currentNamespace)
             {
@@ -62,17 +62,17 @@ namespace Machine.Specifications.Reporting.Integration
             _currentContext = context.FullName;
         }
 
-        public override void OnContextEnd(ContextInfo context)
+        public void OnContextEnd(ContextInfo context)
         {
             _currentContext = "";
         }
 
-        public override void OnSpecificationStart(SpecificationInfo specification)
+        public void OnSpecificationStart(SpecificationInfo specification)
         {
             _writer.WriteTestStarted(GetSpecificationName(specification), false);
         }
 
-        public override void OnSpecificationEnd(SpecificationInfo specification, Result result)
+        public void OnSpecificationEnd(SpecificationInfo specification, Result result)
         {
             switch (result.Status)
             {
@@ -103,7 +103,7 @@ namespace Machine.Specifications.Reporting.Integration
             _writer.WriteTestFinished(GetSpecificationName(specification), duration);
         }
 
-        public override void OnFatalError(ExceptionResult exception)
+        public void OnFatalError(ExceptionResult exception)
         {
             _writer.WriteError(exception.Message, exception.ToString());
             _failureOccurred = true;
