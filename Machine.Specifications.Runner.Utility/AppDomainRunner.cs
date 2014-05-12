@@ -140,7 +140,7 @@ namespace Machine.Specifications.Runner.Utility
 
             var constructorArgs = new object[3];
             constructorArgs[0] = _listener;
-            constructorArgs[1] = _options;
+            constructorArgs[1] = _options.ToXml();
             constructorArgs[2] = false;
 
             // TODO: Really necessary?
