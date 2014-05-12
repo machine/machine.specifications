@@ -2,59 +2,68 @@
 using System.IO;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Messaging;
-using System.Security;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
 namespace Machine.Specifications.Runner.Utility
 {
     /// <summary>
-    /// The specification run listener base is a base class which takes the burden to implement IMessageSink and translates
+    /// The remote run listener is a decorator class which takes the burden to implement IMessageSink and translates
     /// information about specification execution over app domain boundaries.
     /// </summary>
     [Serializable]
-    public class SpecificationRunListenerBase : MarshalByRefObject, ISpecificationRunListener, IMessageSink
+    internal class RemoteRunListener : LongLivedMarshalByRefObject, ISpecificationRunListener, IMessageSink
     {
+        private readonly ISpecificationRunListener _runListener;
+
+        public RemoteRunListener(ISpecificationRunListener runListener)
+        {
+            _runListener = runListener;
+        }
+
         public virtual void OnAssemblyStart(AssemblyInfo assemblyInfo)
         {
+            _runListener.OnAssemblyStart(assemblyInfo);
         }
 
         public virtual void OnAssemblyEnd(AssemblyInfo assemblyInfo)
         {
+            _runListener.OnAssemblyEnd(assemblyInfo);
         }
 
         public virtual void OnRunStart()
         {
+            _runListener.OnRunStart();
         }
 
         public virtual void OnRunEnd()
         {
+            _runListener.OnRunEnd();
         }
 
         public virtual void OnContextStart(ContextInfo contextInfo)
         {
+            _runListener.OnContextStart(contextInfo);
         }
 
         public virtual void OnContextEnd(ContextInfo contextInfo)
         {
+            _runListener.OnContextEnd(contextInfo);
         }
 
         public virtual void OnSpecificationStart(SpecificationInfo specificationInfo)
         {
+            _runListener.OnSpecificationStart(specificationInfo);
         }
 
         public virtual void OnSpecificationEnd(SpecificationInfo specificationInfo, Result result)
         {
+            _runListener.OnSpecificationEnd(specificationInfo, result);
         }
 
         public virtual void OnFatalError(ExceptionResult exceptionResult)
         {
-        }
-
-        [SecurityCritical]
-        public override object InitializeLifetimeService()
-        {
-            return null;
+            _runListener.OnFatalError(exceptionResult);
         }
 
         public IMessage SyncProcessMessage(IMessage msg)

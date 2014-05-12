@@ -44,12 +44,17 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AppDomainRunner.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="FullNames.cs" />
+    <Compile Include="InvokeOnce.cs" />
+    <Compile Include="LongLivedMarshalByRefObject.cs" />
     <Compile Include="Naming.cs" />
+    <Compile Include="NullMessageSink.cs" />
+    <Compile Include="RemoteRunnerDecorator.cs" />
     <Compile Include="RunOptionsExtensions.cs" />
     <Compile Include="AssemblyPath.cs" />
-    <Compile Include="SpecificationRunListenerBase.cs" />
+    <Compile Include="RemoteRunListener.cs" />
     <Compile Include="XDocumentExtensions.cs" />
     <Compile Include="SpecificationRunner.cs" />
     <Compile Include="ISpecificationRunner.cs" />

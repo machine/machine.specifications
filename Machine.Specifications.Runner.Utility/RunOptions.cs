@@ -12,7 +12,6 @@ namespace Machine.Specifications.Runner.Utility
         public IEnumerable<string> Filters { get; protected set; }
         public IEnumerable<string> Contexts { get; protected set; }
         public string ShadowCopyCachePath { get; protected set; }
-        public bool SeperateAppDomain { get; protected set; }
 
         private RunOptions()
         {
@@ -20,7 +19,6 @@ namespace Machine.Specifications.Runner.Utility
             this.ExcludeTags = Enumerable.Empty<string>();
             this.Filters = Enumerable.Empty<string>();
             this.Contexts = Enumerable.Empty<string>();
-            this.SeperateAppDomain = false;
         }
 
         public static RunOptions Default { get { return new RunOptions(); } }
@@ -63,12 +61,6 @@ namespace Machine.Specifications.Runner.Utility
             public RunOptionsBuilder ShadowCopyTo(string cachePath)
             {
                 this.ShadowCopyCachePath = cachePath;
-                return this;
-            }
-
-            public RunOptionsBuilder SeperateAppDomainPerAssembly()
-            {
-                this.SeperateAppDomain = true;
                 return this;
             }
         }

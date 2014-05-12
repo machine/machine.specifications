@@ -7,7 +7,7 @@ namespace Machine.Specifications.Runner.Utility
     /// Aggregates several listeners and enebales to subscribe more than one listener. Its for example
     /// used to subscribe a TimerListener and a runListener like a PerAssemblyRunLitener
     /// </summary>
-    public class AggregateRunListener : SpecificationRunListenerBase
+    public class AggregateRunListener : ISpecificationRunListener
     {
         private readonly IEnumerable<ISpecificationRunListener> reversedListeners;
         private readonly List<ISpecificationRunListener> listeners;
@@ -18,47 +18,47 @@ namespace Machine.Specifications.Runner.Utility
             this.reversedListeners = Enumerable.Reverse(this.listeners);
         }
 
-        public override void OnAssemblyStart(AssemblyInfo assemblyInfo)
+        public void OnAssemblyStart(AssemblyInfo assemblyInfo)
         {
             this.listeners.Each(listener => listener.OnAssemblyStart(assemblyInfo));
         }
 
-        public override void OnAssemblyEnd(AssemblyInfo assemblyInfo)
+        public void OnAssemblyEnd(AssemblyInfo assemblyInfo)
         {
             this.listeners.Each(listener => listener.OnAssemblyEnd(assemblyInfo));
         }
 
-        public override void OnRunStart()
+        public void OnRunStart()
         {
             this.listeners.Each(listener => listener.OnRunStart());
         }
 
-        public override void OnRunEnd()
+        public void OnRunEnd()
         {
             this.reversedListeners.Each(listener => listener.OnRunEnd());
         }
 
-        public override void OnContextStart(ContextInfo contextInfo)
+        public void OnContextStart(ContextInfo contextInfo)
         {
             this.listeners.Each(listener => listener.OnContextStart(contextInfo));
         }
 
-        public override void OnContextEnd(ContextInfo contextInfo)
+        public void OnContextEnd(ContextInfo contextInfo)
         {
             this.listeners.Each(listener => listener.OnContextEnd(contextInfo));
         }
 
-        public override void OnSpecificationStart(SpecificationInfo specificationInfo)
+        public void OnSpecificationStart(SpecificationInfo specificationInfo)
         {
             this.listeners.Each(listener => listener.OnSpecificationStart(specificationInfo));
         }
 
-        public override void OnSpecificationEnd(SpecificationInfo specificationInfo, Result result)
+        public void OnSpecificationEnd(SpecificationInfo specificationInfo, Result result)
         {
             this.reversedListeners.Each(listener => listener.OnSpecificationEnd(specificationInfo, result));
         }
 
-        public override void OnFatalError(ExceptionResult exceptionResult)
+        public void OnFatalError(ExceptionResult exceptionResult)
         {
             this.listeners.Each(listener => listener.OnFatalError(exceptionResult));
         }
