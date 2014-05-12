@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -71,7 +72,7 @@ namespace Machine.Specifications.Runner.Utility
         }
     }
 
-    internal class RemoteRunnerMessage : IMessage
+    internal class RemoteRunnerMessage : MarshalByRefObject, IMessage
     {
         public RemoteRunnerMessage(XElement root)
         {
