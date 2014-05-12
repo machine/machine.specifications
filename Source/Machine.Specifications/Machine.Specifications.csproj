@@ -98,6 +98,7 @@
     <Compile Include="Runner\Impl\Listener\RedirectOutputRunListener.cs" />
     <Compile Include="Runner\Impl\NullRunner.cs" />
     <Compile Include="Runner\Impl\RemoteRunListener.cs" />
+    <Compile Include="Runner\Impl\RemoteRunListenerDecorator.cs" />
     <Compile Include="Runner\Impl\SpecAssemblyResolver.cs" />
     <Compile Include="Runner\Impl\SpecificationRunner.cs" />
     <Compile Include="Model\Tag.cs" />
@@ -113,7 +114,7 @@
     <Compile Include="Sdk\CleanupDelegateAttributeFullName.cs" />
     <Compile Include="Sdk\DelegateAttributeFullName.cs" />
     <Compile Include="Sdk\IgnoreAttributeFullName.cs" />
-    <Compile Include="Sdk\RemoteToInternalSpecificationRunListenerAdapter.cs" />
+    <Compile Include="Sdk\RemoteRunListenerDecorator.cs" />
     <Compile Include="Sdk\RunSpecs.cs" />
     <Compile Include="Sdk\SetupDelegateAttributeFullName.cs" />
     <Compile Include="Sdk\SubjectAttributeFullName.cs" />

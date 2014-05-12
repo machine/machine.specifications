@@ -11,6 +11,7 @@ namespace Machine.Specifications.Sdk
         {
             var assemblies = assemblyPaths.Select(Assembly.LoadFile);
 
+            // TODO: What to do with that?
             if (RunOptions.Contexts.Any())
             {
                 var assembly = assemblies.Single();

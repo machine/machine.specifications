@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Remoting;
+using System.Runtime.Remoting.Messaging;
 using System.Security;
-
+using System.Xml.Linq;
+using System.Xml.XPath;
 using Machine.Specifications.Explorers;
 using Machine.Specifications.Model;
 using Machine.Specifications.Utility;
@@ -11,7 +15,7 @@ using Machine.Specifications.Utility;
 namespace Machine.Specifications.Runner.Impl
 {
     [Serializable]
-    public class DefaultRunner : MarshalByRefObject, ISpecificationRunner
+    public class DefaultRunner : MarshalByRefObject, ISpecificationRunner, IMessageSink
     {
         readonly ISpecificationRunListener _listener;
         readonly RunOptions _options;
@@ -20,6 +24,11 @@ namespace Machine.Specifications.Runner.Impl
         InvokeOnce _runStart = new InvokeOnce(() => { });
         InvokeOnce _runEnd = new InvokeOnce(() => { });
         bool _explicitStartAndEnd;
+
+        public DefaultRunner(object listener, string runOptionsXml)
+            : this(new RemoteRunListenerDecorator(listener), RunOptions.Parse(runOptionsXml), true)
+        {
+        }
 
         public DefaultRunner(ISpecificationRunListener listener, RunOptions options)
             : this(listener, options, true)
@@ -146,6 +155,43 @@ namespace Machine.Specifications.Runner.Impl
         {
             return null;
         }
+
+        public IMessage SyncProcessMessage(IMessage msg)
+        {
+            var methodCall = msg as IMethodCallMessage;
+            if (methodCall != null)
+            {
+                return RemotingServices.ExecuteMessage(this, methodCall);
+            }
+
+            // This is all a bit ugly but gives us version independance for the moment
+            string value = msg.Properties["data"] as string;
+            var doc = XDocument.Load(new StringReader(value));
+            var element = doc.XPathSelectElement("/runner/*");
+
+            switch (element.Name.ToString())
+            {
+                    // TODO: Optimize loading of assemblies
+                case "startrun":
+                    this.StartRun(Assembly.LoadFile(element.XPathSelectElement("//startrun/assembly").ToString()));
+                    break;
+                case "endrun":
+                    this.EndRun(Assembly.LoadFile(element.XPathSelectElement("//endrun/assembly").ToString()));
+                    break;
+                case "runassemblies":
+                    this.RunAssemblies(element.XPathSelectElements("//runassemblies/assemblies").Select(e => Assembly.LoadFile(e.Value)));
+                    break;
+            }
+
+            return null;
+        }
+
+        public IMessageCtrl AsyncProcessMessage(IMessage msg, IMessageSink replySink)
+        {
+            return null;
+        }
+
+        public IMessageSink NextSink { get; private set; }
     }
 
     public static class TagFilteringExtensions
