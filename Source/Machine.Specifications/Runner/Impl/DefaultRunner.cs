@@ -25,8 +25,8 @@ namespace Machine.Specifications.Runner.Impl
         InvokeOnce _runEnd = new InvokeOnce(() => { });
         bool _explicitStartAndEnd;
 
-        public DefaultRunner(object listener, string runOptionsXml)
-            : this(new RemoteRunListenerDecorator(listener), RunOptions.Parse(runOptionsXml), true)
+        public DefaultRunner(object listener, string runOptionsXml, bool signalRunStartAndEnd)
+            : this(new RemoteRunListenerDecorator(listener), RunOptions.Parse(runOptionsXml), signalRunStartAndEnd)
         {
         }
 
