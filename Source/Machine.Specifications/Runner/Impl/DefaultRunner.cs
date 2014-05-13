@@ -173,13 +173,16 @@ namespace Machine.Specifications.Runner.Impl
             {
                     // TODO: Optimize loading of assemblies
                 case "startrun":
-                    this.StartRun(Assembly.LoadFile(element.XPathSelectElement("//startrun/assembly").ToString()));
+                    this.StartRun(Assembly.LoadFile(element.Value));
                     break;
                 case "endrun":
-                    this.EndRun(Assembly.LoadFile(element.XPathSelectElement("//endrun/assembly").ToString()));
+                    this.EndRun(Assembly.LoadFile(element.Value));
+                    break;
+                case "runassembly":
+                    this.RunAssembly(Assembly.LoadFile(element.Value));
                     break;
                 case "runassemblies":
-                    this.RunAssemblies(element.XPathSelectElements("//runassemblies/assemblies").Select(e => Assembly.LoadFile(e.Value)));
+                    this.RunAssemblies(element.Elements("assemblies").Select(e => Assembly.LoadFile(e.Value)));
                     break;
             }
 
