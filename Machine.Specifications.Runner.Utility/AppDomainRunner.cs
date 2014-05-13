@@ -10,7 +10,7 @@ namespace Machine.Specifications.Runner.Utility
 {
     public class AppDomainRunner : ISpecificationRunner
     {
-        readonly ISpecificationRunListener _listener;
+        readonly object _listener;
         readonly RunOptions _options;
         readonly InvokeOnce _signalRunStart;
         readonly InvokeOnce _signalRunEnd;
@@ -128,7 +128,7 @@ namespace Machine.Specifications.Runner.Utility
         }
 
         [SecuritySafeCritical]
-        RemoteRunnerDecorator CreateRunnerInSeparateAppDomain(AppDomain appDomain, AssemblyPath assembly)
+        ISpecificationRunner CreateRunnerInSeparateAppDomain(AppDomain appDomain, AssemblyPath assembly)
         {
             var mspecAssemblyFilename = Path.Combine(Path.GetDirectoryName(assembly), "Machine.Specifications.dll");
             if (!File.Exists(mspecAssemblyFilename))
@@ -224,7 +224,7 @@ namespace Machine.Specifications.Runner.Utility
         class AppDomainAndRunner
         {
             public AppDomain AppDomain { get; set; }
-            public RemoteRunnerDecorator Runner { get; set; }
+            public ISpecificationRunner Runner { get; set; }
         }
     }
 }

@@ -48,5 +48,10 @@ namespace Machine.Specifications.Runner.Utility
         {
             return path.specAssemblyPath;
         }
+
+        public override string ToString()
+        {
+            return specAssemblyPath;
+        }
     }
 }

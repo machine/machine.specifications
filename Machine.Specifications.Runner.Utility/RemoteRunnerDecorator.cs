@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Remoting.Messaging;
+using System.Security.Policy;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace Machine.Specifications.Runner.Utility
@@ -60,7 +63,7 @@ namespace Machine.Specifications.Runner.Utility
     {
         public static XElement ToXml(this AssemblyPath path)
         {
-            return new XElement("assembly", path);
+            return new XElement("assembly", Path.GetFullPath(path));
         }
     }
 
