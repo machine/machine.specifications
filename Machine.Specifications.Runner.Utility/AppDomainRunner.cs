@@ -143,26 +143,23 @@ namespace Machine.Specifications.Runner.Utility
             constructorArgs[1] = _options.ToXml();
             constructorArgs[2] = false;
 
-            using (new SpecAssemblyResolver(assembly))
+            try
             {
-                try
-                {
-                    var defaultRunner = (IMessageSink)appDomain.CreateInstanceAndUnwrap(mspecAssemblyName.FullName,
-                        "Machine.Specifications.Runner.Impl.DefaultRunner",
-                        false,
-                        0,
-                        null,
-                        constructorArgs,
-                        null,
-                        null,
-                        null);
-                    return new RemoteRunnerDecorator(defaultRunner);
-                }
-                catch (Exception err)
-                {
-                    Console.Error.WriteLine("Runner failure: " + err);
-                    throw;
-                }
+                var defaultRunner = (IMessageSink)appDomain.CreateInstanceAndUnwrap(mspecAssemblyName.FullName,
+                    "Machine.Specifications.Runner.Impl.DefaultRunner",
+                    false,
+                    0,
+                    null,
+                    constructorArgs,
+                    null,
+                    null,
+                    null);
+                return new RemoteRunnerDecorator(defaultRunner);
+            }
+            catch (Exception err)
+            {
+                Console.Error.WriteLine("Runner failure: " + err);
+                throw;
             }
         }
 

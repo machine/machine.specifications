@@ -55,7 +55,6 @@
     <Compile Include="RunOptionsExtensions.cs" />
     <Compile Include="AssemblyPath.cs" />
     <Compile Include="RemoteRunListener.cs" />
-    <Compile Include="SpecAssemblyResolver.cs" />
     <Compile Include="XDocumentExtensions.cs" />
     <Compile Include="SpecificationRunner.cs" />
     <Compile Include="ISpecificationRunner.cs" />
