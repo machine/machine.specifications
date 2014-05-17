@@ -12,7 +12,6 @@ namespace Machine.Specifications.Runner.Utility
             AppendIncludeTags(root, runOptions);
             AppendExcludeTags(root, runOptions);
             AppendFilters(root, runOptions);
-            AppendContexts(root, runOptions);
 
             root.Add(new XElement("shadowcopycachepath", runOptions.ShadowCopyCachePath));
 
@@ -32,11 +31,6 @@ namespace Machine.Specifications.Runner.Utility
         private static void AppendFilters(XElement root, RunOptions runOptions)
         {
             AppendItems(root, runOptions.Filters, "filters", "filter");
-        }
-
-        private static void AppendContexts(XElement root, RunOptions runOptions)
-        {
-            AppendItems(root, runOptions.Contexts, "contexts", "context");
         }
 
         private static void AppendItems(XElement root, IEnumerable<string> items, string itemsElementName, string itemElementName)
