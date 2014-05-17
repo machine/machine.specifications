@@ -104,7 +104,7 @@ namespace Machine.Specifications.ConsoleRunner
 
                 var listener = new AggregateRunListener(listeners);
 
-                ISpecificationRunner specificationRunner = new SpecificationRunner();
+                ISpecificationRunner appDomainRunner = new AppDomainRunner(listener, options.GetRunOptions());
                 var assemblies = new List<AssemblyPath>();
                 foreach (string assemblyName in options.AssemblyFiles)
                 {
@@ -133,7 +133,7 @@ namespace Machine.Specifications.ConsoleRunner
                     }
                 }
 
-                specificationRunner.RunAssemblies(assemblies, listener, options.GetRunOptions());
+                appDomainRunner.RunAssemblies(assemblies);
             }
             catch (Exception ex)
             {

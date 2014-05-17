@@ -5,7 +5,7 @@ using Machine.Specifications.Runner.Utility;
 
 namespace Machine.Specifications.ConsoleRunner
 {
-    public class RunListener : SpecificationRunListenerBase, ISpecificationResultProvider
+    public class RunListener : ISpecificationRunListener, ISpecificationResultProvider
     {
         readonly IConsole _console;
         readonly TimingRunListener _timer;
@@ -33,17 +33,17 @@ namespace Machine.Specifications.ConsoleRunner
             get { return _failureOccurred || _failedSpecificationCount > 0; }
         }
 
-        public override void OnAssemblyStart(AssemblyInfo assembly)
+        public void OnAssemblyStart(AssemblyInfo assembly)
         {
             _output.AssemblyStart(assembly);
         }
 
-        public override void OnAssemblyEnd(AssemblyInfo assembly)
+        public void OnAssemblyEnd(AssemblyInfo assembly)
         {
             _output.AssemblyEnd(assembly);
         }
 
-        public override void OnRunStart()
+        public void OnRunStart()
         {
             _output.RunStart();
 
@@ -55,7 +55,7 @@ namespace Machine.Specifications.ConsoleRunner
             _passedSpecificationCount = 0;
         }
 
-        public override void OnRunEnd()
+        public void OnRunEnd()
         {
             _output.RunEnd();
 
@@ -83,24 +83,24 @@ namespace Machine.Specifications.ConsoleRunner
             _console.WriteLine(line);
         }
 
-        public override void OnContextStart(ContextInfo context)
+        public void OnContextStart(ContextInfo context)
         {
             _currentContext = context;
             _output.ContextStart(context);
         }
 
-        public override void OnContextEnd(ContextInfo context)
+        public void OnContextEnd(ContextInfo context)
         {
             _output.ContextEnd(context);
             _contextCount += 1;
         }
 
-        public override void OnSpecificationStart(SpecificationInfo specification)
+        public void OnSpecificationStart(SpecificationInfo specification)
         {
             _output.SpecificationStart(specification);
         }
 
-        public override void OnSpecificationEnd(SpecificationInfo specification, Result result)
+        public void OnSpecificationEnd(SpecificationInfo specification, Result result)
         {
             _specificationCount += 1;
             switch (result.Status)
@@ -125,7 +125,7 @@ namespace Machine.Specifications.ConsoleRunner
             }
         }
 
-        public override void OnFatalError(ExceptionResult exception)
+        public void OnFatalError(ExceptionResult exception)
         {
             _failureOccurred = true;
             _console.WriteLine("");
