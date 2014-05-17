@@ -143,28 +143,27 @@ namespace Machine.Specifications.Runner.Utility
             constructorArgs[1] = _options.ToXml();
             constructorArgs[2] = false;
 
-            // TODO: Really necessary?
-            //using (new SpecAssemblyResolver(assembly))
-            //{
-            try
+            using (new SpecAssemblyResolver(assembly))
             {
-                var defaultRunner = (IMessageSink)appDomain.CreateInstanceAndUnwrap(mspecAssemblyName.FullName,
-                    "Machine.Specifications.Runner.Impl.DefaultRunner",
-                    false,
-                    0,
-                    null,
-                    constructorArgs,
-                    null,
-                    null,
-                    null);
-                return new RemoteRunnerDecorator(defaultRunner);
+                try
+                {
+                    var defaultRunner = (IMessageSink)appDomain.CreateInstanceAndUnwrap(mspecAssemblyName.FullName,
+                        "Machine.Specifications.Runner.Impl.DefaultRunner",
+                        false,
+                        0,
+                        null,
+                        constructorArgs,
+                        null,
+                        null,
+                        null);
+                    return new RemoteRunnerDecorator(defaultRunner);
+                }
+                catch (Exception err)
+                {
+                    Console.Error.WriteLine("Runner failure: " + err);
+                    throw;
+                }
             }
-            catch (Exception err)
-            {
-                Console.Error.WriteLine("Runner failure: " + err);
-                throw;
-            }
-            //}
         }
 
         readonly Dictionary<AssemblyPath, AppDomainAndRunner> _appDomains = new Dictionary<AssemblyPath, AppDomainAndRunner>();
@@ -180,7 +179,7 @@ namespace Machine.Specifications.Runner.Utility
             var setup = new AppDomainSetup
             {
                 ApplicationBase = Path.GetDirectoryName(assembly),
-                ApplicationName = string.Format("Machine Specifications Runner for {0}", Path.GetFileName(assembly)),
+                ApplicationName = string.Format("Machine Specifications Runner"),
                 ConfigurationFile = GetConfigFile(assembly)
             };
 

@@ -76,6 +76,10 @@
       <Project>{89ecd0d1-6cc4-4319-b1b2-389e0b48f40d}</Project>
       <Name>Example.Failing</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Example.Issue146-NoMSpecDll\Example.Issue146-NoMSpecDll.csproj">
+      <Project>{5c5a9e20-c87b-43ad-be01-aeb3ef6266ad}</Project>
+      <Name>Example.Issue146-NoMSpecDll</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Example.Random\Example.Random.csproj">
       <Project>{1295c389-fce4-4425-93e4-e4ae239b3e35}</Project>
       <Name>Example.Random</Name>

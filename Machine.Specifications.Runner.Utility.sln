@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.CustomDelegates", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.BindingFailure", "Example.BindingFailure\Example.BindingFailure.csproj", "{A635BD1C-DA89-4FC7-8434-5DAB1A09A18D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Issue146-NoMSpecDll", "Example.Issue146-NoMSpecDll\Example.Issue146-NoMSpecDll.csproj", "{5C5A9E20-C87B-43AD-BE01-AEB3EF6266AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{A635BD1C-DA89-4FC7-8434-5DAB1A09A18D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A635BD1C-DA89-4FC7-8434-5DAB1A09A18D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A635BD1C-DA89-4FC7-8434-5DAB1A09A18D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C5A9E20-C87B-43AD-BE01-AEB3EF6266AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C5A9E20-C87B-43AD-BE01-AEB3EF6266AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C5A9E20-C87B-43AD-BE01-AEB3EF6266AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C5A9E20-C87B-43AD-BE01-AEB3EF6266AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
