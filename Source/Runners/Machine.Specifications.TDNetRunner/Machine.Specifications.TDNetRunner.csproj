@@ -54,6 +54,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Machine.Specifications.Runner.Utility">
+      <HintPath>..\..\..\packages\Machine.Specifications.Runner.Utility.0.9.0-Unstable0017\lib\net20\Machine.Specifications.Runner.Utility.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="TestDriven.Framework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=50ecb853f8c6b8d2">
@@ -69,12 +72,6 @@
     <Compile Include="ResultFormatterFactory.cs" />
     <Compile Include="SpecificationRunner.cs" />
     <Compile Include="TDNetRunListener.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Machine.Specifications\Machine.Specifications.csproj">
-      <Project>{CCD02629-1262-4F78-9E9F-AC97B942D0E7}</Project>
-      <Name>Machine.Specifications</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="InstallTDNetRunner.bat">
@@ -104,7 +101,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>

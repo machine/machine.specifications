@@ -132,7 +132,6 @@
     <Compile Include="Result.cs" />
     <Compile Include="Model\Context.cs" />
     <Compile Include="Model\VerificationContext.cs" />
-    <Compile Include="Runner\Impl\AppDomainRunner.cs" />
     <Compile Include="Runner\AssemblyInfo.cs" />
     <Compile Include="Runner\ContextInfo.cs" />
     <Compile Include="Runner\Impl\InfoExtensions.cs" />
