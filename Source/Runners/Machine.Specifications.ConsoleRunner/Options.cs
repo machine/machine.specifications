@@ -68,6 +68,14 @@ namespace Machine.Specifications.ConsoleRunner
           HelpText = "Disables TeamCity autodetection")]
         public bool DisableTeamCityAutodetection { get; set; }
 
+        [Option("appveyor",
+          HelpText = "Reporting for AppVeyor CI integration (also auto-detected)")]
+        public bool AppVeyorIntegration { get; set; }
+
+        [Option("no-appveyor-autodetect",
+          HelpText = "Disables AppVeyor autodetection")]
+        public bool DisableAppVeyorAutodetection { get; set; }
+
         [OptionList('i',
           "include",
           HelpText = "Execute all specifications in contexts with these comma delimited tags. Ex. -i \"foo,bar,foo_bar\"",
@@ -107,6 +115,8 @@ namespace Machine.Specifications.ConsoleRunner
             sb.AppendLine("  -w, --wait                  Wait 15 seconds for debugger to be attached");
             sb.AppendLine("  --teamcity                  Reporting for TeamCity CI integration (also auto-detected)");
             sb.AppendLine("  --no-teamcity-autodetect    Disables TeamCity autodetection");
+            sb.AppendLine("  --appveyor                  Reporting for AppVeyor CI integration (also auto-detected)");
+            sb.AppendLine("  --no-appveyor-autodetect    Disables AppVeyor autodetection");
             sb.AppendLine("  --html <PATH>               Outputs the HTML report to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)");
             sb.AppendLine("  --xml <PATH>                Outputs the XML report to the file referenced by the path");
             sb.AppendLine("  -h, --help                  Shows this help message");

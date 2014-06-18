@@ -294,7 +294,10 @@ namespace Machine.Specifications.ConsoleRunner.Specs
 
     protected static string GetPath(string path)
     {
-      return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), path);
+        string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+        var uri = new UriBuilder(codeBase);
+        string basePath = Uri.UnescapeDataString(uri.Path);
+        return Path.Combine(Path.GetDirectoryName(basePath), path);
     }
   }
 }
