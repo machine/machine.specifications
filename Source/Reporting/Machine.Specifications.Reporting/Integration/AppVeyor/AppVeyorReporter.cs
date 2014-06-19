@@ -7,6 +7,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
     {
         const string FrameworkName = "Machine.Specifications";
 
+        readonly Action<string> _writer;
         readonly IAppVeyorBuildWorkerApiClient _apiClient;
         readonly TimingRunListener _timingListener;
 
@@ -14,8 +15,9 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
         string _currentContext;
         bool _failureOccurred;
 
-        public AppVeyorReporter(IAppVeyorBuildWorkerApiClient apiClient, TimingRunListener listener)
+        public AppVeyorReporter(Action<string> writer, IAppVeyorBuildWorkerApiClient apiClient, TimingRunListener listener)
         {
+            _writer = writer;
             _apiClient = apiClient;
             _timingListener = listener;
             _failureOccurred = false;
@@ -28,11 +30,13 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
 
         protected override void OnAssemblyStart(AssemblyInfo assembly)
         {
+            _writer(string.Format("Assembly: {0}", assembly.Name));
             _currentAssembly = assembly;
         }
 
         protected override void OnContextStart(ContextInfo context)
         {
+            _writer(string.Format("  Context: {0}", context.Name));
             _currentContext = context.FullName;
         }
 
@@ -42,7 +46,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
         }
 
         protected override void OnSpecificationStart(SpecificationInfo specificationInfo)
-        {
+        {            
             _apiClient.AddTest(specificationInfo.Name,
                                FrameworkName,
                                _currentAssembly.Name,
@@ -52,6 +56,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
                                null,
                                null,
                                null);
+            _writer(string.Format("    Specification: {0}", specificationInfo.Name));
         }
 
         protected override void OnSpecificationEnd(SpecificationInfo specification, Result result)
@@ -71,6 +76,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
                     break;
                 default:
                     UpdateTestFailed(specification, duration, result.Exception);
+                    _writer(string.Format("    ^^^^ FAILURE {0}", specification.Name));
                     _failureOccurred = true;
                     break;
             }
