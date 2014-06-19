@@ -62,7 +62,7 @@ namespace Machine.Specifications.ConsoleRunner
             }
             else if(options.AppVeyorIntegration || (!options.DisableAppVeyorAutodetection && appVeyorApiUrl != null))
             {
-                mainListener = new AppVeyorReporter(new AppVeyorBuildWorkerApiClient(appVeyorApiUrl), timer);
+                mainListener = new AppVeyorReporter(_console.WriteLine, new AppVeyorBuildWorkerApiClient(appVeyorApiUrl), timer);
             }
             else
             {
