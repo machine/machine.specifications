@@ -30,13 +30,13 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
 
         protected override void OnAssemblyStart(AssemblyInfo assembly)
         {
-            _writer(string.Format("Assembly: {0}", assembly.Name));
+            _writer(string.Format("Test Assembly: {0}", assembly.Name));
             _currentAssembly = assembly;
         }
 
         protected override void OnContextStart(ContextInfo context)
         {
-            _writer(string.Format("  Context: {0}", context.Name));
+            _writer(string.Format("  * {0}", context.Name));
             _currentContext = context.FullName;
         }
 
@@ -56,7 +56,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
                                null,
                                null,
                                null);
-            _writer(string.Format("    Specification: {0}", specificationInfo.Name));
+            _writer(string.Format("     - It {0}", specificationInfo.Name));
         }
 
         protected override void OnSpecificationEnd(SpecificationInfo specification, Result result)
@@ -76,7 +76,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
                     break;
                 default:
                     UpdateTestFailed(specification, duration, result.Exception);
-                    _writer(string.Format("    ^^^^ FAILURE {0}", specification.Name));
+                    _writer(string.Format("         ^^^^ FAILURE {0}", specification.Name));
                     _failureOccurred = true;
                     break;
             }

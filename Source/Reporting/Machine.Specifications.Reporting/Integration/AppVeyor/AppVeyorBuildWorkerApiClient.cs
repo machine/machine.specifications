@@ -8,6 +8,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
     public class AppVeyorBuildWorkerApiClient : IAppVeyorBuildWorkerApiClient
     {
         const string ApiResource = "/api/tests";
+        
         readonly string _apiUrl;
 
         public AppVeyorBuildWorkerApiClient(string apiUrl)
