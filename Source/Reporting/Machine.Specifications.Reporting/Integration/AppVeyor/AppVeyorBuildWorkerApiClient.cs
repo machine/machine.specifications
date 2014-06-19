@@ -1,6 +1,7 @@
 namespace Machine.Specifications.Reporting.Integration.AppVeyor
 {
     using System;
+    using System.Collections.Generic;
     using System.Net;
     using System.Text;
     
@@ -104,15 +105,15 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
 
         static byte[] Json(object data)
         {
-            var json = "";
+            var jsonProperties = new List<string>();
             foreach (var property in data.GetType().GetProperties())
             {
                 var value = property.GetValue(data, null);
                 var name = property.Name;
                 if (value != null)
-                    json += string.Format("{0}:{1}", name, value);
+                    jsonProperties.Add(string.Format("{0}:{1}", name, value));
             }
-            return Encoding.UTF8.GetBytes("{" + json + "}");
+            return Encoding.UTF8.GetBytes("{" + string.Join(",", jsonProperties.ToArray()) + "}");
         }
 
         WebClient GetClient()
