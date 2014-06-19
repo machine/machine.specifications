@@ -7,6 +7,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
     
     public class AppVeyorBuildWorkerApiClient : IAppVeyorBuildWorkerApiClient
     {
+        const string ApiResource = "/api/tests";
         readonly string _apiUrl;
 
         public AppVeyorBuildWorkerApiClient(string apiUrl)
@@ -16,7 +17,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
                 throw new ArgumentNullException("apiUrl");
             }
 
-            _apiUrl = apiUrl.TrimEnd('/') + "/";
+            _apiUrl = apiUrl;
         }
 
         public void AddTest(string testName,
@@ -46,7 +47,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
             {
                 using (WebClient wc = GetClient())
                 {
-                    wc.UploadData("api/tests", "POST", Json(body));
+                    wc.UploadData(ApiResource, "POST", Json(body));
                 }
             }
             catch (Exception ex)
@@ -82,7 +83,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
             {
                 using (WebClient wc = GetClient())
                 {
-                    wc.UploadData("api/tests", "PUT", Json(body));
+                    wc.UploadData(ApiResource, "PUT", Json(body));
                 }
             }
             catch (Exception ex)
@@ -111,7 +112,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
                 var value = property.GetValue(data, null);
                 var name = property.Name;
                 if (value != null)
-                    jsonProperties.Add(string.Format("{0}:{1}", name, value));
+                    jsonProperties.Add(string.Format("\"{0}\":\"{1}\"", name, value));
             }
             return Encoding.UTF8.GetBytes("{" + string.Join(",", jsonProperties.ToArray()) + "}");
         }
