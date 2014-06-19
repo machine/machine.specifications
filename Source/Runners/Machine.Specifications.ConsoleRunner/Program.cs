@@ -14,6 +14,8 @@ using Machine.Specifications.Runner.Utility;
 
 namespace Machine.Specifications.ConsoleRunner
 {
+    using Reporting.Integration.AppVeyor;
+
     public class Program
     {
         [LoaderOptimization(LoaderOptimization.MultiDomainHost)]
@@ -50,12 +52,17 @@ namespace Machine.Specifications.ConsoleRunner
                         timer
                       };
 
-            ISpecificationRunListener mainListener;
-            if (options.TeamCityIntegration ||
-                (!options.DisableTeamCityAutodetection &&
-                 Environment.GetEnvironmentVariable("TEAMCITY_PROJECT_NAME") != null))
+            string teamCityProjectName = Environment.GetEnvironmentVariable("TEAMCITY_PROJECT_NAME");
+            string appVeyorApiUrl = Environment.GetEnvironmentVariable("APPVEYOR_API_URL");
+
+            ISpecificationRunListener mainListener;            
+            if (options.TeamCityIntegration || (!options.DisableTeamCityAutodetection && teamCityProjectName != null))
             {
                 mainListener = new TeamCityReporter(_console.WriteLine, timer);
+            }
+            else if(options.AppVeyorIntegration || (!options.DisableAppVeyorAutodetection && appVeyorApiUrl != null))
+            {
+                mainListener = new AppVeyorReporter(_console.WriteLine, new AppVeyorBuildWorkerApiClient(appVeyorApiUrl), timer);
             }
             else
             {

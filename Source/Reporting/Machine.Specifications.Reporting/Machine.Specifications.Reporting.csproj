@@ -74,6 +74,9 @@
     <Compile Include="Generation\Spark\SparkView.cs" />
     <Compile Include="Generation\SpecificationTreeMapping.cs" />
     <Compile Include="Generation\Xml\GenerateXmlReportListener.cs" />
+    <Compile Include="Integration\AppVeyor\AppVeyorBuildWorkerApiClient.cs" />
+    <Compile Include="Integration\AppVeyor\AppVeyorReporter.cs" />
+    <Compile Include="Integration\AppVeyor\IAppVeyorBuildWorkerApiClient.cs" />
     <Compile Include="Integration\TeamCityReporter.cs" />
     <Compile Include="Integration\TeamCityServiceMessageWriter.cs" />
     <Compile Include="Generation\ISpecificationTreeReportGenerator.cs" />
