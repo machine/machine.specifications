@@ -1,9 +1,9 @@
 namespace Machine.Specifications.Reporting.Integration.AppVeyor
 {
     using System;
-    using Runner.Utility;
+    using Runner;
 
-    public class AppVeyorReporter : SpecificationRunListenerBase
+    public class AppVeyorReporter : RunListenerBase
     {
         const string FrameworkName = "Machine.Specifications";
 
@@ -28,24 +28,24 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
             get { return _failureOccurred; }
         }
 
-        protected override void OnAssemblyStart(AssemblyInfo assembly)
+        public override void OnAssemblyStart(AssemblyInfo assembly)
         {
             _writer(string.Format("Test Assembly: {0}", assembly.Name));
             _currentAssembly = assembly;
         }
 
-        protected override void OnContextStart(ContextInfo context)
+        public override void OnContextStart(ContextInfo context)
         {
             _writer(string.Format("  * {0}", context.Name));
             _currentContext = context.FullName;
         }
 
-        protected override void OnContextEnd(ContextInfo context)
+        public override void OnContextEnd(ContextInfo context)
         {
             _currentContext = "";
         }
 
-        protected override void OnSpecificationStart(SpecificationInfo specificationInfo)
+        public override void OnSpecificationStart(SpecificationInfo specificationInfo)
         {            
             _apiClient.AddTest(specificationInfo.Name,
                                FrameworkName,
@@ -59,7 +59,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
             _writer(string.Format("     - It {0}", specificationInfo.Name));
         }
 
-        protected override void OnSpecificationEnd(SpecificationInfo specification, Result result)
+        public override void OnSpecificationEnd(SpecificationInfo specification, Result result)
         {
             TimeSpan duration = TimeSpan.FromMilliseconds(_timingListener.GetSpecificationTime(specification));
 
@@ -131,7 +131,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
                                   null);
         }
 
-        protected override void OnFatalError(ExceptionResult exception)
+        public override void OnFatalError(ExceptionResult exception)
         {
             _failureOccurred = true;
         }

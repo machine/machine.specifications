@@ -76,8 +76,8 @@
     <Compile Include="Integration\AppVeyor\AppVeyorBuildWorkerApiClient.cs" />
     <Compile Include="Integration\AppVeyor\AppVeyorReporter.cs" />
     <Compile Include="Integration\AppVeyor\IAppVeyorBuildWorkerApiClient.cs" />
-    <Compile Include="Integration\TeamCityReporter.cs" />
-    <Compile Include="Integration\TeamCityServiceMessageWriter.cs" />
+    <Compile Include="Integration\TeamCity\TeamCityReporter.cs" />
+    <Compile Include="Integration\TeamCity\TeamCityServiceMessageWriter.cs" />
     <Compile Include="Generation\ISpecificationTreeReportGenerator.cs" />
     <Compile Include="Model\Assembly.cs" />
     <Compile Include="Model\Concern.cs" />
@@ -159,7 +159,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
