@@ -1,3 +1,9 @@
+Machine.Specifications 0.8.3
+-----------------------------
+- AppVeyor support for mspec.exe with --appveyor, 
+  uses AutoDetection by default by inspecting the APPVEYOR_API_URL environment variable,
+  detection can be disabled with --no-appveyor-autodetect
+
 Machine.Specifications 0.8.2
 -----------------------------
 - Fixes specs not being loaded into Resharper

@@ -68,13 +68,13 @@ namespace Machine.Specifications.ConsoleRunner
       HelpText = "Disables TeamCity autodetection")]
     public bool DisableTeamCityAutodetection { get; set; }
 
-        [Option("appveyor",
-          HelpText = "Reporting for AppVeyor CI integration (also auto-detected)")]
-        public bool AppVeyorIntegration { get; set; }
+    [Option("appveyor",
+        HelpText = "Reporting for AppVeyor CI integration (also auto-detected)")]
+    public bool AppVeyorIntegration { get; set; }
 
-        [Option("no-appveyor-autodetect",
-          HelpText = "Disables AppVeyor autodetection")]
-        public bool DisableAppVeyorAutodetection { get; set; }
+    [Option("no-appveyor-autodetect",
+        HelpText = "Disables AppVeyor autodetection")]
+    public bool DisableAppVeyorAutodetection { get; set; }
 
     [OptionList('i',
       "include",
