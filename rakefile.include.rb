@@ -111,9 +111,11 @@ end
 
 desc "Package build artifacts as a NuGet package and a symbols package"
 task :createpackage => [ :default ] do
-	FileList.new('**/*.nuspec').exclude(/packages/).each do |nuspec|
+	nuspecs = FileList.new('**/*.nuspec')
+	nuspecs.exclude(/packages/)
+	nuspecs.each do |nuspec|
 		opts = %W(
-			nuget pack #{nuspec} -Symbols -OutputDirectory #{configatron.distribution.dir}
+			nuget pack #{nuspec} -Symbols -Version #{configatron.version.full} -OutputDirectory #{configatron.distribution.dir}
 		)
 
 		sh(*opts) do |ok, status|
