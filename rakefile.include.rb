@@ -130,7 +130,7 @@ task :createpackage => [ :default ] do
 	nuspecs.exclude(/packages/)
 	nuspecs.each do |nuspec|
 		opts = %W(
-			nuget pack #{nuspec} -Symbols -Version #{configatron.version.full} -OutputDirectory "#{configatron.distribution.dir}/Runners"
+			nuget pack #{nuspec} -Version #{configatron.version.full} -OutputDirectory "#{configatron.distribution.dir}/Runners"
 		)
 
 		sh(*opts) do |ok, status|
