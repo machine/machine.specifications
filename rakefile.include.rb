@@ -113,9 +113,24 @@ desc "Package build artifacts as a NuGet package and a symbols package"
 task :createpackage => [ :default ] do
 	nuspecs = FileList.new('**/*.nuspec')
 	nuspecs.exclude(/packages/)
+	nuspecs.exclude(/Machine.Specifications.Runner.*.nuspec/)
 	nuspecs.each do |nuspec|
 		opts = %W(
 			nuget pack #{nuspec} -Symbols -Version #{configatron.version.full} -OutputDirectory #{configatron.distribution.dir}
+		)
+
+		sh(*opts) do |ok, status|
+			ok or fail "Command failed with status (#{status.exitstatus})"
+		end
+	end
+	
+	#Temporary hack until refactored
+	Dir.mkdir "#{configatron.distribution.dir}/Runners"
+	nuspecs = FileList.new('**/Machine.Specifications.Runner.*.nuspec')
+	nuspecs.exclude(/packages/)
+	nuspecs.each do |nuspec|
+		opts = %W(
+			nuget pack #{nuspec} -Symbols -Version #{configatron.version.full} -OutputDirectory "#{configatron.distribution.dir}/Runners"
 		)
 
 		sh(*opts) do |ok, status|
