@@ -4,6 +4,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
     using System.Collections.Generic;
     using System.Net;
     using System.Text;
+    using System.Web.Script.Serialization;
     
     public class AppVeyorBuildWorkerApiClient : IAppVeyorBuildWorkerApiClient
     {
@@ -107,15 +108,9 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
 
         static byte[] Json(object data)
         {
-            var jsonProperties = new List<string>();
-            foreach (var property in data.GetType().GetProperties())
-            {
-                var value = property.GetValue(data, null);
-                var name = property.Name;
-                if (value != null)
-                    jsonProperties.Add(string.Format("\"{0}\":\"{1}\"", name, value));
-            }
-            return Encoding.UTF8.GetBytes("{" + string.Join(",", jsonProperties.ToArray()) + "}");
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            var json = serializer.Serialize(data);
+            return Encoding.UTF8.GetBytes(json);
         }
 
         WebClient GetClient()
