@@ -53,7 +53,7 @@ end
 
 task :restore do
   nopts = %W(
-   nuget restore "#{configatron.solution}"
+   nuget restore #{configatron.solution}
   )
 
   sh(*nopts)
