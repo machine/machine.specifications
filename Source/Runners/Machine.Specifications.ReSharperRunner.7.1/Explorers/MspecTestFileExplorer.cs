@@ -25,6 +25,13 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
 #if RESHARPER_81
     public void ExploreFile(IFile psiFile, UnitTestElementLocationConsumer consumer, Func<bool> interrupted)
     {
+      if (psiFile == null)
+          throw new ArgumentNullException("psiFile");
+
+      var project = psiFile.GetProject();
+      if (project == null)
+          return;
+
       if ((psiFile.Language.Name == "CSHARP") || (psiFile.Language.Name == "VBASIC"))
       {
         psiFile.ProcessDescendants(new FileExplorer(_provider, _factories, psiFile, consumer, interrupted));
@@ -34,6 +41,13 @@ namespace Machine.Specifications.ReSharperRunner.Explorers
     public void ExploreFile(IFile psiFile, UnitTestElementLocationConsumer consumer, CheckForInterrupt interrupted)
     {
       Func<bool> interruptedFunc = () => interrupted();
+
+      if (psiFile == null)
+          throw new ArgumentNullException("psiFile");
+
+      var project = psiFile.GetProject();
+      if (project == null)
+          return;
 
        if ((psiFile.Language.Name == "CSHARP") || (psiFile.Language.Name == "VBASIC"))
       {
