@@ -9,12 +9,15 @@ using System.Threading;
 using Machine.Specifications.ConsoleRunner.Outputs;
 using Machine.Specifications.Reporting.Generation.Spark;
 using Machine.Specifications.Reporting.Generation.Xml;
-using Machine.Specifications.Reporting.Integration;
+using Machine.Specifications.Reporting.Integration.AppVeyor;
+using Machine.Specifications.Reporting.Integration.TeamCity;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
 
 namespace Machine.Specifications.ConsoleRunner
 {
+    using Reporting.Integration.AppVeyor;
+
   public class Program
   {
     [LoaderOptimization(LoaderOptimization.MultiDomainHost)]
@@ -51,12 +54,17 @@ namespace Machine.Specifications.ConsoleRunner
                         timer
                       };
 
-      ISpecificationRunListener mainListener;
-      if (options.TeamCityIntegration ||
-          (!options.DisableTeamCityAutodetection &&
-           Environment.GetEnvironmentVariable("TEAMCITY_PROJECT_NAME") != null))
+            string teamCityProjectName = Environment.GetEnvironmentVariable("TEAMCITY_PROJECT_NAME");
+            string appVeyorApiUrl = Environment.GetEnvironmentVariable("APPVEYOR_API_URL");
+
+      ISpecificationRunListener mainListener;            
+      if (options.TeamCityIntegration || (!options.DisableTeamCityAutodetection && teamCityProjectName != null))
       {
         mainListener = new TeamCityReporter(_console.WriteLine, timer);
+      }
+      else if(options.AppVeyorIntegration || (!options.DisableAppVeyorAutodetection && appVeyorApiUrl != null))
+      {
+        mainListener = new AppVeyorReporter(_console.WriteLine, new AppVeyorBuildWorkerApiClient(appVeyorApiUrl));
       }
       else
       {
@@ -65,7 +73,6 @@ namespace Machine.Specifications.ConsoleRunner
 
       try
       {
-
         if (!String.IsNullOrEmpty(options.HtmlPath))
         {
           if (IsHtmlPathValid(options.HtmlPath))
