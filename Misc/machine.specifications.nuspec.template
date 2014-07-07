@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>@configatron.project@</id>
-		<version>@configatron.version.full@</version>
+		<version>$version$</version>
 		<title>@configatron.project@</title>
 		<authors>Aaron Jensen, Alexander Groß, Daniel Marbach, et al.</authors>
 		<owners>Alexander Groß, Daniel Marbach</owners>
