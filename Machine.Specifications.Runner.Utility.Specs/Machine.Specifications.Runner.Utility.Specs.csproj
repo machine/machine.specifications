@@ -51,6 +51,7 @@
     <Compile Include="AppDomainRunnerSpecs.cs" />
     <Compile Include="CustomDelegateSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemoteRunListenerSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
