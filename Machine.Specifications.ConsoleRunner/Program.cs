@@ -120,7 +120,7 @@ namespace Machine.Specifications.ConsoleRunner
                         continue;
                     }
 
-                    assemblies.Add(new AssemblyPath(assemblyName));
+                    assemblies.Add(new AssemblyPath(Assembly.ReflectionOnlyLoadFrom(assemblyName).Location));
                 }
 
                 if (options.WaitForDebugger)
