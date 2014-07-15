@@ -65,6 +65,7 @@
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -78,8 +79,11 @@
     <Compile Include="Generation\Spark\SparkView.cs" />
     <Compile Include="Generation\SpecificationTreeMapping.cs" />
     <Compile Include="Generation\Xml\GenerateXmlReportListener.cs" />
-    <Compile Include="Integration\TeamCityReporter.cs" />
-    <Compile Include="Integration\TeamCityServiceMessageWriter.cs" />
+    <Compile Include="Integration\AppVeyor\AppVeyorBuildWorkerApiClient.cs" />
+    <Compile Include="Integration\AppVeyor\AppVeyorReporter.cs" />
+    <Compile Include="Integration\AppVeyor\IAppVeyorBuildWorkerApiClient.cs" />
+    <Compile Include="Integration\TeamCity\TeamCityReporter.cs" />
+    <Compile Include="Integration\TeamCity\TeamCityServiceMessageWriter.cs" />
     <Compile Include="Generation\ISpecificationTreeReportGenerator.cs" />
     <Compile Include="Model\Assembly.cs" />
     <Compile Include="Model\Concern.cs" />

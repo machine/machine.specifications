@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 
 using Machine.Specifications.Reporting.Integration;
+using Machine.Specifications.Reporting.Integration.TeamCity;
 
 namespace Machine.Specifications.Reporting.Specs.Integration
 {

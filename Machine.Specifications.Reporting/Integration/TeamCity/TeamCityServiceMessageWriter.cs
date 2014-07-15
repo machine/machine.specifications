@@ -17,7 +17,7 @@ using System;
 using System.Globalization;
 using System.Text;
 
-namespace Machine.Specifications.Reporting.Integration
+namespace Machine.Specifications.Reporting.Integration.TeamCity
 {
 
     /// <summary>
