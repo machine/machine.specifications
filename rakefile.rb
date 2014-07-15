@@ -16,4 +16,4 @@ end
 
 task :rebuild => [ :clean, :configure, :restore, :build, :templates ]
 
-task :default => [ :rebuild, :tests, :specs ]
+task :default => [ :rebuild, :tests ]
