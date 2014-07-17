@@ -4,7 +4,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
     using Runner;
     using System.Diagnostics;
 
-    public class AppVeyorReporter : RunListenerBase
+    public class AppVeyorReporter : ISpecificationRunListener, ISpecificationResultProvider
     {
         const string FrameworkName = "Machine.Specifications";
 
@@ -28,24 +28,37 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
             get { return _failureOccurred; }
         }
 
-        public override void OnAssemblyStart(AssemblyInfo assembly)
+        public void OnRunStart()
+        {
+        }
+
+        public void OnRunEnd()
+        {
+            _writer("");
+        }
+
+        public void OnAssemblyStart(AssemblyInfo assembly)
         {
             _writer(string.Format("\nSpecs in {0}:", assembly.Name));
             _currentAssembly = assembly;
         }
 
-        public override void OnContextStart(ContextInfo context)
+        public void OnAssemblyEnd(AssemblyInfo assembly)
+        {
+        }
+
+        public void OnContextStart(ContextInfo context)
         {
             _writer(string.Format("\n{0}", context.FullName));
             _currentContext = context.FullName;
         }
 
-        public override void OnContextEnd(ContextInfo context)
+        public void OnContextEnd(ContextInfo context)
         {
             _currentContext = "";
         }
 
-        public override void OnSpecificationStart(SpecificationInfo specification)
+        public void OnSpecificationStart(SpecificationInfo specification)
         {
             _specificationTimer.Reset();
             _specificationTimer.Start();
@@ -61,7 +74,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
                                null);
         }
 
-        public override void OnSpecificationEnd(SpecificationInfo specification, Result result)
+        public void OnSpecificationEnd(SpecificationInfo specification, Result result)
         {
             _specificationTimer.Stop();
             long duration = _specificationTimer.ElapsedMilliseconds;
@@ -149,7 +162,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
                                   null);
         }
 
-        public override void OnFatalError(ExceptionResult exception)
+        public void OnFatalError(ExceptionResult exception)
         {
             _failureOccurred = true;
         }
