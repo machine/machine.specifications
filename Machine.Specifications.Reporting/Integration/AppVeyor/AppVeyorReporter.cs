@@ -1,11 +1,10 @@
-using Machine.Specifications.Runner.Utility;
-
 namespace Machine.Specifications.Reporting.Integration.AppVeyor
 {
     using System;
+    using Runner;
     using System.Diagnostics;
 
-    public class AppVeyorReporter : ISpecificationRunListener
+    public class AppVeyorReporter : ISpecificationRunListener, ISpecificationResultProvider
     {
         const string FrameworkName = "Machine.Specifications";
 
@@ -29,21 +28,22 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
             get { return _failureOccurred; }
         }
 
+        public void OnRunStart()
+        {
+        }
+
+        public void OnRunEnd()
+        {
+            _writer("");
+        }
+
         public void OnAssemblyStart(AssemblyInfo assembly)
         {
             _writer(string.Format("\nSpecs in {0}:", assembly.Name));
             _currentAssembly = assembly;
         }
 
-        public void OnAssemblyEnd(AssemblyInfo assemblyInfo)
-        {
-        }
-
-        public void OnRunStart()
-        {
-        }
-
-        public void OnRunEnd()
+        public void OnAssemblyEnd(AssemblyInfo assembly)
         {
         }
 
