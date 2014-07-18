@@ -6,7 +6,7 @@ Machine.Specifications (MSpec) is a [context/specification][5] framework that re
 
 # Installation
 
-You can download the [unsigned binaries][1] (<strong>recommended</strong>) or the [signed binaries][2] directly from the [TeamCity server][3]. But, we recommended installing [the NuGet package][4]. Install on the command line from your solution directory:
+You can download the [unsigned binaries] (<strong>recommended</strong>) or the [signed binaries] directly from the [TeamCity server][3]. But, we recommended installing [the NuGet package][4]. Install on the command line from your solution directory:
 
 ```bash
 cmd> nuget install Machine.Specifications
@@ -238,7 +238,7 @@ The MSpec HTML reports can show additional [Selenium](http://seleniumhq.org/)-sp
 
 # ReSharper Integration
 
-MSpec provides a batch file to integrate with the ReSharper test runner, custom naming rules, and code annotations. MSpec currently supports ReSharper 6.1, 7.0, 7.1, 8.0, 8.1 and 8.2.
+MSpec provides a batch file to integrate with the ReSharper test runner, custom naming rules, and code annotations. MSpec currently supports ReSharper 7.1, 8.0, 8.1 and 8.2. We strongly recommend to install the ReSharper integration with the Extension Manager. Just search for Machine.Specifications.Runner.Resharper.
 
 ### Code Annotations
 
@@ -262,9 +262,7 @@ The file, live, and surround templates can be imported from `Misc\ReSharper.*.Do
 
 MSpec provides a batch file for setting up TD.NET integration. Newer versions (2.24+) support an xcopy integration that avoids the versioning issues arising from the registry-based scheme. If you use NuGet, you're already set. If you're not using NuGet, make sure to  copy `Machine.Specifications.dll.tdnet` and `Machine.Specifications.TDNetRunner.dll` to your project's output directory.
 
- [1]: http://teamcity.codebetter.com/guestAuth/repository/download/bt342/.lastSuccessful/Machine.Specifications-Release.zip
- [2]: http://teamcity.codebetter.com/guestAuth/repository/download/bt345/.lastSuccessful/Machine.Specifications-Signed-Release.zip
- [3]: http://teamcity.codebetter.com/project.html?projectId=project27
+ [3]: https://teamcity.bbv.ch/project.html?projectId=MachineSpecifications
  [4]: http://nuget.org/packages/Machine.Specifications
  [5]: http://www.code-magazine.com/article.aspx?quickid=0805061
  [6]: http://codebetter.com/blogs/aaron.jensen/archive/2009/10/19/advanced-selenium-logging-with-mspec.aspx
