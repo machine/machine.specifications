@@ -68,6 +68,7 @@ namespace Machine.Specifications.Reporting.Generation
 
         public void OnSpecificationEnd(SpecificationInfo specification, Result result)
         {
+            _specifications.Add(AssignId(specification.ToNode(result)));
         }
 
         public void OnFatalError(ExceptionResult exceptionResult)

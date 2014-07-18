@@ -142,4 +142,14 @@
   </PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets" Condition="Exists('..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets')" />
+  <!-- MSpec -->
+  <PropertyGroup>
+    <SpecsFolder>$(SolutionDir)\Specs\</SpecsFolder>
+  </PropertyGroup>
+  <Target Name="AfterBuild">
+    <MakeDir Directories="$(SpecsFolder)" />
+    <Exec 
+      Condition="'$(Configuration)' == 'Release'" 
+      Command="$(SolutionDir)\packages\Machine.Specifications.Runner.Console.0.9.0-Unstable0016\tools\mspec.exe --progress --silent $(TargetPath) --html $(SpecsFolder)$(MSBuildProjectName).html" />
+  </Target>  
 </Project>
