@@ -1,6 +1,7 @@
 using System;
 
 using Machine.Specifications.ConsoleRunner.Outputs;
+using Machine.Specifications.Reporting.Integration;
 using Machine.Specifications.Runner.Utility;
 
 namespace Machine.Specifications.ConsoleRunner
