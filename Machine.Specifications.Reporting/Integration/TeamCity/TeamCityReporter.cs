@@ -3,7 +3,7 @@ using Machine.Specifications.Runner.Utility;
 
 namespace Machine.Specifications.Reporting.Integration.TeamCity
 {
-    public class TeamCityReporter : ISpecificationRunListener
+    public class TeamCityReporter : ISpecificationRunListener, ISpecificationResultProvider
     {
         readonly TimingRunListener _timingListener;
 

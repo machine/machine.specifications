@@ -1,7 +1,8 @@
+using Machine.Specifications.Runner.Utility;
+
 namespace Machine.Specifications.Reporting.Integration.AppVeyor
 {
     using System;
-    using Runner;
     using System.Diagnostics;
 
     public class AppVeyorReporter : ISpecificationRunListener, ISpecificationResultProvider

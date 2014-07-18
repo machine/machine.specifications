@@ -81,6 +81,7 @@
     <Compile Include="Integration\AppVeyor\AppVeyorBuildWorkerApiClient.cs" />
     <Compile Include="Integration\AppVeyor\AppVeyorReporter.cs" />
     <Compile Include="Integration\AppVeyor\IAppVeyorBuildWorkerApiClient.cs" />
+    <Compile Include="Integration\ISpecificationResultProvider.cs" />
     <Compile Include="Integration\TeamCity\TeamCityReporter.cs" />
     <Compile Include="Integration\TeamCity\TeamCityServiceMessageWriter.cs" />
     <Compile Include="Generation\ISpecificationTreeReportGenerator.cs" />
