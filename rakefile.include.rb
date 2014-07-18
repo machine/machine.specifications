@@ -74,18 +74,6 @@ msbuild :build do |msb|
   }
 end
 
-task :specs  => [:rebuild] do
-  puts 'Running Specs...'
-
-  specs = FileList.new("#{configatron.out_dir}/Tests/*.Specs.dll").exclude(/Clr4/)
-  sh "#{configatron.out_dir}/mspec.exe", "--html", "Specs/#{configatron.project}.Specs.html", *(configatron.mspec_options + specs)
-
-  specs = FileList.new("#{configatron.out_dir}/Tests/*.Clr4.Specs.dll")
-  sh "#{configatron.out_dir}/mspec-clr4.exe", *(configatron.mspec_options + specs)
-
-  puts "Wrote specs to Specs/#{configatron.project}.Specs.html"
-end
-
 desc "Run all nunit tests"
 nunit :tests => [:rebuild] do |cmd|
   cmd.command = "packages/NUnit.Runners.2.6.3/tools/nunit-console-x86.exe"
