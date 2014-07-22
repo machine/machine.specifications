@@ -53,8 +53,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Machine.Specifications.Runner.Utility">
-      <HintPath>..\packages\Machine.Specifications.Runner.Utility.0.9.0-Unstable0017\lib\net20\Machine.Specifications.Runner.Utility.dll</HintPath>
+    <Reference Include="Machine.Specifications.Runner.Utility, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Machine.Specifications.Runner.Utility.0.9.0-Unstable0022\lib\net20\Machine.Specifications.Runner.Utility.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -110,9 +111,9 @@
       <Output TaskParameter="Assemblies" ItemName="AssemblyInfo" />
     </GetAssemblyIdentity>
     <Copy SourceFiles="$(ProjectDir)\Machine.Specifications.dll.tdnet" DestinationFiles="$(TargetDir)\Machine.Specifications.dll.tdnet" />
-    <XmlPoke XmlInputPath="$(TargetDir)\Machine.Specifications.dll.tdnet" Query="//ns:FriendlyName" Value="Machine.Specifications %(AssemblyInfo.Version)" Namespaces="&lt;Namespace Prefix='ns' Uri='' /&gt;" />
+    <XmlPoke XmlInputPath="$(TargetDir)\Machine.Specifications.dll.tdnet" Query="//ns:FriendlyName" Value="Machine.Specifications {0}.{1}.{2}" Namespaces="&lt;Namespace Prefix='ns' Uri='' /&gt;" />
   </Target>
-  <Import Project="..\..\..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets" Condition="Exists('..\..\..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets')" />
+  <Import Project="..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets" Condition="Exists('..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
