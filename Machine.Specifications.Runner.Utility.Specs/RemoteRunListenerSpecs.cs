@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using FluentAssertions;
-using Machine.Specifications.Sdk;
 
 namespace Machine.Specifications.Runner.Utility
 {
     public class remote_run
     {
-        protected static RemoteToInternalSpecificationRunListenerAdapter adapter;
+        protected static ISpecificationRunListener adapter;
 
         protected static AssemblyInfo assemblyStart;
         protected static AssemblyInfo assemblyEnd;
@@ -29,7 +28,7 @@ namespace Machine.Specifications.Runner.Utility
         Establish ctx = () =>
             {
                 var remoteListener = new Listener();
-                adapter = new TestableRemoteToInternalSpecificationRunListenerAdapter(remoteListener);
+                adapter = new RemoteRunListener(remoteListener);
             };
 
         Cleanup cleanup = () =>
@@ -45,14 +44,6 @@ namespace Machine.Specifications.Runner.Utility
                 runStart = false;
                 runEnd = false;
             };
-
-        private class TestableRemoteToInternalSpecificationRunListenerAdapter : RemoteToInternalSpecificationRunListenerAdapter
-        {
-            public TestableRemoteToInternalSpecificationRunListenerAdapter(object listener)
-                : base(listener, Utility.RunOptions.Default.ToXml())
-            {
-            }
-        }
 
         private class Listener : ISpecificationRunListener
         {
@@ -106,22 +97,22 @@ namespace Machine.Specifications.Runner.Utility
 
     public class when_remote_run_listener_observes_a_failed_run : remote_run
     {
-        static Runner.AssemblyInfo assemblyInfo;
+        static AssemblyInfo assemblyInfo;
 
-        static Runner.SpecificationInfo specificationInfo;
+        static SpecificationInfo specificationInfo;
 
-        static Specifications.ExceptionResult exceptionResult;
+        static ExceptionResult exceptionResult;
 
-        static Specifications.Result result;
+        static Result result;
 
-        static Runner.ContextInfo contexInfo;
+        static ContextInfo contexInfo;
 
         Establish ctx = () =>
             {
-                assemblyInfo = new Runner.AssemblyInfo("assembly", "location");
-                specificationInfo = new Runner.SpecificationInfo("leader", "name", "containingType", "fieldName");
-                exceptionResult = new Specifications.ExceptionResult(new InvalidOperationException("Argf", new ArgumentException()));
-                result = Specifications.Result.Failure(new InvalidOperationException("foo", new ArgumentException()));
+                assemblyInfo = new AssemblyInfo("assembly", "location");
+                specificationInfo = new SpecificationInfo("leader", "name", "containingType", "fieldName");
+                exceptionResult = new ExceptionResult(new InvalidOperationException("Argf", new ArgumentException()));
+                result = Result.Failure(new InvalidOperationException("foo", new ArgumentException()));
                 result.Supplements.Add("Foo", new Dictionary<string, string>
                                                {
                                                    { "Foo", "Bar" },
@@ -132,7 +123,7 @@ namespace Machine.Specifications.Runner.Utility
                                                    { "Bar", "Foo" },
                                                    { "", "Foo" },
                                                });
-                contexInfo = new Runner.ContextInfo("name", "concern", "typeName", "namespace", "assemblyname");
+                contexInfo = new ContextInfo("name", "concern", "typeName", "namespace", "assemblyname");
             };
 
         Because of = () => adapter.Run(assemblyInfo, specificationInfo, result, exceptionResult, contexInfo);
@@ -151,23 +142,23 @@ namespace Machine.Specifications.Runner.Utility
 
     public class when_remote_run_listener_observes_a_successful_run : remote_run
     {
-        static Runner.AssemblyInfo assemblyInfo;
+        static AssemblyInfo assemblyInfo;
 
-        static Runner.SpecificationInfo specificationInfo;
+        static SpecificationInfo specificationInfo;
 
-        static Specifications.ExceptionResult exceptionResult;
+        static ExceptionResult exceptionResult;
 
-        static Specifications.Result result;
+        static Result result;
 
-        static Runner.ContextInfo contexInfo;
+        static ContextInfo contexInfo;
 
         Establish ctx = () =>
         {
             exceptionResult = null; // empty exception result
-            assemblyInfo = new Runner.AssemblyInfo("assembly", "location");
-            specificationInfo = new Runner.SpecificationInfo("leader", "name", "containingType", "fieldName");
-            result = Specifications.Result.Pass();
-            contexInfo = new Runner.ContextInfo("name", "concern", "typeName", "namespace", "assemblyname");
+            assemblyInfo = new AssemblyInfo("assembly", "location");
+            specificationInfo = new SpecificationInfo("leader", "name", "containingType", "fieldName");
+            result = Result.Pass();
+            contexInfo = new ContextInfo("name", "concern", "typeName", "namespace", "assemblyname");
         };
 
         Because of = () => adapter.Run(assemblyInfo, specificationInfo, result, exceptionResult, contexInfo);
@@ -186,7 +177,7 @@ namespace Machine.Specifications.Runner.Utility
 
     static class RemoteToInternalSpecificationRunListenerAdapterExtensions
     {
-        public static void Run(this RemoteToInternalSpecificationRunListenerAdapter adapter, Runner.AssemblyInfo assemblyInfo, Runner.SpecificationInfo specificationInfo, Specifications.Result failure, Specifications.ExceptionResult exceptionResult, Runner.ContextInfo contexInfo)
+        public static void Run(this ISpecificationRunListener adapter, AssemblyInfo assemblyInfo, SpecificationInfo specificationInfo, Result failure, ExceptionResult exceptionResult, ContextInfo contexInfo)
         {
             adapter.OnAssemblyStart(assemblyInfo);
             adapter.OnAssemblyEnd(assemblyInfo);
