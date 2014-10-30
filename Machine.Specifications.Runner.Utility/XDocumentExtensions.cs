@@ -18,6 +18,7 @@ namespace Machine.Specifications.Runner.Utility
 
                 return (T)Convert.ChangeType(selected.Value, typeof(T));
             }
+
             return default(T);
         }
     }

@@ -46,17 +46,19 @@
     </Compile>
     <Compile Include="AppDomainRunner.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="AssemblyPathExtensions.cs" />
+    <Compile Include="AssemblyPathsExtensions.cs" />
     <Compile Include="FullNames.cs" />
     <Compile Include="InvokeOnce.cs" />
     <Compile Include="LongLivedMarshalByRefObject.cs" />
     <Compile Include="Naming.cs" />
     <Compile Include="NullMessageSink.cs" />
     <Compile Include="RemoteRunnerDecorator.cs" />
+    <Compile Include="RemoteRunnerMessage.cs" />
     <Compile Include="RunOptionsExtensions.cs" />
     <Compile Include="AssemblyPath.cs" />
     <Compile Include="RemoteRunListener.cs" />
     <Compile Include="XDocumentExtensions.cs" />
-    <Compile Include="SpecificationRunner.cs" />
     <Compile Include="ISpecificationRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>

@@ -8,8 +8,11 @@ namespace Machine.Specifications.Runner.Utility
     public class RunOptions
     {
         public IEnumerable<string> IncludeTags { get; protected set; }
+
         public IEnumerable<string> ExcludeTags { get; protected set; }
+
         public IEnumerable<string> Filters { get; protected set; }
+
         public string ShadowCopyCachePath { get; protected set; }
 
         private RunOptions()
