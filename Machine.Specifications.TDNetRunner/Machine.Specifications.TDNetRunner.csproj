@@ -80,6 +80,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Machine.Specifications.dll.tdnet" />
+    <None Include="Machine.Specifications.Runner.TDNet.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
