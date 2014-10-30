@@ -5,9 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Remoting.Messaging;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Policy;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace Machine.Specifications.Runner.Utility
 {
@@ -36,7 +39,9 @@ namespace Machine.Specifications.Runner.Utility
 
         public void RunMember(AssemblyPath assembly, MemberInfo member)
         {
-            // TODO
+            var root = new XElement("runner", new XElement("runmember", assembly.ToXml()));
+
+            _remoteRunner.SyncProcessMessage(new RemoteRunnerMessage(root, member));
         }
 
         public void RunAssemblies(IEnumerable<AssemblyPath> assemblies)
@@ -48,7 +53,9 @@ namespace Machine.Specifications.Runner.Utility
 
         public void RunNamespace(AssemblyPath assembly, string targetNamespace)
         {
-            // TODO
+            var root = new XElement("runner", new XElement("runnamespace", assembly.ToXml(), new XElement("namespace", targetNamespace)));
+
+            _remoteRunner.SyncProcessMessage(new RemoteRunnerMessage(root));
         }
 
         public void RunAssembly(AssemblyPath assembly)
@@ -77,13 +84,12 @@ namespace Machine.Specifications.Runner.Utility
 
     internal class RemoteRunnerMessage : MarshalByRefObject, IMessage
     {
-        public RemoteRunnerMessage(XElement root)
+        public RemoteRunnerMessage(XElement root, MemberInfo info = null)
         {
-            this.Properties = new Dictionary<string, string>
+            this.Properties = new Dictionary<string, object>
             {
-                {
-                    "data", root.ToString()
-                }
+                { "data", root.ToString() },
+                { "member", info },
             };
         }
 

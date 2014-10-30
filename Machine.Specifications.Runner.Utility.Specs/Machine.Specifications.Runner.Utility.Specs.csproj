@@ -108,8 +108,6 @@
   </PropertyGroup>
   <Target Name="AfterBuild">
     <MakeDir Directories="$(SpecsFolder)" />
-    <Exec 
-      Condition="'$(Configuration)' == 'Release'" 
-      Command="$(SolutionDir)\packages\Machine.Specifications.Runner.Console.0.9.0-Unstable0017\tools\mspec.exe --progress --silent $(TargetPath) --html $(SpecsFolder)$(MSBuildProjectName).html" />
+    <Exec Condition="'$(Configuration)' == 'Release'" Command="$(SolutionDir)\packages\Machine.Specifications.Runner.Console.0.9.0-Unstable0017\tools\mspec.exe --progress --silent $(TargetPath) --html $(SpecsFolder)$(MSBuildProjectName).html" />
   </Target>
 </Project>
