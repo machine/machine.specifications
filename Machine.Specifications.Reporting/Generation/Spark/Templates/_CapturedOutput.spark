@@ -1,0 +1,11 @@
+﻿<div if="!string.IsNullOrEmpty(output)">
+  <var id="Guid.NewGuid()" />
+  <div>
+    [<a id="${id}_link" href="javascript:toggleVisibility('${id}', 'captured output');">Show captured output</a>]
+  </div>
+  <div id="${id}" class="supplement">
+    <pre><code>${output}</code></pre>
+  </div>
+</div>
+
+<ToggleVisibility />

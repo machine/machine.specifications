@@ -1,0 +1,6 @@
+source 'http://rubygems.org'
+gem 'rake'
+gem 'albacore', '1.0.0.rc.2'
+gem 'configatron', '2.13.0'
+gem 'nuget'
+gem 'gitflowversion'
