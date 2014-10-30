@@ -4,7 +4,6 @@ using TestDriven.Framework;
 
 namespace Machine.Specifications.TDNetRunner
 {
-    // TODO: Fix app domain leak
     public class SpecificationRunner : ITestRunner
     {
         public TestRunState RunAssembly(ITestListener testListener, Assembly assembly)

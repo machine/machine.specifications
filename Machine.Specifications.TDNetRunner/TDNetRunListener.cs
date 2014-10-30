@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Reflection;
-using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Utility;
 using TestDriven.Framework;
 
