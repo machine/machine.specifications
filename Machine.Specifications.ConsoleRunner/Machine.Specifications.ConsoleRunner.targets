@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Target Name="Default">
+		<ItemGroup>
+			<ConsoleRunners Include="Item1">
+				<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+				<PlatformTarget>x86</PlatformTarget>
+				<AssemblyName>mspec-x86</AssemblyName>
+			</ConsoleRunners>
+			<ConsoleRunners Include="Item2">
+				<TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+				<PlatformTarget>x86</PlatformTarget>
+				<AssemblyName>mspec-x86-clr4</AssemblyName>
+			</ConsoleRunners>
+			<ConsoleRunners Include="Item3">
+				<TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+				<PlatformTarget>AnyCPU</PlatformTarget>
+				<AssemblyName>mspec-clr4</AssemblyName>
+			</ConsoleRunners>			
+		</ItemGroup>
+		<Copy
+        SourceFiles="$(SolutionDir)\Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunner.csproj"
+        DestinationFiles="$(SolutionDir)\Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunners.%(ConsoleRunners.PlatformTarget).%(ConsoleRunners.TargetFrameworkVersion).csproj"/>
+		
+		<XmlPoke XmlInputPath="$(SolutionDir)\Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunners.%(ConsoleRunners.PlatformTarget).%(ConsoleRunners.TargetFrameworkVersion).csproj"
+             Query="/ns:Project/@DefaultTargets"
+             Value="Build" Namespaces="&lt;Namespace Prefix='ns' Uri='http://schemas.microsoft.com/developer/msbuild/2003' /&gt;"/>
+
+		<XmlPoke XmlInputPath="$(SolutionDir)\Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunners.%(ConsoleRunners.PlatformTarget).%(ConsoleRunners.TargetFrameworkVersion).csproj"
+             Query="//ns:AssemblyName"
+             Value="%(ConsoleRunners.AssemblyName)" Namespaces="&lt;Namespace Prefix='ns' Uri='http://schemas.microsoft.com/developer/msbuild/2003' /&gt;"/>
+		<XmlPoke XmlInputPath="$(SolutionDir)\Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunners.%(ConsoleRunners.PlatformTarget).%(ConsoleRunners.TargetFrameworkVersion).csproj"
+             Query="//ns:TargetFrameworkVersion"
+             Value="%(ConsoleRunners.TargetFrameworkVersion)" Namespaces="&lt;Namespace Prefix='ns' Uri='http://schemas.microsoft.com/developer/msbuild/2003' /&gt;"/>
+		<XmlPoke XmlInputPath="$(SolutionDir)\Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunners.%(ConsoleRunners.PlatformTarget).%(ConsoleRunners.TargetFrameworkVersion).csproj"
+             Query="//ns:PlatformTarget"
+             Value="%(ConsoleRunners.PlatformTarget)" Namespaces="&lt;Namespace Prefix='ns' Uri='http://schemas.microsoft.com/developer/msbuild/2003' /&gt;"/>			 
+		<MSBuild
+        Projects="$(SolutionDir)\Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunners.%(ConsoleRunners.PlatformTarget).%(ConsoleRunners.TargetFrameworkVersion).csproj"
+        Targets="Build"
+        Properties="Configuration=$(Configuration);TrackFileAccess=$(TrackFileAccess)"/>			 
+		<Delete
+        Files="$(SolutionDir)\Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunners.%(ConsoleRunners.PlatformTarget).%(ConsoleRunners.TargetFrameworkVersion).csproj" />
+	</Target>
+</Project>
