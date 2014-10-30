@@ -169,9 +169,10 @@ namespace Machine.Specifications.Runner.Impl
             var doc = XDocument.Load(new StringReader(value));
             var element = doc.XPathSelectElement("/runner/*");
 
+            XElement assemblyElement;
             switch (element.Name.ToString())
             {
-                    // TODO: Optimize loading of assemblies
+                // TODO: Optimize loading of assemblies
                 case "startrun":
                     this.StartRun(Assembly.LoadFile(element.Value));
                     break;
@@ -180,6 +181,18 @@ namespace Machine.Specifications.Runner.Impl
                     break;
                 case "runassembly":
                     this.RunAssembly(Assembly.LoadFile(element.Value));
+                    break;
+                case "runnamespace":
+                    assemblyElement = element.XPathSelectElement("/runner/runnamespace/assembly");
+                    var namespaceElement = element.XPathSelectElement("/runner/runnamespace/namespace");
+
+                    this.RunNamespace(Assembly.LoadFile(assemblyElement.Value), namespaceElement.Value);
+                    break;
+                case "runmember":
+                    assemblyElement = element.XPathSelectElement("/runner/runmember/assembly");
+                    var memberInfo = msg.Properties["member"] as MemberInfo;
+
+                    this.RunMember(Assembly.LoadFile(assemblyElement.Value), memberInfo);
                     break;
                 case "runassemblies":
                     this.RunAssemblies(element.Elements("assemblies").Select(e => Assembly.LoadFile(e.Value)));
