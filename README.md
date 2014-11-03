@@ -28,6 +28,8 @@ PM> Install-Package Machine.Specifications-Signed
 PM> Install-Package Machine.Specifications.Should-Signed
 ```
 
+The should library described above is an opinionated library provided by MSpec. You can also use other libraries like FluentAssertions [12].
+
 # Usage
 MSpec is called a "context/specification" test framework because of the "grammar" that is used in describing and coding the tests or "specs". That grammar reads roughly like this
 
@@ -169,7 +171,7 @@ It should_have_a_unique_session_id = () => Token.SessionId.ShouldNotBeNull();
 
 ## Catch
 
-When testing that exceptions are thrown from the "action" you should use a `Catch` statement. This prevents thrown exceptions from escaping the spec and failing the test run. You can inspect the exception's expected properites in your assertions.
+When testing that exceptions are thrown from the "action" you should use a `Catch` statement. This prevents thrown exceptions from escaping the spec and failing the test run. You can inspect the exception's expected properties in your assertions.
 
 ```csharp
 [Subject("Authentication")]
@@ -192,7 +194,19 @@ public class When_authenticating_a_user_fails_due_to_bad_credentials
 
 # Command Line Reference
 
-MSpec, like other testing frameworks, provides a robust command-line runner that can be used to execute specs in one or more assemblies and allows a number of output formats to suit your needs. The runner comes in different flavors:
+MSpec, like other testing frameworks, provides a robust command-line runner that can be used to execute specs in one or more assemblies and allows a number of output formats to suit your needs. The runner is provided as a separate package and can be installed with the following commands:
+
+```bash
+cmd> nuget install Machine.Specifications.Runner.Console
+```
+
+Or use the Package Manager console in Visual Studio:
+
+```powershell
+PM> Install-Package Machine.Specifications.Runner.Console
+```
+
+The runner comes in different flavors:
 
  * `mspec.exe`, AnyCPU, runs on the CLR 2.0
  * `mspec-x86.exe`, x86, runs on the CLR 2.0
@@ -214,31 +228,45 @@ Options:
 -w, --wait                  Wait 15 seconds for debugger to be attached
 --teamcity                  Reporting for TeamCity CI integration (also auto-detected)
 --no-teamcity-autodetect    Disables TeamCity autodetection
+--appveyor                  Reporting for AppVeyor CI integration (also auto-detected)
+--no-appveyor-autodetect    Disables AppVeyor autodetection
 --html <PATH>               Outputs the HTML report to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)
 --xml <PATH>                Outputs the XML report to the file referenced by the path
 -h, --help                  Shows this help message
 Usage: mspec.exe [options] <assemblies>
 ```
 
+More information can be found under https://github.com/machine/machine.specifications.runner.console Please provide feedback, feature requests, issues and more in that repository.
+
 ### TeamCity Reports
 
 MSpec can output [TeamCity](http://www.jetbrains.com/teamcity/) [service messages][7] to update the test run status in real time. This feature is enabled by passing the `--teamcity` switch, but the command-line runner *can* auto-detect that it is running in the TeamCity context.
+
+More information can be found under https://github.com/machine/machine.specifications.reporting Please provide feedback, feature requests, issues and more in that repository.
 
 ### HTML Reports
 
 MSpec can output human-readable HTML reports of the test run by passing the `--html` option. If a filename is provided, the output is placed at that path, overwriting existing files. If multiple assemblies are being testing, the output is grouped into a single file. If no filename is provided, it will use the name of the assembly(s). If multiple assemblies are being tested, an `index.html` is created with links to each assembly-specific report. You can use this option if your CI server supports capturing HTML as build reports.
 
+More information can be found under https://github.com/machine/machine.specifications.reporting Please provide feedback, feature requests, issues and more in that repository.
+
 ### XML Reports
 
 MSpec can output XML test run reports by passing the `--xml` option. This option behaves the same as the `--html` option, in terms of file naming.
+
+More information can be found under https://github.com/machine/machine.specifications.reporting Please provide feedback, feature requests, issues and more in that repository.
 
 ### Selenium Reports
 
 The MSpec HTML reports can show additional [Selenium](http://seleniumhq.org/)-specific information, like screenshots and debug statements. Instructions on [how to integrate this feature][6] into your specs is available on the web. There is also a [sample implementation][10] available.
 
+More information can be found under https://github.com/machine/machine.specifications.reporting Please provide feedback, feature requests, issues and more in that repository.
+
 # ReSharper Integration
 
-MSpec provides a batch file to integrate with the ReSharper test runner, custom naming rules, and code annotations. MSpec currently supports ReSharper 7.1, 8.0, 8.1 and 8.2. We strongly recommend to install the ReSharper integration with the Extension Manager. Just search for Machine.Specifications.Runner.Resharper.
+MSpec provides a batch file to integrate with the ReSharper test runner, custom naming rules, and code annotations. MSpec currently supports ReSharper 7.1, 8.0, 8.1 and 8.2. We strongly recommend to install the ReSharper integration with the Extension Manager. Just search for Machine.Specifications.Runner.Resharper. In future versions the command line batch installation will be deprecated.
+
+More information can be found under https://github.com/machine/machine.specifications.runner.resharper Please provide feedback, feature requests, issues and more in that repository.
 
 ### Code Annotations
 
@@ -260,7 +288,19 @@ The file, live, and surround templates can be imported from `Misc\ReSharper.*.Do
 
 # TestDriven.Net Integration
 
-MSpec provides a batch file for setting up TD.NET integration. Newer versions (2.24+) support an xcopy integration that avoids the versioning issues arising from the registry-based scheme. If you use NuGet, you're already set. If you're not using NuGet, make sure to  copy `Machine.Specifications.dll.tdnet` and `Machine.Specifications.TDNetRunner.dll` to your project's output directory.
+MSpec provides a batch file for setting up TD.NET integration. Newer versions (2.24+) support an xcopy integration that avoids the versioning issues arising from the registry-based scheme. If you use NuGet, you're already set. If you're not using NuGet, make sure to  copy `Machine.Specifications.dll.tdnet` and `Machine.Specifications.TDNetRunner.dll` to your project's output directory. The runner is provided as a separate package and can be installed with the following commands:
+
+```bash
+cmd> nuget install Machine.Specifications.Runner.TDnet
+```
+
+Or use the Package Manager console in Visual Studio:
+
+```powershell
+PM> Install-Package Machine.Specifications.Runner.TDnet
+```
+
+More information can be found under https://github.com/machine/machine.specifications.runner.tdnet Please provide feedback, feature requests, issues and more in that repository.
 
  [3]: https://teamcity.bbv.ch/project.html?projectId=MachineSpecifications
  [4]: http://nuget.org/packages/Machine.Specifications
@@ -271,3 +311,4 @@ MSpec provides a batch file for setting up TD.NET integration. Newer versions (2
  [9]: http://c2.com/cgi/wiki?ArrangeActAssert
  [10]: https://github.com/agross/mspec-samples/tree/master/WebSpecs/LoginApp.Selenium.Specs
  [11]: http://therightstuff.de/2010/03/03/MachineSpecifications-Templates-For-ReSharper.aspx
+ [12]: https://github.com/dennisdoomen/fluentassertions
