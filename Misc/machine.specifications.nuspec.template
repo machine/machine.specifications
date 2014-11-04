@@ -32,24 +32,18 @@
 		<!-- NET 4.5 -->
 		<file src="..\Build\@configatron.target@\Machine.Specifications.dll" target="lib\net45" />
 		<file src="..\Build\@configatron.target@\Machine.Specifications.pdb" target="lib\net45" />
-		<!--<file src="..\Build\@configatron.target@\Machine.Specifications.tdnet" target="lib\net45" />-->
 		<file src="..\Build\@configatron.target@\Machine.Specifications.Clr4.dll" target="lib\net45" />
 		<file src="..\Build\@configatron.target@\Machine.Specifications.Clr4.pdb" target="lib\net45" />
-		<file src="..\Build\@configatron.target@\Machine.Specifications.TDNetRunner.*" target="lib\net45" />
 
 		<!-- NET 4.0 -->
 		<file src="..\Build\@configatron.target@\Machine.Specifications.dll" target="lib\net40" />
 		<file src="..\Build\@configatron.target@\Machine.Specifications.pdb" target="lib\net40" />
-		<!--<file src="..\Build\@configatron.target@\Machine.Specifications.tdnet" target="lib\net40" />-->
 		<file src="..\Build\@configatron.target@\Machine.Specifications.Clr4.dll" target="lib\net40" />
 		<file src="..\Build\@configatron.target@\Machine.Specifications.Clr4.pdb" target="lib\net40" />
-		<file src="..\Build\@configatron.target@\Machine.Specifications.TDNetRunner.*" target="lib\net40" />
 
 		<!-- NET 2.0 -->
 		<file src="..\Build\@configatron.target@\Machine.Specifications.dll" target="lib\net20" />
 		<file src="..\Build\@configatron.target@\Machine.Specifications.pdb" target="lib\net20" />
-		<!--<file src="..\Build\@configatron.target@\Machine.Specifications.tdnet" target="lib\net20" />-->
-		<file src="..\Build\@configatron.target@\Machine.Specifications.TDNetRunner.*" target="lib\net20" />
 		
 		<!-- Sources -->
 		<file src="..\Source\**\*.cs" target="src" exclude="..\Source\Examples\**;..\Source\*.Specs\**;..\Source\*.Tests\**;..\Source\**\*.Specs\**"/>
@@ -58,11 +52,5 @@
 		<file src="..\Install.ps1" target="tools" />
 		<file src="..\License.txt" target="tools" />
 		<file src="..\History.txt" target="tools" />
-		<file src="..\Build\@configatron.target@\Install*" target="tools" exclude="..\Build\@configatron.target@\*.InstallLog" />
-		<file src="..\Build\@configatron.target@\Machine.*" target="tools" exclude="..\Build\@configatron.target@\*.pdb;..\Build\@configatron.target@\*.InstallLog;..\Build\@configatron.target@\*.InstallState"/>
-		<file src="..\Build\@configatron.target@\mspec*" target="tools" exclude="..\Build\@configatron.target@\*.vshost*;..\Build\@configatron.target@\*.pdb"/>
-		<file src="..\Build\@configatron.target@\Spark.dll" target="tools"/>
-		<file src="..\Build\@configatron.target@\CommandLine.dll" target="tools"/>
-		<file src="..\Build\@configatron.target@\Testdriven.Framework.dll" target="tools"/>
 	</files>  
 </package>

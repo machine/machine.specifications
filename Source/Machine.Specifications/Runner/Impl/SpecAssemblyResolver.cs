@@ -4,30 +4,30 @@ using System.Security;
 
 namespace Machine.Specifications.Runner.Impl
 {
-  public class SpecAssemblyResolver : IDisposable
-  {
-    readonly Assembly _assembly;
-
-    [SecuritySafeCritical]
-    public SpecAssemblyResolver(Assembly assembly)
+    internal class SpecAssemblyResolver : IDisposable
     {
-      _assembly = assembly;
-      AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-    }
+        readonly Assembly _assembly;
 
-    [SecuritySafeCritical]
-    public void Dispose()
-    {
-      AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
-    }
+        [SecuritySafeCritical]
+        public SpecAssemblyResolver(Assembly assembly)
+        {
+            _assembly = assembly;
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+        }
 
-    Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-    {
-      if (args.Name == _assembly.GetName().FullName)
-      {
-        return _assembly;
-      }
-      return null;
+        [SecuritySafeCritical]
+        public void Dispose()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
+        }
+
+        Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            if (args.Name == _assembly.GetName().FullName)
+            {
+                return _assembly;
+            }
+            return null;
+        }
     }
-  }
 }

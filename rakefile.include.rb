@@ -17,7 +17,7 @@ task :configure do
     "#{configatron.solution.gsub(".sln", "")}#{'-Signed' if configatron.sign_assembly}"
   end
   configatron.distribution.dir = Configatron::Delayed.new do
-    "Distribution/"
+    ENV.include?('TEAMCITY_PROJECT_NAME') ? "Distribution/" : "../nugets"
   end
   configatron.version.full = Configatron::Delayed.new do
     `gitflowversion`.scan(/NugetVersion":"(.*)"/)[0][0][0,20]
@@ -74,18 +74,6 @@ msbuild :build do |msb|
   }
 end
 
-task :specs  => [:rebuild] do
-  puts 'Running Specs...'
-
-  specs = FileList.new("#{configatron.out_dir}/Tests/*.Specs.dll").exclude(/Clr4/)
-  sh "#{configatron.out_dir}/mspec.exe", "--html", "Specs/#{configatron.project}.Specs.html", *(configatron.mspec_options + specs)
-
-  specs = FileList.new("#{configatron.out_dir}/Tests/*.Clr4.Specs.dll")
-  sh "#{configatron.out_dir}/mspec-clr4.exe", *(configatron.mspec_options + specs)
-
-  puts "Wrote specs to Specs/#{configatron.project}.Specs.html"
-end
-
 desc "Run all nunit tests"
 nunit :tests => [:rebuild] do |cmd|
   cmd.command = "packages/NUnit.Runners.2.6.3/tools/nunit-console-x86.exe"
@@ -111,26 +99,9 @@ end
 
 desc "Package build artifacts as a NuGet package and a symbols package"
 task :createpackage => [ :default ] do
-	nuspecs = FileList.new('**/*.nuspec')
-	nuspecs.exclude(/packages/)
-	nuspecs.exclude(/Machine.Specifications.Runner.*.nuspec/)
-	nuspecs.each do |nuspec|
+	FileList.new('**/*.nuspec').exclude(/packages/).each do |nuspec|
 		opts = %W(
 			nuget pack #{nuspec} -Symbols -Version #{configatron.version.full} -OutputDirectory #{configatron.distribution.dir}
-		)
-
-		sh(*opts) do |ok, status|
-			ok or fail "Command failed with status (#{status.exitstatus})"
-		end
-	end
-	
-	#Temporary hack until refactored
-	Dir.mkdir "#{configatron.distribution.dir}/Runners"
-	nuspecs = FileList.new('**/Machine.Specifications.Runner.*.nuspec')
-	nuspecs.exclude(/packages/)
-	nuspecs.each do |nuspec|
-		opts = %W(
-			nuget pack #{nuspec} -Version #{configatron.version.full} -OutputDirectory "#{configatron.distribution.dir}/Runners"
 		)
 
 		sh(*opts) do |ok, status|

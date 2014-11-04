@@ -1,35 +1,39 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Text;
+
+#if CLEAN_EXCEPTION_STACK_TRACE
+using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Linq;
+#endif
 
 namespace Machine.Specifications
 {
-  public enum Status
-  {
-    Failing,
-    Passing,
-    NotImplemented,
-    Ignored
-  }
-
-  [Serializable]
-  public class ExceptionResult
-  {
-    public string FullTypeName { get; private set; }
-    public string TypeName { get; private set; }
-    public string Message { get; private set; }
-    public string StackTrace { get; private set; }
-    public ExceptionResult InnerExceptionResult { get; private set; }
-
-    public ExceptionResult(Exception exception) : this(exception, true)
+    public enum Status
     {
+        Failing,
+        Passing,
+        NotImplemented,
+        Ignored
     }
 
-    ExceptionResult(Exception exception, bool outermost)
+    [Serializable]
+    public class ExceptionResult
     {
+        public string FullTypeName { get; private set; }
+        public string TypeName { get; private set; }
+        public string Message { get; private set; }
+        public string StackTrace { get; private set; }
+        public ExceptionResult InnerExceptionResult { get; private set; }
+
+        public ExceptionResult(Exception exception)
+            : this(exception, true)
+        {
+        }
+
+        ExceptionResult(Exception exception, bool outermost)
+        {
 #if CLEAN_EXCEPTION_STACK_TRACE
       if (outermost && exception is TargetInvocationException)
       {
@@ -37,39 +41,39 @@ namespace Machine.Specifications
       }
 #endif
 
-      FullTypeName = exception.GetType().FullName;
-      TypeName = exception.GetType().Name;
-      Message = exception.Message;
-      StackTrace = FilterStackTrace(exception.StackTrace);
+            FullTypeName = exception.GetType().FullName;
+            TypeName = exception.GetType().Name;
+            Message = exception.Message;
+            StackTrace = FilterStackTrace(exception.StackTrace);
 
-      if (exception.InnerException != null)
-      {
-        InnerExceptionResult = new ExceptionResult(exception.InnerException, false);
-      }
-    }
+            if (exception.InnerException != null)
+            {
+                InnerExceptionResult = new ExceptionResult(exception.InnerException, false);
+            }
+        }
 
-    public override string ToString()
-    {
-      var message = new StringBuilder();
-      message.Append(FullTypeName);
+        public override string ToString()
+        {
+            var message = new StringBuilder();
+            message.Append(FullTypeName);
 
-      if (!string.IsNullOrEmpty(Message))
-      {
-        message.AppendFormat(": {0}", Message);
-      }
-      if (InnerExceptionResult != null)
-      {
-        message.AppendFormat(" ---> {0}{1}   --- End of inner exception stack trace ---", InnerExceptionResult, Environment.NewLine);
-      }
-      if (StackTrace != null)
-      {
-        message.Append(Environment.NewLine + StackTrace);
-      }
+            if (!string.IsNullOrEmpty(Message))
+            {
+                message.AppendFormat(": {0}", Message);
+            }
+            if (InnerExceptionResult != null)
+            {
+                message.AppendFormat(" ---> {0}{1}   --- End of inner exception stack trace ---", InnerExceptionResult, Environment.NewLine);
+            }
+            if (StackTrace != null)
+            {
+                message.Append(Environment.NewLine + StackTrace);
+            }
 
-      return message.ToString();
-    }
+            return message.ToString();
+        }
 
-    #region Borrowed from XUnit to clean up the stack trace, licened under MS-PL
+        #region Borrowed from XUnit to clean up the stack trace, licened under MS-PL
 
 #if CLEAN_EXCEPTION_STACK_TRACE
     /// <summary>
@@ -112,106 +116,106 @@ namespace Machine.Specifications
       return FrameworkStackLine.IsMatch(trimmedLine);
     }
 #else
-    // Do not change the line at all if you are not going to clean it
-    static string FilterStackTrace(string stackTrace)
-    {
-      return stackTrace;
-    }
+        // Do not change the line at all if you are not going to clean it
+        static string FilterStackTrace(string stackTrace)
+        {
+            return stackTrace;
+        }
 #endif
 
-    #endregion
-  }
-
-  [Serializable]
-  public class Result
-  {
-    readonly Status _status;
-    readonly IDictionary<string, IDictionary<string, string>> _supplements = new Dictionary<string, IDictionary<string, string>>();
-
-    public IDictionary<string, IDictionary<string, string>> Supplements
-    {
-      get { return _supplements; }
+        #endregion
     }
 
-    public bool Passed
+    [Serializable]
+    public class Result
     {
-      get { return _status == Status.Passing; }
+        readonly Status _status;
+        readonly IDictionary<string, IDictionary<string, string>> _supplements = new Dictionary<string, IDictionary<string, string>>();
+
+        public IDictionary<string, IDictionary<string, string>> Supplements
+        {
+            get { return _supplements; }
+        }
+
+        public bool Passed
+        {
+            get { return _status == Status.Passing; }
+        }
+
+        public ExceptionResult Exception { get; private set; }
+
+        public Status Status
+        {
+            get { return _status; }
+        }
+
+        public bool HasSupplement(string name)
+        {
+            return _supplements.ContainsKey(name);
+        }
+
+        public IDictionary<string, string> GetSupplement(string name)
+        {
+            return _supplements[name];
+        }
+
+        private Result(Exception exception)
+        {
+            _status = Status.Failing;
+            this.Exception = new ExceptionResult(exception);
+        }
+
+        private Result(Status status)
+        {
+            _status = status;
+        }
+
+        private Result(Result result, string supplementName, IDictionary<string, string> supplement)
+        {
+            _status = result.Status;
+            this.Exception = result.Exception;
+
+            foreach (var pair in result._supplements)
+            {
+                _supplements.Add(pair);
+            }
+
+            if (HasSupplement(supplementName))
+            {
+                throw new ArgumentException("Result already has supplement named: " + supplementName, "supplementName");
+            }
+
+            _supplements.Add(supplementName, supplement);
+        }
+
+        public static Result Pass()
+        {
+            return new Result(Status.Passing);
+        }
+
+        public static Result Ignored()
+        {
+            return new Result(Status.Ignored);
+        }
+
+        public static Result NotImplemented()
+        {
+            return new Result(Status.NotImplemented);
+        }
+
+        public static Result Failure(Exception exception)
+        {
+            return new Result(exception);
+        }
+
+        public static Result ContextFailure(Exception exception)
+        {
+            return new Result(exception);
+        }
+
+        public static Result Supplement(Result result, string supplementName, IDictionary<string, string> supplement)
+        {
+            return new Result(result, supplementName, supplement);
+        }
     }
-
-    public ExceptionResult Exception { get; private set; }
-
-    public Status Status
-    {
-      get { return _status; }
-    }
-
-    public bool HasSupplement(string name)
-    {
-      return _supplements.ContainsKey(name);
-    }
-
-    public IDictionary<string, string> GetSupplement(string name)
-    {
-      return _supplements[name];
-    }
-
-    private Result(Exception exception)
-    {
-      _status = Status.Failing;
-      this.Exception = new ExceptionResult(exception);
-    }
-
-    private Result(Status status)
-    {
-      _status = status;
-    }
-
-    private Result(Result result, string supplementName, IDictionary<string, string> supplement)
-    {
-      _status = result.Status;
-      this.Exception = result.Exception;
-
-      foreach (var pair in result._supplements)
-      {
-        _supplements.Add(pair);
-      }
-
-      if (HasSupplement(supplementName))
-      {
-        throw new ArgumentException("Result already has supplement named: " + supplementName, "supplementName");
-      }
-
-      _supplements.Add(supplementName, supplement);
-    }
-
-    public static Result Pass()
-    {
-      return new Result(Status.Passing);
-    }
-
-    public static Result Ignored()
-    {
-      return new Result(Status.Ignored);
-    }
-
-    public static Result NotImplemented()
-    {
-      return new Result(Status.NotImplemented);
-    }
-
-    public static Result Failure(Exception exception)
-    {
-      return new Result(exception);
-    }
-
-    public static Result ContextFailure(Exception exception)
-    {
-      return new Result(exception);
-    }
-
-    public static Result Supplement(Result result, string supplementName, IDictionary<string, string> supplement)
-    {
-      return new Result(result, supplementName, supplement);
-    }
-  }
 }

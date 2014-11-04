@@ -6,69 +6,69 @@ using System;
 
 namespace Machine.Specifications.Model
 {
-  public class BehaviorSpecification : Specification
-  {
-    readonly object _behaviorInstance;
-    readonly object _contextInstance;
-    readonly ConventionMapper _mapper;
-
-    public BehaviorSpecification(string name,
-                                 Type fieldType,
-                                 Delegate it,
-                                 bool isIgnored,
-                                 FieldInfo fieldInfo,
-                                 Context context,
-                                 Behavior behavior)
-      : base(name, fieldType, it, isIgnored, fieldInfo)
+    public class BehaviorSpecification : Specification
     {
-      _contextInstance = context.Instance;
-      _behaviorInstance = behavior.Instance;
+        readonly object _behaviorInstance;
+        readonly object _contextInstance;
+        readonly ConventionMapper _mapper;
 
-      _mapper = new ConventionMapper();
-    }
-
-    protected override void InvokeSpecificationField()
-    {
-      _mapper.MapPropertiesOf(_contextInstance).To(_behaviorInstance);
-      base.InvokeSpecificationField();
-    }
-
-    #region Nested type: ConventionMapper
-    private class ConventionMapper
-    {
-      internal ConventionMap MapPropertiesOf(object source)
-      {
-        return new ConventionMap(source);
-      }
-
-      #region Nested type: ConventionMap
-      internal class ConventionMap
-      {
-        readonly object _source;
-
-        public ConventionMap(object source)
+        public BehaviorSpecification(string name,
+                                     Type fieldType,
+                                     Delegate it,
+                                     bool isIgnored,
+                                     FieldInfo fieldInfo,
+                                     Context context,
+                                     Behavior behavior)
+            : base(name, fieldType, it, isIgnored, fieldInfo)
         {
-          _source = source;
+            _contextInstance = context.Instance;
+            _behaviorInstance = behavior.Instance;
+
+            _mapper = new ConventionMapper();
         }
 
-        public void To(object target)
+        protected override void InvokeSpecificationField()
         {
-          IEnumerable<FieldInfo> sourceFields = _source.GetType().GetStaticProtectedOrInheritedFields();
+            _mapper.MapPropertiesOf(_contextInstance).To(_behaviorInstance);
+            base.InvokeSpecificationField();
+        }
 
-          foreach (var sourceField in sourceFields)
-          {
-            FieldInfo targetField = target.GetType().GetStaticProtectedOrInheritedFieldNamed(sourceField.Name);
-            if (targetField == null)
+        #region Nested type: ConventionMapper
+        private class ConventionMapper
+        {
+            internal ConventionMap MapPropertiesOf(object source)
             {
-              continue;
+                return new ConventionMap(source);
             }
 
-            targetField.SetValue(target, sourceField.GetValue(_source));
-          }
+            #region Nested type: ConventionMap
+            internal class ConventionMap
+            {
+                readonly object _source;
+
+                public ConventionMap(object source)
+                {
+                    _source = source;
+                }
+
+                public void To(object target)
+                {
+                    IEnumerable<FieldInfo> sourceFields = _source.GetType().GetStaticProtectedOrInheritedFields();
+
+                    foreach (var sourceField in sourceFields)
+                    {
+                        FieldInfo targetField = target.GetType().GetStaticProtectedOrInheritedFieldNamed(sourceField.Name);
+                        if (targetField == null)
+                        {
+                            continue;
+                        }
+
+                        targetField.SetValue(target, sourceField.GetValue(_source));
+                    }
+                }
+            }
+            #endregion
         }
-      }
-      #endregion
+        #endregion
     }
-    #endregion
-  }
 }

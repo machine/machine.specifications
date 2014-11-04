@@ -1,10 +1,16 @@
+Machine.Specifications 0.9.0
+-----------------------------
+- Split out of ReSharper, dotCover and TDNet integration
+- Split out console runner and reporting
+- Version independent running of specs
+
 Machine.Specifications 0.8.3
 -----------------------------
 - AppVeyor support for mspec.exe with --appveyor, 
 uses AutoDetection by default by inspecting the APPVEYOR_API_URL environment variable,
 detection can be disabled with --no-appveyor-autodetect
 - Resharper Extension Gallery support for 8.0/8.1/8.2 and dotCover 2.6/2.7
-Make sure you uninstall all previously Machine.Specifications plugins before installing the   plugin
+Make sure you uninstall all previously Machine.Specifications plugins before installing the plugin
 
 Machine.Specifications 0.8.2
 -----------------------------

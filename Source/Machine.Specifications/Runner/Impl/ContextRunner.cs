@@ -10,7 +10,7 @@ namespace Machine.Specifications.Runner.Impl
     IEnumerable<Result> Run(Context context, ISpecificationRunListener listener, RunOptions options, IEnumerable<ICleanupAfterEveryContextInAssembly> globalCleanups, IEnumerable<ISupplementSpecificationResults> resultSupplementers);
   }
 
-  public class SetupOnceContextRunner : IContextRunner
+  internal class SetupOnceContextRunner : IContextRunner
   {
     public IEnumerable<Result> Run(Context context, ISpecificationRunListener listener, RunOptions options, IEnumerable<ICleanupAfterEveryContextInAssembly> globalCleanups, IEnumerable<ISupplementSpecificationResults> resultSupplementers)
     {
@@ -77,7 +77,7 @@ namespace Machine.Specifications.Runner.Impl
     }
   }
 
-  public class SetupForEachContextRunner : IContextRunner
+  internal class SetupForEachContextRunner : IContextRunner
   {
     public IEnumerable<Result> Run(Context context, ISpecificationRunListener listener, RunOptions options, IEnumerable<ICleanupAfterEveryContextInAssembly> globalCleanups, IEnumerable<ISupplementSpecificationResults> resultSupplementers)
     {
