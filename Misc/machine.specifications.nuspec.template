@@ -52,7 +52,5 @@
 		<file src="..\Install.ps1" target="tools" />
 		<file src="..\License.txt" target="tools" />
 		<file src="..\History.txt" target="tools" />
-		<file src="..\Build\@configatron.target@\Install*" target="tools" exclude="..\Build\@configatron.target@\*.InstallLog" />
-		<file src="..\Build\@configatron.target@\Machine.*" target="tools" exclude="..\Build\@configatron.target@\*.pdb;..\Build\@configatron.target@\*.InstallLog;..\Build\@configatron.target@\*.InstallState"/>
 	</files>  
 </package>
