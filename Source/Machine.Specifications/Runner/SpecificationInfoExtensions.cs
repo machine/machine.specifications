@@ -12,7 +12,7 @@ namespace Machine.Specifications.Runner
                 new XElement("name", specificationInfo.Name),
                 new XElement("containingtype", specificationInfo.ContainingType),
                 new XElement("fieldname", specificationInfo.FieldName),
-                new XElement("captureoutput", specificationInfo.CapturedOutput));
+                new XElement("capturedoutput", specificationInfo.CapturedOutput));
         }
     }
 }
