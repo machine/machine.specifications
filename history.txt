@@ -1,3 +1,7 @@
+Machine.Specifications 0.9.1
+-----------------------------
+- Fixed #255 to re-enable capture output feature.
+
 Machine.Specifications 0.9.0
 -----------------------------
 - Split out of ReSharper, dotCover and TDNet integration
