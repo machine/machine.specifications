@@ -62,13 +62,24 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- MSpec -->
+  <!-- MSpec --> 
+  <PropertyGroup>
+    <BuildDependsOn>$(BuildDependsOn);MSpec</BuildDependsOn>
+    <RebuildDependsOn>$(RebuildDependsOn);MSpec</RebuildDependsOn>
+  </PropertyGroup>
+  
   <PropertyGroup>
     <SpecsFolder>$(SolutionDir)\Specs\</SpecsFolder>
   </PropertyGroup>
-  <Target Name="AfterBuild">
+  <ItemGroup>
+    <MSpec Include="$(SolutionDir)packages\Machine.Specifications.Runner.Console.*\tools\mspec-clr4.exe"/>
+  </ItemGroup>
+  <Target Name="MSpec">
     <MakeDir Directories="$(SpecsFolder)" />
-    <Exec Condition="'$(Configuration)' == 'Release'" Command="$(SolutionDir)\packages\Machine.Specifications.Runner.Console.0.9.0-Unstable0017\tools\mspec-clr4.exe --progress --silent $(TargetPath) --html $(SpecsFolder)$(MSBuildProjectName).html" />
+    <Error Condition="'@(MSpec->Count())' != '1'" Text="There are several MSpec.Runners packages installed. Cannot execute specs." />
+    <Exec
+        Condition="'$(Configuration)' == 'Release'"
+        Command="@(MSpec->'%(FullPath)') --progress --silent $(TargetPath) --html $(SpecsFolder)$(MSBuildProjectName).html" />
   </Target>
   <Import Project="..\..\packages\GitVersionTask.1.3.3\Build\GitVersionTask.targets" Condition="Exists('..\..\packages\GitVersionTask.1.3.3\Build\GitVersionTask.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
