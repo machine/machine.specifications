@@ -31,6 +31,8 @@ namespace Machine.Specifications.Runner
 
         public static RunOptions Parse(string runOptionsXml)
         {
+            if (runOptionsXml == null)
+                throw new ArgumentNullException("runOptionsXml");
             var document = XDocument.Parse(runOptionsXml);
 
             IEnumerable<string> includeTags = Parse(document, "/runoptions/includetags/tag");
