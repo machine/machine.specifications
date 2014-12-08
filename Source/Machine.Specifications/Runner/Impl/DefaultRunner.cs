@@ -214,6 +214,9 @@ namespace Machine.Specifications.Runner.Impl
     {
         public static IEnumerable<Context> FilteredBy(this IEnumerable<Context> contexts, RunOptions options)
         {
+            if (options == null)
+                throw new ArgumentNullException("options");
+                
             var results = contexts;
 
             if (options.Filters.Any())
