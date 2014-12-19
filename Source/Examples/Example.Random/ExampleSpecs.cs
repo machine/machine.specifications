@@ -337,4 +337,24 @@ namespace Example.Random
     protected It specification;
     It private_specification;
   }
+
+  [Tags(tag.example)]
+  public class generic_container<Type1>
+  {
+    public class nested_context
+    {
+      
+    } 
+
+    public class nested_generic_context<Type2>
+    {
+      public class nested_nested_non_generic
+      {
+      }
+
+      public class nested_nested_generic<Type3>
+      {
+      }
+    } 
+  }
 }
