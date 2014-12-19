@@ -85,6 +85,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Examples\Example.Random\Example.Random.csproj">
+      <Project>{1295c389-fce4-4425-93e4-e4ae239b3e35}</Project>
+      <Name>Example.Random</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Examples\Example\Example.csproj">
       <Project>{2C28C643-31A2-44CA-B762-953A963F6F61}</Project>
       <Name>Example</Name>

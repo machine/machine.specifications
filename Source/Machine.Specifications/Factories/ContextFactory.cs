@@ -161,14 +161,9 @@ namespace Machine.Specifications.Factories
                 return;
             }
 
-            if (target.IsAbstract)
-            {
-
-            }
-
+            var instance = instanceResolver();
             if (!IsStatic(target))
             {
-                var instance = instanceResolver();
                 if (instance == null)
                 {
                     return;
@@ -193,7 +188,29 @@ namespace Machine.Specifications.Factories
                 CollectDetailsOf(target.BaseType, () => instance, items, ensureMaximumOfOne, attributeFullName);
             }
 
-            CollectDetailsOf(target.DeclaringType, () => Activator.CreateInstance(target.DeclaringType), items, ensureMaximumOfOne, attributeFullName);
+            Func<Type> declaringTypeResolution = () => target.DeclaringType;
+            Func<Type> resolveDeclaringTypeUsingAnInstanceToMaintainCorrectGenericParameters = () => GetDeclaringType(instance);
+
+            Func<Type> typeResolver = instance == null
+              ? declaringTypeResolution
+              : resolveDeclaringTypeUsingAnInstanceToMaintainCorrectGenericParameters;
+
+            CollectDetailsOf(target.DeclaringType, () => Activator.CreateInstance(typeResolver()), items, ensureMaximumOfOne, attributeFullName);
+        }
+
+        static Type GetDeclaringType(object instance)
+        {
+            var targetType = instance.GetType();
+            var declaringType = targetType.DeclaringType;
+
+            if (declaringType == typeof(object)) return declaringType;
+            if (!declaringType.ContainsGenericParameters) return declaringType;
+
+            var numberOfGenericParametersToProvideToEnclosingType = declaringType.GetGenericTypeDefinition().GetGenericArguments().Count();
+            var parameters = targetType.GetGenericArguments().Take(numberOfGenericParametersToProvideToEnclosingType);
+            var typeDefinition = declaringType.MakeGenericType(parameters.ToArray());
+
+            return typeDefinition;
         }
 
         static bool IsStatic(Type target)
