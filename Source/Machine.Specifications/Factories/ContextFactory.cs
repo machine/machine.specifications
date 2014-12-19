@@ -154,77 +154,31 @@ namespace Machine.Specifications.Factories
             }
         }
 
-        static void CollectDetailsOf<T>(Type target, Func<object> instanceResolver, ICollection<T> items, bool ensureMaximumOfOne, AttributeFullName attributeFullName)
+      static void CollectFieldDetails<T>(CollectionArguments<T> arguments)
         {
-            if (target == typeof(Object) || target == null)
+            if (arguments.AreNotValidForCollection) return;
+
+            if (arguments.TargetIsStatic)
             {
-                return;
+              CollectFieldDetails(arguments.DetailsForDeclaringType());
+              return;
             }
 
-            var instance = instanceResolver();
-            if (!IsStatic(target))
-            {
-                if (instance == null)
-                {
-                    return;
-                }
+            if (arguments.HasNoInstance) return;
 
-                var fields = target.GetInstanceFieldsOfUsage(attributeFullName);
-
-                if (ensureMaximumOfOne && fields.Count() > 1)
-                {
-                    throw new SpecificationUsageException(String.Format("You cannot have more than one {0} clause in {1}",
-                                                                        fields.First().FieldType.Name,
-                                                                        target.FullName));
-                }
-                var field = fields.FirstOrDefault();
-
-                if (field != null)
-                {
-                    var val = (T)field.GetValue(instance);
-                    items.Add(val);
-                }
-
-                CollectDetailsOf(target.BaseType, () => instance, items, ensureMaximumOfOne, attributeFullName);
-            }
-
-            Func<Type> declaringTypeResolution = () => target.DeclaringType;
-            Func<Type> resolveDeclaringTypeUsingAnInstanceToMaintainCorrectGenericParameters = () => GetDeclaringType(instance);
-
-            Func<Type> typeResolver = instance == null
-              ? declaringTypeResolution
-              : resolveDeclaringTypeUsingAnInstanceToMaintainCorrectGenericParameters;
-
-            CollectDetailsOf(target.DeclaringType, () => Activator.CreateInstance(typeResolver()), items, ensureMaximumOfOne, attributeFullName);
+            arguments.CollectFieldValue();
+            CollectFieldDetails(arguments.DetailsForBaseType());
         }
 
-        static Type GetDeclaringType(object instance)
+      static ICollection<Delegate> ExtractPrivateFieldValues(object instance, bool ensureMaximumOfOne, AttributeFullName attributeFullName)
         {
-            var targetType = instance.GetType();
-            var declaringType = targetType.DeclaringType;
+          var details = CollectionArguments<Delegate>.CreateToInspectDelegates(instance,
+            ensureMaximumOfOne,
+            attributeFullName);
 
-            if (declaringType == typeof(object)) return declaringType;
-            if (!declaringType.ContainsGenericParameters) return declaringType;
+          CollectFieldDetails(details);
 
-            var numberOfGenericParametersToProvideToEnclosingType = declaringType.GetGenericTypeDefinition().GetGenericArguments().Count();
-            var parameters = targetType.GetGenericArguments().Take(numberOfGenericParametersToProvideToEnclosingType);
-            var typeDefinition = declaringType.MakeGenericType(parameters.ToArray());
-
-            return typeDefinition;
-        }
-
-        static bool IsStatic(Type target)
-        {
-            return target.IsAbstract && target.IsSealed;
-        }
-
-        static List<Delegate> ExtractPrivateFieldValues(object instance, bool ensureMaximumOfOne, AttributeFullName attributeFullName)
-        {
-            var delegates = new List<Delegate>();
-            var type = instance.GetType();
-            CollectDetailsOf(type, () => instance, delegates, ensureMaximumOfOne, attributeFullName);
-
-            return delegates;
+          return details.Items;
         }
 
         public static void ChangeAllowedNumberOfBecauseBlocksTo(int newValue)
