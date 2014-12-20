@@ -125,7 +125,6 @@ namespace Machine.Specifications.Factories
       return DeclaringType.MakeGenericType(parameters);
     }
 
-
     Type GetDeclaringType()
     {
       if (DeclaringTypeIsObject) 
