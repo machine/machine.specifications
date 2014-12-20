@@ -10,7 +10,6 @@ namespace Machine.Specifications.Factories
   public class FieldInspectionArguments<T>
   {
     Type _target;
-    Type _baseType;
     Func<object> _instanceResolver;
     bool _ensureMaximumOfOne;
     AttributeFullName _attributeFullName;
@@ -29,7 +28,6 @@ namespace Machine.Specifications.Factories
       _ensureMaximumOfOne = ensureMaximumOfOne;
       _attributeFullName = attributeFullName;
       _instance = instanceResolver();
-      _baseType = target.BaseType;
 
       Items = items;
     }
@@ -64,6 +62,38 @@ namespace Machine.Specifications.Factories
     public bool CannotProceed
     {
       get { return _target == typeof(object); }
+    }
+
+    public FieldInspectionArguments<T> DetailsForBaseType()
+    {
+      return new FieldInspectionArguments<T>(_target.BaseType, 
+        _instanceResolver, 
+        Items, 
+        _ensureMaximumOfOne, 
+        _attributeFullName);
+    }
+
+    public FieldInspectionArguments<T> DetailsForDeclaringType()
+    {
+      return new FieldInspectionArguments<T>(_target.DeclaringType,
+        () => Activator.CreateInstance(GetDeclaringTypeResolver()()),
+        Items,
+        _ensureMaximumOfOne,
+        _attributeFullName);
+    }
+
+    public static FieldInspectionArguments<T> CreateFromInstance(object instance,
+      bool ensureMaximumOfOne,
+      AttributeFullName attributeFullName)
+    {
+      var delegates = new List<T>();
+      var type = instance.GetType();
+
+      return new FieldInspectionArguments<T>(type,
+        () => instance,
+        delegates,
+        ensureMaximumOfOne,
+        attributeFullName);
     }
 
     Func<Type> GetDeclaringTypeResolver()
@@ -127,10 +157,7 @@ namespace Machine.Specifications.Factories
 
     Type GetDeclaringType()
     {
-      if (DeclaringTypeIsObject) 
-        return DeclaringType;
-
-      if (DeclaringTypeIsNotGeneric)
+      if (DeclaringTypeIsObject || DeclaringTypeIsNotGeneric)
         return DeclaringType;
 
       return MakeClosedVersionOfDeclaringType();
@@ -144,36 +171,5 @@ namespace Machine.Specifications.Factories
       return parameters.ToArray();
     }
 
-    public FieldInspectionArguments<T> DetailsForBaseType()
-    {
-      return new FieldInspectionArguments<T>(_target.BaseType, 
-        _instanceResolver, 
-        Items, 
-        _ensureMaximumOfOne, 
-        _attributeFullName);
-    }
-
-    public FieldInspectionArguments<T> DetailsForDeclaringType()
-    {
-      return new FieldInspectionArguments<T>(_target.DeclaringType,
-        () => Activator.CreateInstance(GetDeclaringTypeResolver()()),
-        Items,
-        _ensureMaximumOfOne,
-        _attributeFullName);
-    }
-
-    public static FieldInspectionArguments<T> CreateFromInstance(object instance,
-      bool ensureMaximumOfOne,
-      AttributeFullName attributeFullName)
-    {
-      var delegates = new List<T>();
-      var type = instance.GetType();
-
-      return new FieldInspectionArguments<T>(type,
-        () => instance,
-        delegates,
-        ensureMaximumOfOne,
-        attributeFullName);
-    }
   }
 }
