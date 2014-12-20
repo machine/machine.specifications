@@ -120,7 +120,6 @@ namespace Machine.Specifications.Factories
 
     Type GetDeclaringType()
     {
-
       if (DeclaringTypeIsObject) 
         return DeclaringType;
 
