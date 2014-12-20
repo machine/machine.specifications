@@ -66,7 +66,7 @@ namespace Machine.Specifications.Factories
       get { return _target == typeof(object); }
     }
 
-    public Func<Type> GetDeclaringTypeResolver()
+    Func<Type> GetDeclaringTypeResolver()
     {
       Func<Type> declaringTypeResolution = () => _target.DeclaringType;
       Func<Type> resolveDeclaringTypeUsingAnInstanceToMaintainCorrectGenericParameters = () => GetDeclaringType();
@@ -118,16 +118,16 @@ namespace Machine.Specifications.Factories
         _attributeFullName);
     }
 
-    public static CollectionArguments<Delegate> CreateToInspectDelegates(object instance,
+    public static CollectionArguments<T> CreateFromInstance(object instance,
       bool ensureMaximumOfOne,
       AttributeFullName attributeFullName)
     {
-      var delegates = new List<Delegate>();
+      var delegates = new List<T>();
       var type = instance.GetType();
 
       var fields = type.GetInstanceFieldsOfUsage(attributeFullName);
 
-      return new CollectionArguments<Delegate>(type,
+      return new CollectionArguments<T>(type,
         () => instance,
         delegates,
         ensureMaximumOfOne,

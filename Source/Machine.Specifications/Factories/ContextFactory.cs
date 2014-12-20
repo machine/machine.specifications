@@ -172,7 +172,7 @@ namespace Machine.Specifications.Factories
 
       static ICollection<Delegate> ExtractPrivateFieldValues(object instance, bool ensureMaximumOfOne, AttributeFullName attributeFullName)
         {
-          var details = CollectionArguments<Delegate>.CreateToInspectDelegates(instance,
+          var details = CollectionArguments<Delegate>.CreateFromInstance(instance,
             ensureMaximumOfOne,
             attributeFullName);
 
