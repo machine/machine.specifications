@@ -154,20 +154,20 @@ namespace Machine.Specifications.Factories
             }
         }
 
-      static void CollectFieldDetails<T>(FieldInspectionArguments<T> arguments)
+      static void CollectFieldDetails<T>(FieldInspectionArguments<T> inspection)
         {
-            if (arguments.AreNotValidForCollection) return;
+            if (inspection.CannotProceed) return;
 
-            if (arguments.TargetIsStatic)
+            if (inspection.IsTargetingAStatic)
             {
-              CollectFieldDetails(arguments.DetailsForDeclaringType());
+              CollectFieldDetails(inspection.DetailsForDeclaringType());
               return;
             }
 
-            if (arguments.HasNoInstance) return;
+            if (inspection.HasNoInstance) return;
 
-            arguments.CollectFieldValue();
-            CollectFieldDetails(arguments.DetailsForBaseType());
+            inspection.CollectFieldValue();
+            CollectFieldDetails(inspection.DetailsForBaseType());
         }
 
       static ICollection<Delegate> ExtractPrivateFieldValues(object instance, bool ensureMaximumOfOne, AttributeFullName attributeFullName)

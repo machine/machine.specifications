@@ -34,7 +34,7 @@ namespace Machine.Specifications.Factories
       Items = items;
     }
 
-    public bool TargetIsStatic
+    public bool IsTargetingAStatic
     {
       get { return _target.IsAbstract && _target.IsSealed; }
     }
@@ -61,7 +61,7 @@ namespace Machine.Specifications.Factories
       get { return _instance == null; }
     }
 
-    public bool AreNotValidForCollection
+    public bool CannotProceed
     {
       get { return _target == typeof(object); }
     }
