@@ -7,7 +7,7 @@ using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Factories
 {
-  public class CollectionArguments<T>
+  public class FieldInspectionArguments<T>
   {
     Type _target;
     Type _baseType;
@@ -18,7 +18,7 @@ namespace Machine.Specifications.Factories
 
     public ICollection<T> Items { get; private set; }
 
-    public CollectionArguments(Type target,
+    public FieldInspectionArguments(Type target,
       Func<object> instanceResolver,
       ICollection<T> items,
       bool ensureMaximumOfOne,
@@ -100,32 +100,32 @@ namespace Machine.Specifications.Factories
       return typeDefinition;
     }
 
-    public CollectionArguments<T> DetailsForBaseType()
+    public FieldInspectionArguments<T> DetailsForBaseType()
     {
-      return new CollectionArguments<T>(_target.BaseType, 
+      return new FieldInspectionArguments<T>(_target.BaseType, 
         _instanceResolver, 
         Items, 
         _ensureMaximumOfOne, 
         _attributeFullName);
     }
 
-    public CollectionArguments<T> DetailsForDeclaringType()
+    public FieldInspectionArguments<T> DetailsForDeclaringType()
     {
-      return new CollectionArguments<T>(_target.DeclaringType,
+      return new FieldInspectionArguments<T>(_target.DeclaringType,
         () => Activator.CreateInstance(GetDeclaringTypeResolver()()),
         Items,
         _ensureMaximumOfOne,
         _attributeFullName);
     }
 
-    public static CollectionArguments<T> CreateFromInstance(object instance,
+    public static FieldInspectionArguments<T> CreateFromInstance(object instance,
       bool ensureMaximumOfOne,
       AttributeFullName attributeFullName)
     {
       var delegates = new List<T>();
       var type = instance.GetType();
 
-      return new CollectionArguments<T>(type,
+      return new FieldInspectionArguments<T>(type,
         () => instance,
         delegates,
         ensureMaximumOfOne,

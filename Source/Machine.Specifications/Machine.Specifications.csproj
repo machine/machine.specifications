@@ -78,7 +78,7 @@
     <Compile Include="DelegateAttributes.cs" />
     <Compile Include="ExceptionResultExtensions.cs" />
     <Compile Include="Factories\BehaviorFactory.cs" />
-    <Compile Include="Factories\CollectionArguments.cs" />
+    <Compile Include="Factories\FieldInspectionArguments.cs" />
     <Compile Include="Factories\ITagExtractor.cs" />
     <Compile Include="ICleanupAfterEveryContextInAssembly.cs" />
     <Compile Include="Model\Behavior.cs" />

@@ -154,7 +154,7 @@ namespace Machine.Specifications.Factories
             }
         }
 
-      static void CollectFieldDetails<T>(CollectionArguments<T> arguments)
+      static void CollectFieldDetails<T>(FieldInspectionArguments<T> arguments)
         {
             if (arguments.AreNotValidForCollection) return;
 
@@ -172,7 +172,7 @@ namespace Machine.Specifications.Factories
 
       static ICollection<Delegate> ExtractPrivateFieldValues(object instance, bool ensureMaximumOfOne, AttributeFullName attributeFullName)
         {
-          var details = CollectionArguments<Delegate>.CreateFromInstance(instance,
+          var details = FieldInspectionArguments<Delegate>.CreateFromInstance(instance,
             ensureMaximumOfOne,
             attributeFullName);
 
