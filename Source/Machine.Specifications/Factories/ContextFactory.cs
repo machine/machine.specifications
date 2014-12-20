@@ -45,17 +45,17 @@ namespace Machine.Specifications.Factories
             var itShouldBehaveLikeFieldInfos = new List<FieldInfo>();
 
             var contextClauses = ExtractPrivateFieldValues(instance, true, new SetupDelegateAttributeFullName());
-            contextClauses.Reverse();
+            contextClauses = contextClauses.Reverse();
 
             var cleanupClauses = ExtractPrivateFieldValues(instance, true, new CleanupDelegateAttributeFullName());
 
             var becauses = ExtractPrivateFieldValues(instance, false, new ActDelegateAttributeFullName());
-            becauses.Reverse();
+            becauses = becauses.Reverse();
 
-            if (becauses.Count > _allowedNumberOfBecauseBlocks)
+            if (becauses.Count() > _allowedNumberOfBecauseBlocks)
             {
                 var message = String.Format("There can only be one Because clause. Found {0} Becauses in the type hierarchy of {1}.",
-                                            becauses.Count,
+                                            becauses.Count(),
                                             instance.GetType().FullName);
                 throw new SpecificationUsageException(message);
             }
@@ -170,7 +170,7 @@ namespace Machine.Specifications.Factories
             CollectFieldDetails(inspection.DetailsForBaseType());
         }
 
-      static ICollection<Delegate> ExtractPrivateFieldValues(object instance, bool ensureMaximumOfOne, AttributeFullName attributeFullName)
+      static IEnumerable<Delegate> ExtractPrivateFieldValues(object instance, bool ensureMaximumOfOne, AttributeFullName attributeFullName)
         {
           var details = FieldInspectionArguments<Delegate>.CreateFromInstance(instance,
             ensureMaximumOfOne,

@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using Example.Random;
 
 using FluentAssertions;
@@ -75,7 +79,9 @@ namespace Machine.Specifications.Factories
         {
           factory = new ContextFactory();
           newContext =
-            factory.CreateContextFrom(new generic_container<int>.nested_generic_context<string>.nested_nested_non_generic());
+            factory.CreateContextFrom(
+                                      new generic_container<int>.nested_generic_context<string>.
+                                        nested_nested_non_generic());
         }
 
         [Test]
@@ -96,8 +102,9 @@ namespace Machine.Specifications.Factories
         {
           factory = new ContextFactory();
           newContext = factory.CreateContextFrom(
-                                      new generic_container<int>.nested_generic_context<string>.nested_nested_generic
-                                        <bool>());
+                                                 new generic_container<int>.nested_generic_context<string>.
+                                                   nested_nested_generic
+                                                   <bool>());
         }
 
         [Test]
@@ -105,6 +112,45 @@ namespace Machine.Specifications.Factories
         {
           Assert.NotNull(newContext);
         }
+      }
+    }
+
+    [TestFixture]
+    public class when_a_hierarchical_context_is_created
+    {
+      public static IList<int> numbers;
+      ContextFactory factory;
+      Context newContext;
+
+      public class top_of_hierarchy
+      {
+        public Establish first = () =>
+        {
+          numbers.Add(1);
+        };
+
+        public class inner
+        {
+          public Establish second = () =>
+          {
+            numbers.Add(2);
+          };
+        }
+      }
+
+      [SetUp]
+      public void setup()
+      {
+        numbers = new List<int>();
+        factory = new ContextFactory();
+        newContext = factory.CreateContextFrom(new top_of_hierarchy());
+        newContext.EstablishContext();
+      }
+
+      public void establish_blocks_run_in_the_correct_order()
+      {
+        Assert.AreEqual(1, numbers.First());
+        Assert.AreEqual(2, numbers.Last());
       }
     }
   }
