@@ -93,8 +93,13 @@ namespace Machine.Specifications.Factories
       }
 
       var numberOfGenericParametersToProvideToEnclosingType =
-        declaringType.GetGenericTypeDefinition().GetGenericArguments().Count();
-      var parameters = targetType.GetGenericArguments().Take(numberOfGenericParametersToProvideToEnclosingType);
+        declaringType.GetGenericTypeDefinition()
+        .GetGenericArguments()
+        .Count();
+
+      var parameters = targetType.GetGenericArguments()
+        .Take(numberOfGenericParametersToProvideToEnclosingType);
+
       var typeDefinition = declaringType.MakeGenericType(parameters.ToArray());
 
       return typeDefinition;
