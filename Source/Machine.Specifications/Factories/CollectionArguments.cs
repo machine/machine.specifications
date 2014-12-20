@@ -125,8 +125,6 @@ namespace Machine.Specifications.Factories
       var delegates = new List<T>();
       var type = instance.GetType();
 
-      var fields = type.GetInstanceFieldsOfUsage(attributeFullName);
-
       return new CollectionArguments<T>(type,
         () => instance,
         delegates,
