@@ -78,29 +78,59 @@ namespace Machine.Specifications.Factories
       return typeResolver;
     }
 
+    Type DeclaringType
+    {
+      get
+      {
+        return TargetType.DeclaringType;
+      }
+    }
+
+    Type TargetType
+    {
+      get
+      {
+        return _instance.GetType();
+      }
+    }
+
+    bool DeclaringTypeIsObject
+    {
+      get
+      {
+        return DeclaringType == typeof(object);
+      }
+    }
+
+    bool DeclaringTypeIsNotGeneric
+    {
+      get
+      {
+        return !DeclaringType.ContainsGenericParameters;
+      }
+    }
+
+    int NumberOfGenericParametersOnDeclaringType
+    {
+      get
+      {
+        return DeclaringType.GetGenericTypeDefinition().GetGenericArguments().Count();
+      }
+    }
+
     Type GetDeclaringType()
     {
-      var targetType = _instance.GetType();
-      var declaringType = targetType.DeclaringType;
 
-      if (declaringType == typeof(object))
-      {
-        return declaringType;
-      }
-      if (!declaringType.ContainsGenericParameters)
-      {
-        return declaringType;
-      }
+      if (DeclaringTypeIsObject) 
+        return DeclaringType;
 
-      var numberOfGenericParametersToProvideToEnclosingType =
-        declaringType.GetGenericTypeDefinition()
-        .GetGenericArguments()
-        .Count();
+      if (DeclaringTypeIsNotGeneric)
+        return DeclaringType;
 
-      var parameters = targetType.GetGenericArguments()
-        .Take(numberOfGenericParametersToProvideToEnclosingType);
+      var parameters = TargetType.GetGenericArguments()
+        .Take(NumberOfGenericParametersOnDeclaringType);
 
-      var typeDefinition = declaringType.MakeGenericType(parameters.ToArray());
+      var typeDefinition = DeclaringType.MakeGenericType(parameters.ToArray());
 
       return typeDefinition;
     }
