@@ -118,6 +118,14 @@ namespace Machine.Specifications.Factories
       }
     }
 
+    Type MakeClosedVersionOfDeclaringType()
+    {
+      var parameters = GetGenericParametersForDeclaringType();
+
+      return DeclaringType.MakeGenericType(parameters);
+    }
+
+
     Type GetDeclaringType()
     {
       if (DeclaringTypeIsObject) 
@@ -126,12 +134,15 @@ namespace Machine.Specifications.Factories
       if (DeclaringTypeIsNotGeneric)
         return DeclaringType;
 
+      return MakeClosedVersionOfDeclaringType();
+    }
+
+    Type[] GetGenericParametersForDeclaringType()
+    {
       var parameters = TargetType.GetGenericArguments()
         .Take(NumberOfGenericParametersOnDeclaringType);
 
-      var typeDefinition = DeclaringType.MakeGenericType(parameters.ToArray());
-
-      return typeDefinition;
+      return parameters.ToArray();
     }
 
     public FieldInspectionArguments<T> DetailsForBaseType()
