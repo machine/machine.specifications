@@ -1,17 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{8B6A3294-62DB-4838-AF2F-F107A1CC1926}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Machine.Specifications.Clr4.Specs</RootNamespace>
     <AssemblyName>Machine.Specifications.Clr4.Specs</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>015587ff</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -62,12 +58,19 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- MSpec --> 
+  <Import Project="..\..\packages\GitVersionTask.1.3.3\Build\GitVersionTask.targets" Condition="Exists('..\..\packages\GitVersionTask.1.3.3\Build\GitVersionTask.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\GitVersionTask.1.3.3\Build\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\GitVersionTask.1.3.3\Build\GitVersionTask.targets'))" />
+  </Target>
+  <!-- MSpec -->
   <PropertyGroup>
     <BuildDependsOn>$(BuildDependsOn);MSpec</BuildDependsOn>
     <RebuildDependsOn>$(RebuildDependsOn);MSpec</RebuildDependsOn>
   </PropertyGroup>
-  
+
   <PropertyGroup>
     <SpecsFolder>$(SolutionDir)\Specs\</SpecsFolder>
   </PropertyGroup>
@@ -78,14 +81,7 @@
     <MakeDir Directories="$(SpecsFolder)" />
     <Error Condition="'@(MSpec->Count())' != '1'" Text="There are several MSpec.Runners packages installed. Cannot execute specs." />
     <Exec
-        Condition="'$(Configuration)' == 'Release'"
-        Command="@(MSpec->'%(FullPath)') --progress --silent $(TargetPath) --html $(SpecsFolder)$(MSBuildProjectName).html" />
-  </Target>
-  <Import Project="..\..\packages\GitVersionTask.1.3.3\Build\GitVersionTask.targets" Condition="Exists('..\..\packages\GitVersionTask.1.3.3\Build\GitVersionTask.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\GitVersionTask.1.3.3\Build\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\GitVersionTask.1.3.3\Build\GitVersionTask.targets'))" />
-  </Target>
+      Condition="'$(Configuration)' == 'Release'"
+      Command="@(MSpec->'%(FullPath)') --progress --silent $(TargetPath) --html $(SpecsFolder)$(MSBuildProjectName).html" />
+    </Target>
 </Project>
