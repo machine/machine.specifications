@@ -30,7 +30,7 @@
 	</metadata>
 	<files>
 		<!-- NET 4.5 -->
-		<file src="..\Build\Release\Machine.Specifications.dll" target="lib\net45" />
+		<file src="..\..\Build\Release\Machine.Specifications.dll" target="lib\net45" />
 		<file src="..\..\Build\Release\Machine.Specifications.pdb" target="lib\net45" />
 		<file src="..\..\Build\Release\Machine.Specifications.Clr4.dll" target="lib\net45" />
 		<file src="..\..\Build\Release\Machine.Specifications.Clr4.pdb" target="lib\net45" />
@@ -46,7 +46,7 @@
 		<file src="..\..\Build\Release\Machine.Specifications.pdb" target="lib\net20" />
 
 		<!-- Sources -->
-		<file src="..\..\Source\**\*.cs" target="src" exclude="..\..\Source\Examples\**;..\Source\*.Specs\**;..\Source\*.Tests\**;..\Source\**\*.Specs\**"/>
+		<file src="..\..\Source\**\*.cs" target="src" exclude="..\..\Source\Examples\**;..\..\Source\*.Specs\**;..\..\Source\*.Tests\**;..\..\Source\**\*.Specs\**"/>
 
 		<!-- Tools -->
 		<file src="..\..\Install.ps1" target="tools" />
