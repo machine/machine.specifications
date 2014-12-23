@@ -75,8 +75,9 @@ namespace Machine.Specifications.Factories
 
     public FieldInspectionArguments<T> DetailsForDeclaringType()
     {
-      return new FieldInspectionArguments<T>(_target.DeclaringType,
-        () => Activator.CreateInstance(GetDeclaringTypeResolver()()),
+      var declaringType = GetDeclaringTypeResolver()();
+      return new FieldInspectionArguments<T>(declaringType,
+        () => Activator.CreateInstance(declaringType),
         Items,
         _ensureMaximumOfOne,
         _attributeFullName);
@@ -123,6 +124,16 @@ namespace Machine.Specifications.Factories
         return _instance.GetType();
       }
     }
+
+
+    public bool IsNested
+    {
+      get
+      {
+        return TargetType.IsNested;
+      }
+    }
+
 
     bool DeclaringTypeIsObject
     {

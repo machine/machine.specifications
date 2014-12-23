@@ -45,7 +45,6 @@ namespace Machine.Specifications.Factories
             var itShouldBehaveLikeFieldInfos = new List<FieldInfo>();
 
             var contextClauses = ExtractPrivateFieldValues(instance, true, new SetupDelegateAttributeFullName());
-            contextClauses = contextClauses.Reverse();
 
             var cleanupClauses = ExtractPrivateFieldValues(instance, true, new CleanupDelegateAttributeFullName());
 
@@ -165,6 +164,9 @@ namespace Machine.Specifications.Factories
             }
 
             if (inspection.HasNoInstance) return;
+
+            if (inspection.IsNested)
+              CollectFieldDetails(inspection.DetailsForDeclaringType());
 
             inspection.CollectFieldValue();
             CollectFieldDetails(inspection.DetailsForBaseType());
