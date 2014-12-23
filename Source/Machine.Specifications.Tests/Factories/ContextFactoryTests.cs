@@ -23,9 +23,50 @@ namespace Machine.Specifications.Factories
   }
 
   [TestFixture]
-  public class when_a_hierarchical_context_is_created
+  public class when_using_nested_contexts
   {
     public static IList<int> numbers;
+    ContextFactory factory;
+    Context newContext;
+
+    public class top_of_hierarchy
+    {
+      Establish first = () => { numbers.Add(1); };
+
+      public class inner
+      {
+        Establish second = () => { numbers.Add(2); };
+      }
+    }
+
+    [SetUp]
+    public void setup()
+    {
+      numbers = new List<int>();
+      factory = new ContextFactory();
+      newContext = factory.CreateContextFrom(new top_of_hierarchy.inner());
+      newContext.EstablishContext();
+    }
+
+    [TearDown]
+    public void teardown()
+    {
+      numbers.Clear();
+    }
+
+    [Test]
+    public void establish_blocks_run_in_the_correct_order()
+    {
+      Assert.AreEqual(2, numbers.Count());
+      Assert.AreEqual(1, numbers[0]);
+      Assert.AreEqual(2, numbers[1]);
+    }
+  }
+
+  [TestFixture]
+  public class when_creating_a_nested_context
+  {
+    public static List<int> numbers;
     ContextFactory factory;
     Context newContext;
 
@@ -34,10 +75,16 @@ namespace Machine.Specifications.Factories
       Establish first = () =>
         numbers.Add(1);
 
-      public class inner
+      public class some_other_base
       {
-        Establish second = () =>
+        Establish c = () =>
           numbers.Add(2);
+      }
+
+      public class inner : some_other_base
+      {
+        Establish third = () =>
+          numbers.Add(3);
       }
     }
 
@@ -53,9 +100,10 @@ namespace Machine.Specifications.Factories
     [Test]
     public void establish_blocks_run_in_the_correct_order()
     {
-      Assert.AreEqual(2, numbers.Count());
-      Assert.AreEqual(1, numbers[0]);
-      Assert.AreEqual(2, numbers[1]);
+      var results = numbers.Distinct().ToList();
+      Assert.AreEqual(1, results[0]);
+      Assert.AreEqual(2, results[1]);
+      Assert.AreEqual(3, results[2]);
     }
   }
 

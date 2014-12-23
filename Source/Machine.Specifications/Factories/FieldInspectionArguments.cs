@@ -7,7 +7,12 @@ using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Factories
 {
-  public class FieldInspectionArguments<T>
+  public interface IInspectFields
+  {
+    bool CannotProceed { get; }
+  }
+
+  public class FieldInspectionArguments<T> : IInspectFields
   {
     Type _target;
     Func<object> _instanceResolver;
@@ -32,7 +37,7 @@ namespace Machine.Specifications.Factories
       Items = items;
     }
 
-    public bool IsTargetingAStatic
+    public bool IsAbstractOrSealed
     {
       get { return _target.IsAbstract && _target.IsSealed; }
     }
@@ -54,9 +59,9 @@ namespace Machine.Specifications.Factories
       }
     }
 
-    public bool HasNoInstance
+    public bool HasInstance
     {
-      get { return _instance == null; }
+      get { return _instance != null; }
     }
 
     public bool CannotProceed
@@ -81,6 +86,7 @@ namespace Machine.Specifications.Factories
         Items,
         _ensureMaximumOfOne,
         _attributeFullName);
+
     }
 
     public static FieldInspectionArguments<T> CreateFromInstance(object instance,
