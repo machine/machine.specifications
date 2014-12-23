@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>Machine.Specifications-Signed</id>
+		<version>$version$</version>
+		<title>Machine.Specifications-Signed</title>
+		<authors>Aaron Jensen, Alexander Groß, Daniel Marbach, et al.</authors>
+		<owners>Alexander Groß, Daniel Marbach</owners>
+		<summary>Machine.Specifications Context/Specification framework</summary>
+		<description>Machine.Specifications is a Context/Specification framework geared towards removing language noise and simplifying tests.</description>
+		<language>en-US</language>
+		<projectUrl>http://github.com/machine/machine.specifications</projectUrl>
+		<licenseUrl>http://github.com/machine/machine.specifications/blob/master/License.txt</licenseUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<iconUrl>http://github.com/machine/machine.specifications/raw/master/Misc/Machine.Specifications-128x128.png</iconUrl>
+		<tags>test unit testing context specification bdd tdd mspec</tags>
+		<references>
+			<group targetFramework="net45">
+				<reference file="Machine.Specifications.dll" />
+				<reference file="Machine.Specifications.Clr4.dll" />
+			</group>
+			<group targetFramework="net40">
+				<reference file="Machine.Specifications.dll" />
+				<reference file="Machine.Specifications.Clr4.dll" />
+			</group>
+			<group>
+				<reference file="Machine.Specifications.dll" />
+			</group>
+		</references>
+	</metadata>
+	<files>
+		<!-- NET 4.5 -->
+		<file src="..\Build\Release\Machine.Specifications.dll" target="lib\net45" />
+		<file src="..\Build\Release\Machine.Specifications.pdb" target="lib\net45" />
+		<file src="..\Build\Release\Machine.Specifications.Clr4.dll" target="lib\net45" />
+		<file src="..\Build\Release\Machine.Specifications.Clr4.pdb" target="lib\net45" />
+
+		<!-- NET 4.0 -->
+		<file src="..\Build\Release\Machine.Specifications.dll" target="lib\net40" />
+		<file src="..\Build\Release\Machine.Specifications.pdb" target="lib\net40" />
+		<file src="..\Build\Release\Machine.Specifications.Clr4.dll" target="lib\net40" />
+		<file src="..\Build\Release\Machine.Specifications.Clr4.pdb" target="lib\net40" />
+
+		<!-- NET 2.0 -->
+		<file src="..\Build\Release\Machine.Specifications.dll" target="lib\net20" />
+		<file src="..\Build\Release\Machine.Specifications.pdb" target="lib\net20" />
+
+		<!-- Sources -->
+		<file src="..\Source\**\*.cs" target="src" exclude="..\Source\Examples\**;..\Source\*.Specs\**;..\Source\*.Tests\**;..\Source\**\*.Specs\**"/>
+
+		<!-- Tools -->
+		<file src="..\License.txt" target="tools" />
+		<file src="..\History.txt" target="tools" />
+	</files>
+</package>

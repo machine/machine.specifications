@@ -49,6 +49,7 @@
 		<file src="..\Source\**\*.cs" target="src" exclude="..\Source\Examples\**;..\Source\*.Specs\**;..\Source\*.Tests\**;..\Source\**\*.Specs\**"/>
 
 		<!-- Tools -->
+		<file src="..\Install.ps1" target="tools" />
 		<file src="..\License.txt" target="tools" />
 		<file src="..\History.txt" target="tools" />
 	</files>
