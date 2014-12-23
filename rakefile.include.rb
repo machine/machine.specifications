@@ -71,19 +71,6 @@ msbuild :build do |msb|
   }
 end
 
-desc "Run all nunit tests"
-nunit :tests => [:rebuild] do |cmd|
-  cmd.command = "packages/NUnit.Runners.2.6.3/tools/nunit-console-x86.exe"
-  cmd.assemblies = FileList.new("#{configatron.out_dir}/Tests/*.Tests.dll").to_a
-  #cmd.results_path = "Specs/test-report.xml"
-  #cmd.no_logo
-  cmd.parameters = [
-    "/framework=#{configatron.nunit_framework}",
-	"/nothread",
-	"/work=Specs"
-  ]
-end
-
 task :templates do
   #Prepare templates
   FileList.new('**/*.template').each do |template|
