@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,11 +31,13 @@ namespace Machine.Specifications.Factories
 
     public class top_of_hierarchy
     {
-      Establish first = () => { numbers.Add(1); };
+      Establish first = () =>
+        numbers.Add(1);
 
       public class inner
       {
-        Establish second = () => { numbers.Add(2); };
+        Establish second = () =>
+          numbers.Add(2);
       }
     }
 
