@@ -80,13 +80,23 @@ namespace Machine.Specifications.Factories
 
     public FieldInspectionArguments<T> DetailsForDeclaringType()
     {
-      var declaringType = GetDeclaringTypeResolver()();
+      var declaringType = GetFullyClosedDeclaringType();
+      var factory = GetNextInstanceResolver(declaringType);
+
       return new FieldInspectionArguments<T>(declaringType,
-        () => Activator.CreateInstance(declaringType),
+        factory,
         Items,
         _ensureMaximumOfOne,
         _attributeFullName);
 
+    }
+
+    static Func<object> GetNextInstanceResolver(Type declaringType)
+    {
+      if (declaringType.IsAbstract || declaringType.IsSealed)
+        return () => declaringType;
+
+      return () => Activator.CreateInstance(declaringType);
     }
 
     public static FieldInspectionArguments<T> CreateFromInstance(object instance,
@@ -103,16 +113,12 @@ namespace Machine.Specifications.Factories
         attributeFullName);
     }
 
-    Func<Type> GetDeclaringTypeResolver()
+    Type GetFullyClosedDeclaringType()
     {
-      Func<Type> declaringTypeResolution = () => _target.DeclaringType;
-      Func<Type> resolveDeclaringTypeUsingAnInstanceToMaintainCorrectGenericParameters = () => GetDeclaringType();
+      if (_instance == null)
+        return _target.DeclaringType;
 
-      var typeResolver = _instance == null
-        ? declaringTypeResolution
-        : resolveDeclaringTypeUsingAnInstanceToMaintainCorrectGenericParameters;
-
-      return typeResolver;
+      return GetDeclaringType();
     }
 
     Type DeclaringType

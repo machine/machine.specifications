@@ -221,7 +221,7 @@ namespace Machine.Specifications.Specs.Factories
           () => newContext.Should().NotBeNull();
       }
 
-      public class and_the_nested_context_generic
+      public class and_the_nested_context_is_generic
       {
         static Context newContext;
 
