@@ -161,11 +161,8 @@ namespace Machine.Specifications.Factories
       if (inspection.CannotProceed)
         return;
 
-      if (inspection.HasInstance)
-      {
-        inspection.CollectFieldValue();
-        CollectFieldDetails(inspection.DetailsForBaseType());
-      }
+      inspection.CollectFieldValue();
+      CollectFieldDetails(inspection.DetailsForBaseType());
 
       if (inspection.IsNested)
         CollectFieldDetails(inspection.DetailsForDeclaringType());

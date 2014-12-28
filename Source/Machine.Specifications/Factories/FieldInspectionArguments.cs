@@ -59,11 +59,6 @@ namespace Machine.Specifications.Factories
       }
     }
 
-    public bool HasInstance
-    {
-      get { return _instance != null; }
-    }
-
     public bool CannotProceed
     {
       get { return _target == typeof(object); }
