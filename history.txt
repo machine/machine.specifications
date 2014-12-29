@@ -1,3 +1,9 @@
+Machine.Specifications 0.9.2
+-----------------------------
+- Fixed #260 by developwithpassion, THX!
+  Deep nested contexts with varying levels of outer & inner generic type parameters 
+  cannot be created successfully by the ContextFactory
+
 Machine.Specifications 0.9.1
 -----------------------------
 - Fixed #255 to re-enable capture output feature.
