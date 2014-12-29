@@ -264,8 +264,7 @@ More information can be found under [the reporting repo](https://github.com/mach
 
 # ReSharper Integration
 
-MSpec provides a batch file to integrate with the ReSharper test runner, custom naming rules, and code annotations. MSpec currently supports ReSharper 7.1, 8.0, 8.1 and 8.2. We strongly recommend to install the ReSharper integration with the Extension Manager. Just search for Machine.Specifications.Runner.Resharper. In future versions the command line batch installation will be deprecated.
-
+MSpec a plugin to integrate with the ReSharper test runner, custom naming rules, and code annotations.
 
 More information can be found under [the resharper repo](https://github.com/machine/machine.specifications.runner.resharper). Please provide feedback, feature requests, issues and more in that repository.
 
