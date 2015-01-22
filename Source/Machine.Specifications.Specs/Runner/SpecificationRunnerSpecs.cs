@@ -183,6 +183,16 @@ namespace Machine.Specifications.Specs.Runner
   }
 
   [Subject("Specification Runner")]
+  public class when_running_a_context_with_failing_cleanup_clauses
+    : RunnerSpecs
+  {
+      Because of = Run<context_with_failing_cleanup>;
+
+      It should_fail = () =>
+      testListener.LastResult.Passed.Should().BeFalse();
+  }
+
+  [Subject("Specification Runner")]
   public class when_running_a_context_with_failing_because_clauses
     : RunnerSpecs
   {

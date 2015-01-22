@@ -131,6 +131,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -141,8 +142,6 @@
   </PropertyGroup>
   <Target Name="AfterBuild">
     <MakeDir Directories="$(SpecsFolder)" />
-    <Exec 
-      Condition="'$(Configuration)' == 'Release'" 
-      Command="$(SolutionDir)\packages\Machine.Specifications.Runner.Console.0.9.0-Unstable0017\tools\mspec.exe --progress --silent $(TargetPath) --html $(SpecsFolder)$(MSBuildProjectName).html" />
-  </Target>  
+    <Exec Condition="'$(Configuration)' == 'Release'" Command="$(SolutionDir)\packages\Machine.Specifications.Runner.Console.0.9.0-Unstable0017\tools\mspec.exe --progress --silent $(TargetPath) --html $(SpecsFolder)$(MSBuildProjectName).html" />
+  </Target>
 </Project>

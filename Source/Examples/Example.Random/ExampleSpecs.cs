@@ -197,6 +197,14 @@ namespace Example.Random
   }
 
   [Tags(tag.example)]
+  public class context_with_failing_cleanup
+  {
+    Because of = () => { };
+    It should = () => { };
+    Cleanup after = () => { throw new InvalidOperationException("something went wrong"); };
+  }
+
+  [Tags(tag.example)]
   public class context_with_console_output
   {
     Establish context =
