@@ -34,7 +34,12 @@ namespace Machine.Specifications.Runner.Impl
 
       if (context.HasExecutableSpecifications)
       {
-        result = context.Cleanup();
+        var cleanupResult = context.Cleanup();
+        if (!cleanupResult.Passed)
+        {
+            results = FailSpecifications(context, listener, options, cleanupResult, resultSupplementers);
+        }
+        
         foreach (var cleanup in globalCleanups)
         {
           cleanup.AfterContextCleanup();
