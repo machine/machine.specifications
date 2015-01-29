@@ -179,7 +179,7 @@ namespace Machine.Specifications.Specs.Runner
     Because of = Run<context_with_failing_establish>;
 
     It should_fail = () =>
-    testListener.LastResult.Passed.Should().BeFalse();
+      testListener.LastResult.Passed.Should().BeFalse();
   }
 
   [Subject("Specification Runner")]
@@ -189,7 +189,22 @@ namespace Machine.Specifications.Specs.Runner
     Because of = Run<context_with_failing_because>;
 
     It should_fail = () =>
-    testListener.LastResult.Passed.Should().BeFalse();
+      testListener.LastResult.Passed.Should().BeFalse();
+  }
+
+  [Subject("Specification Runner")]
+  public class when_running_a_context_with_failing_cleanup_clause
+    : RunnerSpecs
+  {
+    static Exception exception;
+
+    Because of = Run<context_with_failing_cleanup>;
+      
+    It should_report_cleanup_exception = () => 
+      testListener
+        .LastFatalError
+        .InnerExceptionResult
+        .Message.Should().Be(context_with_failing_cleanup.ExceptionThrownByCleanup.Message);
   }
 
   [Subject("Specification Runner")]
