@@ -174,28 +174,28 @@ namespace Machine.Specifications.Runner.Impl
             {
                 // TODO: Optimize loading of assemblies
                 case "startrun":
-                    this.StartRun(Assembly.LoadFile(element.Value));
+                    this.StartRun(Assembly.LoadFrom(element.Value));
                     break;
                 case "endrun":
-                    this.EndRun(Assembly.LoadFile(element.Value));
+                    this.EndRun(Assembly.LoadFrom(element.Value));
                     break;
                 case "runassembly":
-                    this.RunAssembly(Assembly.LoadFile(element.Value));
+                    this.RunAssembly(Assembly.LoadFrom(element.Value));
                     break;
                 case "runnamespace":
                     assemblyElement = element.XPathSelectElement("/runner/runnamespace/assembly");
                     var namespaceElement = element.XPathSelectElement("/runner/runnamespace/namespace");
 
-                    this.RunNamespace(Assembly.LoadFile(assemblyElement.Value), namespaceElement.Value);
+                    this.RunNamespace(Assembly.LoadFrom(assemblyElement.Value), namespaceElement.Value);
                     break;
                 case "runmember":
                     assemblyElement = element.XPathSelectElement("/runner/runmember/assembly");
                     var memberInfo = msg.Properties["member"] as MemberInfo;
 
-                    this.RunMember(Assembly.LoadFile(assemblyElement.Value), memberInfo);
+                    this.RunMember(Assembly.LoadFrom(assemblyElement.Value), memberInfo);
                     break;
                 case "runassemblies":
-                    this.RunAssemblies(element.Elements("assemblies").Select(e => Assembly.LoadFile(e.Value)));
+                    this.RunAssemblies(element.Elements("assemblies").Select(e => Assembly.LoadFrom(e.Value)));
                     break;
             }
 
