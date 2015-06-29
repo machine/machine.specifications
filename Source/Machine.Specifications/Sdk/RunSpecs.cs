@@ -9,7 +9,7 @@ namespace Machine.Specifications.Sdk
         public RunSpecs(object listener, string runOptionsXml, IEnumerable<string> assemblyPaths)
             : base(listener, runOptionsXml)
         {
-            var assemblies = assemblyPaths.Select(Assembly.LoadFile);
+            var assemblies = assemblyPaths.Select(Assembly.LoadFrom);
 
             // TODO: What to do with that?
             if (RunOptions.Contexts.Any())
