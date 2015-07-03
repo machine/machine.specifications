@@ -197,6 +197,15 @@ namespace Example.Random
   }
 
   [Tags(tag.example)]
+  public class context_with_failing_cleanup
+  {
+    public static readonly Exception ExceptionThrownByCleanup = new InvalidOperationException("something went wrong");
+
+    It should = () => { };
+    Cleanup after = () => { throw ExceptionThrownByCleanup; };
+  }
+
+  [Tags(tag.example)]
   public class context_with_console_output
   {
     Establish context =

@@ -4,6 +4,10 @@ Machine.Specifications 0.10.0
   Deep nested contexts with varying levels of outer & inner generic type parameters 
   cannot be created successfully by the ContextFactory
 
+Machine.Specifications 0.9.3
+-----------------------------
+- Fixed #170: Exceptions in Cleanup are now reported by failing the test. Previously these exceptions were swallowed.
+
 Machine.Specifications 0.9.2
 -----------------------------
 - Fixed #278 broken shadow copy
