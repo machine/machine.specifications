@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Machine.Specifications.Model;
 using System.Linq;
@@ -34,7 +33,12 @@ namespace Machine.Specifications.Runner.Impl
 
       if (context.HasExecutableSpecifications)
       {
-        result = context.Cleanup();
+        var cleanupResult = context.Cleanup();
+        if (!cleanupResult.Passed)
+        {
+          listener.OnFatalError(cleanupResult.Exception);
+        }
+
         foreach (var cleanup in globalCleanups)
         {
           cleanup.AfterContextCleanup();
