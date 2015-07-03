@@ -1,6 +1,6 @@
 Machine.Specifications 0.9.3
 -----------------------------
-- Fixed #170: Exceptions in Cleanup are now reported by failing the test.
+- Fixed #170: Exceptions in Cleanup are now reported by failing the test. Previously these exceptions were swallowed.
 
 Machine.Specifications 0.9.2
 -----------------------------
