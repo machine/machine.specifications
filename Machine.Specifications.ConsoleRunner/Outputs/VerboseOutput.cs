@@ -1,3 +1,5 @@
+using System;
+
 using Machine.Specifications.Runner.Utility;
 
 namespace Machine.Specifications.ConsoleRunner.Outputs
@@ -70,6 +72,12 @@ namespace Machine.Specifications.ConsoleRunner.Outputs
         {
             _console.WriteLine(" (FAIL)");
             _console.WriteLine(result.Exception.ToString());
+        }
+
+        public void FatalError(ExceptionResult exception)
+        {
+            _console.WriteLine(exception.ToString());
+            EmptyLine();
         }
 
         void EmptyLine()

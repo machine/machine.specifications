@@ -132,6 +132,8 @@ namespace Machine.Specifications.ConsoleRunner
             _console.WriteLine("");
             _console.WriteLine("Fatal Error");
             _console.WriteLine(exception.ToString());
+
+            _summary.RecordFatalError(exception);
         }
 
         static DateTime FormattableTimeSpan(long milliseconds)
