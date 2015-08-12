@@ -3,6 +3,7 @@ Machine.Specifications 0.10.0
 - Fixed #260 by developwithpassion, THX!
   Deep nested contexts with varying levels of outer & inner generic type parameters 
   cannot be created successfully by the ContextFactory
+- Default namespace for JetBrains annotation attributes (#282)
 
 Machine.Specifications 0.9.3
 -----------------------------

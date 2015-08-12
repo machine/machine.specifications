@@ -270,13 +270,7 @@ More information can be found under [the resharper repo](https://github.com/mach
 
 ### Code Annotations
 
-By default, ReSharper thinks that specification classes (those with the `[Subject]` attribute) and their internals are unused. To change this behavior in Visual Studio:
-
- 1. Open the ReSharper Options (ReSharper -> Options...)
- 1. Select "Code Annotations"
- 1. Ensure that the namespace "Machine.Specifications.Annotations" is checked
- 1. Click "OK"
- 1. Make sure your reports are decorated with `[Subject]` attribute
+MSpec uses [ReSharper Code Annotations](https://www.jetbrains.com/resharper/help/Code_Analysis__Code_Annotations.html) to automatically annotate spec classes (decorated by a `[Subject]` attribute) and behavior classes (`[Behaviors]` attribute) and their members as "implicity used" to avoid "Type/Member 'x' is never used" warnings.
 
 ### Templates
 
