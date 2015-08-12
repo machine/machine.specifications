@@ -1,5 +1,5 @@
 using System;
-using Machine.Specifications.Annotations;
+using JetBrains.Annotations;
 
 namespace Machine.Specifications
 {
