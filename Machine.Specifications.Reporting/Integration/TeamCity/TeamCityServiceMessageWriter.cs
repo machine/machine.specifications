@@ -237,7 +237,7 @@ namespace Machine.Specifications.Reporting.Integration.TeamCity
         {
           WriteMessage(builder =>
           {
-            builder.Append("message test='");
+            builder.Append("message text='");
             AppendEscapedString(builder, message);
             builder.Append("' errorDetails='");
             AppendEscapedString(builder, details);

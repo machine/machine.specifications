@@ -19,7 +19,7 @@ namespace Machine.Specifications.Reporting.Specs.Integration
           () => Written.Should().EndWith("status=\'ERROR\']");
 
         It should_report_the_error_message =
-          () => { Written.Should().Contain("test=\'test failed\'"); };
+          () => { Written.Should().Contain("text=\'test failed\'"); };
 
         It should_report_error_details =
           () => { Written.Should().Contain("errorDetails=\'details\'"); };
