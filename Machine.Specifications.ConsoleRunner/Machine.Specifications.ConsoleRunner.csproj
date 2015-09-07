@@ -59,11 +59,13 @@
     <Reference Include="CommandLine">
       <HintPath>..\packages\CommandLineParser.1.9.71\lib\net35\CommandLine.dll</HintPath>
     </Reference>
-    <Reference Include="Machine.Specifications.Reporting">
-      <HintPath>..\packages\Machine.Specifications.Reporting.0.9.0\lib\net20\Machine.Specifications.Reporting.dll</HintPath>
+    <Reference Include="Machine.Specifications.Reporting, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Machine.Specifications.Reporting.0.9.1\lib\net20\Machine.Specifications.Reporting.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Machine.Specifications.Reporting.Templates">
-      <HintPath>..\packages\Machine.Specifications.Reporting.0.9.0\lib\net20\Machine.Specifications.Reporting.Templates.dll</HintPath>
+    <Reference Include="Machine.Specifications.Reporting.Templates, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Machine.Specifications.Reporting.0.9.1\lib\net20\Machine.Specifications.Reporting.Templates.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Machine.Specifications.Runner.Utility">
       <HintPath>..\packages\Machine.Specifications.Runner.Utility.0.9.0\lib\net20\Machine.Specifications.Runner.Utility.dll</HintPath>
