@@ -527,6 +527,23 @@ namespace Machine.Specifications.Should.Specs
   But was:  [null]");
         }
 
+        class and_actual_has_circular_reference
+        {
+            Establish ctx = () =>
+            {
+                actualNode.Next = actualNode;
+                expectedNode.Next = null;
+            };
+
+            Because of = () => exception = Catch.Exception(() => actualNode.ShouldBeLike(expectedNode));
+
+            It should_throw = () => exception.ShouldBeOfExactType<SpecificationException>();
+
+            It should_contain_message = () => exception.Message.ShouldEqual(@"""Next"":
+  Expected: [null]
+  But was:  Machine.Specifications.Should.Specs.when_node_with_circular_references+Node");
+        }
+
         class and_the_object_graph_is_similar
         {
             Establish ctx = () =>
