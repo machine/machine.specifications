@@ -447,4 +447,208 @@ namespace Machine.Specifications.Should.Specs
 }");
         }
     }
+
+    [Subject(typeof (ShouldExtensionMethods))]
+    public class when_node_with_circular_references
+    {
+        class Node
+        {
+            public string Field;
+            public Node Next;
+        }
+
+        static Exception exception;
+
+        static Node actualNode;
+        static Node expectedNode;
+
+        Establish ctx = () =>
+        {
+            actualNode = new Node { Field = "field1" };
+            expectedNode = new Node { Field = "field1" };
+        };
+
+        class and_the_objects_are_equal
+        {
+            Establish ctx = () => actualNode.Next = actualNode;
+
+            Because of = () => exception = Catch.Exception(() => actualNode.ShouldBeLike(actualNode));
+
+            It should_not_throw = () => exception.ShouldBeNull();
+        }
+
+        class and_the_objects_are_similar
+        {
+            Establish ctx = () =>
+            {
+                actualNode.Next = actualNode;
+                expectedNode.Next = expectedNode;
+            };
+
+            Because of = () => exception = Catch.Exception(() => actualNode.ShouldBeLike(expectedNode));
+
+            It should_not_throw = () => exception.ShouldBeNull();
+        }
+
+        class and_the_objects_differ_by_string_field
+        {
+            Establish ctx = () =>
+            {
+                actualNode.Next = actualNode;
+                expectedNode.Next = expectedNode;
+                expectedNode.Field = "field2";
+            };
+
+            Because of = () => exception = Catch.Exception(() => actualNode.ShouldBeLike(expectedNode));
+
+            It should_throw = () => exception.ShouldBeOfExactType<SpecificationException>();
+
+            It should_contain_message = () => exception.Message.ShouldEqual(@"""Field"":
+  String lengths are both 6. Strings differ at index 5.
+  Expected: ""field2""
+  But was:  ""field1""
+  ----------------^");
+        }
+
+        class and_expected_has_circular_reference
+        {
+            Establish ctx = () =>
+            {
+                actualNode.Next = null;
+                expectedNode.Next = expectedNode;
+            };
+
+            Because of = () => exception = Catch.Exception(() => actualNode.ShouldBeLike(expectedNode));
+
+            It should_throw = () => exception.ShouldBeOfExactType<SpecificationException>();
+
+            It should_contain_message = () => exception.Message.ShouldEqual(@"""Next"":
+  Expected: Machine.Specifications.Should.Specs.when_node_with_circular_references+Node
+  But was:  [null]");
+        }
+
+        class and_the_object_graph_is_similar
+        {
+            Establish ctx = () =>
+            {
+                actualNode.Next = actualNode;
+                var interNode = new Node { Field = "field1", Next = expectedNode };
+                expectedNode.Next = interNode;
+            };
+
+            Because of = () => exception = Catch.Exception(() => actualNode.ShouldBeLike(expectedNode));
+
+            It should_not_throw = () => exception.ShouldBeNull();
+        }
+
+        class and_the_objects_differ_by_referencing_node
+        {
+            Establish ctx = () =>
+            {
+                actualNode.Next = actualNode;
+                var interNode = new Node {Field = "field3", Next = expectedNode};
+                expectedNode.Next = interNode;
+            };
+
+            Because of = () => exception = Catch.Exception(() => actualNode.ShouldBeLike(expectedNode));
+
+            It should_throw = () => exception.ShouldBeOfExactType<SpecificationException>();
+
+            It should_contain_message = () => exception.Message.ShouldEqual(@"""Next.Field"":
+  String lengths are both 6. Strings differ at index 5.
+  Expected: ""field3""
+  But was:  ""field1""
+  ----------------^");
+        }
+
+        class and_the_node_has_indirect_circular_reference
+        {
+            Establish ctx = () =>
+            {
+                var interNode = new Node {Field = "node3", Next = actualNode };
+                actualNode.Next = expectedNode;
+                expectedNode.Next = interNode;
+            };
+
+            Because of = () => exception = Catch.Exception(() => actualNode.ShouldBeLike(actualNode));
+
+            It should_not_throw = () => exception.ShouldBeNull();
+        }
+    }
+
+    [Subject(typeof(ShouldExtensionMethods))]
+    class when_complex_type_with_circular_references_are_in_collection
+    {
+        class Node
+        {
+            public string Field;
+            public Node Next;
+        }
+
+        static Exception exception;
+
+        static Node node1;
+        static Node node2;
+
+        static List<Node> actualNodeList;
+        static List<Node> expectedNodeList;
+
+        Establish ctx = () =>
+        {
+            node1 = new Node {Field = "node1Field"};
+            node1.Next = node1;
+            node2 = new Node {Field = "node2Field"};
+            node2.Next = node2;
+        };
+
+        class and_the_elements_are_similar
+        {
+            Establish ctx = () =>
+            {
+                actualNodeList = new List<Node> { node1, node2 };
+                expectedNodeList = new List<Node> { node1, node2 };
+            };
+
+            Because of = () => exception = Catch.Exception(() => actualNodeList.ShouldBeLike(expectedNodeList));
+
+            It should_not_throw = () => exception.ShouldBeNull();
+        }
+
+        class and_the_elements_differ
+        {
+            Establish ctx = () =>
+            {
+                actualNodeList = new List<Node> { node1, node2 };
+                var node3 = new Node {Field = "node3Field"};
+                node3.Next = node3;
+                expectedNodeList = new List<Node> { node1, node3 };
+            };
+
+            Because of = () => exception = Catch.Exception(() => actualNodeList.ShouldBeLike(expectedNodeList));
+
+            It should_throw = () => exception.ShouldBeOfExactType<SpecificationException>();
+
+            It should_contain_message = () => exception.Message.ShouldEqual(@"""[1].Field"":
+  String lengths are both 10. Strings differ at index 4.
+  Expected: ""node3Field""
+  But was:  ""node2Field""
+  ---------------^");
+
+        }
+
+        class and_the_elements_reference_each_other
+        {
+            Establish ctx = () =>
+            {
+                node1.Next = node2;
+                node2.Next = node1;
+                actualNodeList = new List<Node> { node1, node2 };
+                expectedNodeList = new List<Node> { node1, node2 };
+            };
+
+            Because of = () => exception = Catch.Exception(() => actualNodeList.ShouldBeLike(expectedNodeList));
+
+            It should_not_throw = () => exception.ShouldBeNull();
+        }
+    }
 }

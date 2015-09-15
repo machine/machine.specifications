@@ -649,7 +649,8 @@ entire list: {1}",
 
         public static void ShouldBeLike(this object obj, object expected)
         {
-            var exceptions = ShouldBeLikeInternal(obj, expected, "").ToArray();
+
+            var exceptions = ShouldBeLikeInternal(obj, expected, "", new List<object>()).ToArray();
 
             if (exceptions.Any())
             {
@@ -657,8 +658,16 @@ entire list: {1}",
             }
         }
 
-        static IEnumerable<SpecificationException> ShouldBeLikeInternal(object obj, object expected, string nodeName)
+        static IEnumerable<SpecificationException> ShouldBeLikeInternal(object obj, object expected, string nodeName, List<object> visited)
         {
+            if (IsReferenceTypeNotNullOrString(obj) && IsReferenceTypeNotNullOrString(expected))
+            {
+                if (visited.Any(o => ReferenceEquals(o, expected)))
+                    return Enumerable.Empty<SpecificationException>();
+
+                visited.Add(expected);
+            }
+
             ObjectGraphHelper.INode expectedNode = null;
             var nodeType = typeof(ObjectGraphHelper.LiteralNode);
 
@@ -709,7 +718,7 @@ entire list: {1}",
                 return Enumerable.Range(0, expectedCount)
                     .SelectMany(i => ShouldBeLikeInternal(Enumerable.ElementAt<Func<object>>(actualValues, i)(),
                         Enumerable.ElementAt<Func<object>>(expectedValues, i)(),
-                        string.Format("{0}[{1}]", nodeName, i)));
+                        string.Format("{0}[{1}]", nodeName, i), visited));
             }
             else if (nodeType == typeof(ObjectGraphHelper.KeyValueNode))
             {
@@ -734,13 +743,18 @@ entire list: {1}",
                             return new[] { NewException(string.Format("{{0}}:{0}{1}", Environment.NewLine, errorMessage), fullNodeName) };
                         }
 
-                        return ShouldBeLikeInternal(actualKeyValue.ValueGetter(), kv.ValueGetter(), fullNodeName);
+                        return ShouldBeLikeInternal(actualKeyValue.ValueGetter(), kv.ValueGetter(), fullNodeName, visited);
                     });
             }
             else
             {
                 throw new InvalidOperationException("Unknown node type");
             }
+        }
+
+        private static bool IsReferenceTypeNotNullOrString(object obj)
+        {
+            return obj != null && obj.GetType().IsClass && !(obj is string);
         }
     }
 }
