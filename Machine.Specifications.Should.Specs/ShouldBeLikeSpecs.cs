@@ -593,6 +593,30 @@ namespace Machine.Specifications.Should.Specs
         }
     }
 
+    [Subject(typeof (ShouldExtensionMethods))]
+    public class when_node_with_inner_static_node
+    {
+        class Node
+        {
+            public string Field;
+            public static readonly Node Inner = new Node();
+        }
+
+        static Exception exception;
+        static Node actualNode;
+        static Node expectedNode;
+
+        Establish ctx = () =>
+        {
+            actualNode = new Node();
+            expectedNode = new Node();
+        };
+
+        Because of = () => exception = Catch.Exception(() => actualNode.ShouldBeLike(expectedNode));
+
+        It should_not_throw = () => exception.ShouldBeNull();
+    }
+
     [Subject(typeof(ShouldExtensionMethods))]
     class when_complex_type_with_circular_references_are_in_collection
     {
