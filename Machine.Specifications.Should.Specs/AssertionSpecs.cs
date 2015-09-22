@@ -45,10 +45,10 @@ namespace Machine.Specifications.Should.Specs
         Because of = () => { Exception = Catch.Exception(() => Ints.ShouldEachConformTo(x => x % 2 == 0)); };
 
         // Horribly inconsistent here. It seems like this spec might fail because linq expressions returns ((x % 2) = 0)
-        // for the original ((x % 2) == 0).
+        // for the original ((x % 2) == 0). (fixed with .NET 4.0, therefore we use a regex match)
 
         It should_print_the_func_description =
-          () => Exception.Message.ShouldContain("Should contain only elements conforming to: x => ((x % 2) = 0)");
+          () => Exception.Message.ShouldMatch(@"Should contain only elements conforming to: x => \(\(x % 2\) (==|=) 0\)");
 
         It should_print_the_elements_that_did_not_match =
           () => Exception.Message.ShouldMatch(@"the following items did not meet the condition: {\s+\[1\],\s+\[3\]\s+}");
