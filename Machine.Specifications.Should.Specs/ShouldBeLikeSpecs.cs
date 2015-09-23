@@ -73,6 +73,21 @@ namespace Machine.Specifications.Should.Specs
 
             It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
         }
+
+        public class with_different_types
+        {
+            public class and_object_should_equal_integer
+            {
+                Because of = () => Exception = Catch.Exception(() => new object().ShouldEqual(5));
+                It should_throw_specificationException = () => Exception.ShouldBeOfExactType<SpecificationException>();
+            }
+
+            public class and_integer_should_equal_object
+            {
+                Because of = () => Exception = Catch.Exception(() => 5.ShouldEqual(new object()));
+                It should_throw_specificationException = () => Exception.ShouldBeOfExactType<SpecificationException>();
+            }
+        }
     }
 
     [Subject(typeof(ShouldExtensionMethods))]

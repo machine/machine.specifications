@@ -17,9 +17,12 @@ namespace Machine.Specifications.ComparerStrategies
 
             if (comparable2 != null)
             {
+                if (!(comparable2.GetType().IsInstanceOfType(y)))
+                {
+                    return new NoResult();
+                }
                 return new ComparisionResult(comparable2.CompareTo(y));
             }
-
             return new NoResult();
         }
     }
