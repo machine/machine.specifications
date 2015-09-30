@@ -623,8 +623,8 @@ namespace Machine.Specifications.Should.Specs
 
         Establish ctx = () =>
         {
-            actualNode = new Node();
-            expectedNode = new Node();
+            actualNode = new Node { Field = "a" };
+            expectedNode = new Node { Field="a" };
         };
 
         Because of = () => exception = Catch.Exception(() => actualNode.ShouldBeLike(expectedNode));
