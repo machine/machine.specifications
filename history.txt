@@ -1,3 +1,8 @@
+Machine.Specifications.Should 0.8.0
+-----------------------------
+- ShouldBeLike can now handle circular references (#10)
+- Fixed ShouldEqual exceptions for different types (#8)
+
 Machine.Specifications.Should 0.7.2
 -----------------------------
 - Fixed typos in obsoletion message

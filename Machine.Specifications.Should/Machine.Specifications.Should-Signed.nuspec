@@ -21,7 +21,7 @@
 		</references>
 		<dependencies>
 			<group>
-				<dependency id="Machine.Specifications-Signed" version="[0.7, 1.0)" />
+				<dependency id="Machine.Specifications-Signed" version="[0.9, 1.0)" />
 			</group>
 		</dependencies>		
 	</metadata>
