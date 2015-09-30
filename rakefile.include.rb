@@ -77,26 +77,10 @@ end
 task :specs  => [:rebuild] do
   puts 'Running Specs...'
 
-  specs = FileList.new("#{configatron.out_dir}/Tests/*.Specs.dll").exclude(/Clr4/)
-  sh "#{configatron.out_dir}/mspec.exe", "--html", "Specs/#{configatron.project}.Specs.html", *(configatron.mspec_options + specs)
-
-  specs = FileList.new("#{configatron.out_dir}/Tests/*.Clr4.Specs.dll")
-  sh "#{configatron.out_dir}/mspec-clr4.exe", *(configatron.mspec_options + specs)
+  specs = FileList.new("#{configatron.out_dir}/*.Specs.dll").exclude(/Clr4/)
+  sh "packages/Machine.Specifications.Runner.Console.0.9.2/tools/mspec.exe", "--html", "Specs/#{configatron.project}.Specs.html", *(configatron.mspec_options + specs)
 
   puts "Wrote specs to Specs/#{configatron.project}.Specs.html"
-end
-
-desc "Run all nunit tests"
-nunit :tests => [:rebuild] do |cmd|
-  cmd.command = "packages/NUnit.Runners.2.6.3/tools/nunit-console-x86.exe"
-  cmd.assemblies = FileList.new("#{configatron.out_dir}/Tests/*.Tests.dll").to_a
-  #cmd.results_path = "Specs/test-report.xml"
-  #cmd.no_logo
-  cmd.parameters = [
-    "/framework=#{configatron.nunit_framework}",
-	"/nothread",
-	"/work=Specs"
-  ]
 end
 
 task :templates do
