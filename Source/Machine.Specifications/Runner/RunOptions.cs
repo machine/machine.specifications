@@ -13,6 +13,7 @@ namespace Machine.Specifications.Runner
         public IEnumerable<string> ExcludeTags { get; private set; }
         public IEnumerable<string> Filters { get; private set; }
         public IEnumerable<string> Contexts { get; private set; }
+        public IEnumerable<string> Specifications { get; private set; }
 
         public RunOptions(IEnumerable<string> includeTags, IEnumerable<string> excludeTags, IEnumerable<string> filters)
             : this(includeTags, excludeTags, filters, Enumerable.Empty<string>())
@@ -20,11 +21,16 @@ namespace Machine.Specifications.Runner
         }
 
         public RunOptions(IEnumerable<string> includeTags, IEnumerable<string> excludeTags, IEnumerable<string> filters, IEnumerable<string> contexts)
+            : this(includeTags, excludeTags, filters, contexts, Enumerable.Empty<string>())
+        {
+        }
+        public RunOptions(IEnumerable<string> includeTags, IEnumerable<string> excludeTags, IEnumerable<string> filters, IEnumerable<string> contexts, IEnumerable<string> specifications)
         {
             IncludeTags = includeTags;
             ExcludeTags = excludeTags;
             Filters = filters;
             Contexts = contexts;
+            Specifications = specifications;
         }
 
         public static RunOptions Default { get { return new RunOptions(Enumerable.Empty<string>(), Enumerable.Empty<string>(), Enumerable.Empty<string>(), Enumerable.Empty<string>()); } }
@@ -37,8 +43,9 @@ namespace Machine.Specifications.Runner
             IEnumerable<string> excludeTags = Parse(document, "/runoptions/excludetags/tag");
             IEnumerable<string> filters = Parse(document, "/runoptions/filters/filter");
             IEnumerable<string> contexts = Parse(document, "/runoptions/contexts/context");
+            IEnumerable<string> specifications = Parse(document, "/runoptions/contexts/specifications");
 
-            return new RunOptions(includeTags, excludeTags, filters, contexts);
+            return new RunOptions(includeTags, excludeTags, filters, contexts, specifications);
         }
 
         private static IEnumerable<string> Parse(XDocument document, string xpath)
