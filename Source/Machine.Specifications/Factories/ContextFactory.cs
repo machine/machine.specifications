@@ -37,7 +37,7 @@ namespace Machine.Specifications.Factories
             return CreateContextFrom(instance, fieldInfos);
         }
 
-        Context CreateContextFrom(object instance, IEnumerable<FieldInfo> acceptedSpecificationFields)
+        public Context CreateContextFrom(object instance, IEnumerable<FieldInfo> acceptedSpecificationFields)
         {
             var type = instance.GetType();
             var fieldInfos = type.GetInstanceFields();

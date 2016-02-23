@@ -64,6 +64,12 @@ namespace Machine.Specifications.Explorers
             return _contextFactory.CreateContextFrom(instance, fieldInfo);
         }
 
+        Context CreateContextFrom(Type type, IEnumerable<FieldInfo> fieldInfos)
+        {
+            object instance = Activator.CreateInstance(type);
+            return _contextFactory.CreateContextFrom(instance, fieldInfos);
+        }
+
         static bool IsContext(Type type)
         {
             return HasSpecificationMembers(type) && !type.HasAttribute(new BehaviorAttributeFullName());
@@ -101,6 +107,19 @@ namespace Machine.Specifications.Explorers
             }
 
             return null;
+        }
+
+        public IEnumerable<Context> FindContexts(IEnumerable<FieldInfo> infos)
+        {
+            foreach(IGrouping<Type, FieldInfo> grouping in infos.GroupBy(info => info.ReflectedType))
+            {
+                Type type = grouping.Key;
+                if (IsContext(type))
+                {
+                    yield return CreateContextFrom(type, grouping.ToList());
+                }
+
+            }
         }
     }
 }
