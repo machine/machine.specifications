@@ -9,7 +9,7 @@ using Machine.Specifications.Runner.Impl.Listener;
 
 namespace Machine.Specifications.Runner.Impl
 {
-    internal class AssemblyRunner
+    public class AssemblyRunner
     {
         readonly ISpecificationRunListener _listener;
         readonly RunOptions _options;
