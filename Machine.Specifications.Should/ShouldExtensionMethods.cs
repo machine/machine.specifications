@@ -612,7 +612,7 @@ entire list: {1}",
         public static void ShouldBeLike(this object obj, object expected)
         {
 
-            var exceptions = ShouldBeLikeInternal(obj, expected, "", new List<object>()).ToArray();
+            var exceptions = ShouldBeLikeInternal(obj, expected, "", new HashSet<object>()).ToArray();
 
             if (exceptions.Any())
             {
@@ -620,11 +620,11 @@ entire list: {1}",
             }
         }
 
-        static IEnumerable<SpecificationException> ShouldBeLikeInternal(object obj, object expected, string nodeName, List<object> visited)
+        static IEnumerable<SpecificationException> ShouldBeLikeInternal(object obj, object expected, string nodeName, HashSet<object> visited)
         {
             if (IsReferenceTypeNotNullOrString(obj) && IsReferenceTypeNotNullOrString(expected))
             {
-                if (visited.Any(o => ReferenceEquals(o, expected)))
+                if (visited.Contains(expected))
                     return Enumerable.Empty<SpecificationException>();
 
                 visited.Add(expected);
