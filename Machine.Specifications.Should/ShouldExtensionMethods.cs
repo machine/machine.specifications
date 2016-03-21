@@ -612,7 +612,7 @@ entire list: {1}",
         public static void ShouldBeLike(this object obj, object expected)
         {
 
-            var exceptions = ShouldBeLikeInternal(obj, expected, "", new HashSet<object>()).ToArray();
+            var exceptions = ShouldBeLikeInternal(obj, expected, "", new HashSet<SimpleTuple>()).ToArray();
 
             if (exceptions.Any())
             {
@@ -620,14 +620,15 @@ entire list: {1}",
             }
         }
 
-        static IEnumerable<SpecificationException> ShouldBeLikeInternal(object obj, object expected, string nodeName, HashSet<object> visited)
+        static IEnumerable<SpecificationException> ShouldBeLikeInternal(object obj, object expected, string nodeName, HashSet<SimpleTuple> visited)
         {
             if (IsReferenceTypeNotNullOrString(obj) && IsReferenceTypeNotNullOrString(expected))
             {
-                if (visited.Contains(expected))
+                var objExpectedTuple = new SimpleTuple(obj, expected);
+                if (visited.Contains(objExpectedTuple))
                     return Enumerable.Empty<SpecificationException>();
 
-                visited.Add(expected);
+                visited.Add(objExpectedTuple);
             }
 
             ObjectGraphHelper.INode expectedNode = null;
@@ -717,6 +718,33 @@ entire list: {1}",
         private static bool IsReferenceTypeNotNullOrString(object obj)
         {
             return obj != null && obj.GetType().IsClass && !(obj is string);
+        }
+
+        // Required for ShouldBeLikeInternal(), unfortunately we do not have Sytem.Tuple<T1,T2> in .NET < 4.0
+        private class SimpleTuple
+        {
+            private object Obj { get; }
+            private object Expected { get; }
+
+            public SimpleTuple(object obj, object expected)
+            {
+                Obj = obj;
+                Expected = expected;
+            }
+
+            public override int GetHashCode()
+            {
+                return Obj.GetHashCode() * Expected.GetHashCode();
+            }
+
+            public override bool Equals(object other)
+            {
+                if (!(other is SimpleTuple))
+                    return false;
+
+                var otherSimpleTuple = (SimpleTuple) other;
+                return ReferenceEquals(Obj, otherSimpleTuple.Obj) && ReferenceEquals(Expected, otherSimpleTuple.Expected);
+            }
         }
     }
 }
