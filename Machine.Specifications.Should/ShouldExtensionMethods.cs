@@ -94,44 +94,6 @@ namespace Machine.Specifications
             return expected;
         }
 
-        [ObsoleteEx(Message = "This method behaved like `ShouldBeAssignableTo` which is misleading. For exact type comparison use `ShouldBeOfExactType`, for assignability verification use `ShouldBeAssignableTo`. Redesigned because of #171.", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
-        public static void ShouldBeOfType(this object actual, Type expected)
-        {
-            if (actual == null)
-            {
-                throw new SpecificationException(string.Format("Should be of type {0} but is [null]", expected));
-            }
-
-            if (!expected.IsAssignableFrom(actual.GetType()))
-            {
-                throw new SpecificationException(string.Format("Should be of type {0} but is of type {1}",
-                    expected,
-                    actual.GetType()));
-            }
-        }
-
-        [ObsoleteEx(Message = "This method behaved like `ShouldBeAssignableTo` which is misleading. For exact type comparison use `ShouldBeOfExactType`, for assignability verification use `ShouldBeAssignableTo`. Redesigned because of #171.", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
-        public static void ShouldBeOfType<T>(this object actual)
-        {
-            actual.ShouldBeOfType(typeof(T));
-        }
-
-        [ObsoleteEx(Message = "This method behaved like `ShouldBeAssignableTo` which is misleading. For exact type comparison use `ShouldBeOfExactType`, for assignability verification use `ShouldBeAssignableTo`. Redesigned because of #171.", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
-        public static void ShouldBe(this object actual, Type expected)
-        {
-            actual.ShouldBeOfType(expected);
-        }
-
-        [ObsoleteEx(Message = "This method should no longer be used. Redesigned because of #171. See replacement.", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8", Replacement = "ShouldNotBeOfExactType")]
-        public static void ShouldNotBeOfType(this object actual, Type expected)
-        {
-            if (actual.GetType() == expected)
-            {
-                throw new SpecificationException(string.Format("Should not be of type {0} but is of type {1}", expected,
-                    actual.GetType()));
-            }
-        }
-
         public static void ShouldBeOfExactType(this object actual, Type expected)
         {
             if (actual == null)
@@ -643,7 +605,7 @@ entire list: {1}",
             var exception = Catch.Exception(method);
 
             ShouldNotBeNull(exception);
-            ShouldBeOfType(exception, exceptionType);
+            ShouldBeAssignableTo(exception, exceptionType);
             return exception;
         }
 
