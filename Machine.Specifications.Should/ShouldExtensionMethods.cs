@@ -739,10 +739,10 @@ entire list: {1}",
 
             public override bool Equals(object other)
             {
-                if (!(other is SimpleTuple))
-                    return false;
-
-                var otherSimpleTuple = (SimpleTuple) other;
+                var otherSimpleTuple = other as ReferentialEqualityTuple;
+                if (otherSimpleTuple == null)
+                  return false;
+              
                 return ReferenceEquals(Obj, otherSimpleTuple.Obj) && ReferenceEquals(Expected, otherSimpleTuple.Expected);
             }
         }
