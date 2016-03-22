@@ -612,7 +612,7 @@ entire list: {1}",
         public static void ShouldBeLike(this object obj, object expected)
         {
 
-            var exceptions = ShouldBeLikeInternal(obj, expected, "", new HashSet<SimpleTuple>()).ToArray();
+            var exceptions = ShouldBeLikeInternal(obj, expected, "", new HashSet<ReferentialEqualityTuple>()).ToArray();
 
             if (exceptions.Any())
             {
@@ -620,11 +620,11 @@ entire list: {1}",
             }
         }
 
-        static IEnumerable<SpecificationException> ShouldBeLikeInternal(object obj, object expected, string nodeName, HashSet<SimpleTuple> visited)
+        static IEnumerable<SpecificationException> ShouldBeLikeInternal(object obj, object expected, string nodeName, HashSet<ReferentialEqualityTuple> visited)
         {
             if (IsReferenceTypeNotNullOrString(obj) && IsReferenceTypeNotNullOrString(expected))
             {
-                var objExpectedTuple = new SimpleTuple(obj, expected);
+                var objExpectedTuple = new ReferentialEqualityTuple(obj, expected);
                 if (visited.Contains(objExpectedTuple))
                     return Enumerable.Empty<SpecificationException>();
 
@@ -720,13 +720,13 @@ entire list: {1}",
             return obj != null && obj.GetType().IsClass && !(obj is string);
         }
 
-        // Required for ShouldBeLikeInternal(), unfortunately we do not have Sytem.Tuple<T1,T2> in .NET < 4.0
-        private class SimpleTuple
+        // DTO for ShouldBeLikeInternal() loop detection's visited cache
+        private class ReferentialEqualityTuple
         {
             private object Obj { get; }
             private object Expected { get; }
 
-            public SimpleTuple(object obj, object expected)
+            public ReferentialEqualityTuple(object obj, object expected)
             {
                 Obj = obj;
                 Expected = expected;
