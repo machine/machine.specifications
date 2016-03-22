@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 using Machine.Specifications.Annotations;
@@ -734,7 +735,7 @@ entire list: {1}",
 
             public override int GetHashCode()
             {
-                return Obj.GetHashCode() * Expected.GetHashCode();
+                return RuntimeHelpers.GetHashCode (Obj) * RuntimeHelpers.GetHashCode (Expected);
             }
 
             public override bool Equals(object other)
