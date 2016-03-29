@@ -129,4 +129,22 @@ namespace Machine.Specifications.Model
       ContextWithSingleSpecification.CleanupInvoked.Should().BeTrue();
     }
   }
+
+  [TestFixture]
+  public class InheritingFromNestedGenericTests : With<ContextInheritingFromNestedGeneric>
+  {
+      IEnumerable<Result> results;
+
+      public override void BeforeEachTest()
+      {
+          base.BeforeEachTest();
+          results = Run(context);
+      }
+
+      [Test]
+      public void ShouldInvokeIt()
+      {
+          ContextInheritingFromNestedGeneric.ItInvoked.Should().BeTrue();
+      }
+  }
 }

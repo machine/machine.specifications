@@ -242,4 +242,32 @@ namespace Machine.Specifications
     {
     }
   }
+
+  public class OuterNonGenericContext
+  {
+    public class Nested
+    { }
+  }
+  
+  public class OuterGenericContext<T1, T2, T3>
+  {
+    public class NestedBase<TN1, TN2> : OuterGenericContext<TN1, string, TN2>
+    {}
+
+    public class Nested : NestedBase<char, bool>
+    {}
+  }
+
+  public class ContextInheritingFromNestedGeneric : OuterGenericContext<int, string, float>.Nested, IFakeContext
+  {
+    public static bool ItInvoked;
+
+    It should_be_invoked = () =>
+      ItInvoked = true;
+
+    public void Reset()
+    {
+        ItInvoked = false;
+    }
+  }
 }

@@ -193,7 +193,32 @@ namespace Machine.Specifications.Factories
                 CollectDetailsOf(target.BaseType, () => instance, items, ensureMaximumOfOne, attributeFullName);
             }
 
-            CollectDetailsOf(target.DeclaringType, () => Activator.CreateInstance(target.DeclaringType), items, ensureMaximumOfOne, attributeFullName);
+            CollectDetailsOf(target.DeclaringType, () => CreateDeclaringTypeInstance(target),
+              items, ensureMaximumOfOne, attributeFullName);
+        }
+
+        static object CreateDeclaringTypeInstance(Type target)
+        {
+            var instantiatingType = target.DeclaringType;
+            object declaringTypeInstance = null;
+            if (instantiatingType != typeof(object))
+            {
+                if (instantiatingType.IsGenericType)
+                {
+                    var genericTypeDefinition = target.GetGenericTypeDefinition();
+                    if (genericTypeDefinition == null)
+                    {
+                        throw new InvalidOperationException(string.Format("Unable to get generic type definition for {0}", target));
+                    }
+                    var genericArgs = target.GetGenericArguments().ToArray();
+                    if (genericArgs.Length != 0)
+                    {
+                        instantiatingType = genericTypeDefinition.MakeGenericType(genericArgs);
+                    }
+                  }
+                declaringTypeInstance = Activator.CreateInstance(instantiatingType);
+            }
+            return declaringTypeInstance;
         }
 
         static bool IsStatic(Type target)
