@@ -626,8 +626,8 @@ entire list: {1}",
             var objExpectedTuple = new ReferentialEqualityTuple(obj, expected);
             if (visited.Contains(objExpectedTuple))
                 return Enumerable.Empty<SpecificationException>();
-
-            visited.Add(objExpectedTuple);
+            else
+                visited.Add(objExpectedTuple);
 
             ObjectGraphHelper.INode expectedNode = null;
             var nodeType = typeof(ObjectGraphHelper.LiteralNode);
