@@ -718,18 +718,18 @@ entire list: {1}",
         // DTO for ShouldBeLikeInternal() loop detection's visited cache
         private class ReferentialEqualityTuple
         {
-            private object Obj { get; }
-            private object Expected { get; }
+            private readonly object _obj;
+            private readonly object _expected;
 
             public ReferentialEqualityTuple(object obj, object expected)
             {
-                Obj = obj;
-                Expected = expected;
+                _obj = obj;
+                _expected = expected;
             }
 
             public override int GetHashCode()
             {
-                return RuntimeHelpers.GetHashCode (Obj) * RuntimeHelpers.GetHashCode (Expected);
+                return RuntimeHelpers.GetHashCode (_obj) * RuntimeHelpers.GetHashCode (_expected);
             }
 
             public override bool Equals(object other)
@@ -738,7 +738,7 @@ entire list: {1}",
                 if (otherSimpleTuple == null)
                   return false;
               
-                return ReferenceEquals(Obj, otherSimpleTuple.Obj) && ReferenceEquals(Expected, otherSimpleTuple.Expected);
+                return ReferenceEquals(_obj, otherSimpleTuple._obj) && ReferenceEquals(_expected, otherSimpleTuple._expected);
             }
         }
     }
