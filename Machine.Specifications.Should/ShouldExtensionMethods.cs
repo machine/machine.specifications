@@ -623,14 +623,11 @@ entire list: {1}",
 
         static IEnumerable<SpecificationException> ShouldBeLikeInternal(object obj, object expected, string nodeName, HashSet<ReferentialEqualityTuple> visited)
         {
-            if (IsReferenceTypeNotNullOrString(obj) && IsReferenceTypeNotNullOrString(expected))
-            {
-                var objExpectedTuple = new ReferentialEqualityTuple(obj, expected);
-                if (visited.Contains(objExpectedTuple))
-                    return Enumerable.Empty<SpecificationException>();
+            var objExpectedTuple = new ReferentialEqualityTuple(obj, expected);
+            if (visited.Contains(objExpectedTuple))
+                return Enumerable.Empty<SpecificationException>();
 
-                visited.Add(objExpectedTuple);
-            }
+            visited.Add(objExpectedTuple);
 
             ObjectGraphHelper.INode expectedNode = null;
             var nodeType = typeof(ObjectGraphHelper.LiteralNode);
@@ -714,11 +711,6 @@ entire list: {1}",
             {
                 throw new InvalidOperationException("Unknown node type");
             }
-        }
-
-        private static bool IsReferenceTypeNotNullOrString(object obj)
-        {
-            return obj != null && obj.GetType().IsClass && !(obj is string);
         }
 
         // DTO for ShouldBeLikeInternal() loop detection's visited cache
