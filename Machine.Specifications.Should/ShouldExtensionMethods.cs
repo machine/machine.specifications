@@ -623,6 +623,8 @@ entire list: {1}",
 
         static IEnumerable<SpecificationException> ShouldBeLikeInternal(object obj, object expected, string nodeName, HashSet<ReferentialEqualityTuple> visited)
         {
+            // Stop at already checked <actual,expected>-pairs to prevent infinite loops (cycles in object graphs). Additionally
+            // this also avoids re-equality-evaluation for already compared pairs.
             var objExpectedTuple = new ReferentialEqualityTuple(obj, expected);
             if (visited.Contains(objExpectedTuple))
                 return Enumerable.Empty<SpecificationException>();
