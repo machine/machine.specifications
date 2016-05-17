@@ -138,7 +138,7 @@ namespace Machine.Specifications.Should.Specs
             It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
         }
 
-        public class with_using_object_multiple_times_in_expected_value
+        public class with_using_object_multiple_times_in_expected_array
         {
             // Regression test for issue 17: ShouldBeLikeInternal() must mark <actual,expected> as visisted instead of simply marking <expected>.
 
