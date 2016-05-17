@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 using Machine.Specifications.Annotations;
@@ -92,44 +93,6 @@ namespace Machine.Specifications
             }
 
             return expected;
-        }
-
-        [ObsoleteEx(Message = "This method behaved like `ShouldBeAssignableTo` which is misleading. For exact type comparison use `ShouldBeOfExactType`, for assignability verification use `ShouldBeAssignableTo`. Redesigned because of #171.", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
-        public static void ShouldBeOfType(this object actual, Type expected)
-        {
-            if (actual == null)
-            {
-                throw new SpecificationException(string.Format("Should be of type {0} but is [null]", expected));
-            }
-
-            if (!expected.IsAssignableFrom(actual.GetType()))
-            {
-                throw new SpecificationException(string.Format("Should be of type {0} but is of type {1}",
-                    expected,
-                    actual.GetType()));
-            }
-        }
-
-        [ObsoleteEx(Message = "This method behaved like `ShouldBeAssignableTo` which is misleading. For exact type comparison use `ShouldBeOfExactType`, for assignability verification use `ShouldBeAssignableTo`. Redesigned because of #171.", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
-        public static void ShouldBeOfType<T>(this object actual)
-        {
-            actual.ShouldBeOfType(typeof(T));
-        }
-
-        [ObsoleteEx(Message = "This method behaved like `ShouldBeAssignableTo` which is misleading. For exact type comparison use `ShouldBeOfExactType`, for assignability verification use `ShouldBeAssignableTo`. Redesigned because of #171.", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8")]
-        public static void ShouldBe(this object actual, Type expected)
-        {
-            actual.ShouldBeOfType(expected);
-        }
-
-        [ObsoleteEx(Message = "This method should no longer be used. Redesigned because of #171. See replacement.", RemoveInVersion = "0.9", TreatAsErrorFromVersion = "0.8", Replacement = "ShouldNotBeOfExactType")]
-        public static void ShouldNotBeOfType(this object actual, Type expected)
-        {
-            if (actual.GetType() == expected)
-            {
-                throw new SpecificationException(string.Format("Should not be of type {0} but is of type {1}", expected,
-                    actual.GetType()));
-            }
         }
 
         public static void ShouldBeOfExactType(this object actual, Type expected)
@@ -643,14 +606,14 @@ entire list: {1}",
             var exception = Catch.Exception(method);
 
             ShouldNotBeNull(exception);
-            ShouldBeOfType(exception, exceptionType);
+            ShouldBeAssignableTo(exception, exceptionType);
             return exception;
         }
 
         public static void ShouldBeLike(this object obj, object expected)
         {
 
-            var exceptions = ShouldBeLikeInternal(obj, expected, "", new List<object>()).ToArray();
+            var exceptions = ShouldBeLikeInternal(obj, expected, "", new HashSet<ReferentialEqualityTuple>()).ToArray();
 
             if (exceptions.Any())
             {
@@ -658,15 +621,15 @@ entire list: {1}",
             }
         }
 
-        static IEnumerable<SpecificationException> ShouldBeLikeInternal(object obj, object expected, string nodeName, List<object> visited)
+        static IEnumerable<SpecificationException> ShouldBeLikeInternal(object obj, object expected, string nodeName, HashSet<ReferentialEqualityTuple> visited)
         {
-            if (IsReferenceTypeNotNullOrString(obj) && IsReferenceTypeNotNullOrString(expected))
-            {
-                if (visited.Any(o => ReferenceEquals(o, expected)))
-                    return Enumerable.Empty<SpecificationException>();
-
-                visited.Add(expected);
-            }
+            // Stop at already checked <actual,expected>-pairs to prevent infinite loops (cycles in object graphs). Additionally
+            // this also avoids re-equality-evaluation for already compared pairs.
+            var objExpectedTuple = new ReferentialEqualityTuple(obj, expected);
+            if (visited.Contains(objExpectedTuple))
+                return Enumerable.Empty<SpecificationException>();
+            else
+                visited.Add(objExpectedTuple);
 
             ObjectGraphHelper.INode expectedNode = null;
             var nodeType = typeof(ObjectGraphHelper.LiteralNode);
@@ -752,9 +715,31 @@ entire list: {1}",
             }
         }
 
-        private static bool IsReferenceTypeNotNullOrString(object obj)
+        // DTO for ShouldBeLikeInternal() loop detection's visited cache
+        private class ReferentialEqualityTuple
         {
-            return obj != null && obj.GetType().IsClass && !(obj is string);
+            private readonly object _obj;
+            private readonly object _expected;
+
+            public ReferentialEqualityTuple(object obj, object expected)
+            {
+                _obj = obj;
+                _expected = expected;
+            }
+
+            public override int GetHashCode()
+            {
+                return RuntimeHelpers.GetHashCode (_obj) * RuntimeHelpers.GetHashCode (_expected);
+            }
+
+            public override bool Equals(object other)
+            {
+                var otherSimpleTuple = other as ReferentialEqualityTuple;
+                if (otherSimpleTuple == null)
+                  return false;
+              
+                return ReferenceEquals(_obj, otherSimpleTuple._obj) && ReferenceEquals(_expected, otherSimpleTuple._expected);
+            }
         }
     }
 }
