@@ -74,6 +74,35 @@ namespace Machine.Specifications.Should.Specs
             It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
         }
 
+        public class with_using_object_multiple_times_in_expected_object_graph
+        {
+            // Regression test for issue 17: ShouldBeLikeInternal() must mark <actual,expected> as visisted instead of simply marking <expected>.
+
+            Establish ctx = () =>
+            {
+                _a = new Dummy { Prop = "a" };
+                _b = new Dummy { Prop = "b" };
+            };
+
+            Because of = () => { Exception = Catch.Exception(() => new { A = _a, B = _b  }.ShouldBeLike(new { A = _a, B = _a  })); };
+      
+            It should_contain_message = () => Exception.Message.ShouldEqual(@"""B.Prop"":
+  String lengths are both 1. Strings differ at index 0.
+  Expected: ""a""
+  But was:  ""b""
+  -----------^");
+
+            It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
+
+            static Dummy _a;
+            static Dummy _b;
+
+            class Dummy
+            {
+                public string Prop { get; set; }
+            }
+        }
+
         public class with_different_types
         {
             public class and_object_should_equal_integer
