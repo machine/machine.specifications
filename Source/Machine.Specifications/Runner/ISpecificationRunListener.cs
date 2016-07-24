@@ -1,3 +1,5 @@
+using System;
+
 namespace Machine.Specifications.Runner
 {
     public interface ISpecificationRunListener
@@ -13,7 +15,7 @@ namespace Machine.Specifications.Runner
         void OnFatalError(ExceptionResult exception);
     }
 
-    [ObsoleteEx(Message = "Information can be obtained by implementing ISpecificationRunListener.OnFatalError and or counting specifications with failures", TreatAsErrorFromVersion = "0.9", RemoveInVersion = "1.0")]
+    [Obsolete("Information can be obtained by implementing ISpecificationRunListener.OnFatalError and or counting specifications with failures. To be removed in 1.0.")]
     public interface ISpecificationResultProvider
     {
         bool FailureOccurred { get; }
