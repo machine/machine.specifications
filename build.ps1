@@ -18,12 +18,6 @@ function Invoke-ExpressionExitCodeCheck([string] $command)
 [string] $codeProjectsDirectory = "Source"
 [string] $nugetOutputDirectory = "Build"
 
-
-if ($AppVeyor) {
-    $netMSpecRunnerExe += " --appveyor"
-    $netNUnitRunnerExe += " --result=myresults.xml;format=AppVeyor"
-}
-
 # Patch version
 
 if ($AppVeyor) {
@@ -70,6 +64,10 @@ Invoke-ExpressionExitCodeCheck "dotnet build ${codeProjectsDirectory}\Machine.Sp
 # Run Mspec tests
 Write-Host "Running specs..."
 
+if ($AppVeyor) {
+    $netMSpecRunnerExe += " --appveyor"
+}
+
 [bool] $specsFailed = $false
 
 Get-ChildItem $testProjectsDirectory -Directory -Filter "*.Specs" | ForEach {
@@ -93,7 +91,10 @@ Get-ChildItem $testProjectsDirectory -Directory -Filter "*.Tests" | ForEach {
     Invoke-ExpressionExitCodeCheck "dotnet build $($_.FullName) -c ${configuration}"
 
     Get-Item "$($_.FullName)\bin\${configuration}\*\*.Tests.dll" -ErrorAction Stop | ForEach {
-        Invoke-Expression "${netNUnitRunnerExe} $($_.FullName)"
+        $command = "${netNUnitRunnerExe} $($_.FullName)"
+        if ($AppVeyor) {
+            $command += " --result=myresults.xml;format=AppVeyor"
+        }
 
         if (!$testsFailed) {
             $testsFailed = $LASTEXITCODE -and $LASTEXITCODE -ne 0
