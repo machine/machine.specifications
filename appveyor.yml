@@ -1,0 +1,16 @@
+environment:
+  nuget_version: '0.10.0-unstable0039'
+  assembly_version: '0.9.3'
+
+clone_depth: 5
+
+version: '$(nuget_version){build}'
+configuration: Debug
+
+build_script:
+- cmd: >-
+    powershell -f build.ps1 -AppVeyor -Version "%NUGET_VERSION%" -Configuration %CONFIGURATION%"
+artifacts:
+- path: Build\*.nupkg
+
+test: off
