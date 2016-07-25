@@ -20,5 +20,11 @@ install.ps1
 Misc/machine.specifications.nuspec
 
 Source/packages/*
+Source/**/bin/
+Source/**/obj/
 logs/*
 .bundle/*
+
+.vs/
+project.lock.json
+

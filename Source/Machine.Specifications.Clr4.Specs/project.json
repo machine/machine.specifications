@@ -1,0 +1,31 @@
+{
+    "version": "1-*",
+    "buildOptions": {
+        "emitEntryPoint": false,
+        "define": [
+            "DEBUG",
+            "TRACE"
+        ]
+    },
+    "frameworks": {
+        "net461": {
+            "dependencies": {
+                "Machine.Specifications.Runner.Console": {
+                    "version": "0.*",
+                    "type": "build"
+                }
+            }
+        }
+    },
+    "dependencies": {
+        "Machine.Specifications": {
+            "version": "",
+            "target": "project"
+        },
+        "Machine.Specifications.Clr4": {
+            "version": "",
+            "target": "project"
+        },
+        "FluentAssertions": "4.*"
+    }
+}
