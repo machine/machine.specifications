@@ -38,17 +38,6 @@ namespace Machine.Specifications.Clr4.Specs
   }
 
   [Subject(typeof(TaskSpecificationExtensions))]
-  public class when_an_async_operation_runs_without_await : AsyncSpecs
-  {
-    static Task<string> Result;
-
-    Because of = () => { Result = Delayed.Echo("result"); };
-
-    It should_not_wait_for_completion =
-      () => Result.IsCompleted.Should().BeFalse();
-  }
-
-  [Subject(typeof(TaskSpecificationExtensions))]
   public class when_an_async_operation_runs_with_await : AsyncSpecs
   {
     static string Result;
