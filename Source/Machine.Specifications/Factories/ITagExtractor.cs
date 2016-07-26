@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Machine.Specifications.Model;
+using Machine.Specifications.Utility;
+using System.Reflection;
 
 namespace Machine.Specifications.Factories
 {
@@ -28,7 +30,7 @@ namespace Machine.Specifications.Factories
     {
         public IEnumerable<Tag> ExtractTags(Type type)
         {
-            var tags = type.GetInterfaces().Where(x => x.FullName.StartsWith("Machine.Specifications.Tags`"))
+            var tags = type.GetTypeInfo().GetInterfaces().Where(x => x.FullName.StartsWith("Machine.Specifications.Tags`"))
               .SelectMany(x => x.GetGenericArguments())
               .Select(x => new Tag(x.Name)).Distinct();
 
@@ -40,7 +42,7 @@ namespace Machine.Specifications.Factories
     {
         public IEnumerable<Tag> ExtractTags(Type type)
         {
-            var tags = type.GetCustomAttributes(typeof(TagsAttribute), true).SelectMany(x => ((TagsAttribute)x).Tags).Distinct();
+            var tags = type.GetTypeInfo().GetCustomAttributes(typeof(TagsAttribute), true).SelectMany(x => ((TagsAttribute)x).Tags).Distinct();
 
             return tags.ToList();
         }

@@ -66,12 +66,12 @@ namespace Machine.Specifications.Explorers
 
         static bool IsContext(Type type)
         {
-            return HasSpecificationMembers(type) && !type.HasAttribute(new BehaviorAttributeFullName());
+            return HasSpecificationMembers(type) && !type.GetTypeInfo().HasAttribute(new BehaviorAttributeFullName());
         }
 
         static bool HasSpecificationMembers(Type type)
         {
-            return !type.IsAbstract && type.GetInstanceFieldsOfUsage(new AssertDelegateAttributeFullName(), new BehaviorDelegateAttributeFullName()).Any();
+            return !type.GetTypeInfo().IsAbstract && type.GetInstanceFieldsOfUsage(new AssertDelegateAttributeFullName(), new BehaviorDelegateAttributeFullName()).Any();
         }
 
         static IEnumerable<Type> EnumerateContextsIn(Assembly assembly)
@@ -94,7 +94,7 @@ namespace Machine.Specifications.Explorers
 
         public Context FindContexts(FieldInfo info)
         {
-            Type type = info.ReflectedType;
+            Type type = info.DeclaringType;
             if (IsContext(type))
             {
                 return CreateContextFrom(type, info);

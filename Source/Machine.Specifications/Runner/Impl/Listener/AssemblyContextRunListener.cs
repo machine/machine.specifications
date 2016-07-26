@@ -14,7 +14,7 @@ namespace Machine.Specifications.Runner.Impl.Listener
 
         public override void OnAssemblyStart(AssemblyInfo assembly)
         {
-            var asm = Assembly.LoadFrom(assembly.Location);
+            var asm = AssemblyUtil.LoadFrom(assembly.Location);
 
             var assemblyContexts = _explorer.FindAssemblyContextsIn(asm);
             assemblyContexts.Each(assemblyContext =>

@@ -24,6 +24,6 @@ using System.Security;
 
 [assembly: AllowPartiallyTrustedCallers]
 
-#if !NET35
+#if !NET35 && !NETSTANDARD
 [assembly: SecurityRules(SecurityRuleSet.Level1)]
 #endif

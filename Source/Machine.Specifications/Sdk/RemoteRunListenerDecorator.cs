@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿#if !NETSTANDARD
+
+using System.Collections;
 using System.Runtime.Remoting.Messaging;
 using System.Security.Permissions;
 using System.Xml.Linq;
@@ -17,7 +19,7 @@ namespace Machine.Specifications.Sdk
         protected RemoteToInternalSpecificationRunListenerAdapter(object listener, string runOptionsXml)
         {
             _listener = (IMessageSink)listener;
-            
+
             this.RunOptions = RunOptions.Parse(runOptionsXml);
             this.Runner = new DefaultRunner(this, RunOptions);
         }
@@ -106,3 +108,5 @@ namespace Machine.Specifications.Sdk
         }
     }
 }
+
+#endif

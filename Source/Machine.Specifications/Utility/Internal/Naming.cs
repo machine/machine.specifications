@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Reflection;
+
+using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Utility.Internal
 {
@@ -13,7 +16,7 @@ namespace Machine.Specifications.Utility.Internal
         {
             while (true)
             {
-                var args = type.GetGenericArguments();
+                var args = type.GetTypeInfo().GetGenericArguments();
                 if (args.Length == 0 || args.Where(x => x.IsGenericParameter).Any()) break;
                 type = type.GetGenericTypeDefinition();
             }

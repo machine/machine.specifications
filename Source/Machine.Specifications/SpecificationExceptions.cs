@@ -1,9 +1,14 @@
 using System;
+
+#if !NETSTANDARD
 using System.Runtime.Serialization;
+#endif
 
 namespace Machine.Specifications
 {
+#if !NETSTANDARD
     [Serializable]
+#endif
     public class SpecificationUsageException : Exception
     {
         //
@@ -27,15 +32,19 @@ namespace Machine.Specifications
         {
         }
 
+#if !NETSTANDARD
         protected SpecificationUsageException(
           SerializationInfo info,
           StreamingContext context)
             : base(info, context)
         {
         }
+#endif
     }
 
+#if !NETSTANDARD
     [Serializable]
+#endif
     public class SpecificationException : Exception
     {
         //
@@ -59,11 +68,13 @@ namespace Machine.Specifications
         {
         }
 
+#if !NETSTANDARD
         protected SpecificationException(
           SerializationInfo info,
           StreamingContext context)
             : base(info, context)
         {
         }
+#endif
     }
 }

@@ -25,6 +25,9 @@
     ],
     "frameworks": {
         "net35": {
+            "buildOptions": {
+                "define": [ "NET35" ]
+            },
              "frameworkAssemblies": {
                 "System.Xml": "",
                 "System.Xml.Linq": "",
@@ -32,6 +35,9 @@
             }
         },
         "net40": {
+            "buildOptions": {
+                "define": [ "NET40" ]
+            },
             "frameworkAssemblies": {
                 "System.Xml": "",
                 "System.Xml.Linq": "",
@@ -67,6 +73,22 @@
                 "Machine.Specifications.Clr4": {
                     "target": "project"
                 }
+            }
+        },
+        "netstandard1.5": {
+            "buildOptions": {
+                "define": [ "NETSTANDARD" ]
+            },
+            "dependencies": {
+                "NETStandard.Library": "1.6.0",
+                "System.Diagnostics.TraceSource": "4.*",
+                "System.Diagnostics.TextWriterTraceListener": "4.*",
+                "System.Reflection": "4.*",
+                "System.Reflection.Extensions": "4.*",
+                "System.Reflection.TypeExtensions": "4.*",
+                "System.Runtime.Loader": "4.*",
+                "System.Xml.XPath": "4.*",
+                "System.Xml.XPath.XDocument": "4.*"
             }
         }
     }

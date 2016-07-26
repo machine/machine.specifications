@@ -30,7 +30,7 @@ namespace Machine.Specifications.Factories
             EnsureAllBehaviorFieldsAreInContext(behaviorType, context);
 
             var isIgnored = behaviorField.HasAttribute(new IgnoreAttributeFullName()) ||
-                            behaviorInstance.GetType().HasAttribute(new IgnoreAttributeFullName());
+                            behaviorInstance.GetType().GetTypeInfo().HasAttribute(new IgnoreAttributeFullName());
             var behavior = new Behavior(behaviorField.FieldType, behaviorInstance, context, isIgnored);
 
             var itFieldInfos = behaviorType.GetInstanceFieldsOfUsage(new AssertDelegateAttributeFullName());
@@ -41,7 +41,7 @@ namespace Machine.Specifications.Factories
 
         static void EnsureBehaviorHasBehaviorsAttribute(Type behaviorType)
         {
-            if (!behaviorType.HasAttribute(new BehaviorAttributeFullName()))
+            if (!behaviorType.GetTypeInfo().HasAttribute(new BehaviorAttributeFullName()))
             {
                 throw new SpecificationUsageException(
                   "Behaviors require the BehaviorsAttribute on the type containing the Specifications. Attribute is missing from " +

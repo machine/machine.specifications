@@ -3,19 +3,31 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Remoting;
-using System.Runtime.Remoting.Messaging;
-using System.Security;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Machine.Specifications.Explorers;
 using Machine.Specifications.Model;
 using Machine.Specifications.Utility;
 
+#if !NETSTANDARD
+using System.Runtime.Remoting;
+using System.Runtime.Remoting.Messaging;
+using System.Security;
+#endif
+
 namespace Machine.Specifications.Runner.Impl
 {
+
+#if !NETSTANDARD
     [Serializable]
-    public class DefaultRunner : MarshalByRefObject, ISpecificationRunner, IMessageSink
+#endif
+
+    public class DefaultRunner :
+#if !NETSTANDARD
+                                MarshalByRefObject, IMessageSink,
+#endif
+                                ISpecificationRunner
+
     {
         readonly ISpecificationRunListener _listener;
         readonly RunOptions _options;
@@ -25,10 +37,12 @@ namespace Machine.Specifications.Runner.Impl
         InvokeOnce _runEnd = new InvokeOnce(() => { });
         bool _explicitStartAndEnd;
 
+#if !NETSTANDARD
         public DefaultRunner(object listener, string runOptionsXml, bool signalRunStartAndEnd)
             : this(new RemoteRunListenerDecorator(listener), RunOptions.Parse(runOptionsXml), signalRunStartAndEnd)
         {
         }
+#endif
 
         public DefaultRunner(ISpecificationRunListener listener, RunOptions options)
             : this(listener, options, true)
@@ -97,7 +111,7 @@ namespace Machine.Specifications.Runner.Impl
 
         void RunClass(MemberInfo member, Assembly assembly)
         {
-            var type = (Type)member;
+            Type type = member.AsType();
             var context = _explorer.FindContexts(type);
 
             if (context == null)
@@ -150,6 +164,7 @@ namespace Machine.Specifications.Runner.Impl
             _runEnd.Invoke();
         }
 
+#if !NETSTANDARD
         [SecurityCritical]
         public override object InitializeLifetimeService()
         {
@@ -208,6 +223,8 @@ namespace Machine.Specifications.Runner.Impl
         }
 
         public IMessageSink NextSink { get; private set; }
+
+#endif
     }
 
     public static class TagFilteringExtensions
@@ -216,7 +233,7 @@ namespace Machine.Specifications.Runner.Impl
         {
             if (options == null)
                 throw new ArgumentNullException("options");
-                
+
             var results = contexts;
 
             if (options.Filters.Any())

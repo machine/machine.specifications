@@ -77,7 +77,7 @@ namespace Machine.Specifications.Utility
 
             if (attributeFullName is BehaviorAttributeFullName)
             {
-                if (!fieldType.IsGenericType)
+                if (!fieldType.GetTypeInfo().IsGenericType)
                 {
                     throw new InvalidOperationException(
                       string.Format("{0} delegates need to be generic types with 1 parameter. {1} is not a generic type.",
@@ -91,7 +91,7 @@ namespace Machine.Specifications.Utility
                       string.Format("{0} delegates need to be generic types with 1 parameter. {1} has {2} parameters.",
                                     attributeFullName,
                                     fieldType,
-                                    fieldType.GetGenericParameterConstraints().Length));
+                                    fieldType.GetTypeInfo().GetGenericParameterConstraints().Length));
                 }
             }
 

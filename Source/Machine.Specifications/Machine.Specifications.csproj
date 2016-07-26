@@ -124,6 +124,7 @@
     <Compile Include="Framework.cs" />
     <Compile Include="Utility\RandomExtensionMethods.cs" />
     <Compile Include="Utility\ReflectionHelper.cs" />
+    <Compile Include="Utility\ReflectionPolyfillExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
