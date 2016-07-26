@@ -1,0 +1,22 @@
+{
+    "version": "1-*",
+    "buildOptions": {
+        "nowarn": [
+            "169"
+        ],
+        "define": [
+            "DEBUG",
+            "TRACE"
+        ]
+    },
+    "frameworks": {
+        "net40": {}
+    },
+    "dependencies": {
+        "FluentAssertions": "4.*",
+        "Machine.Specifications": {
+            "version": "",
+            "target": "project"
+        }
+    }
+}

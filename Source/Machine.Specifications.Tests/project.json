@@ -1,0 +1,39 @@
+{
+    "version": "1-*",
+    "buildOptions": {
+        "nowarn": [
+            "169"
+        ],
+        "define": [
+            "DEBUG",
+            "TRACE"
+        ]
+    },
+    "frameworks": {
+        "net461": {
+            "dependencies": {
+                "Machine.Specifications.Runner.Console": {
+                    "version": "0.*",
+                    "type": "build"
+                },
+                "NUnit.Console": {
+                    "version": "3.*",
+                    "type": "build"
+                }
+            }
+        }
+    },
+    "dependencies": {
+        "Machine.Specifications": {
+            "target": "project"
+        },
+        "Example": {
+            "target": "project"
+        },
+        "Example.Random": {
+            "target": "project"
+        },
+        "FluentAssertions": "4.*",
+        "NUnit": "3.*"
+    }
+}
