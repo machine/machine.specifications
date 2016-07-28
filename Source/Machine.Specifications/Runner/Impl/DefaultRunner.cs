@@ -90,12 +90,11 @@ namespace Machine.Specifications.Runner.Impl
 
         public void RunMember(Assembly assembly, MemberInfo member)
         {
-            if (member.MemberType == MemberTypes.TypeInfo ||
-                member.MemberType == MemberTypes.NestedType)
+            if (member.IsType())
             {
                 RunClass(member, assembly);
             }
-            else if (member.MemberType == MemberTypes.Field)
+            else if (member is FieldInfo)
             {
                 RunField(member, assembly);
             }

@@ -30,7 +30,7 @@ namespace Machine.Specifications.Factories
     {
         public IEnumerable<Tag> ExtractTags(Type type)
         {
-            var tags = type.GetTypeInfo().GetInterfaces().Where(x => x.FullName.StartsWith("Machine.Specifications.Tags`"))
+            var tags = type.GetInterfaces().Where(x => x.FullName.StartsWith("Machine.Specifications.Tags`"))
               .SelectMany(x => x.GetGenericArguments())
               .Select(x => new Tag(x.Name)).Distinct();
 

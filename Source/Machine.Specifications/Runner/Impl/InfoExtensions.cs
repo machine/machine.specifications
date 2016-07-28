@@ -8,7 +8,7 @@ namespace Machine.Specifications.Runner.Impl
     {
         public static AssemblyInfo GetInfo(this Assembly assembly)
         {
-            return new AssemblyInfo(assembly.GetName().Name, assembly.Location);
+            return new AssemblyInfo(assembly.GetName().Name, assembly.TryGetLocation());
         }
 
         public static ContextInfo GetInfo(this Context context)

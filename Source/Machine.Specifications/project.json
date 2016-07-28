@@ -62,20 +62,7 @@
                 }
             }
         },
-        "net46": {
-            "frameworkAssemblies": {
-                "System.Xml": "",
-                "System.Xml.Serialization": "",
-                "System.Xml.Linq": "",
-                "System.Runtime.Remoting": ""
-            },
-            "dependencies": {
-                "Machine.Specifications.Clr4": {
-                    "target": "project"
-                }
-            }
-        },
-        "netstandard1.5": {
+        "netstandard1.3": {
             "buildOptions": {
                 "define": [ "NETSTANDARD" ]
             },
@@ -87,7 +74,10 @@
                 "System.Reflection.Extensions": "4.*",
                 "System.Reflection.TypeExtensions": "4.*",
                 "System.Xml.XPath": "4.*",
-                "System.Xml.XPath.XDocument": "4.*"
+                "System.Xml.XPath.XDocument": "4.*",
+                "Machine.Specifications.Clr4": {
+                    "target": "project"
+                }
             }
         }
     }

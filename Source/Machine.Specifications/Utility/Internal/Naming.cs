@@ -16,7 +16,7 @@ namespace Machine.Specifications.Utility.Internal
         {
             while (true)
             {
-                var args = type.GetTypeInfo().GetGenericArguments();
+                var args = type.GetGenericArguments();
                 if (args.Length == 0 || args.Where(x => x.IsGenericParameter).Any()) break;
                 type = type.GetGenericTypeDefinition();
             }

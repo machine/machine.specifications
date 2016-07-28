@@ -32,7 +32,7 @@ namespace Machine.Specifications.Utility
             actions.Each(x => x());
         }
 
-        internal static bool HasAttribute<TAttributeFullName>(this ICustomAttributeProvider attributeProvider, TAttributeFullName attributeFullName)
+        internal static bool HasAttribute<TAttributeFullName>(this MemberInfo attributeProvider, TAttributeFullName attributeFullName)
           where TAttributeFullName : AttributeFullName
         {
             var attributeType = Type.GetType(attributeFullName.FullName);
