@@ -274,6 +274,8 @@ namespace Machine.Specifications.Specs.Runner
                                                                                Environment.NewLine));
   }
 
+#if !NETCORE
+// Redirecting Debug output is not support / doesn't work in .NET Core
   [Subject("Specification Runner")]
   public class when_running_a_specification_with_debug_output
     : RunnerSpecs
@@ -289,6 +291,7 @@ namespace Machine.Specifications.Specs.Runner
                                                                                "Debug.WriteLine message in cleanup{0}",
                                                                                Environment.NewLine));
   }
+#endif
 
   [Subject("Specification Runner")]
   public class when_running_a_specification_with_console_output_and_foreach
