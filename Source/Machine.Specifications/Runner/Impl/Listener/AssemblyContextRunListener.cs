@@ -14,6 +14,7 @@ namespace Machine.Specifications.Runner.Impl.Listener
 
         public override void OnAssemblyStart(AssemblyInfo assembly)
         {
+            // TODO - this shouldn't be required in order to make this portable
             var asm = AssemblyUtil.LoadFrom(assembly.Location);
 
             var assemblyContexts = _explorer.FindAssemblyContextsIn(asm);

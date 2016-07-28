@@ -17,6 +17,17 @@
                     "type": "build"
                 }
             }
+        },
+        "netcoreapp1.0": {
+            "dependencies": {
+                "Microsoft.NETCore.App": {
+                    "version": "1.0.0",
+                    "type": "platform"
+                },
+                "System.Reflection": "4.*",
+                "System.Reflection.Extensions": "4.*",
+                "System.Reflection.TypeExtensions": "4.*"
+            }
         }
     },
     "dependencies": {

@@ -53,7 +53,6 @@ Invoke-ExpressionExitCodeCheck "dotnet restore"
 
 
 [string] $netMSpecRunnerExe = $(Get-Item "${packagesDirectory}\Machine.Specifications.Runner.Console\*\tools\mspec-clr4.exe" -ErrorAction Stop).FullName
-[string] $netNUnitRunnerExe = $(Get-Item "${packagesDirectory}\NUnit.ConsoleRunner\*\tools\nunit3-console.exe" -ErrorAction Stop).FullName
 
 # Build
 Write-Host "Building ${configuration}..."
@@ -74,10 +73,13 @@ Get-ChildItem $testProjectsDirectory -Directory -Filter "*.Specs" | ForEach {
     Invoke-ExpressionExitCodeCheck "dotnet build $($_.FullName) -c ${configuration}"
 
     Get-Item "$($_.FullName)\bin\${configuration}\*\*.Specs.dll" -ErrorAction Stop | ForEach {
-        Invoke-Expression "${netMSpecRunnerExe} $($_.FullName)"
+        if (!$_.FullName.Contains("netcoreapp")) {
 
-        if (!$specsFailed) {
-            $specsFailed = $LASTEXITCODE -and $LASTEXITCODE -ne 0
+            Invoke-Expression "${netMSpecRunnerExe} $($_.FullName)"
+
+            if (!$specsFailed) {
+                $specsFailed = $LASTEXITCODE -and $LASTEXITCODE -ne 0
+            }
         }
     }
 }
@@ -87,18 +89,11 @@ Write-Host "Running nunit tests..."
 
 [bool] $testsFailed = $false
 
-Get-ChildItem $testProjectsDirectory -Directory -Filter "*.Tests" | ForEach {
-    Invoke-ExpressionExitCodeCheck "dotnet build $($_.FullName) -c ${configuration}"
+Get-ChildItem $testProjectsDirectory -Directory -Filter "*.Tests" -ErrorAction Stop | ForEach {
+    Invoke-Expression "dotnet test $($_.FullName)"
 
-    Get-Item "$($_.FullName)\bin\${configuration}\*\*.Tests.dll" -ErrorAction Stop | ForEach {
-        $command = "${netNUnitRunnerExe} $($_.FullName)"
-        if ($AppVeyor) {
-            $command += " --result=myresults.xml;format=AppVeyor"
-        }
-
-        if (!$testsFailed) {
-            $testsFailed = $LASTEXITCODE -and $LASTEXITCODE -ne 0
-        }
+    if (!$testsFailed) {
+        $testsFailed = $LASTEXITCODE -and $LASTEXITCODE -ne 0
     }
 }
 

@@ -9,6 +9,7 @@
             "TRACE"
         ]
     },
+    "testRunner": "nunit",
     "frameworks": {
         "net461": {
             "dependencies": {
@@ -16,10 +17,22 @@
                     "version": "0.*",
                     "type": "build"
                 },
-                "NUnit.Console": {
-                    "version": "3.*",
-                    "type": "build"
+                "Microsoft.NETCore.Platforms": {
+                    "version": "*",
+                    "type":"build"
                 }
+            }
+        },
+        "netcoreapp1.0": {
+            "imports": ["dotnet"], // for dotnet-test-nunit
+            "dependencies": {
+                "Microsoft.NETCore.App": {
+                    "version": "1.0.0",
+                    "type": "platform"
+                },
+                "System.Reflection": "4.*",
+                "System.Reflection.Extensions": "4.*",
+                "System.Reflection.TypeExtensions": "4.*"
             }
         }
     },
@@ -34,6 +47,7 @@
             "target": "project"
         },
         "FluentAssertions": "4.*",
-        "NUnit": "3.*"
+        "NUnit": "3.*",
+        "dotnet-test-nunit":"3.4.0-*"
     }
 }
