@@ -86,7 +86,6 @@
                 "System.Reflection": "4.*",
                 "System.Reflection.Extensions": "4.*",
                 "System.Reflection.TypeExtensions": "4.*",
-                "System.Runtime.Loader": "4.*",
                 "System.Xml.XPath": "4.*",
                 "System.Xml.XPath.XDocument": "4.*"
             }

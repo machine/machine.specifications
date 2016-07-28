@@ -11,7 +11,7 @@ namespace Machine.Specifications.Runner.Impl
 {
     internal class AssemblyRunner
     {
-        readonly ISpecificationRunListener _listener;
+        readonly AggregateRunListener _listener;
         readonly RunOptions _options;
         Action<Assembly> _assemblyStart;
         Action<Assembly> _assemblyEnd;
@@ -25,7 +25,6 @@ namespace Machine.Specifications.Runner.Impl
                                              new SetUpRedirectOutputRunListener(state),
                                              listener,
                                              new TearDownRedirectOutputRunListener(state),
-                                             new AssemblyContextRunListener()
                                            });
             _options = options;
 
@@ -36,9 +35,11 @@ namespace Machine.Specifications.Runner.Impl
         public void Run(Assembly assembly, IEnumerable<Context> contexts)
         {
             var hasExecutableSpecifications = false;
+            AssemblyContextRunListener assemblyContextRunListener = new AssemblyContextRunListener(assembly);
 
             try
             {
+                _listener.Add(assemblyContextRunListener);
                 hasExecutableSpecifications = contexts.Any(x => x.HasExecutableSpecifications);
 
                 var explorer = new AssemblyExplorer();
@@ -61,10 +62,18 @@ namespace Machine.Specifications.Runner.Impl
             }
             finally
             {
-                if (hasExecutableSpecifications)
+                try
                 {
-                    _assemblyEnd(assembly);
+                    if (hasExecutableSpecifications)
+                    {
+                        _assemblyEnd(assembly);
+                    }
                 }
+                finally
+                {
+                    _listener.Remove(assemblyContextRunListener);
+                }
+
             }
         }
 

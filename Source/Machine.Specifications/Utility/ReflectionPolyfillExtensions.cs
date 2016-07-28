@@ -5,17 +5,6 @@ using System.Reflection;
 
 namespace Machine.Specifications.Utility
 {
-    internal static class AssemblyUtil
-    {
-        public static Assembly LoadFrom(string path)
-        {
-#if NETSTANDARD
-            return System.Runtime.Loader.AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
-#else
-            return Assembly.LoadFrom(path);
-#endif
-        }
-    }
     public static class ReflectionPolyfillExtensions
     {
 
