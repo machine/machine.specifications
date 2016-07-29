@@ -13,10 +13,6 @@
     "frameworks": {
         "net461": {
             "dependencies": {
-                "Machine.Specifications.Runner.Console": {
-                    "version": "0.*",
-                    "type": "build"
-                },
                 "Microsoft.NETCore.Platforms": {
                     "version": "*",
                     "type":"build"
