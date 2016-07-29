@@ -57,7 +57,7 @@
                 "define": [ "NETSTANDARD" ]
             },
             "dependencies": {
-                "NETStandard.Library": "1.6.0",
+                "NETStandard.Library": "1.*",
                 "System.Diagnostics.TraceSource": "4.*",
                 "System.Diagnostics.TextWriterTraceListener": "4.*",
                 "System.Reflection": "4.*",
