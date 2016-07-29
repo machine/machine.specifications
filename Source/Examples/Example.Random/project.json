@@ -9,19 +9,24 @@
             "TRACE"
         ]
     },
+    "testRunner": "mspec",
     "frameworks": {
-        "net40": { },
-        "netstandard1.6": {
+        "net45": { },
+        "netcoreapp1.0": {
             "dependencies": {
-                "NETStandard.Library": "1.6.0"
+                "Microsoft.NETCore.App": {
+                    "version": "1.*",
+                    "type": "platform"
+                }
             }
         }
     },
     "dependencies": {
         "FluentAssertions": "4.*",
         "Machine.Specifications": {
-            "version": "",
+            "version": "*",
             "target": "project"
-        }
+        },
+        "dotnet-test-mspec": "0.2-*"
     }
 }
