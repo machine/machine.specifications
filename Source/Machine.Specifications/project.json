@@ -42,11 +42,6 @@
                 "System.Xml": "",
                 "System.Xml.Linq": "",
                 "System.Runtime.Remoting": ""
-            },
-            "dependencies": {
-                "Machine.Specifications.Clr4": {
-                    "target": "project"
-                }
             }
         },
         "net45": {
@@ -55,11 +50,6 @@
                 "System.Xml.Serialization": "",
                 "System.Xml.Linq": "",
                 "System.Runtime.Remoting": ""
-            },
-            "dependencies": {
-                "Machine.Specifications.Clr4": {
-                    "target": "project"
-                }
             }
         },
         "netstandard1.3": {
@@ -74,10 +64,7 @@
                 "System.Reflection.Extensions": "4.*",
                 "System.Reflection.TypeExtensions": "4.*",
                 "System.Xml.XPath": "4.*",
-                "System.Xml.XPath.XDocument": "4.*",
-                "Machine.Specifications.Clr4": {
-                    "target": "project"
-                }
+                "System.Xml.XPath.XDocument": "4.*"
             }
         }
     }

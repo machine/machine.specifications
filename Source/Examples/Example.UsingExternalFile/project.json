@@ -7,6 +7,9 @@
         "define": [
             "DEBUG",
             "TRACE"
+        ],
+        "copyToOutput": [
+            "TestData.txt"
         ]
     },
     "testRunner": "mspec",
@@ -24,7 +27,6 @@
     "dependencies": {
         "FluentAssertions": "4.*",
         "Machine.Specifications": {
-            "version": "*",
             "target": "project"
         },
         "dotnet-test-mspec": "0.2-*"

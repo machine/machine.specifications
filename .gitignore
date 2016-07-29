@@ -19,7 +19,6 @@ NDependOut
 install.ps1
 Misc/machine.specifications.nuspec
 /TestResult.xml
-/packages-dotnet
 
 Source/packages/*
 Source/**/bin/

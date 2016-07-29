@@ -11,7 +11,7 @@
     },
     "testRunner": "mspec",
     "frameworks": {
-        "net45": { },
+        "net45": {},
         "netcoreapp1.0": {
             "dependencies": {
                 "Microsoft.NETCore.App": {
@@ -23,10 +23,12 @@
     },
     "dependencies": {
         "FluentAssertions": "4.*",
+        "dotnet-test-mspec": "0.2-*",
         "Machine.Specifications": {
-            "version": "*",
             "target": "project"
         },
-        "dotnet-test-mspec": "0.2-*"
+        "Example.BindingFailure.Ref": {
+            "target": "project"
+        }
     }
 }

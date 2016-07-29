@@ -1,3 +1,5 @@
-# How to build
+## To build you can use:
 
-Nothing easier than that! Just open Visual Studio 2012 or later and build it in Debug mode. Before sending a pull request please build a Release build which runs all unit tests and specs.
+* Visual Studio IDE and open the `.sln` file
+* Visual Studio Code
+* `powershell -f build.ps1` - builds, runs tests and creates package
