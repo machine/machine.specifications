@@ -1,10 +1,13 @@
 environment:
-  nuget_version: '0.10.0-unstable0039'
+  nuget_version: '0.10.1-beta1'
   assembly_version: '0.9.3'
+
+pull_requests:
+  do_not_increment_build_number: true
 
 clone_depth: 5
 
-version: '$(nuget_version){build}'
+version: '$(nuget_version)+{build}'
 configuration: Debug
 
 build_script:
