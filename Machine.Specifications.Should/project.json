@@ -39,10 +39,7 @@
                 "define": [ "NETSTANDARD" ]
             },
             "dependencies": {
-                "NETStandard.Library": "1.*",
-                "System.Reflection": "4.*",
-                "System.Reflection.Extensions": "4.*",
-                "System.Reflection.TypeExtensions": "4.*"
+                "NETStandard.Library": "1.6.0"
             }
         }
     },
