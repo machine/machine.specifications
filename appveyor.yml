@@ -12,7 +12,7 @@ configuration: Release
 
 assembly_info:
   patch: true
-  file: src\**\Properties\AssemblyInfo.cs
+  file: Source\**\Properties\AssemblyInfo.cs
   assembly_version: '$(assembly_version)'
 
 build_script:
