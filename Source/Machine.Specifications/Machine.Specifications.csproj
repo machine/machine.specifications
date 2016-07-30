@@ -125,6 +125,8 @@
     <Compile Include="Utility\RandomExtensionMethods.cs" />
     <Compile Include="Utility\ReflectionHelper.cs" />
     <Compile Include="Utility\ReflectionPolyfillExtensions.cs" />
+    <Compile Include="Controller\TestController.cs" />
+    <Compile Include="Controller\TestControllerRunListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
