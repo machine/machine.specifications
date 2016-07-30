@@ -1,8 +1,14 @@
 Param(
-    [switch] $AppVeyor,
-    [string] $Version = "0.10.0-unstable-1",
-    [string] $Configuration = "Debug"
+    [string] $Configuration = "Debug",
+    [string] $CodeDirectory = ".",
+    [string] $TestsDirectory = ".",
+    [string] $PackageOutputDirectory = "Build",
+    [string] $Version,
+    [string[]] $Package = @()
 )
+
+$tests = Get-ChildItem $TestsDirectory -Directory | where { $_.FullName -imatch "^.*\.(?:Specs|Tests|Test)$" }
+$projects = Get-ChildItem $CodeDirectory -Recurse -File -Filter "project.json"
 
 function Invoke-ExpressionExitCodeCheck([string] $command)
 {
@@ -13,15 +19,11 @@ function Invoke-ExpressionExitCodeCheck([string] $command)
     }
 }
 
-[string] $testProjectsDirectory = "Source"
-[string] $codeProjectsDirectory = "Source"
-[string] $nugetOutputDirectory = "Build"
-
 # Patch version
-if ($AppVeyor) {
-    Write-Host "Patching versions to ${version}..."
+if ($Version) {
+    Write-Host "Patching versions to ${Version}..."
 
-    Get-ChildItem $codeProjectsDirectory -Recurse -File -Filter "project.json" | ForEach {
+    $projects | ForEach {
         Write-Host "Updating version: $($_.FullName)"
 
         $foundVersion = $false; # replace only the first occurance of versin (assumes package version is on top)
@@ -40,26 +42,21 @@ if ($AppVeyor) {
     }
 }
 
-# Restore Packages
-Write-Host "Restoring packages..."
-
-Invoke-ExpressionExitCodeCheck "dotnet restore"
-
-
 # Build
+
+Write-Host "Restoring packages..."
+Invoke-ExpressionExitCodeCheck "dotnet restore" -ErrorAction Stop
+
 Write-Host "Building in ${Configuration}..."
+Invoke-ExpressionExitCodeCheck "dotnet build ${CodeDirectory}\**\project.json -c ${Configuration}" -ErrorAction Stop
 
-Invoke-ExpressionExitCodeCheck "dotnet build ${codeProjectsDirectory}\Machine.Specifications -c ${configuration}" -ErrorAction Stop
 
+# Test
 
-# Run tests
 Write-Host "Running tests..."
 
 [bool] $testsFailed = $false
-
-@(@(Get-ChildItem $testProjectsDirectory -Directory -Filter "*.Tests") +
-  @(Get-ChildItem $testProjectsDirectory -Directory -Filter "*.Specs")) | ForEach {
-
+$tests | ForEach {
     Invoke-Expression "dotnet test $($_.FullName)"
 
     if (!$testsFailed) {
@@ -74,9 +71,11 @@ if ($testsFailed) {
     Write-Host -BackgroundColor Green -ForegroundColor White "All good!"
 }
 
-# NuGet packaging
-if ($AppVeyor) {
-    Write-Host "Creating a nuget package in ${nugetOutputDirectory}"
 
-    Invoke-ExpressionExitCodeCheck "dotnet pack ${codeProjectsDirectory}\Machine.Specifications -c ${configuration} -o ${nugetOutputDirectory} --version-suffix ${version}"
+# NuGet packaging
+
+Write-Host "Creating a nuget package in ${PackageOutputDirectory}"
+
+$Package | ForEach {
+    Invoke-ExpressionExitCodeCheck "dotnet pack ${CodeDirectory}\$($_) -c ${Configuration} -o ${PackageOutputDirectory}"
 }

@@ -1,6 +1,5 @@
 environment:
   nuget_version: '0.10.1-beta1'
-  assembly_version: '0.9.3'
 
 pull_requests:
   do_not_increment_build_number: true
@@ -8,12 +7,20 @@ pull_requests:
 clone_depth: 5
 
 version: '$(nuget_version)+{build}'
-configuration: Debug
+configuration: Release
+
 
 build_script:
 - cmd: >-
-    powershell -f build.ps1 -AppVeyor -Version "%NUGET_VERSION%" -Configuration %CONFIGURATION%"
+    powershell -f build.ps1 -CodeDirectory "Source" -TestsDirectory "Source" -PackageOutputDirectory "Build" -Package "Machine.Specifications" -Version "%NUGET_VERSION%" -Configuration "%CONFIGURATION%"
 artifacts:
 - path: Build\*.nupkg
 
 test: off
+
+deploy:
+- provider: NuGet
+  api_key:
+    secure: R+qirYPrTX9IzJHpRLL6KAV1Lo+vlAnInf6ShiIB2rAGIP28ceJxRAh1jirHE/uD
+  on:
+    appveyor_repo_tag: true

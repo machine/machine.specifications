@@ -2,4 +2,5 @@
 
 * Visual Studio IDE and open the `.sln` file
 * Visual Studio Code
-* `powershell -f build.ps1` - builds, runs tests and creates package
+* `build-local.bat` if you want a quick bulid+test+package run locally
+* `powershell -f build.ps1` - used by the above script and in CI
