@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 using Machine.Specifications.Sdk;
 using Machine.Specifications.Utility;
@@ -18,7 +19,7 @@ namespace Machine.Specifications.Factories
     Func<object> _instanceResolver;
     bool _ensureMaximumOfOne;
     AttributeFullName _attributeFullName;
-    object _instance; 
+    object _instance;
 
     public ICollection<T> Items { get; private set; }
 
@@ -39,7 +40,7 @@ namespace Machine.Specifications.Factories
 
     public bool IsAbstractOrSealed
     {
-      get { return _target.IsAbstract && _target.IsSealed; }
+      get { return _target.GetTypeInfo().IsAbstract && _target.GetTypeInfo().IsSealed; }
     }
 
     public void CollectFieldValue()
@@ -66,10 +67,10 @@ namespace Machine.Specifications.Factories
 
     public FieldInspectionArguments<T> DetailsForBaseType()
     {
-      return new FieldInspectionArguments<T>(_target.BaseType, 
-        _instanceResolver, 
-        Items, 
-        _ensureMaximumOfOne, 
+      return new FieldInspectionArguments<T>(_target.GetTypeInfo().BaseType,
+        _instanceResolver,
+        Items,
+        _ensureMaximumOfOne,
         _attributeFullName);
     }
 
@@ -88,7 +89,8 @@ namespace Machine.Specifications.Factories
 
     static Func<object> GetNextInstanceResolver(Type declaringType)
     {
-      if (declaringType.IsAbstract || declaringType.IsSealed)
+      var typeInfo = declaringType.GetTypeInfo();
+      if (typeInfo.IsAbstract || typeInfo.IsSealed)
         return () => declaringType;
 
       return () => Activator.CreateInstance(declaringType);
@@ -154,7 +156,7 @@ namespace Machine.Specifications.Factories
     {
       get
       {
-        return !DeclaringType.ContainsGenericParameters;
+        return !DeclaringType.GetTypeInfo().ContainsGenericParameters;
       }
     }
 
@@ -162,7 +164,7 @@ namespace Machine.Specifications.Factories
     {
       get
       {
-        return DeclaringType.GetGenericTypeDefinition().GetGenericArguments().Count();
+        return DeclaringType.GetTypeInfo().GetGenericTypeDefinition().GetGenericArguments().Count();
       }
     }
 

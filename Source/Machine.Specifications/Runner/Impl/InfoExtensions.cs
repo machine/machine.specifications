@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Machine.Specifications.Model;
+using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Runner.Impl
 {
@@ -7,7 +8,7 @@ namespace Machine.Specifications.Runner.Impl
     {
         public static AssemblyInfo GetInfo(this Assembly assembly)
         {
-            return new AssemblyInfo(assembly.GetName().Name, assembly.Location);
+            return new AssemblyInfo(assembly.GetName().Name, assembly.TryGetLocation());
         }
 
         public static ContextInfo GetInfo(this Context context)
@@ -18,7 +19,7 @@ namespace Machine.Specifications.Runner.Impl
                 concern = context.Subject.FullConcern;
             }
 
-            return new ContextInfo(context.Name, concern, context.Type.FullName, context.Type.Namespace, context.Type.Assembly.GetName().Name);
+            return new ContextInfo(context.Name, concern, context.Type.FullName, context.Type.Namespace, context.Type.GetTypeInfo().Assembly.GetName().Name);
         }
 
         public static SpecificationInfo GetInfo(this Specification specification)

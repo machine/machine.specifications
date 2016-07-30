@@ -25,6 +25,9 @@
     ],
     "frameworks": {
         "net35": {
+            "buildOptions": {
+                "define": [ "NET35" ]
+            },
              "frameworkAssemblies": {
                 "System.Xml": "",
                 "System.Xml.Linq": "",
@@ -32,15 +35,13 @@
             }
         },
         "net40": {
+            "buildOptions": {
+                "define": [ "NET40" ]
+            },
             "frameworkAssemblies": {
                 "System.Xml": "",
                 "System.Xml.Linq": "",
                 "System.Runtime.Remoting": ""
-            },
-            "dependencies": {
-                "Machine.Specifications.Clr4": {
-                    "target": "project"
-                }
             }
         },
         "net45": {
@@ -49,24 +50,21 @@
                 "System.Xml.Serialization": "",
                 "System.Xml.Linq": "",
                 "System.Runtime.Remoting": ""
-            },
-            "dependencies": {
-                "Machine.Specifications.Clr4": {
-                    "target": "project"
-                }
             }
         },
-        "net46": {
-            "frameworkAssemblies": {
-                "System.Xml": "",
-                "System.Xml.Serialization": "",
-                "System.Xml.Linq": "",
-                "System.Runtime.Remoting": ""
+        "netstandard1.3": {
+            "buildOptions": {
+                "define": [ "NETSTANDARD" ]
             },
             "dependencies": {
-                "Machine.Specifications.Clr4": {
-                    "target": "project"
-                }
+                "NETStandard.Library": "1.*",
+                "System.Diagnostics.TraceSource": "4.*",
+                "System.Diagnostics.TextWriterTraceListener": "4.*",
+                "System.Reflection": "4.*",
+                "System.Reflection.Extensions": "4.*",
+                "System.Reflection.TypeExtensions": "4.*",
+                "System.Xml.XPath": "4.*",
+                "System.Xml.XPath.XDocument": "4.*"
             }
         }
     }

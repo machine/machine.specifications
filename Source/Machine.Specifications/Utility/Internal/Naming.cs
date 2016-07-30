@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Reflection;
+
+using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Utility.Internal
 {

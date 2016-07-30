@@ -65,7 +65,7 @@ namespace Machine.Specifications.Factories
       var concern = ExtractSubject(type);
       var isSetupForEachSpec = IsSetupForEachSpec(type);
 
-      var isIgnored = type.HasAttribute(new IgnoreAttributeFullName());
+      var isIgnored = type.GetTypeInfo().HasAttribute(new IgnoreAttributeFullName());
       var tags = ExtractTags(type);
       var context = new Context(type,
         instance,
@@ -106,19 +106,19 @@ namespace Machine.Specifications.Factories
 
     static bool IsSetupForEachSpec(Type type)
     {
-      return type.GetCustomAttributes(typeof(SetupForEachSpecification), true).Any();
+      return type.GetTypeInfo().GetCustomAttributes(typeof(SetupForEachSpecification), true).Any();
     }
 
     static Subject ExtractSubject(Type type)
     {
-      var attributes = type.GetCustomAttributes(typeof(SubjectAttribute), true);
+      var attributes = type.GetTypeInfo().GetCustomAttributes(typeof(SubjectAttribute), true);
 
-      if (attributes.Length > 1)
+      if (attributes.Count() > 1)
       {
         throw new SpecificationUsageException("Cannot have more than one Subject on a Context");
       }
 
-      if (attributes.Length == 0)
+      if (attributes.Count() == 0)
       {
         if (type.DeclaringType == null)
         {
@@ -128,7 +128,7 @@ namespace Machine.Specifications.Factories
         return ExtractSubject(type.DeclaringType);
       }
 
-      var attribute = (SubjectAttribute) attributes[0];
+      var attribute = (SubjectAttribute) attributes.ElementAt(0);
 
       return attribute.CreateSubject();
     }

@@ -6,7 +6,9 @@ using System.Xml.XPath;
 
 namespace Machine.Specifications.Runner
 {
+#if !NETSTANDARD
     [Serializable]
+#endif
     public class RunOptions
     {
         public IEnumerable<string> IncludeTags { get; private set; }

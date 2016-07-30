@@ -1,8 +1,14 @@
 Param(
-    [switch] $AppVeyor,
-    [string] $Version = "0.10.0-unstable-1",
-    [string] $Configuration = "Debug"
+    [string] $Configuration = "Debug",
+    [string] $CodeDirectory = ".",
+    [string] $TestsDirectory = ".",
+    [string] $PackageOutputDirectory = "Build",
+    [string] $Version,
+    [string[]] $Package = @()
 )
+
+$tests = Get-ChildItem $TestsDirectory -Directory | where { $_.FullName -imatch "^.*\.(?:Specs|Tests|Test)$" }
+$projects = Get-ChildItem $CodeDirectory -Recurse -File -Filter "project.json"
 
 function Invoke-ExpressionExitCodeCheck([string] $command)
 {
@@ -13,17 +19,11 @@ function Invoke-ExpressionExitCodeCheck([string] $command)
     }
 }
 
-[string] $packagesDirectory = "packages-dotnet";
-[string] $testProjectsDirectory = "Source"
-[string] $codeProjectsDirectory = "Source"
-[string] $nugetOutputDirectory = "Build"
-
 # Patch version
+if ($Version) {
+    Write-Host "Patching versions to ${Version}..."
 
-if ($AppVeyor) {
-    Write-Host "Patching versions to ${version}..."
-
-    Get-ChildItem $codeProjectsDirectory -Recurse -File -Filter "project.json" | ForEach {
+    $projects | ForEach {
         Write-Host "Updating version: $($_.FullName)"
 
         $foundVersion = $false; # replace only the first occurance of versin (assumes package version is on top)
@@ -42,76 +42,40 @@ if ($AppVeyor) {
     }
 }
 
-# Restore Packages
-Write-Host "Restoring packages..."
-
-# we restore in a specific folder, because we need to reference the nunit and mspec console tools
-Invoke-ExpressionExitCodeCheck "dotnet restore --packages ${packagesDirectory}"
-
-# we restore properly (otherwise seems to cause issues)
-Invoke-ExpressionExitCodeCheck "dotnet restore"
-
-
-[string] $netMSpecRunnerExe = $(Get-Item "${packagesDirectory}\Machine.Specifications.Runner.Console\*\tools\mspec-clr4.exe" -ErrorAction Stop).FullName
-[string] $netNUnitRunnerExe = $(Get-Item "${packagesDirectory}\NUnit.ConsoleRunner\*\tools\nunit3-console.exe" -ErrorAction Stop).FullName
-
 # Build
-Write-Host "Building ${configuration}..."
 
-Invoke-ExpressionExitCodeCheck "dotnet build ${codeProjectsDirectory}\Machine.Specifications -c ${configuration}" -ErrorAction Stop
+Write-Host "Restoring packages..."
+Invoke-ExpressionExitCodeCheck "dotnet restore" -ErrorAction Stop
+
+Write-Host "Building in ${Configuration}..."
+Invoke-ExpressionExitCodeCheck "dotnet build ${CodeDirectory}\**\project.json -c ${Configuration}" -ErrorAction Stop
 
 
-# Run Mspec tests
-Write-Host "Running specs..."
+# Test
 
-if ($AppVeyor) {
-    $netMSpecRunnerExe += " --appveyor"
-}
-
-[bool] $specsFailed = $false
-
-Get-ChildItem $testProjectsDirectory -Directory -Filter "*.Specs" | ForEach {
-    Invoke-ExpressionExitCodeCheck "dotnet build $($_.FullName) -c ${configuration}"
-
-    Get-Item "$($_.FullName)\bin\${configuration}\*\*.Specs.dll" -ErrorAction Stop | ForEach {
-        Invoke-Expression "${netMSpecRunnerExe} $($_.FullName)"
-
-        if (!$specsFailed) {
-            $specsFailed = $LASTEXITCODE -and $LASTEXITCODE -ne 0
-        }
-    }
-}
-
-# Run NUnit tests
-Write-Host "Running nunit tests..."
+Write-Host "Running tests..."
 
 [bool] $testsFailed = $false
+$tests | ForEach {
+    Invoke-Expression "dotnet test $($_.FullName)"
 
-Get-ChildItem $testProjectsDirectory -Directory -Filter "*.Tests" | ForEach {
-    Invoke-ExpressionExitCodeCheck "dotnet build $($_.FullName) -c ${configuration}"
-
-    Get-Item "$($_.FullName)\bin\${configuration}\*\*.Tests.dll" -ErrorAction Stop | ForEach {
-        $command = "${netNUnitRunnerExe} $($_.FullName)"
-        if ($AppVeyor) {
-            $command += " --result=myresults.xml;format=AppVeyor"
-        }
-
-        if (!$testsFailed) {
-            $testsFailed = $LASTEXITCODE -and $LASTEXITCODE -ne 0
-        }
+    if (!$testsFailed) {
+        $testsFailed = $LASTEXITCODE -and $LASTEXITCODE -ne 0
     }
 }
 
-if ($testsFailed -or $specsFailed) {
+if ($testsFailed) {
     Write-Host -BackgroundColor Red -ForegroundColor Yellow "Tests failed!"
     exit -1
 } else {
     Write-Host -BackgroundColor Green -ForegroundColor White "All good!"
 }
 
-if ($AppVeyor) {
-    # Pack NuGet
-    Write-Host "Creating a nuget package in ${nugetOutputDirectory}"
 
-    Invoke-ExpressionExitCodeCheck "dotnet pack ${codeProjectsDirectory}\Machine.Specifications -c ${configuration} -o ${nugetOutputDirectory} --version-suffix ${version}"
+# NuGet packaging
+
+Write-Host "Creating a nuget package in ${PackageOutputDirectory}"
+
+$Package | ForEach {
+    Invoke-ExpressionExitCodeCheck "dotnet pack ${CodeDirectory}\$($_) -c ${Configuration} -o ${PackageOutputDirectory}"
 }

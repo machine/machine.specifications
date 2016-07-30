@@ -12,6 +12,8 @@ using System.Security;
 [assembly : AssemblyConfiguration("")]
 [assembly : AssemblyCulture("")]
 
+[assembly: AssemblyVersion("0.9.3.0")]
+
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
 // COM, set the ComVisible attribute to true on that type.
@@ -24,6 +26,6 @@ using System.Security;
 
 [assembly: AllowPartiallyTrustedCallers]
 
-#if !NET35
+#if !NET35 && !NETSTANDARD
 [assembly: SecurityRules(SecurityRuleSet.Level1)]
 #endif

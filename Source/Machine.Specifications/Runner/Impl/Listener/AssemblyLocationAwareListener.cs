@@ -14,13 +14,16 @@ namespace Machine.Specifications.Runner.Impl.Listener
 
         public override void OnAssemblyStart(AssemblyInfo assembly)
         {
-            _originalDirectory = Environment.CurrentDirectory;
-            Environment.CurrentDirectory = Path.GetDirectoryName(assembly.Location);
+            _originalDirectory = Directory.GetCurrentDirectory();
+            if (assembly.Location != null)
+            {
+                Directory.SetCurrentDirectory(Path.GetDirectoryName(assembly.Location));
+            }
         }
 
         public override void OnAssemblyEnd(AssemblyInfo assembly)
         {
-            Environment.CurrentDirectory = _originalDirectory;
+            Directory.SetCurrentDirectory(_originalDirectory);
         }
     }
 }
