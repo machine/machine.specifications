@@ -2,7 +2,9 @@
 
 namespace Machine.Specifications.Runner
 {
+#if !NETSTANDARD
     [Serializable]
+#endif
     public class ContextInfo
     {
         public string Name { get; private set; }
@@ -69,7 +71,9 @@ namespace Machine.Specifications.Runner
         }
     }
 
+#if !NETSTANDARD
     [Serializable]
+#endif
     public class CapturedOutput
     {
         public string StdOut { get; set; }

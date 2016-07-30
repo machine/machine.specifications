@@ -2,7 +2,9 @@
 
 namespace Machine.Specifications.Runner
 {
+#if !NETSTANDARD
     [Serializable]
+#endif
     public class AssemblyInfo
     {
         public AssemblyInfo(string name, string location)

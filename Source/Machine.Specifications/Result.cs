@@ -18,7 +18,9 @@ namespace Machine.Specifications
         Ignored
     }
 
+#if !NETSTANDARD
     [Serializable]
+#endif
     public class ExceptionResult
     {
         public string FullTypeName { get; private set; }
@@ -126,7 +128,9 @@ namespace Machine.Specifications
         #endregion
     }
 
+#if !NETSTANDARD
     [Serializable]
+#endif
     public class Result
     {
         readonly Status _status;

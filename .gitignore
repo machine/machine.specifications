@@ -18,7 +18,14 @@ NDependOut
 /packages
 install.ps1
 Misc/machine.specifications.nuspec
+/TestResult.xml
 
 Source/packages/*
+Source/**/bin/
+Source/**/obj/
 logs/*
 .bundle/*
+
+.vs/
+project.lock.json
+

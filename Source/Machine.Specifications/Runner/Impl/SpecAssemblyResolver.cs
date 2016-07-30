@@ -1,9 +1,11 @@
+#if !NETSTANDARD
 using System;
 using System.Reflection;
 using System.Security;
 
 namespace Machine.Specifications.Runner.Impl
 {
+    // TODO: This doesn't seem to be used by anything?
     internal class SpecAssemblyResolver : IDisposable
     {
         readonly Assembly _assembly;
@@ -31,3 +33,5 @@ namespace Machine.Specifications.Runner.Impl
         }
     }
 }
+
+#endif

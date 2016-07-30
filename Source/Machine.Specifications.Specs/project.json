@@ -1,0 +1,59 @@
+{
+    "version": "1-*",
+    "buildOptions": {
+        "nowarn": [
+            "169"
+        ],
+        "define": [
+            "DEBUG",
+            "TRACE"
+        ]
+    },
+    "testRunner": "mspec",
+    "frameworks": {
+        "net461": {
+            "dependencies": {
+                "Microsoft.NETCore.Platforms": {
+                    "version": "*",
+                    "type":"build"
+                }
+            }
+        },
+        "netcoreapp1.0": {
+            "buildOptions": {
+                "define": [
+                    "NETCORE"
+                ]
+            },
+            "dependencies": {
+                "Microsoft.NETCore.App": {
+                    "version": "1.*",
+                    "type": "platform"
+                },
+                "System.Reflection": "4.*",
+                "System.Reflection.Extensions": "4.*",
+                "System.Reflection.TypeExtensions": "4.*"
+            }
+        }
+    },
+    "dependencies": {
+        "Machine.Specifications": {
+            "version": "",
+            "target": "project"
+        },
+        "Example": {
+            "version": "",
+            "target": "project"
+        },
+        "Example.Random": {
+            "version": "",
+            "target": "project"
+        },
+        "Example.Failing": {
+            "version": "",
+            "target": "project"
+        },
+        "FluentAssertions": "4.*",
+        "dotnet-test-mspec": "0.2-*"
+    }
+}

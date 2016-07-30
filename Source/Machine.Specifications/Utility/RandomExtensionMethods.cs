@@ -32,7 +32,7 @@ namespace Machine.Specifications.Utility
             actions.Each(x => x());
         }
 
-        internal static bool HasAttribute<TAttributeFullName>(this ICustomAttributeProvider attributeProvider, TAttributeFullName attributeFullName)
+        internal static bool HasAttribute<TAttributeFullName>(this MemberInfo attributeProvider, TAttributeFullName attributeFullName)
           where TAttributeFullName : AttributeFullName
         {
             var attributeType = Type.GetType(attributeFullName.FullName);
@@ -43,31 +43,33 @@ namespace Machine.Specifications.Utility
         {
             // TODO: Make smarter
             var attributeType = Type.GetType(new ActDelegateAttributeFullName());
-            if (type.GetCustomAttributes(attributeType, false).Any())
+            var typeInfo = type.GetTypeInfo();
+
+            if (typeInfo.GetCustomAttributes(attributeType, false).Any())
             {
                 return new ActDelegateAttributeFullName();
             }
 
             attributeType = Type.GetType(new AssertDelegateAttributeFullName());
-            if (type.GetCustomAttributes(attributeType, false).Any())
+            if (typeInfo.GetCustomAttributes(attributeType, false).Any())
             {
                 return new AssertDelegateAttributeFullName();
             }
 
             attributeType = Type.GetType(new BehaviorDelegateAttributeFullName());
-            if (type.GetCustomAttributes(attributeType, false).Any())
+            if (typeInfo.GetCustomAttributes(attributeType, false).Any())
             {
                 return new BehaviorDelegateAttributeFullName();
             }
 
             attributeType = Type.GetType(new CleanupDelegateAttributeFullName());
-            if (type.GetCustomAttributes(attributeType, false).Any())
+            if (typeInfo.GetCustomAttributes(attributeType, false).Any())
             {
                 return new CleanupDelegateAttributeFullName();
             }
 
             attributeType = Type.GetType(new SetupDelegateAttributeFullName());
-            if (type.GetCustomAttributes(attributeType, false).Any())
+            if (typeInfo.GetCustomAttributes(attributeType, false).Any())
             {
                 return new SetupDelegateAttributeFullName();
             }

@@ -14,7 +14,6 @@
                     new XElement("typename", contextInfo.TypeName),
                     new XElement("namespace", contextInfo.Namespace),
                     new XElement("assemblyname", contextInfo.AssemblyName),
-                    new XElement("assemblyname", contextInfo.AssemblyName),
                     new XElement("fullname", contextInfo.FullName),
                     new XElement("capturedoutput", contextInfo.CapturedOutput));
         }

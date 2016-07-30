@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 using Example;
 using Example.Failing;
@@ -199,8 +200,8 @@ namespace Machine.Specifications.Specs.Runner
     static Exception exception;
 
     Because of = Run<context_with_failing_cleanup>;
-      
-    It should_report_cleanup_exception = () => 
+
+    It should_report_cleanup_exception = () =>
       testListener
         .LastFatalError
 #if !CLEAN_EXCEPTION_STACK_TRACE
@@ -232,7 +233,7 @@ namespace Machine.Specifications.Specs.Runner
     };
 
     Because of = () =>
-      runner.RunAssembly(typeof(TestAssemblyContext).Assembly);
+      runner.RunAssembly(typeof(TestAssemblyContext).GetTypeInfo().Assembly);
 
     It should_not_run_assembly_start = () =>
       TestAssemblyContext.OnAssemblyStartRun.Should().BeFalse();
@@ -273,6 +274,8 @@ namespace Machine.Specifications.Specs.Runner
                                                                                Environment.NewLine));
   }
 
+#if !NETCORE
+// Redirecting Debug output is not support / doesn't work in .NET Core
   [Subject("Specification Runner")]
   public class when_running_a_specification_with_debug_output
     : RunnerSpecs
@@ -288,6 +291,7 @@ namespace Machine.Specifications.Specs.Runner
                                                                                "Debug.WriteLine message in cleanup{0}",
                                                                                Environment.NewLine));
   }
+#endif
 
   [Subject("Specification Runner")]
   public class when_running_a_specification_with_console_output_and_foreach
@@ -354,8 +358,8 @@ namespace Machine.Specifications.Specs.Runner
     };
 
     Because of = () =>
-      runner.RunMember(typeof(context_with_multiple_specifications).Assembly,
-                       typeof(context_with_multiple_specifications));
+      runner.RunMember(typeof(context_with_multiple_specifications).GetTypeInfo().Assembly,
+                       typeof(context_with_multiple_specifications).GetTypeInfo());
 
     It should_run_untagged_assembly_context = () =>
       UntaggedAssemblyContext.OnAssemblyStartRun.Should().BeTrue();
@@ -398,10 +402,10 @@ namespace Machine.Specifications.Specs.Runner
 
     Because of = () =>
       {
-        runner.RunMember(typeof(context_with_multiple_specifications).Assembly,
-                         typeof(context_with_multiple_specifications));
-        runner.RunMember(typeof(context_with_duplicate_tags).Assembly,
-                         typeof(context_with_duplicate_tags));
+        runner.RunMember(typeof(context_with_multiple_specifications).GetTypeInfo().Assembly,
+                         typeof(context_with_multiple_specifications).GetTypeInfo());
+        runner.RunMember(typeof(context_with_duplicate_tags).GetTypeInfo().Assembly,
+                         typeof(context_with_duplicate_tags).GetTypeInfo());
       };
 
     It should_run_everything = () =>
@@ -424,10 +428,10 @@ namespace Machine.Specifications.Specs.Runner
 
     Because of = () =>
       {
-        runner.RunMember(typeof(context_with_multiple_specifications).Assembly,
-                         typeof(context_with_multiple_specifications));
-        runner.RunMember(typeof(context_with_duplicate_tags).Assembly,
-                         typeof(context_with_duplicate_tags));
+        runner.RunMember(typeof(context_with_multiple_specifications).GetTypeInfo().Assembly,
+                         typeof(context_with_multiple_specifications).GetTypeInfo());
+        runner.RunMember(typeof(context_with_duplicate_tags).GetTypeInfo().Assembly,
+                         typeof(context_with_duplicate_tags).GetTypeInfo());
       };
 
     It should_run_included_contexts_only = () =>
@@ -456,10 +460,10 @@ namespace Machine.Specifications.Specs.Runner
 
     Because of = () =>
       {
-        runner.RunMember(typeof(context_with_multiple_specifications).Assembly,
-                         typeof(context_with_multiple_specifications));
-        runner.RunMember(typeof(context_with_duplicate_tags).Assembly,
-                         typeof(context_with_duplicate_tags));
+        runner.RunMember(typeof(context_with_multiple_specifications).GetTypeInfo().Assembly,
+                         typeof(context_with_multiple_specifications).GetTypeInfo());
+        runner.RunMember(typeof(context_with_duplicate_tags).GetTypeInfo().Assembly,
+                         typeof(context_with_duplicate_tags).GetTypeInfo());
       };
 
     It should_run_included_specifications_only = () =>
@@ -552,7 +556,7 @@ namespace Machine.Specifications.Specs.Runner
 
     public static void Run<T>()
     {
-      runner.RunMember(typeof(T).Assembly, typeof(T));
+      runner.RunMember(typeof(T).GetTypeInfo().Assembly, typeof(T).GetTypeInfo());
     }
   }
 

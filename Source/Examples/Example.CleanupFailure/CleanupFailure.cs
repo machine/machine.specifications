@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
 using Machine.Specifications;
 
@@ -30,12 +29,6 @@ namespace Example.CleanupFailure
     }
 
     public NonSerializableException(string message, Exception inner) : base(message, inner)
-    {
-    }
-
-    protected NonSerializableException(
-      SerializationInfo info,
-      StreamingContext context) : base(info, context)
     {
     }
   }

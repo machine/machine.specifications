@@ -2,7 +2,9 @@
 
 namespace Machine.Specifications.Runner
 {
+#if !NETSTANDARD
     [Serializable]
+#endif
     public class SpecificationInfo
     {
         public SpecificationInfo(string leader, string name, string containingType, string fieldName)

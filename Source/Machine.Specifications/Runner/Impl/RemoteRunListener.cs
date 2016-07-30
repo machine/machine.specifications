@@ -1,3 +1,5 @@
+#if !NETSTANDARD
+
 using System;
 using System.Security;
 
@@ -65,3 +67,4 @@ namespace Machine.Specifications.Runner.Impl
         }
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if !NETSTANDARD
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -96,3 +97,4 @@ namespace Machine.Specifications.Runner.Impl
         }
     }
 }
+#endif

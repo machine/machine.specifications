@@ -6,7 +6,9 @@ using System.Xml.XPath;
 
 namespace Machine.Specifications.Runner
 {
+#if !NETSTANDARD
     [Serializable]
+#endif
     public class RunOptions
     {
         public IEnumerable<string> IncludeTags { get; private set; }
@@ -31,6 +33,8 @@ namespace Machine.Specifications.Runner
 
         public static RunOptions Parse(string runOptionsXml)
         {
+            if (runOptionsXml == null)
+                throw new ArgumentNullException("runOptionsXml");
             var document = XDocument.Parse(runOptionsXml);
 
             IEnumerable<string> includeTags = Parse(document, "/runoptions/includetags/tag");

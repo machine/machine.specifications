@@ -9,14 +9,19 @@ namespace Machine.Specifications.Runner.Impl.Listener
 {
     internal class AssemblyContextRunListener : RunListenerBase
     {
+        Assembly _assembly;
+
+        public AssemblyContextRunListener(Assembly assembly)
+        {
+            _assembly = assembly;
+        }
+
         readonly IList<IAssemblyContext> _executedAssemblyContexts = new List<IAssemblyContext>();
         readonly AssemblyExplorer _explorer = new AssemblyExplorer();
 
         public override void OnAssemblyStart(AssemblyInfo assembly)
         {
-            var asm = Assembly.LoadFrom(assembly.Location);
-
-            var assemblyContexts = _explorer.FindAssemblyContextsIn(asm);
+            var assemblyContexts = _explorer.FindAssemblyContextsIn(_assembly);
             assemblyContexts.Each(assemblyContext =>
             {
                 assemblyContext.OnAssemblyStart();

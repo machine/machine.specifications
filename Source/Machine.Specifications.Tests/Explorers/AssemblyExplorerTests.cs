@@ -18,7 +18,7 @@ namespace Machine.Specifications.Explorers
 
     public override void BeforeEachTest()
     {
-      specifications = Target.FindContextsIn(typeof(Account).Assembly);
+      specifications = Target.FindContextsIn(typeof(Account).GetTypeInfo().Assembly);
     }
 
     [Test]
@@ -49,7 +49,7 @@ namespace Machine.Specifications.Explorers
 
     public override void BeforeEachTest()
     {
-      descriptions = Target.FindContextsIn(typeof(ExampleA.InExampleA_1).Assembly, "Machine.Specifications.ExampleA");
+      descriptions = Target.FindContextsIn(typeof(ExampleA.InExampleA_1).GetTypeInfo().Assembly, "Machine.Specifications.ExampleA");
     }
 
     [Test]
@@ -130,7 +130,7 @@ namespace Machine.Specifications.Explorers
 
     public override void BeforeEachTest()
     {
-      descriptions = Target.FindContextsIn(typeof(Account).Assembly);
+      descriptions = Target.FindContextsIn(typeof(Account).GetTypeInfo().Assembly);
       context =
         descriptions.Where(x => x.Name == "when transferring between two accounts").FirstOrDefault();
       context.Should().NotBeNull();
@@ -159,7 +159,7 @@ namespace Machine.Specifications.Explorers
 
     public override void BeforeEachTest()
     {
-      var assembly = Assembly.GetExecutingAssembly();
+      var assembly = typeof(AssemblyExplorer_FindAssemblyContextsIn_WithinAnAssembly).GetTypeInfo().Assembly;
       assemblyContexts = new List<IAssemblyContext>(Target.FindAssemblyContextsIn(assembly));
     }
 

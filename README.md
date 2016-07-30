@@ -2,33 +2,20 @@
 
 Machine.Specifications (MSpec) is a [context/specification][5] framework that removes language noise and simplifies tests. All it asks is that you accept the `= () =>`. Keep up with the [latest news and discussions][8] or follow the maintainers, [@agross](https://twitter.com/agross), CTO of [GROSSWEBER](http://grossweber.com/en) and [@danielmarbach](https://twitter.com/danielmarbach).
 
-[![NDepend supports the Machine.Specifications project](http://www.ndepend.com/res/PoweredByNDepend.png)](http://www.ndepend.com/)
 
 # Installation
 
-You can download the unsigned binaries (<strong>recommended</strong>) or the signed binaries directly from the [TeamCity server][3]. But, we recommended installing [the NuGet package][4]. Install on the command line from your solution directory:
+* [Machine.Specifications on NuGet](http://nuget.org/packages/Machine.Specifications)
+* [Machine.Specifications.Should on NuGet](http://nuget.org/packages/Machine.Specifications.Should)
 
-```bash
-cmd> nuget install Machine.Specifications
-cmd> nuget install Machine.Specifications.Should
+| Target                          | Compatible version   | Test Runners                                                     |
+|---------------------------------|---------------------|------------------------------------------------------------------|
+| .NET Core                       |  >= 0.10            | dotnet test (dotnet-test-mspec)                                  |
+| .NET Framework 3.5 - 4.6.x      |  any                | [ReSharper](https://github.com/machine/machine.specifications.runner.resharper) </br> [TeamCity](https://github.com/machine/machine.specifications.runner.console) </br> [TeamCity parallelized](https://github.com/ivanz/Machine.Specifications.TeamCityParallelRunner) </br> [Visual Studio IDE](https://github.com/machine-visualstudio/machine.vstestadapter) </br> [Visual Studio Team Services](https://github.com/machine-visualstudio/machine.vstestadapter) </br> [TestDriven.NET](https://github.com/machine/machine.specifications.runner.tdnet) </br> [AppVeyor](https://github.com/machine/machine.specifications.runner.console) </br> [Console](https://github.com/machine/machine.specifications.runner.console)                                                          |
+| .Net Standard 1.3+  |  >= 0.10            | (not applicable)                                                              |
+| UWP                 |  >= 0.10            |                                                                               |
+| .NET 2.0            |  <= 0.9.x           |  [Console](https://github.com/machine/machine.specifications.runner.console)  |
 
-# or:
-cmd> nuget install Machine.Specifications-Signed
-cmd> nuget install Machine.Specifications.Should-Signed
-```
-
-Or use the Package Manager console in Visual Studio:
-
-```powershell
-PM> Install-Package Machine.Specifications
-PM> Install-Package Machine.Specifications.Should
-
-# or:
-PM> Install-Package Machine.Specifications-Signed
-PM> Install-Package Machine.Specifications.Should-Signed
-```
-
-The should library described above is an opinionated library provided by MSpec. You can also use other libraries like [FluentAssertions][12].
 
 # Usage
 MSpec is called a "context/specification" test framework because of the "grammar" that is used in describing and coding the tests or "specs". That grammar reads roughly like this
@@ -194,6 +181,47 @@ public class When_authenticating_a_user_fails_due_to_bad_credentials
 
 # Command Line Reference
 
+## dotnet cli or .NET Core
+
+Install the `dotnet-test-mspec` NuGet package in each project with MSpec tests and set the `testRunner` to `mspec`. Projects have to target `framework` either `>= net45` or `>= netcoreapp1.0` or later.
+
+**project.json**
+
+```
+  "testRunner": "mspec",
+  "dependencies": {
+        "Machine.Specifications": "0.*",
+        "Machine.Specifications.Should": "0.*",
+        "dotnet-test-mspec": {
+            "version": "*",
+            "type": "build"
+        }
+    },
+
+    "frameworks": {
+      "net46": { ... },
+      "netcoreapp1.0": { ... }
+    }
+```
+
+Then you can use `dotnet test` as usual:
+
+```cmd
+> dotnet test
+
+Project Test (.NETCoreApp,Version=v1.0) was previously compiled. Skipping compilation.
+
+Specs in Machine.Specifications.Core.Runner.DotNet.Tests:
+SampleSpec
+> should be hello
+> should be world
+Contexts: 1, Specifications: 2, Time: 0.07 seconds
+
+SUMMARY: Total: 1 targets, Passed: 1, Failed: 0.
+```
+
+## .Net Framework Command Line Reference
+
 MSpec, like other testing frameworks, provides a robust command-line runner that can be used to execute specs in one or more assemblies and allows a number of output formats to suit your needs. The runner is provided as a [separate package](http://www.nuget.org/packages/Machine.Specifications.Runner.Console/) and can be installed with the following commands:
 
 ```bash
@@ -246,7 +274,7 @@ More information can be found under [the reporting repo](https://github.com/mach
 
 ### HTML Reports
 
-MSpec can output human-readable HTML reports of the test run by passing the `--html` option. If a filename is provided, the output is placed at that path, overwriting existing files. If multiple assemblies are being testing, the output is grouped into a single file. If no filename is provided, it will use the name of the assembly(s). If multiple assemblies are being tested, an `index.html` is created with links to each assembly-specific report. You can use this option if your CI server supports capturing HTML as build reports.
+MSpec can output human-readable HTML reports of the test run by passing the `--html` option. If a filename is provided, the output is placed at that path, overwriting existing files. If multiple assemblies are being tested, the output is grouped into a single file. If no filename is provided, it will use the name of the assembly(s). If multiple assemblies are being tested, an `index.html` is created with links to each assembly-specific report. You can use this option if your CI server supports capturing HTML as build reports.
 
 More information can be found under [the reporting repo](https://github.com/machine/machine.specifications.reporting). Please provide feedback, feature requests, issues and more in that repository.
 
@@ -264,8 +292,7 @@ More information can be found under [the reporting repo](https://github.com/mach
 
 # ReSharper Integration
 
-MSpec provides a batch file to integrate with the ReSharper test runner, custom naming rules, and code annotations. MSpec currently supports ReSharper 7.1, 8.0, 8.1 and 8.2. We strongly recommend to install the ReSharper integration with the Extension Manager. Just search for Machine.Specifications.Runner.Resharper. In future versions the command line batch installation will be deprecated.
-
+MSpec a plugin to integrate with the ReSharper test runner, custom naming rules, and code annotations.
 
 More information can be found under [the resharper repo](https://github.com/machine/machine.specifications.runner.resharper). Please provide feedback, feature requests, issues and more in that repository.
 
@@ -304,8 +331,6 @@ PM> Install-Package Machine.Specifications.Runner.TDnet
 
 More information can be found under [the TDnet repo](https://github.com/machine/machine.specifications.runner.tdnet). Please provide feedback, feature requests, issues and more in that repository.
 
- [3]: https://teamcity.bbv.ch/project.html?projectId=MachineSpecifications
- [4]: http://nuget.org/packages/Machine.Specifications
  [5]: http://www.code-magazine.com/article.aspx?quickid=0805061
  [6]: http://codebetter.com/blogs/aaron.jensen/archive/2009/10/19/advanced-selenium-logging-with-mspec.aspx
  [7]: http://confluence.jetbrains.com/display/TCD9/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-ReportingTests
@@ -313,4 +338,3 @@ More information can be found under [the TDnet repo](https://github.com/machine/
  [9]: http://c2.com/cgi/wiki?ArrangeActAssert
  [10]: https://github.com/agross/mspec-samples/tree/master/WebSpecs/LoginApp.Selenium.Specs
  [11]: http://therightstuff.de/2010/03/03/MachineSpecifications-Templates-For-ReSharper.aspx
- [12]: https://github.com/dennisdoomen/fluentassertions
