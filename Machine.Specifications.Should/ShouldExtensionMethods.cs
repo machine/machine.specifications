@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
+
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
@@ -227,7 +230,7 @@ the following items did not meet the condition: {1}",
             if (noContain.Any())
             {
                 throw new SpecificationException(string.Format(
-                                                               @"Should contain: {0} 
+                                                               @"Should contain: {0}
 entire list: {1}
 does not contain: {2}",
                     items.EachToUsefulString(),
@@ -279,7 +282,7 @@ entire list: {1}",
             if (contains.Any())
             {
                 throw new SpecificationException(string.Format(
-                                                               @"Should not contain: {0} 
+                                                               @"Should not contain: {0}
 entire list: {1}
 does contain: {2}",
                     items.EachToUsefulString(),
@@ -511,7 +514,7 @@ does contain: {2}",
             if (expected == null) throw new ArgumentNullException("expected");
             if (actual == null) throw NewException("Should be equal ignoring case to {0} but is [null]", expected);
 
-            if (!actual.Equals(expected, StringComparison.InvariantCultureIgnoreCase))
+            if ((CultureInfo.InvariantCulture.CompareInfo.Compare(actual, expected, CompareOptions.IgnoreCase) != 0))
             {
                 throw NewException("Should be equal ignoring case to {0} but is {1}", expected, actual);
             }
@@ -584,7 +587,7 @@ does contain: {2}",
 
             if (noContain.Any() || source.Any())
             {
-                var message = string.Format(@"Should contain only: {0} 
+                var message = string.Format(@"Should contain only: {0}
 entire list: {1}",
                     items.EachToUsefulString(),
                     list.EachToUsefulString());
@@ -737,7 +740,7 @@ entire list: {1}",
                 var otherSimpleTuple = other as ReferentialEqualityTuple;
                 if (otherSimpleTuple == null)
                   return false;
-              
+
                 return ReferenceEquals(_obj, otherSimpleTuple._obj) && ReferenceEquals(_expected, otherSimpleTuple._expected);
             }
         }

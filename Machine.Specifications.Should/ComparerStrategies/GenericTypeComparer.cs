@@ -1,4 +1,6 @@
-﻿namespace Machine.Specifications.ComparerStrategies
+﻿using System.Reflection;
+
+namespace Machine.Specifications.ComparerStrategies
 {
     class GenericTypeComparer<T> : IComparerStrategy<T>
     {
@@ -6,7 +8,7 @@
         {
             var type = typeof(T);
 
-            if (!type.IsValueType || (type.IsGenericType && type.IsNullable()))
+            if (!type.GetTypeInfo().IsValueType || (type.GetTypeInfo().IsGenericType && type.IsNullable()))
             {
                 if (x.IsEqualToDefault())
                 {

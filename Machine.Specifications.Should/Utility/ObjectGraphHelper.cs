@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Machine.Specifications.Utility
 {
@@ -16,7 +17,7 @@ namespace Machine.Specifications.Utility
             if (objectType.IsArray || (obj is IEnumerable && objectType != typeof(string)))
                 return GetSequenceNode(obj);
 
-            if (objectType.IsClass && objectType != typeof(string))
+            if (objectType.GetTypeInfo().IsClass && objectType != typeof(string))
                 return GetKeyValueNode(obj);
 
             return new LiteralNode { Value = obj };
