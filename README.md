@@ -1,3 +1,5 @@
+Please open issues here: https://github.com/machine/machine.specifications
+
 machine.specifications.runner.utility
 =============================
 
