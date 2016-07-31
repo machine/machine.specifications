@@ -20,6 +20,7 @@
             }
         },
         "netcoreapp1.0": {
+            "imports": ["dotnet"], // for FluentAssertions
             "buildOptions": {
                 "define": [
                     "NETCORE"
@@ -53,7 +54,7 @@
             "version": "",
             "target": "project"
         },
-        "FluentAssertions": "4.*",
+        "FluentAssertions": "4.12.0",
         "dotnet-test-mspec": "0.2-*"
     }
 }

@@ -20,7 +20,7 @@
             }
         },
         "netcoreapp1.0": {
-            "imports": ["dotnet"], // for dotnet-test-nunit
+            "imports": ["dotnet"], // for FluentAssertions
             "dependencies": {
                 "Microsoft.NETCore.App": {
                     "version": "1.*",
@@ -42,7 +42,7 @@
         "Example.Random": {
             "target": "project"
         },
-        "FluentAssertions": "4.*",
+        "FluentAssertions": "4.12.0",
         "NUnit": "3.*",
         "dotnet-test-nunit":"3.4.0-*"
     }
