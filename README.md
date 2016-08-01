@@ -1,2 +1,1 @@
-machine.specifications.should
-=============================
+[![Build status](https://ci.appveyor.com/api/projects/status/xct2xane0k4y15wj/branch/master?svg=true)](https://ci.appveyor.com/project/machine-specifications/machine-specifications-should/branch/master)
