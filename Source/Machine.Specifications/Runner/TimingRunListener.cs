@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-using Machine.Specifications.Runner.Impl.Listener;
-
 namespace Machine.Specifications.Runner
 {
     public class TimingRunListener : ISpecificationRunListener

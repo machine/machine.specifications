@@ -43,7 +43,7 @@
             "target": "project"
         },
         "FluentAssertions": "4.12.0",
-        "NUnit": "3.*",
+        "NUnit": "3.4.1",
         "dotnet-test-nunit":"3.4.0-*"
     }
 }
