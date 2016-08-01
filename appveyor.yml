@@ -1,5 +1,5 @@
 environment:
-  nuget_version: '0.10.0-beta1'
+  nuget_version: '0.11.0-beta1'
   assembly_version: '0.9.3.0'
 
 pull_requests:
