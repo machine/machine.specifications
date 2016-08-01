@@ -10,10 +10,10 @@ Machine.Specifications (MSpec) is a [context/specification][5] framework that re
 
 | Target                          | Compatible version   | Test Runners                                                     |
 |---------------------------------|---------------------|------------------------------------------------------------------|
-| .NET Core                       |  >= 0.10            | dotnet test (dotnet-test-mspec)                                  |
+| .NET Core                       |  >= 0.11            | dotnet test (dotnet-test-mspec)                                  |
 | .NET Framework 3.5 - 4.6.x      |  any                | [ReSharper](https://github.com/machine/machine.specifications.runner.resharper) </br> [TeamCity](https://github.com/machine/machine.specifications.runner.console) </br> [TeamCity parallelized](https://github.com/ivanz/Machine.Specifications.TeamCityParallelRunner) </br> [Visual Studio IDE](https://github.com/machine-visualstudio/machine.vstestadapter) </br> [Visual Studio Team Services](https://github.com/machine-visualstudio/machine.vstestadapter) </br> [TestDriven.NET](https://github.com/machine/machine.specifications.runner.tdnet) </br> [AppVeyor](https://github.com/machine/machine.specifications.runner.console) </br> [Console](https://github.com/machine/machine.specifications.runner.console)                                                          |
-| .Net Standard 1.3+  |  >= 0.10            | (not applicable)                                                              |
-| UWP                 |  >= 0.10            |                                                                               |
+| .Net Standard 1.3+  |  >= 0.11            | (not applicable)                                                              |
+| UWP                 |  >= 0.11            |                                                                               |
 | .NET 2.0            |  <= 0.9.x           |  [Console](https://github.com/machine/machine.specifications.runner.console)  |
 
 
