@@ -28,11 +28,12 @@ namespace Machine.Specifications.Should.Specs
         {
             Because of = () => { Exception = Catch.Exception(() => Obj.ShouldBeLike(new { Prop1 = "test2", Prop2 = 2 })); };
 
-            It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop1"":
-  Expected string length 5 but was 4. Strings differ at index 4.
-  Expected: ""test2""
-  But was:  ""test""
-  ---------------^");
+            It should_contain_message = () => Exception.Message.ShouldEqual(
+                        @"""Prop1"":"  + Environment.NewLine +
+                        @"  Expected string length 5 but was 4. Strings differ at index 4." + Environment.NewLine +
+                        @"  Expected: ""test2""" + Environment.NewLine +
+                        @"  But was:  ""test""" + Environment.NewLine +
+                        @"  ---------------^");
 
             It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
         }
@@ -42,9 +43,9 @@ namespace Machine.Specifications.Should.Specs
             Because of =
               () => { Exception = Catch.Exception(() => Obj.ShouldBeLike(new { Prop1 = "test", Prop2 = 2, Prop3 = "other" })); };
 
-            It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop3"":
-  Expected: ""other""
-  But was:  Not Defined");
+            It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop3"":" + Environment.NewLine +
+                @"  Expected: ""other""" + Environment.NewLine +
+                @"  But was:  Not Defined");
 
             It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
         }
@@ -57,19 +58,20 @@ namespace Machine.Specifications.Should.Specs
                   Exception = Catch.Exception(() => Obj.ShouldBeLike(new { Prop1 = "test2", Prop2 = 3, Prop3 = "other" }));
               };
 
-            It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop1"":
-  Expected string length 5 but was 4. Strings differ at index 4.
-  Expected: ""test2""
-  But was:  ""test""
-  ---------------^
-
-""Prop2"":
-  Expected: [3]
-  But was:  [2]
-
-""Prop3"":
-  Expected: ""other""
-  But was:  Not Defined");
+            It should_contain_message = () => Exception.Message.ShouldEqual(
+                @"""Prop1"":" + Environment.NewLine +
+                @"  Expected string length 5 but was 4. Strings differ at index 4." + Environment.NewLine +
+                @"  Expected: ""test2""" + Environment.NewLine +
+                @"  But was:  ""test""" + Environment.NewLine +
+                @"  ---------------^" + Environment.NewLine +
+                Environment.NewLine +
+                @"""Prop2"":" + Environment.NewLine +
+                @"  Expected: [3]" + Environment.NewLine +
+                @"  But was:  [2]" + Environment.NewLine +
+                Environment.NewLine +
+                @"""Prop3"":" + Environment.NewLine +
+                @"  Expected: ""other""" + Environment.NewLine +
+                @"  But was:  Not Defined");
 
             It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
         }
@@ -85,12 +87,13 @@ namespace Machine.Specifications.Should.Specs
             };
 
             Because of = () => { Exception = Catch.Exception(() => new { A = _a, B = _b  }.ShouldBeLike(new { A = _a, B = _a  })); };
-      
-            It should_contain_message = () => Exception.Message.ShouldEqual(@"""B.Prop"":
-  String lengths are both 1. Strings differ at index 0.
-  Expected: ""a""
-  But was:  ""b""
-  -----------^");
+
+            It should_contain_message = () => Exception.Message.ShouldEqual(
+                @"""B.Prop"":"  + Environment.NewLine +
+                @"  String lengths are both 1. Strings differ at index 0." + Environment.NewLine +
+                @"  Expected: ""a""" + Environment.NewLine +
+                @"  But was:  ""b""" + Environment.NewLine +
+                @"  -----------^");
 
             It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
 
@@ -146,11 +149,12 @@ namespace Machine.Specifications.Should.Specs
             Establish ctx = () => _array = new[] { "value1", "value2" };
             Because of = () => { Exception = Catch.Exception(() => _array.ShouldBeLike(new[] { "value1", "value3" })); };
 
-            It should_contain_message = () => Exception.Message.ShouldEqual(@"""[1]"":
-  String lengths are both 6. Strings differ at index 5.
-  Expected: ""value3""
-  But was:  ""value2""
-  ----------------^");
+            It should_contain_message = () => Exception.Message.ShouldEqual(
+                @"""[1]"":" + Environment.NewLine +
+                @"  String lengths are both 6. Strings differ at index 5." + Environment.NewLine +
+                @"  Expected: ""value3""" + Environment.NewLine +
+                @"  But was:  ""value2""" + Environment.NewLine +
+                @"  ----------------^");
 
             It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
         }
@@ -160,9 +164,10 @@ namespace Machine.Specifications.Should.Specs
             Establish ctx = () => _array = new[] { "value1", "value2" };
             Because of = () => { Exception = Catch.Exception(() => _array.ShouldBeLike(new[] { "value1" })); };
 
-            It should_contain_message = () => Exception.Message.ShouldEqual(@""""":
-  Expected: Sequence length of 1
-  But was:  2");
+            It should_contain_message = () => Exception.Message.ShouldEqual(
+                @""""":" + Environment.NewLine +
+                @"  Expected: Sequence length of 1" + Environment.NewLine +
+                @"  But was:  2");
 
             It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
         }
@@ -180,11 +185,12 @@ namespace Machine.Specifications.Should.Specs
 
             Because of = () => { Exception = Catch.Exception(() => _array.ShouldBeLike(new[] { _a, _a })); };
 
-            It should_contain_message = () => Exception.Message.ShouldEqual(@"""[1].Prop"":
-  String lengths are both 1. Strings differ at index 0.
-  Expected: ""a""
-  But was:  ""b""
-  -----------^");
+            It should_contain_message = () => Exception.Message.ShouldEqual
+               (@"""[1].Prop"":" + Environment.NewLine +
+                @"  String lengths are both 1. Strings differ at index 0." + Environment.NewLine +
+                @"  Expected: ""a""" + Environment.NewLine +
+                @"  But was:  ""b""" + Environment.NewLine +
+                @"  -----------^");
 
             It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
 
@@ -260,9 +266,10 @@ namespace Machine.Specifications.Should.Specs
                                                         }));
               };
 
-            It should_contain_message = () => Exception.Message.ShouldEqual(@"""NestedProp.NestedProp1"":
-  Expected: [7]
-  But was:  [5]");
+            It should_contain_message = () => Exception.Message.ShouldEqual(
+                @"""NestedProp.NestedProp1"":"  + Environment.NewLine +
+                @"  Expected: [7]" + Environment.NewLine +
+                @"  But was:  [5]");
 
             It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
         }
@@ -285,9 +292,10 @@ namespace Machine.Specifications.Should.Specs
                                                                     }));
             };
 
-            It should_contain_message = () => Exception.Message.ShouldEqual(@"""NestedProp.NestedProp3"":
-  Expected: ""value3""
-  But was:  Not Defined");
+            It should_contain_message = () => Exception.Message.ShouldEqual(
+                @"""NestedProp.NestedProp3"":" + Environment.NewLine +
+                @"  Expected: ""value3""" + Environment.NewLine +
+                @"  But was:  Not Defined");
 
             It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
         }
@@ -324,11 +332,12 @@ namespace Machine.Specifications.Should.Specs
 
             It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
 
-            It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop1"":
-  Expected string length 9 but was 4. Strings differ at index 0.
-  Expected: ""different""
-  But was:  ""test""
-  -----------^");
+            It should_contain_message = () => Exception.Message.ShouldEqual(
+                @"""Prop1"":" + Environment.NewLine +
+                @"  Expected string length 9 but was 4. Strings differ at index 0." + Environment.NewLine +
+                @"  Expected: ""different""" + Environment.NewLine +
+                @"  But was:  ""test""" + Environment.NewLine +
+                @"  -----------^");
         }
 
         public class and_the_objects_are_different_and_have_null_values
@@ -339,9 +348,10 @@ namespace Machine.Specifications.Should.Specs
 
             It should_throw_a_specification_exception = () => Exception.ShouldBeOfExactType<SpecificationException>();
 
-            It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop1"":
-  Expected: [null]
-  But was:  ""test""");
+            It should_contain_message = () => Exception.Message.ShouldEqual(
+                @"""Prop1"":" + Environment.NewLine +
+                @"  Expected: [null]" + Environment.NewLine +
+                @"  But was:  ""test""");
         }
     }
 
@@ -376,17 +386,18 @@ namespace Machine.Specifications.Should.Specs
 
             It should_throw = () => Exception.ShouldBeOfExactType<SpecificationException>();
 
-            It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop1[0]"":
-  Expected: [2]
-  But was:  [1]
-
-""Prop1[1]"":
-  Expected: [2]
-  But was:  [1]
-
-""Prop1[2]"":
-  Expected: [2]
-  But was:  [1]");
+            It should_contain_message = () => Exception.Message.ShouldEqual(
+                @"""Prop1[0]"":" + Environment.NewLine +
+                @"  Expected: [2]" + Environment.NewLine +
+                @"  But was:  [1]" + Environment.NewLine +
+                Environment.NewLine +
+                @"""Prop1[1]"":" + Environment.NewLine +
+                @"  Expected: [2]" + Environment.NewLine +
+                @"  But was:  [1]" + Environment.NewLine +
+                Environment.NewLine +
+                @"""Prop1[2]"":" + Environment.NewLine +
+                @"  Expected: [2]" + Environment.NewLine +
+                @"  But was:  [1]");
         }
 
         public class and_the_objects_are_different_and_have_null_values
@@ -400,14 +411,15 @@ namespace Machine.Specifications.Should.Specs
 
             It should_throw_a_specification_exception = () => Exception.ShouldBeOfExactType<SpecificationException>();
 
-            It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop1"":
-  Expected: [null]
-  But was:  System.Int32[]:
-{
-  [1],
-  [1],
-  [1]
-}");
+            It should_contain_message = () => Exception.Message.ShouldEqual(
+                @"""Prop1"":" + Environment.NewLine +
+                @"  Expected: [null]" + Environment.NewLine +
+                @"  But was:  System.Int32[]:" + Environment.NewLine +
+                @"{" + Environment.NewLine +
+                @"  [1]," + Environment.NewLine +
+                @"  [1]," + Environment.NewLine +
+                @"  [1]" + Environment.NewLine +
+                @"}");
         }
 
         public class and_the_objects_are_different_and_the_actual_object_has_a_null_value
@@ -421,15 +433,16 @@ namespace Machine.Specifications.Should.Specs
 
             It should_throw_a_specification_exception = () => Exception.ShouldBeOfExactType<SpecificationException>();
 
-            It should_contain_message = () => Exception.Message.ShouldEqual(@"""Prop1"":
-  Expected: System.Int32[]:
-{
-  [1],
-  [1],
-  [1]
-}
-
-  But was:  [null]");
+            It should_contain_message = () => Exception.Message.ShouldEqual(
+                @"""Prop1"":" + Environment.NewLine +
+                @"  Expected: System.Int32[]:" + Environment.NewLine +
+                @"{" + Environment.NewLine +
+                @"  [1]," + Environment.NewLine +
+                @"  [1]," + Environment.NewLine +
+                @"  [1]" + Environment.NewLine +
+                @"}" + Environment.NewLine +
+                Environment.NewLine +
+                @"  But was:  [null]");
         }
     }
 
@@ -484,13 +497,14 @@ namespace Machine.Specifications.Should.Specs
 
             It should_throw = () => exception.ShouldBeOfExactType<SpecificationException>();
 
-            It should_contain_message = () => exception.Message.ShouldEqual(@"""Prop2[0]"":
-  Expected: [3]
-  But was:  [1]
-
-""Prop2[2]"":
-  Expected: [1]
-  But was:  [3]");
+            It should_contain_message = () => exception.Message.ShouldEqual(
+                @"""Prop2[0]"":" + Environment.NewLine +
+                @"  Expected: [3]" + Environment.NewLine +
+                @"  But was:  [1]" + Environment.NewLine +
+                Environment.NewLine +
+                @"""Prop2[2]"":" + Environment.NewLine +
+                @"  Expected: [1]" + Environment.NewLine +
+                @"  But was:  [3]");
         }
 
         public class and_the_objects_differ_and_have_null_values
@@ -511,14 +525,15 @@ namespace Machine.Specifications.Should.Specs
 
             It should_throw = () => exception.ShouldBeOfExactType<SpecificationException>();
 
-            It should_contain_message = () => exception.Message.ShouldEqual(@"""Prop3"":
-  Expected: [null]
-  But was:  System.Collections.Generic.LinkedList`1[System.Char]:
-{
-  [a],
-  [b],
-  [c]
-}");
+            It should_contain_message = () => exception.Message.ShouldEqual(
+                @"""Prop3"":" + Environment.NewLine +
+                @"  Expected: [null]" + Environment.NewLine +
+                @"  But was:  System.Collections.Generic.LinkedList`1[System.Char]:" + Environment.NewLine +
+                @"{" + Environment.NewLine +
+                @"  [a]," + Environment.NewLine +
+                @"  [b]," + Environment.NewLine +
+                @"  [c]" + Environment.NewLine +
+                @"}");
         }
     }
 
@@ -577,11 +592,12 @@ namespace Machine.Specifications.Should.Specs
 
             It should_throw = () => exception.ShouldBeOfExactType<SpecificationException>();
 
-            It should_contain_message = () => exception.Message.ShouldEqual(@"""Field"":
-  String lengths are both 6. Strings differ at index 5.
-  Expected: ""field2""
-  But was:  ""field1""
-  ----------------^");
+            It should_contain_message = () => exception.Message.ShouldEqual(
+                @"""Field"":" + Environment.NewLine +
+                @"  String lengths are both 6. Strings differ at index 5." + Environment.NewLine +
+                @"  Expected: ""field2""" + Environment.NewLine +
+                @"  But was:  ""field1""" + Environment.NewLine +
+                @"  ----------------^");
         }
 
         class and_expected_has_circular_reference
@@ -596,9 +612,10 @@ namespace Machine.Specifications.Should.Specs
 
             It should_throw = () => exception.ShouldBeOfExactType<SpecificationException>();
 
-            It should_contain_message = () => exception.Message.ShouldEqual(@"""Next"":
-  Expected: Machine.Specifications.Should.Specs.when_node_with_circular_references+Node
-  But was:  [null]");
+            It should_contain_message = () => exception.Message.ShouldEqual(
+                @"""Next"":" + Environment.NewLine +
+                @"  Expected: Machine.Specifications.Should.Specs.when_node_with_circular_references+Node" + Environment.NewLine +
+                @"  But was:  [null]");
         }
 
         class and_actual_has_circular_reference
@@ -613,9 +630,10 @@ namespace Machine.Specifications.Should.Specs
 
             It should_throw = () => exception.ShouldBeOfExactType<SpecificationException>();
 
-            It should_contain_message = () => exception.Message.ShouldEqual(@"""Next"":
-  Expected: [null]
-  But was:  Machine.Specifications.Should.Specs.when_node_with_circular_references+Node");
+            It should_contain_message = () => exception.Message.ShouldEqual(
+                @"""Next"":" + Environment.NewLine +
+                @"  Expected: [null]" + Environment.NewLine +
+                @"  But was:  Machine.Specifications.Should.Specs.when_node_with_circular_references+Node");
         }
 
         class and_the_object_graph_is_similar
@@ -645,11 +663,12 @@ namespace Machine.Specifications.Should.Specs
 
             It should_throw = () => exception.ShouldBeOfExactType<SpecificationException>();
 
-            It should_contain_message = () => exception.Message.ShouldEqual(@"""Next.Field"":
-  String lengths are both 6. Strings differ at index 5.
-  Expected: ""field3""
-  But was:  ""field1""
-  ----------------^");
+            It should_contain_message = () => exception.Message.ShouldEqual(
+                @"""Next.Field"":" + Environment.NewLine +
+                @"  String lengths are both 6. Strings differ at index 5." + Environment.NewLine +
+                @"  Expected: ""field3""" + Environment.NewLine +
+                @"  But was:  ""field1""" + Environment.NewLine +
+                @"  ----------------^");
         }
 
         class and_the_node_has_indirect_circular_reference
@@ -743,11 +762,12 @@ namespace Machine.Specifications.Should.Specs
 
             It should_throw = () => exception.ShouldBeOfExactType<SpecificationException>();
 
-            It should_contain_message = () => exception.Message.ShouldEqual(@"""[1].Field"":
-  String lengths are both 10. Strings differ at index 4.
-  Expected: ""node3Field""
-  But was:  ""node2Field""
-  ---------------^");
+            It should_contain_message = () => exception.Message.ShouldEqual(
+                @"""[1].Field"":" + Environment.NewLine +
+                @"  String lengths are both 10. Strings differ at index 4." + Environment.NewLine +
+                @"  Expected: ""node3Field""" + Environment.NewLine +
+                @"  But was:  ""node2Field""" + Environment.NewLine +
+                @"  ---------------^");
 
         }
 

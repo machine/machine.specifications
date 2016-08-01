@@ -194,8 +194,8 @@ namespace Machine.Specifications
             if (failingItems.Any())
             {
                 throw new SpecificationException(string.Format(
-                                                               @"Should contain only elements conforming to: {0}
-the following items did not meet the condition: {1}",
+                                                               @"Should contain only elements conforming to: {0}" + Environment.NewLine +
+                                                                "the following items did not meet the condition: {1}",
                     condition,
                     failingItems.EachToUsefulString()));
             }
@@ -230,9 +230,9 @@ the following items did not meet the condition: {1}",
             if (noContain.Any())
             {
                 throw new SpecificationException(string.Format(
-                                                               @"Should contain: {0}
-entire list: {1}
-does not contain: {2}",
+                                                               @"Should contain: {0}" + Environment.NewLine +
+                                                                "entire list: {1}"  + Environment.NewLine +
+                                                                "does not contain: {2}",
                     items.EachToUsefulString(),
                     list.EachToUsefulString(),
                     noContain.EachToUsefulString()));
@@ -246,8 +246,8 @@ does not contain: {2}",
             if (!list.Any(func))
             {
                 throw new SpecificationException(string.Format(
-                                                               @"Should contain elements conforming to: {0}
-entire list: {1}",
+                                                               @"Should contain elements conforming to: {0}" + Environment.NewLine +
+                                                                "entire list: {1}",
                     condition,
                     list.EachToUsefulString()));
             }
@@ -282,9 +282,9 @@ entire list: {1}",
             if (contains.Any())
             {
                 throw new SpecificationException(string.Format(
-                                                               @"Should not contain: {0}
-entire list: {1}
-does contain: {2}",
+                                                               @"Should not contain: {0}" + Environment.NewLine +
+                                                                "entire list: {1}" + Environment.NewLine +
+                                                                "does contain: {2}",
                     items.EachToUsefulString(),
                     list.EachToUsefulString(),
                     contains.EachToUsefulString()));
@@ -300,9 +300,9 @@ does contain: {2}",
             if (contains.Any())
             {
                 throw new SpecificationException(string.Format(
-                                                               @"No elements should conform to: {0}
-entire list: {1}
-does contain: {2}",
+                                                               @"No elements should conform to: {0}" + Environment.NewLine +
+                                                                "entire list: {1}" + Environment.NewLine +
+                                                                "does contain: {2}",
                     condition,
                     list.EachToUsefulString(),
                     contains.EachToUsefulString()));
@@ -587,8 +587,8 @@ does contain: {2}",
 
             if (noContain.Any() || source.Any())
             {
-                var message = string.Format(@"Should contain only: {0}
-entire list: {1}",
+                var message = string.Format(@"Should contain only: {0}" + Environment.NewLine +
+                                             "entire list: {1}",
                     items.EachToUsefulString(),
                     list.EachToUsefulString());
                 if (noContain.Any())
