@@ -44,6 +44,6 @@
         }
     },
     "dependencies": {
-        "Machine.Specifications": "0.10-*"
+        "Machine.Specifications": "0.11-*"
     }
 }
