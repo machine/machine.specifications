@@ -1,11 +1,10 @@
 
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace Machine.Specifications.Utility
 {
-    public static class ReflectionPolyfillExtensions
+    internal static class ReflectionPolyfillExtensions
     {
 
 #if NET35 || NET40
