@@ -408,6 +408,22 @@ namespace Machine.Specifications
             }
         }
 
+        public static void ShouldBeCloseTo(this decimal actual, decimal expected)
+        {
+            ShouldBeCloseTo(actual, expected, 0.0000001m);
+        }
+
+        public static void ShouldBeCloseTo(this decimal actual, decimal expected, decimal tolerance)
+        {
+            if (Math.Abs(actual - expected) > tolerance)
+            {
+                throw new SpecificationException(string.Format("Should be within {0} of {1} but is {2}",
+                    tolerance.ToUsefulString(),
+                    expected.ToUsefulString(),
+                    actual.ToUsefulString()));
+            }
+        }
+
         public static void ShouldBeCloseTo(this TimeSpan actual, TimeSpan expected, TimeSpan tolerance)
         {
             if (Math.Abs(actual.Ticks - expected.Ticks) > tolerance.Ticks)
