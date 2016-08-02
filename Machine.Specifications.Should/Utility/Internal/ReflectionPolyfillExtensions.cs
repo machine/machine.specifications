@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace System.Reflection
 {
-    public static class ReflectionPolyfillExtensions
+    internal static class ReflectionPolyfillExtensions
     {
 
         public static Type GetTypeInfo(this Type type)
