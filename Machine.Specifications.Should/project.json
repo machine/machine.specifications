@@ -8,7 +8,8 @@
         "licenseUrl": "http://github.com/machine/machine.specifications.should/blob/master/License.txt",
         "iconUrl": "http://github.com/machine/machine.specifications/raw/master/Misc/Machine.Specifications-128x128.png",
         "tags": [ "test", "unit", "testing", "context", "specification", "bdd", "tdd", "mspec" ],
-        "requireLicenseAcceptance": false
+        "requireLicenseAcceptance": false,
+        "releaseNotes": "https://github.com/machine/machine.specifications.should/releases"
     },
     "description": "Machine.Specifications.Should is a should library for the Context/Specification framework Machine.Specifications",
     "authors": [
