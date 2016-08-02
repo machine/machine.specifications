@@ -17,7 +17,8 @@
         "licenseUrl": "http://github.com/machine/machine.specifications/blob/master/License.txt",
         "iconUrl": "http://github.com/machine/machine.specifications/raw/master/Misc/Machine.Specifications-128x128.png",
         "tags": [ "test", "unit", "testing", "context", "specification", "bdd", "tdd", "mspec" ],
-        "requireLicenseAcceptance": false
+        "requireLicenseAcceptance": false,
+        "releaseNotes": "https://github.com/machine/machine.specifications/releases"
     },
     "description": "Machine.Specifications is a Context/Specification framework geared towards removing language noise and simplifying tests.",
     "authors": [
