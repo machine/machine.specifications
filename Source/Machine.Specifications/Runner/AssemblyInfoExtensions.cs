@@ -10,7 +10,9 @@
                 "assemblyinfo",
                 new XElement("name", assemblyInfo.Name),
                 new XElement("location", assemblyInfo.Location),
-                new XElement("captureoutput", assemblyInfo.CapturedOutput));
+                new XElement("captureoutput", assemblyInfo.CapturedOutput),
+                // above one has a typo
+                new XElement("capturedoutput", assemblyInfo.CapturedOutput));
         }
     }
 }

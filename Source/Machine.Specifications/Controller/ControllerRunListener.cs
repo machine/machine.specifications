@@ -17,6 +17,7 @@ namespace Machine.Specifications.Controller
 
         private void SendMessage(XElement message)
         {
+            message.Add(new XAttribute("version", Controller.PROTOCOL_VERSION));
             _listener(message.ToString());
         }
 

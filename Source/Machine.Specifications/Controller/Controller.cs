@@ -11,6 +11,8 @@ namespace Machine.Specifications.Controller
 {
     public class Controller
     {
+        internal static readonly string PROTOCOL_VERSION = "1.0";
+
         readonly DefaultRunner _runner;
         readonly AssemblyExplorer _explorer;
         readonly ISpecificationRunListener _listener;
@@ -84,9 +86,27 @@ namespace Machine.Specifications.Controller
             }
         }
 
-        public string DiscoverTests(Assembly assembly)
+        public void RunTypes(Assembly assembly, IEnumerable<Type> types)
+        {
+            try
+            {
+                _runner.StartRun(assembly);
+
+                foreach (Type type in types)
+                {
+                    _runner.RunMember(assembly, type.GetTypeInfo());
+                }
+            }
+            finally
+            {
+                _runner.EndRun(assembly);
+            }
+        }
+
+        public string DiscoverSpecs(Assembly assembly)
         {
             XElement contextListElement = new XElement("contexts");
+            contextListElement.Add(new XAttribute("version", "1.0.0"));
 
             IEnumerable<Context> contexts = _explorer.FindContextsIn(assembly);
             foreach (Context context in contexts)
