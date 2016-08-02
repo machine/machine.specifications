@@ -1,6 +1,0 @@
-﻿make sure exceptions thrown from cleanup are handled gracefully
-look into inner class thing for contexts
-figure out how to handle exceptions thrown during beforeall and aftereach
-incorporate browser links
-
-add service message to auto upload specifications html report as an artifact
