@@ -2,18 +2,25 @@
 using System;
 using System.Reflection;
 
-namespace Machine.Specifications.Utility
-{
-    internal static class ReflectionPolyfillExtensions
-    {
-
 #if NET35 || NET40
+
+namespace System.Reflection
+{
+    internal static class SystemReflectionPolyfillExtensions
+    {
         public static Type GetTypeInfo(this Type type)
         {
             return type;
         }
+    }
+}
 #endif
 
+
+namespace Machine.Specifications.Utility
+{
+    internal static class ReflectionCompatExtensions
+    {
 #if NETSTANDARD
         public static bool IsType(this MemberInfo memberInfo)
         {
