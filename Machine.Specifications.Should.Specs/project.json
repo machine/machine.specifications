@@ -1,0 +1,34 @@
+{
+    "version": "1-*",
+    "testRunner": "mspec",
+    "frameworks": {
+        "net45": {
+            "dependencies": {
+                "Microsoft.NETCore.Platforms": {
+                    "version": "*",
+                    "type":"build"
+                }
+            }
+        },
+        "netcoreapp1.0": {
+            "buildOptions": {
+                "define": [
+                    "NETCORE"
+                ]
+            },
+            "dependencies": {
+                "Microsoft.NETCore.App": {
+                    "version": "1.*",
+                    "type": "platform"
+                }
+            }
+        }
+    },
+    "dependencies": {
+        "Machine.Specifications": "0.11-*",
+        "Machine.Specifications.Should": {
+            "target": "project"
+        },
+        "dotnet-test-mspec": "0.2-*"
+    }
+}

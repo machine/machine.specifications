@@ -105,8 +105,14 @@ namespace Machine.Specifications.Should.Specs.Utility.Internal
 
         Establish context = () =>
         {
+#if NETCORE
+            Culture = CultureInfo.InvariantCulture;
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+#else
             Culture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+#endif
+
         };
 
         Because of = () => { ActualMessage = Catch.Exception(() => Actual.ShouldEqual(Expected)).Message; };
@@ -114,7 +120,13 @@ namespace Machine.Specifications.Should.Specs.Utility.Internal
         It should_report_a_formatted_message =
           () => ActualMessage.ShouldEqual("  Expected: [4.5578]" + Environment.NewLine + "  But was:  [4.5568]");
 
-        Cleanup after = () => Thread.CurrentThread.CurrentCulture = Culture;
+        Cleanup after = () => {
+#if NETCORE
+            CultureInfo.CurrentCulture = Culture;
+#else
+            Thread.CurrentThread.CurrentCulture = Culture;
+#endif
+        };
 
         const double Actual = 4.5568;
         const double Expected = 4.5578;

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Reflection;
+
 
 namespace Machine.Specifications.Utility.Internal
 {
@@ -189,7 +191,7 @@ namespace Machine.Specifications.Utility.Internal
 
                 return "\"" + str.Replace("\n", "\\n") + "\"";
             }
-            if (obj.GetType().IsValueType)
+            if (obj.GetType().GetTypeInfo().IsValueType)
             {
                 return "[" + obj + "]";
             }
