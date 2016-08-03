@@ -1,7 +1,7 @@
 environment:
-  nuget_version: '0.11.0-beta2'
+  nuget_version: '0.11.0-beta3'
   nuget_prerelease: true
-  assembly_version: '0.9.3.0'
+  assembly_version: '0.11.0.0'
 
 deploy:
   - provider: GitHub
@@ -34,6 +34,7 @@ assembly_info:
   patch: true
   file: Source\**\Properties\AssemblyInfo.cs
   assembly_version: '$(assembly_version)'
+  assembly_informational_version: '$(nuget_version)'
 
 build_script:
 - cmd: >-
