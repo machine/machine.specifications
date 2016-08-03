@@ -11,7 +11,7 @@ namespace Machine.Specifications.Controller
 {
     public class Controller
     {
-        internal static readonly string PROTOCOL_VERSION = "1.0";
+        public static string Version => "1.0";
 
         readonly DefaultRunner _runner;
         readonly AssemblyExplorer _explorer;
@@ -106,7 +106,7 @@ namespace Machine.Specifications.Controller
         public string DiscoverSpecs(Assembly assembly)
         {
             XElement contextListElement = new XElement("contexts");
-            contextListElement.Add(new XAttribute("version", "1.0.0"));
+            contextListElement.Add(new XAttribute("version", Version));
 
             IEnumerable<Context> contexts = _explorer.FindContextsIn(assembly);
             foreach (Context context in contexts)
