@@ -1,7 +1,7 @@
 environment:
-  nuget_version: '0.11.0-rc1'
+  nuget_version: '0.11.0-rc2'
   nuget_prerelease: true
-  assembly_version: '0.9.0.0'
+  assembly_version: '0.11.0.0'
 
 deploy:
   - provider: GitHub
