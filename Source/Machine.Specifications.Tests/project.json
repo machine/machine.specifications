@@ -5,9 +5,18 @@
             "169"
         ],
         "define": [
-            "DEBUG",
-            "TRACE"
+            "DEBUG", // needed for Trace*/Debug.* tests
+            "TRACE"// needed for Trace*/Debug.* tests
         ]
+    },
+    "configurations": {
+        "Release": {
+            "buildOptions": {
+                "define": [
+                    "CLEAN_EXCEPTION_STACK_TRACE"
+                ]
+            }
+        }
     },
     "testRunner": "nunit",
     "frameworks": {
