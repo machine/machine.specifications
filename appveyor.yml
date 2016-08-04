@@ -7,7 +7,11 @@ deploy:
   - provider: GitHub
     description: |
       * Support for .NET Standard 1.3 and NET Core. (#296)
-      * New portable test controller interface: https://github.com/machine/machine.specifications/wiki/Test-Controller-Protocol
+      * New portable test controller interface preview: https://github.com/machine/machine.specifications/wiki/Test-Controller-Protocol
+      * Machine.Specifications.Clr4.dll has been merged into Machine.Specifications.dll (namespaces are same still)
+      * There is no *-Signed packages - let us know
+      * .NET 2.0 is no longer supported (newer packages will not install on < .NET 3.5)
+
     on:
       appveyor_repo_tag: true
     prerelease: $(nuget_prerelease)
