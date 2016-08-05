@@ -1,15 +1,12 @@
 environment:
-  nuget_version: '0.11.0'
-  nuget_prerelease: false
+  nuget_version: '0.11.1-alpha1'
+  nuget_prerelease: true
   assembly_version: '0.11.0.0'
 
 deploy:
   - provider: GitHub
     description: |
-      * Support for .NET Standard 1.3 and NET Core
-      * Added support for decimals for ShouldBeCloseTo method (thanks to @meinsiedler)
-      * Fixed a bug in ShouldBeLike (#17)
-      * We skipped a release number due to an accidentally published 0.10 prerelease package.
+      * add lines here
     on:
       appveyor_repo_tag: true
     prerelease: $(nuget_prerelease)
