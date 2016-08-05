@@ -29,7 +29,7 @@
             "buildOptions": {
                 "define": [ "NET35" ]
             },
-             "frameworkAssemblies": {
+            "frameworkAssemblies": {
                 "System.Xml": "",
                 "System.Xml.Linq": "",
                 "System.Runtime.Remoting": ""

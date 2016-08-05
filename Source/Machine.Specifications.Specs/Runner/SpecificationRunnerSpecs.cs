@@ -10,6 +10,8 @@ using FluentAssertions;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
 
+using TestAssemblyContext = Example.TestAssemblyContext;
+
 namespace Machine.Specifications.Specs.Runner
 {
   [Subject("Specification Runner")]

@@ -14,16 +14,6 @@ namespace Machine.Specifications.Runner
             _listeners = new List<ISpecificationRunListener>(listeners);
         }
 
-        public void Add(ISpecificationRunListener listener)
-        {
-            _listeners.Add(listener);
-        }
-
-        public void Remove(ISpecificationRunListener listener)
-        {
-            _listeners.Remove(listener);
-        }
-
         public void OnAssemblyStart(AssemblyInfo assembly)
         {
             _listeners.Each(listener => listener.OnAssemblyStart(assembly));

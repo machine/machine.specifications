@@ -17,11 +17,11 @@ namespace Machine.Specifications.Controller
         readonly AssemblyExplorer _explorer;
         readonly ISpecificationRunListener _listener;
 
+
         public Controller(Action<string> listenCallback)
             : this(listenCallback, RunOptions.Default)
         {
         }
-
 
         public Controller(Action<string> listenCallback, string runOptions)
             :this(listenCallback, RunOptions.Parse(runOptions))
@@ -47,10 +47,7 @@ namespace Machine.Specifications.Controller
 
         public void RunAssemblies(IEnumerable<Assembly> assemblies)
         {
-            foreach (Assembly assembly in assemblies)
-            {
-                _runner.RunAssemblies(assemblies);
-            }
+            _runner.RunAssemblies(assemblies);
         }
 
         public void RunNamespaces(Assembly assembly, IEnumerable<string> targetNamespaces)
@@ -58,7 +55,8 @@ namespace Machine.Specifications.Controller
             try
             {
                 _runner.StartRun(assembly);
-                foreach (string targetNamespace in targetNamespaces)
+
+               foreach (string targetNamespace in targetNamespaces)
                 {
                     _runner.RunNamespace(assembly, targetNamespace);
                 }
