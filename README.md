@@ -4,7 +4,7 @@ The documentation is here: https://github.com/machine/machine.specifications/wik
 
 [![Build status](https://ci.appveyor.com/api/projects/status/wtk1ch0ix6i47epu/branch/master?svg=true)](https://ci.appveyor.com/project/machine-specifications/machine-specifications) [![Travis CI](https://travis-ci.org/einari/machine.specifications.svg?label=travis-ci&branch=master)](https://travis-ci.org/einari/machine.specifications)
 
-[![Travis](https://img.shields.io/travis/rust-lang/rust.svg?maxAge=2592000?style=flat-square)](https://travis-ci.org/einari/machine.specifications)
+[![Travis](https://img.shields.io/travis/rust-lang/rust.svg?label=travis-ci&maxAge=2592000?style=flat-square)](https://travis-ci.org/einari/machine.specifications)
 
 ## Overview
 MSpec is called a "context/specification" test framework because of the "grammar" that is used in describing and coding the tests or "specs". That grammar reads roughly like this
