@@ -100,6 +100,15 @@ namespace Machine.Specifications.Runner.Impl
             }
         }
 
+        public void RunType(Assembly assembly, Type type, IEnumerable<string> specs)
+        {
+            Context context = _explorer.FindContexts(type);
+            IEnumerable<Specification> specsToRun = context.Specifications.Where(s => specs.Contains(s.FieldInfo.Name));
+            context.Filter(specsToRun);
+
+            StartRun(CreateMap(assembly, new[] { context }));
+        }
+
         void RunField(MemberInfo member, Assembly assembly)
         {
             var fieldInfo = (FieldInfo)member;

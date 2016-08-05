@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Example.Random.SingleContextInThisNamespace;
 using Example.Random;
+using System;
 
 namespace Machine.Specifications.Specs.Controller
 {
@@ -128,5 +129,73 @@ namespace Machine.Specifications.Specs.Controller
         };
 
         Behaves_like<RunListenerNotificationBehaviors> run_listener_notifier;
+    }
+
+
+    [Subject(typeof(Machine.Specifications.Controller.Controller))]
+    public class When_runspecs_is_given_two_standard_specs : With_Controller
+    {
+        static Type Type = typeof(context_with_specs_and_behaviors);
+
+        Because of = () => {
+            Controller.StartRun();
+            Controller.RunSpecs(Type.GetTypeInfo().Assembly,
+                                new[] {
+                                    Type.FullName + ".spec1",
+                                    Type.FullName + ".spec2",
+                                });
+            Controller.EndRun();
+        };
+
+        Behaves_like<RunListenerNotificationBehaviors> run_listener_notifier;
+
+        It runs_both_specs = () => {
+            // two mentions: one for start and one for end spec run
+            ListenEvents.Count(e => e.Contains("spec1")).Should().Be(2);
+            ListenEvents.Count(e => e.Contains("spec2")).Should().Be(2);
+        };
+    }
+
+    [Subject(typeof(Machine.Specifications.Controller.Controller))]
+    public class When_runspecs_is_given_a_behavior_spec : With_Controller
+    {
+        static Type Type = typeof(context_with_specs_and_behaviors);
+
+        Because of = () => {
+            Controller.StartRun();
+            Controller.RunSpecs(Type.GetTypeInfo().Assembly,
+                                new[] {
+                                    Type.FullName + ".behavior1",
+                                });
+            Controller.EndRun();
+        };
+
+        Behaves_like<RunListenerNotificationBehaviors> run_listener_notifier;
+
+        It runs_only_the_behavior_spec = () => {
+            // two mentions: one for start and one for end spec run
+            ListenEvents.Count(e => e.Contains("<onspecificationstart>")).Should().Be(1);
+            ListenEvents.Count(e => e.Contains("behavior1")).Should().Be(2);
+        };
+    }
+
+    [Subject(typeof(Machine.Specifications.Controller.Controller))]
+    public class When_runspecs_is_given_a_behaves_like_field : With_Controller
+    {
+        static Type Type = typeof(context_with_specs_and_behaviors);
+
+        Because of = () => {
+            Controller.StartRun();
+            Controller.RunSpecs(Type.GetTypeInfo().Assembly,
+                                new[] {
+                                    Type.FullName + ".behaviors",
+                                });
+            Controller.EndRun();
+        };
+
+        It does_not_run_anything = () => {
+            // two mentions: one for start and one for end spec run
+            ListenEvents.Count(e => e.Contains("<onspecificationstart>")).Should().Be(0);
+        };
     }
 }

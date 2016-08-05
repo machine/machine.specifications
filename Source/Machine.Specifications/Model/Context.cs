@@ -75,6 +75,13 @@ namespace Machine.Specifications.Model
             _specifications.Add(specification);
         }
 
+        public void Filter(IEnumerable<Specification> toKeep)
+        {
+            var newList = _specifications.Intersect(toKeep).ToList();
+            _specifications.Clear();
+            _specifications.AddRange(newList);
+        }
+
         public Result EstablishContext()
         {
             var result = Result.Pass();

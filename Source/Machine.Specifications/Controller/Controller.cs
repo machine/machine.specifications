@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Machine.Specifications.Explorers;
@@ -76,6 +77,33 @@ namespace Machine.Specifications.Controller
                 foreach (MemberInfo member in members)
                 {
                     _runner.RunMember(assembly, member);
+                }
+            }
+            finally
+            {
+                _runner.EndRun(assembly);
+            }
+        }
+
+        /// <summary>
+        /// Run specifics specs. This method is available to support IDE integration scenarios, where users can run
+        /// a specific test only.
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <param name="specifications">A spec full name "namespace.type.field_name". </param>
+        /// <remarks>This method supports fields that actually come from Behaviors </remarks>
+        public void RunSpecs(Assembly assembly, IEnumerable<string> specifications)
+        {
+            try
+            {
+                _runner.StartRun(assembly);
+
+                foreach (IGrouping<string, string> specsByType in specifications.GroupBy(spec => spec.Substring(0, spec.LastIndexOf("."))))
+                {
+                    string fullTypeName = specsByType.Key;
+                    IEnumerable<string> specNames = specsByType.Select(spec => spec.Substring(spec.LastIndexOf(".") + 1, spec.Length - 1 - spec.LastIndexOf(".")));
+
+                    _runner.RunType(assembly, assembly.GetType(fullTypeName), specNames);
                 }
             }
             finally
