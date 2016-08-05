@@ -14,15 +14,15 @@ GREEN="\033[1;32m"
 NC="\033[0m" # No Color
 
 function info {
-    echo "${NC}"$1
+    echo -e "${NC}"$1
 } 
 
 function success {
-    echo "${GREEN}"$1
+    echo -e "${GREEN}"$1
 } 
 
 function error {
-    echo "${RED}"$1
+    echo -e "${RED}"$1
 }
 
 function restore {
