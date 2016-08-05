@@ -1,6 +1,6 @@
 environment:
-  nuget_version: '0.11.0-beta4'
-  nuget_prerelease: true
+  nuget_version: '0.11.0'
+  nuget_prerelease: false
   assembly_version: '0.11.0.0'
 
 deploy:
