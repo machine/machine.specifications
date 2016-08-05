@@ -1,6 +1,6 @@
 environment:
-  nuget_version: '0.11.0-rc2'
-  nuget_prerelease: true
+  nuget_version: '0.11.0'
+  nuget_prerelease: false
   assembly_version: '0.11.0.0'
 
 deploy:
@@ -36,6 +36,8 @@ assembly_info:
   patch: true
   file: Machine.Specifications.Should\Properties\AssemblyInfo.cs
   assembly_version: '$(assembly_version)'
+  assembly_file_version: '$(assembly_version)'
+  assembly_informational_version: '$(nuget_version)'
 
 build_script:
   - cmd: >-
