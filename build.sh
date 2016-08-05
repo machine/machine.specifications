@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Inspired by  http://andrewlock.net/adding-travis-ci-to-a-net-core-app/
+
 configuration="Debug"
 framework=netcoreapp1.0
 pattern="Source/*Specs* Source/*Test*"
