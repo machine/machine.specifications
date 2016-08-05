@@ -38,6 +38,7 @@ assembly_info:
   patch: true
   file: Source\**\Properties\AssemblyInfo.cs
   assembly_version: '$(assembly_version)'
+  assembly_file_version: '$(assembly_version)'
   assembly_informational_version: '$(nuget_version)'
 
 build_script:
