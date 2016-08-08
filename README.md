@@ -4,7 +4,7 @@ The documentation is here: https://github.com/machine/machine.specifications/wik
 
 ## Training
 
-There is a course made by @kevinkuebler - you can find it here:
+There is a course made by [@kevinkuebler](/kevinkuebler) - you can find it here:
 
 [![Training](https://www.pluralsight.com/content/dam/pluralsight/newsroom/brand-assets/logos/pluralsight-logo-hor-black-1@2x.png)](https://www.pluralsight.com/courses/expressive-testing-dotnet-mspec)
 
