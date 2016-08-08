@@ -2,7 +2,7 @@
 
 The documentation is here: https://github.com/machine/machine.specifications/wiki
 
-[![Build status](https://ci.appveyor.com/api/projects/status/wtk1ch0ix6i47epu/branch/master?svg=true)](https://ci.appveyor.com/project/machine-specifications/machine-specifications) [![Travis](https://img.shields.io/travis/machine/machine.specifications.svg?label=travis-ci)](https://travis-ci.org/machine/machine.specifications)
+[![Build status](https://ci.appveyor.com/api/projects/status/wtk1ch0ix6i47epu/branch/master?svg=true)](https://ci.appveyor.com/project/machine-specifications/machine-specifications) [![Travis](https://img.shields.io/travis/machine/machine.specifications.svg?label=travis-ci)](https://travis-ci.org/machine/machine.specifications) [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?maxAge=2592000)](https://gitter.im/machine/specifications)
 
 ## Overview
 MSpec is called a "context/specification" test framework because of the "grammar" that is used in describing and coding the tests or "specs". That grammar reads roughly like this
