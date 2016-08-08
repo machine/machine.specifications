@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/wtk1ch0ix6i47epu/branch/master?svg=true)](https://ci.appveyor.com/project/machine-specifications/machine-specifications) [![Travis](https://img.shields.io/travis/machine/machine.specifications.svg?label=travis-ci)](https://travis-ci.org/machine/machine.specifications) [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?maxAge=2592000)](https://gitter.im/machine/specifications) [![Waffle.io](https://img.shields.io/waffle/label/evancohen/smart-mirror/in%20progress.svg?maxAge=2592000)](https://waffle.io/machine/machine.specifications)
+
 ## Documentation
 
 The documentation is here: https://github.com/machine/machine.specifications/wiki
@@ -7,10 +9,6 @@ The documentation is here: https://github.com/machine/machine.specifications/wik
 There is a course made by [@kevinkuebler](https://github.com/kevinkuebler) - you can find it here:
 
 [![Training](https://www.pluralsight.com/content/dam/pluralsight/newsroom/brand-assets/logos/pluralsight-logo-hor-black-1@2x.png)](https://www.pluralsight.com/courses/expressive-testing-dotnet-mspec)
-
-## Build status
-
-[![Build status](https://ci.appveyor.com/api/projects/status/wtk1ch0ix6i47epu/branch/master?svg=true)](https://ci.appveyor.com/project/machine-specifications/machine-specifications) [![Travis](https://img.shields.io/travis/machine/machine.specifications.svg?label=travis-ci)](https://travis-ci.org/machine/machine.specifications) [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?maxAge=2592000)](https://gitter.im/machine/specifications) [![Waffle.io](https://img.shields.io/waffle/label/evancohen/smart-mirror/in%20progress.svg?maxAge=2592000)](https://waffle.io/machine/machine.specifications)
 
 
 ## Overview
