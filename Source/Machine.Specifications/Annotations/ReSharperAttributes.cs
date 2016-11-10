@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Machine.Specifications.Annotations
+// ReSharper disable once CheckNamespace
+namespace JetBrains.Annotations
 {
   /// <summary>
   /// Indicates that marked element should be localized or not.
   /// </summary>
   [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
-  public sealed class LocalizationRequiredAttribute : Attribute
+  internal sealed class LocalizationRequiredAttribute : Attribute
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="LocalizationRequiredAttribute"/> class.
@@ -53,7 +54,7 @@ namespace Machine.Specifications.Annotations
   /// The format string should be in <see cref="string.Format(IFormatProvider,string,object[])"/> -like form
   /// </summary>
   [AttributeUsage(AttributeTargets.Constructor | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-  public sealed class StringFormatMethodAttribute : Attribute
+  internal sealed class StringFormatMethodAttribute : Attribute
   {
     private readonly string myFormatParameterName;
 
@@ -80,7 +81,7 @@ namespace Machine.Specifications.Annotations
   /// For example, <see cref="ArgumentNullException"/> has such parameter.
   /// </summary>
   [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = true)]
-  public sealed class InvokerParameterNameAttribute : Attribute
+  internal sealed class InvokerParameterNameAttribute : Attribute
   {
   }
 
@@ -89,7 +90,7 @@ namespace Machine.Specifications.Annotations
   /// For example, it could unconditionally throw exception
   /// </summary>
   [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-  public sealed class TerminatesProgramAttribute : Attribute
+  internal sealed class TerminatesProgramAttribute : Attribute
   {
   }
 
@@ -97,7 +98,7 @@ namespace Machine.Specifications.Annotations
   /// Indicates that the value of marked element could be <c>null</c> sometimes, so the check for <c>null</c> is necessary before its usage
   /// </summary>
   [AttributeUsage(AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Delegate | AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
-  public sealed class CanBeNullAttribute : Attribute
+  internal sealed class CanBeNullAttribute : Attribute
   {
   }
 
@@ -105,7 +106,7 @@ namespace Machine.Specifications.Annotations
   /// Indicates that the value of marked element could never be <c>null</c>
   /// </summary>
   [AttributeUsage(AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Delegate | AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
-  public sealed class NotNullAttribute : Attribute
+  internal sealed class NotNullAttribute : Attribute
   {
   }
 
@@ -114,7 +115,7 @@ namespace Machine.Specifications.Annotations
   /// There is only exception to compare with <c>null</c>, it is permitted
   /// </summary>
   [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false, Inherited = true)]
-  public sealed class CannotApplyEqualityOperatorAttribute : Attribute
+  internal sealed class CannotApplyEqualityOperatorAttribute : Attribute
   {
   }
 
@@ -135,7 +136,7 @@ namespace Machine.Specifications.Annotations
   /// </example>
   [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
   [BaseTypeRequired(typeof(Attribute))]
-  public sealed class BaseTypeRequiredAttribute : Attribute
+  internal sealed class BaseTypeRequiredAttribute : Attribute
   {
     private readonly Type[] myBaseTypes;
 
@@ -162,7 +163,7 @@ namespace Machine.Specifications.Annotations
   /// so this symbol will not be marked as unused (as well as by other usage inspections)
   /// </summary>
   [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
-  public sealed class UsedImplicitlyAttribute : Attribute
+  internal sealed class UsedImplicitlyAttribute : Attribute
   {
     [UsedImplicitly]
     public UsedImplicitlyAttribute()
@@ -203,7 +204,7 @@ namespace Machine.Specifications.Annotations
   /// Should be used on attributes and causes ReSharper to not mark symbols marked with such attributes as unused (as well as by other usage inspections)
   /// </summary>
   [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-  public sealed class MeansImplicitUseAttribute : Attribute
+  internal sealed class MeansImplicitUseAttribute : Attribute
   {
     [UsedImplicitly]
     public MeansImplicitUseAttribute()
@@ -241,7 +242,7 @@ namespace Machine.Specifications.Annotations
   }
 
   [Flags]
-  public enum ImplicitUseKindFlags
+  internal enum ImplicitUseKindFlags
   {
     Default = Access | Assign | Instantiated,
 
@@ -265,7 +266,7 @@ namespace Machine.Specifications.Annotations
   /// Specify what is considered used implicitly when marked with <see cref="MeansImplicitUseAttribute"/> or <see cref="UsedImplicitlyAttribute"/>
   /// </summary>
   [Flags]
-  public enum ImplicitUseTargetFlags
+  internal enum ImplicitUseTargetFlags
   {
     Default = Itself,
 

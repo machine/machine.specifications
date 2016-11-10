@@ -1,6 +1,7 @@
 using System;
 
-using Machine.Specifications.Annotations;
+using JetBrains.Annotations;
+
 using Machine.Specifications.Model;
 
 namespace Machine.Specifications
