@@ -11,7 +11,7 @@ namespace Machine.Specifications.Model
     {
         readonly string _name;
         readonly Delegate _it;
-        readonly bool _isIgnored;
+        bool _isIgnored;
         readonly FieldInfo _fieldInfo;
         readonly string _leader;
 
@@ -28,6 +28,7 @@ namespace Machine.Specifications.Model
         public bool IsIgnored
         {
             get { return _isIgnored; }
+            set { _isIgnored = value; }
         }
 
         public string Leader

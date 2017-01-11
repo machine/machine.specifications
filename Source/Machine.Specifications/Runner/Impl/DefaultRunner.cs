@@ -251,6 +251,22 @@ namespace Machine.Specifications.Runner.Impl
                 results = results.Where(x => includeFilters.Any(filter => StringComparer.OrdinalIgnoreCase.Equals(filter, x.Type.FullName)));
             }
 
+            if (options.Specifications.Any())
+            {
+                var includeSpecs = options.Specifications;
+
+                Func<Context, Specification,string> format = (context, spec) => {
+                    return String.Format("{0}::{1}::{2}", context.Type.Assembly.GetName().Name, context.Type.FullName, spec.FieldInfo.Name);
+                };
+
+                foreach (Context context in contexts) {
+                    context.Specifications
+                        .Where(spec => !includeSpecs.Any(includedSpec => includedSpec.Equals(format(context, spec), StringComparison.OrdinalIgnoreCase)))
+                        .ToList()
+                        .ForEach(spec => spec.IsIgnored = true);
+                }
+            }
+
             if (options.IncludeTags.Any())
             {
                 var tags = options.IncludeTags.Select(tag => new Tag(tag));
