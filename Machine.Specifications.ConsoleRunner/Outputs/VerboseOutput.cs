@@ -1,5 +1,3 @@
-using System;
-
 using Machine.Specifications.Runner.Utility;
 
 namespace Machine.Specifications.ConsoleRunner.Outputs
@@ -50,7 +48,7 @@ namespace Machine.Specifications.ConsoleRunner.Outputs
 
         public void SpecificationStart(SpecificationInfo specification)
         {
-            _console.Write("» " + specification.Name);
+            _console.Write("ï¿½ " + specification.Name);
         }
 
         public void Passing(SpecificationInfo specification)

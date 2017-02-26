@@ -10,7 +10,6 @@ using Machine.Specifications.ConsoleRunner.Outputs;
 using Machine.Specifications.Reporting.Generation.Spark;
 using Machine.Specifications.Reporting.Generation.Xml;
 using Machine.Specifications.Reporting.Integration;
-using Machine.Specifications.Reporting.Integration.AppVeyor;
 using Machine.Specifications.Reporting.Integration.TeamCity;
 using Machine.Specifications.Runner.Utility;
 
