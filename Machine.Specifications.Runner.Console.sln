@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.ConsoleRunner", "Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunner.csproj", "{CFF4B323-24C1-4B19-98CA-7DF92755458E}"
 EndProject
@@ -24,6 +24,17 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Issue157-Fail", "Example.Issue157-Fail\Example.Issue157-Fail.csproj", "{38AA3D5D-3708-4F7F-8738-5F2090B86FC0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Issue157-Success", "Example.Issue157-Success\Example.Issue157-Success.csproj", "{79F44A49-3516-40F3-AC67-91EFA57B8119}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{E204891A-0601-4CE0-96B0-654995E636D9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{DC1E07B3-1885-4633-9942-22E2CD5075CE}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		appveyor.yml = appveyor.yml
+		License.txt = License.txt
+		Machine.snk = Machine.snk
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,5 +77,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2C28C643-31A2-44CA-B762-953A963F6F61} = {E204891A-0601-4CE0-96B0-654995E636D9}
+		{89ECD0D1-6CC4-4319-B1B2-389E0B48F40D} = {E204891A-0601-4CE0-96B0-654995E636D9}
+		{2C33D385-9024-4346-8839-93CFF1AF227C} = {E204891A-0601-4CE0-96B0-654995E636D9}
+		{A6B234F5-5D96-4809-BD25-86F6544BF838} = {E204891A-0601-4CE0-96B0-654995E636D9}
+		{38AA3D5D-3708-4F7F-8738-5F2090B86FC0} = {E204891A-0601-4CE0-96B0-654995E636D9}
+		{79F44A49-3516-40F3-AC67-91EFA57B8119} = {E204891A-0601-4CE0-96B0-654995E636D9}
 	EndGlobalSection
 EndGlobal

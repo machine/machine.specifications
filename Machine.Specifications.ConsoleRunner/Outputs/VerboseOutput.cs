@@ -48,7 +48,7 @@ namespace Machine.Specifications.ConsoleRunner.Outputs
 
         public void SpecificationStart(SpecificationInfo specification)
         {
-            _console.Write("� " + specification.Name);
+            _console.Write("» " + specification.Name);
         }
 
         public void Passing(SpecificationInfo specification)

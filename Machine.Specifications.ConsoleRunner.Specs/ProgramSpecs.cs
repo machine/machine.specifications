@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -37,9 +37,9 @@ namespace Machine.Specifications.ConsoleRunner.Specs
 
     It should_write_the_specifications =
       () => console.Lines.Should().Contain(
-        "» should debit the from account by the amount transferred",
-        "» should credit the to account by the amount transferred",
-        "» should not allow the transfer");
+        "Â» should debit the from account by the amount transferred",
+        "Â» should credit the to account by the amount transferred",
+        "Â» should not allow the transfer");
 
     It should_write_the_contexts =
       () => console.Lines.Should().Contain(
@@ -71,7 +71,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       () => console.Lines.Should().Match(l => !l.All(_ => _.StartsWith("Account Funds transfer")));
 
     It should_not_write_the_specifications =
-      () => console.Lines.Should().Match(l => !l.All(_ => _.StartsWith("» should")));
+      () => console.Lines.Should().Match(l => !l.All(_ => _.StartsWith("Â» should")));
 
     It should_write_the_count_of_contexts =
       () => console.Lines.Should().Contain(l => l.Contains("Contexts: 3"));
@@ -97,7 +97,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       () => console.Lines.Should().Match(l => !l.All(_ => _.StartsWith("Account Funds transfer")));
 
     It should_not_write_the_specifications =
-      () => console.Lines.Should().Match(l => !l.All(_ => _.StartsWith("» should")));
+      () => console.Lines.Should().Match(l => !l.All(_ => _.StartsWith("Â» should")));
 
     It should_write_the_specification_results =
       () => console.Lines.Should().Contain("...***");
@@ -165,7 +165,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       () => exitCode.Should().Be(ExitCode.Failure);
 
     It should_write_a_summary_of_failing_specifications =
-      () => console.Lines.Should().Contain("Failures:", "Scott Bellware, at any given moment", "» will fail (FAIL)");
+      () => console.Lines.Should().Contain("Failures:", "Scott Bellware, at any given moment", "Â» will fail (FAIL)");
 
     It should_write_failure_stack_traces =
       () => console.Lines.Should().Contain(l => l.Contains("hi scott, love you, miss you."));
@@ -192,7 +192,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       () => exitCode.Should().Be(ExitCode.Failure);
 
     It should_write_a_summary_of_failing_specifications =
-      () => console.Lines.Should().Contain("Failures:", "Scott Bellware, at any given moment", "» will fail (FAIL)");
+      () => console.Lines.Should().Contain("Failures:", "Scott Bellware, at any given moment", "Â» will fail (FAIL)");
 
     It should_write_failure_stack_traces =
       () => console.Lines.Should().Contain(l => l.Contains("hi scott, love you, miss you."));
@@ -223,7 +223,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     It should_pass_the_specification_which_depends_on_external_file = () =>
       console.Lines.Should().Contain(
         "External resources usage, when using file copied to assembly output directory",
-        "» should be able to locate it by relative path");
+        "Â» should be able to locate it by relative path");
 
     It should_pass_all_specifications = () =>
       console.Lines.Should().NotContain("failed");
