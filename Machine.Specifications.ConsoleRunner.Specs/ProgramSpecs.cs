@@ -30,7 +30,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     : ConsoleRunnerSpecs
   {
     Because of =
-      () => program.Run(new [] { GetPath("Example.dll") });
+      () => program.Run(new [] { GetPath("Example.dll"), "--no-appveyor-autodetect" });
 
     It should_write_the_assembly_name =
       () => console.Lines.Should().Contain(l => l.Contains("Example"));
@@ -62,7 +62,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     : ConsoleRunnerSpecs
   {
     Because of =
-      () => program.Run(new [] { GetPath("Example.dll"), "--silent" });
+      () => program.Run(new [] { GetPath("Example.dll"), "--silent", "--no-appveyor-autodetect" });
 
     It should_not_write_the_assembly_name =
       () => console.Lines.Should().NotContain(l => l.Contains("Example"));
@@ -88,7 +88,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     : ConsoleRunnerSpecs
   {
     Because of =
-      () => program.Run(new [] { GetPath("Example.dll"), "--progress" });
+      () => program.Run(new [] { GetPath("Example.dll"), "--progress", "--no-appveyor-autodetect" });
 
     It should_write_the_assembly_name =
       () => console.Lines.Should().Contain(l => l.Contains("Example"));
@@ -120,7 +120,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     public static ExitCode exitCode;
 
     Because of = ()=>
-      exitCode = program.Run(new[] { missingAssemblyName });
+      exitCode = program.Run(new[] { missingAssemblyName, "--no-appveyor-autodetect" });
 
     It should_output_an_error_message_with_the_name_of_the_missing_assembly = ()=>
       console.Lines.Should().Contain(string.Format(Resources.MissingAssemblyError, missingAssemblyName));
@@ -135,7 +135,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     public static ExitCode exitCode;
 
     Because of =
-      () => exitCode = program.Run(new[] { GetPath("Example.Failing.dll") });
+      () => exitCode = program.Run(new[] { GetPath("Example.Failing.dll"), "--no-appveyor-autodetect" });
 
     It should_write_the_failure =
       () => console.Lines.Should().Contain(l => l.Contains("Exception"));
@@ -156,7 +156,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     public static ExitCode exitCode;
 
     Because of =
-      () => exitCode = program.Run(new[] { GetPath("Example.Failing.dll"), "--silent", "--exclude", "example" });
+      () => exitCode = program.Run(new[] { GetPath("Example.Failing.dll"), "--silent", "--exclude", "example", "--no-appveyor-autodetect" });
 
     It should_write_the_count_of_failed_specifications =
       () => console.Lines.Should().Contain(l => l.Contains("1 failed"));
@@ -180,7 +180,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     public static ExitCode exitCode;
 
     Because of =
-      () => exitCode = program.Run(new[] { GetPath("Example.Failing.dll"), "--progress", "--exclude", "example" });
+      () => exitCode = program.Run(new[] { GetPath("Example.Failing.dll"), "--progress", "--exclude", "example", "--no-appveyor-autodetect" });
 
     It should_write_failed_specification_results =
       () => console.Lines.Should().Contain("F");
@@ -205,7 +205,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
   public class when_specifying_an_include_filter : ConsoleRunnerSpecs
   {
     Because of = ()=>
-      program.Run(new [] { GetPath("Example.dll"), "--include", "failure"});
+      program.Run(new [] { GetPath("Example.dll"), "--include", "failure", "--no-appveyor-autodetect"});
 
     It should_execute_specs_with_the_included_tag = () =>
       console.Lines.Should().Contain(l => l.Contains("Account Funds transfer, when transferring an amount larger than the balance of the from account"));
@@ -218,7 +218,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
   public class when_running_from_directory_different_from_assembly_location : ConsoleRunnerSpecs
   {
     Because of = () =>
-      program.Run(new[] { GetPath(@"ExternalFile\Example.UsingExternalFile.dll") });
+      program.Run(new[] { GetPath(@"ExternalFile\Example.UsingExternalFile.dll"), "--no-appveyor-autodetect" });
 
     It should_pass_the_specification_which_depends_on_external_file = () =>
       console.Lines.Should().Contain(
@@ -236,7 +236,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     static ExitCode ExitCode;
 
     Because of = () =>
-      ExitCode = program.Run(new[] { GetPath(@"Issue157\Example.Issue157-Fail.dll"), GetPath(@"Issue157\Example.Issue157-Success.dll") });
+      ExitCode = program.Run(new[] { GetPath(@"Issue157\Example.Issue157-Fail.dll"), GetPath(@"Issue157\Example.Issue157-Success.dll"), "--no-appveyor-autodetect" });
 
     It should_fail_the_run = () =>
       ExitCode.Should().NotBe(ExitCode.Success);
@@ -249,7 +249,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     static ExitCode ExitCode;
 
     Because of = () =>
-      ExitCode = program.Run(new[] { GetPath(@"Issue157\Example.Issue157-Success.dll"), GetPath(@"Issue157\Example.Issue157-Fail.dll") });
+      ExitCode = program.Run(new[] { GetPath(@"Issue157\Example.Issue157-Success.dll"), GetPath(@"Issue157\Example.Issue157-Fail.dll"), "--no-appveyor-autodetect" });
 
     It should_fail_the_run = () =>
       ExitCode.Should().NotBe(ExitCode.Success);
@@ -261,7 +261,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
     static ExitCode ExitCode;
 
     Because of = () =>
-      ExitCode = program.Run(new[] { GetPath(@"Example.dll"), GetPath(@"Example.Failing.dll") });
+      ExitCode = program.Run(new[] { GetPath(@"Example.dll"), GetPath(@"Example.Failing.dll"), "--no-appveyor-autodetect" });
 
     It should_write_the_summary_once = () =>
       console.Lines.Count(x => x.StartsWith("Contexts: ")).Should().Be(1);
