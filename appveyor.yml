@@ -38,16 +38,21 @@ assembly_info:
   assembly_informational_version: '$(nuget_version)'
 
 before_build:
-- cmd: >-
-    nuget restore
+  - cmd: >-
+      nuget restore
 
 build:
   project: Machine.Specifications.Runner.Console.sln
-  publish_nuget: true
-  verbosity: minimal
+
+after_build:
+  - cmd: >-
+      nuget pack Machine.Specifications.ConsoleRunner\Machine.Specifications.Runner.Console.nuspec -Version %NUGET_VERSION%
 
 test:
   assemblies:
     - Machine.Specifications.ConsoleRunner.Specs.dll
+
+artifacts:
+  - path: '*.nupkg'
 
 
