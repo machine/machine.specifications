@@ -1,12 +1,13 @@
 environment:
-  nuget_version: '0.10.1-beta1'
-  nuget_prerelease: true
-  assembly_version: '0.10.0.0'
+  nuget_version: '0.9.3'
+# nuget_prerelease: true
+  assembly_version: '1.0.0.0'
 
 deploy:
   - provider: GitHub
     description: |
-      * add lines here
+      * Fixed TeamCity timing (contributed by [will14smith](https://github.com/will14smith))
+      * Moved CI and CD to AppVeyor
 
     on:
       appveyor_repo_tag: true
