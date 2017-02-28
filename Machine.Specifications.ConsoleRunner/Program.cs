@@ -102,7 +102,7 @@ namespace Machine.Specifications.ConsoleRunner
                     }
                 }
 
-                listeners.Add(mainListener);
+                listeners.Insert(0, mainListener);
 
                 if (options.AssemblyFiles.Count == 0)
                 {

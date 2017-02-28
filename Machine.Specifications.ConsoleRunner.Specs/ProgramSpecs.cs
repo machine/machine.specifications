@@ -267,6 +267,25 @@ namespace Machine.Specifications.ConsoleRunner.Specs
       console.Lines.Count(x => x.StartsWith("Contexts: ")).Should().Be(1);
   }
 
+  [Subject("Console runner")]
+  public class when_running_on_teamcity : ConsoleRunnerSpecs
+  {
+    Because of = () =>
+      program.Run(new[] { GetPath(@"Example.dll"), "--teamcity" });
+
+    It should_output_valid_durations = () =>
+      console.Lines.Count(x => ExtractDuration(x) >= 0).Should().Be(6);
+    It should_not_output_invalid_durations = () =>
+      console.Lines.Count(x => x.Contains("duration='-1'")).Should().Be(0);
+
+    private static long? ExtractDuration(string message)
+    {
+      var match = Regex.Match(message, "duration='(\\d+)'");
+      if (!match.Success) return null;
+      return long.Parse(match.Groups[1].Value);
+    }
+  }
+
   public class ConsoleRunnerSpecs
   {
     const string TeamCityIndicator = "TEAMCITY_PROJECT_NAME";
