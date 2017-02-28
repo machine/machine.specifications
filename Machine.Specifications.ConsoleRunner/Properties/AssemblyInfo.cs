@@ -22,3 +22,7 @@ using System.Runtime.InteropServices;
 [assembly : Guid("c3c1cde1-f517-4ca8-8657-5465be3e1556")]
 
 [assembly : InternalsVisibleTo("Machine.Specifications.ConsoleRunner.Specs")]
+
+// updated by CI
+[assembly: AssemblyVersion("0.1.0.0")]
+[assembly: AssemblyInformationalVersion("1.0.*")]
