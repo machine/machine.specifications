@@ -63,7 +63,7 @@ namespace Machine.Specifications.Factories
       ContextFactory factory = new ContextFactory();
       var context = factory.CreateContextFrom(new ContextWithEmptySpecification());
 
-      specification = Target.CreateSpecification(context, field);
+      specification = Target.CreateSpecification(context, field, new FieldInfo[0]);
     }
   }
 
@@ -77,7 +77,7 @@ namespace Machine.Specifications.Factories
       ContextFactory factory = new ContextFactory();
       var context = factory.CreateContextFrom(new ContextWithSingleSpecification());
 
-      specification = Target.CreateSpecification(context, field);
+      specification = Target.CreateSpecification(context, field, new FieldInfo[0]);
     }
   }
 
@@ -91,7 +91,7 @@ namespace Machine.Specifications.Factories
       ContextFactory factory = new ContextFactory();
       var context = factory.CreateContextFrom(new ContextWithThrowingSpecification());
 
-      specification = Target.CreateSpecification(context, field);
+      specification = Target.CreateSpecification(context, field, new FieldInfo[0]);
     }
   }
 

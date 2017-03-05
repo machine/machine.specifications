@@ -74,6 +74,12 @@ namespace Machine.Specifications.Utility
                 return new SetupDelegateAttributeFullName();
             }
 
+            attributeType = Type.GetType(new PrerequisiteDelegateAttributeFullName());
+            if (typeInfo.GetCustomAttributes(attributeType, false).Any())
+            {
+                return new PrerequisiteDelegateAttributeFullName();
+            }
+
             return null;
         }
     }

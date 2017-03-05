@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+
 using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications.Model
@@ -14,6 +16,7 @@ namespace Machine.Specifications.Model
         readonly bool _isIgnored;
         readonly FieldInfo _fieldInfo;
         readonly string _leader;
+        readonly Tuple<Delegate, FieldInfo>[]  _prerequisites;
 
         public FieldInfo FieldInfo
         {
@@ -35,13 +38,20 @@ namespace Machine.Specifications.Model
             get { return _leader; }
         }
 
-        public Specification(string name, Type fieldType, Delegate it, bool isIgnored, FieldInfo fieldInfo)
+
+        // TODO: Use a dedicated class for prerequisites, instead of Tuples.
+        public Specification(string name, Type fieldType, Delegate it, bool isIgnored, FieldInfo fieldInfo, Tuple<Delegate, FieldInfo>[] prerequisites) 
         {
-            _leader = fieldType.ToFormat();
-            _name = name;
-            _it = it;
-            _isIgnored = isIgnored;
-            _fieldInfo = fieldInfo;
+            this._leader = fieldType.ToFormat();
+            this._name = name;
+            this._it = it;
+            this._isIgnored = isIgnored;
+            this._fieldInfo = fieldInfo;
+            this._prerequisites = prerequisites;
+        }
+
+        public Specification(string name, Type fieldType, Delegate it, bool isIgnored, FieldInfo fieldInfo) : this(name, fieldType, it, isIgnored, fieldInfo, new Tuple<Delegate, FieldInfo>[0])
+        {
         }
 
         public virtual Result Verify()
@@ -80,6 +90,21 @@ namespace Machine.Specifications.Model
 
         protected virtual void InvokeSpecificationField()
         {
+            foreach (var prerequisite in _prerequisites)
+            {
+                try
+                {
+                    prerequisite.Item1.DynamicInvoke();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"The requirements expressed by the following specification were not met: \r\nRequires {prerequisite.Item2.Name.ToFormat()}\r\n\r\nSpecification: {prerequisite.Item2.DeclaringType}.{prerequisite.Item2.Name}");
+                    throw new PrerequisiteNotMetException(
+                        e.InnerException?.Message,
+                        // unwrap the exception.
+                        e.InnerException);
+                }
+            }
             _it.DynamicInvoke();
         }
     }

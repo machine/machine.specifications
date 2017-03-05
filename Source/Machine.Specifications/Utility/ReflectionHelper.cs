@@ -10,9 +10,19 @@ namespace Machine.Specifications.Utility
     public static class ReflectionHelper
     {
         public static IEnumerable<FieldInfo> GetInstanceFields(this Type type)
+        {                        
+            var specificationFields = type.GetFields(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.NonPublic | BindingFlags.Public);
+
+            var prerequisiteFields = type.GetFields(BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).Where(IsPrerequisiteField);
+
+            var consideredFields = specificationFields.Concat(prerequisiteFields);             
+
+            return consideredFields;
+        }
+
+        static bool IsPrerequisiteField(FieldInfo field)
         {
-            return
-              type.GetFields(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.NonPublic | BindingFlags.Public);
+            return field.FieldType == typeof(Requires);
         }
 
         public static IEnumerable<FieldInfo> GetStaticProtectedOrInheritedFields(this Type type)

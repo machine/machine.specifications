@@ -23,6 +23,11 @@ namespace Machine.Specifications
     }
 
     [AttributeUsage(AttributeTargets.Delegate, Inherited = false, AllowMultiple = false)]
+    public sealed class PrerequisiteDelegateAttribute : Attribute
+    {
+    }
+
+    [AttributeUsage(AttributeTargets.Delegate, Inherited = false, AllowMultiple = false)]
     public sealed class CleanupDelegateAttribute : Attribute
     {
     }

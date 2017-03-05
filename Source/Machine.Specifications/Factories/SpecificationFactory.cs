@@ -5,18 +5,21 @@ using Machine.Specifications.Sdk;
 using Machine.Specifications.Utility;
 using Machine.Specifications.Utility.Internal;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Machine.Specifications.Factories
 {
     public class SpecificationFactory
     {
-        public Specification CreateSpecification(Context context, FieldInfo specificationField)
+        public Specification CreateSpecification(Context context, FieldInfo specificationField, IList<FieldInfo> prerequisiteFields)
         {
             bool isIgnored = context.IsIgnored || specificationField.HasAttribute(new IgnoreAttributeFullName());
             var it = (Delegate)specificationField.GetValue(context.Instance);
+            var prerequisites = prerequisiteFields.Select(o => new Tuple<Delegate, FieldInfo>((Delegate)o.GetValue(context.Instance), o)).ToArray();
             string name = specificationField.Name.ToFormat();
 
-            return new Specification(name, specificationField.FieldType, it, isIgnored, specificationField);
+            return new Specification(name, specificationField.FieldType, it, isIgnored, specificationField, prerequisites);
         }
 
         public Specification CreateSpecificationFromBehavior(Behavior behavior, FieldInfo specificationField)

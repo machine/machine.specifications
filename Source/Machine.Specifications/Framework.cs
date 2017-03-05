@@ -9,6 +9,9 @@ namespace Machine.Specifications
     [AssertDelegate]
     public delegate void It();
 
+    [PrerequisiteDelegate]
+    public delegate void Requires();
+
     [BehaviorDelegate]
     public delegate void Behaves_like<TBehavior>();
 

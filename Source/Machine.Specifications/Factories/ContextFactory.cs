@@ -43,6 +43,7 @@ namespace Machine.Specifications.Factories
       var type = instance.GetType();
       var fieldInfos = type.GetInstanceFields();
       var itFieldInfos = new List<FieldInfo>();
+      var prerequisiteFieldInfos = new List<FieldInfo>();
       var itShouldBehaveLikeFieldInfos = new List<FieldInfo>();
 
       var contextClauses = ExtractPrivateFieldValues(instance, true, new SetupDelegateAttributeFullName());
@@ -85,14 +86,19 @@ namespace Machine.Specifications.Factories
           itFieldInfos.Add(info);
         }
 
-        if (acceptedSpecificationFields.Contains(info) &&
+        if (info.IsOfUsage(new PrerequisiteDelegateAttributeFullName()))
+        {
+            prerequisiteFieldInfos.Add(info);
+        }
+
+                if (acceptedSpecificationFields.Contains(info) &&
             info.IsOfUsage(new BehaviorDelegateAttributeFullName()))
         {
           itShouldBehaveLikeFieldInfos.Add(info);
         }
       }
 
-      CreateSpecifications(itFieldInfos, context);
+      CreateSpecifications(itFieldInfos, prerequisiteFieldInfos, context);
       CreateSpecificationsFromBehaviors(itShouldBehaveLikeFieldInfos, context);
 
       return context;
@@ -133,11 +139,11 @@ namespace Machine.Specifications.Factories
       return attribute.CreateSubject();
     }
 
-    void CreateSpecifications(IEnumerable<FieldInfo> itFieldInfos, Context context)
+    void CreateSpecifications(IEnumerable<FieldInfo> itFieldInfos, IList<FieldInfo> prerequisiteFieldInfos,  Context context)
     {
       foreach (var itFieldInfo in itFieldInfos)
       {
-        var specification = _specificationFactory.CreateSpecification(context, itFieldInfo);
+        var specification = _specificationFactory.CreateSpecification(context, itFieldInfo, prerequisiteFieldInfos);
         context.AddSpecification(specification);
       }
     }
