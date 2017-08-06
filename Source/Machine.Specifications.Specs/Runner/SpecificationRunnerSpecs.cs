@@ -276,24 +276,26 @@ namespace Machine.Specifications.Specs.Runner
                                                                                Environment.NewLine));
   }
 
-#if !NETCORE
-// Redirecting Debug output is not support / doesn't work in .NET Core
-  [Subject("Specification Runner")]
-  public class when_running_a_specification_with_debug_output
-    : RunnerSpecs
-  {
-    Because of = () =>
-      Run<context_with_debug_output>();
+// FIXME: Disabled due to false positives in CI
+//
+// #if !NETCORE
+// // Redirecting Debug output is not supported / doesn't work in .NET Core
+//   [Subject("Specification Runner")]
+//   public class when_running_a_specification_with_debug_output
+//     : RunnerSpecs
+//   {
+//     Because of = () =>
+//       Run<context_with_debug_output>();
 
-    It should_capture_the_debug_trace =
-      () => testListener.LastAssembly.CapturedOutput.Should().Be(String.Format("Debug.WriteLine message in establish{0}" +
-                                                                               "Debug.WriteLine message in because{0}" +
-                                                                               "Debug.WriteLine message in spec{0}" +
-                                                                               "Debug.WriteLine message in nth spec{0}" +
-                                                                               "Debug.WriteLine message in cleanup{0}",
-                                                                               Environment.NewLine));
-  }
-#endif
+//     It should_capture_the_debug_trace =
+//       () => testListener.LastAssembly.CapturedOutput.Should().Be(String.Format("Debug.WriteLine message in establish{0}" +
+//                                                                                "Debug.WriteLine message in because{0}" +
+//                                                                                "Debug.WriteLine message in spec{0}" +
+//                                                                                "Debug.WriteLine message in nth spec{0}" +
+//                                                                                "Debug.WriteLine message in cleanup{0}",
+//                                                                                Environment.NewLine));
+//   }
+// #endif
 
   [Subject("Specification Runner")]
   public class when_running_a_specification_with_console_output_and_foreach

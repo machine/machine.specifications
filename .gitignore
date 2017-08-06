@@ -1,31 +1,25 @@
 _ReSharper.*
 *.user
 *.suo
-*.csproj[1-9]*
 *.cache
 *~
 *.swp
-NDependOut
-*mm_cache.bin
 
-*.ncrunchsolution
-*.ncrunchproject
-
-/.nuget/nuget.exe
-/Build/*
-/Distribution/*
-/Specs/*.*
-/packages
-install.ps1
-Misc/machine.specifications.nuspec
+Build/
 /TestResult.xml
 
-Source/packages/*
-Source/**/bin/
-Source/**/obj/
-logs/*
-.bundle/*
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio
 
 .vs/
-project.lock.json
+
+# Visual Studio Code
+
+
+# JetBrains Rider
+.idea/
+
+
 
