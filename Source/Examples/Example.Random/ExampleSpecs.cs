@@ -322,9 +322,7 @@ namespace Example.Random
   [Tags(tag.example)]
   public class context_with_internal_It_field
   {
-#pragma warning disable 0649
     internal It should;
-#pragma warning restore 0649
   }
 
   [Tags(tag.example)]
@@ -340,9 +338,7 @@ namespace Example.Random
     public Because because;
     public Cleanup cleanup;
 
-#pragma warning disable 0649
     internal Behaves_like<Behaviors> behavior;
-#pragma warning restore 0649
     protected It specification;
     It private_specification;
   }

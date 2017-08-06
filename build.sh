@@ -3,7 +3,7 @@
 # Inspired by  http://andrewlock.net/adding-travis-ci-to-a-net-core-app/
 
 configuration="Debug"
-framework=netcoreapp1.0
+framework=netcoreapp1.1
 pattern="Source/*Specs* Source/*Test*"
 
 echo configuration = ${configuration}
@@ -36,7 +36,7 @@ function restore {
 
 function buildProject {
     info "Building"
-    if dotnet build $1/**/project.json -c ${configuration} -f ${framework} ; then
+    if dotnet build $1/*.csproj -c ${configuration} -f ${framework} ; then
         success "Build succeeded"
     else 
         error "Build failed"
@@ -45,7 +45,7 @@ function buildProject {
 
 function testProject {
     info "Running tests for "
-    if dotnet test $1 -c ${configuration} -f ${framework} ; then
+    if dotnet test $1/*.csproj -c ${configuration} -f ${framework} ; then
         success "Test succeeded"
     else
         error "Test failed"
