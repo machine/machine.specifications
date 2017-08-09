@@ -9,7 +9,7 @@ namespace Machine.Specifications.Runner.Impl.Listener.Redirection
 {
     internal class OutputInterceptor : IDisposable
     {
-        readonly StringWriter _combinedOutput;
+        readonly TextWriter _combinedOutput;
         TextWriter _oldError;
         TraceListener[] _oldListeners;
         TextWriter _oldOut;
@@ -74,7 +74,7 @@ namespace Machine.Specifications.Runner.Impl.Listener.Redirection
         }
     }
 
-    public class SafeStringWriter : StringWriter
+    class SafeStringWriter : StringWriter
     {
         readonly StringBuilder _buffer;
         static readonly object _lock = new object();
