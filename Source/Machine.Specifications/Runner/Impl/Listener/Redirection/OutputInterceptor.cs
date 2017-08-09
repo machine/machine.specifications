@@ -15,7 +15,11 @@ namespace Machine.Specifications.Runner.Impl.Listener.Redirection
 
         public OutputInterceptor()
         {
+#if NETSTANDARD
             _combinedOutput = new StringWriter();
+#else
+            _combinedOutput = TextWriter.Synchronized(new StringWriter());
+#endif
 
             CaptureStandardOut();
             CaptureStandardError();
