@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Machine.Specifications.Runner.Impl.Listener.Redirection
 {
-    public class OutputInterceptor : IDisposable
+    internal class OutputInterceptor : IDisposable
     {
         readonly StringWriter _combinedOutput;
         TextWriter _oldError;
@@ -23,7 +23,7 @@ namespace Machine.Specifications.Runner.Impl.Listener.Redirection
             CaptureDebugTrace();
         }
 
-        public void CaptureStandardOut()
+        void CaptureStandardOut()
         {
             _oldOut = Console.Out;
             var stdOut = new ForwardingStringWriter(new[] { _oldOut, _combinedOutput });
