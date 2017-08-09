@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Machine.Specifications.Runner.Impl.Listener.Redirection
 {
@@ -15,7 +16,7 @@ namespace Machine.Specifications.Runner.Impl.Listener.Redirection
 
         public OutputInterceptor()
         {
-            _combinedOutput = new StringWriter();
+            _combinedOutput = new SafeStringWriter();
 
             CaptureStandardOut();
             CaptureStandardError();
@@ -70,6 +71,29 @@ namespace Machine.Specifications.Runner.Impl.Listener.Redirection
             return traceListeners
               .Concat(new TraceListener[] { new TextWriterTraceListener(textWriter) })
               .ToArray();
+        }
+    }
+
+    class SafeStringWriter : StringWriter
+    {
+        readonly StringBuilder _buffer;
+        static readonly object _lock = new object();
+
+        public SafeStringWriter()
+        {
+            _buffer = new StringBuilder();
+        }
+
+        public override void Write(char value)
+        {
+            lock (_lock)
+                _buffer.Append(value);
+        }
+
+        public override string ToString()
+        {
+            lock (_lock)
+                return _buffer.ToString();
         }
     }
 }
