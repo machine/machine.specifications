@@ -1,14 +1,14 @@
 environment:
-  nuget_version: '0.11.1'
+  nuget_version: '0.11.2'
   nuget_prerelease: false
-  assembly_version: '0.11.0.0'
+  assembly_version: '0.11.2.0'
 
 image: Visual Studio 2017
 
 deploy:
   - provider: GitHub
     description: |
-      * Fix ArgumentOutOfRangeException thrown when tests are concurrently writing diagnostic output. (#224 - thanks to dannyvincent)
+      * Track behavior field from context in behavior specification
 
     on:
       appveyor_repo_tag: true
