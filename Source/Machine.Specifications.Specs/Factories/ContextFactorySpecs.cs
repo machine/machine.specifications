@@ -236,4 +236,23 @@ namespace Machine.Specifications.Specs.Factories
       }
     }
   }
+
+  [Subject(typeof(ContextFactory))]
+  public class when_creating_behavior_specifications_and_tracking_original_behavior_field
+  {
+    static Context newContext;
+
+    Establish context = () =>
+    {
+      var factory = new ContextFactory();
+      newContext = factory.CreateContextFrom(new context_with_behaviors());
+    };
+
+    It should_create_behavior_specs_with_original_behavior_field =
+      () => newContext.Specifications
+        .OfType<BehaviorSpecification>()
+        .First()
+        .BehaviorFieldInfo.Name.Should().BeEquivalentTo("behavior");
+
+  }
 }
