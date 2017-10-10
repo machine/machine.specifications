@@ -34,7 +34,7 @@ namespace Machine.Specifications.Factories
             var behavior = new Behavior(behaviorField.FieldType, behaviorInstance, context, isIgnored);
 
             var itFieldInfos = behaviorType.GetInstanceFieldsOfUsage(new AssertDelegateAttributeFullName());
-            CreateBehaviorSpecifications(itFieldInfos, behavior);
+            CreateBehaviorSpecifications(itFieldInfos, behaviorField, behavior);
 
             return behavior;
         }
@@ -126,11 +126,13 @@ namespace Machine.Specifications.Factories
         }
 
         void CreateBehaviorSpecifications(IEnumerable<FieldInfo> itFieldInfos,
+                                          FieldInfo behaviorField,
                                           Behavior behavior)
         {
             foreach (var itFieldInfo in itFieldInfos)
             {
                 var specification = _specificationFactory.CreateSpecificationFromBehavior(behavior,
+                                                                                          behaviorField,
                                                                                           itFieldInfo);
                 behavior.AddSpecification(specification);
             }

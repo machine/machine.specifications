@@ -19,13 +19,13 @@ namespace Machine.Specifications.Factories
             return new Specification(name, specificationField.FieldType, it, isIgnored, specificationField);
         }
 
-        public Specification CreateSpecificationFromBehavior(Behavior behavior, FieldInfo specificationField)
+        public Specification CreateSpecificationFromBehavior(Behavior behavior, FieldInfo behaviorField, FieldInfo specificationField)
         {
             bool isIgnored = behavior.IsIgnored || specificationField.HasAttribute(new IgnoreAttributeFullName());
             var it = (Delegate)specificationField.GetValue(behavior.Instance);
             string name = specificationField.Name.ToFormat();
 
-            return new BehaviorSpecification(name, specificationField.FieldType, it, isIgnored, specificationField, behavior.Context, behavior);
+            return new BehaviorSpecification(name, specificationField.FieldType, behaviorField, it, isIgnored, specificationField, behavior.Context, behavior);
         }
     }
 }
