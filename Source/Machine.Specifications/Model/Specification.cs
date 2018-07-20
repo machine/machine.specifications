@@ -94,7 +94,7 @@ namespace Machine.Specifications.Model
             {
                 try
                 {
-                    prerequisite.Condition.DynamicInvoke();
+                    prerequisite.Condition.DynamicInvoke(this);
                 }
                 catch (Exception e)
                 {

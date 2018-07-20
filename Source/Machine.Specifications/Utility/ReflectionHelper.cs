@@ -77,12 +77,13 @@ namespace Machine.Specifications.Utility
                 throw new InvalidOperationException(string.Format("The delegate type {0} does not have an invoke method.",
                                                                   fieldType));
             }
-            if (invoke.GetParameters().Length != 0)
+            if (fieldType != typeof(Requires) && invoke.GetParameters().Length != 0)
             {
-                throw new InvalidOperationException(string.Format("{0} delegates require 0 parameters, {1} has {2}.",
+                throw new InvalidOperationException(string.Format("{0} delegates except '{3}' require 0 parameters, {1} has {2}.",
                                                                   attributeFullName,
                                                                   fieldType,
-                                                                  invoke.GetParameters().Length));
+                                                                  invoke.GetParameters().Length,
+                                                                  nameof(Requires)));
             }
 
             if (attributeFullName is BehaviorAttributeFullName)

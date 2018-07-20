@@ -1,3 +1,5 @@
+using Machine.Specifications.Model;
+
 namespace Machine.Specifications
 {
     [SetupDelegate]
@@ -10,7 +12,7 @@ namespace Machine.Specifications
     public delegate void It();
 
     [PrerequisiteDelegate]
-    public delegate void Requires();
+    public delegate void Requires(Specification specification);
 
     [BehaviorDelegate]
     public delegate void Behaves_like<TBehavior>();
