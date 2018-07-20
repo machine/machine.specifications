@@ -16,7 +16,7 @@ namespace Machine.Specifications.Factories
         {
             bool isIgnored = context.IsIgnored || specificationField.HasAttribute(new IgnoreAttributeFullName());
             var it = (Delegate)specificationField.GetValue(context.Instance);
-            var prerequisites = prerequisiteFields.Select(o => new Tuple<Delegate, FieldInfo>((Delegate)o.GetValue(context.Instance), o)).ToArray();
+            Prerequesite[] prerequisites = prerequisiteFields.Select(o => new Prerequesite((Delegate)o.GetValue(context.Instance), o)).ToArray();
             string name = specificationField.Name.ToFormat();
 
             return new Specification(name, specificationField.FieldType, it, isIgnored, specificationField, prerequisites);

@@ -16,7 +16,7 @@ namespace Machine.Specifications.Model
         readonly bool _isIgnored;
         readonly FieldInfo _fieldInfo;
         readonly string _leader;
-        readonly Tuple<Delegate, FieldInfo>[]  _prerequisites;
+        readonly Prerequesite[]  _prerequisites;
 
         public FieldInfo FieldInfo
         {
@@ -40,7 +40,7 @@ namespace Machine.Specifications.Model
 
 
         // TODO: Use a dedicated class for prerequisites, instead of Tuples.
-        public Specification(string name, Type fieldType, Delegate it, bool isIgnored, FieldInfo fieldInfo, Tuple<Delegate, FieldInfo>[] prerequisites) 
+        public Specification(string name, Type fieldType, Delegate it, bool isIgnored, FieldInfo fieldInfo, Prerequesite[] prerequisites) 
         {
             this._leader = fieldType.ToFormat();
             this._name = name;
@@ -50,7 +50,7 @@ namespace Machine.Specifications.Model
             this._prerequisites = prerequisites;
         }
 
-        public Specification(string name, Type fieldType, Delegate it, bool isIgnored, FieldInfo fieldInfo) : this(name, fieldType, it, isIgnored, fieldInfo, new Tuple<Delegate, FieldInfo>[0])
+        public Specification(string name, Type fieldType, Delegate it, bool isIgnored, FieldInfo fieldInfo) : this(name, fieldType, it, isIgnored, fieldInfo, new Prerequesite[0])
         {
         }
 
@@ -94,11 +94,11 @@ namespace Machine.Specifications.Model
             {
                 try
                 {
-                    prerequisite.Item1.DynamicInvoke();
+                    prerequisite.Condition.DynamicInvoke();
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"The requirements expressed by the following specification were not met: \r\nRequires {prerequisite.Item2.Name.ToFormat()}\r\n\r\nSpecification: {prerequisite.Item2.DeclaringType}.{prerequisite.Item2.Name}");
+                    Console.WriteLine($"The requirements expressed by the following specification were not met: \r\nRequires {prerequisite.SpecificationField.Name.ToFormat()}\r\n\r\nSpecification: {prerequisite.SpecificationField.DeclaringType}.{prerequisite.SpecificationField.Name}");
                     throw new PrerequisiteNotMetException(
                         e.InnerException?.Message,
                         // unwrap the exception.
