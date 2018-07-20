@@ -218,28 +218,4 @@ namespace Machine.Specifications
       CleanupInvoked = false;
     }
   }
-
-  public class ContextWithBadlyNamedBefore : IFakeContext
-  {
-    Establish foo =()=>
-    {
-      
-    };
-
-    public void Reset()
-    {
-    }
-  }
-
-  public class ContextWithBadlyNamedAfter : IFakeContext
-  {
-    Establish foo =()=>
-    {
-      
-    };
-
-    public void Reset()
-    {
-    }
-  }
 }

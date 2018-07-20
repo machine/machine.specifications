@@ -1,14 +1,10 @@
 Param(
     [string] $Configuration = "Debug",
-    [string] $CodeDirectory = ".",
-    [string] $TestsDirectory = ".",
     [string] $PackageOutputDirectory = "Build",
     [string] $Version,
     [string[]] $Package = @()
 )
 
-$tests = Get-ChildItem $TestsDirectory -Directory | where { $_.FullName -imatch "^.*\.(?:Specs|Tests|Test)$" }
-$projects = Get-ChildItem $CodeDirectory -Recurse -File -Filter "project.json"
 
 function Invoke-ExpressionExitCodeCheck([string] $command)
 {
@@ -19,28 +15,9 @@ function Invoke-ExpressionExitCodeCheck([string] $command)
     }
 }
 
-# Patch version
-if ($Version) {
-    Write-Host "Patching versions to ${Version}..."
+# Print out dotnet cli info
 
-    $projects | ForEach {
-        Write-Host "Updating version: $($_.FullName)"
-
-        $foundVersion = $false; # replace only the first occurance of versin (assumes package version is on top)
-
-        (Get-Content $_.FullName -ErrorAction Stop) |
-            Foreach-Object {
-                $versionLine = '"version":\s*?".*?"'
-                if (($foundVersion -ne $true) -and ($_ -match $versionLine)) {
-                    $foundVersion = $true;
-                    return $_ -replace '"version":\s*?".*?"',"""version"": ""$Version"""
-                } else {
-                    return $_
-                }
-            } |
-            Set-Content $_.FullName -ErrorAction Stop
-    }
-}
+Invoke-Expression "dotnet --info"
 
 # Build
 
@@ -48,15 +25,17 @@ Write-Host "Restoring packages..."
 Invoke-ExpressionExitCodeCheck "dotnet restore" -ErrorAction Stop
 
 Write-Host "Building in ${Configuration}..."
-Invoke-ExpressionExitCodeCheck "dotnet build ${CodeDirectory}\**\project.json -c ${Configuration}" -ErrorAction Stop
+Invoke-ExpressionExitCodeCheck "dotnet build -c ${Configuration}" -ErrorAction Stop
 
 
 # Test
 
 Write-Host "Running tests..."
 
+$tests = Get-ChildItem -File -Recurse -Filter "*.csproj" | Where-Object { $_.FullName -imatch "^.*\.(?:Specs|Tests|Test).csproj$" }
+
 [bool] $testsFailed = $false
-$tests | ForEach {
+$tests | ForEach-Object {
     Invoke-Expression "dotnet test $($_.FullName) -c ${Configuration}"
 
     if (!$testsFailed) {
@@ -76,6 +55,6 @@ if ($testsFailed) {
 
 Write-Host "Creating a nuget package in ${PackageOutputDirectory}"
 
-$Package | ForEach {
-    Invoke-ExpressionExitCodeCheck "dotnet pack ${CodeDirectory}\$($_) -c ${Configuration} -o ${PackageOutputDirectory}"
+$Package | ForEach-Object {
+    Invoke-ExpressionExitCodeCheck "dotnet pack $_ --include-symbols -c ${Configuration} -o ${PackageOutputDirectory} /p:Version=${Version}"
 }

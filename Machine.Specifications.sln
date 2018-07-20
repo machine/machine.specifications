@@ -1,37 +1,51 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{85BC2C4A-493A-476C-971E-BE9CE51ECF5D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Machine.Specifications", "Source\Machine.Specifications\Machine.Specifications.xproj", "{EC054D80-8858-4A61-9FD9-0185EA3F4643}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications", "Source\Machine.Specifications\Machine.Specifications.csproj", "{EC054D80-8858-4A61-9FD9-0185EA3F4643}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Machine.Specifications.Specs", "Source\Machine.Specifications.Specs\Machine.Specifications.Specs.xproj", "{25843FAC-8A2E-4595-8AC5-534A5F251A8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example", "Source\Examples\Example\Example.csproj", "{A8B22591-9BAC-4A69-AF11-99215CECCB9A}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Machine.Specifications.Tests", "Source\Machine.Specifications.Tests\Machine.Specifications.Tests.xproj", "{C28055F1-E727-4206-80C2-880530EAF306}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Failing", "Source\Examples\Example.Failing\Example.Failing.csproj", "{B8326240-1533-4EAD-A146-3FA4D5260C01}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Example", "Source\Examples\Example\Example.xproj", "{A8B22591-9BAC-4A69-AF11-99215CECCB9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Random", "Source\Examples\Example.Random\Example.Random.csproj", "{5BF4481E-EE64-4FF4-93F2-3FECA09FF474}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Example.Failing", "Source\Examples\Example.Failing\Example.Failing.xproj", "{B8326240-1533-4EAD-A146-3FA4D5260C01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.BindingFailure", "Source\Examples\Example.BindingFailure\Example.BindingFailure.csproj", "{ED2B7445-91EF-46C2-AE8E-498C786C3F69}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Example.Random", "Source\Examples\Example.Random\Example.Random.xproj", "{5BF4481E-EE64-4FF4-93F2-3FECA09FF474}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.BindingFailure.Ref", "Source\Examples\Example.BindingFailure.Ref\Example.BindingFailure.Ref.csproj", "{AD4164D2-884B-4236-B7C6-7578BED43ECB}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Example.BindingFailure", "Source\Examples\Example.BindingFailure\Example.BindingFailure.xproj", "{ED2B7445-91EF-46C2-AE8E-498C786C3F69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.CleanupFailure", "Source\Examples\Example.CleanupFailure\Example.CleanupFailure.csproj", "{AFBD09BE-2521-4DA6-9D43-CC027658977A}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Example.BindingFailure.Ref", "Source\Examples\Example.BindingFailure.Ref\Example.BindingFailure.Ref.xproj", "{AD4164D2-884B-4236-B7C6-7578BED43ECB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Clr4", "Source\Examples\Example.Clr4\Example.Clr4.csproj", "{7DA257E1-198C-4542-BC8C-4775DA0FBFE3}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Example.CleanupFailure", "Source\Examples\Example.CleanupFailure\Example.CleanupFailure.xproj", "{AFBD09BE-2521-4DA6-9D43-CC027658977A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.CustomDelegates", "Source\Examples\Example.CustomDelegates\Example.CustomDelegates.csproj", "{6AD2E5BB-76FB-4A8F-8573-FE3C81C02C16}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Example.Clr4", "Source\Examples\Example.Clr4\Example.Clr4.xproj", "{7DA257E1-198C-4542-BC8C-4775DA0FBFE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.DerivedSubject", "Source\Examples\Example.DerivedSubject\Example.DerivedSubject.csproj", "{B328DA70-7FF4-484C-935A-8FA3BADF4668}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Example.CustomDelegates", "Source\Examples\Example.CustomDelegates\Example.CustomDelegates.xproj", "{6AD2E5BB-76FB-4A8F-8573-FE3C81C02C16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.UsingExternalFile", "Source\Examples\Example.UsingExternalFile\Example.UsingExternalFile.csproj", "{69B7D01F-EDBF-4EB8-90A5-5917F9D810A8}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Example.DerivedSubject", "Source\Examples\Example.DerivedSubject\Example.DerivedSubject.xproj", "{B328DA70-7FF4-484C-935A-8FA3BADF4668}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.WithBehavior", "Source\Examples\Example.WithBehavior\Example.WithBehavior.csproj", "{F6EF1498-49C6-4256-9A2E-3672B148AF99}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Example.UsingExternalFile", "Source\Examples\Example.UsingExternalFile\Example.UsingExternalFile.xproj", "{69B7D01F-EDBF-4EB8-90A5-5917F9D810A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Specs", "Source\Machine.Specifications.Specs\Machine.Specifications.Specs.csproj", "{3A94F45A-5633-49E3-AC93-6A7E00E1EF46}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Example.WithBehavior", "Source\Examples\Example.WithBehavior\Example.WithBehavior.xproj", "{F6EF1498-49C6-4256-9A2E-3672B148AF99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Tests", "Source\Machine.Specifications.Tests\Machine.Specifications.Tests.csproj", "{A3BB14C0-FE95-4562-990D-A61B3C624A8B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{1D85E618-71A9-43F2-B76D-95DC161E2A13}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		.travis.yml = .travis.yml
+		appveyor.yml = appveyor.yml
+		build-local.bat = build-local.bat
+		build.ps1 = build.ps1
+		build.sh = build.sh
+		CONTRIBUTING.md = CONTRIBUTING.md
+		HOW_TO_BUILD.md = HOW_TO_BUILD.md
+		License.txt = License.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,14 +57,6 @@ Global
 		{EC054D80-8858-4A61-9FD9-0185EA3F4643}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC054D80-8858-4A61-9FD9-0185EA3F4643}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC054D80-8858-4A61-9FD9-0185EA3F4643}.Release|Any CPU.Build.0 = Release|Any CPU
-		{25843FAC-8A2E-4595-8AC5-534A5F251A8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{25843FAC-8A2E-4595-8AC5-534A5F251A8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{25843FAC-8A2E-4595-8AC5-534A5F251A8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{25843FAC-8A2E-4595-8AC5-534A5F251A8A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C28055F1-E727-4206-80C2-880530EAF306}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C28055F1-E727-4206-80C2-880530EAF306}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C28055F1-E727-4206-80C2-880530EAF306}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C28055F1-E727-4206-80C2-880530EAF306}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A8B22591-9BAC-4A69-AF11-99215CECCB9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A8B22591-9BAC-4A69-AF11-99215CECCB9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8B22591-9BAC-4A69-AF11-99215CECCB9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -95,6 +101,14 @@ Global
 		{F6EF1498-49C6-4256-9A2E-3672B148AF99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6EF1498-49C6-4256-9A2E-3672B148AF99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6EF1498-49C6-4256-9A2E-3672B148AF99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A94F45A-5633-49E3-AC93-6A7E00E1EF46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A94F45A-5633-49E3-AC93-6A7E00E1EF46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A94F45A-5633-49E3-AC93-6A7E00E1EF46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A94F45A-5633-49E3-AC93-6A7E00E1EF46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3BB14C0-FE95-4562-990D-A61B3C624A8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3BB14C0-FE95-4562-990D-A61B3C624A8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3BB14C0-FE95-4562-990D-A61B3C624A8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3BB14C0-FE95-4562-990D-A61B3C624A8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

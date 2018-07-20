@@ -1,12 +1,14 @@
 environment:
-  nuget_version: '0.11.1-alpha1'
-  nuget_prerelease: true
-  assembly_version: '0.11.0.0'
+  nuget_version: '0.12.0'
+  nuget_prerelease: false
+  assembly_version: '0.12.0.0'
+
+image: Visual Studio 2017
 
 deploy:
   - provider: GitHub
     description: |
-      * add lines here
+      * Track behavior field from context in behavior specification
 
     on:
       appveyor_repo_tag: true
@@ -30,16 +32,10 @@ clone_depth: 5
 version: '$(nuget_version)+{build}'
 configuration: Release
 
-assembly_info:
-  patch: true
-  file: Source\**\Properties\AssemblyInfo.cs
-  assembly_version: '$(assembly_version)'
-  assembly_file_version: '$(assembly_version)'
-  assembly_informational_version: '$(nuget_version)'
-
 build_script:
 - cmd: >-
-    powershell -f build.ps1 -CodeDirectory "Source" -TestsDirectory "Source" -PackageOutputDirectory "Build" -Package "Machine.Specifications" -Version "%NUGET_VERSION%" -Configuration "%CONFIGURATION%"
+    powershell -f build.ps1 -PackageOutputDirectory "..\..\Build" -Package "Source\Machine.Specifications" -Version "%NUGET_VERSION%" -Configuration "%CONFIGURATION%"
+
 artifacts:
 - path: Build\*.nupkg
 

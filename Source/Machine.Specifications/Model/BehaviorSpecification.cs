@@ -8,12 +8,14 @@ namespace Machine.Specifications.Model
 {
     public class BehaviorSpecification : Specification
     {
+        readonly FieldInfo _behaviorfield;
         readonly object _behaviorInstance;
         readonly object _contextInstance;
         readonly ConventionMapper _mapper;
 
         public BehaviorSpecification(string name,
                                      Type fieldType,
+                                     FieldInfo behaviorfield,
                                      Delegate it,
                                      bool isIgnored,
                                      FieldInfo fieldInfo,
@@ -21,10 +23,16 @@ namespace Machine.Specifications.Model
                                      Behavior behavior)
             : base(name, fieldType, it, isIgnored, fieldInfo)
         {
+            _behaviorfield = behaviorfield;
             _contextInstance = context.Instance;
             _behaviorInstance = behavior.Instance;
 
             _mapper = new ConventionMapper();
+        }
+
+        public FieldInfo BehaviorFieldInfo
+        {
+            get { return _behaviorfield; }
         }
 
         protected override void InvokeSpecificationField()

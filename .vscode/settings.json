@@ -4,8 +4,6 @@
         "**/.git": true,
         "**/.svn": true,
         "**/.DS_Store": true,
-        "packages/": true,
-        "packages-dotnet/": true,
         "**/bin/": true,
         "**/obj/": true,
         ".vs/": true

@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>1</VersionPrefix>
+    <TargetFrameworks>net461;netcoreapp1.1</TargetFrameworks>
+    <NoWarn>$(NoWarn);169</NoWarn>
+    <AssemblyName>Machine.Specifications.Tests</AssemblyName>
+    <PackageId>Machine.Specifications.Tests</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj" />
+    <ProjectReference Include="..\Examples\Example\Example.csproj" />
+    <ProjectReference Include="..\Examples\Example.Random\Example.Random.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="4.12.0" />
+    <PackageReference Include="NUnit" Version="3.7.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DefineConstants>$(DefineConstants);CLEAN_EXCEPTION_STACK_TRACE</DefineConstants>
+  </PropertyGroup>
+</Project>
