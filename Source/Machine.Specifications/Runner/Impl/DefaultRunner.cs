@@ -248,35 +248,24 @@ namespace Machine.Specifications.Runner.Impl
             {
                 var includeFilters = options.Filters.ToList();
 
-                results = results.Where(
-                    x => includeFilters.Any(
-                        filter => StringComparer.OrdinalIgnoreCase.Equals(
-                            filter.Name,
-                            x.Type.FullName)))
-                                 .ToList();
+                results = results.Where(x => includeFilters.Any(filter => StringComparer.OrdinalIgnoreCase.Equals(filter.Name, x.Type.FullName)))
+                                 .Select(x =>
+                                         {
+                                             ContextFilter contextFilter = includeFilters.Single(y => StringComparer.OrdinalIgnoreCase
+                                                                                                                    .Equals(y.Name, x.Type.FullName));
+                                             List<SpecifiactionFilter> specifiactionFilters = contextFilter.SpecificationFilters
+                                                                                                           .ToList();
+                                             if (!specifiactionFilters.Any())
+                                             {
+                                                 return x;
+                                             }
 
-                foreach (var context in results)
-                {
-                    ContextFilter contextFilter = includeFilters.Single(
-                        x => StringComparer.OrdinalIgnoreCase.Equals(
-                            x.Name,
-                            context.Type.FullName));
-                    List<SpecifiactionFilter> specifiactionFilters = contextFilter.SpecificationFilters.ToList();
-                    if (!specifiactionFilters.Any())
-                    {
-                        continue;
-                    }
-
-                    var specsToRun = context.Specifications
-                                            .Where(
-                                                s => specifiactionFilters.Any(
-                                                    sf => StringComparer.OrdinalIgnoreCase.Equals(
-                                                        sf.Name, 
-                                                        s.FieldInfo.Name)));
-                    context.Filter(specsToRun);
-                }
-
-                results = results.Where(x => x.Specifications.Any());
+                                             var specsToRun = x.Specifications
+                                                               .Where(s => specifiactionFilters.Any(sf => StringComparer.OrdinalIgnoreCase.Equals(sf.Name, s.FieldInfo.Name)));
+                                             x.Filter(specsToRun);
+                                             return x;
+                                         })
+                                 .Where(x => x.Specifications.Any());
             }
 
             if (options.IncludeTags.Any())
