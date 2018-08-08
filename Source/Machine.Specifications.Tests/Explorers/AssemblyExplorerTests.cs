@@ -22,18 +22,19 @@ namespace Machine.Specifications.Explorers
     }
 
     [Test]
-    public void ShouldReturnThreeContexts()
+    public void ShouldReturnFourContexts()
     {
-      specifications.Count().Should().Be(3);
+      specifications.Count().Should().Be(4);
     }
 
     [Test]
-    public void ShouldReturnThreeContextsNamedCorrectly()
+    public void ShouldReturnFourContextsNamedCorrectly()
     {
       var names = specifications.Select(x => x.Name).OrderBy(x => x).ToList();
       names.Should().BeEquivalentTo(
         new[]
     {
+      "when context with passing and failing clauses",
       "when a customer first views the account summary page",
       "when transferring between two accounts",
       "when transferring an amount larger than the balance of the from account"

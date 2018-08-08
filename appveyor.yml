@@ -1,14 +1,14 @@
 environment:
-  nuget_version: '0.12.0'
+  nuget_version: '0.13.0'
   nuget_prerelease: false
-  assembly_version: '0.12.0.0'
+  assembly_version: '0.13.0.0'
 
 image: Visual Studio 2017
 
 deploy:
   - provider: GitHub
     description: |
-      * Track behavior field from context in behavior specification
+      * Add filtering for test cases to RunOptions
 
     on:
       appveyor_repo_tag: true
