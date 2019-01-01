@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <VersionPrefix>1</VersionPrefix>
-    <TargetFrameworks>net45;netcoreapp1.1</TargetFrameworks>
+    <TargetFrameworks>net45;netcoreapp2.1</TargetFrameworks>
     <NoWarn>$(NoWarn);169</NoWarn>
     <AssemblyName>Example.DerivedSubject</AssemblyName>
     <PackageId>Example.DerivedSubject</PackageId>

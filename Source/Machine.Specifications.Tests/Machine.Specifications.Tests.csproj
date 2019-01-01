@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <VersionPrefix>1</VersionPrefix>
-    <TargetFrameworks>net461;netcoreapp1.1</TargetFrameworks>
+    <TargetFrameworks>net461;netcoreapp2.1</TargetFrameworks>
     <NoWarn>$(NoWarn);169</NoWarn>
     <AssemblyName>Machine.Specifications.Tests</AssemblyName>
     <PackageId>Machine.Specifications.Tests</PackageId>
