@@ -1,33 +1,14 @@
-# Based on http://andrewlock.net/adding-travis-ci-to-a-net-core-app/
-language: csharp  
-sudo: required  
-dist: trusty  
-env:  
-  - CLI_VERSION=latest
-addons:  
-  apt:
-    packages:
-    - gettext
-    - libcurl4-openssl-dev
-    - libicu-dev
-    - libssl-dev
-    - libunwind8
-    - zlib1g
-mono:  
-  - 4.2.3
-os:  
+language: csharp
+
+os:
   - linux
-#  - osx
-osx_image: xcode7.1  
-branches:  
-  only:
-    - master
-before_install:  
-  - if test "$TRAVIS_OS_NAME" == "osx"; then brew update; brew install openssl; brew link --force openssl; fi
-  - chmod +x build.sh 
-install:  
-  - export DOTNET_INSTALL_DIR="$PWD/.dotnetcli"
-  - curl -sSL https://raw.githubusercontent.com/dotnet/cli/v1.1.0/scripts/obtain/dotnet-install.sh | bash /dev/stdin --version "$CLI_VERSION" --install-dir "$DOTNET_INSTALL_DIR"
-  - export PATH="$DOTNET_INSTALL_DIR:$PATH"  
-script:  
-  - ./build.sh
+
+dist: trusty
+mono: none
+dotnet: 2.2.100
+
+solution: Machine.Specifications.sln
+
+script:
+  - dotnet restore
+  - dotnet pack

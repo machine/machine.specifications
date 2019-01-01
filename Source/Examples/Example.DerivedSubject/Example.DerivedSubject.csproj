@@ -6,6 +6,7 @@
     <NoWarn>$(NoWarn);169</NoWarn>
     <AssemblyName>Example.DerivedSubject</AssemblyName>
     <PackageId>Example.DerivedSubject</PackageId>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

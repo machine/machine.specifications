@@ -6,6 +6,7 @@
     <NoWarn>$(NoWarn);169;649</NoWarn>
     <AssemblyName>Example.Random</AssemblyName>
     <PackageId>Example.Random</PackageId>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

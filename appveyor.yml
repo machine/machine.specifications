@@ -1,43 +1,36 @@
-environment:
-  nuget_version: '0.12.0'
-  nuget_prerelease: false
-  assembly_version: '0.12.0.0'
-
 image: Visual Studio 2017
 
-deploy:
-  - provider: GitHub
-    description: |
-      * Track behavior field from context in behavior specification
+configuration: Release
 
-    on:
-      appveyor_repo_tag: true
-    prerelease: $(nuget_prerelease)
+install:
+  - choco install gitversion.portable -pre -y
 
-    release: v$(nuget_version)
-    auth_token:
-      secure: VrF5TrpBRN0ims9nJC1LG32O6ga5hsRuGNSufEbatAiIWZ1z68iiCYKZtqnAaT9y
-
-  - provider: NuGet
-    api_key:
-      secure: R+qirYPrTX9IzJHpRLL6KAV1Lo+vlAnInf6ShiIB2rAGIP28ceJxRAh1jirHE/uD
-    on:
-      appveyor_repo_tag: true
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: $(GitVersion_NuGetVersion)
+  package_version: $(GitVersion_NuGetVersion)
+  assembly_version: $(GitVersion_MajorMinorPatch)
+  file_version: $(GitVersion_MajorMinorPatch)
+  informational_version: $(GitVersion_MajorMinorPatch)
 
 pull_requests:
   do_not_increment_build_number: true
 
-clone_depth: 5
+before_build:
+  - cmd: dotnet restore
+  - ps: gitversion /l console /output buildserver
 
-version: '$(nuget_version)+{build}'
-configuration: Release
+build:
+  publish_nuget: true
 
-build_script:
-- cmd: >-
-    powershell -f build.ps1 -PackageOutputDirectory "..\..\Build" -Package "Source\Machine.Specifications" -Version "%NUGET_VERSION%" -Configuration "%CONFIGURATION%"
+test_script:
+  - dotnet test -c %CONFIGURATION% Source\Machine.Specifications.Specs
+  - dotnet test -c %CONFIGURATION% Source\Machine.Specifications.Tests
 
-artifacts:
-- path: Build\*.nupkg
-
-test: off
-
+deploy:
+  - provider: NuGet
+    api_key:
+      secure: TL0dRg5VvDEghNB05X4nTEOECXqoNiuhVIhCFYrFg3pcaK8jNybRuruK8+S8KdJN
+    on:
+      appveyor_repo_tag: true

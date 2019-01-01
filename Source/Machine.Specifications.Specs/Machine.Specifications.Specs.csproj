@@ -6,6 +6,7 @@
     <NoWarn>$(NoWarn);169</NoWarn>
     <AssemblyName>Machine.Specifications.Specs</AssemblyName>
     <PackageId>Machine.Specifications.Specs</PackageId>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

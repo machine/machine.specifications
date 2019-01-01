@@ -6,6 +6,7 @@
     <NoWarn>$(NoWarn);169</NoWarn>
     <AssemblyName>Example.BindingFailure</AssemblyName>
     <PackageId>Example.BindingFailure</PackageId>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

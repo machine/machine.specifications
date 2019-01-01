@@ -6,6 +6,7 @@
     <NoWarn>$(NoWarn);169</NoWarn>
     <AssemblyName>Example.UsingExternalFile</AssemblyName>
     <PackageId>Example.UsingExternalFile</PackageId>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
