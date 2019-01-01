@@ -8,7 +8,8 @@ branches:
     - master
 
 dist: trusty
-mono: latest
+mono: none
+dotnet: 2.1.500
 
 solution: Machine.Specifications.sln
 
