@@ -5,7 +5,7 @@ os:
 
 dist: trusty
 mono: none
-dotnet: 2.2.100
+dotnet: 2.1.500
 
 solution: Machine.Specifications.sln
 
