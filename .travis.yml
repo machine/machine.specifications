@@ -10,5 +10,6 @@ dotnet: 2.1.500
 solution: Machine.Specifications.sln
 
 script:
-  - dotnet restore
-  - dotnet pack
+  - dotnet build
+  - dotnet test Source\Machine.Specifications.Specs
+  - dotnet test Source\Machine.Specifications.Tests
