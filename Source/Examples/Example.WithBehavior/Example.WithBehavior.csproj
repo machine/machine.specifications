@@ -2,10 +2,11 @@
 
   <PropertyGroup>
     <VersionPrefix>1</VersionPrefix>
-    <TargetFrameworks>net45;netcoreapp1.1</TargetFrameworks>
+    <TargetFrameworks>net45;netcoreapp2.1</TargetFrameworks>
     <NoWarn>$(NoWarn);169</NoWarn>
     <AssemblyName>Example.WithBehavior</AssemblyName>
     <PackageId>Example.WithBehavior</PackageId>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

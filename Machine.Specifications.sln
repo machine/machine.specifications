@@ -39,9 +39,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{1D85E618
 		.gitignore = .gitignore
 		.travis.yml = .travis.yml
 		appveyor.yml = appveyor.yml
-		build-local.bat = build-local.bat
-		build.ps1 = build.ps1
-		build.sh = build.sh
 		CONTRIBUTING.md = CONTRIBUTING.md
 		HOW_TO_BUILD.md = HOW_TO_BUILD.md
 		License.txt = License.txt
@@ -125,5 +122,8 @@ Global
 		{B328DA70-7FF4-484C-935A-8FA3BADF4668} = {85BC2C4A-493A-476C-971E-BE9CE51ECF5D}
 		{69B7D01F-EDBF-4EB8-90A5-5917F9D810A8} = {85BC2C4A-493A-476C-971E-BE9CE51ECF5D}
 		{F6EF1498-49C6-4256-9A2E-3672B148AF99} = {85BC2C4A-493A-476C-971E-BE9CE51ECF5D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {366B74C3-E4FA-41D2-95E4-A46651DF5C32}
 	EndGlobalSection
 EndGlobal

@@ -3,6 +3,7 @@
   <PropertyGroup>
     <Description>Machine.Specifications is a Context/Specification framework geared towards removing language noise and simplifying tests.</Description>
     <Authors>Machine Project</Authors>
+    <Version>0.1.0</Version>
     <TargetFrameworks>net35;net40;net45;netstandard1.3</TargetFrameworks>
     <AssemblyName>Machine.Specifications</AssemblyName>
     <PackageId>Machine.Specifications</PackageId>

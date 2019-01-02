@@ -2,10 +2,11 @@
 
   <PropertyGroup>
     <VersionPrefix>1</VersionPrefix>
-    <TargetFrameworks>net461;netcoreapp1.1</TargetFrameworks>
+    <TargetFrameworks>net461;netcoreapp2.1</TargetFrameworks>
     <NoWarn>$(NoWarn);169</NoWarn>
     <AssemblyName>Machine.Specifications.Specs</AssemblyName>
     <PackageId>Machine.Specifications.Specs</PackageId>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,7 +22,7 @@
     <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.2.3" />
   </ItemGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
     <DefineConstants>$(DefineConstants);NETCORE</DefineConstants>
   </PropertyGroup>
 
