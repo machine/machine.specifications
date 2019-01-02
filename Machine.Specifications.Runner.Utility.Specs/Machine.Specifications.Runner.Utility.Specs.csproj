@@ -7,13 +7,17 @@
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.5.3" />
+    <PackageReference Include="Machine.Specifications" Version="0.12.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.7.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Example.BindingFailure.Ref\Example.BindingFailure.Ref.csproj" />
+    <ProjectReference Include="..\Example.BindingFailure\Example.BindingFailure.csproj" />
     <ProjectReference Include="..\Example.CleanupFailure\Example.CleanupFailure.csproj" />
     <ProjectReference Include="..\Example.CustomDelegates\Example.CustomDelegates.csproj" />
+    <ProjectReference Include="..\Example.Issue146-NoMSpecDll\Example.Issue146-NoMSpecDll.csproj" />
     <ProjectReference Include="..\Example.Random\Example.Random.csproj" />
     <ProjectReference Include="..\Example\Example.csproj" />
     <ProjectReference Include="..\Machine.Specifications.Runner.Utility\Machine.Specifications.Runner.Utility.csproj" />

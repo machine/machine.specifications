@@ -61,7 +61,7 @@ namespace Machine.Specifications.Runner.Utility
     public class when_running_an_assembly_that_does_not_use_mspec : running_specs
     {
         static Exception Exception;
-        readonly static string SpecAssembly = GetPath(@"Issue146-NoMSpecDll\Example.Issue146-NoMSpecDll.dll");
+        readonly static string SpecAssembly = GetPath(@"Example.Issue146-NoMSpecDll.dll");
 
         Because of = () => runner.RunAssembly(new AssemblyPath(Assembly.LoadFrom(SpecAssembly).Location));
 
