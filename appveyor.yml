@@ -1,0 +1,35 @@
+image: Visual Studio 2017
+
+configuration: Release
+
+install:
+  - choco install gitversion.portable -pre -y
+
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: $(GitVersion_NuGetVersion)
+  package_version: $(GitVersion_NuGetVersion)
+  assembly_version: $(GitVersion_MajorMinorPatch)
+  file_version: $(GitVersion_MajorMinorPatch)
+  informational_version: $(GitVersion_MajorMinorPatch)
+
+pull_requests:
+  do_not_increment_build_number: true
+
+before_build:
+  - cmd: dotnet restore
+  - ps: gitversion /l console /output buildserver
+
+build:
+  publish_nuget: true
+
+test_script:
+  - dotnet test -c %CONFIGURATION% Source\Machine.Specifications.Runner.Utility.Specs
+
+deploy:
+  - provider: NuGet
+    api_key:
+      secure: TL0dRg5VvDEghNB05X4nTEOECXqoNiuhVIhCFYrFg3pcaK8jNybRuruK8+S8KdJN
+    on:
+      appveyor_repo_tag: true

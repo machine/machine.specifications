@@ -1,91 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{ED308706-7C33-48B7-AD12-9F8EC88C63A9}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Machine.Specifications.Runner.Utility</RootNamespace>
-    <AssemblyName>Machine.Specifications.Runner.Utility</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <TargetFrameworkProfile />
+    <Description>Machine.Specifications.Runner.Utility provides a version independent runner for the Context/Specification framework Machine.Specifications</Description>
+    <Authors>Machine Project</Authors>
+    <Version>0.1.0</Version>
+    <TargetFrameworks>net40;net45</TargetFrameworks>
+    <PackageTags>test;unit;testing;context;specification;bdd;tdd;mspec;runner</PackageTags>
+    <PackageReleaseNotes>https://github.com/machine/machine.specifications/releases</PackageReleaseNotes>
+    <PackageIconUrl>http://github.com/machine/machine.specifications/raw/master/Misc/Machine.Specifications-128x128.png</PackageIconUrl>
+    <PackageProjectUrl>http://github.com/machine/machine.specifications.runner.utility</PackageProjectUrl>
+    <PackageLicenseUrl>http://github.com/machine/machine.specifications.runner.utility/blob/master/License.txt</PackageLicenseUrl>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\Build\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\Build\Release\</OutputPath>
-    <DefineConstants>TRACE;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>$(AssemblyName).Specs</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="AppDomainRunner.cs" />
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="AssemblyPathExtensions.cs" />
-    <Compile Include="AssemblyPathsExtensions.cs" />
-    <Compile Include="FullNames.cs" />
-    <Compile Include="InvokeOnce.cs" />
-    <Compile Include="LongLivedMarshalByRefObject.cs" />
-    <Compile Include="Naming.cs" />
-    <Compile Include="NullMessageSink.cs" />
-    <Compile Include="RemoteRunnerDecorator.cs" />
-    <Compile Include="RemoteRunnerMessage.cs" />
-    <Compile Include="RunOptionsExtensions.cs" />
-    <Compile Include="AssemblyPath.cs" />
-    <Compile Include="RemoteRunListener.cs" />
-    <Compile Include="XDocumentExtensions.cs" />
-    <Compile Include="ISpecificationRunner.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>
-      </SubType>
-    </Compile>
-    <Compile Include="AggregateRunListener.cs" />
-    <Compile Include="ISpecificationRunListener.cs" />
-    <Compile Include="EnumerableExtensions.cs" />
-    <Compile Include="ContextInfo.cs" />
-    <Compile Include="Result.cs" />
-    <Compile Include="RunOptions.cs" />
-    <Compile Include="SpecificationInfo.cs" />
-    <Compile Include="TimerRunListener.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Machine.Specifications.Runner.Utility.nuspec" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets" Condition="Exists('..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

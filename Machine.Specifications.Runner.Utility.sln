@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Runner.Utility", "Machine.Specifications.Runner.Utility\Machine.Specifications.Runner.Utility.csproj", "{ED308706-7C33-48B7-AD12-9F8EC88C63A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Runner.Utility", "Machine.Specifications.Runner.Utility\Machine.Specifications.Runner.Utility.csproj", "{ED308706-7C33-48B7-AD12-9F8EC88C63A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Runner.Utility.Specs", "Machine.Specifications.Runner.Utility.Specs\Machine.Specifications.Runner.Utility.Specs.csproj", "{84480312-6CCD-4303-AA60-1504C9916F22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Runner.Utility.Specs", "Machine.Specifications.Runner.Utility.Specs\Machine.Specifications.Runner.Utility.Specs.csproj", "{84480312-6CCD-4303-AA60-1504C9916F22}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.csproj", "{2C28C643-31A2-44CA-B762-953A963F6F61}"
 EndProject
@@ -22,11 +22,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.BindingFailure", "Example.BindingFailure\Example.BindingFailure.csproj", "{A635BD1C-DA89-4FC7-8434-5DAB1A09A18D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Issue146-NoMSpecDll", "Example.Issue146-NoMSpecDll\Example.Issue146-NoMSpecDll.csproj", "{5C5A9E20-C87B-43AD-BE01-AEB3EF6266AD}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E0FB94E5-1622-4D00-9752-447354B6B96A}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\packages.config = .nuget\packages.config
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,5 +72,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B03366D7-42FB-412C-AD73-F3F59F674C32}
 	EndGlobalSection
 EndGlobal
