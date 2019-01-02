@@ -25,7 +25,7 @@ build:
   publish_nuget: true
 
 test_script:
-  - dotnet test -c %CONFIGURATION% Source\Machine.Specifications.Runner.Utility.Specs
+  - dotnet test -c %CONFIGURATION% Machine.Specifications.Runner.Utility.Specs
 
 deploy:
   - provider: NuGet
