@@ -14,10 +14,6 @@
     <PackageLicenseUrl>http://github.com/machine/machine.specifications.should/blob/master/License.txt</PackageLicenseUrl>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net35' ">
-    <DefineConstants>$(DefineConstants);NET35</DefineConstants>
-  </PropertyGroup>
-
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net40' ">
     <DefineConstants>$(DefineConstants);NET40</DefineConstants>
   </PropertyGroup>
