@@ -1,3 +1,9 @@
+## Machine.Specifications.Runner.Console
+A command-line runner for Machine.Specifications assemblies.
+
+To open an issue, please visit the [core issue tracker](https://github.com/machine/machine.specifications/issues).
+
+## How to use it
 MSpec, like other testing frameworks, provides a robust command-line runner that can be used to execute specs in one or more assemblies and allows a number of output formats to suit your needs. The runner is provided as a [separate package](http://www.nuget.org/packages/Machine.Specifications.Runner.Console/) and can be installed with the following commands:
 
 ```bash
