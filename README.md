@@ -1,6 +1,6 @@
-Please open issues here: https://github.com/machine/machine.specifications
-
-machine.specifications.runner.utility
+Machine.Specifications.Runner.Utility
 =============================
 
-The runner utility provides a stable abstraction against the Machine.Specifications core library. This allows to evolve the inner workings of the core independently from the runners.
+The runner utility provides a stable abstraction against the MSpec core library. This allows to evolve the inner workings of the core independently from the runners.
+
+To open an issue, please visit the [core issue tracker](https://github.com/machine/machine.specifications/issues).
