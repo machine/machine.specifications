@@ -1,1 +1,5 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/xct2xane0k4y15wj/branch/master?svg=true)](https://ci.appveyor.com/project/machine-specifications/machine-specifications-should/branch/master)
+## Machine.Specifications.Should
+
+This projects contains the assertion extensions for MSpec. You can use this as part of your tests to assert certain conditions.
+
+To open an issue, please visit the [core issue tracker](https://github.com/machine/machine.specifications/issues).
