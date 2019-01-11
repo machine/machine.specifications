@@ -1,0 +1,13 @@
+image: Visual Studio 2017
+
+environment:
+  NUGET_API_KEY:
+    secure: TL0dRg5VvDEghNB05X4nTEOECXqoNiuhVIhCFYrFg3pcaK8jNybRuruK8+S8KdJN
+
+build_script:
+  - ps: .\build.ps1
+
+test: off
+
+artifacts:
+  - path: artifacts\*.nupkg

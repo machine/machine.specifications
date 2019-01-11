@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <TargetFrameworks>net462</TargetFrameworks>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="5.5.3" />
+    <PackageReference Include="Machine.Specifications" Version="0.12.0" />
+    <PackageReference Include="Machine.Specifications.Runner.Utility" Version="0.9.0" />
+    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.8.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="RhinoMocks" Version="3.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Example.Random\Example.Random.csproj" />
+    <ProjectReference Include="..\Example\Example.csproj" />
+    <ProjectReference Include="..\Machine.Specifications.Reporting\Machine.Specifications.Reporting.csproj" />
+  </ItemGroup>
+
+</Project>
