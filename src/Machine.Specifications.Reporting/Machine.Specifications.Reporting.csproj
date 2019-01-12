@@ -9,7 +9,7 @@
     <PackageReleaseNotes>See http://github.com/machine/machine.specifications.reporting/releases</PackageReleaseNotes>
     <PackageIconUrl>http://github.com/machine/machine.specifications/raw/master/Misc/Machine.Specifications-128x128.png</PackageIconUrl>
     <PackageProjectUrl>http://github.com/machine/machine.specifications.reporting</PackageProjectUrl>
-    <PackageLicenseUrl>http://github.com/machine/machine.specifications.reporting/raw/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseUrl>http://github.com/machine/machine.specifications.reporting/raw/master/License.txt</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>
