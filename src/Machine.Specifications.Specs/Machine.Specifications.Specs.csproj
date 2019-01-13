@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>1</VersionPrefix>
+    <TargetFrameworks>net461;netcoreapp2.1</TargetFrameworks>
+    <NoWarn>$(NoWarn);169</NoWarn>
+    <AssemblyName>Machine.Specifications.Specs</AssemblyName>
+    <PackageId>Machine.Specifications.Specs</PackageId>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj" />
+    <ProjectReference Include="..\Examples\Example\Example.csproj" />
+    <ProjectReference Include="..\Examples\Example.Random\Example.Random.csproj" />
+    <ProjectReference Include="..\Examples\Example.Failing\Example.Failing.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="5.6.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.8.0" />
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
+    <DefineConstants>$(DefineConstants);NETCORE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DefineConstants>$(DefineConstants);CLEAN_EXCEPTION_STACK_TRACE</DefineConstants>
+  </PropertyGroup>
+</Project>
