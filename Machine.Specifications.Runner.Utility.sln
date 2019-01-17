@@ -3,25 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Runner.Utility", "Machine.Specifications.Runner.Utility\Machine.Specifications.Runner.Utility.csproj", "{ED308706-7C33-48B7-AD12-9F8EC88C63A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Runner.Utility", "src\Machine.Specifications.Runner.Utility\Machine.Specifications.Runner.Utility.csproj", "{ED308706-7C33-48B7-AD12-9F8EC88C63A9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Runner.Utility.Specs", "Machine.Specifications.Runner.Utility.Specs\Machine.Specifications.Runner.Utility.Specs.csproj", "{84480312-6CCD-4303-AA60-1504C9916F22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Runner.Utility.Specs", "src\Machine.Specifications.Runner.Utility.Specs\Machine.Specifications.Runner.Utility.Specs.csproj", "{84480312-6CCD-4303-AA60-1504C9916F22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.csproj", "{2C28C643-31A2-44CA-B762-953A963F6F61}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "src\Example\Example.csproj", "{2C28C643-31A2-44CA-B762-953A963F6F61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Failing", "Example.Failing\Example.Failing.csproj", "{89ECD0D1-6CC4-4319-B1B2-389E0B48F40D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Failing", "src\Example.Failing\Example.Failing.csproj", "{89ECD0D1-6CC4-4319-B1B2-389E0B48F40D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.BindingFailure.Ref", "Example.BindingFailure.Ref\Example.BindingFailure.Ref.csproj", "{2C33D385-9024-4346-8839-93CFF1AF227C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.BindingFailure.Ref", "src\Example.BindingFailure.Ref\Example.BindingFailure.Ref.csproj", "{2C33D385-9024-4346-8839-93CFF1AF227C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Random", "Example.Random\Example.Random.csproj", "{1295C389-FCE4-4425-93E4-E4AE239B3E35}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Random", "src\Example.Random\Example.Random.csproj", "{1295C389-FCE4-4425-93E4-E4AE239B3E35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.CleanupFailure", "Example.CleanupFailure\Example.CleanupFailure.csproj", "{0C0F5B79-50B7-4B6E-9EAB-9A7DC70F92AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.CleanupFailure", "src\Example.CleanupFailure\Example.CleanupFailure.csproj", "{0C0F5B79-50B7-4B6E-9EAB-9A7DC70F92AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.CustomDelegates", "Example.CustomDelegates\Example.CustomDelegates.csproj", "{844788DF-F12F-462F-BDE8-C46F8FFECD11}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.CustomDelegates", "src\Example.CustomDelegates\Example.CustomDelegates.csproj", "{844788DF-F12F-462F-BDE8-C46F8FFECD11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.BindingFailure", "Example.BindingFailure\Example.BindingFailure.csproj", "{A635BD1C-DA89-4FC7-8434-5DAB1A09A18D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.BindingFailure", "src\Example.BindingFailure\Example.BindingFailure.csproj", "{A635BD1C-DA89-4FC7-8434-5DAB1A09A18D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Issue146-NoMSpecDll", "Example.Issue146-NoMSpecDll\Example.Issue146-NoMSpecDll.csproj", "{5C5A9E20-C87B-43AD-BE01-AEB3EF6266AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Issue146-NoMSpecDll", "src\Example.Issue146-NoMSpecDll\Example.Issue146-NoMSpecDll.csproj", "{5C5A9E20-C87B-43AD-BE01-AEB3EF6266AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
