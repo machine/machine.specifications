@@ -1,35 +1,13 @@
 image: Visual Studio 2017
 
-configuration: Release
+environment:
+  NUGET_API_KEY:
+    secure: TL0dRg5VvDEghNB05X4nTEOECXqoNiuhVIhCFYrFg3pcaK8jNybRuruK8+S8KdJN
 
-install:
-  - choco install gitversion.portable -pre -y
+build_script:
+  - ps: .\build.ps1
 
-dotnet_csproj:
-  patch: true
-  file: '**\*.csproj'
-  version: $(GitVersion_NuGetVersion)
-  package_version: $(GitVersion_NuGetVersion)
-  assembly_version: $(GitVersion_MajorMinorPatch)
-  file_version: $(GitVersion_MajorMinorPatch)
-  informational_version: $(GitVersion_MajorMinorPatch)
+test: off
 
-pull_requests:
-  do_not_increment_build_number: true
-
-before_build:
-  - cmd: dotnet restore
-  - ps: gitversion /l console /output buildserver
-
-build:
-  publish_nuget: true
-
-test_script:
-  - dotnet test -c %CONFIGURATION% Machine.Specifications.Should.Specs
-
-deploy:
-  - provider: NuGet
-    api_key:
-      secure: TL0dRg5VvDEghNB05X4nTEOECXqoNiuhVIhCFYrFg3pcaK8jNybRuruK8+S8KdJN
-    on:
-      appveyor_repo_tag: true
+artifacts:
+  - path: artifacts\*.nupkg

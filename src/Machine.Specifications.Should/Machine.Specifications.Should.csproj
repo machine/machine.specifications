@@ -1,15 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>Machine.Specifications.Should is a should library for the Context/Specification framework Machine.Specifications</Description>
-    <Version>0.10.0</Version>
-    <Authors>Machine Project</Authors>
+    <Version>0.1.0</Version>
     <TargetFrameworks>net40;net45;netstandard1.3</TargetFrameworks>
-    <AssemblyName>Machine.Specifications.Should</AssemblyName>
-    <PackageId>Machine.Specifications.Should</PackageId>
+    <Description>Machine.Specifications.Should is a should library for the Context/Specification framework Machine.Specifications</Description>
+    <Authors>Machine Specifications</Authors>
     <PackageTags>test;unit;testing;context;specification;bdd;tdd;mspec</PackageTags>
     <PackageReleaseNotes>https://github.com/machine/machine.specifications.should/releases</PackageReleaseNotes>
-    <PackageIconUrl>http://github.com/machine/machine.specifications/raw/master/Misc/Machine.Specifications-128x128.png</PackageIconUrl>
+    <PackageIconUrl>http://github.com/machine/media/raw/master/Machine.Specifications-128x128.png</PackageIconUrl>
     <PackageProjectUrl>http://github.com/machine/machine.specifications.should</PackageProjectUrl>
     <PackageLicenseUrl>http://github.com/machine/machine.specifications.should/blob/master/License.txt</PackageLicenseUrl>
   </PropertyGroup>

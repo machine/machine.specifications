@@ -3,9 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Should", "Machine.Specifications.Should\Machine.Specifications.Should.csproj", "{C2271303-5DA7-4DF6-94A2-FA3ED614B355}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Should", "src\Machine.Specifications.Should\Machine.Specifications.Should.csproj", "{C2271303-5DA7-4DF6-94A2-FA3ED614B355}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Should.Specs", "Machine.Specifications.Should.Specs\Machine.Specifications.Should.Specs.csproj", "{B726E32B-7310-4065-BAE4-5AB370278A6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Should.Specs", "src\Machine.Specifications.Should.Specs\Machine.Specifications.Should.Specs.csproj", "{B726E32B-7310-4065-BAE4-5AB370278A6F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{88003F2A-28B9-4842-8E00-FC0EFD38AF5B}"
+	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+		build.cake = build.cake
+		CONTRIBUTING.md = CONTRIBUTING.md
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
