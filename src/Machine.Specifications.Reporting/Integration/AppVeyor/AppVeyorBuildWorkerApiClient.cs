@@ -1,11 +1,9 @@
+using System;
+using System.Net;
+using System.Text;
+
 namespace Machine.Specifications.Reporting.Integration.AppVeyor
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Net;
-    using System.Text;
-    using System.Web.Script.Serialization;
-
     public class AppVeyorBuildWorkerApiClient : IAppVeyorBuildWorkerApiClient
     {
         const string ApiResource = "/api/tests";
@@ -32,24 +30,22 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
                             string stdOut,
                             string stdErr)
         {
-            var body = new
-                       {
-                           TestName = testName,
-                           TestFramework = testFramework,
-                           FileName = fileName,
-                           Outcome = outcome,
-                           DurationMilliseconds = durationMilliseconds,
-                           ErrorMessage = errorMessage,
-                           ErrorStackTrace = errorStackTrace,
-                           StdOut = TrimStdOut(stdOut),
-                           StdErr = TrimStdOut(stdErr)
-                       };
-
             try
             {
+                var json = Json(
+                    testName,
+                    testFramework,
+                    fileName,
+                    outcome,
+                    durationMilliseconds,
+                    errorMessage,
+                    errorStackTrace,
+                    TrimStdOut(stdOut),
+                    TrimStdOut(stdErr));
+
                 using (WebClient wc = GetClient())
                 {
-                    wc.UploadData(ApiResource, "POST", Json(body));
+                    wc.UploadData(ApiResource, "POST", json);
                 }
             }
             catch (Exception ex)
@@ -68,24 +64,22 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
                                string stdOut,
                                string stdErr)
         {
-            var body = new
-                       {
-                           TestName = testName,
-                           TestFramework = testFramework,
-                           FileName = fileName,
-                           Outcome = outcome,
-                           DurationMilliseconds = durationMilliseconds,
-                           ErrorMessage = errorMessage,
-                           ErrorStackTrace = errorStackTrace,
-                           StdOut = TrimStdOut(stdOut),
-                           StdErr = TrimStdOut(stdErr)
-                       };
-
             try
             {
+                var json = Json(
+                    testName,
+                    testFramework,
+                    fileName,
+                    outcome,
+                    durationMilliseconds,
+                    errorMessage,
+                    errorStackTrace,
+                    TrimStdOut(stdOut),
+                    TrimStdOut(stdErr));
+
                 using (WebClient wc = GetClient())
                 {
-                    wc.UploadData(ApiResource, "PUT", Json(body));
+                    wc.UploadData(ApiResource, "PUT", json);
                 }
             }
             catch (Exception ex)
@@ -106,11 +100,57 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
             return (str.Length > MaxLength) ? str.Substring(0, MaxLength) : str;
         }
 
-        static byte[] Json(object data)
+        static byte[] Json(
+            string testName,
+            string testFramework,
+            string fileName,
+            string outcome,
+            long? durationMilliseconds,
+            string errorMessage,
+            string errorStackTrace,
+            string stdOut,
+            string stdErr)
         {
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            var json = serializer.Serialize(data);
-            return Encoding.UTF8.GetBytes(json);
+            var value = new StringBuilder()
+                .Append("{")
+                .Append($"{GetJsonValue("TestName")}:{GetJsonValue(testName)},")
+                .Append($"{GetJsonValue("TestFramework")}:{GetJsonValue(testFramework)},")
+                .Append($"{GetJsonValue("FileName")}:{GetJsonValue(fileName)},")
+                .Append($"{GetJsonValue("Outcome")}:{GetJsonValue(outcome)},")
+                .Append($"{GetJsonValue("DurationMilliseconds")}:{GetJsonValue(durationMilliseconds)},")
+                .Append($"{GetJsonValue("ErrorMessage")}:{GetJsonValue(errorMessage)},")
+                .Append($"{GetJsonValue("ErrorStackTrace")}:{GetJsonValue(errorStackTrace)},")
+                .Append($"{GetJsonValue("StdOut")}:{GetJsonValue(stdOut)},")
+                .Append($"{GetJsonValue("StdErr")}:{GetJsonValue(stdErr)}")
+                .Append("}")
+                .ToString();
+
+            return Encoding.UTF8.GetBytes(value);
+        }
+
+        private static string GetJsonValue(long? value)
+        {
+            if (value == null)
+                return "null";
+
+            return value.ToString();
+        }
+
+        private static string GetJsonValue(string value)
+        {
+            if (value == null)
+                return "null";
+
+            var jsonValue = value
+                .Replace("\\", "\\\\")
+                .Replace("\b", "\\b")
+                .Replace("\f", "\\f")
+                .Replace("\n", "\\n")
+                .Replace("\r", "\\r")
+                .Replace("\t", "\\t")
+                .Replace("\"", "\\\"");
+
+            return $"\"{jsonValue}\"";
         }
 
         WebClient GetClient()
