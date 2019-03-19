@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <TargetFrameworks>net40</TargetFrameworks>
+    <OutputType>Exe</OutputType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AssemblyName>mspec</AssemblyName>
+    <Description>Console runner for the Context/Specification framework Machine.Specifications</Description>
+    <Authors>Machine Specifications</Authors>
+    <PackageTags>test;unit;testing;context;specification;bdd;tdd;mspec</PackageTags>
+    <PackageReleaseNotes>https://github.com/machine/machine.specifications.runner.console/releases</PackageReleaseNotes>
+    <PackageIconUrl>http://github.com/machine/media/raw/master/Machine.Specifications-128x128.png</PackageIconUrl>
+    <PackageProjectUrl>http://github.com/machine/machine.specifications.runner.console</PackageProjectUrl>
+    <PackageLicenseUrl>http://github.com/machine/machine.specifications.runner.console/raw/master/License.txt</PackageLicenseUrl>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NoTargetFrameworkNet35 Condition=" '$(NoTargetFrameworkNet35)' == '' AND '$(MSBuildRuntimeType)' == 'Core' ">true</NoTargetFrameworkNet35>
+    <TargetFrameworks Condition=" '$(NoTargetFrameworkNet35)' != 'true' ">$(TargetFrameworks);net35</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net40' ">
+    <AssemblyName>mspec-clr4</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="1.9.71" PrivateAssets="All" />
+    <PackageReference Include="Machine.Specifications.Reporting" Version="0.10.0-beta0001" PrivateAssets="All" />
+    <PackageReference Include="Machine.Specifications.Runner.Utility" Version="0.9.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Machine.Specifications.ConsoleRunner.x86\Machine.Specifications.ConsoleRunner.x86.csproj" PrivateAssets="All" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);PackageItems</TargetsForTfmSpecificContentInPackage>
+  </PropertyGroup>
+
+  <Target Name="PackageItems">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="bin\$(Configuration)\net35\mspec.exe" PackagePath="tools" />
+      <TfmSpecificPackageFile Include="bin\$(Configuration)\net40\mspec-clr4.exe" PackagePath="tools" />
+      <TfmSpecificPackageFile Include="bin\$(Configuration)\net40\mspec-clr4.exe.config" PackagePath="tools" />
+
+      <TfmSpecificPackageFile Include="..\$(MSBuildProjectName).x86\bin\$(Configuration)\net35\mspec-x86.exe" PackagePath="tools" />
+      <TfmSpecificPackageFile Include="..\$(MSBuildProjectName).x86\bin\$(Configuration)\net40\mspec-x86-clr4.exe" PackagePath="tools" />
+      <TfmSpecificPackageFile Include="..\$(MSBuildProjectName).x86\bin\$(Configuration)\net40\mspec-x86-clr4.exe.config" PackagePath="tools" />
+
+      <TfmSpecificPackageFile Include="$(OutputPath)\CommandLine.dll" PackagePath="tools" />
+      <TfmSpecificPackageFile Include="$(OutputPath)\Machine.Specifications.Reporting.dll" PackagePath="tools" />
+      <TfmSpecificPackageFile Include="$(OutputPath)\Machine.Specifications.Runner.Utility.dll" PackagePath="tools" />
+      <TfmSpecificPackageFile Include="$(OutputPath)\Spark.dll" PackagePath="tools" />
+    </ItemGroup>
+  </Target>
+
+</Project>

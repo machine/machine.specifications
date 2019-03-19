@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <TargetFrameworks>net45</TargetFrameworks>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+</Project>

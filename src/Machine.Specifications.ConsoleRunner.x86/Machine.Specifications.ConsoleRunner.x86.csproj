@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <TargetFrameworks>net40</TargetFrameworks>
+    <OutputType>Exe</OutputType>
+    <PlatformTarget>x86</PlatformTarget>
+    <AssemblyName>mspec-x86</AssemblyName>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NoTargetFrameworkNet35 Condition=" '$(NoTargetFrameworkNet35)' == '' AND '$(MSBuildRuntimeType)' == 'Core' ">true</NoTargetFrameworkNet35>
+    <TargetFrameworks Condition=" '$(NoTargetFrameworkNet35)' != 'true' ">$(TargetFrameworks);net35</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net40' ">
+    <AssemblyName>mspec-x86-clr4</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="1.9.71" />
+    <PackageReference Include="Machine.Specifications.Reporting" Version="0.10.0-beta0001" />
+    <PackageReference Include="Machine.Specifications.Runner.Utility" Version="0.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Machine.Specifications.ConsoleRunner\**\*.cs" Exclude="..\Machine.Specifications.ConsoleRunner\obj\**" />
+    <None Include="..\Machine.Specifications.ConsoleRunner\App.config" Link="App.config" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+
+</Project>

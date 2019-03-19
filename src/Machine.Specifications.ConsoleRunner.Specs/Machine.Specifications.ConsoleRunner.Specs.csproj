@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <TargetFrameworks>net461</TargetFrameworks>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="2.2.0" />
+    <PackageReference Include="Machine.Specifications" Version="0.12.0" />
+    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.8.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Example.BindingFailure.Ref\Example.BindingFailure.Ref.csproj" />
+    <ProjectReference Include="..\Example.Failing\Example.Failing.csproj" />
+    <ProjectReference Include="..\Example.Issue157-Fail\Example.Issue157-Fail.csproj" />
+    <ProjectReference Include="..\Example.Issue157-Success\Example.Issue157-Success.csproj" />
+    <ProjectReference Include="..\Example.UsingExternalFile\Example.UsingExternalFile.csproj" />
+    <ProjectReference Include="..\Example\Example.csproj" />
+    <ProjectReference Include="..\Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunner.csproj" />
+  </ItemGroup>
+
+</Project>
