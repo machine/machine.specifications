@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="1.9.71" />
-    <PackageReference Include="Machine.Specifications.Reporting" Version="0.10.0-beta0001" />
+    <PackageReference Include="Machine.Specifications.Reporting" Version="0.10.0" />
     <PackageReference Include="Machine.Specifications.Runner.Utility" Version="0.9.0" />
   </ItemGroup>
 
