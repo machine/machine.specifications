@@ -9,7 +9,7 @@
     <PackageReleaseNotes>https://github.com/machine/machine.specifications/releases</PackageReleaseNotes>
     <PackageIconUrl>http://github.com/machine/media/raw/master/Machine.Specifications-128x128.png</PackageIconUrl>
     <PackageProjectUrl>http://github.com/machine/machine.specifications</PackageProjectUrl>
-    <PackageLicenseUrl>http://github.com/machine/machine.specifications/raw/master/License.txt</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.0</NetStandardImplicitPackageVersion>
     <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net35' ">C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5\Profile\Client</FrameworkPathOverride>
   </PropertyGroup>
