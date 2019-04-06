@@ -14,7 +14,7 @@
     <PackageReleaseNotes>https://github.com/machine/machine.specifications.runner.console/releases</PackageReleaseNotes>
     <PackageIconUrl>http://github.com/machine/media/raw/master/Machine.Specifications-128x128.png</PackageIconUrl>
     <PackageProjectUrl>http://github.com/machine/machine.specifications.runner.console</PackageProjectUrl>
-    <PackageLicenseUrl>http://github.com/machine/machine.specifications.runner.console/raw/master/License.txt</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <PropertyGroup>
