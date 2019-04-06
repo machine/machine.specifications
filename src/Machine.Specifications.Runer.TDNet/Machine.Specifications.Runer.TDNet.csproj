@@ -11,7 +11,7 @@
     <PackageReleaseNotes>http://github.com/machine/machine.specifications.runner.tdnet/releases</PackageReleaseNotes>
     <PackageIconUrl>http://github.com/machine/media/raw/master/Machine.Specifications-128x128.png</PackageIconUrl>
     <PackageProjectUrl>http://github.com/machine/machine.specifications.runner.tdnet</PackageProjectUrl>
-    <PackageLicenseUrl>http://github.com/machine/machine.specifications.runner.tdnet/raw/master/License.txt</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net35' ">C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5\Profile\Client</FrameworkPathOverride>
     <IsTool>true</IsTool>
   </PropertyGroup>
