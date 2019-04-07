@@ -9,7 +9,7 @@
     <PackageReleaseNotes>https://github.com/machine/machine.specifications.should/releases</PackageReleaseNotes>
     <PackageIconUrl>http://github.com/machine/media/raw/master/Machine.Specifications-128x128.png</PackageIconUrl>
     <PackageProjectUrl>http://github.com/machine/machine.specifications.should</PackageProjectUrl>
-    <PackageLicenseUrl>http://github.com/machine/machine.specifications.should/blob/master/License.txt</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net40' ">
