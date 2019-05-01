@@ -21,7 +21,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Machine.Specifications" Version="1.0.0-beta1" />
+    <PackageReference Include="Machine.Specifications" Version="1.0.0" />
   </ItemGroup>
 
 </Project>
