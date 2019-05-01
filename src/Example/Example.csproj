@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.6.0" />
-    <PackageReference Include="Machine.Specifications" Version="1.0.0-beta1" />
+    <PackageReference Include="Machine.Specifications" Version="1.0.0" />
   </ItemGroup>
 
 </Project>
