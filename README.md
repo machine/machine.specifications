@@ -4,10 +4,7 @@ For project documentation, please visit the [wiki](https://github.com/machine/ma
 
 ## Training
 
-There is a PluralSight course made by [@kevinkuebler](https://github.com/kevinkuebler) - you can find it here:
-
-[![Training](https://www.pluralsight.com/content/dam/pluralsight/newsroom/brand-assets/logos/pluralsight-logo-hor-black-1@2x.png)](https://www.pluralsight.com/courses/expressive-testing-dotnet-mspec)
-
+A PluralSight course by [@kevinkuebler](https://github.com/kevinkuebler) is available [here](https://www.pluralsight.com/courses/expressive-testing-dotnet-mspec).
 
 ## Overview
 MSpec is called a "context/specification" test framework because of the "grammar" that is used in describing and coding the tests or "specs". That grammar reads roughly like this
@@ -20,20 +17,20 @@ You should be able to see the components of the traditional Arrange-Act-Assert m
 [Subject("Authentication")]
 class When_authenticating_an_admin_user
 {
-    static SecurityService Subject;
-    static UserToken Token;
+    static SecurityService subject;
+    static UserToken user_token;
 
     Establish context = () => 
-        Subject = new SecurityService();
+        subject = new SecurityService();
 
     Because of = () =>
-        Token = Subject.Authenticate("username", "password");
+        user_token = subject.Authenticate("username", "password");
 
     It should_indicate_the_users_role = () =>
-        Token.Role.ShouldEqual(Roles.Admin);
+        user_token.Role.ShouldEqual(Roles.Admin);
 
     It should_have_a_unique_session_id = () =>
-        Token.SessionId.ShouldNotBeNull();
+        user_token.SessionId.ShouldNotBeNull();
 }
 ```
 
