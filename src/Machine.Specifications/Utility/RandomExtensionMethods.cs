@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+#if ASYNC
+using System.Threading.Tasks;
+#endif
 
 using Machine.Specifications.Sdk;
 
@@ -19,7 +22,19 @@ namespace Machine.Specifications.Utility
 
         internal static void InvokeAll(this IEnumerable<Delegate> contextActions, params object[] args)
         {
-            contextActions.AllNonNull().Select<Delegate, Action>(x => () => x.DynamicInvoke(args)).InvokeAll();
+            contextActions.AllNonNull().Select<Delegate, Action>(x => () => x.Invoke(args)).InvokeAll();
+        }
+
+        internal static void Invoke(this Delegate @delegate, params object[] args)
+        {
+#if ASYNC
+            if (@delegate.DynamicInvoke(args) is Task task)
+            {
+                task.Wait();
+            }
+#else
+            @delegate.DynamicInvoke(args);
+#endif
         }
 
         static IEnumerable<T> AllNonNull<T>(this IEnumerable<T> elements) where T : class
@@ -29,7 +44,7 @@ namespace Machine.Specifications.Utility
 
         static void InvokeAll(this IEnumerable<Action> actions)
         {
-            actions.Each(x => x());
+            actions.Each(x => x.Invoke());
         }
 
         internal static bool HasAttribute<TAttributeFullName>(this MemberInfo attributeProvider, TAttributeFullName attributeFullName)

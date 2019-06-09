@@ -56,8 +56,12 @@
     <DefineConstants>$(DefineConstants);NET40</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <DefineConstants>$(DefineConstants);NET45;ASYNC</DefineConstants>
+  </PropertyGroup>
+
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
-    <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
+    <DefineConstants>$(DefineConstants);NETSTANDARD;ASYNC</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
