@@ -274,7 +274,52 @@ namespace Machine.Specifications
   }
 
   [Behaviors]
-  public class AsyncBehavior
+  public class ContextBehavior
+  {
+      protected static bool ItInvoked;
+
+      It is_a_specification = () =>
+      {
+          ItInvoked = true;
+      };
+  }
+
+  public class ContextWithBehavior : IFakeContext
+  {
+      public static bool BecauseInvoked = false;
+      protected static bool ItInvoked = false;
+      public static bool ItWasInvoked => ItInvoked;
+      public static bool ContextInvoked = false;
+      public static bool CleanupInvoked = false;
+
+      Establish context = () =>
+      {
+          ContextInvoked = true;
+      };
+
+      Because of = () =>
+      {
+          BecauseInvoked = true;
+      };
+
+      Behaves_like<ContextBehavior> behavior;
+
+      Cleanup after = () =>
+      {
+          CleanupInvoked = true;
+      };
+
+      public void Reset()
+      {
+          BecauseInvoked = false;
+          ItInvoked = false;
+          ContextInvoked = false;
+          CleanupInvoked = false;
+      }
+  }
+
+  [Behaviors]
+  public class AsyncContextBehavior
   {
       protected static bool ItInvoked;
 
@@ -314,7 +359,7 @@ namespace Machine.Specifications
           });
       };
 
-      Behaves_like<AsyncBehavior> behavior;
+      Behaves_like<AsyncContextBehavior> behavior;
 
       CleanupAsync after = async () =>
       {

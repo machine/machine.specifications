@@ -172,6 +172,41 @@ namespace Machine.Specifications.Model
   }
 
   [TestFixture]
+  public class BehaviorContextTests : With<ContextWithBehavior>
+  {
+      public override void BeforeEachTest()
+      {
+          base.BeforeEachTest();
+
+          Run(context);
+      }
+
+      [Test]
+      public void ShouldEstablishContext()
+      {
+          ContextWithBehavior.BecauseInvoked.Should().BeTrue();
+      }
+
+      [Test]
+      public void ShouldCallBeforeEach()
+      {
+          ContextWithBehavior.ContextInvoked.Should().BeTrue();
+      }
+
+      [Test, NUnit.Framework.Ignore("Fields not copied back across in this context.")]
+      public void ShouldRunSpecification()
+      {
+          ContextWithBehavior.ItWasInvoked.Should().BeTrue();
+      }
+
+      [Test]
+      public void ShouldCleanup()
+      {
+          ContextWithBehavior.CleanupInvoked.Should().BeTrue();
+      }
+  }
+
+    [TestFixture]
   public class AsyncBehaviorContextTests : With<AsyncContextWithBehavior>
   {
       public override void BeforeEachTest()
