@@ -4,7 +4,9 @@ using FluentAssertions;
 
 namespace Machine.Specifications
 {
-  namespace ExampleA
+    using System.Threading.Tasks;
+
+    namespace ExampleA
   {
     namespace ExampleB
     {
@@ -217,5 +219,118 @@ namespace Machine.Specifications
       ContextInvoked = false;
       CleanupInvoked = false;
     }
+  }
+
+  public class AsyncContextWithSingleSpecification : IFakeContext
+  {
+      public static bool BecauseInvoked = false;
+      public static bool ItInvoked = false;
+      public static bool ContextInvoked = false;
+      public static bool CleanupInvoked = false;
+
+      EstablishAsync context = async () =>
+      {
+          await Task.Run(() =>
+          {
+              Task.Delay(10000);
+              ContextInvoked = true;
+          });
+      };
+
+      BecauseAsync of = async () =>
+      {
+          await Task.Run(() =>
+          {
+              Task.Delay(10000);
+              BecauseInvoked = true;
+          });
+      };
+
+      ItAsync is_a_specification = async () =>
+      {
+          await Task.Run(() =>
+          {
+              Task.Delay(10000);
+              ItInvoked = true;
+          });
+      };
+
+      CleanupAsync after = async () =>
+      {
+          await Task.Run(() =>
+          {
+              Task.Delay(10000);
+              CleanupInvoked = true;
+          });
+      };
+
+      public void Reset()
+      {
+          BecauseInvoked = false;
+          ItInvoked = false;
+          ContextInvoked = false;
+          CleanupInvoked = false;
+      }
+  }
+
+  [Behaviors]
+  public class AsyncBehavior
+  {
+      protected static bool ItInvoked;
+
+      ItAsync is_a_specification = async () =>
+      {
+          await Task.Run(() =>
+          {
+              Task.Delay(10000);
+              ItInvoked = true;
+          });
+      };
+    }
+
+  public class AsyncContextWithBehavior : IFakeContext
+  {
+      public static bool BecauseInvoked = false;
+      protected static bool ItInvoked = false;
+      public static bool ItWasInvoked => ItInvoked;
+      public static bool ContextInvoked = false;
+      public static bool CleanupInvoked = false;
+
+      EstablishAsync context = async () =>
+      {
+          await Task.Run(() =>
+          {
+              Task.Delay(10000);
+              ContextInvoked = true;
+          });
+      };
+
+      BecauseAsync of = async () =>
+      {
+          await Task.Run(() =>
+          {
+              Task.Delay(10000);
+              BecauseInvoked = true;
+          });
+      };
+
+      Behaves_like<AsyncBehavior> behavior;
+
+      CleanupAsync after = async () =>
+      {
+          await Task.Run(() =>
+          {
+              Task.Delay(10000);
+              CleanupInvoked = true;
+          });
+      };
+
+      public void Reset()
+      {
+          BecauseInvoked = false;
+          ItInvoked = false;
+          ContextInvoked = false;
+          CleanupInvoked = false;
+      }
   }
 }

@@ -124,9 +124,85 @@ namespace Machine.Specifications.Model
     }
 
     [Test]
+    public void ShouldRunSpecification()
+    {
+        ContextWithSingleSpecification.ItInvoked.Should().BeTrue();
+    }
+
+        [Test]
     public void ShouldCleanup()
     {
       ContextWithSingleSpecification.CleanupInvoked.Should().BeTrue();
     }
+  }
+
+  [TestFixture]
+  public class AsyncContextTests : With<AsyncContextWithSingleSpecification>
+  {
+      public override void BeforeEachTest()
+      {
+          base.BeforeEachTest();
+
+          Run(context);
+      }
+
+      [Test]
+      public void ShouldEstablishContext()
+      {
+          AsyncContextWithSingleSpecification.BecauseInvoked.Should().BeTrue();
+      }
+
+      [Test]
+      public void ShouldCallBeforeEach()
+      {
+          AsyncContextWithSingleSpecification.ContextInvoked.Should().BeTrue();
+      }
+
+      [Test]
+      public void ShouldRunSpecification()
+      {
+          AsyncContextWithSingleSpecification.ItInvoked.Should().BeTrue();
+      }
+
+        [Test]
+      public void ShouldCleanup()
+      {
+          AsyncContextWithSingleSpecification.CleanupInvoked.Should().BeTrue();
+      }
+  }
+
+  [TestFixture]
+  public class AsyncBehaviorContextTests : With<AsyncContextWithBehavior>
+  {
+      public override void BeforeEachTest()
+      {
+          base.BeforeEachTest();
+
+          Run(context);
+      }
+
+      [Test]
+      public void ShouldEstablishContext()
+      {
+          AsyncContextWithBehavior.BecauseInvoked.Should().BeTrue();
+      }
+
+      [Test]
+      public void ShouldCallBeforeEach()
+      {
+          AsyncContextWithBehavior.ContextInvoked.Should().BeTrue();
+      }
+
+      [Test, NUnit.Framework.Ignore("Fields not copied back across in this context.")]
+      public void ShouldRunSpecification()
+      {
+          AsyncContextWithBehavior.ItWasInvoked.Should().BeTrue();
+      }
+
+      [Test]
+      public void ShouldCleanup()
+      {
+          AsyncContextWithBehavior.CleanupInvoked.Should().BeTrue();
+      }
   }
 }
