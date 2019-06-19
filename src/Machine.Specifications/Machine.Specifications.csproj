@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Version>0.1.0</Version>
-    <TargetFrameworks>net35;net40;net45;netstandard1.3</TargetFrameworks>
+    <TargetFrameworks>net35;net40;net45;netstandard1.3;netstandard2.0</TargetFrameworks>
     <Description>Machine.Specifications is a Context/Specification framework geared towards removing language noise and simplifying tests.</Description>
     <Authors>Machine Specifications</Authors>
     <PackageTags>test;unit;testing;context;specification;bdd;tdd;mspec</PackageTags>
@@ -38,7 +38,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'netstandard2.0' ">
     <PackageReference Include="System.Diagnostics.TraceSource" Version="4.0.0" />
     <PackageReference Include="System.Diagnostics.TextWriterTraceListener" Version="4.0.0" />
     <PackageReference Include="System.Xml.XPath" Version="4.0.1" />
@@ -56,7 +56,7 @@
     <DefineConstants>$(DefineConstants);NET40</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'netstandard2.0' ">
     <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
   </PropertyGroup>
 
