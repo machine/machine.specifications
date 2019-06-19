@@ -48,7 +48,7 @@ namespace Machine.Specifications.Explorers
         public IEnumerable<IAssemblyContext> FindAssemblyContextsIn(Assembly assembly)
         {
             return assembly.GetExportedTypes()
-              .Where(x => x.GetTypeInfo().IsClass && x.GetTypeInfo().IsAbstract == false && x.GetInterfaces().Contains(typeof(IAssemblyContext)))
+              .Where(x => x.GetTypeInfo().IsClass && !x.GetTypeInfo().IsAbstract && x.GetInterfaces().Contains(typeof(IAssemblyContext)))
               .Select(x => (IAssemblyContext)Activator.CreateInstance(x));
         }
 
