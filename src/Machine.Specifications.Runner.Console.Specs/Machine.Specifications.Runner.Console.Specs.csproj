@@ -20,7 +20,7 @@
     <ProjectReference Include="..\Example.Issue157-Success\Example.Issue157-Success.csproj" />
     <ProjectReference Include="..\Example.UsingExternalFile\Example.UsingExternalFile.csproj" />
     <ProjectReference Include="..\Example\Example.csproj" />
-    <ProjectReference Include="..\Machine.Specifications.ConsoleRunner\Machine.Specifications.ConsoleRunner.csproj" />
+    <ProjectReference Include="..\Machine.Specifications.Runner.Console\Machine.Specifications.Runner.Console.csproj" />
   </ItemGroup>
 
 </Project>

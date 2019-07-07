@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Machine.Specifications.ConsoleRunner.x86\Machine.Specifications.ConsoleRunner.x86.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Machine.Specifications.Runner.Console.x86\Machine.Specifications.Runner.Console.x86.csproj" PrivateAssets="All" />
   </ItemGroup>
 
   <PropertyGroup>
