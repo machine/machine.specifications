@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Runer.TDNet", "src\Machine.Specifications.Runer.TDNet\Machine.Specifications.Runer.TDNet.csproj", "{E57865B9-C7EF-4340-8AF2-5D85F2545EC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Runner.TDNet", "src\Machine.Specifications.Runner.TDNet\Machine.Specifications.Runner.TDNet.csproj", "{E57865B9-C7EF-4340-8AF2-5D85F2545EC6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{EBF452B7-212F-4A84-AA3F-83E6D974F2CC}"
 	ProjectSection(SolutionItems) = preProject

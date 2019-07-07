@@ -14,7 +14,7 @@ var version = "0.1.0";
 var versionNumber = "0.1.0";
 
 var artifacts = Directory("./artifacts");
-var solution = File("./Machine.Specifications.Runer.TDNet.sln");
+var solution = File("./Machine.Specifications.Runner.TDNet.sln");
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
