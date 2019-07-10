@@ -1,13 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using FluentAssertions;
-
 using Machine.Specifications.Reporting.Model;
 using Machine.Specifications.Reporting.Visitors;
 using Machine.Specifications.Utility;
-
 using Rhino.Mocks;
 
 namespace Machine.Specifications.Reporting.Specs.Visitors
@@ -103,13 +99,13 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
         Because of = () => Preparation.Visit(Report);
 
         It should_copy_all_image_files_to_the_report_resource_directory =
-          () => Images.Supplements.Values.Each(v => v.Values.Each(f => f.Should().StartWith(@"C:\report\resources\")));
+          () => Images.Supplements.Values.Each(v => v.Values.Each(f => f.ShouldStartWith(@"C:\report\resources\")));
 
         It should_copy_all_HTML_files_to_the_report_resource_directory =
-          () => HtmlFiles.Supplements.Values.Each(v => v.Values.Each(f => f.Should().StartWith(@"C:\report\resources\")));
+          () => HtmlFiles.Supplements.Values.Each(v => v.Values.Each(f => f.ShouldStartWith(@"C:\report\resources\")));
 
         It should_not_alter_text_supplements =
-          () => Texts.Supplements.Values.Each(v => v.Values.Each(f => f.Should().Be("text")));
+          () => Texts.Supplements.Values.Each(v => v.Values.Each(f => f.ShouldEqual("text")));
     }
 
     [Subject(typeof(FileBasedResultSupplementPreparation))]
@@ -159,15 +155,15 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
           };
 
         It should_replace_file_results_with_text_results =
-          () => FirstSupplement.Keys.Each(x => x.Should().StartWith("text-"));
+          () => FirstSupplement.Keys.Each(x => x.ShouldStartWith("text-"));
 
         It should_replace_file_results_with_text_results_where_the_original_key_is_prefixed_with__text__ =
-          () => FirstSupplement.Keys.Where(x => x.StartsWith("text-img-")).Count().Should().Be(2);
+          () => FirstSupplement.Keys.Where(x => x.StartsWith("text-img-")).Count().ShouldEqual(2);
 
         It should_replace_file_results_with_text_results_containing_the_error_message =
           () => FirstSupplement
                   .Where(x => x.Key.StartsWith("text-img-"))
-                  .Each(x => x.Value.Should().StartWith(@"Failed to copy supplement C:\some\"));
+                  .Each(x => x.Value.ShouldStartWith(@"Failed to copy supplement C:\some\"));
     }
 
     [Subject(typeof(FileBasedResultSupplementPreparation))]
@@ -217,9 +213,9 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
           };
 
         It should_succeed =
-          () => true.Should().BeTrue();
+          () => true.ShouldBeTrue();
 
         It should_create_a_unique_error_key =
-          () => FirstSupplement.Keys.Should().Contain("text-img-image-error-error-error");
+          () => FirstSupplement.Keys.ShouldContain("text-img-image-error-error-error");
     }
 }

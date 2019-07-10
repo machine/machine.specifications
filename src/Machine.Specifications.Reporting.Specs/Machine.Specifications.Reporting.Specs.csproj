@@ -7,17 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="5.6.0" />
     <PackageReference Include="Machine.Specifications" Version="1.0.0" />
     <PackageReference Include="Machine.Specifications.Runner.Utility" Version="1.0.0" />
-    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.8.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.9.0" />
+    <PackageReference Include="Machine.Specifications.Should" Version="1.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="RhinoMocks" Version="3.6.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Example.Random\Example.Random.csproj" />
-    <ProjectReference Include="..\Example\Example.csproj" />
     <ProjectReference Include="..\Machine.Specifications.Reporting\Machine.Specifications.Reporting.csproj" />
   </ItemGroup>
 

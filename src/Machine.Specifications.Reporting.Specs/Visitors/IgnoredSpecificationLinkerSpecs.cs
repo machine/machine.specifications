@@ -1,5 +1,3 @@
-using FluentAssertions;
-
 using Machine.Specifications.Reporting.Model;
 using Machine.Specifications.Reporting.Visitors;
 
@@ -45,27 +43,27 @@ namespace Machine.Specifications.Reporting.Specs.Visitors
         Because of = () => Linker.Visit(Report);
 
         It should_not_assign_a__previous__link_to_the_report =
-          () => Report.PreviousIgnored.Should().BeNull();
+          () => Report.PreviousIgnored.ShouldBeNull();
 
         It should_assign_a__next__link_to_the_report =
-          () => Report.NextIgnored.Should().Be(First);
+          () => Report.NextIgnored.ShouldEqual(First);
 
         It should_assign_a__next__link_to_the_first_ignored_spec =
-          () => First.NextIgnored.Should().Be(Second);
+          () => First.NextIgnored.ShouldEqual(Second);
 
         It should_not_assign_a__previous__link_to_the_first_ignored_spec =
-          () => First.PreviousIgnored.Should().BeNull();
+          () => First.PreviousIgnored.ShouldBeNull();
 
         It should_assign_a__next__link_to_the_second_ignored_spec =
-          () => Second.NextIgnored.Should().Be(Last);
+          () => Second.NextIgnored.ShouldEqual(Last);
 
         It should_assign_a__previous__link_to_the_second_ignored_spec =
-          () => Second.PreviousIgnored.Should().Be(First);
+          () => Second.PreviousIgnored.ShouldEqual(First);
 
         It should_not_assign_a__next__link_to_the_last_ignored_spec =
-          () => Last.NextIgnored.Should().BeNull();
+          () => Last.NextIgnored.ShouldBeNull();
 
         It should_assign_a__previous__link_to_the_last_ignored_spec =
-          () => Last.PreviousIgnored.Should().Be(Second);
+          () => Last.PreviousIgnored.ShouldEqual(Second);
     }
 }
