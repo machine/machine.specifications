@@ -257,14 +257,17 @@ namespace Machine.Specifications.Specs.Factories
     [Subject(typeof(ContextFactory))]
     public class ContextFactoryTests
     {
-        static Context context;
+        static Context single_context;
         static ContextFactory factory;
 
+        Establish context = () =>
+            factory = new ContextFactory();
+
         Because of = () =>
-            context = factory.CreateContextFrom(new ContextWithSingleSpecification());
+            single_context = factory.CreateContextFrom(new ContextWithSingleSpecification());
 
         It should_set_type = () =>
-            context.Type.Name.Should().Be("ContextWithSingleSpecification");
+            single_context.Type.Name.Should().Be("ContextWithSingleSpecification");
     }
 
     [Subject(typeof(ContextFactory))]
@@ -278,6 +281,8 @@ namespace Machine.Specifications.Specs.Factories
         {
             numbers = new List<int>();
             factory = new ContextFactory();
+
+            top_of_hierarchy.Numbers = numbers;
         };
 
         Because of = () =>
@@ -292,15 +297,17 @@ namespace Machine.Specifications.Specs.Factories
             numbers[0].Should().Be(1);
             numbers[1].Should().Be(2);
         };
+    }
 
-        public class top_of_hierarchy
+    public class top_of_hierarchy
+    {
+        public static IList<int> Numbers;
+
+        Establish first = () => { Numbers.Add(1); };
+
+        public class inner
         {
-            Establish first = () => { numbers.Add(1); };
-
-            public class inner
-            {
-                Establish second = () => { numbers.Add(2); };
-            }
+            Establish second = () => { Numbers.Add(2); };
         }
     }
 
@@ -315,11 +322,13 @@ namespace Machine.Specifications.Specs.Factories
         {
             numbers = new List<int>();
             factory = new ContextFactory();
+
+            top_of_hierarchy_nested_context.Numbers = numbers;
         };
 
         Because of = () =>
         {
-            newContext = factory.CreateContextFrom(new top_of_hierarchy.inner());
+            newContext = factory.CreateContextFrom(new top_of_hierarchy_nested_context.inner());
             newContext.EstablishContext();
         };
 
@@ -330,23 +339,25 @@ namespace Machine.Specifications.Specs.Factories
             results[1].Should().Be(2);
             results[2].Should().Be(3);
         };
+    }
 
-        public class top_of_hierarchy
+    public class top_of_hierarchy_nested_context
+    {
+        public static List<int> Numbers;
+
+        Establish first = () =>
+            Numbers.Add(1);
+
+        public class some_other_base
         {
-            Establish first = () =>
-                numbers.Add(1);
+            Establish c = () =>
+                Numbers.Add(2);
+        }
 
-            public class some_other_base
-            {
-                Establish c = () =>
-                    numbers.Add(2);
-            }
-
-            public class inner : some_other_base
-            {
-                Establish third = () =>
-                    numbers.Add(3);
-            }
+        public class inner : some_other_base
+        {
+            Establish third = () =>
+                Numbers.Add(3);
         }
     }
 
