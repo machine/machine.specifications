@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using FluentAssertions;
 
 namespace Machine.Specifications.Runner.Utility
 {
@@ -26,24 +25,24 @@ namespace Machine.Specifications.Runner.Utility
         protected static ExceptionResult fatalError;
 
         Establish ctx = () =>
-            {
-                var remoteListener = new Listener();
-                adapter = new RemoteRunListener(remoteListener);
-            };
+        {
+            var remoteListener = new Listener();
+            adapter = new RemoteRunListener(remoteListener);
+        };
 
         Cleanup cleanup = () =>
-            {
-                assemblyStart = null;
-                assemblyEnd = null;
-                specificationEnd = null;
-                specificationStart = null;
-                specificationEndResult = null;
-                contextStart = null;
-                contextEnd = null;
-                fatalError = null;
-                runStart = false;
-                runEnd = false;
-            };
+        {
+            assemblyStart = null;
+            assemblyEnd = null;
+            specificationEnd = null;
+            specificationStart = null;
+            specificationEndResult = null;
+            contextStart = null;
+            contextEnd = null;
+            fatalError = null;
+            runStart = false;
+            runEnd = false;
+        };
 
         private class Listener : ISpecificationRunListener
         {
@@ -108,36 +107,42 @@ namespace Machine.Specifications.Runner.Utility
         static ContextInfo contexInfo;
 
         Establish ctx = () =>
+        {
+            assemblyInfo = new AssemblyInfo("assembly", "location");
+            specificationInfo = new SpecificationInfo("leader", "name", "containingType", "fieldName");
+            exceptionResult = new ExceptionResult(new InvalidOperationException("Argf", new ArgumentException()));
+            result = Result.Failure(new InvalidOperationException("foo", new ArgumentException()));
+            result.Supplements.Add("Foo", new Dictionary<string, string>
             {
-                assemblyInfo = new AssemblyInfo("assembly", "location");
-                specificationInfo = new SpecificationInfo("leader", "name", "containingType", "fieldName");
-                exceptionResult = new ExceptionResult(new InvalidOperationException("Argf", new ArgumentException()));
-                result = Result.Failure(new InvalidOperationException("foo", new ArgumentException()));
-                result.Supplements.Add("Foo", new Dictionary<string, string>
-                                               {
-                                                   { "Foo", "Bar" },
-                                                   { "Bar", "Foo" },
-                                               });
-                result.Supplements.Add("Bar", new Dictionary<string, string>
-                                               {
-                                                   { "Bar", "Foo" },
-                                                   { "", "Foo" },
-                                               });
-                contexInfo = new ContextInfo("name", "concern", "typeName", "namespace", "assemblyname");
-            };
+                {"Foo", "Bar"},
+                {"Bar", "Foo"},
+            });
+            result.Supplements.Add("Bar", new Dictionary<string, string>
+            {
+                {"Bar", "Foo"},
+                {"", "Foo"},
+            });
+            contexInfo = new ContextInfo("name", "concern", "typeName", "namespace", "assemblyname");
+        };
 
         Because of = () => adapter.Run(assemblyInfo, specificationInfo, result, exceptionResult, contexInfo);
 
-        It should_run_start = () => runStart.Should().BeTrue();
-        It should_run_end = () => runEnd.Should().BeTrue();
-        It should_context_start = () => contextStart.Should().BeEquivalentTo(contexInfo);
-        It should_context_end = () => contextEnd.Should().BeEquivalentTo(contexInfo);
-        It should_fatal_error = () => fatalError.Should().BeEquivalentTo(exceptionResult, c => c.IncludingNestedObjects());
-        It should_specification_start = () => specificationStart.Should().BeEquivalentTo(specificationInfo);
-        It should_specification_end = () => specificationEnd.Should().BeEquivalentTo(specificationInfo);
-        It should_specification_end_result = () => specificationEndResult.Should().BeEquivalentTo(result, c => c.IncludingNestedObjects().Excluding(r => r.Status));
-        It should_assembly_start = () => assemblyStart.Should().BeEquivalentTo(assemblyInfo);
-        It should_assembly_end = () => assemblyEnd.Should().BeEquivalentTo(assemblyInfo);
+        It should_run_start = () => runStart.ShouldBeTrue();
+        It should_run_end = () => runEnd.ShouldBeTrue();
+        It should_context_start = () => contextStart.ShouldEqual(contexInfo);
+        It should_context_end = () => contextEnd.ShouldEqual(contexInfo);
+
+        It should_fatal_error = () =>
+            fatalError.ShouldEqual(exceptionResult);
+
+        It should_specification_start = () => specificationStart.ShouldEqual(specificationInfo);
+        It should_specification_end = () => specificationEnd.ShouldEqual(specificationInfo);
+
+        It should_specification_end_result = () =>
+            specificationEndResult.ShouldEqual(result); // exclude status
+
+        It should_assembly_start = () => assemblyStart.ShouldEqual(assemblyInfo);
+        It should_assembly_end = () => assemblyEnd.ShouldEqual(assemblyInfo);
     }
 
     public class when_remote_run_listener_observes_a_successful_run : remote_run
@@ -163,21 +168,26 @@ namespace Machine.Specifications.Runner.Utility
 
         Because of = () => adapter.Run(assemblyInfo, specificationInfo, result, exceptionResult, contexInfo);
 
-        It should_run_start = () => runStart.Should().BeTrue();
-        It should_run_end = () => runEnd.Should().BeTrue();
-        It should_context_start = () => contextStart.Should().BeEquivalentTo(contexInfo);
-        It should_context_end = () => contextEnd.Should().BeEquivalentTo(contexInfo);
-        It should_fatal_error = () => fatalError.Should().BeNull();
-        It should_specification_start = () => specificationStart.Should().BeEquivalentTo(specificationInfo);
-        It should_specification_end = () => specificationEnd.Should().BeEquivalentTo(specificationInfo);
-        It should_specification_end_result = () => specificationEndResult.Should().BeEquivalentTo(result, c => c.IncludingNestedObjects().Excluding(r => r.Status));
-        It should_assembly_start = () => assemblyStart.Should().BeEquivalentTo(assemblyInfo);
-        It should_assembly_end = () => assemblyEnd.Should().BeEquivalentTo(assemblyInfo);
+        It should_run_start = () => runStart.ShouldBeTrue();
+        It should_run_end = () => runEnd.ShouldBeTrue();
+        It should_context_start = () => contextStart.ShouldEqual(contexInfo);
+        It should_context_end = () => contextEnd.ShouldEqual(contexInfo);
+        It should_fatal_error = () => fatalError.ShouldBeNull();
+        It should_specification_start = () => specificationStart.ShouldEqual(specificationInfo);
+        It should_specification_end = () => specificationEnd.ShouldEqual(specificationInfo);
+
+        It should_specification_end_result = () =>
+            specificationEndResult.ShouldEqual(result); // exclude status
+
+        It should_assembly_start = () => assemblyStart.ShouldEqual(assemblyInfo);
+        It should_assembly_end = () => assemblyEnd.ShouldEqual(assemblyInfo);
     }
 
     static class RemoteToInternalSpecificationRunListenerAdapterExtensions
     {
-        public static void Run(this ISpecificationRunListener adapter, AssemblyInfo assemblyInfo, SpecificationInfo specificationInfo, Result failure, ExceptionResult exceptionResult, ContextInfo contexInfo)
+        public static void Run(this ISpecificationRunListener adapter, AssemblyInfo assemblyInfo,
+            SpecificationInfo specificationInfo, Result failure, ExceptionResult exceptionResult,
+            ContextInfo contexInfo)
         {
             adapter.OnAssemblyStart(assemblyInfo);
             adapter.OnAssemblyEnd(assemblyInfo);
@@ -191,7 +201,7 @@ namespace Machine.Specifications.Runner.Utility
             adapter.OnContextEnd(contexInfo);
 
             adapter.OnRunStart();
-            adapter.OnRunEnd(); 
+            adapter.OnRunEnd();
         }
     }
 }
