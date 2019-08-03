@@ -2,20 +2,11 @@
 
   <PropertyGroup>
     <Version>0.1.0</Version>
-    <TargetFrameworks>net40</TargetFrameworks>
+    <TargetFrameworks>net472</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <PlatformTarget>x86</PlatformTarget>
     <AssemblyName>mspec-x86</AssemblyName>
     <IsPackable>false</IsPackable>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <NoTargetFrameworkNet35 Condition=" '$(NoTargetFrameworkNet35)' == '' AND '$(MSBuildRuntimeType)' == 'Core' ">true</NoTargetFrameworkNet35>
-    <TargetFrameworks Condition=" '$(NoTargetFrameworkNet35)' != 'true' ">$(TargetFrameworks);net35</TargetFrameworks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net40' ">
-    <AssemblyName>mspec-x86-clr4</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,7 +17,6 @@
 
   <ItemGroup>
     <Compile Include="..\Machine.Specifications.Runner.Console\**\*.cs" Exclude="..\Machine.Specifications.Runner.Console\obj\**" />
-    <None Include="..\Machine.Specifications.Runner.Console\App.config" Link="App.config" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
 </Project>

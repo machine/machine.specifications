@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Version>0.1.0</Version>
-    <TargetFrameworks>net40</TargetFrameworks>
+    <TargetFrameworks>net472</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AssemblyName>mspec</AssemblyName>
@@ -15,15 +15,6 @@
     <PackageIconUrl>http://github.com/machine/media/raw/master/Machine.Specifications-128x128.png</PackageIconUrl>
     <PackageProjectUrl>http://github.com/machine/machine.specifications.runner.console</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <NoTargetFrameworkNet35 Condition=" '$(NoTargetFrameworkNet35)' == '' AND '$(MSBuildRuntimeType)' == 'Core' ">true</NoTargetFrameworkNet35>
-    <TargetFrameworks Condition=" '$(NoTargetFrameworkNet35)' != 'true' ">$(TargetFrameworks);net35</TargetFrameworks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net40' ">
-    <AssemblyName>mspec-clr4</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -42,13 +33,8 @@
 
   <Target Name="PackageItems">
     <ItemGroup>
-      <TfmSpecificPackageFile Include="bin\$(Configuration)\net35\mspec.exe" PackagePath="tools" />
-      <TfmSpecificPackageFile Include="bin\$(Configuration)\net40\mspec-clr4.exe" PackagePath="tools" />
-      <TfmSpecificPackageFile Include="bin\$(Configuration)\net40\mspec-clr4.exe.config" PackagePath="tools" />
-
-      <TfmSpecificPackageFile Include="..\$(MSBuildProjectName).x86\bin\$(Configuration)\net35\mspec-x86.exe" PackagePath="tools" />
-      <TfmSpecificPackageFile Include="..\$(MSBuildProjectName).x86\bin\$(Configuration)\net40\mspec-x86-clr4.exe" PackagePath="tools" />
-      <TfmSpecificPackageFile Include="..\$(MSBuildProjectName).x86\bin\$(Configuration)\net40\mspec-x86-clr4.exe.config" PackagePath="tools" />
+      <TfmSpecificPackageFile Include="bin\$(Configuration)\net472\mspec.exe" PackagePath="tools" />
+      <TfmSpecificPackageFile Include="..\$(MSBuildProjectName).x86\bin\$(Configuration)\net472\mspec-x86.exe" PackagePath="tools" />
 
       <TfmSpecificPackageFile Include="$(OutputPath)\CommandLine.dll" PackagePath="tools" />
       <TfmSpecificPackageFile Include="$(OutputPath)\Machine.Specifications.Reporting.dll" PackagePath="tools" />

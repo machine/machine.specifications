@@ -5,38 +5,38 @@ using System.Text;
 
 namespace Machine.Specifications.ConsoleRunner.Specs
 {
-  public class FakeConsole : IConsole
-  {
-    readonly StringBuilder _console = new StringBuilder();
-
-    public IEnumerable<string> Lines
+    public class FakeConsole : IConsole
     {
-      get { return _console.ToString().Split(new[] { Environment.NewLine }, StringSplitOptions.None).ToList(); }
-    }
+        readonly StringBuilder _console = new StringBuilder();
 
-    public string Output
-    {
-      get { return _console.ToString(); }
-    }
+        public IEnumerable<string> Lines
+        {
+            get { return _console.ToString().Split(new[] {Environment.NewLine}, StringSplitOptions.None).ToList(); }
+        }
 
-    public void Write(string line)
-    {
-      _console.Append(line);
-    }
+        public string Output
+        {
+            get { return _console.ToString(); }
+        }
 
-    public void Write(string line, params object[] parameters)
-    {
-      _console.AppendFormat(line, parameters);
-    }
+        public void Write(string line)
+        {
+            _console.Append(line);
+        }
 
-    public void WriteLine(string line)
-    {
-      _console.AppendLine(line);
-    }
+        public void Write(string line, params object[] parameters)
+        {
+            _console.AppendFormat(line, parameters);
+        }
 
-    public void WriteLine(string line, params object[] parameters)
-    {
-      _console.AppendLine(string.Format(line, parameters));
+        public void WriteLine(string line)
+        {
+            _console.AppendLine(line);
+        }
+
+        public void WriteLine(string line, params object[] parameters)
+        {
+            _console.AppendLine(string.Format(line, parameters));
+        }
     }
-  }
 }
