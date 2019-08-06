@@ -1,8 +1,5 @@
 using System;
 using System.Reflection;
-
-using FluentAssertions;
-
 using Machine.Specifications;
 
 #if CLEAN_EXCEPTION_STACK_TRACE
@@ -63,7 +60,8 @@ namespace Machine.Specifications.Specs
   {
     static ExceptionResult Result;
 
-    Because of = () => { Result = new ExceptionResult(new Exception("outer", new TargetInvocationException(new Exception("inner")))); };
+    Because of = () => { Result =
+ new ExceptionResult(new Exception("outer", new TargetInvocationException(new Exception("inner")))); };
 
     It should_keep_the_exception =
       () => Result.InnerExceptionResult.FullTypeName.Should().Be(typeof(TargetInvocationException).FullName);

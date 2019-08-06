@@ -2,25 +2,17 @@ using System;
 
 namespace Example
 {
-  public class Account
-  {
-    private decimal _balance;
-
-    public decimal Balance
+    public class Account
     {
-      get { return _balance; }
-      set { _balance = value; }
-    }
+        public decimal Balance { get; set; }
 
-    public void Transfer(decimal amount, Account toAccount)
-    {
-      if (amount > _balance)
-      {
-        throw new Exception(String.Format("Cannot transfer ${0}. The available balance is ${1}.", amount, _balance));
-      }
+        public void Transfer(decimal amount, Account toAccount)
+        {
+            if (amount > Balance)
+                throw new Exception(String.Format("Cannot transfer ${0}. The available balance is ${1}.", amount, Balance));
 
-      _balance -= amount;
-      toAccount.Balance += amount;
+            Balance -= amount;
+            toAccount.Balance += amount;
+        }
     }
-  }
 }

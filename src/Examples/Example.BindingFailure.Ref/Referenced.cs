@@ -1,6 +1,6 @@
 namespace Example.BindingFailure.Ref
 {
-  public class Referenced
-  {
-  }
+    public class Referenced
+    {
+    }
 }

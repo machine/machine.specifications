@@ -4,8 +4,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using FluentAssertions;
-
 namespace Machine.Specifications.Clr4.Specs
 {
   public static class Delayed
@@ -47,7 +45,7 @@ namespace Machine.Specifications.Clr4.Specs
     Because of = () => { Result = Delayed.Echo("result").Await(); };
 
     It should_wait_for_completion =
-      () => Result.Should().Be("result");
+      () => Result.ShouldEqual("result");
   }
 
   [Subject(typeof(TaskSpecificationExtensions), "exception")]
@@ -58,7 +56,7 @@ namespace Machine.Specifications.Clr4.Specs
     Because of = () => exception = Catch.Exception(() => Delayed.Fail());
 
     It should_not_capture_the_exception =
-      () => exception.Should().BeNull();
+      () => exception.ShouldBeNull();
   }
 
   [Subject(typeof(TaskSpecificationExtensions), "exception")]
@@ -69,7 +67,7 @@ namespace Machine.Specifications.Clr4.Specs
     Because of = () => exception = Catch.Exception(() => Delayed.Fail().Await());
 
     It should_capture_the_first_exception =
-      () => exception.Should().BeOfType<InvalidOperationException>();
+      () => exception.ShouldBeOfExactType<InvalidOperationException>();
   }
 
   [Subject(typeof(TaskSpecificationExtensions), "exception")]
@@ -80,10 +78,10 @@ namespace Machine.Specifications.Clr4.Specs
     Because of = () => exception = Catch.Exception(() => Delayed.MultipleFails().Await());
 
     It should_capture_the_aggregate_exception =
-      () => exception.Should().BeOfType<AggregateException>();
+      () => exception.ShouldBeOfExactType<AggregateException>();
 
     It should_capture_all_inner_exceptions =
-      () => ((AggregateException)exception).InnerExceptions.Count.Should().Be(2);
+      () => ((AggregateException)exception).InnerExceptions.Count.ShouldEqual(2);
   }
 
   public class AsyncSpecs

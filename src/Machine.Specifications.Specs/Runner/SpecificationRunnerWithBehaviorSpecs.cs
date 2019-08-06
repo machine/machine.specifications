@@ -1,8 +1,5 @@
 using System;
-
 using Example.Random;
-
-using FluentAssertions;
 
 namespace Machine.Specifications.Specs.Runner
 {
@@ -12,14 +9,14 @@ namespace Machine.Specifications.Specs.Runner
   {
     Establish context = () =>
       {
-        context_with_behaviors.LocalSpecRan = false;
-        Behaviors.BehaviorSpecRan = false;
+        context_with_behaviors.local_spec_ran = false;
+        Behaviors.behavior_spec_ran = false;
       };
 
     Because of = Run<context_with_behaviors>;
 
-    It should_run_the_context_spec = () => context_with_behaviors.LocalSpecRan.Should().BeTrue();
-    It should_run_the_behavior_spec = () => Behaviors.BehaviorSpecRan.Should().BeTrue();
+    It should_run_the_context_spec = () => context_with_behaviors.local_spec_ran.ShouldBeTrue();
+    It should_run_the_behavior_spec = () => Behaviors.behavior_spec_ran.ShouldBeTrue();
   }
 
   [Subject("Specification Runner")]
@@ -28,14 +25,14 @@ namespace Machine.Specifications.Specs.Runner
   {
     Establish context = () =>
       {
-        context_with_behaviors_where_the_behavior_field_is_ignored.LocalSpecRan = false;
-        Behaviors.BehaviorSpecRan = false;
+        context_with_behaviors_where_the_behavior_field_is_ignored.local_spec_ran = false;
+        Behaviors.behavior_spec_ran = false;
       };
 
     Because of = Run<context_with_behaviors_where_the_behavior_field_is_ignored>;
 
-    It should_run_the_context_spec = () => context_with_behaviors_where_the_behavior_field_is_ignored.LocalSpecRan.Should().BeTrue();
-    It should_not_run_the_behavior_spec = () => Behaviors.BehaviorSpecRan.Should().BeFalse();
+    It should_run_the_context_spec = () => context_with_behaviors_where_the_behavior_field_is_ignored.local_spec_ran.ShouldBeTrue();
+    It should_not_run_the_behavior_spec = () => Behaviors.behavior_spec_ran.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
@@ -44,14 +41,14 @@ namespace Machine.Specifications.Specs.Runner
   {
     Establish context = () =>
       {
-        context_with_behaviors_where_the_behavior_is_ignored.LocalSpecRan = false;
-        IgnoredBehaviors.BehaviorSpecRan = false;
+        context_with_behaviors_where_the_behavior_is_ignored.local_spec_ran = false;
+        IgnoredBehaviors.behavior_spec_ran = false;
       };
 
     Because of = Run<context_with_behaviors_where_the_behavior_is_ignored>;
 
-    It should_run_the_context_spec = () => context_with_behaviors_where_the_behavior_is_ignored.LocalSpecRan.Should().BeTrue();
-    It should_not_run_the_behavior_spec = () => IgnoredBehaviors.BehaviorSpecRan.Should().BeFalse();
+    It should_run_the_context_spec = () => context_with_behaviors_where_the_behavior_is_ignored.local_spec_ran.ShouldBeTrue();
+    It should_not_run_the_behavior_spec = () => IgnoredBehaviors.behavior_spec_ran.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
@@ -60,14 +57,14 @@ namespace Machine.Specifications.Specs.Runner
   {
     Establish context = () =>
       {
-        context_with_behaviors_where_the_behavior_specs_are_ignored.LocalSpecRan = false;
-        BehaviorsWithIgnoredSpec.BehaviorSpecRan = false;
+        context_with_behaviors_where_the_behavior_specs_are_ignored.local_spec_ran = false;
+        BehaviorsWithIgnoredSpec.behavior_spec_ran = false;
       };
 
     Because of = Run<context_with_behaviors_where_the_behavior_specs_are_ignored>;
 
-    It should_run_the_context_spec = () => context_with_behaviors_where_the_behavior_specs_are_ignored.LocalSpecRan.Should().BeTrue();
-    It should_not_run_the_behavior_spec = () => BehaviorsWithIgnoredSpec.BehaviorSpecRan.Should().BeFalse();
+    It should_run_the_context_spec = () => context_with_behaviors_where_the_behavior_specs_are_ignored.local_spec_ran.ShouldBeTrue();
+    It should_not_run_the_behavior_spec = () => BehaviorsWithIgnoredSpec.behavior_spec_ran.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
@@ -78,9 +75,9 @@ namespace Machine.Specifications.Specs.Runner
 
     Because of = () => { exception = Catch.Exception(Run<context_with_nested_behaviors>); };
 
-    It should_fail = () => exception.Should().BeOfType<SpecificationUsageException>();
+    It should_fail = () => exception.ShouldBeOfExactType<SpecificationUsageException>();
     It should_print_the_type_containing_the_nested_behaviors = () =>
-      exception.Message.Should().Contain(typeof(BehaviorsWithNestedBehavior).FullName);
+      exception.Message.ShouldContain(typeof(BehaviorsWithNestedBehavior).FullName);
   }
 
   [Subject("Specification Runner")]
@@ -91,9 +88,9 @@ namespace Machine.Specifications.Specs.Runner
 
     Because of = () => { exception = Catch.Exception(Run<context_with_behaviors_without_behaviors_attribute>); };
 
-    It should_fail = () => exception.Should().BeOfType<SpecificationUsageException>();
+    It should_fail = () => exception.ShouldBeOfExactType<SpecificationUsageException>();
     It should_print_the_type_missing_the_attribute = () =>
-      exception.Message.Should().Contain(typeof(BehaviorsWithoutBehaviorsAttribute).FullName);
+      exception.Message.ShouldContain(typeof(BehaviorsWithoutBehaviorsAttribute).FullName);
   }
 
   [Subject("Specification Runner")]
@@ -104,9 +101,9 @@ namespace Machine.Specifications.Specs.Runner
 
     Because of = () => { exception = Catch.Exception(Run<context_with_behaviors_with_establish>); };
 
-    It should_fail = () => exception.Should().BeOfType<SpecificationUsageException>();
+    It should_fail = () => exception.ShouldBeOfExactType<SpecificationUsageException>();
     It should_print_the_behaviors_with_the_establish = () =>
-      exception.Message.Should().Contain(typeof(BehaviorsWithEstablish).FullName);
+      exception.Message.ShouldContain(typeof(BehaviorsWithEstablish).FullName);
   }
 
   [Subject("Specification Runner")]
@@ -117,9 +114,9 @@ namespace Machine.Specifications.Specs.Runner
 
     Because of = () => { exception = Catch.Exception(Run<context_with_behaviors_with_because>); };
 
-    It should_fail = () => exception.Should().BeOfType<SpecificationUsageException>();
+    It should_fail = () => exception.ShouldBeOfExactType<SpecificationUsageException>();
     It should_print_the_behaviors_with_the_because = () =>
-      exception.Message.Should().Contain(typeof(BehaviorsWithBecause).FullName);
+      exception.Message.ShouldContain(typeof(BehaviorsWithBecause).FullName);
   }
 
   [Subject("Specification Runner")]
@@ -130,11 +127,11 @@ namespace Machine.Specifications.Specs.Runner
 
     Because of = () => { exception = Catch.Exception(Run<context_missing_protected_fields_that_are_in_behaviors>); };
 
-    It should_fail = () => exception.Should().BeOfType<SpecificationUsageException>();
+    It should_fail = () => exception.ShouldBeOfExactType<SpecificationUsageException>();
     It should_print_the_behaviors_containing_missing_fields = () =>
-      exception.Message.Should().Contain(typeof(BehaviorsWithProtectedFields).FullName);
+      exception.Message.ShouldContain(typeof(BehaviorsWithProtectedFields).FullName);
     It should_print_the_missing_fields = () =>
-      exception.Message.Should().Contain("fieldThatShouldBeCopiedOverFromContext");
+      exception.Message.ShouldContain("fieldThatShouldBeCopiedOverFromContext");
   }
 
   [Subject("Specification Runner")]
@@ -145,10 +142,10 @@ namespace Machine.Specifications.Specs.Runner
 
     Because of = () => { exception = Catch.Exception(Run<context_with_protected_fields_having_different_types_than_in_behaviors>); };
 
-    It should_fail = () => exception.Should().BeOfType<SpecificationUsageException>();
+    It should_fail = () => exception.ShouldBeOfExactType<SpecificationUsageException>();
     It should_print_the_behaviors_containing_wrongly_typed_fields = () =>
-      exception.Message.Should().Contain(typeof(BehaviorsWithProtectedFields).FullName);
+      exception.Message.ShouldContain(typeof(BehaviorsWithProtectedFields).FullName);
     It should_print_the_wrongly_typed_fields = () =>
-      exception.Message.Should().Contain("fieldThatShouldBeCopiedOverFromContext");
+      exception.Message.ShouldContain("fieldThatShouldBeCopiedOverFromContext");
   }
 }

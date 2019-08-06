@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using Machine.Specifications.Factories;
+﻿using Machine.Specifications.Factories;
 using Machine.Specifications.Model;
 
 namespace Machine.Specifications.Specs.Model
@@ -16,12 +15,12 @@ namespace Machine.Specifications.Specs.Model
             factory.CreateContextFrom(new ContextWithSingleSpecification());
 
         It should_establish_context = () =>
-            ContextWithSingleSpecification.BecauseInvoked.Should().BeTrue();
+            ContextWithSingleSpecification.because_invoked.ShouldBeTrue();
 
         It should_call_before_each = () =>
-            ContextWithSingleSpecification.ContextInvoked.Should().BeTrue();
+            ContextWithSingleSpecification.context_invoked.ShouldBeTrue();
 
         It should_cleanup = () =>
-            ContextWithSingleSpecification.CleanupInvoked.Should().BeTrue();
+            ContextWithSingleSpecification.cleanup_invoked.ShouldBeTrue();
     }
 }

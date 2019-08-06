@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using Example.Random.SingleContextInThisNamespace;
@@ -29,46 +28,46 @@ namespace Machine.Specifications.Specs.Controller
         protected static List<string> ListenEvents;
 
         It notifies_listener_of_protocol_version = () => {
-            ListenEvents.All(e => e.Contains("<listener version=\"1.0\">")).Should().BeTrue();
+            ListenEvents.All(e => e.Contains("<listener version=\"1.0\">")).ShouldBeTrue();
         };
 
         It notifies_listener_that_the_run_has_started = () => {
-            ListenEvents.Count(e => e.Contains("<onrunstart />")).Should().Be(1);
+            ListenEvents.Count(e => e.Contains("<onrunstart />")).ShouldEqual(1);
         };
 
         It notifies_listener_that_the_run_has_ended = () => {
-            ListenEvents.Count(e => e.Contains("<onrunend />")).Should().Be(1);
+            ListenEvents.Count(e => e.Contains("<onrunend />")).ShouldEqual(1);
         };
 
         It notifies_listener_that_the_assembly_run_has_ended = () => {
-            ListenEvents.Count(e => e.Contains("<onassemblyend>")).Should().Be(1);
+            ListenEvents.Count(e => e.Contains("<onassemblyend>")).ShouldEqual(1);
         };
 
         It notifies_listener_that_the_assembly_run_has_started = () => {
-            ListenEvents.Count(e => e.Contains("<onassemblystart>")).Should().Be(1);
+            ListenEvents.Count(e => e.Contains("<onassemblystart>")).ShouldEqual(1);
         };
 
         It notifies_listener_that_the_context_run_has_ended = () => {
-            ListenEvents.Count(e => e.Contains("<oncontextend>")).Should().BeGreaterOrEqualTo(1);
+            ListenEvents.Count(e => e.Contains("<oncontextend>")).ShouldBeGreaterThanOrEqualTo(1);
         };
 
         It notifies_listener_that_the_context_run_has_started = () => {
-            ListenEvents.Count(e => e.Contains("<oncontextstart>")).Should().BeGreaterOrEqualTo(1);
+            ListenEvents.Count(e => e.Contains("<oncontextstart>")).ShouldBeGreaterThanOrEqualTo(1);
         };
         It notifies_listener_that_the_spec_run_has_ended = () => {
-            ListenEvents.Count(e => e.Contains("<onspecificationstart>")).Should().BeGreaterOrEqualTo(1);
+            ListenEvents.Count(e => e.Contains("<onspecificationstart>")).ShouldBeGreaterThanOrEqualTo(1);
         };
 
         It notifies_listener_that_the_spec_run_has_started = () => {
-            ListenEvents.Count(e => e.Contains("<onspecificationend>")).Should().BeGreaterOrEqualTo(1);
+            ListenEvents.Count(e => e.Contains("<onspecificationend>")).ShouldBeGreaterThanOrEqualTo(1);
         };
 
         It runs_assembly_context_start = () => {
-            TestAssemblyContext.OnAssemblyStartRun.Should().BeTrue();
+            TestAssemblyContext.OnAssemblyStartRun.ShouldBeTrue();
         };
 
         It runs_assembly_complete = () => {
-            TestAssemblyContext.OnAssemblyCompleteRun.Should().BeTrue();
+            TestAssemblyContext.OnAssemblyCompleteRun.ShouldBeTrue();
         };
     }
 
@@ -151,8 +150,8 @@ namespace Machine.Specifications.Specs.Controller
 
         It runs_both_specs = () => {
             // two mentions: one for start and one for end spec run
-            ListenEvents.Count(e => e.Contains("spec1")).Should().Be(2);
-            ListenEvents.Count(e => e.Contains("spec2")).Should().Be(2);
+            ListenEvents.Count(e => e.Contains("spec1")).ShouldEqual(2);
+            ListenEvents.Count(e => e.Contains("spec2")).ShouldEqual(2);
         };
     }
 
@@ -174,8 +173,8 @@ namespace Machine.Specifications.Specs.Controller
 
         It runs_only_the_behavior_spec = () => {
             // two mentions: one for start and one for end spec run
-            ListenEvents.Count(e => e.Contains("<onspecificationstart>")).Should().Be(1);
-            ListenEvents.Count(e => e.Contains("behavior1")).Should().Be(2);
+            ListenEvents.Count(e => e.Contains("<onspecificationstart>")).ShouldEqual(1);
+            ListenEvents.Count(e => e.Contains("behavior1")).ShouldEqual(2);
         };
     }
 
@@ -195,7 +194,7 @@ namespace Machine.Specifications.Specs.Controller
 
         It does_not_run_anything = () => {
             // two mentions: one for start and one for end spec run
-            ListenEvents.Count(e => e.Contains("<onspecificationstart>")).Should().Be(0);
+            ListenEvents.Count(e => e.Contains("<onspecificationstart>")).ShouldEqual(0);
         };
     }
 }

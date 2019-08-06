@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using Example;
 using Example.Random;
-using FluentAssertions;
 using Machine.Specifications.Explorers;
 using Machine.Specifications.Model;
 
@@ -22,7 +21,7 @@ namespace Machine.Specifications.Specs.Explorers
             Contexts = Explorer.FindContextsIn(typeof(tag).GetTypeInfo().Assembly, "Example.Random.Internal");
 
         It should_find_two_contexts = () =>
-            Contexts.Count().Should().Be(2);
+            Contexts.Count().ShouldEqual(2);
     }
 
     [Subject(typeof(AssemblyExplorer))]
@@ -38,13 +37,13 @@ namespace Machine.Specifications.Specs.Explorers
             contexts = Explorer.FindContextsIn(typeof(Account).GetTypeInfo().Assembly);
 
         It should_find_three_contexts = () =>
-            contexts.Count().Should().Be(3);
+            contexts.Count().ShouldEqual(3);
 
         It should_return_three_contexts_named_correctly = () =>
             contexts
                 .Select(x => x.Name)
                 .OrderBy(x => x)
-                .Should().BeEquivalentTo(
+                .ShouldContainOnly(
                     new[]
                     {
                         "when a customer first views the account summary page",
@@ -67,13 +66,12 @@ namespace Machine.Specifications.Specs.Explorers
             contexts = Explorer.FindContextsIn(typeof(ExampleA.InExampleA_1).GetTypeInfo().Assembly, "Machine.Specifications.ExampleA");
 
         It should_find_two_contexts = () =>
-            contexts.Count().Should().Be(2);
+            contexts.Count().ShouldEqual(2);
 
         It should_return_two_contexts_named_correctly = () =>
             contexts
                 .Select(x => x.Name)
-                .Should()
-                .BeEquivalentTo(
+                .ShouldContainOnly(
                     "InExampleA 1",
                     "InExampleA 2");
     }
@@ -91,10 +89,10 @@ namespace Machine.Specifications.Specs.Explorers
             single_context = Explorer.FindContexts(typeof(ExampleC.InExampleC_1));
 
         It should_return_a_context = () =>
-            single_context.Should().NotBeNull();
+            single_context.ShouldNotBeNull();
 
         It should_return_correct_name = () =>
-            single_context.Name.Should().Be("InExampleC 1");
+            single_context.Name.ShouldEqual("InExampleC 1");
     }
 
     [Subject(typeof(AssemblyExplorer))]
@@ -110,13 +108,13 @@ namespace Machine.Specifications.Specs.Explorers
             Explorer.FindContexts(typeof(ExampleC.InExampleC_1).GetField("is_spec_1", BindingFlags.Instance | BindingFlags.NonPublic));
 
         It should_return_a_context = () =>
-            single_context.Should().NotBeNull();
+            single_context.ShouldNotBeNull();
 
         It should_return_one_specification = () =>
-            single_context.Specifications.Count().Should().Be(1);
+            single_context.Specifications.Count().ShouldEqual(1);
 
         It should_return_one_specification_named_correctly = () =>
-            single_context.Specifications.First().Name.Should().Be("is spec 1");
+            single_context.Specifications.First().Name.ShouldEqual("is spec 1");
     }
 
     [Subject(typeof(AssemblyExplorer))]
@@ -136,16 +134,15 @@ namespace Machine.Specifications.Specs.Explorers
         };
 
         It should_return_a_context = () =>
-            single_context.Should().NotBeNull();
+            single_context.ShouldNotBeNull();
 
         It should_return_two_specifications = () =>
-            single_context.Specifications.Count().Should().Be(2);
+            single_context.Specifications.Count().ShouldEqual(2);
 
         It should_have_specifications_with_correct_it_clauses = () =>
             single_context.Specifications
                 .Select(x => x.Name)
-                .Should()
-                .BeEquivalentTo(
+                .ShouldContainOnly(
                     "should debit the from account by the amount transferred",
                     "should credit the to account by the amount transferred");
     }
@@ -164,7 +161,7 @@ namespace Machine.Specifications.Specs.Explorers
                 Explorer.FindAssemblyContextsIn(typeof(AssemblyExplorer_FindAssemblyContextsIn_WithinAnAssembly).GetTypeInfo().Assembly));
 
         It should_have_one_assembly_context = () =>
-            assemblyContexts.Count.Should().Be(1);
+            assemblyContexts.Count.ShouldEqual(1);
     }
 
     public class TestAssemblyContext : IAssemblyContext

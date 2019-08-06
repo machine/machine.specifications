@@ -17,6 +17,7 @@ namespace Example.Random
         Behaves_like<SampleBehaviors> behaviors;
 
         It spec1 = () => { };
+
         It spec2 = () => { };
     }
 }

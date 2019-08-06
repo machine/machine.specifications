@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using FluentAssertions;
 using Machine.Specifications.Factories;
 using Machine.Specifications.Model;
 using Machine.Specifications.Sdk;
@@ -31,10 +30,10 @@ namespace Machine.Specifications.Specs.Factories
         };
 
         It should_have_correct_it_clause = () =>
-            specification.Name.Should().Be("is a specification");
+            specification.Name.ShouldEqual("is a specification");
 
         It should_have_field_info = () =>
-            specification.FieldInfo.Name.Should().Be("is_a_specification");
+            specification.FieldInfo.Name.ShouldEqual("is_a_specification");
     }
 
     [Subject(typeof(SpecificationFactory))]
@@ -59,7 +58,7 @@ namespace Machine.Specifications.Specs.Factories
         };
 
         It should_have_correct_it_clause = () =>
-            specification.Name.Should().Be("should throw an exception");
+            specification.Name.ShouldEqual("should throw an exception");
     }
 
     [Subject(typeof(SpecificationFactory))]
@@ -84,6 +83,6 @@ namespace Machine.Specifications.Specs.Factories
         };
 
         It should_create_unknown_specification = () =>
-            specification.IsDefined.Should().BeFalse();
+            specification.IsDefined.ShouldBeFalse();
     }
 }

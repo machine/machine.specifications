@@ -10,8 +10,4 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Machine.Specifications\Machine.Specifications.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="5.7.0" />
-  </ItemGroup>
 </Project>

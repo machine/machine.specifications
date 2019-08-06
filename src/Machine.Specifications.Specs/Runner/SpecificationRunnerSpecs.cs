@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Reflection;
-
 using Example;
 using Example.Failing;
 using Example.Random;
-
-using FluentAssertions;
-
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
 
@@ -21,21 +17,21 @@ namespace Machine.Specifications.Specs.Runner
     Establish context = () =>
     {
       TestCleanupAfterEveryContext.AfterContextCleanupRun = false;
-      context_with_no_specs.ContextEstablished = false;
-      context_with_no_specs.CleanupOccurred = false;
+      context_with_no_specs.context_established = false;
+      context_with_no_specs.cleanup_occurred = false;
     };
 
     Because of = () =>
       Run<context_with_no_specs>();
 
     It should_not_establish_the_context = () =>
-      context_with_no_specs.ContextEstablished.Should().BeFalse();
+      context_with_no_specs.context_established.ShouldBeFalse();
 
     It should_not_cleanup = () =>
-      context_with_no_specs.CleanupOccurred.Should().BeFalse();
+      context_with_no_specs.cleanup_occurred.ShouldBeFalse();
 
     It should_not_perform_assembly_wide_cleanup = () =>
-      TestCleanupAfterEveryContext.AfterContextCleanupRun.Should().BeFalse();
+      TestCleanupAfterEveryContext.AfterContextCleanupRun.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
@@ -44,9 +40,9 @@ namespace Machine.Specifications.Specs.Runner
   {
     Establish context = () =>
     {
-      context_with_no_specs.ContextEstablished = false;
-      context_with_no_specs.CleanupOccurred = false;
-      context_with_ignore_on_one_spec.IgnoredSpecRan = false;
+      context_with_no_specs.context_established = false;
+      context_with_no_specs.cleanup_occurred = false;
+      context_with_ignore_on_one_spec.ignored_spec_ran = false;
       TestCleanupAfterEveryContext.AfterContextCleanupRun = false;
     };
 
@@ -54,16 +50,16 @@ namespace Machine.Specifications.Specs.Runner
       Run<context_with_ignore_on_one_spec>();
 
     It should_not_run_the_spec = () =>
-      context_with_ignore_on_one_spec.IgnoredSpecRan.Should().BeFalse();
+      context_with_ignore_on_one_spec.ignored_spec_ran.ShouldBeFalse();
 
     It should_not_establish_the_context = () =>
-      context_with_ignore_on_one_spec.ContextEstablished.Should().BeFalse();
+      context_with_ignore_on_one_spec.context_established.ShouldBeFalse();
 
     It should_not_cleanup = () =>
-      context_with_ignore_on_one_spec.CleanupOccurred.Should().BeFalse();
+      context_with_ignore_on_one_spec.cleanup_occurred.ShouldBeFalse();
 
     It should_not_perform_assembly_wide_cleanup = () =>
-      TestCleanupAfterEveryContext.AfterContextCleanupRun.Should().BeFalse();
+      TestCleanupAfterEveryContext.AfterContextCleanupRun.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
@@ -72,7 +68,7 @@ namespace Machine.Specifications.Specs.Runner
   {
     Establish context = () =>
     {
-      context_with_ignore.IgnoredSpecRan = false;
+      context_with_ignore.ignored_spec_ran = false;
       TestCleanupAfterEveryContext.AfterContextCleanupRun = false;
     };
 
@@ -80,16 +76,16 @@ namespace Machine.Specifications.Specs.Runner
       Run<context_with_ignore>();
 
     It should_not_run_the_spec = () =>
-      context_with_ignore.IgnoredSpecRan.Should().BeFalse();
+      context_with_ignore.ignored_spec_ran.ShouldBeFalse();
 
     It should_not_establish_the_context = () =>
-      context_with_ignore.ContextEstablished.Should().BeFalse();
+      context_with_ignore.context_established.ShouldBeFalse();
 
     It should_not_cleanup = () =>
-      context_with_ignore.CleanupOccurred.Should().BeFalse();
+      context_with_ignore.cleanup_occurred.ShouldBeFalse();
 
     It should_not_perform_assembly_wide_cleanup = () =>
-      TestCleanupAfterEveryContext.AfterContextCleanupRun.Should().BeFalse();
+      TestCleanupAfterEveryContext.AfterContextCleanupRun.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
@@ -98,8 +94,8 @@ namespace Machine.Specifications.Specs.Runner
   {
     Establish context = () =>
     {
-      context_with_multiple_specifications.EstablishRunCount = 0;
-      context_with_multiple_specifications.BecauseClauseRunCount = 0;
+      context_with_multiple_specifications.establish_run_count = 0;
+      context_with_multiple_specifications.because_clause_run_count = 0;
       TestCleanupAfterEveryContext.Reset();
     };
 
@@ -107,13 +103,13 @@ namespace Machine.Specifications.Specs.Runner
       Run<context_with_multiple_specifications>();
 
     It should_establish_the_context_once = () =>
-      context_with_multiple_specifications.EstablishRunCount.Should().Be(1);
+      context_with_multiple_specifications.establish_run_count.ShouldEqual(1);
 
     It should_invoke_the_because_clause_once = () =>
-      context_with_multiple_specifications.BecauseClauseRunCount.Should().Be(1);
+      context_with_multiple_specifications.because_clause_run_count.ShouldEqual(1);
 
     It should_invoke_the_assembly_wide_cleanup_once = () =>
-      TestCleanupAfterEveryContext.AfterContextCleanupRunCount.Should().Be(1);
+      TestCleanupAfterEveryContext.AfterContextCleanupRunCount.ShouldEqual(1);
   }
 
   [Subject("Specification Runner")]
@@ -122,8 +118,8 @@ namespace Machine.Specifications.Specs.Runner
   {
     Establish context = () =>
     {
-      context_with_multiple_specifications_and_setup_for_each.EstablishRunCount = 0;
-      context_with_multiple_specifications_and_setup_for_each.BecauseClauseRunCount = 0;
+      context_with_multiple_specifications_and_setup_for_each.establish_run_count = 0;
+      context_with_multiple_specifications_and_setup_for_each.because_clause_run_count = 0;
       TestCleanupAfterEveryContext.Reset();
     };
 
@@ -131,13 +127,13 @@ namespace Machine.Specifications.Specs.Runner
       Run<context_with_multiple_specifications_and_setup_for_each>();
 
     It should_establish_the_context_for_each_specification = () =>
-      context_with_multiple_specifications_and_setup_for_each.EstablishRunCount.Should().Be(2);
+      context_with_multiple_specifications_and_setup_for_each.establish_run_count.ShouldEqual(2);
 
     It should_invoke_the_because_clause_for_each_specification = () =>
-      context_with_multiple_specifications_and_setup_for_each.BecauseClauseRunCount.Should().Be(2);
+      context_with_multiple_specifications_and_setup_for_each.because_clause_run_count.ShouldEqual(2);
 
     It should_invoke_the_assembly_wide_cleanup_once_per_spec = () =>
-      TestCleanupAfterEveryContext.AfterContextCleanupRunCount.Should().Be(2);
+      TestCleanupAfterEveryContext.AfterContextCleanupRunCount.ShouldEqual(2);
   }
 
   [Subject("Specification Runner")]
@@ -153,10 +149,10 @@ namespace Machine.Specifications.Specs.Runner
       };
 
     It should_fail =
-      () => exception.Should().BeOfType<SpecificationUsageException>();
+      () => exception.ShouldBeOfExactType<SpecificationUsageException>();
 
     It should_report_the_reason =
-      () => exception.Message.Should().StartWith("You cannot have more than one Establish clause in Example.Failing.context_with_multiple_establish_clauses");
+      () => exception.Message.ShouldStartWith("You cannot have more than one Establish clause in Example.Failing.context_with_multiple_establish_clauses");
   }
 
   [Subject("Specification Runner")]
@@ -169,10 +165,10 @@ namespace Machine.Specifications.Specs.Runner
       () => exception = Catch.Exception(Run<context_with_multiple_given_clauses>);
 
     It should_fail =
-      () => exception.Should().BeOfType<SpecificationUsageException>();
+      () => exception.ShouldBeOfExactType<SpecificationUsageException>();
 
     It should_report_the_reason =
-      () => exception.Message.Should().StartWith("You cannot have more than one Given clause in Example.Failing.context_with_multiple_given_clauses");
+      () => exception.Message.ShouldStartWith("You cannot have more than one Given clause in Example.Failing.context_with_multiple_given_clauses");
   }
 
   [Subject("Specification Runner")]
@@ -182,7 +178,7 @@ namespace Machine.Specifications.Specs.Runner
     Because of = Run<context_with_failing_establish>;
 
     It should_fail = () =>
-      testListener.LastResult.Passed.Should().BeFalse();
+      testListener.LastResult.Passed.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
@@ -192,7 +188,7 @@ namespace Machine.Specifications.Specs.Runner
     Because of = Run<context_with_failing_because>;
 
     It should_fail = () =>
-      testListener.LastResult.Passed.Should().BeFalse();
+      testListener.LastResult.Passed.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
@@ -209,7 +205,7 @@ namespace Machine.Specifications.Specs.Runner
 #if !CLEAN_EXCEPTION_STACK_TRACE
         .InnerExceptionResult
 #endif
-        .Message.Should().Be(context_with_failing_cleanup.ExceptionThrownByCleanup.Message);
+        .Message.ShouldEqual(context_with_failing_cleanup.ExceptionThrownByCleanup.Message);
   }
 
   [Subject("Specification Runner")]
@@ -219,7 +215,7 @@ namespace Machine.Specifications.Specs.Runner
     Because of = Run<context_with_failing_specs>;
 
     It should_fail = () =>
-      testListener.LastResult.Passed.Should().BeFalse();
+      testListener.LastResult.Passed.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
@@ -238,10 +234,10 @@ namespace Machine.Specifications.Specs.Runner
       runner.RunAssembly(typeof(TestAssemblyContext).GetTypeInfo().Assembly);
 
     It should_not_run_assembly_start = () =>
-      TestAssemblyContext.OnAssemblyStartRun.Should().BeFalse();
+      TestAssemblyContext.OnAssemblyStartRun.ShouldBeFalse();
 
     It should_not_run_assembly_complete = () =>
-      TestAssemblyContext.OnAssemblyCompleteRun.Should().BeFalse();
+      TestAssemblyContext.OnAssemblyCompleteRun.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
@@ -252,7 +248,7 @@ namespace Machine.Specifications.Specs.Runner
       Run<context_with_console_output>();
 
     It should_capture_the_standard_output =
-      () => testListener.LastAssembly.CapturedOutput.Should().Be(String.Format("Console.Out message in establish{0}" +
+      () => testListener.LastAssembly.CapturedOutput.ShouldEqual(String.Format("Console.Out message in establish{0}" +
                                                                                "Console.Out message in because{0}" +
                                                                                "Console.Out message in spec{0}" +
                                                                                "Console.Out message in nth spec{0}" +
@@ -268,7 +264,7 @@ namespace Machine.Specifications.Specs.Runner
       Run<context_with_console_error_output>();
 
     It should_capture_the_standard_error =
-      () => testListener.LastAssembly.CapturedOutput.Should().Be(String.Format("Console.Error message in establish{0}" +
+      () => testListener.LastAssembly.CapturedOutput.ShouldEqual(String.Format("Console.Error message in establish{0}" +
                                                                                "Console.Error message in because{0}" +
                                                                                "Console.Error message in spec{0}" +
                                                                                "Console.Error message in nth spec{0}" +
@@ -305,7 +301,7 @@ namespace Machine.Specifications.Specs.Runner
       Run<context_with_console_output_and_setup_for_each>();
 
     It should_capture_the_standard_output =
-      () => testListener.LastAssembly.CapturedOutput.Should().Be(String.Format("Console.Out message in establish{0}" +
+      () => testListener.LastAssembly.CapturedOutput.ShouldEqual(String.Format("Console.Out message in establish{0}" +
                                                                                "Console.Out message in because{0}" +
                                                                                "Console.Out message in spec{0}" +
                                                                                "Console.Out message in cleanup{0}" +
@@ -324,7 +320,7 @@ namespace Machine.Specifications.Specs.Runner
       Run<context_with_inner_exception>();
 
     It should_include_the_inner_exception_in_the_result = () =>
-      testListener.LastResult.Exception.ToString().Should().Contain("INNER123");
+      testListener.LastResult.Exception.ToString().ShouldContain("INNER123");
   }
 
   [Subject("Specification Runner")]
@@ -333,14 +329,14 @@ namespace Machine.Specifications.Specs.Runner
   {
     Establish context = () =>
     {
-      Behaviors.BehaviorSpecRan = false;
+      Behaviors.behavior_spec_ran = false;
     };
 
     Because of = () =>
       Run<Behaviors>();
 
     It should_not_run_the_behavior_specs = () =>
-      Behaviors.BehaviorSpecRan.Should().BeFalse();
+      Behaviors.behavior_spec_ran.ShouldBeFalse();
   }
 
   [Subject("Specification Runner")]
@@ -366,28 +362,28 @@ namespace Machine.Specifications.Specs.Runner
                        typeof(context_with_multiple_specifications).GetTypeInfo());
 
     It should_run_untagged_assembly_context = () =>
-      UntaggedAssemblyContext.OnAssemblyStartRun.Should().BeTrue();
+      UntaggedAssemblyContext.OnAssemblyStartRun.ShouldBeTrue();
 
     It should_run_tagged_assembly_context = () =>
-      TaggedAssemblyContext.OnAssemblyStartRun.Should().BeTrue();
+      TaggedAssemblyContext.OnAssemblyStartRun.ShouldBeTrue();
 
     It should_run_untagged_assembly_context_complete = () =>
-      UntaggedAssemblyContext.OnAssemblyCompleteRun.Should().BeTrue();
+      UntaggedAssemblyContext.OnAssemblyCompleteRun.ShouldBeTrue();
 
     It should_run_tagged_assembly_context_complete = () =>
-      TaggedAssemblyContext.OnAssemblyCompleteRun.Should().BeTrue();
+      TaggedAssemblyContext.OnAssemblyCompleteRun.ShouldBeTrue();
 
     It should_run_untagged_global_cleanup = () =>
-      UntaggedCleanup.AfterContextCleanupRunCount.Should().BeGreaterThan(0);
+      UntaggedCleanup.AfterContextCleanupRunCount.ShouldBeGreaterThan(0);
 
     It should_run_tagged_global_cleanup = () =>
-      TaggedCleanup.AfterContextCleanupRunCount.Should().BeGreaterThan(0);
+      TaggedCleanup.AfterContextCleanupRunCount.ShouldBeGreaterThan(0);
 
     It should_run_tagged_result_supplementer = () =>
-      TaggedResultSupplementer.SupplementResultRun.Should().BeTrue();
+      TaggedResultSupplementer.SupplementResultRun.ShouldBeTrue();
 
     It should_run_untagged_result_supplementer = () =>
-      UntaggedResultSupplementer.SupplementResultRun.Should().BeTrue();
+      UntaggedResultSupplementer.SupplementResultRun.ShouldBeTrue();
 
     static DefaultRunner runner;
     static TestListener testListener;
@@ -413,7 +409,7 @@ namespace Machine.Specifications.Specs.Runner
       };
 
     It should_run_everything = () =>
-      testListener.SpecCount.Should().Be(3);
+      testListener.SpecCount.ShouldEqual(3);
 
     static DefaultRunner runner;
     static TestListener testListener;
@@ -439,7 +435,7 @@ namespace Machine.Specifications.Specs.Runner
       };
 
     It should_run_included_contexts_only = () =>
-      testListener.SpecCount.Should().Be(2);
+      testListener.SpecCount.ShouldEqual(2);
 
     static DefaultRunner runner;
     static TestListener testListener;
@@ -471,7 +467,7 @@ namespace Machine.Specifications.Specs.Runner
       };
 
     It should_run_included_specifications_only = () =>
-      testListener.SpecCount.Should().Be(3);
+      testListener.SpecCount.ShouldEqual(3);
 
     static DefaultRunner runner;
     static TestListener testListener;
@@ -484,7 +480,7 @@ namespace Machine.Specifications.Specs.Runner
     Because of = Run<context_with_public_It_field>;
 
     It should_succeed =
-      () => testListener.SpecCount.Should().Be(1);
+      () => testListener.SpecCount.ShouldEqual(1);
   }
 
   [Subject("Specification Runner")]
@@ -494,7 +490,7 @@ namespace Machine.Specifications.Specs.Runner
     Because of = Run<context_with_protected_It_field>;
 
     It should_succeed =
-      () => testListener.SpecCount.Should().Be(1);
+      () => testListener.SpecCount.ShouldEqual(1);
   }
 
   [Subject("Specification Runner")]
@@ -504,7 +500,7 @@ namespace Machine.Specifications.Specs.Runner
     Because of = Run<context_with_internal_It_field>;
 
     It should_succeed =
-      () => testListener.SpecCount.Should().Be(1);
+      () => testListener.SpecCount.ShouldEqual(1);
   }
 
   [Subject("Specification Runner")]
@@ -514,7 +510,7 @@ namespace Machine.Specifications.Specs.Runner
     Because of = Run<context_with_public_Behaves_like_field>;
 
     It should_succeed =
-      () => testListener.SpecCount.Should().Be(1);
+      () => testListener.SpecCount.ShouldEqual(1);
   }
 
   [Subject("Specification Runner")]
@@ -524,7 +520,7 @@ namespace Machine.Specifications.Specs.Runner
     Because of = Run<context_with_nonprivate_framework_fields>;
 
     It should_succeed =
-      () => testListener.LastResult.Passed.Should().BeTrue();
+      () => testListener.LastResult.Passed.ShouldBeTrue();
   }
 
   [Subject("Specification Runner")]
@@ -534,7 +530,7 @@ namespace Machine.Specifications.Specs.Runner
     Because of = Run<StaticContainer.when_a_context_is_nested_inside_a_static_class>;
 
     It should_succeed =
-      () => testListener.LastResult.Passed.Should().BeTrue();
+      () => testListener.LastResult.Passed.ShouldBeTrue();
   }
 
   [Subject("Specification Runner")]
@@ -544,7 +540,7 @@ namespace Machine.Specifications.Specs.Runner
     Because of = Run<NonStaticContainer.StaticContainer.when_a_context_is_nested_inside_a_static_class_that_is_nested_inside_a_class>;
 
     It should_succeed =
-      () => testListener.LastResult.Passed.Should().BeTrue();
+      () => testListener.LastResult.Passed.ShouldBeTrue();
   }
 
   public class RunnerSpecs

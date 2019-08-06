@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Machine.Specifications.Should" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="TestData.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -15,10 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Machine.Specifications\Machine.Specifications.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="5.7.0" />
   </ItemGroup>
 
 </Project>

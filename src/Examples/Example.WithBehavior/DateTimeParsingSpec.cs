@@ -1,7 +1,4 @@
 using System;
-
-using FluentAssertions;
-
 using Machine.Specifications;
 
 // This is a rather contrived example, but I hope it shows what you can do with it.
@@ -10,37 +7,42 @@ using Machine.Specifications;
 
 namespace Example.WithBehavior
 {
-  [Subject("Date time parsing")]
-  public class when_a_date_is_parsed_with_the_regular_expression_parser : DateTimeParsingSpecs
-  {
-    Establish context = () => { Parser = new RegexParser(); };
+    [Subject("Date time parsing")]
+    public class when_a_date_is_parsed_with_the_regular_expression_parser : DateTimeParsingSpecs
+    {
+        Behaves_like<DateTimeParsingBehavior> a_date_time_parser;
 
-    Because of = () => { ParsedDate = Parser.Parse("2009/01/21"); };
+        Establish context = () =>
+            Parser = new RegexParser();
 
-    Behaves_like<DateTimeParsingBehavior> a_date_time_parser;
-  }
+        Because of = () =>
+            ParsedDate = Parser.Parse("2009/01/21");
+    }
 
-  [Subject("Date time parsing")]
-  public class when_a_date_is_parsed_by_the_infrastructure : DateTimeParsingSpecs
-  {
-    Establish context = () => { Parser = new InfrastructureParser(); };
+    [Subject("Date time parsing")]
+    public class when_a_date_is_parsed_by_the_infrastructure : DateTimeParsingSpecs
+    {
+        Behaves_like<DateTimeParsingBehavior> a_date_time_parser;
 
-    Because of = () => { ParsedDate = Parser.Parse("2009/01/21"); };
+        Establish context = () =>
+            Parser = new InfrastructureParser();
 
-    Behaves_like<DateTimeParsingBehavior> a_date_time_parser;
-  }
+        Because of = () =>
+            ParsedDate = Parser.Parse("2009/01/21");
+    }
 
-  public abstract class DateTimeParsingSpecs
-  {
-    protected static DateTime ParsedDate;
-    protected static IParser Parser;
-  }
+    public abstract class DateTimeParsingSpecs
+    {
+        protected static DateTime ParsedDate;
+        protected static IParser Parser;
+    }
 
-  [Behaviors]
-  public class DateTimeParsingBehavior
-  {
-    protected static DateTime ParsedDate;
+    [Behaviors]
+    public class DateTimeParsingBehavior
+    {
+        protected static DateTime ParsedDate;
 
-    It should_parse_the_expected_date = () => ParsedDate.Should().Be(new DateTime(2009, 1, 21));
-  }
+        It should_parse_the_expected_date = () =>
+            ParsedDate.ShouldEqual(new DateTime(2009, 1, 21));
+    }
 }

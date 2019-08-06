@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Example.Random;
-using FluentAssertions;
 using Machine.Specifications.Factories;
 using Machine.Specifications.Model;
 
@@ -20,10 +19,10 @@ namespace Machine.Specifications.Specs.Factories
         };
 
         It should_capture_the_concerns_type =
-            () => newContext.Subject.Type.Should().Be<int>();
+            () => newContext.Subject.Type.ShouldBeOfExactType<int>();
 
         It should_capture_the_concerns_description =
-            () => newContext.Subject.Description.Should().Be("Some description");
+            () => newContext.Subject.Description.ShouldEqual("Some description");
     }
 
     [Subject(typeof(ContextFactory))]
@@ -38,7 +37,7 @@ namespace Machine.Specifications.Specs.Factories
         };
 
         It should_capture_the_base_concerns_subject_details =
-            () => newContext.Subject.Type.Should().Be<int>();
+            () => newContext.Subject.Type.ShouldBeOfExactType<int>();
     }
 
     [Subject(typeof(ContextFactory))]
@@ -49,7 +48,7 @@ namespace Machine.Specifications.Specs.Factories
         public class and_the_parent_context_has_context_blocks
         {
             It should_run_the_parent_context_blocks_prior_to_the_nested_context_blocks =
-                () => outerContextRan.Should().BeTrue();
+                () => outerContextRan.ShouldBeTrue();
         }
 
         static bool outerContextRan;
@@ -65,10 +64,10 @@ namespace Machine.Specifications.Specs.Factories
         };
 
         It should_contain_the_details_created_by_the_context_detail_factory =
-            () => new_context.Specifications.Count().Should().Be(1);
+            () => new_context.Specifications.Count().ShouldEqual(1);
 
         It should_take_the_subject_from_the_outer_class =
-            () => new_context.Subject.FullConcern.Should().Be("Int32 Parent description");
+            () => new_context.Subject.FullConcern.ShouldEqual("Int32 Parent description");
 
         static Context new_context;
     }
@@ -83,7 +82,7 @@ namespace Machine.Specifications.Specs.Factories
         };
 
         It should_take_the_subject_from_the_inherited_concern =
-            () => new_context.Subject.FullConcern.Should().Be("Int32 Some description");
+            () => new_context.Subject.FullConcern.ShouldEqual("Int32 Some description");
 
         static Context new_context;
     }
@@ -99,7 +98,7 @@ namespace Machine.Specifications.Specs.Factories
         };
 
         It should_take_the_owned_concern =
-            () => new_context.Subject.FullConcern.Should().Be("Int32 Nested description");
+            () => new_context.Subject.FullConcern.ShouldEqual("Int32 Nested description");
 
         static Context new_context;
     }
@@ -119,7 +118,7 @@ namespace Machine.Specifications.Specs.Factories
 
         It should_be_able_to_be_created_successfully_if_a_testing_tool_has_specified_to_override_the_allowed_number_of_because_blocks
             =
-            () => new_context.Should().NotBeNull();
+            () => new_context.ShouldNotBeNull();
 
         static Context new_context;
     }
@@ -134,7 +133,7 @@ namespace Machine.Specifications.Specs.Factories
         };
 
         It should_have_no_concern =
-            () => new_context.Subject.Should().BeNull();
+            () => new_context.Subject.ShouldBeNull();
 
         static Context new_context;
     }
@@ -151,7 +150,7 @@ namespace Machine.Specifications.Specs.Factories
         };
 
         It should_capture_the_tags =
-            () => newContext.Tags.Should().BeEquivalentTo(new Tag(tag2.example),
+            () => newContext.Tags.ShouldContainOnly(new Tag(tag2.example),
                 new Tag(tag2.some_other_tag),
                 new Tag(tag2.one_more_tag));
     }
@@ -168,7 +167,7 @@ namespace Machine.Specifications.Specs.Factories
         };
 
         It should_capture_the_tags_once =
-            () => newContext.Tags.Count().Should().Be(1);
+            () => newContext.Tags.Count().ShouldEqual(1);
     }
 
     [Subject(typeof(ContextFactory))]
@@ -185,7 +184,7 @@ namespace Machine.Specifications.Specs.Factories
             };
 
             It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic =
-                () => newContext.Should().NotBeNull();
+                () => newContext.ShouldNotBeNull();
         }
 
         public class and_the_nested_context_is_a_generic_type_definition
@@ -199,7 +198,7 @@ namespace Machine.Specifications.Specs.Factories
             };
 
             It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic =
-                () => newContext.Should().NotBeNull();
+                () => newContext.ShouldNotBeNull();
         }
 
         public class and_there_are_multiple_generic_parents
@@ -216,7 +215,7 @@ namespace Machine.Specifications.Specs.Factories
                 };
 
                 It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic =
-                    () => newContext.Should().NotBeNull();
+                    () => newContext.ShouldNotBeNull();
             }
 
             public class and_the_nested_context_is_generic
@@ -231,7 +230,7 @@ namespace Machine.Specifications.Specs.Factories
                 };
 
                 It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic =
-                    () => newContext.Should().NotBeNull();
+                    () => newContext.ShouldNotBeNull();
             }
         }
     }
@@ -251,7 +250,7 @@ namespace Machine.Specifications.Specs.Factories
             () => newContext.Specifications
                 .OfType<BehaviorSpecification>()
                 .First()
-                .BehaviorFieldInfo.Name.Should().BeEquivalentTo("behavior");
+                .BehaviorFieldInfo.Name.ShouldContainOnly("behavior");
     }
 
     [Subject(typeof(ContextFactory))]
@@ -267,7 +266,7 @@ namespace Machine.Specifications.Specs.Factories
             single_context = factory.CreateContextFrom(new ContextWithSingleSpecification());
 
         It should_set_type = () =>
-            single_context.Type.Name.Should().Be("ContextWithSingleSpecification");
+            single_context.Type.Name.ShouldEqual("ContextWithSingleSpecification");
     }
 
     [Subject(typeof(ContextFactory))]
@@ -293,9 +292,9 @@ namespace Machine.Specifications.Specs.Factories
 
         It establish_blocks_run_in_the_correct_order = () =>
         {
-            numbers.Count.Should().Be(2);
-            numbers[0].Should().Be(1);
-            numbers[1].Should().Be(2);
+            numbers.Count.ShouldEqual(2);
+            numbers[0].ShouldEqual(1);
+            numbers[1].ShouldEqual(2);
         };
     }
 
@@ -335,9 +334,9 @@ namespace Machine.Specifications.Specs.Factories
         It establish_blocks_run_in_the_correct_order = () =>
         {
             var results = numbers.Distinct().ToList();
-            results[0].Should().Be(1);
-            results[1].Should().Be(2);
-            results[2].Should().Be(3);
+            results[0].ShouldEqual(1);
+            results[1].ShouldEqual(2);
+            results[2].ShouldEqual(3);
         };
     }
 
@@ -376,7 +375,7 @@ namespace Machine.Specifications.Specs.Factories
                 newContext = factory.CreateContextFrom(new generic_container<int>.nested_context());
 
             It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic = () =>
-                newContext.Should().NotBeNull();
+                newContext.ShouldNotBeNull();
         }
 
         class and_the_nested_context_is_a_generic_type_definition
@@ -391,7 +390,7 @@ namespace Machine.Specifications.Specs.Factories
                 newContext = factory.CreateContextFrom(new generic_container<int>.nested_generic_context<string>());
 
             It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic = () =>
-                newContext.Should().NotBeNull();
+                newContext.ShouldNotBeNull();
         }
 
         class and_there_are_multiple_generic_parents
@@ -409,7 +408,7 @@ namespace Machine.Specifications.Specs.Factories
                             new generic_container<int>.nested_generic_context<string>.nested_nested_non_generic());
 
                 It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic = () =>
-                    newContext.Should().NotBeNull();
+                    newContext.ShouldNotBeNull();
             }
 
             class and_the_nested_context_generic
@@ -425,7 +424,7 @@ namespace Machine.Specifications.Specs.Factories
                         new generic_container<int>.nested_generic_context<string>.nested_nested_generic<bool>());
 
                 It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic = () =>
-                    newContext.Should().NotBeNull();
+                    newContext.ShouldNotBeNull();
             }
         }
     }

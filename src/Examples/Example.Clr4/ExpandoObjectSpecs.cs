@@ -1,18 +1,16 @@
 ﻿using System.Dynamic;
-
-using FluentAssertions;
-
 using Machine.Specifications;
 
 namespace Example.Clr4
 {
-	public class When_specs_target_the_common_language_runtime_in_version_4
-	{
-		static ExpandoObject ExpandoObject;
+    public class When_specs_target_the_common_language_runtime_in_version_4
+    {
+        static ExpandoObject expando_object;
 
-		Because of = () => { ExpandoObject = new ExpandoObject(); };
+        Because of = () =>
+            expando_object = new ExpandoObject();
 
-		It should_be_able_to_use_components_that_are_available_in_the_target_framework =
-			() => ExpandoObject.Should().NotBeNull();
-	}
+        It should_be_able_to_use_components_that_are_available_in_the_target_framework = () =>
+            expando_object.ShouldNotBeNull();
+    }
 }

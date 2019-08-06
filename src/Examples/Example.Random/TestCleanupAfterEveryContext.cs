@@ -2,136 +2,136 @@ using Machine.Specifications;
 
 namespace Example.Random
 {
-  public class TestCleanupAfterEveryContext : ICleanupAfterEveryContextInAssembly
-  {
-    public static bool AfterContextCleanupRun;
-    public static int AfterContextCleanupRunCount;
-
-    public void AfterContextCleanup()
+    public class TestCleanupAfterEveryContext : ICleanupAfterEveryContextInAssembly
     {
-      ++AfterContextCleanupRunCount;
-      AfterContextCleanupRun = true;
+        public static bool AfterContextCleanupRun;
+        public static int AfterContextCleanupRunCount;
+
+        public void AfterContextCleanup()
+        {
+            ++AfterContextCleanupRunCount;
+            AfterContextCleanupRun = true;
+        }
+
+        public static void Reset()
+        {
+            AfterContextCleanupRun = false;
+            AfterContextCleanupRunCount = 0;
+        }
     }
 
-    public static void Reset()
+    [Tags("foobar")]
+    public class TaggedCleanup : ICleanupAfterEveryContextInAssembly
     {
-      AfterContextCleanupRun = false;
-      AfterContextCleanupRunCount = 0;
-    }
-  }
+        public static bool AfterContextCleanupRun;
+        public static int AfterContextCleanupRunCount;
 
-  [Tags("foobar")]
-  public class TaggedCleanup : ICleanupAfterEveryContextInAssembly
-  {
-    public static bool AfterContextCleanupRun;
-    public static int AfterContextCleanupRunCount;
+        public void AfterContextCleanup()
+        {
+            ++AfterContextCleanupRunCount;
+            AfterContextCleanupRun = true;
+        }
 
-    public void AfterContextCleanup()
-    {
-      ++AfterContextCleanupRunCount;
-      AfterContextCleanupRun = true;
-    }
-
-    public static void Reset()
-    {
-      AfterContextCleanupRun = false;
-      AfterContextCleanupRunCount = 0;
-    }
-  }
-
-  public class UntaggedCleanup : ICleanupAfterEveryContextInAssembly
-  {
-    public static bool AfterContextCleanupRun;
-    public static int AfterContextCleanupRunCount;
-
-    public void AfterContextCleanup()
-    {
-      ++AfterContextCleanupRunCount;
-      AfterContextCleanupRun = true;
+        public static void Reset()
+        {
+            AfterContextCleanupRun = false;
+            AfterContextCleanupRunCount = 0;
+        }
     }
 
-    public static void Reset()
+    public class UntaggedCleanup : ICleanupAfterEveryContextInAssembly
     {
-      AfterContextCleanupRun = false;
-      AfterContextCleanupRunCount = 0;
-    }
-  }
+        public static bool AfterContextCleanupRun;
+        public static int AfterContextCleanupRunCount;
 
-  [Tags("foobar")]
-  public class TaggedAssemblyContext : IAssemblyContext
-  {
-    public static bool OnAssemblyStartRun;
-    public static bool OnAssemblyCompleteRun;
+        public void AfterContextCleanup()
+        {
+            ++AfterContextCleanupRunCount;
+            AfterContextCleanupRun = true;
+        }
 
-    public static void Reset()
-    {
-      OnAssemblyStartRun = false;
-      OnAssemblyCompleteRun = false;
-    }
-
-    public void OnAssemblyStart()
-    {
-      OnAssemblyStartRun = true;
+        public static void Reset()
+        {
+            AfterContextCleanupRun = false;
+            AfterContextCleanupRunCount = 0;
+        }
     }
 
-    public void OnAssemblyComplete()
+    [Tags("foobar")]
+    public class TaggedAssemblyContext : IAssemblyContext
     {
-      OnAssemblyCompleteRun = true;
-    }
-  }
+        public static bool OnAssemblyStartRun;
+        public static bool OnAssemblyCompleteRun;
 
-  public class UntaggedAssemblyContext : IAssemblyContext
-  {
-    public static bool OnAssemblyStartRun;
-    public static bool OnAssemblyCompleteRun;
+        public static void Reset()
+        {
+            OnAssemblyStartRun = false;
+            OnAssemblyCompleteRun = false;
+        }
 
-    public static void Reset()
-    {
-      OnAssemblyStartRun = false;
-      OnAssemblyCompleteRun = false;
-    }
+        public void OnAssemblyStart()
+        {
+            OnAssemblyStartRun = true;
+        }
 
-    public void OnAssemblyStart()
-    {
-      OnAssemblyStartRun = true;
-    }
-
-    public void OnAssemblyComplete()
-    {
-      OnAssemblyCompleteRun = true;
-    }
-  }
-
-  [Tags("foobar")]
-  public class TaggedResultSupplementer : ISupplementSpecificationResults
-  {
-    public static bool SupplementResultRun;
-
-    public Result SupplementResult(Result result)
-    {
-      SupplementResultRun = true;
-      return result;
+        public void OnAssemblyComplete()
+        {
+            OnAssemblyCompleteRun = true;
+        }
     }
 
-    public static void Reset()
+    public class UntaggedAssemblyContext : IAssemblyContext
     {
-      SupplementResultRun = false;
+        public static bool OnAssemblyStartRun;
+        public static bool OnAssemblyCompleteRun;
+
+        public static void Reset()
+        {
+            OnAssemblyStartRun = false;
+            OnAssemblyCompleteRun = false;
+        }
+
+        public void OnAssemblyStart()
+        {
+            OnAssemblyStartRun = true;
+        }
+
+        public void OnAssemblyComplete()
+        {
+            OnAssemblyCompleteRun = true;
+        }
     }
-  }
 
-  public class UntaggedResultSupplementer : ISupplementSpecificationResults
-  {
-    public static bool SupplementResultRun;
-
-    public Result SupplementResult(Result result)
+    [Tags("foobar")]
+    public class TaggedResultSupplementer : ISupplementSpecificationResults
     {
-      SupplementResultRun = true;
-      return result;
+        public static bool SupplementResultRun;
+
+        public Result SupplementResult(Result result)
+        {
+            SupplementResultRun = true;
+            return result;
+        }
+
+        public static void Reset()
+        {
+            SupplementResultRun = false;
+        }
     }
 
-    public static void Reset()
+    public class UntaggedResultSupplementer : ISupplementSpecificationResults
     {
-      SupplementResultRun = false;
+        public static bool SupplementResultRun;
+
+        public Result SupplementResult(Result result)
+        {
+            SupplementResultRun = true;
+            return result;
+        }
+
+        public static void Reset()
+        {
+            SupplementResultRun = false;
+        }
     }
-  }
 }

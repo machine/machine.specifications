@@ -1,221 +1,189 @@
 using System;
 
-using FluentAssertions;
-
 namespace Machine.Specifications
 {
-  namespace ExampleA
-  {
-    namespace ExampleB
+    namespace ExampleA
     {
-      public class InExampleB_1
-      {
-        It is_spec_1 =()=> { };
-        
-      }
-        
-      public class InExampleB_2
-      {
-        It is_spec_1 =()=> { };
-        
-      }
-        
+        namespace ExampleB
+        {
+            public class InExampleB_1
+            {
+                It is_spec_1 = () => { };
+            }
+
+            public class InExampleB_2
+            {
+                It is_spec_1 = () => { };
+            }
+        }
+
+        public class InExampleA_1
+        {
+            It is_spec_1 = () => { };
+        }
+
+        public class InExampleA_2
+        {
+            It is_spec_1 = () => { };
+        }
     }
 
-    public class InExampleA_1
+    namespace ExampleC
     {
-      It is_spec_1 =()=> { };
-      
+        public class InExampleC_1
+        {
+            It is_spec_1 = () => { };
+            It is_spec_2 = () => { };
+        }
+
+        public class InExampleC_2
+        {
+        }
     }
 
-    public class InExampleA_2
+    public interface IFakeContext
     {
-      It is_spec_1 =()=> { };
-    }
-  }
-
-  namespace ExampleC
-  {
-    public class InExampleC_1
-    {
-      It is_spec_1 =()=> { };
-      It is_spec_2 =()=> { };
+        void Reset();
     }
 
-    public class InExampleC_2
+    public class ContextWithSpecificationExpectingThrowThatDoesnt : IFakeContext
     {
-      
+        public static bool it_invoked;
+        static Exception exception;
+
+        Because of = () =>
+            exception = null;
+
+        It should_throw_but_it_wont = () =>
+            exception.ShouldNotBeNull();
+
+        public void Reset()
+        {
+            it_invoked = false;
+        }
     }
-  }
 
-  public interface IFakeContext
-  {
-    void Reset();
-  }
-
-  public class ContextWithSpecificationExpectingThrowThatDoesnt : IFakeContext
-  {
-    public static bool ItInvoked;
-    static Exception exception;
-
-    Because of =()=>
-      exception = null;
-
-    It should_throw_but_it_wont =()=> 
-      exception.Should().NotBeNull();
-
-    public void Reset()
+    public class ContextWithThrowingWhenAndPassingSpecification : IFakeContext
     {
-      ItInvoked = false;
+        public static bool it_invoked;
+
+        Because of = () =>
+            throw new Exception();
+
+        It should_fail = () =>
+            it_invoked = true;
+
+        public void Reset()
+        {
+            it_invoked = false;
+        }
     }
-  }
 
-  public class ContextWithThrowingWhenAndPassingSpecification : IFakeContext
-  {
-    public static bool ItInvoked;
-
-    Because of =()=>
+    public class ContextWithEmptyWhen : IFakeContext
     {
-      throw new Exception();
-    };
+        public static bool it_invoked;
 
-    It should_fail =()=>
-    {
-      ItInvoked = true;
-    };
+        Because of;
 
-    public void Reset()
-    {
-      ItInvoked = false;
+        It should_do_stuff = () =>
+            it_invoked = true;
+
+        public void Reset()
+        {
+            it_invoked = false;
+        }
     }
-  }
 
-  public class ContextWithEmptyWhen : IFakeContext
-  {
-    public static bool ItInvoked = false;
-
-    Because of;
-
-    It should_do_stuff =()=>
+    public class ContextWithTwoWhens : IFakeContext
     {
-      ItInvoked = true;
-    };
+        public static bool when_1_invoked;
+        public static bool when_2_invoked;
+        public static bool it_for_when_1_invoked;
+        public static bool it_for_when_2_invoked;
 
-    public void Reset()
-    {
-      ItInvoked = false;
+        Because _1 = () =>
+            when_1_invoked = true;
+
+        It for_when_1 = () =>
+            it_for_when_1_invoked = true;
+
+        Because _2 = () =>
+            when_2_invoked = true;
+
+        It for_when_2 = () =>
+            it_for_when_2_invoked = true;
+
+        public void Reset()
+        {
+            when_1_invoked = false;
+            when_2_invoked = false;
+            it_for_when_1_invoked = false;
+            it_for_when_2_invoked = false;
+        }
     }
-  }
 
-  public class ContextWithTwoWhens : IFakeContext
-  {
-    public static bool When1Invoked = false;
-    public static bool When2Invoked = false;
-    public static bool ItForWhen1Invoked = false;
-    public static bool ItForWhen2Invoked = false;
-
-    Because _1 =()=>
+    public class ContextWithEmptySpecification : IFakeContext
     {
-      When1Invoked = true;
-    };
+        public static bool when_invoked;
 
-    It for_when_1 =()=>
-    {
-      ItForWhen1Invoked = true;
-    };
+        Because of = () =>
+            when_invoked = true;
 
-    Because _2 =()=>
-    {
-      When2Invoked = true;
-    };
+        It should_do_stuff;
 
-    It for_when_2 =()=>
-    {
-      ItForWhen2Invoked = true;
-    };
-
-    public void Reset()
-    {
-      When1Invoked = false;
-      When2Invoked = false;
-      ItForWhen1Invoked = false;
-      ItForWhen2Invoked = false;
+        public void Reset()
+        {
+            when_invoked = false;
+        }
     }
-  }
 
-  public class ContextWithEmptySpecification : IFakeContext
-  {
-    public static bool WhenInvoked = false;
-
-    Because of =()=>
+    public class ContextWithThrowingSpecification : IFakeContext
     {
-      WhenInvoked = true;
-    };
+        public static bool when_invoked;
+        public static bool it_invoked;
+        public static Exception exception;
 
-    It should_do_stuff;
+        Because it_happens = () =>
+        {
+            when_invoked = true;
+            exception = Catch.Exception(() => throw new Exception());
+        };
 
-    public void Reset()
-    {
-      WhenInvoked = false;
+        It should_throw_an_exception = () =>
+            it_invoked = true;
+
+        public void Reset()
+        {
+            when_invoked = false;
+            it_invoked = false;
+        }
     }
-  }
 
-  public class ContextWithThrowingSpecification : IFakeContext
-  {
-    public static bool WhenInvoked = false;
-    public static bool ItInvoked = false;
-    public static Exception exception;
-    Because it_happens = () =>
+    public class ContextWithSingleSpecification : IFakeContext
     {
-      WhenInvoked = true;
-      exception = Catch.Exception(() => { throw new Exception(); });
-    };
+        public static bool because_invoked;
+        public static bool it_invoked;
+        public static bool context_invoked;
+        public static bool cleanup_invoked;
 
-    It should_throw_an_exception = () =>
-    {
-      ItInvoked = true;
-    };
+        Establish context = () =>
+            context_invoked = true;
 
-    public void Reset()
-    {
-      WhenInvoked = false;
-      ItInvoked = false;
+        Because of = () =>
+            because_invoked = true;
+
+        It is_a_specification = () =>
+            it_invoked = true;
+
+        Cleanup after = () =>
+            cleanup_invoked = true;
+
+        public void Reset()
+        {
+            because_invoked = false;
+            it_invoked = false;
+            context_invoked = false;
+            cleanup_invoked = false;
+        }
     }
-  }
-
-  public class ContextWithSingleSpecification : IFakeContext
-  {
-    public static bool BecauseInvoked = false;
-    public static bool ItInvoked = false;
-    public static bool ContextInvoked = false;
-    public static bool CleanupInvoked = false;
-
-    Establish context =()=>
-    {
-      ContextInvoked = true;
-    };
-
-    Because of = () =>
-    {
-      BecauseInvoked = true;
-    };
-
-    It is_a_specification = () =>
-    {
-      ItInvoked = true;
-    };
-
-    Cleanup after =()=>
-    {
-      CleanupInvoked = true;
-    };
-
-    public void Reset()
-    {
-      BecauseInvoked = false;
-      ItInvoked = false;
-      ContextInvoked = false;
-      CleanupInvoked = false;
-    }
-  }
 }

@@ -5,12 +5,12 @@ using Machine.Specifications;
 
 namespace Example.CustomDelegates
 {
-  [SetupDelegate]
-  public delegate void Given();
+    [SetupDelegate]
+    public delegate void Given();
 
-  [ActDelegate]
-  public delegate void When();
+    [ActDelegate]
+    public delegate void When();
 
-  [AssertDelegate]
-  public delegate void Then();
+    [AssertDelegate]
+    public delegate void Then();
 }

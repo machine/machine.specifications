@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using Machine.Specifications.Factories;
 using Machine.Specifications.Model;
 using Machine.Specifications.Runner;
@@ -32,10 +31,10 @@ namespace Machine.Specifications.Specs.Model
         };
 
         It should_have_exception = () =>
-            results.First().Exception.Should().NotBeNull();
+            results.First().Exception.ShouldNotBeNull();
 
         It should_fail = () =>
-            results.First().Passed.Should().BeFalse();
+            results.First().Passed.ShouldBeFalse();
     }
 
     [Subject(typeof(Context))]
@@ -61,10 +60,10 @@ namespace Machine.Specifications.Specs.Model
         };
 
         It should_not_call_id = () =>
-            ContextWithThrowingWhenAndPassingSpecification.ItInvoked.Should().BeFalse();
+            ContextWithThrowingWhenAndPassingSpecification.it_invoked.ShouldBeFalse();
 
         It should_fail = () =>
-            results.First().Passed.Should().BeFalse();
+            results.First().Passed.ShouldBeFalse();
     }
 
     [Subject(typeof(Context))]
@@ -90,7 +89,7 @@ namespace Machine.Specifications.Specs.Model
         };
 
         It should_call_it = () =>
-            ContextWithEmptyWhen.ItInvoked.Should().BeTrue();
+            ContextWithEmptyWhen.it_invoked.ShouldBeTrue();
     }
 
     [Subject(typeof(Context))]
@@ -116,13 +115,13 @@ namespace Machine.Specifications.Specs.Model
         };
 
         It should_not_call_when = () =>
-            ContextWithEmptySpecification.WhenInvoked.Should().BeFalse();
+            ContextWithEmptySpecification.when_invoked.ShouldBeFalse();
 
         It should_have_not_implemented_result = () =>
-            results.First().Status.Should().Be(Status.NotImplemented);
+            results.First().Status.ShouldEqual(Status.NotImplemented);
 
         It should_have_failed_result = () =>
-            results.First().Passed.Should().BeFalse();
+            results.First().Passed.ShouldBeFalse();
     }
 
     [Subject(typeof(Context))]
@@ -148,12 +147,12 @@ namespace Machine.Specifications.Specs.Model
         };
 
         It should_establish_context = () =>
-            ContextWithSingleSpecification.BecauseInvoked.Should().BeTrue();
+            ContextWithSingleSpecification.because_invoked.ShouldBeTrue();
 
         It should_call_before_each = () =>
-            ContextWithSingleSpecification.ContextInvoked.Should().BeTrue();
+            ContextWithSingleSpecification.context_invoked.ShouldBeTrue();
 
         It should_cleanup = () =>
-            ContextWithSingleSpecification.CleanupInvoked.Should().BeTrue();
+            ContextWithSingleSpecification.cleanup_invoked.ShouldBeTrue();
     }
 }

@@ -1,131 +1,133 @@
 using System;
 
-using FluentAssertions;
-
 namespace Machine.Specifications.Specs
 {
-  [Subject(typeof(Catch))]
-  public class when_calling_Catch_Exception_with_an_Action
-  {
     [Subject(typeof(Catch))]
-    public class with_a_throwing_Action
+    public class when_calling_Catch_Exception_with_an_Action
     {
-      static ArgumentException AnException;
-      static Exception Result;
+        [Subject(typeof(Catch))]
+        public class with_a_throwing_Action
+        {
+            static ArgumentException an_exception;
+            static Exception result;
 
-      Establish context = () => { AnException = new ArgumentException(); };
+            Establish context = () =>
+                an_exception = new ArgumentException();
 
-      Because of = () => { Result = Catch.Exception(() => { throw AnException; }); };
+            Because of = () =>
+                result = Catch.Exception(() => throw an_exception);
 
-      It should_return_the_same_exception =
-        () => Result.Should().BeSameAs(AnException);
-    }
+            It should_return_the_same_exception = () =>
+                result.ShouldBeTheSameAs(an_exception);
+        }
 
-    [Subject(typeof(Catch))]
-    public class with_a_non_throwing_Action
-    {
-      static string ActionSideEffect;
-      static Exception Result;
+        [Subject(typeof(Catch))]
+        public class with_a_non_throwing_Action
+        {
+            static string action_side_effect;
+            static Exception result;
 
-      Because of = () => { Result = Catch.Exception(() => { ActionSideEffect = "hi"; }); };
+            Because of = () =>
+                result = Catch.Exception(() => action_side_effect = "hi");
 
-      It should_access_the_propety =
-        () => ActionSideEffect.Should().Be("hi");
+            It should_access_the_propety = () =>
+                action_side_effect.ShouldEqual("hi");
 
-      It should_return_null =
-        () => Result.Should().BeNull();
-    }
-  }
-
-  [Subject(typeof(Catch))]
-  public class when_calling_Catch_Exception_with_a_Func
-  {
-    class Dummy
-    {
-      public static readonly ArgumentException AnException = new ArgumentException();
-
-      public static string ThrowingProperty
-      {
-        get { throw AnException; }
-      }
-
-      public static string NonThrowingProperty
-      {
-        get { return "hi"; }
-      }
+            It should_return_null =
+                () => result.ShouldBeNull();
+        }
     }
 
     [Subject(typeof(Catch))]
-    public class with_a_throwing_Func
+    public class when_calling_Catch_Exception_with_a_Func
     {
-      static Exception Result;
+        class Dummy
+        {
+            public static readonly ArgumentException AnException = new ArgumentException();
 
-      Because of = () => { Result = Catch.Exception(() => Dummy.ThrowingProperty); };
+            public static string ThrowingProperty => throw AnException;
 
-      It should_return_the_same_exception =
-        () => Result.Should().BeSameAs(Dummy.AnException);
+            public static string NonThrowingProperty => "hi";
+        }
+
+        [Subject(typeof(Catch))]
+        public class with_a_throwing_Func
+        {
+            static Exception result;
+
+            Because of = () =>
+                result = Catch.Exception(() => Dummy.ThrowingProperty);
+
+            It should_return_the_same_exception = () =>
+                result.ShouldBeTheSameAs(Dummy.AnException);
+        }
+
+        [Subject(typeof(Catch))]
+        public class with_a_non_throwing_Func
+        {
+            static Exception result;
+            static string property_value;
+
+            Because of = () =>
+                result = Catch.Exception(() => property_value = Dummy.NonThrowingProperty);
+
+            It should_access_the_propety = () =>
+                property_value.ShouldEqual("hi");
+
+            It should_return_null = () =>
+                result.ShouldBeNull();
+        }
     }
 
     [Subject(typeof(Catch))]
-    public class with_a_non_throwing_Func
+    public class when_calling_Catch_Only_with_an_Action
     {
-      static Exception Result;
-      static string PropertyValue;
+        [Subject(typeof(Catch))]
+        public class with_a_throwing_Action_which_matches_exception_to_be_caught
+        {
+            static ArgumentException an_exception;
+            static Exception result;
 
-      Because of = () => { Result = Catch.Exception(() => PropertyValue = Dummy.NonThrowingProperty); };
+            Establish context = () =>
+                an_exception = new ArgumentException();
 
-      It should_access_the_propety =
-        () => PropertyValue.Should().Be("hi");
+            Because of = () =>
+                result = Catch.Only<ArgumentException>(() => throw an_exception);
 
-      It should_return_null =
-        () => Result.Should().BeNull();
+            It should_return_the_same_exception = () =>
+                result.ShouldBeTheSameAs(an_exception);
+        }
+
+        [Subject(typeof(Catch))]
+        public class with_a_throwing_Action_which_doesnt_match_exception_to_be_caught
+        {
+            static ArgumentException an_exception;
+            static Exception result;
+
+            Establish context = () =>
+                an_exception = new ArgumentException();
+
+            Because of = () =>
+                result = Catch.Exception(() => Catch.Only<InvalidOperationException>(() => throw an_exception));
+
+            It should_return_the_same_exception = () =>
+                result.ShouldBeTheSameAs(an_exception);
+        }
+
+        [Subject(typeof(Catch))]
+        public class with_a_non_throwing_Action
+        {
+            static string action_side_effect;
+            static Exception result;
+
+            Because of = () =>
+                result = Catch.Only<ArgumentException>(() => action_side_effect = "hi");
+
+            It should_access_the_propety = () =>
+                action_side_effect.ShouldEqual("hi");
+
+            It should_return_null = () =>
+                result.ShouldBeNull();
+        }
     }
-  }
-
-  [Subject(typeof(Catch))]
-  public class when_calling_Catch_Only_with_an_Action
-  {
-    [Subject(typeof(Catch))]
-    public class with_a_throwing_Action_which_matches_exception_to_be_caught
-    {
-      static ArgumentException AnException;
-      static Exception Result;
-
-      Establish context = () => { AnException = new ArgumentException(); };
-
-      Because of = () => { Result = Catch.Only<ArgumentException>(() => { throw AnException; }); };
-
-      It should_return_the_same_exception =
-        () => Result.Should().BeSameAs(AnException);
-    }
-
-    [Subject(typeof(Catch))]
-    public class with_a_throwing_Action_which_doesnt_match_exception_to_be_caught
-    {
-      static ArgumentException AnException;
-      static Exception Result;
-
-      Establish context = () => { AnException = new ArgumentException(); };
-
-      Because of = () => { Result = Catch.Exception(() => Catch.Only<InvalidOperationException>(() => { throw AnException; })); };
-
-      It should_return_the_same_exception =
-        () => Result.Should().BeSameAs(AnException);
-    }
-
-    [Subject(typeof(Catch))]
-    public class with_a_non_throwing_Action
-    {
-      static string ActionSideEffect;
-      static Exception Result;
-
-      Because of = () => { Result = Catch.Only<ArgumentException>((() => { ActionSideEffect = "hi"; })); };
-
-      It should_access_the_propety =
-        () => ActionSideEffect.Should().Be("hi");
-
-      It should_return_null =
-        () => Result.Should().BeNull();
-    }
-  }
 }
