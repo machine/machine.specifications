@@ -13,7 +13,7 @@ namespace SomeProject.Specs
     {
       try
       {
-        1.Should().Be(2);
+        1.ShouldEqual(2);
       }
       catch (Exception ex)
       {
@@ -35,13 +35,13 @@ namespace Machine.Specifications.Specs
     Because of = () => { Result = new ExceptionResult(Throw.Exception()); };
 
     It should_remove_framework_stack_lines =
-      () => Result.StackTrace.Should().NotContain(" Machine.Specifications.");
+      () => Result.StackTrace.ShouldNotContain(" Machine.Specifications.");
 
     It should_remove_framework_stack_lines_from_the_string_representation =
-      () => Result.ToString().Should().NotContain(" Machine.Specifications.");
+      () => Result.ToString().ShouldNotContain(" Machine.Specifications.");
 
     It should_keep_user_stack_lines =
-      () => Result.StackTrace.Should().Contain(" SomeProject.Specs.Throw.Exception");
+      () => Result.StackTrace.ShouldContain(" SomeProject.Specs.Throw.Exception");
   }
 
   [Subject(typeof(ExceptionResult))]
@@ -52,7 +52,7 @@ namespace Machine.Specifications.Specs
     Because of = () => { Result = new ExceptionResult(new TargetInvocationException(new Exception("inner"))); };
 
     It should_only_take_the_inner_exception_into_account =
-      () => Result.FullTypeName.Should().Be(typeof(Exception).FullName);
+      () => Result.FullTypeName.ShouldEqual(typeof(Exception).FullName);
   }
 
   [Subject(typeof(ExceptionResult))]
@@ -64,7 +64,7 @@ namespace Machine.Specifications.Specs
  new ExceptionResult(new Exception("outer", new TargetInvocationException(new Exception("inner")))); };
 
     It should_keep_the_exception =
-      () => Result.InnerExceptionResult.FullTypeName.Should().Be(typeof(TargetInvocationException).FullName);
+      () => Result.InnerExceptionResult.FullTypeName.ShouldEqual(typeof(TargetInvocationException).FullName);
   }
 }
 #endif
