@@ -25,9 +25,9 @@ namespace Example.Random.Internal
     [Behaviors]
     class WorkingSpecs
     {
-        protected static bool mspec_rocks;
+        protected static bool MSpecRocks;
 
         It should_work = () =>
-            mspec_rocks.ShouldBeTrue();
+            MSpecRocks.ShouldBeTrue();
     }
 }

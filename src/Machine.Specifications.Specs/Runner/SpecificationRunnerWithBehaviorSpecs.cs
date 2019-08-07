@@ -131,7 +131,7 @@ namespace Machine.Specifications.Specs.Runner
     It should_print_the_behaviors_containing_missing_fields = () =>
       exception.Message.ShouldContain(typeof(BehaviorsWithProtectedFields).FullName);
     It should_print_the_missing_fields = () =>
-      exception.Message.ShouldContain("fieldThatShouldBeCopiedOverFromContext");
+      exception.Message.ShouldContain("field_that_should_be_copied_over_from_context");
   }
 
   [Subject("Specification Runner")]
@@ -146,6 +146,6 @@ namespace Machine.Specifications.Specs.Runner
     It should_print_the_behaviors_containing_wrongly_typed_fields = () =>
       exception.Message.ShouldContain(typeof(BehaviorsWithProtectedFields).FullName);
     It should_print_the_wrongly_typed_fields = () =>
-      exception.Message.ShouldContain("fieldThatShouldBeCopiedOverFromContext");
+      exception.Message.ShouldContain("field_that_should_be_copied_over_from_context");
   }
 }

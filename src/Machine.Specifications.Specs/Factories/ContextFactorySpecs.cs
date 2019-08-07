@@ -19,7 +19,7 @@ namespace Machine.Specifications.Specs.Factories
         };
 
         It should_capture_the_concerns_type =
-            () => newContext.Subject.Type.ShouldBeOfExactType<int>();
+            () => newContext.Subject.Type.ShouldEqual(typeof(int));
 
         It should_capture_the_concerns_description =
             () => newContext.Subject.Description.ShouldEqual("Some description");
@@ -37,7 +37,7 @@ namespace Machine.Specifications.Specs.Factories
         };
 
         It should_capture_the_base_concerns_subject_details =
-            () => newContext.Subject.Type.ShouldBeOfExactType<int>();
+            () => newContext.Subject.Type.ShouldEqual(typeof(int));
     }
 
     [Subject(typeof(ContextFactory))]
