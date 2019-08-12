@@ -10,11 +10,11 @@
     <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj" />
     <ProjectReference Include="..\Examples\Example\Example.csproj" />
     <ProjectReference Include="..\Examples\Example.Random\Example.Random.csproj" />
-    <ProjectReference Include="..\Examples\Example.Failing\Example.Failing.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Machine.Specifications.Should" Version="1.0.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.2.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.9.0" />
   </ItemGroup>

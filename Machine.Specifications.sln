@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example", "src\Examples\Example\Example.csproj", "{A8B22591-9BAC-4A69-AF11-99215CECCB9A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Failing", "src\Examples\Example.Failing\Example.Failing.csproj", "{B8326240-1533-4EAD-A146-3FA4D5260C01}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Random", "src\Examples\Example.Random\Example.Random.csproj", "{5BF4481E-EE64-4FF4-93F2-3FECA09FF474}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Specs", "src\Machine.Specifications.Specs\Machine.Specifications.Specs.csproj", "{3A94F45A-5633-49E3-AC93-6A7E00E1EF46}"
@@ -37,10 +35,6 @@ Global
 		{A8B22591-9BAC-4A69-AF11-99215CECCB9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8B22591-9BAC-4A69-AF11-99215CECCB9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8B22591-9BAC-4A69-AF11-99215CECCB9A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B8326240-1533-4EAD-A146-3FA4D5260C01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B8326240-1533-4EAD-A146-3FA4D5260C01}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B8326240-1533-4EAD-A146-3FA4D5260C01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B8326240-1533-4EAD-A146-3FA4D5260C01}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5BF4481E-EE64-4FF4-93F2-3FECA09FF474}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5BF4481E-EE64-4FF4-93F2-3FECA09FF474}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BF4481E-EE64-4FF4-93F2-3FECA09FF474}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -55,7 +49,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A8B22591-9BAC-4A69-AF11-99215CECCB9A} = {85BC2C4A-493A-476C-971E-BE9CE51ECF5D}
-		{B8326240-1533-4EAD-A146-3FA4D5260C01} = {85BC2C4A-493A-476C-971E-BE9CE51ECF5D}
 		{5BF4481E-EE64-4FF4-93F2-3FECA09FF474} = {85BC2C4A-493A-476C-971E-BE9CE51ECF5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
