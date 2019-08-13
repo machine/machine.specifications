@@ -4,7 +4,6 @@ using Example.Random;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
 using Machine.Specifications.Specs.Fixtures;
-using TestAssemblyContext = Example.TestAssemblyContext;
 
 namespace Machine.Specifications.Specs.Runner
 {
@@ -529,6 +528,22 @@ namespace Machine.Specifications.Specs.Runner
 
         It should_succeed =
             () => testListener.LastResult.Passed.ShouldBeTrue();
+    }
+
+    public class ExampleRunnerSpecs : RunnerSpecs
+    {
+        static CompileContext compiler;
+
+        protected static string AssemblyPath;
+
+        Establish context = () =>
+        {
+            compiler = new CompileContext();
+            AssemblyPath = compiler.Compile(ExampleFixture.Code);
+        };
+
+        Cleanup after = () =>
+            compiler.Dispose();
     }
 
     public class FailingRunnerSpecs : RunnerSpecs

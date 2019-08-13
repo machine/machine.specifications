@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj" />
-    <ProjectReference Include="..\Examples\Example\Example.csproj" />
     <ProjectReference Include="..\Examples\Example.Random\Example.Random.csproj" />
   </ItemGroup>
 

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Example;
 using Example.Random;
 using Machine.Specifications.Explorers;
 using Machine.Specifications.Model;
+using Machine.Specifications.Specs.Runner;
 
 namespace Machine.Specifications.Specs.Explorers
 {
@@ -25,7 +25,7 @@ namespace Machine.Specifications.Specs.Explorers
     }
 
     [Subject(typeof(AssemblyExplorer))]
-    public class AssemblyExplorer_FindSpecifications_WithExampleAssemblyTests
+    public class AssemblyExplorer_FindSpecifications_WithExampleAssemblyTests : ExampleRunnerSpecs
     {
         static AssemblyExplorer Explorer;
         static IEnumerable<Context> contexts;
@@ -34,7 +34,7 @@ namespace Machine.Specifications.Specs.Explorers
             Explorer = new AssemblyExplorer();
 
         Because of = () =>
-            contexts = Explorer.FindContextsIn(typeof(Account).GetTypeInfo().Assembly);
+            contexts = Explorer.FindContextsIn(Assembly.LoadFile(AssemblyPath));
 
         It should_find_three_contexts = () =>
             contexts.Count().ShouldEqual(3);
@@ -118,7 +118,7 @@ namespace Machine.Specifications.Specs.Explorers
     }
 
     [Subject(typeof(AssemblyExplorer))]
-    public class AssemblyExplorer_FindContext_WithFirstContextOfExampleAssemblyTests
+    public class AssemblyExplorer_FindContext_WithFirstContextOfExampleAssemblyTests : ExampleRunnerSpecs
     {
         static AssemblyExplorer Explorer;
         static IEnumerable<Context> contexts;
@@ -129,7 +129,7 @@ namespace Machine.Specifications.Specs.Explorers
 
         Because of = () =>
         {
-            contexts = Explorer.FindContextsIn(typeof(Account).GetTypeInfo().Assembly);
+            contexts = Explorer.FindContextsIn(Assembly.LoadFile(AssemblyPath));
             single_context = contexts.FirstOrDefault(x => x.Name == "when transferring between two accounts");
         };
 
