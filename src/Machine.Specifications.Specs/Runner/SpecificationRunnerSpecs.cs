@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using Example.Random;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
 using Machine.Specifications.Specs.Fixtures;
