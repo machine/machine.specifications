@@ -19,7 +19,7 @@ namespace Machine.Specifications.Specs
             var filename = Path.Combine(_directory, Guid.NewGuid() + ".dll");
 
 #if NETCOREAPP
-            var result = CSharpCompilation.Create(filename)
+            var result = CSharpCompilation.Create(Path.GetFileName(filename))
                 .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
                 .AddReferences(
                     MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
