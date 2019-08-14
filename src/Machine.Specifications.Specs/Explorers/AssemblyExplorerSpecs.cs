@@ -7,21 +7,21 @@ using Machine.Specifications.Specs.Runner;
 
 namespace Machine.Specifications.Specs.Explorers
 {
-    [Subject(typeof(AssemblyExplorer))]
-    public class When_inspecting_internal_types_for_contexts
-    {
-        static AssemblyExplorer Explorer;
-        static IEnumerable<Context> Contexts;
+    //[Subject(typeof(AssemblyExplorer))]
+    //public class When_inspecting_internal_types_for_contexts
+    //{
+    //    static AssemblyExplorer Explorer;
+    //    static IEnumerable<Context> Contexts;
 
-        Establish context = () =>
-            Explorer = new AssemblyExplorer();
+    //    Establish context = () =>
+    //        Explorer = new AssemblyExplorer();
 
-        Because of = () =>
-            Contexts = Explorer.FindContextsIn(typeof(tag).GetTypeInfo().Assembly, "Example.Random.Internal");
+    //    Because of = () =>
+    //        Contexts = Explorer.FindContextsIn(typeof(tag).GetTypeInfo().Assembly, "Example.Random.Internal");
 
-        It should_find_two_contexts = () =>
-            Contexts.Count().ShouldEqual(2);
-    }
+    //    It should_find_two_contexts = () =>
+    //        Contexts.Count().ShouldEqual(2);
+    //}
 
     [Subject(typeof(AssemblyExplorer))]
     public class AssemblyExplorer_FindSpecifications_WithExampleAssemblyTests : ExampleRunnerSpecs
@@ -52,69 +52,69 @@ namespace Machine.Specifications.Specs.Explorers
                 );
     }
 
-    [Subject(typeof(AssemblyExplorer))]
-    public class AssemblyExplorer_FindContexts_WithOneOfManyNamespaces
-    {
-        static AssemblyExplorer Explorer;
-        static IEnumerable<Context> contexts;
+    //[Subject(typeof(AssemblyExplorer))]
+    //public class AssemblyExplorer_FindContexts_WithOneOfManyNamespaces
+    //{
+    //    static AssemblyExplorer Explorer;
+    //    static IEnumerable<Context> contexts;
 
-        Establish context = () =>
-            Explorer = new AssemblyExplorer();
+    //    Establish context = () =>
+    //        Explorer = new AssemblyExplorer();
 
-        Because of = () =>
-            contexts = Explorer.FindContextsIn(typeof(ExampleA.InExampleA_1).GetTypeInfo().Assembly, "Machine.Specifications.ExampleA");
+    //    Because of = () =>
+    //        contexts = Explorer.FindContextsIn(typeof(ExampleA.InExampleA_1).GetTypeInfo().Assembly, "Machine.Specifications.ExampleA");
 
-        It should_find_two_contexts = () =>
-            contexts.Count().ShouldEqual(2);
+    //    It should_find_two_contexts = () =>
+    //        contexts.Count().ShouldEqual(2);
 
-        It should_return_two_contexts_named_correctly = () =>
-            contexts
-                .Select(x => x.Name)
-                .ShouldContainOnly(
-                    "InExampleA 1",
-                    "InExampleA 2");
-    }
+    //    It should_return_two_contexts_named_correctly = () =>
+    //        contexts
+    //            .Select(x => x.Name)
+    //            .ShouldContainOnly(
+    //                "InExampleA 1",
+    //                "InExampleA 2");
+    //}
 
-    [Subject(typeof(AssemblyExplorer))]
-    public class AssemblyExplorer_FindContext_WithFieldInfo
-    {
-        static AssemblyExplorer Explorer;
-        static Context single_context;
+    //[Subject(typeof(AssemblyExplorer))]
+    //public class AssemblyExplorer_FindContext_WithFieldInfo
+    //{
+    //    static AssemblyExplorer Explorer;
+    //    static Context single_context;
 
-        Establish context = () =>
-            Explorer = new AssemblyExplorer();
+    //    Establish context = () =>
+    //        Explorer = new AssemblyExplorer();
 
-        Because of = () =>
-            single_context = Explorer.FindContexts(typeof(ExampleC.InExampleC_1));
+    //    Because of = () =>
+    //        single_context = Explorer.FindContexts(typeof(ExampleC.InExampleC_1));
 
-        It should_return_a_context = () =>
-            single_context.ShouldNotBeNull();
+    //    It should_return_a_context = () =>
+    //        single_context.ShouldNotBeNull();
 
-        It should_return_correct_name = () =>
-            single_context.Name.ShouldEqual("InExampleC 1");
-    }
+    //    It should_return_correct_name = () =>
+    //        single_context.Name.ShouldEqual("InExampleC 1");
+    //}
 
-    [Subject(typeof(AssemblyExplorer))]
-    public class AssemblyExplorer_FindContext_WithClass
-    {
-        static AssemblyExplorer Explorer;
-        static Context single_context;
+    //[Subject(typeof(AssemblyExplorer))]
+    //public class AssemblyExplorer_FindContext_WithClass
+    //{
+    //    static AssemblyExplorer Explorer;
+    //    static Context single_context;
 
-        Establish context = () =>
-            Explorer = new AssemblyExplorer();
+    //    Establish context = () =>
+    //        Explorer = new AssemblyExplorer();
 
-        Because of = () => single_context =
-            Explorer.FindContexts(typeof(ExampleC.InExampleC_1).GetField("is_spec_1", BindingFlags.Instance | BindingFlags.NonPublic));
+    //    Because of = () => single_context =
+    //        Explorer.FindContexts(typeof(ExampleC.InExampleC_1).GetField("is_spec_1", BindingFlags.Instance | BindingFlags.NonPublic));
 
-        It should_return_a_context = () =>
-            single_context.ShouldNotBeNull();
+    //    It should_return_a_context = () =>
+    //        single_context.ShouldNotBeNull();
 
-        It should_return_one_specification = () =>
-            single_context.Specifications.Count().ShouldEqual(1);
+    //    It should_return_one_specification = () =>
+    //        single_context.Specifications.Count().ShouldEqual(1);
 
-        It should_return_one_specification_named_correctly = () =>
-            single_context.Specifications.First().Name.ShouldEqual("is spec 1");
-    }
+    //    It should_return_one_specification_named_correctly = () =>
+    //        single_context.Specifications.First().Name.ShouldEqual("is spec 1");
+    //}
 
     [Subject(typeof(AssemblyExplorer))]
     public class AssemblyExplorer_FindContext_WithFirstContextOfExampleAssemblyTests : ExampleRunnerSpecs

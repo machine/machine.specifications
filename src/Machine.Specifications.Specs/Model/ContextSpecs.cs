@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Machine.Specifications.Factories;
 using Machine.Specifications.Model;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
+using Machine.Specifications.Specs.Runner;
 
 namespace Machine.Specifications.Specs.Model
 {
     [Subject(typeof(Context))]
-    public class ExpectingThrowButDoesntTests
+    public class ExpectingThrowButDoesntTests : RandomRunnerSpecs
     {
         static ContextFactory factory;
         static IEnumerable<Result> results;
@@ -17,9 +19,13 @@ namespace Machine.Specifications.Specs.Model
         Establish context = () =>
             factory = new ContextFactory();
 
-        Because of = () =>
+        private Because of = () =>
         {
-            var context = factory.CreateContextFrom(new ContextWithSpecificationExpectingThrowThatDoesnt());
+            var type = Assembly
+                .LoadFile(AssemblyPath)
+                .GetType("Machine.Specifications.ContextWithSpecificationExpectingThrowThatDoesnt");
+
+            var context = factory.CreateContextFrom(Activator.CreateInstance(type));
 
             results = ContextRunnerFactory
                 .GetContextRunnerFor(context)
@@ -38,8 +44,9 @@ namespace Machine.Specifications.Specs.Model
     }
 
     [Subject(typeof(Context))]
-    public class ThrowingWhenTests
+    public class ThrowingWhenTests : RandomRunnerSpecs
     {
+        static Type type;
         static ContextFactory factory;
         static IEnumerable<Result> results;
 
@@ -48,7 +55,11 @@ namespace Machine.Specifications.Specs.Model
 
         Because of = () =>
         {
-            var context = factory.CreateContextFrom(new ContextWithThrowingWhenAndPassingSpecification());
+            type = Assembly
+                .LoadFile(AssemblyPath)
+                .GetType("Machine.Specifications.ContextWithThrowingWhenAndPassingSpecification");
+
+            var context = factory.CreateContextFrom(Activator.CreateInstance(type));
 
             results = ContextRunnerFactory
                 .GetContextRunnerFor(context)
@@ -60,15 +71,16 @@ namespace Machine.Specifications.Specs.Model
         };
 
         It should_not_call_id = () =>
-            ContextWithThrowingWhenAndPassingSpecification.it_invoked.ShouldBeFalse();
+            type.ToDynamic().it_invoked.ShouldBeFalse();
 
         It should_fail = () =>
             results.First().Passed.ShouldBeFalse();
     }
 
     [Subject(typeof(Context))]
-    public class EmptyContextTests
+    public class EmptyContextTests : RandomRunnerSpecs
     {
+        static Type type;
         static ContextFactory factory;
         static IEnumerable<Result> results;
 
@@ -77,7 +89,11 @@ namespace Machine.Specifications.Specs.Model
 
         Because of = () =>
         {
-            var context = factory.CreateContextFrom(new ContextWithEmptyWhen());
+            type = Assembly
+                .LoadFile(AssemblyPath)
+                .GetType("Machine.Specifications.ContextWithEmptyWhen");
+
+            var context = factory.CreateContextFrom(Activator.CreateInstance(type));
 
             results = ContextRunnerFactory
                 .GetContextRunnerFor(context)
@@ -89,12 +105,13 @@ namespace Machine.Specifications.Specs.Model
         };
 
         It should_call_it = () =>
-            ContextWithEmptyWhen.it_invoked.ShouldBeTrue();
+            type.ToDynamic().it_invoked.ShouldBeTrue();
     }
 
     [Subject(typeof(Context))]
-    public class EmptySpecificationTests
+    public class EmptySpecificationTests : RandomRunnerSpecs
     {
+        static Type type;
         static ContextFactory factory;
         static IEnumerable<Result> results;
 
@@ -103,7 +120,11 @@ namespace Machine.Specifications.Specs.Model
 
         Because of = () =>
         {
-            var context = factory.CreateContextFrom(new ContextWithEmptySpecification());
+            type = Assembly
+                .LoadFile(AssemblyPath)
+                .GetType("Machine.Specifications.ContextWithEmptySpecification");
+
+            var context = factory.CreateContextFrom(Activator.CreateInstance(type));
 
             results = ContextRunnerFactory
                 .GetContextRunnerFor(context)
@@ -115,7 +136,7 @@ namespace Machine.Specifications.Specs.Model
         };
 
         It should_not_call_when = () =>
-            ContextWithEmptySpecification.when_invoked.ShouldBeFalse();
+            type.ToDynamic().when_invoked.ShouldBeFalse();
 
         It should_have_not_implemented_result = () =>
             results.First().Status.ShouldEqual(Status.NotImplemented);
@@ -125,8 +146,9 @@ namespace Machine.Specifications.Specs.Model
     }
 
     [Subject(typeof(Context))]
-    public class ContextTests
+    public class ContextTests : RandomRunnerSpecs
     {
+        static Type type;
         static ContextFactory factory;
         static IEnumerable<Result> results;
 
@@ -135,7 +157,11 @@ namespace Machine.Specifications.Specs.Model
 
         Because of = () =>
         {
-            var context = factory.CreateContextFrom(new ContextWithSingleSpecification());
+            type = Assembly
+                .LoadFile(AssemblyPath)
+                .GetType("Machine.Specifications.ContextWithSingleSpecification");
+
+            var context = factory.CreateContextFrom(Activator.CreateInstance(type));
 
             results = ContextRunnerFactory
                 .GetContextRunnerFor(context)
@@ -147,12 +173,12 @@ namespace Machine.Specifications.Specs.Model
         };
 
         It should_establish_context = () =>
-            ContextWithSingleSpecification.because_invoked.ShouldBeTrue();
+            type.ToDynamic().because_invoked.ShouldBeTrue();
 
         It should_call_before_each = () =>
-            ContextWithSingleSpecification.context_invoked.ShouldBeTrue();
+            type.ToDynamic().context_invoked.ShouldBeTrue();
 
         It should_cleanup = () =>
-            ContextWithSingleSpecification.cleanup_invoked.ShouldBeTrue();
+            type.ToDynamic().cleanup_invoked.ShouldBeTrue();
     }
 }

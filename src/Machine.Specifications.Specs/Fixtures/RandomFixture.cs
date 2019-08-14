@@ -241,14 +241,18 @@ namespace Example.Random
     public class context_with_failing_specs
     {
         It should = () =>
+        {
             throw new InvalidOperationException(""something went wrong"");
+        };
     }
 
     [Tags(tag.example)]
     public class context_with_failing_establish
     {
         Establish context = () =>
+        {
             throw new InvalidOperationException(""something went wrong"");
+        };
 
         It should = () => { };
     }
@@ -257,7 +261,9 @@ namespace Example.Random
     public class context_with_failing_because
     {
         Because of = () =>
+        {
             throw new InvalidOperationException(""something went wrong"");
+        };
 
         It should = () => { };
     }
@@ -270,7 +276,9 @@ namespace Example.Random
         It should = () => { };
 
         Cleanup after = () =>
+        {
             throw ExceptionThrownByCleanup;
+        };
     }
 
     [Tags(tag.example)]
@@ -315,19 +323,19 @@ namespace Example.Random
     public class context_with_debug_output
     {
         Establish context = () =>
-            Debug.WriteLine(""Debug.WriteLine message in establish"");
+            Console.WriteLine(""Debug.WriteLine message in establish"");
 
         Because of = () =>
-            Debug.WriteLine(""Debug.WriteLine message in because"");
+            Console.WriteLine(""Debug.WriteLine message in because"");
 
         Cleanup after = () =>
-            Debug.WriteLine(""Debug.WriteLine message in cleanup"");
+            Console.WriteLine(""Debug.WriteLine message in cleanup"");
 
         It should_log_messages = () =>
-            Debug.WriteLine(""Debug.WriteLine message in spec"");
+            Console.WriteLine(""Debug.WriteLine message in spec"");
 
         It should_log_messages_also_for_the_nth_spec = () =>
-            Debug.WriteLine(""Debug.WriteLine message in nth spec"");
+            Console.WriteLine(""Debug.WriteLine message in nth spec"");
     }
 
     [SetupForEachSpecification, Tags(tag.example)]
@@ -925,7 +933,9 @@ namespace Machine.Specifications
         public static bool it_invoked;
 
         Because of = () =>
+        {
             throw new Exception();
+        };
 
         It should_fail = () =>
             it_invoked = true;
@@ -1003,7 +1013,7 @@ namespace Machine.Specifications
         Because it_happens = () =>
         {
             when_invoked = true;
-            exception = Catch.Exception(() => throw new Exception());
+            exception = Catch.Exception(() => { throw new Exception(); });
         };
 
         It should_throw_an_exception = () =>
