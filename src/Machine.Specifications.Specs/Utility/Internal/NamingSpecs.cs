@@ -7,10 +7,11 @@ namespace Machine.Specifications.Specs.Utility.Internal
     {
         static string Name;
 
-        Because of = () => Name = "when_something_is_specified".ToFormat();
+        Because of = () =>
+            Name = "when_something_is_specified".ToFormat();
 
-        It should_replace_single_underscores_with_spaces =
-            () => Name.ShouldEqual("when something is specified");
+        It should_replace_single_underscores_with_spaces = () =>
+            Name.ShouldEqual("when something is specified");
     }
 
     [Subject(typeof(Naming))]
@@ -18,10 +19,11 @@ namespace Machine.Specifications.Specs.Utility.Internal
     {
         static string Name;
 
-        Because of = () => Name = "when__something__is_specified".ToFormat();
+        Because of = () =>
+            Name = "when__something__is_specified".ToFormat();
 
-        It should_replace_double_underscores_with_quotes =
-            () => Name.ShouldEqual("when \"something\" is specified");
+        It should_replace_double_underscores_with_quotes = () =>
+            Name.ShouldEqual("when \"something\" is specified");
     }
 
     [Subject(typeof(Naming))]
@@ -30,10 +32,11 @@ namespace Machine.Specifications.Specs.Utility.Internal
     {
         static string Name;
 
-        Because of = () => Name = "when__something_is_specified".ToFormat();
+        Because of = () =>
+            Name = "when__something_is_specified".ToFormat();
 
-        It should_replace_the_double_underscore_with_two_spaces =
-            () => Name.ShouldEqual("when  something is specified");
+        It should_replace_the_double_underscore_with_two_spaces = () =>
+            Name.ShouldEqual("when  something is specified");
     }
 
     [Subject(typeof(Naming))]
@@ -41,10 +44,11 @@ namespace Machine.Specifications.Specs.Utility.Internal
     {
         static string Name;
 
-        Because of = () => Name = "when_something_s_specified".ToFormat();
+        Because of = () =>
+            Name = "when_something_s_specified".ToFormat();
 
-        It should_convert__underscore_s__to_possessive_s =
-            () => Name.ShouldEqual("when something's specified");
+        It should_convert__underscore_s__to_possessive_s = () =>
+            Name.ShouldEqual("when something's specified");
     }
 
     [Subject(typeof(Naming))]
@@ -52,9 +56,10 @@ namespace Machine.Specifications.Specs.Utility.Internal
     {
         static string Name;
 
-        Because of = () => Name = "a_single__s__for_fun".ToFormat();
+        Because of = () =>
+            Name = "a_single__s__for_fun".ToFormat();
 
-        It should_replace_double_underscores_with_quotes =
-            () => Name.ShouldEqual("a single \"s\" for fun");
+        It should_replace_double_underscores_with_quotes = () =>
+            Name.ShouldEqual("a single \"s\" for fun");
     }
 }

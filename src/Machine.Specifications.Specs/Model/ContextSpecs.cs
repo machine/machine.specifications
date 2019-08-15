@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Machine.Specifications.Factories;
 using Machine.Specifications.Model;
 using Machine.Specifications.Runner;
@@ -21,9 +20,7 @@ namespace Machine.Specifications.Specs.Model
 
         private Because of = () =>
         {
-            var type = Assembly
-                .LoadFile(AssemblyPath)
-                .GetType("Machine.Specifications.ContextWithSpecificationExpectingThrowThatDoesnt");
+            var type = GetFramework("ContextWithSpecificationExpectingThrowThatDoesnt");
 
             var context = factory.CreateContextFrom(Activator.CreateInstance(type));
 
@@ -55,9 +52,7 @@ namespace Machine.Specifications.Specs.Model
 
         Because of = () =>
         {
-            type = Assembly
-                .LoadFile(AssemblyPath)
-                .GetType("Machine.Specifications.ContextWithThrowingWhenAndPassingSpecification");
+            type = GetFramework("ContextWithThrowingWhenAndPassingSpecification");
 
             var context = factory.CreateContextFrom(Activator.CreateInstance(type));
 
@@ -89,9 +84,7 @@ namespace Machine.Specifications.Specs.Model
 
         Because of = () =>
         {
-            type = Assembly
-                .LoadFile(AssemblyPath)
-                .GetType("Machine.Specifications.ContextWithEmptyWhen");
+            type = GetFramework("ContextWithEmptyWhen");
 
             var context = factory.CreateContextFrom(Activator.CreateInstance(type));
 
@@ -120,9 +113,7 @@ namespace Machine.Specifications.Specs.Model
 
         Because of = () =>
         {
-            type = Assembly
-                .LoadFile(AssemblyPath)
-                .GetType("Machine.Specifications.ContextWithEmptySpecification");
+            type = GetFramework("ContextWithEmptySpecification");
 
             var context = factory.CreateContextFrom(Activator.CreateInstance(type));
 
@@ -157,9 +148,7 @@ namespace Machine.Specifications.Specs.Model
 
         Because of = () =>
         {
-            type = Assembly
-                .LoadFile(AssemblyPath)
-                .GetType("Machine.Specifications.ContextWithSingleSpecification");
+            type = GetFramework("ContextWithSingleSpecification");
 
             var context = factory.CreateContextFrom(Activator.CreateInstance(type));
 

@@ -11,10 +11,8 @@ namespace Machine.Specifications.Specs.Runner
 
         Establish context = () =>
         {
-            var assembly = Assembly.LoadFile(AssemblyPath);
-
-            context_that_inherits = assembly.GetType("Example.Random.context_that_inherits");
-            context_with_inherited_specifications = assembly.GetType("Example.Random.context_with_inherited_specifications");
+            context_that_inherits = GetRandom("context_that_inherits");
+            context_with_inherited_specifications = GetRandom("context_with_inherited_specifications");
 
             context_that_inherits.ToDynamic().base_establish_run_count = 0;
             context_with_inherited_specifications.ToDynamic().because_clause_run_count = 0;
@@ -45,10 +43,8 @@ namespace Machine.Specifications.Specs.Runner
 
         Establish context = () =>
         {
-            var assembly = Assembly.LoadFile(AssemblyPath);
-
-            context_that_inherits = assembly.GetType("Example.Random.context_that_inherits");
-            context_with_inherited_specifications_and_setup_for_each = assembly.GetType("Example.Random.context_with_inherited_specifications_and_setup_for_each");
+            context_that_inherits = GetRandom("context_that_inherits");
+            context_with_inherited_specifications_and_setup_for_each = GetRandom("context_with_inherited_specifications_and_setup_for_each");
 
             context_that_inherits.ToDynamic().base_establish_run_count = 0;
             context_with_inherited_specifications_and_setup_for_each.ToDynamic().because_clause_run_count = 0;

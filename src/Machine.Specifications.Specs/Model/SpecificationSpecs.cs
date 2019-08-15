@@ -1,26 +1,33 @@
-﻿using Machine.Specifications.Factories;
+﻿using System;
+using Machine.Specifications.Factories;
 using Machine.Specifications.Model;
+using Machine.Specifications.Specs.Runner;
 
 namespace Machine.Specifications.Specs.Model
 {
-    //[Subject(typeof(Specification))]
-    //public class SpecificationSpecs
-    //{
-    //    static ContextFactory factory;
+    [Subject(typeof(Specification))]
+    public class SpecificationSpecs : RandomRunnerSpecs
+    {
+        static Type ContextWithSingleSpecification;
+        static ContextFactory factory;
 
-    //    Establish context = () =>
-    //        factory = new ContextFactory();
+        Establish context = () =>
+        {
+            ContextWithSingleSpecification = GetFramework("ContextWithSingleSpecification");
 
-    //    Because of = () =>
-    //        factory.CreateContextFrom(new ContextWithSingleSpecification());
+            factory = new ContextFactory();
+        };
 
-    //    It should_establish_context = () =>
-    //        ContextWithSingleSpecification.because_invoked.ShouldBeTrue();
+        Because of = () =>
+            factory.CreateContextFrom(Activator.CreateInstance(ContextWithSingleSpecification));
 
-    //    It should_call_before_each = () =>
-    //        ContextWithSingleSpecification.context_invoked.ShouldBeTrue();
+        It should_establish_context = () =>
+            ContextWithSingleSpecification.ToDynamic().because_invoked.ShouldBeTrue();
 
-    //    It should_cleanup = () =>
-    //        ContextWithSingleSpecification.cleanup_invoked.ShouldBeTrue();
-    //}
+        It should_call_before_each = () =>
+            ContextWithSingleSpecification.ToDynamic().context_invoked.ShouldBeTrue();
+
+        It should_cleanup = () =>
+            ContextWithSingleSpecification.ToDynamic().cleanup_invoked.ShouldBeTrue();
+    }
 }

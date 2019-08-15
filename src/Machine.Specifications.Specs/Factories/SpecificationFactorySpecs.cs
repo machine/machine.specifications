@@ -1,88 +1,103 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using Machine.Specifications.Factories;
 using Machine.Specifications.Model;
 using Machine.Specifications.Sdk;
+using Machine.Specifications.Specs.Runner;
 using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Specs.Factories
 {
-    //[Subject(typeof(SpecificationFactory))]
-    //public class SpecificationFactory_CreateSpecification
-    //{
-    //    static SpecificationFactory factory;
-    //    static Specification specification;
+    [Subject(typeof(SpecificationFactory))]
+    public class SpecificationFactory_CreateSpecification : RandomRunnerSpecs
+    {
+        static Type ContextWithSingleSpecification;
+        static SpecificationFactory factory;
+        static Specification specification;
 
-    //    Establish context = () =>
-    //        factory = new SpecificationFactory();
+        Establish context = () =>
+        {
+            ContextWithSingleSpecification = GetFramework("ContextWithSingleSpecification");
 
-    //    Because of = () =>
-    //    {
-    //        var singleContext = new ContextFactory()
-    //            .CreateContextFrom(new ContextWithSingleSpecification());
+            factory = new SpecificationFactory();
+        };
 
-    //        var field = typeof(ContextWithSingleSpecification)
-    //            .GetInstanceFieldsOfUsage(new AssertDelegateAttributeFullName())
-    //            .First();
+        Because of = () =>
+        {
+            var singleContext = new ContextFactory()
+                .CreateContextFrom(Activator.CreateInstance(ContextWithSingleSpecification));
 
-    //        specification = factory.CreateSpecification(singleContext, field);
-    //    };
+            var field = ContextWithSingleSpecification
+                .GetInstanceFieldsOfUsage(new AssertDelegateAttributeFullName())
+                .First();
 
-    //    It should_have_correct_it_clause = () =>
-    //        specification.Name.ShouldEqual("is a specification");
+            specification = factory.CreateSpecification(singleContext, field);
+        };
 
-    //    It should_have_field_info = () =>
-    //        specification.FieldInfo.Name.ShouldEqual("is_a_specification");
-    //}
+        It should_have_correct_it_clause = () =>
+            specification.Name.ShouldEqual("is a specification");
 
-    //[Subject(typeof(SpecificationFactory))]
-    //public class SpecificationFactory_CreateThrowSpecification
-    //{
-    //    static SpecificationFactory factory;
-    //    static Specification specification;
+        It should_have_field_info = () =>
+            specification.FieldInfo.Name.ShouldEqual("is_a_specification");
+    }
 
-    //    Establish context = () =>
-    //        factory = new SpecificationFactory();
+    [Subject(typeof(SpecificationFactory))]
+    public class SpecificationFactory_CreateThrowSpecification : RandomRunnerSpecs
+    {
+        static Type ContextWithThrowingSpecification;
+        static SpecificationFactory factory;
+        static Specification specification;
 
-    //    Because of = () =>
-    //    {
-    //        var field = typeof(ContextWithThrowingSpecification)
-    //            .GetInstanceFieldsOfUsage(new AssertDelegateAttributeFullName())
-    //            .First();
+        Establish context = () =>
+        {
+            ContextWithThrowingSpecification = GetFramework("ContextWithThrowingSpecification");
 
-    //        var context = new ContextFactory()
-    //            .CreateContextFrom(new ContextWithThrowingSpecification());
+            factory = new SpecificationFactory();
+        };
 
-    //        specification = factory.CreateSpecification(context, field);
-    //    };
+        Because of = () =>
+        {
+            var field = ContextWithThrowingSpecification
+                .GetInstanceFieldsOfUsage(new AssertDelegateAttributeFullName())
+                .First();
 
-    //    It should_have_correct_it_clause = () =>
-    //        specification.Name.ShouldEqual("should throw an exception");
-    //}
+            var context = new ContextFactory()
+                .CreateContextFrom(Activator.CreateInstance(ContextWithThrowingSpecification));
 
-    //[Subject(typeof(SpecificationFactory))]
-    //public class SpecificationFactory_CreateUndefinedSpecification
-    //{
-    //    static SpecificationFactory factory;
-    //    static Specification specification;
+            specification = factory.CreateSpecification(context, field);
+        };
 
-    //    Establish context = () =>
-    //        factory = new SpecificationFactory();
+        It should_have_correct_it_clause = () =>
+            specification.Name.ShouldEqual("should throw an exception");
+    }
 
-    //    Because of = () =>
-    //    {
-    //        var field = typeof(ContextWithEmptySpecification)
-    //            .GetInstanceFieldsOfUsage(new AssertDelegateAttributeFullName())
-    //            .First();
+    [Subject(typeof(SpecificationFactory))]
+    public class SpecificationFactory_CreateUndefinedSpecification : RandomRunnerSpecs
+    {
+        static Type ContextWithEmptySpecification;
+        static SpecificationFactory factory;
+        static Specification specification;
 
-    //        var context = new ContextFactory()
-    //            .CreateContextFrom(new ContextWithEmptySpecification());
+        Establish context = () =>
+        {
+            ContextWithEmptySpecification = GetFramework("ContextWithEmptySpecification");
 
-    //        specification = factory.CreateSpecification(context, field);
-    //    };
+            factory = new SpecificationFactory();
+        };
 
-    //    It should_create_unknown_specification = () =>
-    //        specification.IsDefined.ShouldBeFalse();
-    //}
+        Because of = () =>
+        {
+            var field = ContextWithEmptySpecification
+                .GetInstanceFieldsOfUsage(new AssertDelegateAttributeFullName())
+                .First();
+
+            var context = new ContextFactory()
+                .CreateContextFrom(Activator.CreateInstance(ContextWithEmptySpecification));
+
+            specification = factory.CreateSpecification(context, field);
+        };
+
+        It should_create_unknown_specification = () =>
+            specification.IsDefined.ShouldBeFalse();
+    }
 }

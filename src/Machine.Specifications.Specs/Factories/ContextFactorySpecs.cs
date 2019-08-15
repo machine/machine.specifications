@@ -3,54 +3,62 @@ using System.Collections.Generic;
 using System.Linq;
 using Machine.Specifications.Factories;
 using Machine.Specifications.Model;
+using Machine.Specifications.Specs.Runner;
 
 namespace Machine.Specifications.Specs.Factories
 {
-    //[Subject(typeof(ContextFactory))]
-    //public class when_creating_a_context_with_a_concern
-    //{
-    //    static Context newContext;
+    [Subject(typeof(ContextFactory))]
+    public class when_creating_a_context_with_a_concern : RandomRunnerSpecs
+    {
+        static Type context_with_subject;
+        static Context newContext;
 
-    //    Establish context = () =>
-    //    {
-    //        var factory = new ContextFactory();
-    //        newContext = factory.CreateContextFrom(new context_with_subject());
-    //    };
+        Establish context = () =>
+        {
+            context_with_subject = GetRandom("context_with_subject");
 
-    //    It should_capture_the_concerns_type =
-    //        () => newContext.Subject.Type.ShouldEqual(typeof(int));
+            var factory = new ContextFactory();
+            newContext = factory.CreateContextFrom(Activator.CreateInstance(context_with_subject));
+        };
 
-    //    It should_capture_the_concerns_description =
-    //        () => newContext.Subject.Description.ShouldEqual("Some description");
-    //}
+        It should_capture_the_concerns_type = () =>
+            newContext.Subject.Type.ShouldEqual(typeof(int));
 
-    //[Subject(typeof(ContextFactory))]
-    //public class when_creating_a_context_with_a_base_concern_that_has_a_subject_attribute_on_it
-    //{
-    //    static Context newContext;
+        It should_capture_the_concerns_description = () =>
+            newContext.Subject.Description.ShouldEqual("Some description");
+    }
 
-    //    Establish context = () =>
-    //    {
-    //        var factory = new ContextFactory();
-    //        newContext = factory.CreateContextFrom(new context_with_parent_with_subject());
-    //    };
+    [Subject(typeof(ContextFactory))]
+    public class when_creating_a_context_with_a_base_concern_that_has_a_subject_attribute_on_it : RandomRunnerSpecs
+    {
+        static Type context_with_parent_with_subject;
+        static Context newContext;
 
-    //    It should_capture_the_base_concerns_subject_details =
-    //        () => newContext.Subject.Type.ShouldEqual(typeof(int));
-    //}
+        Establish context = () =>
+        {
+            context_with_parent_with_subject = GetRandom("context_with_parent_with_subject");
+
+            var factory = new ContextFactory();
+            newContext = factory.CreateContextFrom(Activator.CreateInstance(context_with_parent_with_subject));
+        };
+
+        It should_capture_the_base_concerns_subject_details = () =>
+            newContext.Subject.Type.ShouldEqual(typeof(int));
+    }
 
     [Subject(typeof(ContextFactory))]
     public class when_using_nested_contexts
     {
-        Establish context = () => { outerContextRan = true; };
+        static bool outerContextRan;
+
+        Establish context = () =>
+            outerContextRan = true;
 
         public class and_the_parent_context_has_context_blocks
         {
-            It should_run_the_parent_context_blocks_prior_to_the_nested_context_blocks =
-                () => outerContextRan.ShouldBeTrue();
+            It should_run_the_parent_context_blocks_prior_to_the_nested_context_blocks = () =>
+                outerContextRan.ShouldBeTrue();
         }
-
-        static bool outerContextRan;
     }
 
     //[Subject(typeof(ContextFactory))]
@@ -301,11 +309,13 @@ namespace Machine.Specifications.Specs.Factories
     {
         public static IList<int> Numbers;
 
-        Establish first = () => { Numbers.Add(1); };
+        Establish first = () =>
+            Numbers.Add(1);
 
         public class inner
         {
-            Establish second = () => { Numbers.Add(2); };
+            Establish second = () =>
+                Numbers.Add(2);
         }
     }
 

@@ -33,8 +33,8 @@ namespace Machine.Specifications.Specs
             It should_access_the_propety = () =>
                 action_side_effect.ShouldEqual("hi");
 
-            It should_return_null =
-                () => result.ShouldBeNull();
+            It should_return_null = () =>
+                result.ShouldBeNull();
         }
     }
 

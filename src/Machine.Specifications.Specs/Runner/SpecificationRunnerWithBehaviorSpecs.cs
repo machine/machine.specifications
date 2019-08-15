@@ -11,10 +11,8 @@ namespace Machine.Specifications.Specs.Runner
 
         Establish context = () =>
         {
-            var assembly = Assembly.LoadFile(AssemblyPath);
-
-            context_with_behaviors = assembly.GetType("Example.Random.context_with_behaviors");
-            Behaviors = assembly.GetType("Example.Random.Behaviors");
+            context_with_behaviors = GetRandom("context_with_behaviors");
+            Behaviors = GetRandom("Behaviors");
 
             context_with_behaviors.ToDynamic().local_spec_ran = false;
             Behaviors.ToDynamic().behavior_spec_ran = false;
@@ -38,10 +36,8 @@ namespace Machine.Specifications.Specs.Runner
 
         Establish context = () =>
         {
-            var assembly = Assembly.LoadFile(AssemblyPath);
-
-            context_with_behaviors_where_the_behavior_field_is_ignored = assembly.GetType("Example.Random.context_with_behaviors");
-            Behaviors = assembly.GetType("Example.Random.Behaviors");
+            context_with_behaviors_where_the_behavior_field_is_ignored = GetRandom("context_with_behaviors");
+            Behaviors = GetRandom("Behaviors");
 
             context_with_behaviors_where_the_behavior_field_is_ignored.ToDynamic().local_spec_ran = false;
             Behaviors.ToDynamic().behavior_spec_ran = false;
@@ -65,10 +61,8 @@ namespace Machine.Specifications.Specs.Runner
 
         Establish context = () =>
         {
-            var assembly = Assembly.LoadFile(AssemblyPath);
-
-            context_with_behaviors_where_the_behavior_is_ignored = assembly.GetType("Example.Random.context_with_behaviors");
-            IgnoredBehaviors = assembly.GetType("Example.Random.IgnoredBehaviors");
+            context_with_behaviors_where_the_behavior_is_ignored = GetRandom("context_with_behaviors");
+            IgnoredBehaviors = GetRandom("IgnoredBehaviors");
 
             context_with_behaviors_where_the_behavior_is_ignored.ToDynamic().local_spec_ran = false;
             IgnoredBehaviors.ToDynamic().behavior_spec_ran = false;
@@ -92,10 +86,8 @@ namespace Machine.Specifications.Specs.Runner
 
         Establish context = () =>
         {
-            var assembly = Assembly.LoadFile(AssemblyPath);
-
-            context_with_behaviors_where_the_behavior_specs_are_ignored = assembly.GetType("Example.Random.context_with_behaviors_where_the_behavior_specs_are_ignored");
-            BehaviorsWithIgnoredSpec = assembly.GetType("Example.Random.BehaviorsWithIgnoredSpec");
+            context_with_behaviors_where_the_behavior_specs_are_ignored = GetRandom("context_with_behaviors_where_the_behavior_specs_are_ignored");
+            BehaviorsWithIgnoredSpec = GetRandom("BehaviorsWithIgnoredSpec");
 
             context_with_behaviors_where_the_behavior_specs_are_ignored.ToDynamic().local_spec_ran = false;
             BehaviorsWithIgnoredSpec.ToDynamic().behavior_spec_ran = false;
@@ -118,11 +110,7 @@ namespace Machine.Specifications.Specs.Runner
         static Exception exception;
 
         Establish context = () =>
-        {
-            var assembly = Assembly.LoadFile(AssemblyPath);
-
-            context_with_nested_behaviors = assembly.GetType("Example.Random.context_with_nested_behaviors");
-        };
+            context_with_nested_behaviors = GetRandom("context_with_nested_behaviors");
 
         Because of = () =>
             exception = Catch.Exception(() => Run(context_with_nested_behaviors));
@@ -141,11 +129,7 @@ namespace Machine.Specifications.Specs.Runner
         static Exception exception;
 
         Establish context = () =>
-        {
-            var assembly = Assembly.LoadFile(AssemblyPath);
-
-            context_with_behaviors_without_behaviors_attribute = assembly.GetType("Example.Random.context_with_behaviors_without_behaviors_attribute");
-        };
+            context_with_behaviors_without_behaviors_attribute = GetRandom("context_with_behaviors_without_behaviors_attribute");
 
         Because of = () =>
             exception = Catch.Exception(() => Run(context_with_behaviors_without_behaviors_attribute));
@@ -164,11 +148,7 @@ namespace Machine.Specifications.Specs.Runner
         static Exception exception;
 
         Establish context = () =>
-        {
-            var assembly = Assembly.LoadFile(AssemblyPath);
-
-            context_with_behaviors_with_establish = assembly.GetType("Example.Random.context_with_behaviors_with_establish");
-        };
+            context_with_behaviors_with_establish = GetRandom("context_with_behaviors_with_establish");
 
         Because of = () => exception =
             Catch.Exception(() => Run(context_with_behaviors_with_establish));
@@ -187,11 +167,7 @@ namespace Machine.Specifications.Specs.Runner
         static Exception exception;
 
         Establish context = () =>
-        {
-            var assembly = Assembly.LoadFile(AssemblyPath);
-
-            context_with_behaviors_with_because = assembly.GetType("Example.Random.context_with_behaviors_with_because");
-        };
+            context_with_behaviors_with_because = GetRandom("context_with_behaviors_with_because");
 
         Because of = () =>
             exception = Catch.Exception(() => Run(context_with_behaviors_with_because));
@@ -210,11 +186,7 @@ namespace Machine.Specifications.Specs.Runner
         static Exception exception;
 
         Establish context = () =>
-        {
-            var assembly = Assembly.LoadFile(AssemblyPath);
-
-            context_missing_protected_fields_that_are_in_behaviors = assembly.GetType("Example.Random.context_missing_protected_fields_that_are_in_behaviors");
-        };
+            context_missing_protected_fields_that_are_in_behaviors = GetRandom("context_missing_protected_fields_that_are_in_behaviors");
 
         Because of = () =>
             exception = Catch.Exception(() => Run(context_missing_protected_fields_that_are_in_behaviors));
@@ -236,11 +208,7 @@ namespace Machine.Specifications.Specs.Runner
         static Exception exception;
 
         Establish context = () =>
-        {
-            var assembly = Assembly.LoadFile(AssemblyPath);
-
-            context_with_protected_fields_having_different_types_than_in_behaviors = assembly.GetType("Example.Random.context_with_protected_fields_having_different_types_than_in_behaviors");
-        };
+            context_with_protected_fields_having_different_types_than_in_behaviors = GetRandom("context_with_protected_fields_having_different_types_than_in_behaviors");
 
         Because of = () =>
             exception = Catch.Exception(() => Run(context_with_protected_fields_having_different_types_than_in_behaviors));
