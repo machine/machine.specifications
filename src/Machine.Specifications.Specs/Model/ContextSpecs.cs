@@ -18,9 +18,10 @@ namespace Machine.Specifications.Specs.Model
         Establish context = () =>
             factory = new ContextFactory();
 
-        private Because of = () =>
+        Because of = () =>
         {
             var type = GetFramework("ContextWithSpecificationExpectingThrowThatDoesnt");
+            type.ToDynamic().Reset();
 
             var context = factory.CreateContextFrom(Activator.CreateInstance(type));
 
@@ -53,6 +54,7 @@ namespace Machine.Specifications.Specs.Model
         Because of = () =>
         {
             type = GetFramework("ContextWithThrowingWhenAndPassingSpecification");
+            type.ToDynamic().Reset();
 
             var context = factory.CreateContextFrom(Activator.CreateInstance(type));
 
@@ -85,6 +87,7 @@ namespace Machine.Specifications.Specs.Model
         Because of = () =>
         {
             type = GetFramework("ContextWithEmptyWhen");
+            type.ToDynamic().Reset();
 
             var context = factory.CreateContextFrom(Activator.CreateInstance(type));
 
@@ -114,6 +117,7 @@ namespace Machine.Specifications.Specs.Model
         Because of = () =>
         {
             type = GetFramework("ContextWithEmptySpecification");
+            type.ToDynamic().Reset();
 
             var context = factory.CreateContextFrom(Activator.CreateInstance(type));
 
@@ -149,6 +153,7 @@ namespace Machine.Specifications.Specs.Model
         Because of = () =>
         {
             type = GetFramework("ContextWithSingleSpecification");
+            type.ToDynamic().Reset();
 
             var context = factory.CreateContextFrom(Activator.CreateInstance(type));
 

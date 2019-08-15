@@ -906,12 +906,7 @@ namespace Machine.Specifications
         }
     }
 
-    public interface IFakeContext
-    {
-        void Reset();
-    }
-
-    public class ContextWithSpecificationExpectingThrowThatDoesnt : IFakeContext
+    public class ContextWithSpecificationExpectingThrowThatDoesnt
     {
         public static bool it_invoked;
         static Exception exception;
@@ -922,13 +917,13 @@ namespace Machine.Specifications
         It should_throw_but_it_wont = () =>
             exception.ShouldNotBeNull();
 
-        public void Reset()
+        public static void Reset()
         {
             it_invoked = false;
         }
     }
 
-    public class ContextWithThrowingWhenAndPassingSpecification : IFakeContext
+    public class ContextWithThrowingWhenAndPassingSpecification
     {
         public static bool it_invoked;
 
@@ -940,13 +935,13 @@ namespace Machine.Specifications
         It should_fail = () =>
             it_invoked = true;
 
-        public void Reset()
+        public static void Reset()
         {
             it_invoked = false;
         }
     }
 
-    public class ContextWithEmptyWhen : IFakeContext
+    public class ContextWithEmptyWhen
     {
         public static bool it_invoked;
 
@@ -955,13 +950,13 @@ namespace Machine.Specifications
         It should_do_stuff = () =>
             it_invoked = true;
 
-        public void Reset()
+        public static void Reset()
         {
             it_invoked = false;
         }
     }
 
-    public class ContextWithTwoWhens : IFakeContext
+    public class ContextWithTwoWhens
     {
         public static bool when_1_invoked;
         public static bool when_2_invoked;
@@ -980,7 +975,7 @@ namespace Machine.Specifications
         It for_when_2 = () =>
             it_for_when_2_invoked = true;
 
-        public void Reset()
+        public static void Reset()
         {
             when_1_invoked = false;
             when_2_invoked = false;
@@ -989,7 +984,7 @@ namespace Machine.Specifications
         }
     }
 
-    public class ContextWithEmptySpecification : IFakeContext
+    public class ContextWithEmptySpecification
     {
         public static bool when_invoked;
 
@@ -998,13 +993,13 @@ namespace Machine.Specifications
 
         It should_do_stuff;
 
-        public void Reset()
+        public static void Reset()
         {
             when_invoked = false;
         }
     }
 
-    public class ContextWithThrowingSpecification : IFakeContext
+    public class ContextWithThrowingSpecification
     {
         public static bool when_invoked;
         public static bool it_invoked;
@@ -1019,14 +1014,14 @@ namespace Machine.Specifications
         It should_throw_an_exception = () =>
             it_invoked = true;
 
-        public void Reset()
+        public static void Reset()
         {
             when_invoked = false;
             it_invoked = false;
         }
     }
 
-    public class ContextWithSingleSpecification : IFakeContext
+    public class ContextWithSingleSpecification
     {
         public static bool because_invoked;
         public static bool it_invoked;
@@ -1045,7 +1040,7 @@ namespace Machine.Specifications
         Cleanup after = () =>
             cleanup_invoked = true;
 
-        public void Reset()
+        public static void Reset()
         {
             because_invoked = false;
             it_invoked = false;
@@ -1053,8 +1048,6 @@ namespace Machine.Specifications
             cleanup_invoked = false;
         }
     }
-}
-
-";
+}";
     }
 }
