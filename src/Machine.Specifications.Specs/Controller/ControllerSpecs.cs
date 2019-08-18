@@ -20,7 +20,7 @@ namespace Machine.Specifications.Specs.Controller
             ListenEvents = new List<string>();
             AssemblyContext.ToDynamic().OnAssemblyStartRun = false;
             AssemblyContext.ToDynamic().OnAssemblyCompleteRun = false;
-            Controller = new Machine.Specifications.Controller.Controller((string eventText) =>
+            Controller = new Machine.Specifications.Controller.Controller(eventText =>
             {
                 ListenEvents.Add(eventText);
             });
@@ -71,7 +71,7 @@ namespace Machine.Specifications.Specs.Controller
     {
         Because of = () =>
         {
-            var type = GetRandom("context_without_any_other_in_the_same_namespace");
+            var type = GetRandom("SingleContextInThisNamespace.context_without_any_other_in_the_same_namespace");
 
             Controller.StartRun();
             Controller.RunAssemblies(new[] {type.GetTypeInfo().Assembly});
@@ -86,7 +86,7 @@ namespace Machine.Specifications.Specs.Controller
     {
         Because of = () =>
         {
-            var type = GetRandom("context_without_any_other_in_the_same_namespace");
+            var type = GetRandom("SingleContextInThisNamespace.context_without_any_other_in_the_same_namespace");
 
             Controller.StartRun();
             Controller.RunNamespaces(type.GetTypeInfo().Assembly, new[] {type.Namespace});
@@ -101,7 +101,7 @@ namespace Machine.Specifications.Specs.Controller
     {
         Because of = () =>
         {
-            var type = GetRandom("context_without_any_other_in_the_same_namespace");
+            var type = GetRandom("SingleContextInThisNamespace.context_without_any_other_in_the_same_namespace");
 
             Controller.StartRun();
             Controller.RunTypes(type.GetTypeInfo().Assembly, new[] {type});
@@ -116,7 +116,7 @@ namespace Machine.Specifications.Specs.Controller
     {
         Because of = () =>
         {
-            var type = GetRandom("context_without_any_other_in_the_same_namespace");
+            var type = GetRandom("SingleContextInThisNamespace.context_without_any_other_in_the_same_namespace");
 
             Controller.StartRun();
             Controller.RunMembers(type.GetTypeInfo().Assembly, new[]
