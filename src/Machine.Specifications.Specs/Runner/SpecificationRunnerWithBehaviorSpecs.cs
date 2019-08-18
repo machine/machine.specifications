@@ -36,7 +36,7 @@ namespace Machine.Specifications.Specs.Runner
 
         Establish context = () =>
         {
-            context_with_behaviors_where_the_behavior_field_is_ignored = GetRandom("context_with_behaviors");
+            context_with_behaviors_where_the_behavior_field_is_ignored = GetRandom("context_with_behaviors_where_the_behavior_field_is_ignored");
             Behaviors = GetRandom("Behaviors");
 
             context_with_behaviors_where_the_behavior_field_is_ignored.ToDynamic().local_spec_ran = false;

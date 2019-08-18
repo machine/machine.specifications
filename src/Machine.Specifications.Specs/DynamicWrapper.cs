@@ -26,7 +26,12 @@ namespace Machine.Specifications.Specs
             if (field == null)
                 throw new InvalidOperationException();
 
-            result = new DynamicWrapper(field.GetValue(null));
+            var value = field.GetValue(null);
+
+            if (value is Exception)
+                result = value;
+            else
+                result = new DynamicWrapper(value);
 
             return true;
         }

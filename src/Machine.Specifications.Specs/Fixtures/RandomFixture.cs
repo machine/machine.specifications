@@ -285,76 +285,76 @@ namespace Example.Random
     public class context_with_console_output
     {
         Establish context = () =>
-            Console.Out.WriteLine(""Console.Out message in establish"");
+            System.Console.Out.WriteLine(""Console.Out message in establish"");
 
         Because of = () =>
-            Console.Out.WriteLine(""Console.Out message in because"");
+            System.Console.Out.WriteLine(""Console.Out message in because"");
 
         Cleanup after = () =>
-            Console.Out.WriteLine(""Console.Out message in cleanup"");
+            System.Console.Out.WriteLine(""Console.Out message in cleanup"");
 
         It should_log_messages = () =>
-            Console.Out.WriteLine(""Console.Out message in spec"");
+            System.Console.Out.WriteLine(""Console.Out message in spec"");
 
         It should_log_messages_also_for_the_nth_spec = () =>
-            Console.Out.WriteLine(""Console.Out message in nth spec"");
+            System.Console.Out.WriteLine(""Console.Out message in nth spec"");
     }
 
     [Tags(tag.example)]
     public class context_with_console_error_output
     {
         Establish context = () =>
-            Console.Error.WriteLine(""Console.Error message in establish"");
+            System.Console.Error.WriteLine(""Console.Error message in establish"");
 
         Because of = () =>
-            Console.Error.WriteLine(""Console.Error message in because"");
+            System.Console.Error.WriteLine(""Console.Error message in because"");
 
         Cleanup after = () =>
-            Console.Error.WriteLine(""Console.Error message in cleanup"");
+            System.Console.Error.WriteLine(""Console.Error message in cleanup"");
 
         It should_log_messages = () =>
-            Console.Error.WriteLine(""Console.Error message in spec"");
+            System.Console.Error.WriteLine(""Console.Error message in spec"");
 
         It should_log_messages_also_for_the_nth_spec = () =>
-            Console.Error.WriteLine(""Console.Error message in nth spec"");
+            System.Console.Error.WriteLine(""Console.Error message in nth spec"");
     }
 
     [Tags(tag.example)]
     public class context_with_debug_output
     {
         Establish context = () =>
-            Console.WriteLine(""Debug.WriteLine message in establish"");
+            System.Console.WriteLine(""Debug.WriteLine message in establish"");
 
         Because of = () =>
-            Console.WriteLine(""Debug.WriteLine message in because"");
+            System.Console.WriteLine(""Debug.WriteLine message in because"");
 
         Cleanup after = () =>
-            Console.WriteLine(""Debug.WriteLine message in cleanup"");
+            System.Console.WriteLine(""Debug.WriteLine message in cleanup"");
 
         It should_log_messages = () =>
-            Console.WriteLine(""Debug.WriteLine message in spec"");
+            System.Console.WriteLine(""Debug.WriteLine message in spec"");
 
         It should_log_messages_also_for_the_nth_spec = () =>
-            Console.WriteLine(""Debug.WriteLine message in nth spec"");
+            System.Console.WriteLine(""Debug.WriteLine message in nth spec"");
     }
 
     [SetupForEachSpecification, Tags(tag.example)]
     public class context_with_console_output_and_setup_for_each
     {
         Establish context = () =>
-            Console.Out.WriteLine(""Console.Out message in establish"");
+            System.Console.Out.WriteLine(""Console.Out message in establish"");
 
         Because of = () =>
-            Console.Out.WriteLine(""Console.Out message in because"");
+            System.Console.Out.WriteLine(""Console.Out message in because"");
 
         Cleanup after = () =>
-            Console.Out.WriteLine(""Console.Out message in cleanup"");
+            System.Console.Out.WriteLine(""Console.Out message in cleanup"");
 
         It should_log_messages = () =>
-            Console.Out.WriteLine(""Console.Out message in spec"");
+            System.Console.Out.WriteLine(""Console.Out message in spec"");
 
         It should_log_messages_also_for_the_nth_spec = () =>
-            Console.Out.WriteLine(""Console.Out message in nth spec"");
+            System.Console.Out.WriteLine(""Console.Out message in nth spec"");
     }
 
     [Tags(tag.example)]
