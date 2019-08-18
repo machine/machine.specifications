@@ -561,6 +561,9 @@ namespace Machine.Specifications.Specs.Runner
 
         Establish context = () =>
         {
+            context_with_multiple_specifications = GetRandom("context_with_multiple_specifications");
+            context_with_duplicate_tags = GetRandom("context_with_duplicate_tags");
+
             testListener = new TestListener();
             var options = new RunOptions(new string[] { },
                 new string[] { },
@@ -681,7 +684,8 @@ namespace Machine.Specifications.Specs.Runner
         static Type when_a_context_is_nested_inside_a_static_class_that_is_nested_inside_a_class;
 
         Establish context = () =>
-            when_a_context_is_nested_inside_a_static_class_that_is_nested_inside_a_class = GetRandom("NonStaticContainer+StaticContainer.when_a_context_is_nested_inside_a_static_class_that_is_nested_inside_a_class");
+            when_a_context_is_nested_inside_a_static_class_that_is_nested_inside_a_class = GetRandom(
+                    "NonStaticContainer+StaticContainer+when_a_context_is_nested_inside_a_static_class_that_is_nested_inside_a_class");
 
         Because of = () =>
             Run(when_a_context_is_nested_inside_a_static_class_that_is_nested_inside_a_class);
@@ -705,6 +709,11 @@ namespace Machine.Specifications.Specs.Runner
 
         Cleanup after = () =>
             compiler.Dispose();
+
+        protected static Assembly GetAssembly()
+        {
+            return assembly;
+        }
 
         protected static Type GetRandom(string value)
         {

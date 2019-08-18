@@ -61,220 +61,246 @@ namespace Machine.Specifications.Specs.Factories
         }
     }
 
-    //[Subject(typeof(ContextFactory))]
-    //public class when_creating_a_context_that_is_contained_within_another_context_class
-    //{
-    //    Establish context = () =>
-    //    {
-    //        var factory = new ContextFactory();
-    //        new_context = factory.CreateContextFrom(new parent_context.nested_context());
-    //    };
+    [Subject(typeof(ContextFactory))]
+    public class when_creating_a_context_that_is_contained_within_another_context_class : RandomRunnerSpecs
+    {
+        Establish context = () =>
+        {
+            var type = GetRandom("parent_context+nested_context");
 
-    //    It should_contain_the_details_created_by_the_context_detail_factory =
-    //        () => new_context.Specifications.Count().ShouldEqual(1);
+            var factory = new ContextFactory();
+            new_context = factory.CreateContextFrom(Activator.CreateInstance(type));
+        };
 
-    //    It should_take_the_subject_from_the_outer_class =
-    //        () => new_context.Subject.FullConcern.ShouldEqual("Int32 Parent description");
+        It should_contain_the_details_created_by_the_context_detail_factory =
+            () => new_context.Specifications.Count().ShouldEqual(1);
 
-    //    static Context new_context;
-    //}
+        It should_take_the_subject_from_the_outer_class =
+            () => new_context.Subject.FullConcern.ShouldEqual("Int32 Parent description");
 
-    //[Subject(typeof(ContextFactory))]
-    //public class when_creating_a_context_that_is_contained_within_another_context_class_and_inherits_a_concern
-    //{
-    //    Establish context = () =>
-    //    {
-    //        var factory = new ContextFactory();
-    //        new_context = factory.CreateContextFrom(new parent_context.nested_context_inheriting_another_concern());
-    //    };
+        static Context new_context;
+    }
 
-    //    It should_take_the_subject_from_the_inherited_concern =
-    //        () => new_context.Subject.FullConcern.ShouldEqual("Int32 Some description");
+    [Subject(typeof(ContextFactory))]
+    public class when_creating_a_context_that_is_contained_within_another_context_class_and_inherits_a_concern : RandomRunnerSpecs
+    {
+        Establish context = () =>
+        {
+            var type = GetRandom("parent_context+nested_context_inheriting_another_concern");
 
-    //    static Context new_context;
-    //}
+            var factory = new ContextFactory();
+            new_context = factory.CreateContextFrom(Activator.CreateInstance(type));
+        };
 
-    //[Subject(typeof(ContextFactory))]
-    //public class when_creating_a_context_that_is_contained_within_another_context_class_and_owns_a_concern
-    //{
-    //    Establish context = () =>
-    //    {
-    //        var factory = new ContextFactory();
-    //        new_context =
-    //            factory.CreateContextFrom(new parent_context.nested_context_inheriting_and_owning_a_concern());
-    //    };
+        It should_take_the_subject_from_the_inherited_concern =
+            () => new_context.Subject.FullConcern.ShouldEqual("Int32 Some description");
 
-    //    It should_take_the_owned_concern =
-    //        () => new_context.Subject.FullConcern.ShouldEqual("Int32 Nested description");
+        static Context new_context;
+    }
 
-    //    static Context new_context;
-    //}
+    [Subject(typeof(ContextFactory))]
+    public class when_creating_a_context_that_is_contained_within_another_context_class_and_owns_a_concern : RandomRunnerSpecs
+    {
+        Establish context = () =>
+        {
+            var type = GetRandom("parent_context+nested_context_inheriting_and_owning_a_concern");
 
-    //[Subject(typeof(ContextFactory))]
-    //public class
-    //    when_creating_a_nested_context_that_has_its_own_because_block_and_its_outer_class_also_has_its_own_because_block
-    //{
-    //    Establish context = () =>
-    //    {
-    //        ContextFactory.ChangeAllowedNumberOfBecauseBlocksTo(2);
+            var factory = new ContextFactory();
+            new_context = factory.CreateContextFrom(Activator.CreateInstance(type));
+        };
 
-    //        var factory = new ContextFactory();
-    //        new_context = factory.CreateContextFrom(new parent_context_that_has_its_own_because_block
-    //            .nested_context_that_has_a_because_block_which());
-    //    };
+        It should_take_the_owned_concern =
+            () => new_context.Subject.FullConcern.ShouldEqual("Int32 Nested description");
 
-    //    It should_be_able_to_be_created_successfully_if_a_testing_tool_has_specified_to_override_the_allowed_number_of_because_blocks
-    //        =
-    //        () => new_context.ShouldNotBeNull();
+        static Context new_context;
+    }
 
-    //    static Context new_context;
-    //}
+    [Subject(typeof(ContextFactory))]
+    public class when_creating_a_nested_context_that_has_its_own_because_block_and_its_outer_class_also_has_its_own_because_block : RandomRunnerSpecs
+    {
+        Establish context = () =>
+        {
+            var type = GetRandom("parent_context_that_has_its_own_because_block+nested_context_that_has_a_because_block_which");
 
-    //[Subject(typeof(ContextFactory))]
-    //public class when_creating_a_context_that_is_contained_within_another_context_class_without_concern
-    //{
-    //    Establish context = () =>
-    //    {
-    //        var factory = new ContextFactory();
-    //        new_context = factory.CreateContextFrom(new parent_context_without_concern.nested_context());
-    //    };
+            ContextFactory.ChangeAllowedNumberOfBecauseBlocksTo(2);
 
-    //    It should_have_no_concern =
-    //        () => new_context.Subject.ShouldBeNull();
+            var factory = new ContextFactory();
+            new_context = factory.CreateContextFrom(Activator.CreateInstance(type));
+        };
 
-    //    static Context new_context;
-    //}
+        It should_be_able_to_be_created_successfully_if_a_testing_tool_has_specified_to_override_the_allowed_number_of_because_blocks = () =>
+            new_context.ShouldNotBeNull();
 
-    //[Subject(typeof(ContextFactory))]
-    //public class when_creating_a_context_with_tags
-    //{
-    //    static Context newContext;
+        static Context new_context;
+    }
 
-    //    Establish context = () =>
-    //    {
-    //        var factory = new ContextFactory();
-    //        newContext = factory.CreateContextFrom(new context_with_tags());
-    //    };
+    [Subject(typeof(ContextFactory))]
+    public class when_creating_a_context_that_is_contained_within_another_context_class_without_concern : RandomRunnerSpecs
+    {
+        Establish context = () =>
+        {
+            var type = GetRandom("parent_context_without_concern+nested_context");
 
-    //    It should_capture_the_tags =
-    //        () => newContext.Tags.ShouldContainOnly(new Tag(tag2.example),
-    //            new Tag(tag2.some_other_tag),
-    //            new Tag(tag2.one_more_tag));
-    //}
+            var factory = new ContextFactory();
+            new_context = factory.CreateContextFrom(Activator.CreateInstance(type));
+        };
 
-    //[Subject(typeof(ContextFactory))]
-    //public class when_creating_a_context_with_duplicate_tags
-    //{
-    //    static Context newContext;
+        It should_have_no_concern =
+            () => new_context.Subject.ShouldBeNull();
 
-    //    Establish context = () =>
-    //    {
-    //        var factory = new ContextFactory();
-    //        newContext = factory.CreateContextFrom(new context_with_duplicate_tags());
-    //    };
+        static Context new_context;
+    }
 
-    //    It should_capture_the_tags_once =
-    //        () => newContext.Tags.Count().ShouldEqual(1);
-    //}
+    [Subject(typeof(ContextFactory))]
+    public class when_creating_a_context_with_tags : RandomRunnerSpecs
+    {
+        static Context newContext;
 
-    //[Subject(typeof(ContextFactory))]
-    //public class when_creating_a_context_that_is_nested_inside_of_a_generic_class
-    //{
-    //    public class and_the_nested_context_is_not_a_generic_type_definition
-    //    {
-    //        static Context newContext;
+        Establish context = () =>
+        {
+            var type = GetRandom("context_with_tags");
 
-    //        Establish context = () =>
-    //        {
-    //            var factory = new ContextFactory();
-    //            newContext = factory.CreateContextFrom(new generic_container<int>.nested_context());
-    //        };
+            var factory = new ContextFactory();
+            newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
+        };
 
-    //        It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic =
-    //            () => newContext.ShouldNotBeNull();
-    //    }
+        It should_capture_the_tags =
+            () => newContext.Tags.ShouldContainOnly(new Tag(tag2.example),
+                new Tag(tag2.some_other_tag),
+                new Tag(tag2.one_more_tag));
+    }
 
-    //    public class and_the_nested_context_is_a_generic_type_definition
-    //    {
-    //        static Context newContext;
+    [Subject(typeof(ContextFactory))]
+    public class when_creating_a_context_with_duplicate_tags : RandomRunnerSpecs
+    {
+        static Context newContext;
 
-    //        Establish context = () =>
-    //        {
-    //            var factory = new ContextFactory();
-    //            newContext = factory.CreateContextFrom(new generic_container<int>.nested_generic_context<String>());
-    //        };
+        Establish context = () =>
+        {
+            var type = GetRandom("context_with_duplicate_tags");
 
-    //        It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic =
-    //            () => newContext.ShouldNotBeNull();
-    //    }
+            var factory = new ContextFactory();
+            newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
+        };
 
-    //    public class and_there_are_multiple_generic_parents
-    //    {
-    //        public class and_the_nested_context_is_not_generic
-    //        {
-    //            static Context newContext;
+        It should_capture_the_tags_once =
+            () => newContext.Tags.Count().ShouldEqual(1);
+    }
 
-    //            Establish context = () =>
-    //            {
-    //                var factory = new ContextFactory();
-    //                newContext = factory.CreateContextFrom(
-    //                    new generic_container<int>.nested_generic_context<string>.nested_nested_non_generic());
-    //            };
+    [Subject(typeof(ContextFactory))]
+    public class when_creating_a_context_that_is_nested_inside_of_a_generic_class : RandomRunnerSpecs
+    {
+        public class and_the_nested_context_is_not_a_generic_type_definition
+        {
+            static Context newContext;
 
-    //            It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic =
-    //                () => newContext.ShouldNotBeNull();
-    //        }
+            Establish context = () =>
+            {
+                var type = GetRandom("generic_container`1+nested_context")
+                    .MakeGenericType(typeof(int));
 
-    //        public class and_the_nested_context_is_generic
-    //        {
-    //            static Context newContext;
+                var factory = new ContextFactory();
+                newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
+            };
 
-    //            Establish context = () =>
-    //            {
-    //                var factory = new ContextFactory();
-    //                newContext = factory.CreateContextFrom(
-    //                    new generic_container<int>.nested_generic_context<string>.nested_nested_generic<bool>());
-    //            };
+            It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic =
+                () => newContext.ShouldNotBeNull();
+        }
 
-    //            It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic =
-    //                () => newContext.ShouldNotBeNull();
-    //        }
-    //    }
-    //}
+        public class and_the_nested_context_is_a_generic_type_definition
+        {
+            static Context newContext;
 
-    //[Subject(typeof(ContextFactory))]
-    //public class when_creating_behavior_specifications_and_tracking_original_behavior_field
-    //{
-    //    static Context newContext;
+            Establish context = () =>
+            {
+                var type = GetRandom("generic_container`1+nested_generic_context`1")
+                    .MakeGenericType(typeof(int), typeof(string));
 
-    //    Establish context = () =>
-    //    {
-    //        var factory = new ContextFactory();
-    //        newContext = factory.CreateContextFrom(new context_with_behaviors());
-    //    };
+                var factory = new ContextFactory();
+                newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
+            };
 
-    //    It should_create_behavior_specs_with_original_behavior_field =
-    //        () => newContext.Specifications
-    //            .OfType<BehaviorSpecification>()
-    //            .First()
-    //            .BehaviorFieldInfo.Name.ShouldContainOnly("behavior");
-    //}
+            It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic =
+                () => newContext.ShouldNotBeNull();
+        }
 
-    //[Subject(typeof(ContextFactory))]
-    //public class ContextFactoryTests
-    //{
-    //    static Context single_context;
-    //    static ContextFactory factory;
+        public class and_there_are_multiple_generic_parents
+        {
+            public class and_the_nested_context_is_not_generic
+            {
+                static Context newContext;
 
-    //    Establish context = () =>
-    //        factory = new ContextFactory();
+                Establish context = () =>
+                {
+                    var type = GetRandom("generic_container`1+nested_generic_context`1+nested_nested_non_generic")
+                        .MakeGenericType(typeof(int), typeof(string));
 
-    //    Because of = () =>
-    //        single_context = factory.CreateContextFrom(new ContextWithSingleSpecification());
+                    var factory = new ContextFactory();
+                    newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
+                };
 
-    //    It should_set_type = () =>
-    //        single_context.Type.Name.ShouldEqual("ContextWithSingleSpecification");
-    //}
+                It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic =
+                    () => newContext.ShouldNotBeNull();
+            }
+
+            public class and_the_nested_context_is_generic
+            {
+                static Context newContext;
+
+                Establish context = () =>
+                {
+                    var type = GetRandom("generic_container`1+nested_generic_context`1+nested_nested_generic`1")
+                        .MakeGenericType(typeof(int), typeof(string), typeof(bool));
+
+                    var factory = new ContextFactory();
+                    newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
+                };
+
+                It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic =
+                    () => newContext.ShouldNotBeNull();
+            }
+        }
+    }
+
+    [Subject(typeof(ContextFactory))]
+    public class when_creating_behavior_specifications_and_tracking_original_behavior_field : RandomRunnerSpecs
+    {
+        static Context newContext;
+
+        Establish context = () =>
+        {
+            var type = GetRandom("context_with_behaviors");
+
+            var factory = new ContextFactory();
+            newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
+        };
+
+        It should_create_behavior_specs_with_original_behavior_field =
+            () => newContext.Specifications
+                .OfType<BehaviorSpecification>()
+                .First()
+                .BehaviorFieldInfo.Name.ShouldContainOnly("behavior");
+    }
+
+    [Subject(typeof(ContextFactory))]
+    public class ContextFactoryTests : RandomRunnerSpecs
+    {
+        static Context single_context;
+        static ContextFactory factory;
+
+        Establish context = () =>
+            factory = new ContextFactory();
+
+        Because of = () =>
+        {
+            var type = GetFramework("ContextWithSingleSpecification");
+
+            single_context = factory.CreateContextFrom(Activator.CreateInstance(type));
+        };
+
+        It should_set_type = () =>
+            single_context.Type.Name.ShouldEqual("ContextWithSingleSpecification");
+    }
 
     [Subject(typeof(ContextFactory))]
     public class when_using_nested_contexts_hierarchy
@@ -369,72 +395,90 @@ namespace Machine.Specifications.Specs.Factories
         }
     }
 
-    //[Subject(typeof(ContextFactory))]
-    //public class when_creating_a_context_that_is_nested_inside_of_a_generic_class_hierarchy
-    //{
-    //    class and_the_nested_context_is_not_a_generic_type_definition
-    //    {
-    //        static Context newContext;
-    //        static ContextFactory factory;
+    [Subject(typeof(ContextFactory))]
+    public class when_creating_a_context_that_is_nested_inside_of_a_generic_class_hierarchy : RandomRunnerSpecs
+    {
+        class and_the_nested_context_is_not_a_generic_type_definition
+        {
+            static Context newContext;
+            static ContextFactory factory;
 
-    //        Establish context = () =>
-    //            factory = new ContextFactory();
+            Establish context = () =>
+                factory = new ContextFactory();
 
-    //        Because of = () =>
-    //            newContext = factory.CreateContextFrom(new generic_container<int>.nested_context());
+            Because of = () =>
+            {
+                var type = GetRandom("generic_container`1+nested_context")
+                    .MakeGenericType(typeof(int));
 
-    //        It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic = () =>
-    //            newContext.ShouldNotBeNull();
-    //    }
+                newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
+            };
 
-    //    class and_the_nested_context_is_a_generic_type_definition
-    //    {
-    //        static Context newContext;
-    //        static ContextFactory factory;
+            It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic = () =>
+                newContext.ShouldNotBeNull();
+        }
 
-    //        Establish context = () =>
-    //            factory = new ContextFactory();
+        class and_the_nested_context_is_a_generic_type_definition
+        {
+            static Context newContext;
+            static ContextFactory factory;
 
-    //        Because of = () =>
-    //            newContext = factory.CreateContextFrom(new generic_container<int>.nested_generic_context<string>());
+            Establish context = () =>
+                factory = new ContextFactory();
 
-    //        It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic = () =>
-    //            newContext.ShouldNotBeNull();
-    //    }
+            Because of = () =>
+            {
+                var type = GetRandom("generic_container`1+nested_generic_context`1")
+                    .MakeGenericType(typeof(int), typeof(string));
 
-    //    class and_there_are_multiple_generic_parents
-    //    {
-    //        class and_the_nested_context_is_not_generic
-    //        {
-    //            static Context newContext;
-    //            static ContextFactory factory;
+                newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
+            };
 
-    //            Establish context = () =>
-    //                factory = new ContextFactory();
+            It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic = () =>
+                newContext.ShouldNotBeNull();
+        }
 
-    //            Because of = () =>
-    //                newContext = factory.CreateContextFrom(
-    //                        new generic_container<int>.nested_generic_context<string>.nested_nested_non_generic());
+        class and_there_are_multiple_generic_parents
+        {
+            class and_the_nested_context_is_not_generic
+            {
+                static Context newContext;
+                static ContextFactory factory;
 
-    //            It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic = () =>
-    //                newContext.ShouldNotBeNull();
-    //        }
+                Establish context = () =>
+                    factory = new ContextFactory();
 
-    //        class and_the_nested_context_generic
-    //        {
-    //            static Context newContext;
-    //            static ContextFactory factory;
+                Because of = () =>
+                {
+                    var type = GetRandom("generic_container`1+nested_generic_context`1+nested_nested_non_generic")
+                        .MakeGenericType(typeof(int), typeof(string));
 
-    //            Establish context = () =>
-    //                factory = new ContextFactory();
+                    newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
+                };
 
-    //            Because of = () =>
-    //                newContext = factory.CreateContextFrom(
-    //                    new generic_container<int>.nested_generic_context<string>.nested_nested_generic<bool>());
+                It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic = () =>
+                    newContext.ShouldNotBeNull();
+            }
 
-    //            It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic = () =>
-    //                newContext.ShouldNotBeNull();
-    //        }
-    //    }
-    //}
+            class and_the_nested_context_generic
+            {
+                static Context newContext;
+                static ContextFactory factory;
+
+                Establish context = () =>
+                    factory = new ContextFactory();
+
+                Because of = () =>
+                {
+                    var type = GetRandom("generic_container`1+nested_generic_context`1+nested_nested_generic`1")
+                        .MakeGenericType(typeof(int), typeof(string), typeof(bool));
+
+                    newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
+                };
+
+                It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic = () =>
+                    newContext.ShouldNotBeNull();
+            }
+        }
+    }
 }

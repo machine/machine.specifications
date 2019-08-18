@@ -21,7 +21,7 @@ namespace Machine.Specifications.Specs
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            var field = _type.GetField(binder.Name, BindingFlags.Static | BindingFlags.Public);
+            var field = _type.GetField(binder.Name, BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy);
 
             if (field == null)
                 throw new InvalidOperationException();
@@ -33,7 +33,7 @@ namespace Machine.Specifications.Specs
 
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
-            var field = _type.GetField(binder.Name, BindingFlags.Static | BindingFlags.Public);
+            var field = _type.GetField(binder.Name, BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy);
 
             if (field == null)
                 throw new InvalidOperationException();
@@ -64,6 +64,22 @@ namespace Machine.Specifications.Specs
             if (binder.Name == "ShouldEqual")
             {
                 _value.ShouldEqual(args[0]);
+
+                return true;
+            }
+
+            if (binder.Name == "ShouldBeGreaterThan")
+            {
+                ((IComparable) _value).ShouldBeGreaterThan((IComparable) args[0]);
+
+                return true;
+            }
+
+            var method = _type.GetMethod(binder.Name, BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy);
+
+            if (method != null)
+            {
+                method.Invoke(null, new object[0]);
 
                 return true;
             }
