@@ -24,7 +24,8 @@ namespace Machine.Specifications.Specs
                 .AddReferences(
                     MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
                     MetadataReference.CreateFromFile(Assembly.Load("netstandard, Version=2.0.0.0").Location),
-                    MetadataReference.CreateFromFile(Assembly.Load("System.Runtime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a").Location),
+                    MetadataReference.CreateFromFile(Assembly.Load("System.Runtime").Location),
+                    MetadataReference.CreateFromFile(Assembly.Load("System.Runtime.Extensions").Location),
                     MetadataReference.CreateFromFile(typeof(Establish).Assembly.Location),
                     MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
                     MetadataReference.CreateFromFile(typeof(ShouldExtensionMethods).Assembly.Location))
