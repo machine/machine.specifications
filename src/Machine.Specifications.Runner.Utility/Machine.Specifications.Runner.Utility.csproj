@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <TargetFrameworks>net35;net40;net45</TargetFrameworks>
+    <Description>Machine.Specifications.Runner.Utility provides a version independent runner for the Context/Specification framework Machine.Specifications</Description>
+    <Authors>Machine Specifications</Authors>
+    <PackageTags>test;unit;testing;context;specification;bdd;tdd;mspec;runner</PackageTags>
+    <PackageReleaseNotes>https://github.com/machine/machine.specifications/releases</PackageReleaseNotes>
+    <PackageIconUrl>http://github.com/machine/media/raw/master/Machine.Specifications-128x128.png</PackageIconUrl>
+    <PackageProjectUrl>http://github.com/machine/machine.specifications.runner.utility</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net35' ">C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5\Profile\Client</FrameworkPathOverride>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>$(AssemblyName).Specs</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+</Project>
