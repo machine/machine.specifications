@@ -1,0 +1,7 @@
+﻿<h2 class="concern">
+  ${concern.Name} specifications
+</h2>
+<h3 class="count">
+  ${concern.TotalContexts} ${Pluralize("context", concern.TotalContexts)}, ${concern.TotalSpecifications} ${Pluralize("specification", concern.TotalSpecifications)}
+</h3>
+<render />

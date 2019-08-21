@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <TargetFrameworks>net452</TargetFrameworks>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Machine.Specifications" Version="1.0.0" />
+    <PackageReference Include="WatiN" Version="2.1.0" />
+  </ItemGroup>
+
+</Project>
