@@ -17,8 +17,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Machine.Specifications.Runner.Utility" Version="1.0.0" />
     <PackageReference Include="TestDriven.Framework" Version="2.0.0-alpha2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Machine.Specifications.Runner.Utility\Machine.Specifications.Runner.Utility.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

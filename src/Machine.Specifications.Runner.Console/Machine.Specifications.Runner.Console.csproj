@@ -19,8 +19,6 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="1.9.71" PrivateAssets="All" />
-    <PackageReference Include="Machine.Specifications.Reporting" Version="1.0.0" PrivateAssets="All" />
-    <PackageReference Include="Machine.Specifications.Runner.Utility" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>

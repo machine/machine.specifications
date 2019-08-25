@@ -2,14 +2,13 @@
 
   <PropertyGroup>
     <Version>0.1.0</Version>
-    <TargetFrameworks>net46;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>net46;netcoreapp2.2</TargetFrameworks>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Machine.Specifications" Version="1.0.0" />
-    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.8.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.9.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
   </ItemGroup>
 
   <ItemGroup>

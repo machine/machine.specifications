@@ -7,11 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj" />
+    <ProjectReference Include="..\Machine.Specifications.Should\Machine.Specifications.Should.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Machine.Specifications.Should" Version="1.0.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.2.1" />
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
