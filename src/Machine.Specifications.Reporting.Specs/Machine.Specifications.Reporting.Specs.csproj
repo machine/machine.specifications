@@ -7,16 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Machine.Specifications" Version="1.0.0" />
-    <PackageReference Include="Machine.Specifications.Runner.Utility" Version="1.0.0" />
     <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.9.0" />
-    <PackageReference Include="Machine.Specifications.Should" Version="1.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="RhinoMocks" Version="3.6.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications.Reporting\Machine.Specifications.Reporting.csproj" />
+    <ProjectReference Include="..\Machine.Specifications.Runner.Utility\Machine.Specifications.Runner.Utility.csproj" />
+    <ProjectReference Include="..\Machine.Specifications.Should\Machine.Specifications.Should.csproj" />
   </ItemGroup>
 
 </Project>

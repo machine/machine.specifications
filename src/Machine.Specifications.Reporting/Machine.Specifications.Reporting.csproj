@@ -18,8 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Machine.Specifications.Runner.Utility" Version="[1.0.0, 2.0.0)" />
     <PackageReference Include="Spark" Version="1.7.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Machine.Specifications.Runner.Utility\Machine.Specifications.Runner.Utility.csproj" />
   </ItemGroup>
 
 </Project>

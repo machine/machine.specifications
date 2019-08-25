@@ -11,12 +11,15 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="1.9.71" />
-    <PackageReference Include="Machine.Specifications.Reporting" Version="1.0.0" />
-    <PackageReference Include="Machine.Specifications.Runner.Utility" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Include="..\Machine.Specifications.Runner.Console\**\*.cs" Exclude="..\Machine.Specifications.Runner.Console\obj\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Machine.Specifications.Reporting\Machine.Specifications.Reporting.csproj" />
+    <ProjectReference Include="..\Machine.Specifications.Runner.Utility\Machine.Specifications.Runner.Utility.csproj" />
   </ItemGroup>
 
 </Project>
