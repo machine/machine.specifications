@@ -7,6 +7,8 @@ environment:
 build_script:
   - ps: .\build.ps1
 
+skip_branch_with_pr: true
+
 test: off
 
 artifacts:
