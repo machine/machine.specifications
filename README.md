@@ -14,6 +14,8 @@ MSpec is called a "context/specification" test framework because of the "grammar
 You should be able to see the components of the traditional Arrange-Act-Assert model in there. To support readability and remove as much "noise" as possible, MSpec eschews the traditional attribute-on-method model of test construction. It instead uses custom .NET delegates that you assign anonymous methods and asks you to name them following a certain convention.
 
 ```csharp
+using Machine.Specifications;
+
 [Subject("Authentication")]
 class When_authenticating_an_admin_user
 {
