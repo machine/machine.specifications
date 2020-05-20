@@ -28,6 +28,7 @@ namespace Machine.Specifications.Runner.Impl
             _listener = new AggregateRunListener(new[]
                                            {
                                              new AssemblyLocationAwareListener(),
+                                             new TestContextListener(),
                                              new SetUpRedirectOutputRunListener(state),
                                              listener,
                                              new TearDownRedirectOutputRunListener(state),
