@@ -20,6 +20,7 @@ namespace Machine.Specifications.Runner.Impl
         readonly IList<IAssemblyContext> _executedAssemblyContexts;
         readonly AssemblyExplorer _explorer;
         readonly TestContextListener _testContext;
+        readonly List<ITestContext> _testContexts;
 
         public AssemblyRunner(ISpecificationRunListener listener, RunOptions options)
         {
@@ -36,6 +37,7 @@ namespace Machine.Specifications.Runner.Impl
             _options = options;
             _explorer = new AssemblyExplorer();
             _executedAssemblyContexts = new List<IAssemblyContext>();
+            _testContexts = new List<ITestContext>();
 
             _assemblyStart = OnAssemblyStart;
             _assemblyEnd = OnAssemblyEnd;
@@ -52,8 +54,7 @@ namespace Machine.Specifications.Runner.Impl
 
                 var globalCleanups = _explorer.FindAssemblyWideContextCleanupsIn(assembly).ToList();
                 var specificationSupplements = _explorer.FindSpecificationSupplementsIn(assembly).ToList();
-                var testContexts = _explorer.FindTestContextsIn(assembly).ToList();
-                _testContext.SetTestContexts(testContexts);
+                _testContext.SetTestContexts(_testContexts);
                 if (hasExecutableSpecifications)
                 {
                     _assemblyStart(assembly);
@@ -90,6 +91,13 @@ namespace Machine.Specifications.Runner.Impl
                     assemblyContext.OnAssemblyStart();
                     _executedAssemblyContexts.Add(assemblyContext);
                 });
+
+                var testContexts = _explorer.FindTestContextsIn(assembly);
+                testContexts.Each(testContext =>
+                {
+                    _testContexts.Add(testContext);
+                });
+
             }
             catch (Exception err)
             {
