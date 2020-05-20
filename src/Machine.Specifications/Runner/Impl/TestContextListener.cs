@@ -4,7 +4,7 @@ namespace Machine.Specifications.Runner.Impl
 {
     public class TestContextListener : RunListenerBase
     {
-        List<ITestContext> _testContext;
+        List<ITestContext> _testContext = new List<ITestContext>();
 
         public void SetTestContexts(List<ITestContext> testContexts)
         {

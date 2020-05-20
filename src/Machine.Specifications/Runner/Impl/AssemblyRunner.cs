@@ -20,7 +20,6 @@ namespace Machine.Specifications.Runner.Impl
         readonly IList<IAssemblyContext> _executedAssemblyContexts;
         readonly AssemblyExplorer _explorer;
         readonly TestContextListener _testContext;
-        readonly List<ITestContext> _testContexts;
 
         public AssemblyRunner(ISpecificationRunListener listener, RunOptions options)
         {
@@ -29,7 +28,7 @@ namespace Machine.Specifications.Runner.Impl
             _listener = new AggregateRunListener(new[]
                                            {
                                              new AssemblyLocationAwareListener(),
-                                             new TestContextListener(),
+                                             _testContext,
                                              new SetUpRedirectOutputRunListener(state),
                                              listener,
                                              new TearDownRedirectOutputRunListener(state),
@@ -37,7 +36,6 @@ namespace Machine.Specifications.Runner.Impl
             _options = options;
             _explorer = new AssemblyExplorer();
             _executedAssemblyContexts = new List<IAssemblyContext>();
-            _testContexts = new List<ITestContext>();
 
             _assemblyStart = OnAssemblyStart;
             _assemblyEnd = OnAssemblyEnd;
@@ -54,7 +52,6 @@ namespace Machine.Specifications.Runner.Impl
 
                 var globalCleanups = _explorer.FindAssemblyWideContextCleanupsIn(assembly).ToList();
                 var specificationSupplements = _explorer.FindSpecificationSupplementsIn(assembly).ToList();
-                _testContext.SetTestContexts(_testContexts);
                 if (hasExecutableSpecifications)
                 {
                     _assemblyStart(assembly);
@@ -83,6 +80,9 @@ namespace Machine.Specifications.Runner.Impl
         {
             try
             {
+                var testContexts = _explorer.FindTestContextsIn(assembly);
+                _testContext.SetTestContexts(testContexts.ToList());
+
                 _listener.OnAssemblyStart(assembly.GetInfo());
 
                 var assemblyContexts = _explorer.FindAssemblyContextsIn(assembly);
@@ -91,13 +91,6 @@ namespace Machine.Specifications.Runner.Impl
                     assemblyContext.OnAssemblyStart();
                     _executedAssemblyContexts.Add(assemblyContext);
                 });
-
-                var testContexts = _explorer.FindTestContextsIn(assembly);
-                testContexts.Each(testContext =>
-                {
-                    _testContexts.Add(testContext);
-                });
-
             }
             catch (Exception err)
             {
