@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using Machine.Specifications.Explorers;
 using Machine.Specifications.Model;
+using Machine.Specifications.Runner;
 using Machine.Specifications.Specs.Runner;
 
 namespace Machine.Specifications.Specs.Explorers
@@ -178,6 +179,45 @@ namespace Machine.Specifications.Specs.Explorers
         }
 
         public void OnAssemblyComplete()
+        {
+        }
+    }
+
+    public class TestContext : ITestContext
+    {
+        public void OnAssemblyStart(AssemblyInfo assembly)
+        {
+        }
+
+        public void OnAssemblyEnd(AssemblyInfo assembly)
+        {
+        }
+
+        public void OnRunStart()
+        {
+        }
+
+        public void OnRunEnd()
+        {
+        }
+
+        public void OnContextStart(ContextInfo context)
+        {
+        }
+
+        public void OnContextEnd(ContextInfo context)
+        {
+        }
+
+        public void OnSpecificationStart(SpecificationInfo specification)
+        {
+        }
+
+        public void OnSpecificationEnd(SpecificationInfo specification, Result result)
+        {
+        }
+
+        public void OnFatalError(ExceptionResult exception)
         {
         }
     }

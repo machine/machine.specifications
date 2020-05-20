@@ -48,8 +48,15 @@ namespace Machine.Specifications.Explorers
         public IEnumerable<IAssemblyContext> FindAssemblyContextsIn(Assembly assembly)
         {
             return assembly.GetExportedTypes()
-              .Where(x => x.GetTypeInfo().IsClass && !x.GetTypeInfo().IsAbstract && x.GetInterfaces().Contains(typeof(IAssemblyContext)))
-              .Select(x => (IAssemblyContext)Activator.CreateInstance(x));
+                .Where(x => x.GetTypeInfo().IsClass && !x.GetTypeInfo().IsAbstract && x.GetInterfaces().Contains(typeof(IAssemblyContext)))
+                .Select(x => (IAssemblyContext)Activator.CreateInstance(x));
+        }
+
+        public IEnumerable<ITestContext> FindTestContextsIn(Assembly assembly)
+        {
+            return assembly.GetExportedTypes()
+                .Where(x => x.GetTypeInfo().IsClass && !x.GetTypeInfo().IsAbstract && x.GetInterfaces().Contains(typeof(ITestContext)))
+                .Select(x => (ITestContext)Activator.CreateInstance(x));
         }
 
         Context CreateContextFrom(Type type)

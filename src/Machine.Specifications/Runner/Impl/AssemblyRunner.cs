@@ -19,10 +19,12 @@ namespace Machine.Specifications.Runner.Impl
 
         readonly IList<IAssemblyContext> _executedAssemblyContexts;
         readonly AssemblyExplorer _explorer;
+        readonly TestContextListener _testContext;
 
         public AssemblyRunner(ISpecificationRunListener listener, RunOptions options)
         {
-            RedirectOutputState state = new RedirectOutputState();
+            var state = new RedirectOutputState();
+            _testContext = new TestContextListener();
             _listener = new AggregateRunListener(new[]
                                            {
                                              new AssemblyLocationAwareListener(),
@@ -44,17 +46,19 @@ namespace Machine.Specifications.Runner.Impl
 
             try
             {
-                hasExecutableSpecifications = contexts.Any(x => x.HasExecutableSpecifications);
+                var contextsList = contexts.ToList();
+                hasExecutableSpecifications = contextsList.Any(x => x.HasExecutableSpecifications);
 
                 var globalCleanups = _explorer.FindAssemblyWideContextCleanupsIn(assembly).ToList();
                 var specificationSupplements = _explorer.FindSpecificationSupplementsIn(assembly).ToList();
-
+                var testContexts = _explorer.FindTestContextsIn(assembly).ToList();
+                _testContext.SetTestContexts(testContexts);
                 if (hasExecutableSpecifications)
                 {
                     _assemblyStart(assembly);
                 }
 
-                foreach (var context in contexts)
+                foreach (var context in contextsList)
                 {
                     RunContext(context, globalCleanups, specificationSupplements);
                 }
@@ -79,7 +83,7 @@ namespace Machine.Specifications.Runner.Impl
             {
                 _listener.OnAssemblyStart(assembly.GetInfo());
 
-                IEnumerable<IAssemblyContext> assemblyContexts = _explorer.FindAssemblyContextsIn(assembly);
+                var assemblyContexts = _explorer.FindAssemblyContextsIn(assembly);
                 assemblyContexts.Each(assemblyContext =>
                 {
                     assemblyContext.OnAssemblyStart();
@@ -122,8 +126,8 @@ namespace Machine.Specifications.Runner.Impl
         }
 
         void RunContext(Context context,
-                        IEnumerable<ICleanupAfterEveryContextInAssembly> globalCleanups,
-                        IEnumerable<ISupplementSpecificationResults> supplements)
+            IEnumerable<ICleanupAfterEveryContextInAssembly> globalCleanups,
+            IEnumerable<ISupplementSpecificationResults> supplements)
         {
             var runner = ContextRunnerFactory.GetContextRunnerFor(context);
             runner.Run(context, _listener, _options, globalCleanups, supplements);
