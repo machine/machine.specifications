@@ -47,17 +47,17 @@ namespace Machine.Specifications.Runner.Impl
 
             try
             {
-                var contextsList = contexts.ToList();
-                hasExecutableSpecifications = contextsList.Any(x => x.HasExecutableSpecifications);
+                hasExecutableSpecifications = contexts.Any(x => x.HasExecutableSpecifications);
 
                 var globalCleanups = _explorer.FindAssemblyWideContextCleanupsIn(assembly).ToList();
                 var specificationSupplements = _explorer.FindSpecificationSupplementsIn(assembly).ToList();
+
                 if (hasExecutableSpecifications)
                 {
                     _assemblyStart(assembly);
                 }
 
-                foreach (var context in contextsList)
+                foreach (var context in contexts)
                 {
                     RunContext(context, globalCleanups, specificationSupplements);
                 }
