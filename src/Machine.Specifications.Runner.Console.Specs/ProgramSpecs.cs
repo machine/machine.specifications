@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.ConsoleRunner.Specs
 {
@@ -16,8 +17,14 @@ namespace Machine.Specifications.ConsoleRunner.Specs
         Because of = () =>
             program.Run(new string[] { });
 
-        It should_print_usage_statement = () =>
-            console.Lines.ShouldContain(Options.Usage());
+        It should_print_copyright_statement = () =>
+            console.Lines.ShouldContain(Options.Copyright().SplitNewLine());
+
+        It should_print_command_usage = () =>
+            console.Lines.ShouldContain(Options.CommandUsage().SplitNewLine());
+
+        It should_print_options_summary = () =>
+            console.Lines.ShouldContain(Options.OptionsSummary().SplitNewLine());
     }
 
     [Subject("Console runner")]

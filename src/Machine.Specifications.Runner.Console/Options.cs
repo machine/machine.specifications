@@ -98,12 +98,29 @@ namespace Machine.Specifications.ConsoleRunner
         [HelpOption]
         public string GetUsage()
         {
+            return Usage();
+        }
+
+        public static string Usage()
+        {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("Machine.Specifications");
-            sb.AppendLine("Copyright (C) 2007-2013");
+            sb.AppendLine(Copyright());
+            sb.AppendLine(CommandUsage());
             sb.AppendLine("");
-            sb.AppendLine(Usage());
-            sb.AppendLine("Options:");
+            sb.AppendLine(OptionsSummary());
+            return sb.ToString();
+        }
+
+        public static string CommandUsage()
+        {
+            return
+                $"Usage: {Path.GetFileName(Assembly.GetEntryAssembly()?.Location ?? "mspec.exe")} [options] <assemblies>";
+        }
+
+        public static string OptionsSummary()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("options:");
             sb.AppendLine("  -f, --filters               Filter file specifying contexts to execute (full type name, one per line). Takes precedence over tags");
             sb.AppendLine("  -i, --include               Execute all specifications in contexts with these comma delimited tags. Ex. -i \"foo,bar,foo_bar\"");
             sb.AppendLine("  -x, --exclude               Exclude specifications in contexts with these comma delimited tags. Ex. -x \"foo,bar,foo_bar\"");
@@ -123,10 +140,12 @@ namespace Machine.Specifications.ConsoleRunner
             return sb.ToString();
         }
 
-        public static string Usage()
+        public static string Copyright()
         {
-            var runnerExe = Assembly.GetEntryAssembly();
-            return String.Format("Usage: {0} [options] <assemblies>", Path.GetFileName(runnerExe != null ? runnerExe.Location : "mspec.exe"));
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Machine.Specifications");
+            sb.AppendLine("Copyright (C) 2007-2013");
+            return sb.ToString();
         }
 
         public virtual bool ParseArguments(string[] args)

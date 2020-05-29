@@ -76,5 +76,11 @@ namespace Machine.Specifications.Utility
 
             return null;
         }
+
+        public static IEnumerable<string> SplitNewLine(this string s, StringSplitOptions splitOption = StringSplitOptions.None)
+        {
+            var separator = new[] { Environment.NewLine };
+            return s.Split(separator, splitOption);
+        }
     }
 }
