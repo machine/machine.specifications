@@ -116,6 +116,12 @@ namespace Machine.Specifications.Runner.Utility
             this.Exception = new ExceptionResult(exception);
         }
 
+        private Result(ExceptionResult exception)
+        {
+            _status = Status.Failing;
+            this.Exception = exception;
+        }
+
         private Result(Result result, string supplementName, IDictionary<string, string> supplement)
         {
             this._status = result.Status;
@@ -183,6 +189,11 @@ namespace Machine.Specifications.Runner.Utility
         }
 
         public static Result Failure(Exception exception)
+        {
+            return new Result(exception);
+        }
+
+        public static Result Failure(ExceptionResult exception)
         {
             return new Result(exception);
         }

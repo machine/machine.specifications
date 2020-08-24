@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if !NETSTANDARD
+using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Remoting.Messaging;
 using System.Xml.Linq;
@@ -57,3 +58,4 @@ namespace Machine.Specifications.Runner.Utility
         }
     }
 }
+#endif

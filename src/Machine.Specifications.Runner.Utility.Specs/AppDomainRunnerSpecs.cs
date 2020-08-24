@@ -97,6 +97,7 @@ namespace Example.BindingFailure.Ref
         Because of = () =>
             runner.RunAssembly(path);
 
+
         It should_succeed = () =>
             true.ShouldBeTrue();
 
