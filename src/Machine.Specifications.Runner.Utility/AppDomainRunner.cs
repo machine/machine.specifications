@@ -136,7 +136,9 @@ namespace Machine.Specifications.Runner.Utility
         [SecuritySafeCritical]
         ISpecificationRunner CreateRunnerInSeparateAppDomain(AppDomain appDomain, AssemblyPath assembly)
         {
+#if !NETSTANDARD
             var mspecAssemblyFilename = Path.Combine(Path.GetDirectoryName(assembly), "Machine.Specifications.dll");
+
             if (!File.Exists(mspecAssemblyFilename))
             {
                 return new NullSpecificationRunner();
@@ -144,7 +146,6 @@ namespace Machine.Specifications.Runner.Utility
 
             var mspecAssemblyName = AssemblyName.GetAssemblyName(mspecAssemblyFilename);
 
-#if !NETSTANDARD
             var constructorArgs = new object[3];
             constructorArgs[0] = _listener;
             constructorArgs[1] = _options.ToXml();
@@ -169,7 +170,12 @@ namespace Machine.Specifications.Runner.Utility
                 throw;
             }
 #else
-            var runnerType = Type.GetType($"{RunnerType}, {mspecAssemblyName.FullName}");
+            var runnerType = Type.GetType($"{RunnerType}, Machine.Specifications");
+
+            if (runnerType == null)
+            {
+                throw new InvalidOperationException("Machine.Specifications library not found");
+            }
 
             var ctor = runnerType
                 .GetConstructors(BindingFlags.Instance | BindingFlags.Public)
