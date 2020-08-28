@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
+#if !NETSTANDARD
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Messaging;
+#endif
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -11,8 +13,13 @@ namespace Machine.Specifications.Runner.Utility
     /// The remote run listener is a decorator class which takes the burden to implement IMessageSink and translates
     /// information about specification execution over app domain boundaries.
     /// </summary>
+#if !NETSTANDARD
     [Serializable]
-    internal class RemoteRunListener : LongLivedMarshalByRefObject, ISpecificationRunListener, IMessageSink
+#endif
+    internal class RemoteRunListener : LongLivedMarshalByRefObject, ISpecificationRunListener
+#if !NETSTANDARD
+        , IMessageSink
+#endif
     {
         private readonly ISpecificationRunListener _runListener;
 
@@ -66,6 +73,7 @@ namespace Machine.Specifications.Runner.Utility
             _runListener.OnFatalError(exceptionResult);
         }
 
+#if !NETSTANDARD
         public IMessage SyncProcessMessage(IMessage msg)
         {
             var methodCall = msg as IMethodCallMessage;
@@ -122,5 +130,6 @@ namespace Machine.Specifications.Runner.Utility
         }
 
         public IMessageSink NextSink { get; private set; }
+#endif
     }
 }

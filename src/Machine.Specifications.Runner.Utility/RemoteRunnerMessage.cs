@@ -2,11 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+#if !NETSTANDARD
 using System.Runtime.Remoting.Messaging;
+#endif
 using System.Xml.Linq;
 
 namespace Machine.Specifications.Runner.Utility
 {
+#if !NETSTANDARD
     internal class RemoteRunnerMessage : MarshalByRefObject, IMessage
     {
         public RemoteRunnerMessage(XElement root, MemberInfo info = null)
@@ -22,4 +25,5 @@ namespace Machine.Specifications.Runner.Utility
 
         public IDictionary Properties { get; private set; }
     }
+#endif
 }

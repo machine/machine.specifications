@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+#if !NETSTANDARD
 using System.Runtime.Remoting.Messaging;
+#endif
 using System.Security;
 using System.Security.Permissions;
 
@@ -10,7 +13,9 @@ namespace Machine.Specifications.Runner.Utility
 {
     public class AppDomainRunner : ISpecificationRunner
     {
-        readonly object _listener;
+        private const string RunnerType = "Machine.Specifications.Runner.Impl.DefaultRunner";
+
+        readonly ISpecificationRunListener _listener;
         readonly RunOptions _options;
         readonly InvokeOnce _signalRunStart;
         readonly InvokeOnce _signalRunEnd;
@@ -109,7 +114,7 @@ namespace Machine.Specifications.Runner.Utility
             {
                 return;
             }
-
+#if !NETSTANDARD
             var cachePath = appDomain.SetupInformation.CachePath;
 
             try
@@ -125,15 +130,18 @@ namespace Machine.Specifications.Runner.Utility
             {
                 // This is OK for cleanup
             }
+#endif
         }
 
         [SecuritySafeCritical]
         ISpecificationRunner CreateRunnerInSeparateAppDomain(AppDomain appDomain, AssemblyPath assembly)
         {
+#if !NETSTANDARD
             var mspecAssemblyFilename = Path.Combine(Path.GetDirectoryName(assembly), "Machine.Specifications.dll");
+
             if (!File.Exists(mspecAssemblyFilename))
             {
-                return new RemoteRunnerDecorator(new NullMessageSink());
+                return new NullSpecificationRunner();
             }
 
             var mspecAssemblyName = AssemblyName.GetAssemblyName(mspecAssemblyFilename);
@@ -146,7 +154,7 @@ namespace Machine.Specifications.Runner.Utility
             try
             {
                 var defaultRunner = (IMessageSink)appDomain.CreateInstanceAndUnwrap(mspecAssemblyName.FullName,
-                    "Machine.Specifications.Runner.Impl.DefaultRunner",
+                    RunnerType,
                     false,
                     0,
                     null,
@@ -161,6 +169,25 @@ namespace Machine.Specifications.Runner.Utility
                 Console.Error.WriteLine("Runner failure: " + err);
                 throw;
             }
+#else
+            var runnerType = Type.GetType($"{RunnerType}, Machine.Specifications");
+
+            if (runnerType == null)
+            {
+                throw new InvalidOperationException("Machine.Specifications library not found");
+            }
+
+            var ctor = runnerType
+                .GetConstructors(BindingFlags.Instance | BindingFlags.Public)
+                .First(x => x.GetParameters().Length == 3);
+
+            Runner.RunOptions options = new Runner.RunOptions(_options.IncludeTags, _options.ExcludeTags, _options.Filters);
+
+            var listener = new ReflectionRunListener(_listener);
+            var runner = (Runner.ISpecificationRunner) ctor.Invoke(new object[] {listener, options, false});
+
+            return new ReflectionSpecificationRunner(runner);
+#endif
         }
 
         readonly Dictionary<AssemblyPath, AppDomainAndRunner> _appDomains = new Dictionary<AssemblyPath, AppDomainAndRunner>();
@@ -173,6 +200,7 @@ namespace Machine.Specifications.Runner.Utility
                 return appDomainAndRunner;
             }
 
+#if !NETSTANDARD
             var setup = new AppDomainSetup
             {
                 ApplicationBase = Path.GetDirectoryName(assembly),
@@ -198,6 +226,12 @@ namespace Machine.Specifications.Runner.Utility
             });
 
             return GetOrCreateAppDomainRunner(assembly);
+#else
+            return new AppDomainAndRunner
+            {
+                Runner = CreateRunnerInSeparateAppDomain(null, assembly)
+            };
+#endif
         }
 
         bool RunnerWasCreated(AssemblyPath assembly)
