@@ -7,7 +7,7 @@
     <Authors>Machine Specifications</Authors>
     <PackageTags>test;unit;testing;context;specification;bdd;tdd;mspec</PackageTags>
     <PackageReleaseNotes>https://github.com/machine/machine.specifications.should/releases</PackageReleaseNotes>
-    <PackageIconUrl>http://github.com/machine/media/raw/master/Machine.Specifications-128x128.png</PackageIconUrl>
+    <PackageIcon>Machine.png</PackageIcon>
     <PackageProjectUrl>http://github.com/machine/machine.specifications.should</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
@@ -22,6 +22,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Resources\Machine.png" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 </Project>
