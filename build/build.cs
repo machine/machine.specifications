@@ -30,7 +30,6 @@ public class build
             Run("dotnet", "build " +
                           "--no-restore " +
                           "--configuration Release " +
-                          " /p:HostFullIdentifier= " +
                           $"/p:Version={version.SemVer} " +
                           $"/p:AssemblyVersion={version.AssemblySemVer} " +
                           $"/p:FileVersion={version.AssemblySemFileVer} " +
