@@ -1,0 +1,27 @@
+name: publish
+
+on:
+  release:
+    types: [published]
+
+env:
+  DOTNET_NOLOGO: true
+
+jobs:
+  publish:
+    name: publish
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Fetch all tags and branches
+        run: git fetch --prune --unshallow
+      - name: Deploy
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: ./build.ps1 publish
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: artifacts/*.nupkg

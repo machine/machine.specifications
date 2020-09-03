@@ -12,7 +12,7 @@
     <Authors>Machine Specifications</Authors>
     <PackageTags>test;unit;testing;context;specification;bdd;tdd;mspec</PackageTags>
     <PackageReleaseNotes>https://github.com/machine/machine.specifications.runner.console/releases</PackageReleaseNotes>
-    <PackageIconUrl>http://github.com/machine/media/raw/master/Machine.Specifications-128x128.png</PackageIconUrl>
+    <PackageIcon>Machine.png</PackageIcon>
     <PackageProjectUrl>http://github.com/machine/machine.specifications.runner.console</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
@@ -23,6 +23,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications.Runner.Console.x86\Machine.Specifications.Runner.Console.x86.csproj" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Resources\Machine.png" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
   <PropertyGroup>

@@ -9,9 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Spec
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{1D85E618-71A9-43F2-B76D-95DC161E2A13}"
 	ProjectSection(SolutionItems) = preProject
-		appveyor.yml = appveyor.yml
-		build.cake = build.cake
+		build.ps1 = build.ps1
+		build.sh = build.sh
+		.github\workflows\build.yml = .github\workflows\build.yml
 		CONTRIBUTING.md = CONTRIBUTING.md
+		.config\dotnet-tools.json = .config\dotnet-tools.json
+		GitVersion.yml = GitVersion.yml
+		.github\workflows\publish.yml = .github\workflows\publish.yml
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -35,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Shou
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Should.Specs", "src\Machine.Specifications.Should.Specs\Machine.Specifications.Should.Specs.csproj", "{D3D341C3-98CE-4EF4-9247-02F4265E9F24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Framework", "src\Machine.Specifications.Framework\Machine.Specifications.Framework.csproj", "{3D7C3B22-A3CB-45A9-A3E5-42B992931620}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Framework", "src\Machine.Specifications.Framework\Machine.Specifications.Framework.csproj", "{3D7C3B22-A3CB-45A9-A3E5-42B992931620}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

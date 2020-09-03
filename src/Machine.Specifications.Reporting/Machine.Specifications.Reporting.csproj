@@ -7,7 +7,7 @@
     <Authors>Machine Specifications</Authors>
     <PackageTags>test;unit;testing;context;specification;bdd;tdd;mspec;reporting</PackageTags>
     <PackageReleaseNotes>See http://github.com/machine/machine.specifications.reporting/releases</PackageReleaseNotes>
-    <PackageIconUrl>http://github.com/machine/media/raw/master/Machine.Specifications-128x128.png</PackageIconUrl>
+    <PackageIcon>Machine.png</PackageIcon>
     <PackageProjectUrl>http://github.com/machine/machine.specifications.reporting</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net35' ">C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5\Profile\Client</FrameworkPathOverride>
@@ -23,6 +23,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications.Runner.Utility\Machine.Specifications.Runner.Utility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Resources\Machine.png" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 </Project>
