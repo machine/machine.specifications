@@ -10,7 +10,7 @@ env:
 jobs:
   publish:
     name: publish
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout
@@ -20,7 +20,7 @@ jobs:
       - name: Deploy
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        run: ./build.sh publish
+        run: ./build.ps1 publish
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
