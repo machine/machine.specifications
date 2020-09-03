@@ -14,13 +14,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-      <_Parameter1>$(AssemblyName).Specs</_Parameter1>
-    </AssemblyAttribute>
+    <PackageReference Include="Machine.Specifications" Version="[0.11.0,2.0.0)" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj" PrivateAssets="All" />
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>$(AssemblyName).Specs</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 
 </Project>
