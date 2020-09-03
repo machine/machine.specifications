@@ -11,27 +11,17 @@ env:
 
 jobs:
   build:
-    strategy:
-      fail-fast: false
-      matrix:
-        runs-on: [macos-latest, ubuntu-latest, windows-latest]
-
-    name: Build ${{ matrix.runs-on }}
-    runs-on: ${{ matrix.runs-on }}
+    name: build
+    runs-on: windows-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Fetch all tags and branches
         run: git fetch --prune --unshallow
-      - name: Build ps1
-        if: contains(matrix.runs-on, 'windows')
+      - name: Build
         run: ./build.ps1
-      - name: Build bash
-        if: contains(matrix.runs-on, 'macos') || contains(matrix.runs-on, 'ubuntu')
-        run: ./build.sh
       - name: Upload artifacts
-        if: contains(matrix.runs-on, 'ubuntu')
         uses: actions/upload-artifact@v2
         with:
           path: artifacts/*.nupkg
