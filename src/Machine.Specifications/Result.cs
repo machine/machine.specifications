@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-
-#if CLEAN_EXCEPTION_STACK_TRACE
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Linq;
-#endif
 
 namespace Machine.Specifications
 {
@@ -36,12 +33,10 @@ namespace Machine.Specifications
 
         ExceptionResult(Exception exception, bool outermost)
         {
-#if CLEAN_EXCEPTION_STACK_TRACE
       if (outermost && exception is TargetInvocationException)
       {
         exception = exception.InnerException;
       }
-#endif
 
             FullTypeName = exception.GetType().FullName;
             TypeName = exception.GetType().Name;
@@ -76,9 +71,7 @@ namespace Machine.Specifications
         }
 
         #region Borrowed from XUnit to clean up the stack trace, licened under MS-PL
-
-#if CLEAN_EXCEPTION_STACK_TRACE
-    /// <summary>
+        /// <summary>
     ///  A description of the regular expression:
     ///
     ///  ^\s+\w+\sMachine\.Specifications
@@ -117,14 +110,6 @@ namespace Machine.Specifications
       // Anything in the Machine.Specifications namespace
       return FrameworkStackLine.IsMatch(trimmedLine);
     }
-#else
-        // Do not change the line at all if you are not going to clean it
-        static string FilterStackTrace(string stackTrace)
-        {
-            return stackTrace;
-        }
-#endif
-
         #endregion
     }
 

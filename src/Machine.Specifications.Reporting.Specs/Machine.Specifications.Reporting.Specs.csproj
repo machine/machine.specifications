@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>0.1.0</Version>
-    <TargetFrameworks>net462</TargetFrameworks>
+    <TargetFramework>net472</TargetFramework>
+
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

@@ -8,7 +8,10 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.CSharp;
+
+#if NETCOREAPP
 using Microsoft.CSharp.RuntimeBinder;
+#endif
 
 namespace Machine.Specifications.Runner.Utility
 {

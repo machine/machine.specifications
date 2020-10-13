@@ -1,4 +1,3 @@
-#if !NET35
 using System.Threading.Tasks;
 
 namespace Machine.Specifications
@@ -38,4 +37,3 @@ namespace Machine.Specifications
     }
   }
 }
-#endif
