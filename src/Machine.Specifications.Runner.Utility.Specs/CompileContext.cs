@@ -75,7 +75,8 @@ namespace Machine.Specifications.Runner.Utility
             {
                 "System.dll",
                 "Machine.Specifications.dll",
-                "Machine.Specifications.Should.dll"
+                "Machine.Specifications.Should.dll",
+                "netstandard.dll"
             });
 
             if (references.Any())
