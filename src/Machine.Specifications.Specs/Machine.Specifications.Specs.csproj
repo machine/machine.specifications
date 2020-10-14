@@ -13,7 +13,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.2.1" />
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
-    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.9.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.10.1" />
   </ItemGroup>
 </Project>

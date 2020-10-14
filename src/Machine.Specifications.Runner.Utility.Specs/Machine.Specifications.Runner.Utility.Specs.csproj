@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Compilers" Version="3.7.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
-    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.9.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.10.1" />
   </ItemGroup>
 
   <ItemGroup>
