@@ -1,21 +1,5 @@
-
 using System;
 using System.Reflection;
-
-#if NET35 || NET40
-
-namespace System.Reflection
-{
-    internal static class SystemReflectionPolyfillExtensions
-    {
-        public static Type GetTypeInfo(this Type type)
-        {
-            return type;
-        }
-    }
-}
-#endif
-
 
 namespace Machine.Specifications.Utility
 {
@@ -34,10 +18,7 @@ namespace Machine.Specifications.Utility
 
         public static string TryGetLocation(this Assembly assembly)
         {
-            // .NET Standard 1.3 doesn't support "Assembly.Location"
-            // and UAP/UWP are 1.3.
-            // However .Net Standard 1.5+ support it
-            return null;
+            return assembly.Location;
         }
 #else
         public static Type AsType(this MemberInfo memberInfo)

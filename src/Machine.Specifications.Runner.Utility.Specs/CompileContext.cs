@@ -8,7 +8,10 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.CSharp;
+
+#if NETCOREAPP
 using Microsoft.CSharp.RuntimeBinder;
+#endif
 
 namespace Machine.Specifications.Runner.Utility
 {
@@ -72,7 +75,8 @@ namespace Machine.Specifications.Runner.Utility
             {
                 "System.dll",
                 "Machine.Specifications.dll",
-                "Machine.Specifications.Should.dll"
+                "Machine.Specifications.Should.dll",
+                "netstandard.dll"
             });
 
             if (references.Any())

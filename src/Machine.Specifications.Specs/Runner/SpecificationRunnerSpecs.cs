@@ -249,9 +249,6 @@ namespace Machine.Specifications.Specs.Runner
 
             testListener
                 .LastFatalError
-#if !CLEAN_EXCEPTION_STACK_TRACE
-                .InnerExceptionResult
-#endif
                 .Message.ShouldEqual(exception.Message);
         };
     }

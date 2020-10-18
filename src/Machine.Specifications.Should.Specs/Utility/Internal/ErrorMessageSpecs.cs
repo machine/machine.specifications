@@ -105,7 +105,7 @@ namespace Machine.Specifications.Should.Specs.Utility.Internal
 
         Establish context = () =>
         {
-#if NETCORE
+#if NETCOREAPP
             Culture = CultureInfo.InvariantCulture;
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
 #else
@@ -121,7 +121,7 @@ namespace Machine.Specifications.Should.Specs.Utility.Internal
           () => ActualMessage.ShouldEqual("  Expected: [4.5578]" + Environment.NewLine + "  But was:  [4.5568]");
 
         Cleanup after = () => {
-#if NETCORE
+#if NETCOREAPP
             CultureInfo.CurrentCulture = Culture;
 #else
             Thread.CurrentThread.CurrentCulture = Culture;

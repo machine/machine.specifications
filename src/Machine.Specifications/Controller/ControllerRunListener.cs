@@ -2,10 +2,8 @@ using System;
 using System.Xml.Linq;
 using Machine.Specifications.Runner;
 
-
 namespace Machine.Specifications.Controller
 {
-
     internal class ControllerRunListener : ISpecificationRunListener
     {
         private readonly Action<string> _listener;
