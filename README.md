@@ -1,11 +1,11 @@
 # Machine.Specifications
 
-[![Docs](https://img.shields.io/badge/docs-wiki-blue.svg?style=for-the-badge)](https://github.com/machine/machine.specifications/wiki) [![Nuget](https://img.shields.io/nuget/dt/Machine.Specifications?style=for-the-badge)](https://www.nuget.org/packages/Machine.Specifications) [![Gitter](https://img.shields.io/gitter/room/machine/specifications?style=for-the-badge)](https://gitter.im/machine/specifications) [![GitHub](https://img.shields.io/github/license/machine/machine.specifications?style=for-the-badge)](https://github.com/machine/machine.specifications/blob/master/LICENSE)
+[![Docs](https://img.shields.io/badge/docs-wiki-blue.svg?style=for-the-badge)](https://github.com/machine/machine.specifications/wiki) [![Nuget](https://img.shields.io/nuget/dt/Machine.Specifications?style=for-the-badge)](https://www.nuget.org/packages/Machine.Specifications) [![Discussions](https://img.shields.io/badge/DISCUSS-ON%20GITHUB-orange?style=for-the-badge)](https://github.com/machine/machine.specifications/discussions) [![Gitter](https://img.shields.io/gitter/room/machine/specifications?style=for-the-badge)](https://gitter.im/machine/specifications) [![License](https://img.shields.io/github/license/machine/machine.specifications?style=for-the-badge)](https://github.com/machine/machine.specifications/blob/master/LICENSE)
 
 <img src="https://github.com/machine/machine.specifications/raw/master/src/Machine.Specifications/Resources/Machine.png" alt="MSpec logo" title="Machine.Specifications" align="right" height="100" />
 
 MSpec is called a "context/specification" test framework because of the "grammar" that is used in describing and coding the
-tests or "specs". That grammar reads roughly like this
+tests or "specs". The grammar reads roughly like this
 
 > When the system is in such a state, and a certain action occurs, it should do such-and-such or be in some end state.
 
@@ -63,15 +63,12 @@ Install-Package Machine.Fakes
 For project documentation, please visit the [wiki](https://github.com/machine/machine.specifications/wiki).
 
 ## Training
-
-<img src="https://www.pluralsight.com/content/dam/pluralsight/newsroom/brand-assets/logos/PS_logo_F-01.png" height="50" align="top" style="margin:-10px 0px 15px 10px" />
-
 A PluralSight course by [@kevinkuebler](https://github.com/kevinkuebler) is available [here](https://www.pluralsight.com/courses/expressive-testing-dotnet-mspec).
 
 ## Get in touch
-Chat with us on Gitter, or raise an [issue](https://github.com/machine/machine.specifications/issues).
+Discuss with us on [Discussions](https://github.com/machine/machine.specifications/discussions), chat with us on [Gitter](https://gitter.im/machine/specifications), or raise an [issue](https://github.com/machine/machine.specifications/issues).
 
-[![Gitter](https://img.shields.io/gitter/room/machine/specifications?style=for-the-badge)](https://gitter.im/machine/specifications) 
+[![Discussions](https://img.shields.io/badge/DISCUSS-ON%20GITHUB-orange?style=for-the-badge)](https://github.com/machine/machine.specifications/discussions) [![Gitter](https://img.shields.io/gitter/room/machine/specifications?style=for-the-badge)](https://gitter.im/machine/specifications) 
 
 ## Packages
 
