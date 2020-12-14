@@ -1,7 +1,6 @@
 using System;
 using System.Reflection;
 using Machine.Specifications;
-#if CLEAN_EXCEPTION_STACK_TRACE
 using SomeProject.Specs;
 
 namespace SomeProject.Specs
@@ -68,4 +67,3 @@ namespace Machine.Specifications.Specs
             Result.InnerExceptionResult.FullTypeName.ShouldEqual(typeof(TargetInvocationException).FullName);
     }
 }
-#endif

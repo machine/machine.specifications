@@ -14,10 +14,4 @@ namespace Machine.Specifications.Runner
         void OnSpecificationEnd(SpecificationInfo specification, Result result);
         void OnFatalError(ExceptionResult exception);
     }
-
-    [Obsolete("Information can be obtained by implementing ISpecificationRunListener.OnFatalError and or counting specifications with failures. To be removed in 1.0.")]
-    public interface ISpecificationResultProvider
-    {
-        bool FailureOccurred { get; }
-    }
 }

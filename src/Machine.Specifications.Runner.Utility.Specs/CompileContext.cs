@@ -3,7 +3,15 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Text;
 using Microsoft.CSharp;
+
+#if NETCOREAPP
+using Microsoft.CSharp.RuntimeBinder;
+#endif
 
 namespace Machine.Specifications.Runner.Utility
 {
@@ -12,6 +20,47 @@ namespace Machine.Specifications.Runner.Utility
         private readonly string _directory = Path.GetDirectoryName(typeof(CompileContext).Assembly.Location);
 
         private string _filename;
+
+#if NETCOREAPP
+        public AssemblyPath Compile(string code, params string[] references)
+        {
+            _filename = Path.Combine(_directory, Guid.NewGuid() + ".dll");
+
+            var codeString = SourceText.From(code);
+            var options = CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.CSharp7_3);
+
+            var parsedSyntaxTree = SyntaxFactory.ParseSyntaxTree(codeString, options);
+
+            var trustedAssembliesPaths = ((string)AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES")).Split(Path.PathSeparator);
+
+            var neededAssemblies = new[]
+            {
+                "System.Console",
+                "System.Runtime",
+                "System.Runtime.Extensions",
+                "System.Private.CoreLib",
+                "netstandard",
+                "Machine.Specifications",
+                "Machine.Specifications.Should"
+            };
+
+            var metadataReferences = trustedAssembliesPaths
+                .Where(p => neededAssemblies.Contains(Path.GetFileNameWithoutExtension(p)))
+                .Select(p => MetadataReference.CreateFromFile(p))
+                .Concat(references.Select(x => MetadataReference.CreateFromFile(x)));
+
+            var result = CSharpCompilation.Create(Path.GetFileName(_filename),
+                    new[] {parsedSyntaxTree},
+                    metadataReferences,
+                    new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
+                .Emit(_filename);
+
+            if (!result.Success)
+                throw new InvalidOperationException();
+
+            return new AssemblyPath(_filename);
+        }
+#else
 
         public AssemblyPath Compile(string code, params string[] references)
         {
@@ -26,7 +75,8 @@ namespace Machine.Specifications.Runner.Utility
             {
                 "System.dll",
                 "Machine.Specifications.dll",
-                "Machine.Specifications.Should.dll"
+                "Machine.Specifications.Should.dll",
+                "netstandard.dll"
             });
 
             if (references.Any())
@@ -42,7 +92,7 @@ namespace Machine.Specifications.Runner.Utility
 
             return new AssemblyPath(_filename);
         }
-
+#endif
         public void Dispose()
         {
             var files = Directory.GetFiles(_directory, "*.dll")

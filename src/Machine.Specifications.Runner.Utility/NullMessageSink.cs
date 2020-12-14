@@ -1,4 +1,5 @@
-﻿using System.Runtime.Remoting.Messaging;
+﻿#if !NETSTANDARD
+using System.Runtime.Remoting.Messaging;
 
 namespace Machine.Specifications.Runner.Utility
 {
@@ -17,3 +18,4 @@ namespace Machine.Specifications.Runner.Utility
         public IMessageSink NextSink { get; private set; }
     }
 }
+#endif

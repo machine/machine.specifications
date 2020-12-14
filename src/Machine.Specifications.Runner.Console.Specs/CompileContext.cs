@@ -23,7 +23,8 @@ namespace Machine.Specifications.ConsoleRunner.Specs
             parameters.ReferencedAssemblies.AddRange(new []
             {
                 "Machine.Specifications.dll",
-                "Machine.Specifications.Should.dll"
+                "Machine.Specifications.Should.dll",
+                "netstandard.dll"
             });
 
             if (references.Any())

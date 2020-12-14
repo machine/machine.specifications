@@ -43,7 +43,8 @@ namespace Machine.Specifications.Specs
             parameters.ReferencedAssemblies.AddRange(new []
             {
                 "Machine.Specifications.dll",
-                "Machine.Specifications.Should.dll"
+                "Machine.Specifications.Should.dll",
+                "netstandard.dll"
             });
 
             var options = new Dictionary<string, string> {{"CompilerVersion", "v4.0"}};

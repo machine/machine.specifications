@@ -9,9 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Spec
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{1D85E618-71A9-43F2-B76D-95DC161E2A13}"
 	ProjectSection(SolutionItems) = preProject
-		appveyor.yml = appveyor.yml
-		build.cake = build.cake
+		build.ps1 = build.ps1
+		build.sh = build.sh
+		.github\workflows\build.yml = .github\workflows\build.yml
 		CONTRIBUTING.md = CONTRIBUTING.md
+		.config\dotnet-tools.json = .config\dotnet-tools.json
+		GitVersion.yml = GitVersion.yml
+		.github\workflows\publish.yml = .github\workflows\publish.yml
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -25,8 +29,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Runn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Runner.Console.x86", "src\Machine.Specifications.Runner.Console.x86\Machine.Specifications.Runner.Console.x86.csproj", "{DD0FADCF-7DBE-4DCB-92A5-C899C9956DDA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Runner.TDNet", "src\Machine.Specifications.Runner.TDNet\Machine.Specifications.Runner.TDNet.csproj", "{C497180D-328A-4F74-A54B-758D7DAF49A3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Runner.Utility", "src\Machine.Specifications.Runner.Utility\Machine.Specifications.Runner.Utility.csproj", "{7E11A6CD-5900-4FFD-AE68-231BDA2436BA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Runner.Utility.Specs", "src\Machine.Specifications.Runner.Utility.Specs\Machine.Specifications.Runner.Utility.Specs.csproj", "{068B7D50-95A9-4510-96DC-59AB697D6C5F}"
@@ -35,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Shou
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Should.Specs", "src\Machine.Specifications.Should.Specs\Machine.Specifications.Should.Specs.csproj", "{D3D341C3-98CE-4EF4-9247-02F4265E9F24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Framework", "src\Machine.Specifications.Framework\Machine.Specifications.Framework.csproj", "{3D7C3B22-A3CB-45A9-A3E5-42B992931620}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Framework", "src\Machine.Specifications.Framework\Machine.Specifications.Framework.csproj", "{3D7C3B22-A3CB-45A9-A3E5-42B992931620}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,10 +73,6 @@ Global
 		{DD0FADCF-7DBE-4DCB-92A5-C899C9956DDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD0FADCF-7DBE-4DCB-92A5-C899C9956DDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD0FADCF-7DBE-4DCB-92A5-C899C9956DDA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C497180D-328A-4F74-A54B-758D7DAF49A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C497180D-328A-4F74-A54B-758D7DAF49A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C497180D-328A-4F74-A54B-758D7DAF49A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C497180D-328A-4F74-A54B-758D7DAF49A3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7E11A6CD-5900-4FFD-AE68-231BDA2436BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7E11A6CD-5900-4FFD-AE68-231BDA2436BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E11A6CD-5900-4FFD-AE68-231BDA2436BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
