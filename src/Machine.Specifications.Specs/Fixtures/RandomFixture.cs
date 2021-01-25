@@ -1078,13 +1078,19 @@ namespace Machine.Specifications
     public class AsyncSpecificationsWithExceptions
     {
         Because of = async () =>
-            throw new Exception();
+        {
+            throw new InvalidOperationException(""something went wrong"");
+        };
 
         It should_invoke_sync = () =>
-            throw new Exception();
+        {
+            throw new InvalidOperationException(""something went wrong"");
+        };
 
         It should_invoke_async = async () =>
-            throw new Exception();
+        {
+            throw new InvalidOperationException(""something went wrong"");
+        };
     }
 }";
     }
