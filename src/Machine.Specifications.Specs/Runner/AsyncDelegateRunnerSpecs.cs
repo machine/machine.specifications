@@ -15,13 +15,18 @@ namespace Machine.Specifications.Specs.Runner
         {
             specs = GetFramework("AsyncSpecifications");
 
+            specs.ToDynamic().establish_invoked = false;
             specs.ToDynamic().because_invoked = false;
             specs.ToDynamic().async_it_invoked = false;
             specs.ToDynamic().sync_it_invoked = false;
+            specs.ToDynamic().cleanup_invoked = false;
         };
 
         Because of = () =>
             Run(specs);
+
+        It should_call_establish = () =>
+            specs.ToDynamic().establish_invoked.ShouldBeTrue();
 
         It should_call_because = () =>
             specs.ToDynamic().because_invoked.ShouldBeTrue();
@@ -31,6 +36,9 @@ namespace Machine.Specifications.Specs.Runner
 
         It should_call_sync_spec = () =>
             specs.ToDynamic().sync_it_invoked.ShouldBeTrue();
+
+        It should_call_cleanup = () =>
+            specs.ToDynamic().cleanup_invoked.ShouldBeTrue();
     }
 
     [Subject("Async Delegate Runner")]
