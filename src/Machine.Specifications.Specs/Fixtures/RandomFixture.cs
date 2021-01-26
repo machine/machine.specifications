@@ -6,6 +6,7 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading.Tasks;
 using Machine.Specifications;
 
 namespace Example.Random
@@ -1047,6 +1048,66 @@ namespace Machine.Specifications
             context_invoked = false;
             cleanup_invoked = false;
         }
+    }
+
+    public class AsyncSpecifications
+    {
+        public static bool establish_invoked;
+
+        public static bool because_invoked;
+
+        public static bool async_it_invoked;
+
+        public static bool sync_it_invoked;
+
+        public static bool cleanup_invoked;
+
+        Establish context = async () =>
+        {
+            establish_invoked = true;
+
+            await Task.Delay(10);
+        };
+
+        Because of = async () =>
+        {
+            because_invoked = true;
+
+            await Task.Delay(10);
+        };
+
+        It should_invoke_sync = () =>
+            sync_it_invoked = true;
+
+        It should_invoke_async = async () =>
+        {
+            async_it_invoked = true;
+            await Task.Delay(10);
+        };
+
+        Cleanup after = async () =>
+        {
+            cleanup_invoked = true;
+            await Task.Delay(10);
+        };
+    }
+
+    public class AsyncSpecificationsWithExceptions
+    {
+        Because of = async () =>
+        {
+            throw new InvalidOperationException(""something went wrong"");
+        };
+
+        It should_invoke_sync = () =>
+        {
+            throw new InvalidOperationException(""something went wrong"");
+        };
+
+        It should_invoke_async = async () =>
+        {
+            throw new InvalidOperationException(""something went wrong"");
+        };
     }
 }";
     }
