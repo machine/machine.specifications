@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Machine.Specifications.Utility;
 using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications.Model
@@ -80,7 +81,7 @@ namespace Machine.Specifications.Model
 
         protected virtual void InvokeSpecificationField()
         {
-            _it.DynamicInvoke();
+            _it.InvokeAsync();
         }
     }
 }

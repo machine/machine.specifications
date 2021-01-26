@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
+using Machine.Specifications.Runner.Impl;
 using Machine.Specifications.Sdk;
 
 namespace Machine.Specifications.Utility
@@ -19,7 +19,13 @@ namespace Machine.Specifications.Utility
 
         internal static void InvokeAll(this IEnumerable<Delegate> contextActions, params object[] args)
         {
-            contextActions.AllNonNull().Select<Delegate, Action>(x => () => x.DynamicInvoke(args)).InvokeAll();
+            contextActions.AllNonNull().Select<Delegate, Action>(x => () => x.InvokeAsync(args)).InvokeAll();
+        }
+
+        internal static void InvokeAsync(this Delegate target, params object[] args)
+        {
+            var runner = new DelegateRunner(target, args);
+            runner.Execute();
         }
 
         static IEnumerable<T> AllNonNull<T>(this IEnumerable<T> elements) where T : class
