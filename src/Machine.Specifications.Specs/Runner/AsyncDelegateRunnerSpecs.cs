@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Example.Random;
 using FluentAssertions;
 using Machine.Specifications.Factories;
@@ -8,6 +9,36 @@ using Machine.Specifications.Runner.Impl;
 
 namespace Machine.Specifications.Specs.Runner
 {
+    public class AsyncSpecificationsJustBecause
+    {
+        Because of = async () =>
+            because_value = await GetThingAsync("because");
+
+        It should_set_it_value_sync = () =>
+            because_value.Should().Be("because");
+
+        static async Task<string> GetThingAsync(string s)
+        {
+            await Task.Delay(10);
+            return await Task.FromResult(s);
+        }
+
+        public static string because_value;
+    }
+
+    [Subject("Async Delegate Runner")]
+    public class when_running_async_mixed_specifications : RunnerSpecs
+    {
+        Establish context = () =>
+            AsyncSpecificationsJustBecause.because_value = "aa";
+
+        Because of = () =>
+            Run<AsyncSpecificationsJustBecause>();
+
+        It should_set_because = () =>
+            AsyncSpecificationsJustBecause.because_value.Should().Be("because");
+    }
+
     [Subject("Async Delegate Runner")]
     public class when_running_async_specifications : RunnerSpecs
     {
