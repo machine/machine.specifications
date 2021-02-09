@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace Machine.Specifications.Specs
 {
@@ -128,6 +129,51 @@ namespace Machine.Specifications.Specs
 
             It should_return_null = () =>
                 result.ShouldBeNull();
+        }
+    }
+
+    [Subject(typeof(Catch))]
+    public class when_calling_catch_with_async_methods
+    {
+        static Exception exception;
+
+        [Subject(typeof(Catch))]
+        public class with_a_non_throwing_action
+        {
+            static Task Test() => Task.Run(() => { });
+
+            Because of = async () =>
+                exception = await Catch.ExceptionAsync(Test);
+
+            It should_return_null = () =>
+                exception.ShouldBeNull();
+        }
+
+        [Subject(typeof(Catch))]
+        public class with_a_throwing_action
+        {
+            static Task Test() => Task.Run(() => throw new ArgumentNullException());
+
+            Because of = async () =>
+                exception = await Catch.ExceptionAsync(Test);
+
+            It should_return_exception = () =>
+                exception.ShouldBeOfExactType<ArgumentNullException>();
+        }
+
+        [Subject(typeof(Catch))]
+        public class calling_wrong_catch_method
+        {
+            static Task Test() => Task.Run(() => throw new ArgumentNullException());
+
+            Because of = () =>
+                exception = Catch.Exception(() => Catch.Exception(Test));
+
+            It should_return_exception = () =>
+                exception.ShouldBeOfExactType<InvalidOperationException>();
+
+            It should_contain_message = () =>
+                exception.Message.ShouldEqual("You must use Catch.ExceptionAsync for async methods");
         }
     }
 }

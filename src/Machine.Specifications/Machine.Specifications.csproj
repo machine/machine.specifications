@@ -15,4 +15,5 @@
   <ItemGroup>
     <None Include="Resources\Machine.png" Pack="true" PackagePath="\" />
   </ItemGroup>
+
 </Project>

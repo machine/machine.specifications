@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Machine.Specifications.Factories;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
@@ -74,5 +75,40 @@ namespace Machine.Specifications.Specs.Runner
 
         It should_have_failures = () =>
             results.ShouldEachConformTo(x => !x.Passed);
+    }
+
+    [Subject("Async Delegate Runner")]
+    public class when_running_async_value_task_specifications : RandomRunnerSpecs
+    {
+        static Type specs;
+
+        Establish context = () =>
+        {
+            specs = GetFramework("AsyncSpecificationsValueTask");
+
+            specs.ToDynamic().establish_value = 0;
+            specs.ToDynamic().because_value = 0;
+            specs.ToDynamic().async_it_value = 0;
+            specs.ToDynamic().sync_it_value = 0;
+            specs.ToDynamic().cleanup_value = 0;
+        };
+
+        Because of = () =>
+            Run(specs);
+
+        It should_call_establish = () =>
+            specs.ToDynamic().establish_value.ShouldEqual(10);
+
+        It should_call_because = () =>
+            specs.ToDynamic().because_value.ShouldEqual(10);
+
+        It should_call_async_spec = () =>
+            specs.ToDynamic().async_it_value.ShouldEqual(10);
+
+        It should_call_sync_spec = () =>
+            specs.ToDynamic().sync_it_value.ShouldEqual(10);
+
+        It should_call_cleanup = () =>
+            specs.ToDynamic().cleanup_value.ShouldEqual(10);
     }
 }

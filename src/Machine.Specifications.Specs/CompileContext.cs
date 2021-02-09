@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CSharp;
@@ -44,7 +45,8 @@ namespace Machine.Specifications.Specs
             {
                 "Machine.Specifications.dll",
                 "Machine.Specifications.Should.dll",
-                "netstandard.dll"
+                "netstandard.dll",
+                $"{typeof(ValueTask).Assembly.GetName().Name}.dll"
             });
 
             var options = new Dictionary<string, string> {{"CompilerVersion", "v4.0"}};
@@ -53,7 +55,7 @@ namespace Machine.Specifications.Specs
             var results = provider.CompileAssemblyFromSource(parameters, code);
 
             if (results.Errors.Count > 0)
-                throw new InvalidOperationException();
+                throw new InvalidOperationException(results.Errors[0].ErrorText);
 #endif
             return filename;
         }
