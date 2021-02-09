@@ -69,4 +69,37 @@ namespace Machine.Specifications.Specs.Runner
         It should_have_failures = () =>
             results.Should().Match(x => x.All(y => !y.Passed));
     }
+
+#if NETCOREAPP
+    [Subject("Async Delegate Runner")]
+    public class when_running_async_value_task_specifications : RunnerSpecs
+    {
+        Establish context = () =>
+        {
+            AsyncSpecificationsValueTask.establish_value = 0;
+            AsyncSpecificationsValueTask.because_value = 0;
+            AsyncSpecificationsValueTask.async_it_value = 0;
+            AsyncSpecificationsValueTask.sync_it_value = 0;
+            AsyncSpecificationsValueTask.cleanup_value = 0;
+        };
+
+        Because of = () =>
+            Run<AsyncSpecificationsValueTask>();
+
+        It should_call_establish = () =>
+            AsyncSpecificationsValueTask.establish_value.Should().Be(10);
+
+        It should_call_because = () =>
+            AsyncSpecificationsValueTask.because_value.Should().Be(10);
+
+        It should_call_async_spec = () =>
+            AsyncSpecificationsValueTask.async_it_value.Should().Be(10);
+
+        It should_call_sync_spec = () =>
+            AsyncSpecificationsValueTask.sync_it_value.Should().Be(10);
+
+        It should_call_cleanup = () =>
+            AsyncSpecificationsValueTask.cleanup_value.Should().Be(10);
+    }
+#endif
 }
