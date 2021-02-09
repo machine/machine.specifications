@@ -51,8 +51,8 @@ Task("Versioning")
         OutputType = GitVersionOutput.Json
     });
 
-    version = result.NuGetVersion;
-    versionNumber = result.MajorMinorPatch;
+    version = result.SemVer;
+    versionNumber = result.AssemblySemVer;
 });
 
 Task("Build")
