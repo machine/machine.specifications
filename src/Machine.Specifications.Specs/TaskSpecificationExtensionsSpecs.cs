@@ -51,17 +51,6 @@ namespace Machine.Specifications.Clr4.Specs
   }
 
   [Subject(typeof(TaskSpecificationExtensions), "exception")]
-  public class when_an_async_operation_fails_without_await : AsyncSpecs
-  {
-    static Exception exception;
-
-    Because of = () => exception = Catch.Exception(() => Delayed.Fail());
-
-    It should_not_capture_the_exception =
-      () => exception.Should().BeNull();
-  }
-
-  [Subject(typeof(TaskSpecificationExtensions), "exception")]
   public class when_a_single_async_operation_fails_with_await : AsyncSpecs
   {
     static Exception exception;

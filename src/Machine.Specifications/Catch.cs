@@ -1,5 +1,5 @@
 using System;
-#if !NET35
+#if !NET35 && !NET40
 using System.Threading.Tasks;
 #endif
 
@@ -23,13 +23,13 @@ namespace Machine.Specifications
 
         public static Exception Exception<T>(Func<T> throwingFunc)
         {
-#if !NET35
+#if !NET35 && !NET40
             Task task;
 #endif
             try
             {
                 var result = throwingFunc();
-#if !NET35
+#if !NET35 && !NET40
                 task = result as Task;
 #endif
             }
@@ -37,7 +37,7 @@ namespace Machine.Specifications
             {
                 return exception;
             }
-#if !NET35
+#if !NET35 && !NET40
             if (task != null)
             {
                 throw new InvalidOperationException("You must use Catch.ExceptionAsync for async methods");
@@ -46,24 +46,21 @@ namespace Machine.Specifications
             return null;
         }
 
-#if !NET35
-        public static Task<Exception> ExceptionAsync(Func<Task> throwingAction)
+#if !NET35 && !NET40
+        public static async Task<Exception> ExceptionAsync(Func<Task> throwingAction)
         {
             Exception exception = null;
 
             try
             {
-                throwingAction().Wait();
+                await throwingAction();
             }
             catch (Exception ex)
             {
                 exception = ex;
             }
 
-            var source = new TaskCompletionSource<Exception>(exception);
-            source.TrySetResult(exception);
-
-            return source.Task;
+            return exception;
         }
 #endif
 
