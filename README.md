@@ -1,6 +1,6 @@
 # Machine.Specifications
 
-[![Docs](https://img.shields.io/badge/docs-wiki-blue.svg?style=for-the-badge)](https://github.com/machine/machine.specifications/wiki) [![Nuget](https://img.shields.io/nuget/dt/Machine.Specifications?style=for-the-badge)](https://www.nuget.org/packages/Machine.Specifications) [![Discussions](https://img.shields.io/badge/DISCUSS-ON%20GITHUB-orange?style=for-the-badge)](https://github.com/machine/machine.specifications/discussions) [![Gitter](https://img.shields.io/gitter/room/machine/specifications?style=for-the-badge)](https://gitter.im/machine/specifications) [![License](https://img.shields.io/github/license/machine/machine.specifications?style=for-the-badge)](https://github.com/machine/machine.specifications/blob/master/LICENSE)
+[![Docs](https://img.shields.io/badge/docs-wiki-blue.svg?style=for-the-badge)](https://github.com/machine/machine.specifications/wiki) [![Nuget](https://img.shields.io/nuget/dt/Machine.Specifications?style=for-the-badge)](https://www.nuget.org/packages/Machine.Specifications) [![Discussions](https://img.shields.io/badge/DISCUSS-ON%20GITHUB-orange?style=for-the-badge)](https://github.com/machine/machine.specifications/discussions) [![License](https://img.shields.io/github/license/machine/machine.specifications?style=for-the-badge)](https://github.com/machine/machine.specifications/blob/master/LICENSE)
 
 <img src="https://github.com/machine/machine.specifications/raw/master/src/Machine.Specifications/Resources/Machine.png" alt="MSpec logo" title="Machine.Specifications" align="right" height="100" />
 
@@ -66,9 +66,9 @@ For project documentation, please visit the [wiki](https://github.com/machine/ma
 A PluralSight course by [@kevinkuebler](https://github.com/kevinkuebler) is available [here](https://www.pluralsight.com/courses/expressive-testing-dotnet-mspec).
 
 ## Get in touch
-Discuss with us on [Discussions](https://github.com/machine/machine.specifications/discussions), chat with us on [Gitter](https://gitter.im/machine/specifications), or raise an [issue](https://github.com/machine/machine.specifications/issues).
+Discuss with us on [Discussions](https://github.com/machine/machine.specifications/discussions), or raise an [issue](https://github.com/machine/machine.specifications/issues).
 
-[![Discussions](https://img.shields.io/badge/DISCUSS-ON%20GITHUB-orange?style=for-the-badge)](https://github.com/machine/machine.specifications/discussions) [![Gitter](https://img.shields.io/gitter/room/machine/specifications?style=for-the-badge)](https://gitter.im/machine/specifications) 
+[![Discussions](https://img.shields.io/badge/DISCUSS-ON%20GITHUB-orange?style=for-the-badge)](https://github.com/machine/machine.specifications/discussions)
 
 ## Packages
 
