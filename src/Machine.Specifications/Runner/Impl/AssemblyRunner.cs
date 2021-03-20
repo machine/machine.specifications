@@ -19,13 +19,16 @@ namespace Machine.Specifications.Runner.Impl
 
         readonly IList<IAssemblyContext> _executedAssemblyContexts;
         readonly AssemblyExplorer _explorer;
+        readonly TestContextListener _testContext;
 
         public AssemblyRunner(ISpecificationRunListener listener, RunOptions options)
         {
-            RedirectOutputState state = new RedirectOutputState();
+            var state = new RedirectOutputState();
+            _testContext = new TestContextListener();
             _listener = new AggregateRunListener(new[]
                                            {
                                              new AssemblyLocationAwareListener(),
+                                             _testContext,
                                              new SetUpRedirectOutputRunListener(state),
                                              listener,
                                              new TearDownRedirectOutputRunListener(state),
@@ -77,9 +80,12 @@ namespace Machine.Specifications.Runner.Impl
         {
             try
             {
+                var testContexts = _explorer.FindTestContextsIn(assembly);
+                _testContext.SetTestContexts(testContexts.ToList());
+
                 _listener.OnAssemblyStart(assembly.GetInfo());
 
-                IEnumerable<IAssemblyContext> assemblyContexts = _explorer.FindAssemblyContextsIn(assembly);
+                var assemblyContexts = _explorer.FindAssemblyContextsIn(assembly);
                 assemblyContexts.Each(assemblyContext =>
                 {
                     assemblyContext.OnAssemblyStart();
@@ -122,8 +128,8 @@ namespace Machine.Specifications.Runner.Impl
         }
 
         void RunContext(Context context,
-                        IEnumerable<ICleanupAfterEveryContextInAssembly> globalCleanups,
-                        IEnumerable<ISupplementSpecificationResults> supplements)
+            IEnumerable<ICleanupAfterEveryContextInAssembly> globalCleanups,
+            IEnumerable<ISupplementSpecificationResults> supplements)
         {
             var runner = ContextRunnerFactory.GetContextRunnerFor(context);
             runner.Run(context, _listener, _options, globalCleanups, supplements);
