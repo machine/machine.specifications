@@ -162,7 +162,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
             console.Lines.ShouldContain(l => l.Contains("hi scott, love you, miss you."));
 
         It should_separate_failures_from_the_rest_of_the_test_run = () =>
-            console.Output.ShouldMatchRegex(String.Format("\\S{0}{0}Failures:{0}{0}\\S", Regex.Escape(Environment.NewLine)));
+            console.Output.ShouldMatchRegex(String.Format("{0}Failures:{0}{0}\\S", Regex.Escape(Environment.NewLine)));
     }
 
     [Subject("Console runner")]
@@ -189,7 +189,7 @@ namespace Machine.Specifications.ConsoleRunner.Specs
             console.Lines.ShouldContain(l => l.Contains("hi scott, love you, miss you."));
 
         It should_separate_failures_from_the_rest_of_the_test_run = () =>
-            console.Output.ShouldMatchRegex(String.Format("\\S{0}{0}{0}Failures:{0}{0}\\S", Regex.Escape(Environment.NewLine)));
+            console.Output.ShouldMatchRegex(String.Format("{0}Failures:{0}{0}\\S", Regex.Escape(Environment.NewLine)));
     }
 
     [Subject("Console runner")]

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Machine.Specifications.Factories;
 using Machine.Specifications.Model;
+using Machine.Specifications.Runner;
 using Machine.Specifications.Sdk;
 using Machine.Specifications.Utility;
 
@@ -18,14 +19,54 @@ namespace Machine.Specifications.Explorers
             _contextFactory = new ContextFactory();
         }
 
+        public Context FindContexts(Type type)
+        {
+            return FindContexts(type, null);
+        }
+
+        public Context FindContexts(Type type, RunOptions options)
+        {
+            var filterExpression = CreateTypeFilterExpression(options);
+
+            return filterExpression(type) && IsContext(type) ? CreateContextFrom(type) : null;
+        }
+
+        public Context FindContexts(FieldInfo info)
+        {
+            return FindContexts(info, null);
+        }
+
+        public Context FindContexts(FieldInfo info, RunOptions options)
+        {
+            var filterExpression = CreateTypeFilterExpression(options);
+
+            Type type = info.DeclaringType;
+            if (filterExpression(type) && IsContext(type))
+            {
+                return CreateContextFrom(type, info);
+            }
+
+            return null;
+        }
+
         public IEnumerable<Context> FindContextsIn(Assembly assembly)
         {
-            return EnumerateContextsIn(assembly).Select(CreateContextFrom);
+            return FindContextsIn(assembly, options: null);
+        }
+
+        public IEnumerable<Context> FindContextsIn(Assembly assembly, RunOptions options)
+        {
+            return EnumerateContextsIn(assembly, options).Select(CreateContextFrom);
         }
 
         public IEnumerable<Context> FindContextsIn(Assembly assembly, string targetNamespace)
         {
-            return EnumerateContextsIn(assembly)
+            return FindContextsIn(assembly, targetNamespace, options: null);
+        }
+
+        public IEnumerable<Context> FindContextsIn(Assembly assembly, string targetNamespace, RunOptions options)
+        {
+            return EnumerateContextsIn(assembly, options)
               .Where(x => x.Namespace == targetNamespace)
               .Select(CreateContextFrom);
         }
@@ -73,33 +114,47 @@ namespace Machine.Specifications.Explorers
             return !type.GetTypeInfo().IsAbstract && type.GetInstanceFieldsOfUsage(new AssertDelegateAttributeFullName(), new BehaviorDelegateAttributeFullName()).Any();
         }
 
-        static IEnumerable<Type> EnumerateContextsIn(Assembly assembly)
+        static IEnumerable<Type> EnumerateContextsIn(Assembly assembly, RunOptions options)
         {
+            var typeFilterExpression = CreateTypeFilterExpression(options);
+
             return assembly
               .GetTypes()
+              .Where(typeFilterExpression)
               .Where(IsContext)
               .OrderBy(t => t.Namespace);
         }
 
-        public Context FindContexts(Type type)
+        static Func<Type, bool> CreateTypeFilterExpression(RunOptions options)
         {
-            if (IsContext(type))
+            if (options == null)
             {
-                return CreateContextFrom(type);
+                return type => true;
             }
 
-            return null;
-        }
+            var extractor = new AttributeTagExtractor();
 
-        public Context FindContexts(FieldInfo info)
-        {
-            Type type = info.DeclaringType;
-            if (IsContext(type))
+            var restrictToTypes = options.Filters.ToArray();
+            var includeTags = options.IncludeTags.Select(tag => new Tag(tag)).ToArray();
+            var excludeTags = options.ExcludeTags.Select(tag => new Tag(tag)).ToArray();
+
+            var typeFilterExpression = restrictToTypes.Any() ?
+                (Func<Type, bool>) (x => restrictToTypes.Any(filter => StringComparer.OrdinalIgnoreCase.Equals(filter, x.FullName))) :
+                _ => true;
+
+            var includeTypeFilterExpression = includeTags.Any() ?
+                (Func<IEnumerable<Tag>, bool>) (tags => tags.Intersect(includeTags).Any()) :
+                _ => true;
+
+            var excludeTypeFilterExpression = excludeTags.Any() ?
+                (Func<IEnumerable<Tag>, bool>) (tags => !tags.Intersect(excludeTags).Any()) :
+                _ => true;
+
+            return type =>
             {
-                return CreateContextFrom(type, info);
-            }
-
-            return null;
+                var tags = extractor.ExtractTags(type).ToArray();
+                return typeFilterExpression(type) && includeTypeFilterExpression(tags) && excludeTypeFilterExpression(tags);
+            };
         }
     }
 }
