@@ -17,10 +17,21 @@ using Machine.Specifications;
 
 namespace Example.Large
 {
-
     public class when_there_are_many_contexts
     {
+        public static bool Created = false;
+
+        public when_there_are_many_contexts()
+        {
+            Created = true;
+        }
+
         It spec = () => {};
+    }
+
+    public static class OtherTests
+    {
+        public static bool Created = false;
     }
 
 ");
@@ -30,6 +41,11 @@ namespace Example.Large
                 sb.AppendLine($@"
     public class when_there_are_many_contexts_{i}
     {{
+        public when_there_are_many_contexts_{i}()
+        {{
+            OtherTests.Created = true;
+        }}
+
         It spec = () => {{}};
     }}");
             }

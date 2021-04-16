@@ -697,6 +697,7 @@ namespace Machine.Specifications.Specs.Runner
     public class when_running_a_single_spec_out_of_a_large_number_of_specifications : RunnerSpecs
     {
         static Type when_a_context_has_many_specifications;
+        static Type filtered_out_spec;
         static TimeSpan elapsed { get; set; }
 
         Establish context = () =>
@@ -707,6 +708,7 @@ namespace Machine.Specifications.Specs.Runner
                 var assembly = Assembly.LoadFile(assemblyPath);
 
                 when_a_context_has_many_specifications = assembly.GetType("Example.Large.when_there_are_many_contexts");
+                filtered_out_spec = assembly.GetType("Example.Large.OtherTests");
             }
         };
 
@@ -732,6 +734,18 @@ namespace Machine.Specifications.Specs.Runner
         It should_run_in_a_reasonable_period_of_time = () =>
         {
             elapsed.ShouldBeLessThan(TimeSpan.FromSeconds(1));
+        };
+
+        It should_have_created_the_test_instance = () =>
+        {
+            var fieldInfo = when_a_context_has_many_specifications.GetField("Created");
+            ((bool) fieldInfo.GetValue(null)).ShouldBeTrue();
+        };
+
+        It should_have_not_have_created_any_of_the_filtered_out_tests = () =>
+        {
+            var fieldInfo = filtered_out_spec.GetField("Created");
+            ((bool) fieldInfo.GetValue(null)).ShouldBeFalse();
         };
     }
 
