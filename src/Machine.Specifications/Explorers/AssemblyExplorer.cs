@@ -19,12 +19,7 @@ namespace Machine.Specifications.Explorers
             _contextFactory = new ContextFactory();
         }
 
-        public Context FindContexts(Type type)
-        {
-            return FindContexts(type, options: null);
-        }
-
-        public Context FindContexts(Type type, RunOptions options)
+        public Context FindContexts(Type type, RunOptions options = null)
         {
             var types = new[] {type};
 
@@ -35,12 +30,7 @@ namespace Machine.Specifications.Explorers
                 .FirstOrDefault();
         }
 
-        public Context FindContexts(FieldInfo info)
-        {
-            return FindContexts(info, null);
-        }
-
-        public Context FindContexts(FieldInfo info, RunOptions options)
+        public Context FindContexts(FieldInfo info, RunOptions options = null)
         {
             var types = new[] {info.DeclaringType};
 
