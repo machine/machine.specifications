@@ -21,14 +21,18 @@ namespace Machine.Specifications.Explorers
 
         public Context FindContexts(Type type)
         {
-            return FindContexts(type, null);
+            return FindContexts(type, options: null);
         }
 
         public Context FindContexts(Type type, RunOptions options)
         {
-            var filterExpression = CreateTypeFilterExpression(options);
+            var types = new[] {type};
 
-            return filterExpression(type) && IsContext(type) ? CreateContextFrom(type) : null;
+            return types
+                .Where(IsContext)
+                .Where(CreateTypeFilterExpression(options))
+                .Select(CreateContextFrom)
+                .FirstOrDefault();
         }
 
         public Context FindContexts(FieldInfo info)
@@ -38,15 +42,13 @@ namespace Machine.Specifications.Explorers
 
         public Context FindContexts(FieldInfo info, RunOptions options)
         {
-            var filterExpression = CreateTypeFilterExpression(options);
+            var types = new[] {info.DeclaringType};
 
-            Type type = info.DeclaringType;
-            if (filterExpression(type) && IsContext(type))
-            {
-                return CreateContextFrom(type, info);
-            }
-
-            return null;
+            return types
+                .Where(IsContext)
+                .Where(CreateTypeFilterExpression(options))
+                .Select(t => CreateContextFrom(t, info))
+                .FirstOrDefault();
         }
 
         public IEnumerable<Context> FindContextsIn(Assembly assembly)
@@ -56,7 +58,9 @@ namespace Machine.Specifications.Explorers
 
         public IEnumerable<Context> FindContextsIn(Assembly assembly, RunOptions options)
         {
-            return EnumerateContextsIn(assembly, options).Select(CreateContextFrom);
+            return EnumerateContextsIn(assembly)
+                .Where(CreateTypeFilterExpression(options))
+                .Select(CreateContextFrom);
         }
 
         public IEnumerable<Context> FindContextsIn(Assembly assembly, string targetNamespace)
@@ -66,8 +70,9 @@ namespace Machine.Specifications.Explorers
 
         public IEnumerable<Context> FindContextsIn(Assembly assembly, string targetNamespace, RunOptions options)
         {
-            return EnumerateContextsIn(assembly, options)
+            return EnumerateContextsIn(assembly)
               .Where(x => x.Namespace == targetNamespace)
+              .Where(CreateTypeFilterExpression(options))
               .Select(CreateContextFrom);
         }
 
@@ -114,13 +119,10 @@ namespace Machine.Specifications.Explorers
             return !type.GetTypeInfo().IsAbstract && type.GetInstanceFieldsOfUsage(new AssertDelegateAttributeFullName(), new BehaviorDelegateAttributeFullName()).Any();
         }
 
-        static IEnumerable<Type> EnumerateContextsIn(Assembly assembly, RunOptions options)
+        static IEnumerable<Type> EnumerateContextsIn(Assembly assembly)
         {
-            var typeFilterExpression = CreateTypeFilterExpression(options);
-
             return assembly
               .GetTypes()
-              .Where(typeFilterExpression)
               .Where(IsContext)
               .OrderBy(t => t.Namespace);
         }
@@ -129,11 +131,10 @@ namespace Machine.Specifications.Explorers
         {
             if (options == null)
             {
-                return type => true;
+                return _ => true;
             }
 
             var extractor = new AttributeTagExtractor();
-
             var restrictToTypes = options.Filters.ToArray();
             var includeTags = options.IncludeTags.Select(tag => new Tag(tag)).ToArray();
             var excludeTags = options.ExcludeTags.Select(tag => new Tag(tag)).ToArray();
