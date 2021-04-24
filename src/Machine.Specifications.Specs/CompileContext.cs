@@ -34,7 +34,7 @@ namespace Machine.Specifications.Specs
                 .Emit(filename);
 
             if (!result.Success)
-                throw new InvalidOperationException();
+                throw new InvalidOperationException(result.Diagnostics[0].GetMessage());
 #else
             var parameters = new CompilerParameters
             {

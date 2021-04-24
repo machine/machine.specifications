@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Xml.Linq;
-using System.Xml.XPath;
 using Machine.Specifications.Explorers;
 using Machine.Specifications.Model;
 using Machine.Specifications.Utility;
 
 #if !NETSTANDARD
+using System.IO;
+using System.Xml.Linq;
+using System.Xml.XPath;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Messaging;
 using System.Security;
@@ -66,7 +66,7 @@ namespace Machine.Specifications.Runner.Impl
 
         public void RunAssembly(Assembly assembly)
         {
-            var contexts = _explorer.FindContextsIn(assembly);
+            var contexts = _explorer.FindContextsIn(assembly, _options);
             var map = CreateMap(assembly, contexts);
 
             StartRun(map);
@@ -76,14 +76,14 @@ namespace Machine.Specifications.Runner.Impl
         {
             var map = new Dictionary<Assembly, IEnumerable<Context>>();
 
-            assemblies.Each(assembly => map.Add(assembly, _explorer.FindContextsIn(assembly)));
+            assemblies.Each(assembly => map.Add(assembly, _explorer.FindContextsIn(assembly, _options)));
 
             StartRun(map);
         }
 
         public void RunNamespace(Assembly assembly, string targetNamespace)
         {
-            var contexts = _explorer.FindContextsIn(assembly, targetNamespace);
+            var contexts = _explorer.FindContextsIn(assembly, targetNamespace, _options);
 
             StartRun(CreateMap(assembly, contexts));
         }
@@ -102,7 +102,7 @@ namespace Machine.Specifications.Runner.Impl
 
         public void RunType(Assembly assembly, Type type, IEnumerable<string> specs)
         {
-            Context context = _explorer.FindContexts(type);
+            Context context = _explorer.FindContexts(type, _options);
             IEnumerable<Specification> specsToRun = context.Specifications.Where(s => specs.Contains(s.FieldInfo.Name));
             context.Filter(specsToRun);
 
@@ -112,15 +112,15 @@ namespace Machine.Specifications.Runner.Impl
         void RunField(MemberInfo member, Assembly assembly)
         {
             var fieldInfo = (FieldInfo)member;
-            var context = _explorer.FindContexts(fieldInfo);
+            var context = _explorer.FindContexts(fieldInfo, _options);
 
             StartRun(CreateMap(assembly, new[] { context }));
         }
 
         void RunClass(MemberInfo member, Assembly assembly)
         {
-            Type type = member.AsType();
-            var context = _explorer.FindContexts(type);
+            var type = member.AsType();
+            var context = _explorer.FindContexts(type, _options);
 
             if (context == null)
             {
@@ -144,12 +144,8 @@ namespace Machine.Specifications.Runner.Impl
                 _runStart.Invoke();
             }
 
-            foreach (var pair in contextMap)
+            foreach (var (assembly, contexts) in contextMap)
             {
-                var assembly = pair.Key;
-                // TODO: move this filtering to a more sensible place
-                var contexts = pair.Value.FilteredBy(_options);
-
                 _assemblyRunner.Run(assembly, contexts);
             }
 
@@ -233,38 +229,5 @@ namespace Machine.Specifications.Runner.Impl
         public IMessageSink NextSink { get; private set; }
 
 #endif
-    }
-
-    public static class TagFilteringExtensions
-    {
-        public static IEnumerable<Context> FilteredBy(this IEnumerable<Context> contexts, RunOptions options)
-        {
-            if (options == null)
-                throw new ArgumentNullException("options");
-
-            var results = contexts;
-
-            if (options.Filters.Any())
-            {
-                var includeFilters = options.Filters;
-
-                results = results.Where(x => includeFilters.Any(filter => StringComparer.OrdinalIgnoreCase.Equals(filter, x.Type.FullName)));
-            }
-
-            if (options.IncludeTags.Any())
-            {
-                var tags = options.IncludeTags.Select(tag => new Tag(tag));
-
-                results = results.Where(x => x.Tags.Intersect(tags).Any());
-            }
-
-            if (options.ExcludeTags.Any())
-            {
-                var tags = options.ExcludeTags.Select(tag => new Tag(tag));
-                results = results.Where(x => !x.Tags.Intersect(tags).Any());
-            }
-
-            return results;
-        }
     }
 }

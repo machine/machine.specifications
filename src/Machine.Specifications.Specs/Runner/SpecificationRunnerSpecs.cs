@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
@@ -689,6 +691,62 @@ namespace Machine.Specifications.Specs.Runner
 
         It should_succeed = () =>
             testListener.LastResult.Passed.ShouldBeTrue();
+    }
+
+    [Subject("Specification Runner")]
+    public class when_running_a_single_spec_out_of_a_large_number_of_specifications : RunnerSpecs
+    {
+        static Type when_a_context_has_many_specifications;
+        static Type filtered_out_spec;
+        static TimeSpan elapsed { get; set; }
+
+        Establish context = () =>
+        {
+            using (var compiler = new CompileContext())
+            {
+                var assemblyPath = compiler.Compile(LargeFixture.CreateCode(10000));
+                var assembly = Assembly.LoadFile(assemblyPath);
+
+                when_a_context_has_many_specifications = assembly.GetType("Example.Large.when_there_are_many_contexts");
+                filtered_out_spec = assembly.GetType("Example.Large.OtherTests");
+            }
+        };
+
+        Because of = () =>
+        {
+            var runner = new DefaultRunner(testListener, new RunOptions(
+                Enumerable.Empty<string>(),
+                Enumerable.Empty<string>(),
+                new[] {when_a_context_has_many_specifications.FullName})
+            );
+
+            var sw = Stopwatch.StartNew();
+            runner.RunAssembly(when_a_context_has_many_specifications.Assembly);
+            sw.Stop();
+            elapsed = sw.Elapsed;
+        };
+
+        It should_run_the_single_specification = () =>
+        {
+            testListener.SpecCount.ShouldEqual(1);
+        };
+
+        It should_run_in_a_reasonable_period_of_time = () =>
+        {
+            elapsed.ShouldBeLessThan(TimeSpan.FromSeconds(1));
+        };
+
+        It should_have_created_the_test_instance = () =>
+        {
+            var fieldInfo = when_a_context_has_many_specifications.GetField("Created");
+            ((bool) fieldInfo.GetValue(null)).ShouldBeTrue();
+        };
+
+        It should_have_not_have_created_any_of_the_filtered_out_tests = () =>
+        {
+            var fieldInfo = filtered_out_spec.GetField("Created");
+            ((bool) fieldInfo.GetValue(null)).ShouldBeFalse();
+        };
     }
 
     public class RandomRunnerSpecs : RunnerSpecs
