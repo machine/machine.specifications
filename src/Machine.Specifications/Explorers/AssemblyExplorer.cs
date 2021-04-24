@@ -150,7 +150,7 @@ namespace Machine.Specifications.Explorers
                     filteredTypesWithTags = filteredTypesWithTags.Where(x => x.Tags.Intersect(includeTags).Any());
                 }
 
-                if (excludeTags.Any() )
+                if (excludeTags.Any())
                 {
                     filteredTypesWithTags = filteredTypesWithTags.Where(x => !x.Tags.Intersect(excludeTags).Any());
                 }
