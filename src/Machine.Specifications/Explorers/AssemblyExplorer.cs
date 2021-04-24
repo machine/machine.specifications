@@ -145,7 +145,7 @@ namespace Machine.Specifications.Explorers
 
                 var filteredTypesWithTags = filteredTypes.Select(type => (Type: type, Tags: extractor.ExtractTags(type)));
 
-                if (includeTags.Any() )
+                if (includeTags.Any())
                 {
                     filteredTypesWithTags = filteredTypesWithTags.Where(x => x.Tags.Intersect(includeTags).Any());
                 }
