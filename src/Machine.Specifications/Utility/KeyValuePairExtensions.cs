@@ -2,7 +2,7 @@
 
 namespace Machine.Specifications.Runner.Impl
 {
-    static class KeyValuePairExtensions
+    internal static class KeyValuePairExtensions
     {
         public static void Deconstruct<TKey, TValue>(
             this KeyValuePair<TKey, TValue> kvp,
