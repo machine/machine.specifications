@@ -50,7 +50,7 @@ public class build
         {
             var apiKey = Environment.GetEnvironmentVariable("NUGET_API_KEY");
 
-            //Run("dotnet", $"nuget push {Path.Combine("artifacts", "*.nupkg")} --api-key {apiKey} --source https://api.nuget.org/v3/index.json");
+            Run("dotnet", $"nuget push {Path.Combine("artifacts", "*.nupkg")} --api-key {apiKey} --source https://api.nuget.org/v3/index.json");
         });
 
         Target("default", DependsOn("package"));
