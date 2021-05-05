@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
 using Machine.Specifications.Factories;
 using Machine.Specifications.Model;
+using Machine.Specifications.Runner;
 using Machine.Specifications.Sdk;
 using Machine.Specifications.Utility;
 
@@ -19,37 +19,73 @@ namespace Machine.Specifications.Explorers
             _contextFactory = new ContextFactory();
         }
 
+        public Context FindContexts(Type type, RunOptions options = null)
+        {
+            var types = new[] {type};
+
+            return types
+                .Where(IsContext)
+                .FilterBy(options)
+                .Select(CreateContextFrom)
+                .FirstOrDefault();
+        }
+
+        public Context FindContexts(FieldInfo info, RunOptions options = null)
+        {
+            var types = new[] {info.DeclaringType};
+
+            return types
+                .Where(IsContext)
+                .FilterBy(options)
+                .Select(t => CreateContextFrom(t, info))
+                .FirstOrDefault();
+        }
+
         public IEnumerable<Context> FindContextsIn(Assembly assembly)
         {
-            return EnumerateContextsIn(assembly).Select(CreateContextFrom);
+            return FindContextsIn(assembly, options: null);
+        }
+
+        public IEnumerable<Context> FindContextsIn(Assembly assembly, RunOptions options)
+        {
+            return EnumerateContextsIn(assembly)
+                .FilterBy(options)
+                .OrderBy(t => t.Namespace)
+                .Select(CreateContextFrom);
         }
 
         public IEnumerable<Context> FindContextsIn(Assembly assembly, string targetNamespace)
         {
+            return FindContextsIn(assembly, targetNamespace, options: null);
+        }
+
+        public IEnumerable<Context> FindContextsIn(Assembly assembly, string targetNamespace, RunOptions options)
+        {
             return EnumerateContextsIn(assembly)
-              .Where(x => x.Namespace == targetNamespace)
-              .Select(CreateContextFrom);
+                .Where(x => x.Namespace == targetNamespace)
+                .FilterBy(options)
+                .Select(CreateContextFrom);
         }
 
         public IEnumerable<ICleanupAfterEveryContextInAssembly> FindAssemblyWideContextCleanupsIn(Assembly assembly)
         {
             return assembly.GetExportedTypes()
-              .Where(x => x.GetInterfaces().Contains(typeof(ICleanupAfterEveryContextInAssembly)))
-              .Select(x => (ICleanupAfterEveryContextInAssembly)Activator.CreateInstance(x));
+                .Where(x => x.GetInterfaces().Contains(typeof(ICleanupAfterEveryContextInAssembly)))
+                .Select(x => (ICleanupAfterEveryContextInAssembly) Activator.CreateInstance(x));
         }
 
         public IEnumerable<ISupplementSpecificationResults> FindSpecificationSupplementsIn(Assembly assembly)
         {
             return assembly.GetExportedTypes()
-              .Where(x => x.GetInterfaces().Contains(typeof(ISupplementSpecificationResults)))
-              .Select(x => (ISupplementSpecificationResults)Activator.CreateInstance(x));
+                .Where(x => x.GetInterfaces().Contains(typeof(ISupplementSpecificationResults)))
+                .Select(x => (ISupplementSpecificationResults) Activator.CreateInstance(x));
         }
 
         public IEnumerable<IAssemblyContext> FindAssemblyContextsIn(Assembly assembly)
         {
             return assembly.GetExportedTypes()
-              .Where(x => x.GetInterfaces().Contains(typeof(IAssemblyContext)))
-              .Select(x => (IAssemblyContext)Activator.CreateInstance(x));
+                .Where(x => x.GetTypeInfo().IsClass && !x.GetTypeInfo().IsAbstract && x.GetInterfaces().Contains(typeof(IAssemblyContext)))
+                .Select(x => (IAssemblyContext) Activator.CreateInstance(x));
         }
 
         Context CreateContextFrom(Type type)
@@ -77,30 +113,59 @@ namespace Machine.Specifications.Explorers
         static IEnumerable<Type> EnumerateContextsIn(Assembly assembly)
         {
             return assembly
-              .GetTypes()
-              .Where(IsContext)
-              .OrderBy(t => t.Namespace);
+                .GetTypes()
+                .Where(IsContext);
         }
+    }
 
-        public Context FindContexts(Type type)
+    public static class FilteringExtensions
+    {
+        public static IEnumerable<Type> FilterBy(this IEnumerable<Type> types, RunOptions options)
         {
-            if (IsContext(type))
+            if (options == null)
             {
-                return CreateContextFrom(type);
+                return types;
             }
 
-            return null;
-        }
+            var filteredTypes = types;
 
-        public Context FindContexts(FieldInfo info)
-        {
-            Type type = info.DeclaringType;
-            if (IsContext(type))
+            var restrictToTypes = new HashSet<string>(options.Filters, StringComparer.OrdinalIgnoreCase);
+
+            if (restrictToTypes.Any())
             {
-                return CreateContextFrom(type, info);
+                filteredTypes = filteredTypes.Where(x => restrictToTypes.Contains(x.FullName));
             }
 
-            return null;
+            var includeTags = new HashSet<Tag>(options.IncludeTags.Select(tag => new Tag(tag)));
+            var excludeTags = new HashSet<Tag>(options.ExcludeTags.Select(tag => new Tag(tag)));
+
+            if (includeTags.Any() || excludeTags.Any())
+            {
+                var extractor = new AttributeTagExtractor();
+
+                var filteredTypesWithTags = filteredTypes.Select(type => new TypeWithTag {Type = type, Tags = extractor.ExtractTags(type)});
+
+                if (includeTags.Any())
+                {
+                    filteredTypesWithTags = filteredTypesWithTags.Where(x => x.Tags.Intersect(includeTags).Any());
+                }
+
+                if (excludeTags.Any())
+                {
+                    filteredTypesWithTags = filteredTypesWithTags.Where(x => !x.Tags.Intersect(excludeTags).Any());
+                }
+
+                filteredTypes = filteredTypesWithTags.Select(x => x.Type);
+            }
+
+            return filteredTypes;
+        }
+
+        private class TypeWithTag
+        {
+            public Type Type;
+
+            public IEnumerable<Tag> Tags;
         }
     }
 }
