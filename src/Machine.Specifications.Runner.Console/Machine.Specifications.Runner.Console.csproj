@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="1.9.71" PrivateAssets="All" />
+    <PackageReference Include="CommandLineParser" Version="2.8.0" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
