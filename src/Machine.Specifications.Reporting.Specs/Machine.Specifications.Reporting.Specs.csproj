@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.10.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
     <PackageReference Include="RhinoMocks" Version="3.6.1" />
   </ItemGroup>
 
