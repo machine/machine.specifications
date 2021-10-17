@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Machine.Specifications.Runner.Console\Machine.Specifications.Runner.Console.csproj" />
     <ProjectReference Include="..\Machine.Specifications.Should\Machine.Specifications.Should.csproj" />
   </ItemGroup>
 

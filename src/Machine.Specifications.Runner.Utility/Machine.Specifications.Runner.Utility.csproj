@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="$(AssemblyName).Specs"/>
+    <InternalsVisibleTo Include="$(AssemblyName).Specs" />
   </ItemGroup>
 
   <ItemGroup>
