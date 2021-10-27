@@ -10,14 +10,10 @@
     <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>http://github.com/machine/machine.specifications</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
-
-    <NoWarn>NU5128</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications.Interfaces\Machine.Specifications.Interfaces.csproj" />
-    <ProjectReference Include="..\Machine.Specifications.Should\Machine.Specifications.Should.csproj" />
   </ItemGroup>
 
   <ItemGroup>

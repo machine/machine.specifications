@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
 
-    <Description>Assertion library for Machine.Specifications</Description>
+    <Description>SDK and common runner interfaces used by Machine.Specifications</Description>
     <Authors>Machine Specifications</Authors>
     <PackageTags>test;unit;testing;context;specification;bdd;tdd;mspec</PackageTags>
-    <PackageReleaseNotes>https://github.com/machine/machine.specifications.should/releases</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/machine/machine.specifications/releases</PackageReleaseNotes>
     <PackageIcon>icon.png</PackageIcon>
-    <PackageProjectUrl>http://github.com/machine/machine.specifications.should</PackageProjectUrl>
+    <PackageProjectUrl>http://github.com/machine/machine.specifications</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 

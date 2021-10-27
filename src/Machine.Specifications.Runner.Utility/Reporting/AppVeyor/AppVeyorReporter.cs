@@ -5,7 +5,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
     using System;
     using System.Diagnostics;
 
-    public class AppVeyorReporter : ISpecificationRunListener, ISpecificationResultProvider
+    public class AppVeyorReporter //: ISpecificationRunListener, ISpecificationResultProvider
     {
         const string FrameworkName = "Machine.Specifications";
 

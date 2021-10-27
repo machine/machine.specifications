@@ -622,11 +622,25 @@ namespace Machine.Specifications
 
         public static Exception ShouldBeThrownBy(this Type exceptionType, Action method)
         {
-            var exception = Catch.Exception(method);
+            var exception = CatchException(method);
 
             ShouldNotBeNull(exception);
             ShouldBeAssignableTo(exception, exceptionType);
             return exception;
+        }
+
+        private static Exception CatchException(Action throwingAction)
+        {
+            try
+            {
+                throwingAction();
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+
+            return null;
         }
 
         public static void ShouldBeLike(this object obj, object expected)
