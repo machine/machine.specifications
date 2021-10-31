@@ -36,10 +36,12 @@ namespace Machine.Specifications.Runner.Utility
         private static void AppendItems(XElement root, IEnumerable<string> items, string itemsElementName, string itemElementName)
         {
             var itemsRootNode = new XElement(itemsElementName);
-            foreach (string item in items)
+
+            foreach (var item in items)
             {
                 itemsRootNode.Add(new XElement(itemElementName, item));
             }
+
             root.Add(itemsRootNode);
         }
     }

@@ -1,27 +1,24 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+#if !NETSTANDARD
+using System.Runtime.Remoting;
+using System.Runtime.Remoting.Messaging;
+#endif
+using System.Security;
+using System.Xml.Linq;
+using System.Xml.XPath;
 using Machine.Specifications.Explorers;
 using Machine.Specifications.Model;
 using Machine.Specifications.Utility;
 
-#if !NETSTANDARD
-using System.IO;
-using System.Xml.Linq;
-using System.Xml.XPath;
-using System.Runtime.Remoting;
-using System.Runtime.Remoting.Messaging;
-using System.Security;
-#endif
-
 namespace Machine.Specifications.Runner.Impl
 {
-
 #if !NETSTANDARD
     [Serializable]
 #endif
-
     public class DefaultRunner :
 #if !NETSTANDARD
                                 MarshalByRefObject, IMessageSink,
@@ -29,13 +26,19 @@ namespace Machine.Specifications.Runner.Impl
                                 ISpecificationRunner
 
     {
-        readonly ISpecificationRunListener _listener;
-        readonly RunOptions _options;
-        readonly AssemblyExplorer _explorer;
-        readonly AssemblyRunner _assemblyRunner;
-        InvokeOnce _runStart = new InvokeOnce(() => { });
-        InvokeOnce _runEnd = new InvokeOnce(() => { });
-        bool _explicitStartAndEnd;
+        private readonly ISpecificationRunListener listener;
+
+        private readonly RunOptions options;
+
+        private readonly AssemblyExplorer explorer;
+
+        private readonly AssemblyRunner assemblyRunner;
+
+        private InvokeOnce runStart = new InvokeOnce(() => { });
+
+        private InvokeOnce runEnd = new InvokeOnce(() => { });
+
+        private bool explicitStartAndEnd;
 
 #if !NETSTANDARD
         public DefaultRunner(object listener, string runOptionsXml, bool signalRunStartAndEnd)
@@ -51,22 +54,23 @@ namespace Machine.Specifications.Runner.Impl
 
         public DefaultRunner(ISpecificationRunListener listener, RunOptions options, bool signalRunStartAndEnd)
         {
-            _listener = listener;
-            _options = options;
-            _assemblyRunner = new AssemblyRunner(_listener, _options);
+            this.listener = listener;
+            this.options = options;
 
-            _explorer = new AssemblyExplorer();
+            assemblyRunner = new AssemblyRunner(this.listener, this.options);
+
+            explorer = new AssemblyExplorer();
 
             if (signalRunStartAndEnd)
             {
-                _runStart = new InvokeOnce(() => _listener.OnRunStart());
-                _runEnd = new InvokeOnce(() => _listener.OnRunEnd());
+                runStart = new InvokeOnce(() => this.listener.OnRunStart());
+                runEnd = new InvokeOnce(() => this.listener.OnRunEnd());
             }
         }
 
         public void RunAssembly(Assembly assembly)
         {
-            var contexts = _explorer.FindContextsIn(assembly, _options);
+            var contexts = explorer.FindContextsIn(assembly, options);
             var map = CreateMap(assembly, contexts);
 
             StartRun(map);
@@ -76,14 +80,14 @@ namespace Machine.Specifications.Runner.Impl
         {
             var map = new Dictionary<Assembly, IEnumerable<Context>>();
 
-            assemblies.Each(assembly => map.Add(assembly, _explorer.FindContextsIn(assembly, _options)));
+            assemblies.Each(assembly => map.Add(assembly, explorer.FindContextsIn(assembly, options)));
 
             StartRun(map);
         }
 
         public void RunNamespace(Assembly assembly, string targetNamespace)
         {
-            var contexts = _explorer.FindContextsIn(assembly, targetNamespace, _options);
+            var contexts = explorer.FindContextsIn(assembly, targetNamespace, options);
 
             StartRun(CreateMap(assembly, contexts));
         }
@@ -102,25 +106,25 @@ namespace Machine.Specifications.Runner.Impl
 
         public void RunType(Assembly assembly, Type type, IEnumerable<string> specs)
         {
-            Context context = _explorer.FindContexts(type, _options);
-            IEnumerable<Specification> specsToRun = context.Specifications.Where(s => specs.Contains(s.FieldInfo.Name));
+            var context = explorer.FindContexts(type, options);
+            var specsToRun = context.Specifications.Where(s => specs.Contains(s.FieldInfo.Name));
             context.Filter(specsToRun);
 
             StartRun(CreateMap(assembly, new[] { context }));
         }
 
-        void RunField(MemberInfo member, Assembly assembly)
+        private void RunField(MemberInfo member, Assembly assembly)
         {
             var fieldInfo = (FieldInfo)member;
-            var context = _explorer.FindContexts(fieldInfo, _options);
+            var context = explorer.FindContexts(fieldInfo, options);
 
             StartRun(CreateMap(assembly, new[] { context }));
         }
 
-        void RunClass(MemberInfo member, Assembly assembly)
+        private void RunClass(MemberInfo member, Assembly assembly)
         {
             var type = member.AsType();
-            var context = _explorer.FindContexts(type, _options);
+            var context = explorer.FindContexts(type, options);
 
             if (context == null)
             {
@@ -130,42 +134,43 @@ namespace Machine.Specifications.Runner.Impl
             StartRun(CreateMap(assembly, new[] { context }));
         }
 
-        static Dictionary<Assembly, IEnumerable<Context>> CreateMap(Assembly assembly, IEnumerable<Context> contexts)
+        private static Dictionary<Assembly, IEnumerable<Context>> CreateMap(Assembly assembly, IEnumerable<Context> contexts)
         {
-            var map = new Dictionary<Assembly, IEnumerable<Context>>();
-            map[assembly] = contexts;
-            return map;
+            return new Dictionary<Assembly, IEnumerable<Context>>
+            {
+                [assembly] = contexts
+            };
         }
 
-        void StartRun(IDictionary<Assembly, IEnumerable<Context>> contextMap)
+        private void StartRun(IDictionary<Assembly, IEnumerable<Context>> contextMap)
         {
-            if (!_explicitStartAndEnd)
+            if (!explicitStartAndEnd)
             {
-                _runStart.Invoke();
+                runStart.Invoke();
             }
 
             foreach (var (assembly, contexts) in contextMap)
             {
-                _assemblyRunner.Run(assembly, contexts);
+                assemblyRunner.Run(assembly, contexts);
             }
 
-            if (!_explicitStartAndEnd)
+            if (!explicitStartAndEnd)
             {
-                _runEnd.Invoke();
+                runEnd.Invoke();
             }
         }
 
         public void StartRun(Assembly assembly)
         {
-            _explicitStartAndEnd = true;
-            _runStart.Invoke();
-            _assemblyRunner.StartExplicitRunScope(assembly);
+            explicitStartAndEnd = true;
+            runStart.Invoke();
+            assemblyRunner.StartExplicitRunScope(assembly);
         }
 
         public void EndRun(Assembly assembly)
         {
-            _assemblyRunner.EndExplicitRunScope(assembly);
-            _runEnd.Invoke();
+            assemblyRunner.EndExplicitRunScope(assembly);
+            runEnd.Invoke();
         }
 
 #if !NETSTANDARD
@@ -177,44 +182,49 @@ namespace Machine.Specifications.Runner.Impl
 
         public IMessage SyncProcessMessage(IMessage msg)
         {
-            var methodCall = msg as IMethodCallMessage;
-            if (methodCall != null)
+            if (msg is IMethodCallMessage methodCall)
             {
                 return RemotingServices.ExecuteMessage(this, methodCall);
             }
 
             // This is all a bit ugly but gives us version independance for the moment
-            string value = msg.Properties["data"] as string;
+            var value = msg.Properties["data"] as string;
             var doc = XDocument.Load(new StringReader(value));
             var element = doc.XPathSelectElement("/runner/*");
 
             XElement assemblyElement;
+
             switch (element.Name.ToString())
             {
                 // TODO: Optimize loading of assemblies
                 case "startrun":
-                    this.StartRun(Assembly.LoadFrom(element.Value));
+                    StartRun(Assembly.LoadFrom(element.Value));
                     break;
+
                 case "endrun":
-                    this.EndRun(Assembly.LoadFrom(element.Value));
+                    EndRun(Assembly.LoadFrom(element.Value));
                     break;
+
                 case "runassembly":
-                    this.RunAssembly(Assembly.LoadFrom(element.Value));
+                    RunAssembly(Assembly.LoadFrom(element.Value));
                     break;
+
                 case "runnamespace":
                     assemblyElement = element.XPathSelectElement("/runner/runnamespace/assembly");
                     var namespaceElement = element.XPathSelectElement("/runner/runnamespace/namespace");
 
-                    this.RunNamespace(Assembly.LoadFrom(assemblyElement.Value), namespaceElement.Value);
+                    RunNamespace(Assembly.LoadFrom(assemblyElement.Value), namespaceElement.Value);
                     break;
+
                 case "runmember":
                     assemblyElement = element.XPathSelectElement("/runner/runmember/assembly");
                     var memberInfo = msg.Properties["member"] as MemberInfo;
 
-                    this.RunMember(Assembly.LoadFrom(assemblyElement.Value), memberInfo);
+                    RunMember(Assembly.LoadFrom(assemblyElement.Value), memberInfo);
                     break;
+
                 case "runassemblies":
-                    this.RunAssemblies(element.Elements("assemblies").Select(e => Assembly.LoadFrom(e.Value)));
+                    RunAssemblies(element.Elements("assemblies").Select(e => Assembly.LoadFrom(e.Value)));
                     break;
             }
 
@@ -227,7 +237,6 @@ namespace Machine.Specifications.Runner.Impl
         }
 
         public IMessageSink NextSink { get; private set; }
-
 #endif
     }
 }

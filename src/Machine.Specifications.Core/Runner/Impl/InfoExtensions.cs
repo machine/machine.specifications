@@ -13,7 +13,8 @@ namespace Machine.Specifications.Runner.Impl
 
         public static ContextInfo GetInfo(this Context context)
         {
-            string concern = "";
+            var concern = string.Empty;
+
             if (context.Subject != null)
             {
                 concern = context.Subject.FullConcern;
@@ -24,7 +25,7 @@ namespace Machine.Specifications.Runner.Impl
 
         public static SpecificationInfo GetInfo(this Specification specification)
         {
-            return new SpecificationInfo(specification.Leader, specification.Name, specification.FieldInfo.DeclaringType.FullName, specification.FieldInfo.Name);
+            return new SpecificationInfo(specification.Leader, specification.Name, specification.FieldInfo.DeclaringType?.FullName, specification.FieldInfo.Name);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Machine.Specifications.ComparerStrategies
 {
-    class GenericTypeComparer<T> : IComparerStrategy<T>
+    internal class GenericTypeComparer<T> : IComparerStrategy<T>
     {
         public ComparisionResult Compare(T x, T y)
         {
@@ -20,6 +20,7 @@ namespace Machine.Specifications.ComparerStrategies
                     return new ComparisionResult(-1);
                 }
             }
+
             return new NoResult();
         }
     }

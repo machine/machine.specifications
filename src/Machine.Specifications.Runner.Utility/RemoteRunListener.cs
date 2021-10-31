@@ -21,103 +21,110 @@ namespace Machine.Specifications.Runner.Utility
         , IMessageSink
 #endif
     {
-        private readonly ISpecificationRunListener _runListener;
+        private readonly ISpecificationRunListener runListener;
 
         public RemoteRunListener(ISpecificationRunListener runListener)
         {
-            _runListener = runListener;
+            this.runListener = runListener;
         }
 
         public virtual void OnAssemblyStart(AssemblyInfo assemblyInfo)
         {
-            _runListener.OnAssemblyStart(assemblyInfo);
+            runListener.OnAssemblyStart(assemblyInfo);
         }
 
         public virtual void OnAssemblyEnd(AssemblyInfo assemblyInfo)
         {
-            _runListener.OnAssemblyEnd(assemblyInfo);
+            runListener.OnAssemblyEnd(assemblyInfo);
         }
 
         public virtual void OnRunStart()
         {
-            _runListener.OnRunStart();
+            runListener.OnRunStart();
         }
 
         public virtual void OnRunEnd()
         {
-            _runListener.OnRunEnd();
+            runListener.OnRunEnd();
         }
 
         public virtual void OnContextStart(ContextInfo contextInfo)
         {
-            _runListener.OnContextStart(contextInfo);
+            runListener.OnContextStart(contextInfo);
         }
 
         public virtual void OnContextEnd(ContextInfo contextInfo)
         {
-            _runListener.OnContextEnd(contextInfo);
+            runListener.OnContextEnd(contextInfo);
         }
 
         public virtual void OnSpecificationStart(SpecificationInfo specificationInfo)
         {
-            _runListener.OnSpecificationStart(specificationInfo);
+            runListener.OnSpecificationStart(specificationInfo);
         }
 
         public virtual void OnSpecificationEnd(SpecificationInfo specificationInfo, Result result)
         {
-            _runListener.OnSpecificationEnd(specificationInfo, result);
+            runListener.OnSpecificationEnd(specificationInfo, result);
         }
 
         public virtual void OnFatalError(ExceptionResult exceptionResult)
         {
-            _runListener.OnFatalError(exceptionResult);
+            runListener.OnFatalError(exceptionResult);
         }
 
 #if !NETSTANDARD
         public IMessage SyncProcessMessage(IMessage msg)
         {
-            var methodCall = msg as IMethodCallMessage;
-            if (methodCall != null)
+            if (msg is IMethodCallMessage methodCall)
             {
                 return RemotingServices.ExecuteMessage(this, methodCall);
             }
 
             // This is all a bit ugly but gives us version independance for the moment
-            string value = msg.Properties["data"] as string;
+            var value = (string) msg.Properties["data"];
             var doc = XDocument.Load(new StringReader(value));
             var element = doc.XPathSelectElement("/listener/*");
             var listener = (ISpecificationRunListener) this;
 
-            switch (element.Name.ToString())
+            switch (element?.Name.ToString())
             {
                 case "onassemblystart":
-                    listener.OnAssemblyStart(AssemblyInfo.Parse(element.XPathSelectElement("//onassemblystart/*").ToString()));
+                    listener.OnAssemblyStart(AssemblyInfo.Parse(element.XPathSelectElement("//onassemblystart/*")?.ToString()));
                     break;
+
                 case "onassemblyend":
-                    listener.OnAssemblyEnd(AssemblyInfo.Parse(element.XPathSelectElement("//onassemblyend/*").ToString()));
+                    listener.OnAssemblyEnd(AssemblyInfo.Parse(element.XPathSelectElement("//onassemblyend/*")?.ToString()));
                     break;
+
                 case "onrunstart":
                     listener.OnRunStart();
                     break;
+
                 case "onrunend":
                     listener.OnRunEnd();
                     break;
+
                 case "oncontextstart":
-                    listener.OnContextStart(ContextInfo.Parse(element.XPathSelectElement("//oncontextstart/*").ToString()));
+                    listener.OnContextStart(ContextInfo.Parse(element.XPathSelectElement("//oncontextstart/*")?.ToString()));
                     break;
+
                 case "oncontextend":
-                    listener.OnContextEnd(ContextInfo.Parse(element.XPathSelectElement("//oncontextend/*").ToString()));
+                    listener.OnContextEnd(ContextInfo.Parse(element.XPathSelectElement("//oncontextend/*")?.ToString()));
                     break;
+
                 case "onspecificationstart":
-                    listener.OnSpecificationStart(SpecificationInfo.Parse(element.XPathSelectElement("//onspecificationstart/*").ToString()));
+                    listener.OnSpecificationStart(SpecificationInfo.Parse(element.XPathSelectElement("//onspecificationstart/*")?.ToString()));
                     break;
+
                 case "onspecificationend":
                     listener.OnSpecificationEnd(
-                        SpecificationInfo.Parse(element.XPathSelectElement("//onspecificationend/specificationinfo").ToString()), 
-                        Result.Parse(element.XPathSelectElement("//onspecificationend/result").ToString()));
+                        SpecificationInfo.Parse(element.XPathSelectElement("//onspecificationend/specificationinfo")?.ToString()), 
+                        Result.Parse(element.XPathSelectElement("//onspecificationend/result")?.ToString()));
                     break;
+
                 case "onfatalerror":
-                    listener.OnFatalError(ExceptionResult.Parse(element.XPathSelectElement("//onfatalerror/*").ToString()));
+                    listener.OnFatalError(ExceptionResult.Parse(element.XPathSelectElement("//onfatalerror/*")?.ToString()));
                     break;
             }
 

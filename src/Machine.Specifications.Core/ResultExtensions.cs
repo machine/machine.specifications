@@ -1,8 +1,8 @@
+using System.Xml.Linq;
+using Machine.Specifications.Utility;
+
 namespace Machine.Specifications
 {
-    using System.Collections.Generic;
-    using System.Xml.Linq;
-
     internal static class ResultExtensions
     {
         public static XElement ToXml(this Result result)
@@ -19,13 +19,13 @@ namespace Machine.Specifications
         {
             var root = new XElement("supplements");
 
-            foreach (KeyValuePair<string, IDictionary<string, string>> pair in result.Supplements)
+            foreach (var (key, value) in result.Supplements)
             {
-                var element = new XElement("supplement", new XAttribute("key", pair.Key));
+                var element = new XElement("supplement", new XAttribute("key", key));
 
-                foreach (KeyValuePair<string, string> valuePair in pair.Value)
+                foreach (var (innerKey, innerValue) in value)
                 {
-                    element.Add(new XElement("entry", valuePair.Value, new XAttribute("key", valuePair.Key)));
+                    element.Add(new XElement("entry", innerValue, new XAttribute("key", innerKey)));
                 }
 
                 root.Add(element);

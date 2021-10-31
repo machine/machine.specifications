@@ -6,17 +6,18 @@ namespace Machine.Specifications.Controller
 {
     internal class ControllerRunListener : ISpecificationRunListener
     {
-        private readonly Action<string> _listener;
+        private readonly Action<string> listener;
 
         public ControllerRunListener(Action<string> listener)
         {
-            _listener = listener;
+            this.listener = listener;
         }
 
         private void SendMessage(XElement message)
         {
             message.Add(new XAttribute("version", Controller.Version));
-            _listener(message.ToString());
+
+            listener(message.ToString());
         }
 
         public void OnAssemblyStart(AssemblyInfo assemblyInfo)

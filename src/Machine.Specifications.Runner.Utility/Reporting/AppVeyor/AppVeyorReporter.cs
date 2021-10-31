@@ -1,33 +1,33 @@
+using System;
+using System.Diagnostics;
 using Machine.Specifications.Runner.Utility;
 
 namespace Machine.Specifications.Reporting.Integration.AppVeyor
 {
-    using System;
-    using System.Diagnostics;
-
-    public class AppVeyorReporter //: ISpecificationRunListener, ISpecificationResultProvider
+    public class AppVeyorReporter
     {
-        const string FrameworkName = "Machine.Specifications";
+        private const string FrameworkName = "Machine.Specifications";
 
-        readonly Action<string> _writer;
-        readonly IAppVeyorBuildWorkerApiClient _apiClient;
-        readonly Stopwatch _specificationTimer = new Stopwatch();
+        private readonly Action<string> writer;
 
-        AssemblyInfo _currentAssembly;
-        string _currentContext;
-        bool _failureOccurred;
+        private readonly IAppVeyorBuildWorkerApiClient apiClient;
+
+        private readonly Stopwatch specificationTimer = new Stopwatch();
+
+        private AssemblyInfo currentAssembly;
+
+        private string currentContext;
+
+        private bool failureOccurred;
 
         public AppVeyorReporter(Action<string> writer, IAppVeyorBuildWorkerApiClient apiClient)
         {
-            _writer = writer;
-            _apiClient = apiClient;
-            _failureOccurred = false;
+            this.writer = writer;
+            this.apiClient = apiClient;
+            failureOccurred = false;
         }
 
-        public bool FailureOccurred
-        {
-            get { return _failureOccurred; }
-        }
+        public bool FailureOccurred => failureOccurred;
 
         public void OnRunStart()
         {
@@ -35,13 +35,13 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
 
         public void OnRunEnd()
         {
-            _writer("");
+            writer(string.Empty);
         }
 
         public void OnAssemblyStart(AssemblyInfo assembly)
         {
-            _writer(string.Format("\nSpecs in {0}:", assembly.Name));
-            _currentAssembly = assembly;
+            writer($"\nSpecs in {assembly.Name}:");
+            currentAssembly = assembly;
         }
 
         public void OnAssemblyEnd(AssemblyInfo assembly)
@@ -50,127 +50,137 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
 
         public void OnContextStart(ContextInfo context)
         {
-            _writer(string.Format("\n{0}", context.FullName));
-            _currentContext = context.FullName;
+            writer($"\n{context.FullName}");
+            currentContext = context.FullName;
         }
 
         public void OnContextEnd(ContextInfo context)
         {
-            _currentContext = "";
+            currentContext = string.Empty;
         }
 
         public void OnSpecificationStart(SpecificationInfo specification)
         {
-            _specificationTimer.Reset();
-            _specificationTimer.Start();
+            specificationTimer.Reset();
+            specificationTimer.Start();
 
-            _apiClient.AddTest(GetSpecificationName(specification),
-                               FrameworkName,
-                               _currentAssembly.Name,
-                               "Running",
-                               null,
-                               null,
-                               null,
-                               null,
-                               null);
+            apiClient.AddTest(
+                GetSpecificationName(specification),
+                FrameworkName,
+                currentAssembly.Name,
+                "Running",
+                null,
+                null,
+                null,
+                null,
+                null);
         }
 
         public void OnSpecificationEnd(SpecificationInfo specification, Result result)
         {
-            _specificationTimer.Stop();
-            long duration = _specificationTimer.ElapsedMilliseconds;
+            specificationTimer.Stop();
+
+            var duration = specificationTimer.ElapsedMilliseconds;
 
             switch (result.Status)
             {
                 case Status.Passing:
                     UpdateTestPassed(specification, duration);
                     break;
+
                 case Status.NotImplemented:
                     UpdateTestNotImplemented(specification, duration);
                     break;
+
                 case Status.Ignored:
                     UpdateTestIgnored(specification, duration);
                     break;
+
                 default:
                     UpdateTestFailed(specification, duration, result.Exception);
-                    _failureOccurred = true;
+                    failureOccurred = true;
                     break;
             }
         }
 
-        void UpdateTestPassed(SpecificationInfo specification, long executionTime)
+        private void UpdateTestPassed(SpecificationInfo specification, long executionTime)
         {
-            _writer(string.Format("\x1B[32m* {0}\x1B[39m", specification.Name)); // green
-            _apiClient.UpdateTest(GetSpecificationName(specification),
-                                  FrameworkName,
-                                  _currentAssembly.Name,
-                                  "Passed",
-                                  executionTime,
-                                  null,
-                                  null,
-                                  specification.CapturedOutput,
-                                  null);
+            writer($"\x1B[32m* {specification.Name}\x1B[39m"); // green
+            apiClient.UpdateTest(
+                GetSpecificationName(specification),
+                FrameworkName,
+                currentAssembly.Name,
+                "Passed",
+                executionTime,
+                null,
+                null,
+                specification.CapturedOutput,
+                null);
         }
 
-        void UpdateTestFailed(SpecificationInfo specification, long executionTime, ExceptionResult exceptionResult = null)
+        private void UpdateTestFailed(SpecificationInfo specification, long executionTime, ExceptionResult exceptionResult = null)
         {
-            _writer(string.Format("\x1B[31m* {0} (FAILED)\x1B[39m", specification.Name)); // red
+            writer($"\x1B[31m* {specification.Name} (FAILED)\x1B[39m"); // red
 
             string errorMessage = null;
             string errorStackTrace = null;
+
             if (exceptionResult != null)
             {
                 errorMessage = exceptionResult.Message;
                 errorStackTrace = exceptionResult.ToString();
             }
 
-            _apiClient.UpdateTest(GetSpecificationName(specification),
-                                  FrameworkName,
-                                  _currentAssembly.Name,
-                                  "Failed",
-                                  executionTime,
-                                  errorMessage,
-                                  errorStackTrace,
-                                  specification.CapturedOutput,
-                                  null);
+            apiClient.UpdateTest(
+                GetSpecificationName(specification),
+                FrameworkName,
+                currentAssembly.Name,
+                "Failed",
+                executionTime,
+                errorMessage,
+                errorStackTrace,
+                specification.CapturedOutput,
+                null);
         }
 
-        void UpdateTestIgnored(SpecificationInfo specification, long executionTime)
+        private void UpdateTestIgnored(SpecificationInfo specification, long executionTime)
         {
-            _writer(string.Format("\x1B[33m* {0} (IGNORED)\x1B[39m", specification.Name)); // yellow
-            _apiClient.UpdateTest(GetSpecificationName(specification),
-                                  FrameworkName,
-                                  _currentAssembly.Name,
-                                  "Skipped",
-                                  executionTime,
-                                  null,
-                                  null,
-                                  null,
-                                  null);
+            writer($"\x1B[33m* {specification.Name} (IGNORED)\x1B[39m"); // yellow
+            apiClient.UpdateTest(
+                GetSpecificationName(specification),
+                FrameworkName,
+                currentAssembly.Name,
+                "Skipped",
+                executionTime,
+                null,
+                null,
+                null,
+                null);
         }
 
-        void UpdateTestNotImplemented(SpecificationInfo specification, long executionTime)
+        private void UpdateTestNotImplemented(SpecificationInfo specification, long executionTime)
         {
-            _writer(string.Format("\x1B[90m* {0} (NOT IMPLEMENTED)\x1B[39m", specification.Name)); // gray
-            _apiClient.UpdateTest(GetSpecificationName(specification),
-                                  FrameworkName,
-                                  _currentAssembly.Name,
-                                  "NotImplemented",
-                                  executionTime,
-                                  null,
-                                  null,
-                                  null,
-                                  null);
+            writer($"\x1B[90m* {specification.Name} (NOT IMPLEMENTED)\x1B[39m"); // gray
+            apiClient.UpdateTest(
+                GetSpecificationName(specification),
+                FrameworkName,
+                currentAssembly.Name,
+                "NotImplemented",
+                executionTime,
+                null,
+                null,
+                null,
+                null);
         }
 
         public void OnFatalError(ExceptionResult exception)
         {
-            _failureOccurred = true;
+            failureOccurred = true;
         }
 
         protected string GetSpecificationName(SpecificationInfo specification)
         {
-            return _currentContext + " » " + specification.Name;
+            return currentContext + " » " + specification.Name;
         }
     }
 }

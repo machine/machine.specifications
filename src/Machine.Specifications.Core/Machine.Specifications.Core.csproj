@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+    <RootNamespace>Machine.Specifications</RootNamespace>
 
     <Description>Machine.Specifications is a Context/Specification framework geared towards removing language noise and simplifying tests</Description>
     <Authors>Machine Specifications</Authors>
@@ -17,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="../../images/icon.png" Pack="true" PackagePath="" />
+    <None Include="../../images/icon.png" Pack="true" PackagePath="" Visible="false" />
   </ItemGroup>
 
 </Project>

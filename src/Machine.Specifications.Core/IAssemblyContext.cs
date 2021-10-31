@@ -3,6 +3,7 @@
     public interface IAssemblyContext
     {
         void OnAssemblyStart();
+
         void OnAssemblyComplete();
     }
 }

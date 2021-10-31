@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
 using Machine.Specifications.Sdk;
 
 namespace Machine.Specifications.Utility
@@ -11,8 +10,7 @@ namespace Machine.Specifications.Utility
     {
         public static IEnumerable<FieldInfo> GetInstanceFields(this Type type)
         {
-            return
-              type.GetFields(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.NonPublic | BindingFlags.Public);
+            return type.GetFields(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.NonPublic | BindingFlags.Public);
         }
 
         public static IEnumerable<FieldInfo> GetStaticProtectedOrInheritedFields(this Type type)
@@ -31,12 +29,14 @@ namespace Machine.Specifications.Utility
         {
             if (attributeFullNames == null || attributeFullNames.Length == 0)
             {
-                throw new ArgumentNullException("attributeFullNames");
+                throw new ArgumentNullException(nameof(attributeFullNames));
             }
 
             var fields = GetInstanceFields(type);
-            return attributeFullNames.Aggregate(Enumerable.Empty<FieldInfo>(),
-                                    (current, usage) => current.Union(fields.Where(x => GetDelegateUsage(x) == usage)));
+
+            return attributeFullNames.Aggregate(
+                Enumerable.Empty<FieldInfo>(),
+                (current, usage) => current.Union(fields.Where(x => GetDelegateUsage(x) == usage)));
         }
 
         public static FieldInfo GetStaticProtectedOrInheritedFieldNamed(this Type type, string fieldName)
@@ -49,11 +49,12 @@ namespace Machine.Specifications.Utility
             return GetDelegateUsage(fieldInfo) == attributeFullName;
         }
 
-        static AttributeFullName GetDelegateUsage(this FieldInfo fieldInfo)
+        private static AttributeFullName GetDelegateUsage(this FieldInfo fieldInfo)
         {
             var fieldType = fieldInfo.FieldType;
 
             var attributeFullName = fieldType.GetCustomDelegateAttributeFullName();
+
             if (attributeFullName == null)
             {
                 return null;
@@ -64,34 +65,24 @@ namespace Machine.Specifications.Utility
             // Do some validation to prevent messages with no indication of the cause of the problem later on.
             if (invoke == null)
             {
-                throw new InvalidOperationException(string.Format("The delegate type {0} does not have an invoke method.",
-                                                                  fieldType));
+                throw new InvalidOperationException($"The delegate type {fieldType} does not have an invoke method.");
             }
+
             if (invoke.GetParameters().Length != 0)
             {
-                throw new InvalidOperationException(string.Format("{0} delegates require 0 parameters, {1} has {2}.",
-                                                                  attributeFullName,
-                                                                  fieldType,
-                                                                  invoke.GetParameters().Length));
+                throw new InvalidOperationException($"{attributeFullName} delegates require 0 parameters, {fieldType} has {invoke.GetParameters().Length}.");
             }
 
             if (attributeFullName is BehaviorAttributeFullName)
             {
                 if (!fieldType.GetTypeInfo().IsGenericType)
                 {
-                    throw new InvalidOperationException(
-                      string.Format("{0} delegates need to be generic types with 1 parameter. {1} is not a generic type.",
-                                    attributeFullName,
-                                    fieldType));
+                    throw new InvalidOperationException($"{attributeFullName} delegates need to be generic types with 1 parameter. {fieldType} is not a generic type.");
                 }
 
                 if (fieldType.GetGenericArguments().Length != 1)
                 {
-                    throw new InvalidOperationException(
-                      string.Format("{0} delegates need to be generic types with 1 parameter. {1} has {2} parameters.",
-                                    attributeFullName,
-                                    fieldType,
-                                    fieldType.GetTypeInfo().GetGenericParameterConstraints().Length));
+                    throw new InvalidOperationException($"{attributeFullName} delegates need to be generic types with 1 parameter. {fieldType} has {fieldType.GetTypeInfo().GetGenericParameterConstraints().Length} parameters.");
                 }
             }
 

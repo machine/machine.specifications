@@ -5,7 +5,7 @@ namespace Machine.Specifications.Runner
 #if !NETSTANDARD
     [Serializable]
 #endif
-    public class AssemblyInfo
+    public class AssemblyInfo : IEquatable<AssemblyInfo>
     {
         public AssemblyInfo(string name, string location)
         {
@@ -14,24 +14,19 @@ namespace Machine.Specifications.Runner
         }
 
         public string Name { get; private set; }
+
         public string Location { get; private set; }
+
         public string CapturedOutput { get; set; }
+
+        public bool Equals(AssemblyInfo other)
+        {
+            return other != null && other.Name == Name && other.Location == Location;
+        }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-            if (obj.GetType() != typeof(AssemblyInfo))
-            {
-                return false;
-            }
-            return GetHashCode() == obj.GetHashCode();
+            return Equals(obj as AssemblyInfo);
         }
 
         public override int GetHashCode()

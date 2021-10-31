@@ -1,17 +1,14 @@
 ﻿namespace Machine.Specifications.Sdk
 {
-  public class TagsAttributeFullName : AttributeFullName
-  {
-    static readonly string tagsAttributeFullName = typeof(TagsAttribute).FullName;
-
-    public static implicit operator string(TagsAttributeFullName fullName)
+    public class TagsAttributeFullName : AttributeFullName
     {
-      return tagsAttributeFullName;
-    }
+        static readonly string AttributeFullName = typeof(TagsAttribute).FullName;
 
-    public override string FullName
-    {
-      get { return this; }
+        public static implicit operator string(TagsAttributeFullName fullName)
+        {
+            return AttributeFullName;
+        }
+
+        public override string FullName => this;
     }
-  }
 }

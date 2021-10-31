@@ -1,47 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Machine.Specifications.Model
 {
     public class Subject
     {
-        readonly string _description;
-        readonly Type _type;
-
-        public Type Type
+        public Subject(Type type, string description)
         {
-            get { return _type; }
+            Type = type;
+            Description = description;
         }
 
-        public string Description
-        {
-            get { return _description; }
-        }
+        public Type Type { get; }
+
+        public string Description { get; }
 
         public string FullConcern
         {
             get
             {
-                if (_type == null)
+                if (Type == null)
                 {
-                    return _description;
+                    return Description;
                 }
 
-                if (_description == null)
+                if (Description == null)
                 {
-                    return _type.Name;
+                    return Type.Name;
                 }
 
-                return _type.Name + " " + _description;
+                return Type.Name + " " + Description;
             }
-        }
-
-        public Subject(Type type, string description)
-        {
-            _type = type;
-            _description = description;
         }
     }
 }

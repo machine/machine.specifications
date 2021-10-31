@@ -1,47 +1,43 @@
-using System.Collections.Generic;
-using System.Reflection;
-
-using Machine.Specifications.Utility;
 using System;
+using System.Reflection;
+using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Model
 {
     public class BehaviorSpecification : Specification
     {
-        readonly FieldInfo _behaviorfield;
-        readonly object _behaviorInstance;
-        readonly object _contextInstance;
-        readonly ConventionMapper _mapper;
+        private readonly object behaviorInstance;
 
-        public BehaviorSpecification(string name,
-                                     Type fieldType,
-                                     FieldInfo behaviorfield,
-                                     Delegate it,
-                                     bool isIgnored,
-                                     FieldInfo fieldInfo,
-                                     Context context,
-                                     Behavior behavior)
+        private readonly object contextInstance;
+
+        private readonly ConventionMapper mapper = new ConventionMapper();
+
+        public BehaviorSpecification(
+            string name,
+            Type fieldType,
+            FieldInfo behaviorField,
+            Delegate it,
+            bool isIgnored,
+            FieldInfo fieldInfo,
+            Context context,
+            Behavior behavior)
             : base(name, fieldType, it, isIgnored, fieldInfo)
         {
-            _behaviorfield = behaviorfield;
-            _contextInstance = context.Instance;
-            _behaviorInstance = behavior.Instance;
+            contextInstance = context.Instance;
+            behaviorInstance = behavior.Instance;
 
-            _mapper = new ConventionMapper();
+            BehaviorFieldInfo = behaviorField;
         }
 
-        public FieldInfo BehaviorFieldInfo
-        {
-            get { return _behaviorfield; }
-        }
+        public FieldInfo BehaviorFieldInfo { get; }
 
         protected override void InvokeSpecificationField()
         {
-            _mapper.MapPropertiesOf(_contextInstance).To(_behaviorInstance);
+            mapper.MapPropertiesOf(contextInstance).To(behaviorInstance);
+
             base.InvokeSpecificationField();
         }
 
-        #region Nested type: ConventionMapper
         private class ConventionMapper
         {
             internal ConventionMap MapPropertiesOf(object source)
@@ -49,34 +45,32 @@ namespace Machine.Specifications.Model
                 return new ConventionMap(source);
             }
 
-            #region Nested type: ConventionMap
             internal class ConventionMap
             {
-                readonly object _source;
+                private readonly object source;
 
                 public ConventionMap(object source)
                 {
-                    _source = source;
+                    this.source = source;
                 }
 
                 public void To(object target)
                 {
-                    IEnumerable<FieldInfo> sourceFields = _source.GetType().GetStaticProtectedOrInheritedFields();
+                    var sourceFields = source.GetType().GetStaticProtectedOrInheritedFields();
 
                     foreach (var sourceField in sourceFields)
                     {
-                        FieldInfo targetField = target.GetType().GetStaticProtectedOrInheritedFieldNamed(sourceField.Name);
+                        var targetField = target.GetType().GetStaticProtectedOrInheritedFieldNamed(sourceField.Name);
+
                         if (targetField == null)
                         {
                             continue;
                         }
 
-                        targetField.SetValue(target, sourceField.GetValue(_source));
+                        targetField.SetValue(target, sourceField.GetValue(source));
                     }
                 }
             }
-            #endregion
         }
-        #endregion
     }
 }

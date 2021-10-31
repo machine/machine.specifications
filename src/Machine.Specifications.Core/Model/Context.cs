@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Machine.Specifications.Utility;
 using Machine.Specifications.Utility.Internal;
 
@@ -9,118 +8,61 @@ namespace Machine.Specifications.Model
 {
     public class Context
     {
-        readonly List<Specification> _specifications;
-        readonly object _instance;
+        private readonly List<Specification> specifications;
 
-        readonly Subject _subject;
-        readonly IEnumerable<Delegate> _contextClauses;
-        readonly IEnumerable<Delegate> _becauseClauses;
-        readonly IEnumerable<Delegate> _cleanupClauses;
+        private readonly IEnumerable<Delegate> contextClauses;
 
-        readonly IEnumerable<Tag> _tags;
+        private readonly IEnumerable<Delegate> becauseClauses;
 
-        public string Name { get; private set; }
+        private readonly IEnumerable<Delegate> cleanupClauses;
 
-        public bool IsIgnored { get; private set; }
-
-        public bool IsSetupForEachSpec { get; set; }
-
-        public IEnumerable<Tag> Tags
+        public Context(
+            Type type,
+            object instance,
+            IEnumerable<Delegate> contextClauses,
+            IEnumerable<Delegate> becauseClauses,
+            IEnumerable<Delegate> cleanupClauses,
+            Subject subject,
+            bool isIgnored,
+            IEnumerable<Tag> tags,
+            bool isSetupForEachSpec)
         {
-            get { return _tags; }
-        }
+            this.cleanupClauses = cleanupClauses;
+            this.contextClauses = contextClauses;
+            this.becauseClauses = becauseClauses;
 
-        public object Instance
-        {
-            get { return _instance; }
-        }
-
-        public IEnumerable<Specification> Specifications
-        {
-            get { return _specifications; }
-        }
-
-        public Type Type { get; private set; }
-
-        public Subject Subject
-        {
-            get { return _subject; }
-        }
-
-        public Context(Type type,
-                       object instance,
-                       IEnumerable<Delegate> contextClauses,
-                       IEnumerable<Delegate> becauseClauses,
-                       IEnumerable<Delegate> cleanupClauses,
-                       Subject subject,
-                       bool isIgnored,
-                       IEnumerable<Tag> tags,
-                       bool isSetupForEachSpec)
-        {
             Name = type.Name.ToFormat();
             Type = type;
-            _instance = instance;
-            _cleanupClauses = cleanupClauses;
-            _contextClauses = contextClauses;
-            _becauseClauses = becauseClauses;
-            _specifications = new List<Specification>();
-            _subject = subject;
+            Instance = instance;
+            specifications = new List<Specification>();
+            Subject = subject;
             IsIgnored = isIgnored;
-            _tags = tags;
+            Tags = tags;
             IsSetupForEachSpec = isSetupForEachSpec;
         }
 
-        public void AddSpecification(Specification specification)
-        {
-            _specifications.Add(specification);
-        }
+        public string Name { get; }
 
-        public void Filter(IEnumerable<Specification> toKeep)
-        {
-            var newList = _specifications.Intersect(toKeep).ToList();
-            _specifications.Clear();
-            _specifications.AddRange(newList);
-        }
+        public bool IsIgnored { get; }
 
-        public Result EstablishContext()
-        {
-            var result = Result.Pass();
+        public bool IsSetupForEachSpec { get; }
 
-            try
-            {
-                _contextClauses.InvokeAll();
-                _becauseClauses.InvokeAll();
-            }
-            catch (Exception err)
-            {
-                result = Result.ContextFailure(err);
-            }
+        public IEnumerable<Tag> Tags { get; }
 
-            return result;
-        }
+        public object Instance { get; }
 
-        public Result Cleanup()
-        {
-            var result = Result.Pass();
+        public IEnumerable<Specification> Specifications => specifications;
 
-            try
-            {
-                _cleanupClauses.InvokeAll();
-            }
-            catch (Exception err)
-            {
-                result = Result.ContextFailure(err);
-            }
+        public Type Type { get; }
 
-            return result;
-        }
+        public Subject Subject { get; }
 
         // TODO: Rename to Name
         public string FullName
         {
             get
             {
-                var line = "";
+                var line = string.Empty;
 
                 if (Subject != null)
                 {
@@ -133,21 +75,53 @@ namespace Machine.Specifications.Model
 
         public bool HasExecutableSpecifications
         {
-            get { return Specifications.Where(x => x.IsExecutable).Any(); }
+            get { return Specifications.Any(x => x.IsExecutable); }
         }
-    }
 
-    public class SpecificationVerificationIteration
-    {
-        public Specification Next { get; private set; }
-        public Specification Current { get; private set; }
-        public Result Result { get; private set; }
-
-        public SpecificationVerificationIteration(Specification current, Result result, Specification next)
+        public void AddSpecification(Specification specification)
         {
-            Next = next;
-            Current = current;
-            Result = result;
+            specifications.Add(specification);
+        }
+
+        public void Filter(IEnumerable<Specification> toKeep)
+        {
+            var newList = specifications.Intersect(toKeep).ToList();
+
+            specifications.Clear();
+            specifications.AddRange(newList);
+        }
+
+        public Result EstablishContext()
+        {
+            var result = Result.Pass();
+
+            try
+            {
+                contextClauses.InvokeAll();
+                becauseClauses.InvokeAll();
+            }
+            catch (Exception ex)
+            {
+                result = Result.ContextFailure(ex);
+            }
+
+            return result;
+        }
+
+        public Result Cleanup()
+        {
+            var result = Result.Pass();
+
+            try
+            {
+                cleanupClauses.InvokeAll();
+            }
+            catch (Exception err)
+            {
+                result = Result.ContextFailure(err);
+            }
+
+            return result;
         }
     }
 }

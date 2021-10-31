@@ -1,7 +1,7 @@
-﻿namespace Machine.Specifications.Runner
-{
-    using System.Xml.Linq;
+﻿using System.Xml.Linq;
 
+namespace Machine.Specifications.Runner
+{
     internal static class ContextInfoExtensions
     {
         public static XElement ToXml(this ContextInfo contextInfo)

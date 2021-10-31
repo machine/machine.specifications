@@ -1,6 +1,6 @@
 ﻿namespace Machine.Specifications.ComparerStrategies
 {
-    class NoResult : ComparisionResult
+    internal class NoResult : ComparisionResult
     {
         public NoResult()
         {

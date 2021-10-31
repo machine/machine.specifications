@@ -3,73 +3,77 @@ using Machine.Specifications.Runner.Utility;
 
 namespace Machine.Specifications.Reporting.Integration.TeamCity
 {
-    public class TeamCityReporter //: ISpecificationRunListener, ISpecificationResultProvider
+    public class TeamCityReporter
     {
-        readonly TimingRunListener _timingListener;
+        private readonly TimingRunListener timingListener;
 
-        readonly TeamCityServiceMessageWriter _writer;
-        string _currentContext;
-        string _currentNamespace;
-        bool _failureOccurred;
+        private readonly TeamCityServiceMessageWriter writer;
+
+        private string currentContext;
+
+        private string currentNamespace;
+
+        private bool failureOccurred;
 
         public TeamCityReporter(Action<string> writer, TimingRunListener listener)
         {
-            _timingListener = listener;
-            _failureOccurred = false;
-            _writer = new TeamCityServiceMessageWriter(writer);
+            this.writer = new TeamCityServiceMessageWriter(writer);
+
+            timingListener = listener;
+            failureOccurred = false;
         }
 
-        public bool FailureOccurred
-        {
-            get { return _failureOccurred; }
-        }
+        public bool FailureOccurred => failureOccurred;
 
         public void OnAssemblyStart(AssemblyInfo assembly)
         {
-            _writer.WriteProgressStart("Running specifications in " + assembly.Name);
+            writer.WriteProgressStart("Running specifications in " + assembly.Name);
         }
 
         public void OnAssemblyEnd(AssemblyInfo assembly)
         {
-            if (!string.IsNullOrEmpty(_currentNamespace))
+            if (!string.IsNullOrEmpty(currentNamespace))
             {
-                _writer.WriteTestSuiteFinished(_currentNamespace);
+                writer.WriteTestSuiteFinished(currentNamespace);
             }
-            _writer.WriteProgressFinish("Running specifications in " + assembly.Name);
+
+            writer.WriteProgressFinish("Running specifications in " + assembly.Name);
         }
 
         public void OnRunStart()
         {
-            _writer.WriteProgressStart("Running specifications.");
+            writer.WriteProgressStart("Running specifications.");
         }
 
         public void OnRunEnd()
         {
-            _writer.WriteProgressFinish("Running specifications.");
+            writer.WriteProgressFinish("Running specifications.");
         }
 
         public void OnContextStart(ContextInfo context)
         {
-            if (context.Namespace != _currentNamespace)
+            if (context.Namespace != currentNamespace)
             {
-                if (!string.IsNullOrEmpty(_currentNamespace))
+                if (!string.IsNullOrEmpty(currentNamespace))
                 {
-                    _writer.WriteTestSuiteFinished(_currentNamespace);
+                    writer.WriteTestSuiteFinished(currentNamespace);
                 }
-                _currentNamespace = context.Namespace;
-                _writer.WriteTestSuiteStarted(_currentNamespace);
+
+                currentNamespace = context.Namespace;
+                writer.WriteTestSuiteStarted(currentNamespace);
             }
-            _currentContext = context.FullName;
+
+            currentContext = context.FullName;
         }
 
         public void OnContextEnd(ContextInfo context)
         {
-            _currentContext = "";
+            currentContext = string.Empty;
         }
 
         public void OnSpecificationStart(SpecificationInfo specification)
         {
-            _writer.WriteTestStarted(GetSpecificationName(specification), false);
+            writer.WriteTestStarted(GetSpecificationName(specification), false);
         }
 
         public void OnSpecificationEnd(SpecificationInfo specification, Result result)
@@ -78,40 +82,44 @@ namespace Machine.Specifications.Reporting.Integration.TeamCity
             {
                 case Status.Passing:
                     break;
+
                 case Status.NotImplemented:
-                    _writer.WriteTestIgnored(GetSpecificationName(specification), "(Not Implemented)");
+                    writer.WriteTestIgnored(GetSpecificationName(specification), "(Not Implemented)");
                     break;
+
                 case Status.Ignored:
-                    _writer.WriteTestIgnored(GetSpecificationName(specification), "(Ignored)");
+                    writer.WriteTestIgnored(GetSpecificationName(specification), "(Ignored)");
                     break;
+
                 default:
                     if (result.Exception != null)
                     {
-                        _writer.WriteTestFailed(GetSpecificationName(specification),
+                        writer.WriteTestFailed(GetSpecificationName(specification),
                                                 result.Exception.Message,
                                                 result.Exception.ToString());
                     }
                     else
                     {
-                        _writer.WriteTestFailed(GetSpecificationName(specification), "FAIL", "");
+                        writer.WriteTestFailed(GetSpecificationName(specification), "FAIL", "");
                     }
-                    _failureOccurred = true;
+                    failureOccurred = true;
                     break;
             }
-            var duration = TimeSpan.FromMilliseconds(_timingListener.GetSpecificationTime(specification));
 
-            _writer.WriteTestFinished(GetSpecificationName(specification), duration);
+            var duration = TimeSpan.FromMilliseconds(timingListener.GetSpecificationTime(specification));
+
+            writer.WriteTestFinished(GetSpecificationName(specification), duration);
         }
 
         public void OnFatalError(ExceptionResult exception)
         {
-            _writer.WriteError(exception.Message, exception.ToString());
-            _failureOccurred = true;
+            writer.WriteError(exception.Message, exception.ToString());
+            failureOccurred = true;
         }
 
         protected string GetSpecificationName(SpecificationInfo specification)
         {
-            return _currentContext + " > " + specification.Name;
+            return currentContext + " > " + specification.Name;
         }
     }
 }

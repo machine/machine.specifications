@@ -1,17 +1,14 @@
 ﻿namespace Machine.Specifications.Sdk
 {
-  public class BehaviorAttributeFullName : AttributeFullName
-  {
-    static readonly string behaviorAttributeFullName = typeof(BehaviorsAttribute).FullName;
-
-    public static implicit operator string(BehaviorAttributeFullName fullName)
+    public class BehaviorAttributeFullName : AttributeFullName
     {
-      return behaviorAttributeFullName;
-    }
+        private static readonly string AttributeFullName = typeof(BehaviorsAttribute).FullName;
 
-    public override string FullName
-    {
-      get { return this; }
+        public static implicit operator string(BehaviorAttributeFullName fullName)
+        {
+            return AttributeFullName;
+        }
+
+        public override string FullName => this;
     }
-  }
 }

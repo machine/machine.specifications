@@ -2,7 +2,7 @@
 
 namespace Machine.Specifications
 {
-    [AttributeUsage(AttributeTargets.Class, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Class)]
     public class SetupForEachSpecification : Attribute
     {
     }

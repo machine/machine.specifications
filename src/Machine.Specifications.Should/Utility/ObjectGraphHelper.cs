@@ -14,48 +14,62 @@ namespace Machine.Specifications.Utility
         public static INode GetGraph(object obj)
         {
             var objectType = obj.GetType();
-            if (objectType.IsArray || (obj is IEnumerable && objectType != typeof(string)))
+
+            if (objectType.IsArray || obj is IEnumerable && objectType != typeof(string))
+            {
                 return GetSequenceNode(obj);
+            }
 
             if (objectType.GetTypeInfo().IsClass && objectType != typeof(string))
+            {
                 return GetKeyValueNode(obj);
+            }
 
-            return new LiteralNode { Value = obj };
+            return new LiteralNode
+            {
+                Value = obj
+            };
         }
 
-        static INode GetSequenceNode(object obj)
+        private static INode GetSequenceNode(object obj)
         {
-            var sequence = ((IEnumerable)obj).Cast<object>();
+            var sequence = ((IEnumerable) obj).Cast<object>();
 
-            return new SequenceNode { ValueGetters = sequence.Select<object, Func<object>>(a => () => a).ToArray() };
+            return new SequenceNode
+            {
+                ValueGetters = sequence.Select<object, Func<object>>(a => () => a).ToArray()
+            };
         }
 
-        static INode GetKeyValueNode(object obj)
+        private static INode GetKeyValueNode(object obj)
         {
-            var properties = obj.GetType().GetProperties()
-              .Where(p => p.CanRead)
-              .Select(p =>
-              {
-                  var prop = p;
-                  return new Member
-                  {
-                      Name = p.Name,
-                      ValueGetter = () => prop.GetValue(obj, null)
-                  };
-              });
+            var properties = obj.GetType()
+                .GetProperties()
+                .Where(p => p.CanRead)
+                .Select(p =>
+                {
+                    return new Member
+                    {
+                        Name = p.Name,
+                        ValueGetter = () => p.GetValue(obj, null)
+                    };
+                });
 
-            var fields = obj.GetType().GetFields()
-              .Select(f =>
-              {
-                  var field = f;
-                  return new Member
-                  {
-                      Name = f.Name,
-                      ValueGetter = () => field.GetValue(obj)
-                  };
-              });
+            var fields = obj.GetType()
+                .GetFields()
+                .Select(f =>
+                {
+                    return new Member
+                    {
+                        Name = f.Name,
+                        ValueGetter = () => f.GetValue(obj)
+                    };
+                });
 
-            return new KeyValueNode { KeyValues = properties.Concat(fields).OrderBy(m => m.Name) };
+            return new KeyValueNode
+            {
+                KeyValues = properties.Concat(fields).OrderBy(m => m.Name)
+            };
         }
 
         public class SequenceNode : INode

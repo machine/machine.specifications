@@ -6,49 +6,29 @@ namespace Machine.Specifications.Model
 {
     public class Behavior
     {
-        readonly Context _context;
-        readonly object _instance;
-        readonly List<Specification> _specifications;
-        readonly string _leader;
+        private readonly List<Specification> specifications = new List<Specification>();
 
         public Behavior(Type fieldType, object instance, Context context, bool isIgnored)
         {
-            _leader = fieldType.ToFormat();
-            _instance = instance;
-            _context = context;
+            Instance = instance;
+            Context = context;
+            Leader = fieldType.ToFormat();
             IsIgnored = isIgnored;
-            _specifications = new List<Specification>();
         }
 
-        public string Leader
-        {
-            get { return _leader; }
-        }
+        public string Leader { get; }
 
-        public bool IsIgnored
-        {
-            get;
-            private set;
-        }
+        public bool IsIgnored { get; }
 
-        public object Instance
-        {
-            get { return _instance; }
-        }
+        public object Instance { get; }
 
-        public IEnumerable<Specification> Specifications
-        {
-            get { return _specifications; }
-        }
+        public IEnumerable<Specification> Specifications => specifications;
 
-        public Context Context
-        {
-            get { return _context; }
-        }
+        public Context Context { get; }
 
         public void AddSpecification(Specification specification)
         {
-            _specifications.Add(specification);
+            specifications.Add(specification);
         }
     }
 }

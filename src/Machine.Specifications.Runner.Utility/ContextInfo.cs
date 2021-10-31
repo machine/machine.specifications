@@ -4,77 +4,70 @@ using System.Xml.Linq;
 namespace Machine.Specifications.Runner.Utility
 {
     [Serializable]
-    public class ContextInfo
+    public class ContextInfo : IEquatable<ContextInfo>
     {
-        public string Name { get; private set; }
-        public string Concern { get; private set; }
-        public string TypeName { get; private set; }
-        public string Namespace { get; private set; }
-        public string AssemblyName { get; private set; }
+        public ContextInfo()
+        {
+        }
+
+        public ContextInfo(string name, string concern, string typeName, string typeNamespace, string assemblyName)
+        {
+            Concern = concern;
+            Name = name;
+            TypeName = typeName;
+            AssemblyName = assemblyName;
+            Namespace = typeNamespace;
+        }
+
+        public string Name { get; }
+
+        public string Concern { get; }
+
+        public string TypeName { get; }
+
+        public string Namespace { get; }
+
+        public string AssemblyName { get; }
 
         public string FullName
         {
             get
             {
-                string line = "";
+                var line = string.Empty;
 
-                if (!String.IsNullOrEmpty(this.Concern))
+                if (!string.IsNullOrEmpty(Concern))
                 {
-                    line += this.Concern + ", ";
+                    line += Concern + ", ";
                 }
 
-                return line + this.Name;
+                return line + Name;
             }
         }
 
         public string CapturedOutput { get; set; }
 
-        public ContextInfo()
+        public bool Equals(ContextInfo other)
         {
-        }
-
-        public ContextInfo(string name, string concern, string typeName, string @namespace, string assemblyName)
-        {
-            this.Concern = concern;
-            this.Name = name;
-            this.TypeName = typeName;
-            this.AssemblyName = assemblyName;
-            this.Namespace = @namespace;
+            return other != null &&
+                   other.Name == Name &&
+                   other.Concern == Concern &&
+                   other.TypeName == TypeName &&
+                   other.Namespace == Namespace &&
+                   other.AssemblyName == AssemblyName;
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != typeof(ContextInfo))
-            {
-                return false;
-            }
-
-            return this.GetHashCode() == obj.GetHashCode();
+            return Equals(obj as ContextInfo);
         }
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                int hash = 17;
-                hash = hash * 29 + (this.Name != null ? this.Name.GetHashCode() : 0);
-                hash = hash * 29 + (this.Concern != null ? this.Concern.GetHashCode() : 0);
-                hash = hash * 29 + (this.TypeName != null ? this.TypeName.GetHashCode() : 0);
-                hash = hash * 29 + (this.Namespace != null ? this.Namespace.GetHashCode() : 0);
-                hash = hash * 29 + (this.AssemblyName != null ? this.AssemblyName.GetHashCode() : 0);
-
-                return hash;
-            }
+            return HashCode.Of(Name)
+                .And(Concern)
+                .And(TypeName)
+                .And(Namespace)
+                .And(AssemblyName);
         }
 
         public static ContextInfo Parse(string contextInfoXml)
@@ -83,29 +76,14 @@ namespace Machine.Specifications.Runner.Utility
             var name = document.SafeGet<string>("/contextinfo/name");
             var concern = document.SafeGet<string>("/contextinfo/concern");
             var typeName = document.SafeGet<string>("/contextinfo/typename");
-            var @namespace = document.SafeGet<string>("/contextinfo/namespace");
+            var typeNamespace = document.SafeGet<string>("/contextinfo/namespace");
             var assemblyName = document.SafeGet<string>("/contextinfo/assemblyname");
-            var capturedoutput = document.SafeGet<string>("/contextinfo/capturedoutput");
+            var capturedOutput = document.SafeGet<string>("/contextinfo/capturedoutput");
 
-            return new ContextInfo(name, concern, typeName, @namespace, assemblyName)
-                       {
-                           CapturedOutput = capturedoutput,
-                       };
-        }
-    }
-
-    [Serializable]
-    public class CapturedOutput
-    {
-        public string StdOut { get; private set; }
-        public string StdError { get; private set; }
-        public string DebugTrace { get; private set; }
-
-        public CapturedOutput(string stdOut, string stdError, string debugTrace)
-        {
-            this.StdOut = stdOut;
-            this.StdError = stdError;
-            this.DebugTrace = debugTrace;
+            return new ContextInfo(name, concern, typeName, typeNamespace, assemblyName)
+            {
+                CapturedOutput = capturedOutput,
+            };
         }
     }
 }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Machine.Specifications.Explorers;
-using Machine.Specifications.Model;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
 
@@ -14,10 +13,11 @@ namespace Machine.Specifications.Controller
     {
         public static string Version => "1.0";
 
-        readonly DefaultRunner _runner;
-        readonly AssemblyExplorer _explorer;
-        readonly ISpecificationRunListener _listener;
+        private readonly DefaultRunner runner;
 
+        private readonly AssemblyExplorer explorer;
+
+        private readonly ISpecificationRunListener listener;
 
         public Controller(Action<string> listenCallback)
             : this(listenCallback, RunOptions.Default)
@@ -31,40 +31,40 @@ namespace Machine.Specifications.Controller
 
         private Controller(Action<string> listenCallback, RunOptions runOptions)
         {
-            _listener = new ControllerRunListener(listenCallback);
-            _explorer = new AssemblyExplorer();
-            _runner = new DefaultRunner(_listener, runOptions, signalRunStartAndEnd: false);
+            listener = new ControllerRunListener(listenCallback);
+            explorer = new AssemblyExplorer();
+            runner = new DefaultRunner(listener, runOptions, false);
         }
 
         public void StartRun()
         {
-            _listener.OnRunStart();
+            listener.OnRunStart();
         }
 
         public void EndRun()
         {
-            _listener.OnRunEnd();
+            listener.OnRunEnd();
         }
 
         public void RunAssemblies(IEnumerable<Assembly> assemblies)
         {
-            _runner.RunAssemblies(assemblies);
+            runner.RunAssemblies(assemblies);
         }
 
         public void RunNamespaces(Assembly assembly, IEnumerable<string> targetNamespaces)
         {
             try
             {
-                _runner.StartRun(assembly);
+                runner.StartRun(assembly);
 
-               foreach (string targetNamespace in targetNamespaces)
+                foreach (var targetNamespace in targetNamespaces)
                 {
-                    _runner.RunNamespace(assembly, targetNamespace);
+                    runner.RunNamespace(assembly, targetNamespace);
                 }
             }
             finally
             {
-                _runner.EndRun(assembly);
+                runner.EndRun(assembly);
             }
         }
 
@@ -72,16 +72,16 @@ namespace Machine.Specifications.Controller
         {
             try
             {
-                _runner.StartRun(assembly);
+                runner.StartRun(assembly);
 
-                foreach (MemberInfo member in members)
+                foreach (var member in members)
                 {
-                    _runner.RunMember(assembly, member);
+                    runner.RunMember(assembly, member);
                 }
             }
             finally
             {
-                _runner.EndRun(assembly);
+                runner.EndRun(assembly);
             }
         }
 
@@ -96,19 +96,19 @@ namespace Machine.Specifications.Controller
         {
             try
             {
-                _runner.StartRun(assembly);
+                runner.StartRun(assembly);
 
-                foreach (IGrouping<string, string> specsByType in specifications.GroupBy(spec => spec.Substring(0, spec.LastIndexOf("."))))
+                foreach (var specsByType in specifications.GroupBy(spec => spec.Substring(0, spec.LastIndexOf("."))))
                 {
-                    string fullTypeName = specsByType.Key;
-                    IEnumerable<string> specNames = specsByType.Select(spec => spec.Substring(spec.LastIndexOf(".") + 1, spec.Length - 1 - spec.LastIndexOf(".")));
+                    var fullTypeName = specsByType.Key;
+                    var specNames = specsByType.Select(spec => spec.Substring(spec.LastIndexOf(".") + 1, spec.Length - 1 - spec.LastIndexOf(".")));
 
-                    _runner.RunType(assembly, assembly.GetType(fullTypeName), specNames);
+                    runner.RunType(assembly, assembly.GetType(fullTypeName), specNames);
                 }
             }
             finally
             {
-                _runner.EndRun(assembly);
+                runner.EndRun(assembly);
             }
         }
 
@@ -116,31 +116,33 @@ namespace Machine.Specifications.Controller
         {
             try
             {
-                _runner.StartRun(assembly);
+                runner.StartRun(assembly);
 
-                foreach (Type type in types)
+                foreach (var type in types)
                 {
-                    _runner.RunMember(assembly, type.GetTypeInfo());
+                    runner.RunMember(assembly, type.GetTypeInfo());
                 }
             }
             finally
             {
-                _runner.EndRun(assembly);
+                runner.EndRun(assembly);
             }
         }
 
         public string DiscoverSpecs(Assembly assembly)
         {
-            XElement contextListElement = new XElement("contexts");
+            var contextListElement = new XElement("contexts");
             contextListElement.Add(new XAttribute("version", Version));
 
-            IEnumerable<Context> contexts = _explorer.FindContextsIn(assembly);
-            foreach (Context context in contexts)
-            {
-                XElement contextInfoElement = context.GetInfo().ToXml();
+            var contexts = explorer.FindContextsIn(assembly);
 
-                XElement specificationsListElement = new XElement("specifications");
-                foreach (Specification spec in context.Specifications)
+            foreach (var context in contexts)
+            {
+                var contextInfoElement = context.GetInfo().ToXml();
+
+                var specificationsListElement = new XElement("specifications");
+
+                foreach (var spec in context.Specifications)
                 {
                 	specificationsListElement.Add(spec.GetInfo().ToXml());
                 }

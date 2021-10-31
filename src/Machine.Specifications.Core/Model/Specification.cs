@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using Machine.Specifications.Runner.Impl;
 using Machine.Specifications.Utility.Internal;
 
@@ -10,40 +7,29 @@ namespace Machine.Specifications.Model
 {
     public class Specification
     {
-        readonly string _name;
-        readonly Delegate _it;
-        readonly bool _isIgnored;
-        readonly FieldInfo _fieldInfo;
-        readonly string _leader;
-
-        public FieldInfo FieldInfo
-        {
-            get { return _fieldInfo; }
-        }
-
-        public string Name
-        {
-            get { return _name; }
-        }
-
-        public bool IsIgnored
-        {
-            get { return _isIgnored; }
-        }
-
-        public string Leader
-        {
-            get { return _leader; }
-        }
+        private readonly Delegate it;
 
         public Specification(string name, Type fieldType, Delegate it, bool isIgnored, FieldInfo fieldInfo)
         {
-            _leader = fieldType.ToFormat();
-            _name = name;
-            _it = it;
-            _isIgnored = isIgnored;
-            _fieldInfo = fieldInfo;
+            this.it = it;
+
+            Leader = fieldType.ToFormat();
+            Name = name;
+            IsIgnored = isIgnored;
+            FieldInfo = fieldInfo;
         }
+
+        public FieldInfo FieldInfo { get; }
+
+        public string Name { get; }
+
+        public bool IsIgnored { get; }
+
+        public string Leader { get; }
+
+        public bool IsDefined => it != null;
+
+        public bool IsExecutable => IsDefined && !IsIgnored;
 
         public virtual Result Verify()
         {
@@ -69,19 +55,9 @@ namespace Machine.Specifications.Model
             return Result.Pass();
         }
 
-        public bool IsDefined
-        {
-            get { return _it != null; }
-        }
-
-        public bool IsExecutable
-        {
-            get { return IsDefined && !IsIgnored; }
-        }
-
         protected virtual void InvokeSpecificationField()
         {
-            var runner = new DelegateRunner(_it);
+            var runner = new DelegateRunner(it);
             runner.Execute();
         }
     }

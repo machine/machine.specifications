@@ -11,10 +11,13 @@ namespace Machine.Specifications.Runner
 #endif
     public class RunOptions
     {
-        public IEnumerable<string> IncludeTags { get; private set; }
-        public IEnumerable<string> ExcludeTags { get; private set; }
-        public IEnumerable<string> Filters { get; private set; }
-        public IEnumerable<string> Contexts { get; private set; }
+        public IEnumerable<string> IncludeTags { get; }
+
+        public IEnumerable<string> ExcludeTags { get; }
+
+        public IEnumerable<string> Filters { get; }
+
+        public IEnumerable<string> Contexts { get; }
 
         public RunOptions(IEnumerable<string> includeTags, IEnumerable<string> excludeTags, IEnumerable<string> filters)
             : this(includeTags, excludeTags, filters, Enumerable.Empty<string>())
@@ -29,18 +32,25 @@ namespace Machine.Specifications.Runner
             Contexts = contexts;
         }
 
-        public static RunOptions Default { get { return new RunOptions(Enumerable.Empty<string>(), Enumerable.Empty<string>(), Enumerable.Empty<string>(), Enumerable.Empty<string>()); } }
+        public static RunOptions Default => new RunOptions(
+            Enumerable.Empty<string>(),
+            Enumerable.Empty<string>(),
+            Enumerable.Empty<string>(),
+            Enumerable.Empty<string>());
 
         public static RunOptions Parse(string runOptionsXml)
         {
             if (runOptionsXml == null)
+            {
                 throw new ArgumentNullException("runOptionsXml");
+            }
+
             var document = XDocument.Parse(runOptionsXml);
 
-            IEnumerable<string> includeTags = Parse(document, "/runoptions/includetags/tag");
-            IEnumerable<string> excludeTags = Parse(document, "/runoptions/excludetags/tag");
-            IEnumerable<string> filters = Parse(document, "/runoptions/filters/filter");
-            IEnumerable<string> contexts = Parse(document, "/runoptions/contexts/context");
+            var includeTags = Parse(document, "/runoptions/includetags/tag");
+            var excludeTags = Parse(document, "/runoptions/excludetags/tag");
+            var filters = Parse(document, "/runoptions/filters/filter");
+            var contexts = Parse(document, "/runoptions/contexts/context");
 
             return new RunOptions(includeTags, excludeTags, filters, contexts);
         }

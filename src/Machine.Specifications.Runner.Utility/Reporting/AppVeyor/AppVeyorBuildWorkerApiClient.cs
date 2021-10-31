@@ -6,29 +6,25 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
 {
     public class AppVeyorBuildWorkerApiClient : IAppVeyorBuildWorkerApiClient
     {
-        const string ApiResource = "/api/tests";
+        private const string ApiResource = "/api/tests";
 
-        readonly string _apiUrl;
+        private readonly string apiUrl;
 
         public AppVeyorBuildWorkerApiClient(string apiUrl)
         {
-            if (apiUrl == null)
-            {
-                throw new ArgumentNullException("apiUrl");
-            }
-
-            _apiUrl = apiUrl;
+            this.apiUrl = apiUrl ?? throw new ArgumentNullException(nameof(apiUrl));
         }
 
-        public void AddTest(string testName,
-                            string testFramework,
-                            string fileName,
-                            string outcome,
-                            long? durationMilliseconds,
-                            string errorMessage,
-                            string errorStackTrace,
-                            string stdOut,
-                            string stdErr)
+        public void AddTest(
+            string testName,
+            string testFramework,
+            string fileName,
+            string outcome,
+            long? durationMilliseconds,
+            string errorMessage,
+            string errorStackTrace,
+            string stdOut,
+            string stdErr)
         {
             try
             {
@@ -43,7 +39,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
                     TrimStdOut(stdOut),
                     TrimStdOut(stdErr));
 
-                using (WebClient wc = GetClient())
+                using (var wc = GetClient())
                 {
                     wc.UploadData(ApiResource, "POST", json);
                 }
@@ -54,15 +50,16 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
             }
         }
 
-        public void UpdateTest(string testName,
-                               string testFramework,
-                               string fileName,
-                               string outcome,
-                               long? durationMilliseconds,
-                               string errorMessage,
-                               string errorStackTrace,
-                               string stdOut,
-                               string stdErr)
+        public void UpdateTest(
+            string testName,
+            string testFramework,
+            string fileName,
+            string outcome,
+            long? durationMilliseconds,
+            string errorMessage,
+            string errorStackTrace,
+            string stdOut,
+            string stdErr)
         {
             try
             {
@@ -77,7 +74,7 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
                     TrimStdOut(stdOut),
                     TrimStdOut(stdErr));
 
-                using (WebClient wc = GetClient())
+                using (var wc = GetClient())
                 {
                     wc.UploadData(ApiResource, "PUT", json);
                 }
@@ -88,19 +85,21 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
             }
         }
 
-        static string TrimStdOut(string str)
+        private static string TrimStdOut(string str)
         {
-            const int MaxLength = 4096;
+            const int maxLength = 4096;
 
             if (str == null)
             {
                 return null;
             }
 
-            return (str.Length > MaxLength) ? str.Substring(0, MaxLength) : str;
+            return str.Length > maxLength
+                ? str.Substring(0, maxLength)
+                : str;
         }
 
-        static byte[] Json(
+        private static byte[] Json(
             string testName,
             string testFramework,
             string fileName,
@@ -130,16 +129,17 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
 
         private static string GetJsonValue(long? value)
         {
-            if (value == null)
-                return "null";
-
-            return value.ToString();
+            return value == null
+                ? "null"
+                : value.ToString();
         }
 
         private static string GetJsonValue(string value)
         {
             if (value == null)
+            {
                 return "null";
+            }
 
             var jsonValue = value
                 .Replace("\\", "\\\\")
@@ -153,12 +153,17 @@ namespace Machine.Specifications.Reporting.Integration.AppVeyor
             return $"\"{jsonValue}\"";
         }
 
-        WebClient GetClient()
+        private WebClient GetClient()
         {
-            var wc = new WebClient { BaseAddress = _apiUrl };
-            wc.Headers["Accept"] = "application/json";
-            wc.Headers["Content-type"] = "application/json";
-            return wc;
+            var client = new WebClient
+            {
+                BaseAddress = apiUrl
+            };
+
+            client.Headers["Accept"] = "application/json";
+            client.Headers["Content-type"] = "application/json";
+
+            return client;
         }
     }
 }

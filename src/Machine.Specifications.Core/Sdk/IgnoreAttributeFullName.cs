@@ -1,17 +1,14 @@
 ﻿namespace Machine.Specifications.Sdk
 {
-  public class IgnoreAttributeFullName : AttributeFullName
-  {
-    static readonly string ignoreAttributeFullName = typeof(IgnoreAttribute).FullName;
-
-    public static implicit operator string(IgnoreAttributeFullName fullName)
+    public class IgnoreAttributeFullName : AttributeFullName
     {
-      return ignoreAttributeFullName;
-    }
+        private static readonly string AttributeFullName = typeof(IgnoreAttribute).FullName;
 
-    public override string FullName
-    {
-      get { return this; }
+        public static implicit operator string(IgnoreAttributeFullName fullName)
+        {
+            return AttributeFullName;
+        }
+
+        public override string FullName => this;
     }
-  }
 }

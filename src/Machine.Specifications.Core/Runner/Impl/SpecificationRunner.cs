@@ -1,30 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Machine.Specifications.Model;
 
 namespace Machine.Specifications.Runner.Impl
 {
     internal class SpecificationRunner
     {
-        readonly ISpecificationRunListener _listener;
-        readonly RunOptions _options;
-        readonly IEnumerable<ISupplementSpecificationResults> _resultSupplementers;
+        private readonly ISpecificationRunListener listener;
 
-        public SpecificationRunner(ISpecificationRunListener listener, RunOptions options, IEnumerable<ISupplementSpecificationResults> resultSupplementers)
+        private readonly IEnumerable<ISupplementSpecificationResults> resultSupplementers;
+
+        public SpecificationRunner(ISpecificationRunListener listener, IEnumerable<ISupplementSpecificationResults> resultSupplementers)
         {
-            _listener = listener;
-            _options = options;
-            _resultSupplementers = resultSupplementers;
+            this.listener = listener;
+            this.resultSupplementers = resultSupplementers;
         }
 
         public Result Run(Specification specification)
         {
-            _listener.OnSpecificationStart(specification.GetInfo());
+            listener.OnSpecificationStart(specification.GetInfo());
+
             var result = specification.Verify();
-            result = _resultSupplementers.Aggregate(result, (r, supplement) => supplement.SupplementResult(r));
-            _listener.OnSpecificationEnd(specification.GetInfo(), result);
+            result = resultSupplementers.Aggregate(result, (r, supplement) => supplement.SupplementResult(r));
+
+            listener.OnSpecificationEnd(specification.GetInfo(), result);
 
             return result;
         }

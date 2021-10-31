@@ -1,27 +1,40 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Reflection;
 
 namespace Machine.Specifications.Utility.Internal
 {
     public static class Naming
     {
-        static readonly Regex QuoteRegex = new Regex(@"(?<quoted>__(?<inner>\w+?)__)",
-                                                     RegexOptions.Compiled | RegexOptions.CultureInvariant);
+        private static readonly Regex QuoteRegex = new Regex(@"(?<quoted>__(?<inner>\w+?)__)", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
         public static string ToFormat(this Type type)
         {
             while (true)
             {
                 var args = type.GetGenericArguments();
-                if (args.Length == 0 || args.Where(x => x.IsGenericParameter).Any()) break;
+
+                if (args.Length == 0 || args.Any(x => x.IsGenericParameter))
+                {
+                    break;
+                }
+
                 type = type.GetGenericTypeDefinition();
             }
+
             var typeName = type.Name;
             var index = typeName.IndexOf('`');
-            if (index > 0) typeName = typeName.Substring(0, index);
-            if (typeName.Length > 0) typeName = char.ToLower(typeName[0]) + typeName.Substring(1);
+
+            if (index > 0)
+            {
+                typeName = typeName.Substring(0, index);
+            }
+
+            if (typeName.Length > 0)
+            {
+                typeName = char.ToLower(typeName[0]) + typeName.Substring(1);
+            }
+
             return ToFormat(typeName);
         }
 
@@ -34,23 +47,19 @@ namespace Machine.Specifications.Utility.Internal
             return name;
         }
 
-        static string ReplaceUnderscoreEssWithPossessive(string specificationName)
+        private static string ReplaceUnderscoreEssWithPossessive(string specificationName)
         {
-            specificationName = specificationName.Replace("_s_", "'s ");
-            return specificationName;
+            return specificationName.Replace("_s_", "'s ");
         }
 
-        static string ReplaceSingleUnderscoresWithSpaces(string specificationName)
+        private static string ReplaceSingleUnderscoresWithSpaces(string specificationName)
         {
-            specificationName = specificationName.Replace("_", " ");
-            return specificationName;
+            return specificationName.Replace("_", " ");
         }
 
-        static string ReplaceDoubleUnderscoresWithQuotes(string specificationName)
+        private static string ReplaceDoubleUnderscoresWithQuotes(string specificationName)
         {
-            specificationName = QuoteRegex.Replace(specificationName, " \"${inner}\" ");
-
-            return specificationName;
+            return QuoteRegex.Replace(specificationName, " \"${inner}\" ");
         }
     }
 }

@@ -15,10 +15,14 @@ namespace Machine.Specifications.Runner
             FieldName = fieldName;
         }
 
-        public string Leader { get; set; }
-        public string Name { get; set; }
-        public string ContainingType { get; set; }
-        public string FieldName { get; set; }
+        public string Leader { get; }
+
+        public string Name { get; }
+
+        public string ContainingType { get; }
+
+        public string FieldName { get; }
+
         public string CapturedOutput { get; set; }
     }
 }

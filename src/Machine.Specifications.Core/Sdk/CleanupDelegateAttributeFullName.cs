@@ -1,17 +1,14 @@
 ﻿namespace Machine.Specifications.Sdk
 {
-  public class CleanupDelegateAttributeFullName : DelegateAttributeFullName
-  {
-    static readonly string cleanupDelegateAttributeName = typeof(CleanupDelegateAttribute).FullName;
-
-    public static implicit operator string(CleanupDelegateAttributeFullName fullName)
+    public class CleanupDelegateAttributeFullName : DelegateAttributeFullName
     {
-      return cleanupDelegateAttributeName;
-    }
+        private static readonly string AttributeFullName = typeof(CleanupDelegateAttribute).FullName;
 
-    public override string FullName
-    {
-      get { return this; }
+        public static implicit operator string(CleanupDelegateAttributeFullName fullName)
+        {
+            return AttributeFullName;
+        }
+
+        public override string FullName => this;
     }
-  }
 }

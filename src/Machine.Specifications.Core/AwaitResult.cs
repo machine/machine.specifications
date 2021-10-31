@@ -2,38 +2,28 @@ using System.Threading.Tasks;
 
 namespace Machine.Specifications
 {
-  public class AwaitResult
-  {
-    readonly Task _task;
-
-    public AwaitResult(Task task)
+    public class AwaitResult
     {
-      _task = task;
+        public AwaitResult(Task task)
+        {
+            AsTask = task;
+        }
+
+        public Task AsTask { get; }
     }
 
-    public Task AsTask
+    public class AwaitResult<T>
     {
-      get { return _task; }
-    }
-  }
+        public AwaitResult(Task<T> task)
+        {
+            AsTask = task;
+        }
 
-  public class AwaitResult<T>
-  {
-    readonly Task<T> _task;
+        public static implicit operator T(AwaitResult<T> value)
+        {
+            return value.AsTask.Result;
+        }
 
-    public AwaitResult(Task<T> task)
-    {
-      _task = task;
+        public Task<T> AsTask { get; }
     }
-
-    public Task<T> AsTask
-    {
-      get { return _task; }
-    }
-
-    public static implicit operator T(AwaitResult<T> m)
-    {
-      return m._task.Result;
-    }
-  }
 }

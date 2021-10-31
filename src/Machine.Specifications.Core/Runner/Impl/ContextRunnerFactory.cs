@@ -10,10 +10,8 @@ namespace Machine.Specifications.Runner.Impl
             {
                 return new SetupForEachContextRunner();
             }
-            else
-            {
-                return new SetupOnceContextRunner();
-            }
+
+            return new SetupOnceContextRunner();
         }
     }
 }

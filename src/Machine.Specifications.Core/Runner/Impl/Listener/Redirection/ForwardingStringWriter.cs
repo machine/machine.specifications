@@ -2,26 +2,26 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-
 using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Runner.Impl.Listener.Redirection
 {
     internal class ForwardingStringWriter : TextWriter
     {
-        readonly TextWriter[] _inner;
+        private readonly TextWriter[] inner;
 
         public ForwardingStringWriter(TextWriter[] inner)
             : base(CultureInfo.CurrentCulture)
         {
-            _inner = inner;
+            this.inner = inner;
         }
 
         public override Encoding Encoding
         {
             get
             {
-                var first = _inner.FirstOrDefault();
+                var first = inner.FirstOrDefault();
+
                 if (first == null)
                 {
 #if NETSTANDARD
@@ -38,7 +38,7 @@ namespace Machine.Specifications.Runner.Impl.Listener.Redirection
 
         public override void Write(char value)
         {
-            _inner.Each(x => x.Write(value));
+            inner.Each(x => x.Write(value));
         }
     }
 }

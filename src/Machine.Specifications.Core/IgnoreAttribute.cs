@@ -2,7 +2,7 @@
 
 namespace Machine.Specifications
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Field, Inherited = false, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Field, Inherited = false)]
     public class IgnoreAttribute : Attribute
     {
         public IgnoreAttribute(string reason)
@@ -10,10 +10,6 @@ namespace Machine.Specifications
             Reason = reason;
         }
 
-        public string Reason
-        {
-            get;
-            private set;
-        }
+        public string Reason { get; }
     }
 }

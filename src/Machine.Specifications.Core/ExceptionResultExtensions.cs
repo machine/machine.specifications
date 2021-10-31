@@ -17,7 +17,9 @@ namespace Machine.Specifications
                 new XElement("typename", exceptionResult.TypeName),
                 new XElement("message", exceptionResult.Message),
                 new XElement("stacktrace", exceptionResult.StackTrace),
-                new XElement("innerexceptionresult", exceptionResult.InnerExceptionResult != null ? ToXml(exceptionResult.InnerExceptionResult) : null));
+                new XElement("innerexceptionresult", exceptionResult.InnerExceptionResult != null
+                    ? ToXml(exceptionResult.InnerExceptionResult)
+                    : null));
         }
     }
 }

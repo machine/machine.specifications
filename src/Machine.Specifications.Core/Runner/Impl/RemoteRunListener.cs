@@ -1,5 +1,4 @@
 #if !NETSTANDARD
-
 using System;
 using System.Security;
 
@@ -8,56 +7,56 @@ namespace Machine.Specifications.Runner.Impl
     [Serializable]
     internal class RemoteRunListener : MarshalByRefObject, ISpecificationRunListener
     {
-        readonly ISpecificationRunListener _listener;
+        private readonly ISpecificationRunListener listener;
 
         public RemoteRunListener(ISpecificationRunListener listener)
         {
-            _listener = listener;
+            this.listener = listener;
         }
 
         public void OnRunStart()
         {
-            _listener.OnRunStart();
+            listener.OnRunStart();
         }
 
         public void OnRunEnd()
         {
-            _listener.OnRunEnd();
+            listener.OnRunEnd();
         }
 
         public void OnAssemblyStart(AssemblyInfo assembly)
         {
-            _listener.OnAssemblyStart(assembly);
+            listener.OnAssemblyStart(assembly);
         }
 
         public void OnAssemblyEnd(AssemblyInfo assembly)
         {
-            _listener.OnAssemblyEnd(assembly);
+            listener.OnAssemblyEnd(assembly);
         }
 
         public void OnContextStart(ContextInfo context)
         {
-            _listener.OnContextStart(context);
+            listener.OnContextStart(context);
         }
 
         public void OnContextEnd(ContextInfo context)
         {
-            _listener.OnContextEnd(context);
+            listener.OnContextEnd(context);
         }
 
         public void OnSpecificationStart(SpecificationInfo specification)
         {
-            _listener.OnSpecificationStart(specification);
+            listener.OnSpecificationStart(specification);
         }
 
         public void OnSpecificationEnd(SpecificationInfo specification, Result result)
         {
-            _listener.OnSpecificationEnd(specification, result);
+            listener.OnSpecificationEnd(specification, result);
         }
 
         public void OnFatalError(ExceptionResult exception)
         {
-            _listener.OnFatalError(exception);
+            listener.OnFatalError(exception);
         }
 
         [SecurityCritical]

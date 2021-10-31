@@ -1,17 +1,14 @@
 ﻿namespace Machine.Specifications.Sdk
 {
-  public class AssertDelegateAttributeFullName : DelegateAttributeFullName
-  {
-    static readonly string assertDelegateAttributeName = typeof(AssertDelegateAttribute).FullName;
-
-    public static implicit operator string(AssertDelegateAttributeFullName fullName)
+    public class AssertDelegateAttributeFullName : DelegateAttributeFullName
     {
-      return assertDelegateAttributeName;
-    }
+        private static readonly string AttributeFullName = typeof(AssertDelegateAttribute).FullName;
 
-    public override string FullName
-    {
-      get { return this; }
+        public static implicit operator string(AssertDelegateAttributeFullName fullName)
+        {
+            return AttributeFullName;
+        }
+
+        public override string FullName => this;
     }
-  }
 }

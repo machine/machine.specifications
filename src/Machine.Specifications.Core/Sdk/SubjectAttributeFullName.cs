@@ -1,17 +1,14 @@
 ﻿namespace Machine.Specifications.Sdk
 {
-  public class SubjectAttributeFullName : AttributeFullName
-  {
-    static readonly string subjectAttributeFullName = typeof(SubjectAttribute).FullName;
-
-    public static implicit operator string(SubjectAttributeFullName fullName)
+    public class SubjectAttributeFullName : AttributeFullName
     {
-      return subjectAttributeFullName;
-    }
+        private static readonly string AttributeFullName = typeof(SubjectAttribute).FullName;
 
-    public override string FullName
-    {
-      get { return this; }
+        public static implicit operator string(SubjectAttributeFullName fullName)
+        {
+            return AttributeFullName;
+        }
+
+        public override string FullName => this;
     }
-  }
 }

@@ -4,42 +4,44 @@ using System.Threading.Tasks;
 
 namespace Machine.Specifications
 {
-  public static class TaskSpecificationExtensions
-  {
-    public static AwaitResult<T> Await<T>(this Task<T> task)
+    public static class TaskSpecificationExtensions
     {
-      try
-      {
-        task.Wait();
-      }
-      catch (AggregateException ex)
-      {
-        if (ex.InnerExceptions.Count == 1)
+        public static AwaitResult<T> Await<T>(this Task<T> task)
         {
-          throw ex.InnerExceptions.First();
+            try
+            {
+                task.Wait();
+            }
+            catch (AggregateException ex)
+            {
+                if (ex.InnerExceptions.Count == 1)
+                {
+                    throw ex.InnerExceptions.First();
+                }
+
+                throw;
+            }
+
+            return new AwaitResult<T>(task);
         }
-        throw;
-      }
 
-      return new AwaitResult<T>(task);
-    }
-
-    public static AwaitResult Await(this Task task)
-    {
-      try
-      {
-        task.Wait();
-      }
-      catch (AggregateException ex)
-      {
-        if (ex.InnerExceptions.Count == 1)
+        public static AwaitResult Await(this Task task)
         {
-          throw ex.InnerExceptions.First();
-        }
-        throw;
-      }
+            try
+            {
+                task.Wait();
+            }
+            catch (AggregateException ex)
+            {
+                if (ex.InnerExceptions.Count == 1)
+                {
+                    throw ex.InnerExceptions.First();
+                }
 
-      return new AwaitResult(task);
+                throw;
+            }
+
+            return new AwaitResult(task);
+        }
     }
-  }
 }

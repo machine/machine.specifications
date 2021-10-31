@@ -16,14 +16,14 @@ namespace Machine.Specifications.Runner.Utility
         {
             // This is certainly not the most elegant approach. But instead of building an XML based abstraction
             // over MemberInfo we use the member info directly and marshal it over to the core app domain.
-            this.Properties = new Dictionary<string, object>
+            Properties = new Dictionary<string, object>
             {
                 { "data", root.ToString() },
                 { "member", info },
             };
         }
 
-        public IDictionary Properties { get; private set; }
+        public IDictionary Properties { get; }
     }
 #endif
 }

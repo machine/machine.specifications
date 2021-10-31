@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace Machine.Specifications.Runner.Impl.Listener
 {
@@ -10,20 +9,26 @@ namespace Machine.Specifications.Runner.Impl.Listener
     /// </summary>
     internal class AssemblyLocationAwareListener : RunListenerBase
     {
-        string _originalDirectory;
+        private string originalDirectory;
 
         public override void OnAssemblyStart(AssemblyInfo assembly)
         {
-            _originalDirectory = Directory.GetCurrentDirectory();
+            originalDirectory = Directory.GetCurrentDirectory();
+
             if (assembly.Location != null)
             {
-                Directory.SetCurrentDirectory(Path.GetDirectoryName(assembly.Location));
+                var path = Path.GetDirectoryName(assembly.Location);
+
+                if (path != null)
+                {
+                    Directory.SetCurrentDirectory(path);
+                }
             }
         }
 
         public override void OnAssemblyEnd(AssemblyInfo assembly)
         {
-            Directory.SetCurrentDirectory(_originalDirectory);
+            Directory.SetCurrentDirectory(originalDirectory);
         }
     }
 }

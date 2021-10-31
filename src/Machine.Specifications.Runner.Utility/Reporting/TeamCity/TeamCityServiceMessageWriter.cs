@@ -19,7 +19,6 @@ using System.Text;
 
 namespace Machine.Specifications.Reporting.Integration.TeamCity
 {
-
     /// <summary>
     /// Writes specially formatted service messages for TeamCity.
     /// These messages are interpreted by TeamCity to perform some task.
@@ -31,16 +30,15 @@ namespace Machine.Specifications.Reporting.Integration.TeamCity
 
         public TeamCityServiceMessageWriter(Action<string> writer)
         {
-            if (writer == null)
-                throw new ArgumentNullException("writer");
-
-            this.writer = writer;
+            this.writer = writer ?? throw new ArgumentNullException(nameof(writer));
         }
 
         public void WriteProgressMessage(string message)
         {
             if (message == null)
-                throw new ArgumentNullException("message");
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
 
             WriteMessage(builder =>
             {
@@ -53,7 +51,9 @@ namespace Machine.Specifications.Reporting.Integration.TeamCity
         public void WriteProgressStart(string message)
         {
             if (message == null)
-                throw new ArgumentNullException("message");
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
 
             WriteMessage(builder =>
             {
@@ -66,7 +66,9 @@ namespace Machine.Specifications.Reporting.Integration.TeamCity
         public void WriteProgressFinish(string message)
         {
             if (message == null)
-                throw new ArgumentNullException("message");
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
 
             WriteMessage(builder =>
             {
@@ -79,7 +81,9 @@ namespace Machine.Specifications.Reporting.Integration.TeamCity
         public void WriteTestSuiteStarted(string name)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
 
             WriteMessage(builder =>
             {
@@ -92,7 +96,9 @@ namespace Machine.Specifications.Reporting.Integration.TeamCity
         public void WriteTestSuiteFinished(string name)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
 
             WriteMessage(builder =>
             {
@@ -105,7 +111,9 @@ namespace Machine.Specifications.Reporting.Integration.TeamCity
         public void WriteTestStarted(string name, bool captureStandardOutput)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
 
             WriteMessage(builder =>
             {
@@ -120,14 +128,16 @@ namespace Machine.Specifications.Reporting.Integration.TeamCity
         public void WriteTestFinished(string name, TimeSpan duration)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
 
             WriteMessage(builder =>
             {
                 builder.Append("testFinished name='");
                 AppendEscapedString(builder, name);
                 builder.Append("' duration='");
-                builder.Append(((int)duration.TotalMilliseconds).ToString(CultureInfo.InvariantCulture));
+                builder.Append(((int) duration.TotalMilliseconds).ToString(CultureInfo.InvariantCulture));
                 builder.Append('\'');
             });
         }
@@ -135,9 +145,14 @@ namespace Machine.Specifications.Reporting.Integration.TeamCity
         public void WriteTestIgnored(string name, string message)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
             if (message == null)
-                throw new ArgumentNullException("message");
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
 
             WriteMessage(builder =>
             {
@@ -152,9 +167,14 @@ namespace Machine.Specifications.Reporting.Integration.TeamCity
         public void WriteTestStdOut(string name, string text)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
             if (text == null)
-                throw new ArgumentNullException("text");
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
 
             WriteMessage(builder =>
             {
@@ -169,9 +189,14 @@ namespace Machine.Specifications.Reporting.Integration.TeamCity
         public void WriteTestStdErr(string name, string text)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
             if (text == null)
-                throw new ArgumentNullException("text");
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
 
             WriteMessage(builder =>
             {
@@ -186,11 +211,19 @@ namespace Machine.Specifications.Reporting.Integration.TeamCity
         public void WriteTestFailed(string name, string message, string details)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
             if (message == null)
-                throw new ArgumentNullException("message");
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
             if (details == null)
-                throw new ArgumentNullException("details");
+            {
+                throw new ArgumentNullException(nameof(details));
+            }
 
             WriteMessage(builder =>
             {
@@ -207,15 +240,29 @@ namespace Machine.Specifications.Reporting.Integration.TeamCity
         public void WriteTestFailedWithComparisonFailure(string name, string message, string details, string expected, string actual)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
             if (message == null)
-                throw new ArgumentNullException("message");
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
             if (details == null)
-                throw new ArgumentNullException("details");
+            {
+                throw new ArgumentNullException(nameof(details));
+            }
+
             if (expected == null)
-                throw new ArgumentNullException("expected");
+            {
+                throw new ArgumentNullException(nameof(expected));
+            }
+
             if (actual == null)
-                throw new ArgumentNullException("actual");
+            {
+                throw new ArgumentNullException(nameof(actual));
+            }
 
             WriteMessage(builder =>
             {
@@ -235,19 +282,19 @@ namespace Machine.Specifications.Reporting.Integration.TeamCity
 
         public void WriteError(string message, string details)
         {
-          WriteMessage(builder =>
-          {
-            builder.Append("message text='");
-            AppendEscapedString(builder, message);
-            builder.Append("' errorDetails='");
-            AppendEscapedString(builder, details);
-            builder.Append("' status='ERROR'");
-          });
+            WriteMessage(builder =>
+            {
+                builder.Append("message text='");
+                AppendEscapedString(builder, message);
+                builder.Append("' errorDetails='");
+                AppendEscapedString(builder, details);
+                builder.Append("' status='ERROR'");
+            });
         }
 
         private void WriteMessage(Action<StringBuilder> formatter)
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             builder.Append("##teamcity[");
             formatter(builder);
             builder.Append(']');
@@ -256,41 +303,52 @@ namespace Machine.Specifications.Reporting.Integration.TeamCity
 
         private static void AppendEscapedString(StringBuilder builder, string rawString)
         {
-          if (rawString == null)
-             return;
-          foreach (char c in rawString)
-          {
-            switch (c)
+            if (rawString == null)
             {
-              case '\n':
-                builder.Append("|n");
-                break;
-              case '\'':
-                builder.Append("|'");
-                break;
-              case '\r':
-                builder.Append("|r");
-                break;
-              case '|':
-                builder.Append("||");
-                break;
-              case ']':
-                builder.Append("|]");
-                break;
-              case '\u0085': // \u0085 (next line) => |x
-                builder.Append("|x");
-                break;
-              case '\u2028': // \u2028 (line separator) => |l
-                builder.Append("|l");
-                break;
-              case '\u2029':
-                builder.Append("|p");
-                break;
-              default:
-                builder.Append(c);
-                break;
+                return;
             }
-          }
+
+            foreach (var c in rawString)
+            {
+                switch (c)
+                {
+                    case '\n':
+                        builder.Append("|n");
+                        break;
+
+                    case '\'':
+                        builder.Append("|'");
+                        break;
+
+                    case '\r':
+                        builder.Append("|r");
+                        break;
+
+                    case '|':
+                        builder.Append("||");
+                        break;
+
+                    case ']':
+                        builder.Append("|]");
+                        break;
+
+                    case '\u0085': // \u0085 (next line) => |x
+                        builder.Append("|x");
+                        break;
+
+                    case '\u2028': // \u2028 (line separator) => |l
+                        builder.Append("|l");
+                        break;
+
+                    case '\u2029':
+                        builder.Append("|p");
+                        break;
+
+                    default:
+                        builder.Append(c);
+                        break;
+                }
+            }
         }
     }
 }

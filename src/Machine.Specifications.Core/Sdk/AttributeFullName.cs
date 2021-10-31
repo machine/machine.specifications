@@ -2,39 +2,33 @@
 
 namespace Machine.Specifications.Sdk
 {
-  public abstract class AttributeFullName : IEquatable<AttributeFullName>
-  {
-    public abstract string FullName { get; }
-
-    public bool Equals(AttributeFullName other)
+    public abstract class AttributeFullName : IEquatable<AttributeFullName>
     {
-      return other.FullName == FullName;
-    }
+        public static bool operator ==(AttributeFullName left, AttributeFullName right)
+        {
+            return Equals(left, right);
+        }
 
-    public override bool Equals(object obj)
-    {
-      if (obj == null || obj.GetType() != GetType())
-      {
-        return false;
-      }
+        public static bool operator !=(AttributeFullName left, AttributeFullName right)
+        {
+            return !Equals(left, right);
+        }
 
-      AttributeFullName other = (AttributeFullName)obj;
-      return Equals(other);
-    }
+        public abstract string FullName { get; }
 
-    public override int GetHashCode()
-    {
-      return FullName.GetHashCode();
-    }
+        public bool Equals(AttributeFullName other)
+        {
+            return other != null && other.FullName == FullName;
+        }
 
-    public static bool operator ==(AttributeFullName left, AttributeFullName right)
-    {
-      return Equals(left, right);
-    }
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as AttributeFullName);
+        }
 
-    public static bool operator !=(AttributeFullName left, AttributeFullName right)
-    {
-      return !Equals(left, right);
+        public override int GetHashCode()
+        {
+            return FullName.GetHashCode();
+        }
     }
-  }
 }

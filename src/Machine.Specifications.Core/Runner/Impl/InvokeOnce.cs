@@ -4,13 +4,14 @@ namespace Machine.Specifications.Runner.Impl
 {
     internal class InvokeOnce
     {
-        readonly Action _invocation;
-        public bool WasInvoked { get; private set; }
+        private readonly Action invocation;
 
         public InvokeOnce(Action invocation)
         {
-            _invocation = invocation;
+            this.invocation = invocation;
         }
+
+        public bool WasInvoked { get; private set; }
 
         public void Invoke()
         {
@@ -20,7 +21,8 @@ namespace Machine.Specifications.Runner.Impl
             }
 
             WasInvoked = true;
-            _invocation();
+
+            invocation();
         }
     }
 }
