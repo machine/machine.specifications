@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Machine.Specifications
 {
-    public static class TaskSpecificationExtensions
+    public static class TaskExtensions
     {
         public static AwaitResult<T> Await<T>(this Task<T> task)
         {
