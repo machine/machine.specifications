@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Machine.Specifications.Factories;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
@@ -8,42 +7,38 @@ using Machine.Specifications.Runner.Impl;
 namespace Machine.Specifications.Specs.Runner
 {
     [Subject("Async Delegate Runner")]
-    public class when_running_async_specifications : RandomRunnerSpecs
+    class when_running_async_specifications : RunnerSpecs
     {
-        static Type specs;
-
         Establish context = () =>
         {
-            specs = GetFramework("AsyncSpecifications");
-
-            specs.ToDynamic().establish_invoked = false;
-            specs.ToDynamic().because_invoked = false;
-            specs.ToDynamic().async_it_invoked = false;
-            specs.ToDynamic().sync_it_invoked = false;
-            specs.ToDynamic().cleanup_invoked = false;
+            AsyncSpecifications.establish_invoked = false;
+            AsyncSpecifications.because_invoked = false;
+            AsyncSpecifications.async_it_invoked = false;
+            AsyncSpecifications.sync_it_invoked = false;
+            AsyncSpecifications.cleanup_invoked = false;
         };
 
         Because of = () =>
-            Run(specs);
+            Run<AsyncSpecifications>();
 
         It should_call_establish = () =>
-            specs.ToDynamic().establish_invoked.ShouldBeTrue();
+            AsyncSpecifications.establish_invoked.ShouldBeTrue();
 
         It should_call_because = () =>
-            specs.ToDynamic().because_invoked.ShouldBeTrue();
+            AsyncSpecifications.because_invoked.ShouldBeTrue();
 
         It should_call_async_spec = () =>
-            specs.ToDynamic().async_it_invoked.ShouldBeTrue();
+            AsyncSpecifications.async_it_invoked.ShouldBeTrue();
 
         It should_call_sync_spec = () =>
-            specs.ToDynamic().sync_it_invoked.ShouldBeTrue();
+            AsyncSpecifications.sync_it_invoked.ShouldBeTrue();
 
         It should_call_cleanup = () =>
-            specs.ToDynamic().cleanup_invoked.ShouldBeTrue();
+            AsyncSpecifications.cleanup_invoked.ShouldBeTrue();
     }
 
     [Subject("Async Delegate Runner")]
-    public class when_running_async_specifications_with_exceptions : RandomRunnerSpecs
+    class when_running_async_specifications_with_exceptions : RunnerSpecs
     {
         static ContextFactory factory;
 
@@ -56,7 +51,7 @@ namespace Machine.Specifications.Specs.Runner
 
         Because of = () =>
         {
-            specs = GetFramework("AsyncSpecificationsWithExceptions");
+            specs = typeof(AsyncSpecificationsWithExceptions);
 
             var context = factory.CreateContextFrom(Activator.CreateInstance(specs));
 
@@ -78,37 +73,37 @@ namespace Machine.Specifications.Specs.Runner
     }
 
     [Subject("Async Delegate Runner")]
-    public class when_running_async_value_task_specifications : RandomRunnerSpecs
+    class when_running_async_value_task_specifications : RunnerSpecs
     {
         static Type specs;
 
         Establish context = () =>
         {
-            specs = GetFramework("AsyncSpecificationsValueTask");
+            specs = typeof(AsyncSpecificationsValueTask);
 
-            specs.ToDynamic().establish_value = 0;
-            specs.ToDynamic().because_value = 0;
-            specs.ToDynamic().async_it_value = 0;
-            specs.ToDynamic().sync_it_value = 0;
-            specs.ToDynamic().cleanup_value = 0;
+            AsyncSpecificationsValueTask.establish_value = 0;
+            AsyncSpecificationsValueTask.because_value = 0;
+            AsyncSpecificationsValueTask.async_it_value = 0;
+            AsyncSpecificationsValueTask.sync_it_value = 0;
+            AsyncSpecificationsValueTask.cleanup_value = 0;
         };
 
         Because of = () =>
-            Run(specs);
+            Run<AsyncSpecificationsValueTask>();
 
         It should_call_establish = () =>
-            specs.ToDynamic().establish_value.ShouldEqual(10);
+            AsyncSpecificationsValueTask.establish_value.ShouldEqual(10);
 
         It should_call_because = () =>
-            specs.ToDynamic().because_value.ShouldEqual(10);
+            AsyncSpecificationsValueTask.because_value.ShouldEqual(10);
 
         It should_call_async_spec = () =>
-            specs.ToDynamic().async_it_value.ShouldEqual(10);
+            AsyncSpecificationsValueTask.async_it_value.ShouldEqual(10);
 
         It should_call_sync_spec = () =>
-            specs.ToDynamic().sync_it_value.ShouldEqual(10);
+            AsyncSpecificationsValueTask.sync_it_value.ShouldEqual(10);
 
         It should_call_cleanup = () =>
-            specs.ToDynamic().cleanup_value.ShouldEqual(10);
+            AsyncSpecificationsValueTask.cleanup_value.ShouldEqual(10);
     }
 }

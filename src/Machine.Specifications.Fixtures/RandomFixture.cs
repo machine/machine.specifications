@@ -1,10 +1,4 @@
-﻿namespace Machine.Specifications.Specs.Fixtures
-{
-    public static class RandomFixture
-    {
-        public static string Code = @"
-using System;
-using System.Diagnostics;
+﻿using System;
 using System.Reflection;
 using System.Threading.Tasks;
 using Machine.Specifications;
@@ -14,6 +8,7 @@ namespace Example.Random
     public class TestAssemblyContext : IAssemblyContext
     {
         public static bool OnAssemblyStartRun;
+
         public static bool OnAssemblyCompleteRun;
 
         public void OnAssemblyStart()
@@ -74,15 +69,18 @@ namespace Example.Random
 
     public static class tag
     {
-        public const string example = ""example"";
-        public const string some_other_tag = ""some other tag"";
-        public const string one_more_tag = ""one more tag"";
+        public const string example = "example";
+
+        public const string some_other_tag = "some other tag";
+
+        public const string one_more_tag = "one more tag";
     }
 
     [SetupForEachSpecification, Tags(tag.example)]
     public class context_with_multiple_specifications_and_setup_for_each
     {
         public static int establish_run_count;
+
         public static int because_clause_run_count;
 
         Establish context = () =>
@@ -96,10 +94,11 @@ namespace Example.Random
         It spec2 = () => { };
     }
 
-    [Tags(tag.example, ""foobar"")]
+    [Tags(tag.example, "foobar")]
     public class context_with_multiple_specifications
     {
         public static int establish_run_count;
+
         public static int because_clause_run_count;
 
         Establish context = () =>
@@ -131,7 +130,7 @@ namespace Example.Random
         It should_be_unimplemented;
     }
 
-    [Ignore(""example reason"")]
+    [Ignore("example reason")]
     public class context_with_ignore : context_with_no_specs
     {
         public static bool ignored_spec_ran;
@@ -144,12 +143,12 @@ namespace Example.Random
     {
         public static bool ignored_spec_ran;
 
-        [Ignore(""example reason"")]
+        [Ignore("example reason")]
         It should_be_ignored = () =>
             ignored_spec_ran = true;
     }
 
-    [Ignore(""example reason"")]
+    [Ignore("example reason")]
     public class context_with_ignore_and_reason : context_with_no_specs
     {
         public static bool ignored_spec_ran;
@@ -162,7 +161,7 @@ namespace Example.Random
     {
         public static bool ignored_spec_ran;
 
-        [Ignore(""example reason"")]
+        [Ignore("example reason")]
         It should_be_ignored = () =>
             ignored_spec_ran = true;
     }
@@ -171,6 +170,7 @@ namespace Example.Random
     public class context_with_no_specs
     {
         public static bool context_established;
+
         public static bool cleanup_occurred;
 
         Establish context = () =>
@@ -180,7 +180,7 @@ namespace Example.Random
             cleanup_occurred = true;
     }
 
-    [Subject(typeof(int), ""Some description"")]
+    [Subject(typeof(int), "Some description")]
     [Tags(tag.example)]
     public class context_with_subject
     {
@@ -190,7 +190,7 @@ namespace Example.Random
     {
     }
 
-    [Subject(typeof(int), ""Parent description"")]
+    [Subject(typeof(int), "Parent description")]
     public class parent_context
     {
         It should_be_able_to_assert_something = () =>
@@ -208,7 +208,7 @@ namespace Example.Random
                 false.ShouldBeFalse();
         }
 
-        [Subject(typeof(int), ""Nested description"")]
+        [Subject(typeof(int), "Nested description")]
         public class nested_context_inheriting_and_owning_a_concern : context_with_subject
         {
             It should_be_able_to_assert_something_else = () =>
@@ -242,18 +242,14 @@ namespace Example.Random
     public class context_with_failing_specs
     {
         It should = () =>
-        {
-            throw new InvalidOperationException(""something went wrong"");
-        };
+            throw new InvalidOperationException("something went wrong");
     }
 
     [Tags(tag.example)]
     public class context_with_failing_establish
     {
         Establish context = () =>
-        {
-            throw new InvalidOperationException(""something went wrong"");
-        };
+            throw new InvalidOperationException("something went wrong");
 
         It should = () => { };
     }
@@ -262,9 +258,7 @@ namespace Example.Random
     public class context_with_failing_because
     {
         Because of = () =>
-        {
-            throw new InvalidOperationException(""something went wrong"");
-        };
+            throw new InvalidOperationException("something went wrong");
 
         It should = () => { };
     }
@@ -272,7 +266,7 @@ namespace Example.Random
     [Tags(tag.example)]
     public class context_with_failing_cleanup
     {
-        public static readonly Exception ExceptionThrownByCleanup = new InvalidOperationException(""something went wrong"");
+        public static readonly Exception ExceptionThrownByCleanup = new InvalidOperationException("something went wrong");
 
         It should = () => { };
 
@@ -286,76 +280,76 @@ namespace Example.Random
     public class context_with_console_output
     {
         Establish context = () =>
-            System.Console.Out.WriteLine(""Console.Out message in establish"");
+            Console.Out.WriteLine("Console.Out message in establish");
 
         Because of = () =>
-            System.Console.Out.WriteLine(""Console.Out message in because"");
+            Console.Out.WriteLine("Console.Out message in because");
 
         Cleanup after = () =>
-            System.Console.Out.WriteLine(""Console.Out message in cleanup"");
+            Console.Out.WriteLine("Console.Out message in cleanup");
 
         It should_log_messages = () =>
-            System.Console.Out.WriteLine(""Console.Out message in spec"");
+            Console.Out.WriteLine("Console.Out message in spec");
 
         It should_log_messages_also_for_the_nth_spec = () =>
-            System.Console.Out.WriteLine(""Console.Out message in nth spec"");
+            Console.Out.WriteLine("Console.Out message in nth spec");
     }
 
     [Tags(tag.example)]
     public class context_with_console_error_output
     {
         Establish context = () =>
-            System.Console.Error.WriteLine(""Console.Error message in establish"");
+            Console.Error.WriteLine("Console.Error message in establish");
 
         Because of = () =>
-            System.Console.Error.WriteLine(""Console.Error message in because"");
+            Console.Error.WriteLine("Console.Error message in because");
 
         Cleanup after = () =>
-            System.Console.Error.WriteLine(""Console.Error message in cleanup"");
+            Console.Error.WriteLine("Console.Error message in cleanup");
 
         It should_log_messages = () =>
-            System.Console.Error.WriteLine(""Console.Error message in spec"");
+            Console.Error.WriteLine("Console.Error message in spec");
 
         It should_log_messages_also_for_the_nth_spec = () =>
-            System.Console.Error.WriteLine(""Console.Error message in nth spec"");
+            Console.Error.WriteLine("Console.Error message in nth spec");
     }
 
     [Tags(tag.example)]
     public class context_with_debug_output
     {
         Establish context = () =>
-            System.Console.WriteLine(""Debug.WriteLine message in establish"");
+            Console.WriteLine("Debug.WriteLine message in establish");
 
         Because of = () =>
-            System.Console.WriteLine(""Debug.WriteLine message in because"");
+            Console.WriteLine("Debug.WriteLine message in because");
 
         Cleanup after = () =>
-            System.Console.WriteLine(""Debug.WriteLine message in cleanup"");
+            Console.WriteLine("Debug.WriteLine message in cleanup");
 
         It should_log_messages = () =>
-            System.Console.WriteLine(""Debug.WriteLine message in spec"");
+            Console.WriteLine("Debug.WriteLine message in spec");
 
         It should_log_messages_also_for_the_nth_spec = () =>
-            System.Console.WriteLine(""Debug.WriteLine message in nth spec"");
+            Console.WriteLine("Debug.WriteLine message in nth spec");
     }
 
     [SetupForEachSpecification, Tags(tag.example)]
     public class context_with_console_output_and_setup_for_each
     {
         Establish context = () =>
-            System.Console.Out.WriteLine(""Console.Out message in establish"");
+            Console.Out.WriteLine("Console.Out message in establish");
 
         Because of = () =>
-            System.Console.Out.WriteLine(""Console.Out message in because"");
+            Console.Out.WriteLine("Console.Out message in because");
 
         Cleanup after = () =>
-            System.Console.Out.WriteLine(""Console.Out message in cleanup"");
+            Console.Out.WriteLine("Console.Out message in cleanup");
 
         It should_log_messages = () =>
-            System.Console.Out.WriteLine(""Console.Out message in spec"");
+            Console.Out.WriteLine("Console.Out message in spec");
 
         It should_log_messages_also_for_the_nth_spec = () =>
-            System.Console.Out.WriteLine(""Console.Out message in nth spec"");
+            Console.Out.WriteLine("Console.Out message in nth spec");
     }
 
     [Tags(tag.example)]
@@ -365,7 +359,7 @@ namespace Example.Random
         {
             try
             {
-                throw new Exception(""INNER123"");
+                throw new Exception("INNER123");
             }
             catch (Exception err)
             {
@@ -411,11 +405,15 @@ namespace Example.Random
     public class context_with_nonprivate_framework_fields
     {
         public Establish establish;
+
         public Because because;
+
         public Cleanup cleanup;
 
         internal Behaves_like<Behaviors> behavior;
+
         protected It specification;
+
         It private_specification;
     }
 
@@ -438,7 +436,7 @@ namespace Example.Random
         }
     }
 
-    [Tags(tag.example, ""behavior usage"")]
+    [Tags(tag.example, "behavior usage")]
     public class context_with_behaviors
     {
         public static bool local_spec_ran;
@@ -448,7 +446,7 @@ namespace Example.Random
         Behaves_like<Behaviors> behavior;
     }
 
-    [Tags(tag.example, ""behavior usage"")]
+    [Tags(tag.example, "behavior usage")]
     public class second_context_with_behaviors
     {
         Behaves_like<Behaviors> behavior;
@@ -462,7 +460,7 @@ namespace Example.Random
         It should_run = () =>
             local_spec_ran = true;
 
-        [Ignore(""example reason"")]
+        [Ignore("example reason")]
         Behaves_like<Behaviors> behavior;
     }
 
@@ -547,6 +545,7 @@ namespace Example.Random
     public class context_with_protected_fields_having_different_types_than_in_behaviors
     {
         public static bool local_spec_ran;
+
         protected static bool field_that_should_be_copied_over_from_context;
 
         It should_not_run = () =>
@@ -564,7 +563,7 @@ namespace Example.Random
             behavior_spec_ran = true;
     }
 
-    [Ignore(""example reason"")]
+    [Ignore("example reason")]
     [Behaviors]
     public class IgnoredBehaviors
     {
@@ -579,7 +578,7 @@ namespace Example.Random
     {
         public static bool behavior_spec_ran;
 
-        [Ignore(""example reason"")]
+        [Ignore("example reason")]
         It should_not_run = () =>
             behavior_spec_ran = true;
     }
@@ -614,13 +613,14 @@ namespace Example.Random
     public class BehaviorsWithProtectedFields
     {
         public static bool behavior_spec_ran;
+
         protected static int field_that_should_be_copied_over_from_context;
 
         It should_not_run = () =>
             behavior_spec_ran = true;
     }
 
-    [Subject(""Context that inherits"")]
+    [Subject("Context that inherits")]
     [Tags(tag.example)]
     public abstract class context_that_inherits
     {
@@ -637,6 +637,7 @@ namespace Example.Random
     public class context_with_inherited_specifications : context_that_inherits
     {
         public static int because_clause_run_count;
+
         public static int establish_run_count;
 
         Establish context = () =>
@@ -654,6 +655,7 @@ namespace Example.Random
     public class context_with_inherited_specifications_and_setup_for_each : context_that_inherits
     {
         public static int because_clause_run_count;
+
         public static int establish_run_count;
 
         Establish context = () =>
@@ -689,6 +691,7 @@ namespace Example.Random
     public class TestCleanupAfterEveryContext : ICleanupAfterEveryContextInAssembly
     {
         public static bool AfterContextCleanupRun;
+
         public static int AfterContextCleanupRunCount;
 
         public void AfterContextCleanup()
@@ -704,10 +707,11 @@ namespace Example.Random
         }
     }
 
-    [Tags(""foobar"")]
+    [Tags("foobar")]
     public class TaggedCleanup : ICleanupAfterEveryContextInAssembly
     {
         public static bool AfterContextCleanupRun;
+
         public static int AfterContextCleanupRunCount;
 
         public void AfterContextCleanup()
@@ -726,6 +730,7 @@ namespace Example.Random
     public class UntaggedCleanup : ICleanupAfterEveryContextInAssembly
     {
         public static bool AfterContextCleanupRun;
+
         public static int AfterContextCleanupRunCount;
 
         public void AfterContextCleanup()
@@ -741,10 +746,11 @@ namespace Example.Random
         }
     }
 
-    [Tags(""foobar"")]
+    [Tags("foobar")]
     public class TaggedAssemblyContext : IAssemblyContext
     {
         public static bool OnAssemblyStartRun;
+
         public static bool OnAssemblyCompleteRun;
 
         public static void Reset()
@@ -767,6 +773,7 @@ namespace Example.Random
     public class UntaggedAssemblyContext : IAssemblyContext
     {
         public static bool OnAssemblyStartRun;
+
         public static bool OnAssemblyCompleteRun;
 
         public static void Reset()
@@ -786,7 +793,7 @@ namespace Example.Random
         }
     }
 
-    [Tags(""foobar"")]
+    [Tags("foobar")]
     public class TaggedResultSupplementer : ISupplementSpecificationResults
     {
         public static bool SupplementResultRun;
@@ -822,7 +829,7 @@ namespace Example.Random
 
 namespace Example.Random.Internal
 {
-    [Subject(""Internal types"")]
+    [Subject("Internal types")]
     [Tags(tag.example)]
     class when_a_context_is_internal
     {
@@ -830,7 +837,7 @@ namespace Example.Random.Internal
             true.ShouldBeTrue();
     }
 
-    [Subject(""Internal types"")]
+    [Subject("Internal types")]
     [Tags(tag.example)]
     class when_a_context_is_internal_and_uses_internal_behaviors
     {
@@ -899,6 +906,7 @@ namespace Machine.Specifications
         public class InExampleC_1
         {
             It is_spec_1 = () => { };
+
             It is_spec_2 = () => { };
         }
 
@@ -910,6 +918,7 @@ namespace Machine.Specifications
     public class ContextWithSpecificationExpectingThrowThatDoesnt
     {
         public static bool it_invoked;
+
         static Exception exception;
 
         Because of = () =>
@@ -929,9 +938,7 @@ namespace Machine.Specifications
         public static bool it_invoked;
 
         Because of = () =>
-        {
             throw new Exception();
-        };
 
         It should_fail = () =>
             it_invoked = true;
@@ -960,8 +967,11 @@ namespace Machine.Specifications
     public class ContextWithTwoWhens
     {
         public static bool when_1_invoked;
+
         public static bool when_2_invoked;
+
         public static bool it_for_when_1_invoked;
+
         public static bool it_for_when_2_invoked;
 
         Because _1 = () =>
@@ -1025,8 +1035,11 @@ namespace Machine.Specifications
     public class ContextWithSingleSpecification
     {
         public static bool because_invoked;
+
         public static bool it_invoked;
+
         public static bool context_invoked;
+
         public static bool cleanup_invoked;
 
         Establish context = () =>
@@ -1082,12 +1095,14 @@ namespace Machine.Specifications
         It should_invoke_async = async () =>
         {
             async_it_invoked = true;
+
             await Task.Delay(10);
         };
 
         Cleanup after = async () =>
         {
             cleanup_invoked = true;
+
             await Task.Delay(10);
         };
     }
@@ -1128,20 +1143,12 @@ namespace Machine.Specifications
     public class AsyncSpecificationsWithExceptions
     {
         Because of = async () =>
-        {
-            throw new InvalidOperationException(""something went wrong"");
-        };
+            throw new InvalidOperationException("something went wrong");
 
         It should_invoke_sync = () =>
-        {
-            throw new InvalidOperationException(""something went wrong"");
-        };
+            throw new InvalidOperationException("something went wrong");
 
         It should_invoke_async = async () =>
-        {
-            throw new InvalidOperationException(""something went wrong"");
-        };
-    }
-}";
+            throw new InvalidOperationException("something went wrong");
     }
 }

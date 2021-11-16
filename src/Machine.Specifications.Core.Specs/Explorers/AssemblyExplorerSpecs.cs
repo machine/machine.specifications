@@ -8,32 +8,34 @@ using Machine.Specifications.Specs.Runner;
 namespace Machine.Specifications.Specs.Explorers
 {
     [Subject(typeof(AssemblyExplorer))]
-    public class When_inspecting_internal_types_for_contexts : RandomRunnerSpecs
+    class When_inspecting_internal_types_for_contexts : RunnerSpecs
     {
         static AssemblyExplorer Explorer;
+
         static IEnumerable<Context> Contexts;
 
         Establish context = () =>
             Explorer = new AssemblyExplorer();
 
         Because of = () =>
-            Contexts = Explorer.FindContextsIn(GetAssembly(), "Example.Random.Internal");
+            Contexts = Explorer.FindContextsIn(typeof(ContextWithSingleSpecification).Assembly, "Example.Random.Internal");
 
         It should_find_two_contexts = () =>
             Contexts.Count().ShouldEqual(2);
     }
 
     [Subject(typeof(AssemblyExplorer))]
-    public class AssemblyExplorer_FindSpecifications_WithExampleAssemblyTests : ExampleRunnerSpecs
+    class AssemblyExplorer_FindSpecifications_WithExampleAssemblyTests : RunnerSpecs
     {
         static AssemblyExplorer Explorer;
+
         static IEnumerable<Context> contexts;
 
         Establish context = () =>
             Explorer = new AssemblyExplorer();
 
         Because of = () =>
-            contexts = Explorer.FindContextsIn(Assembly.LoadFile(AssemblyPath));
+            contexts = Explorer.FindContextsIn(typeof(ContextWithSingleSpecification).Assembly);
 
         It should_find_three_contexts = () =>
             contexts.Count().ShouldEqual(3);
@@ -53,16 +55,17 @@ namespace Machine.Specifications.Specs.Explorers
     }
 
     [Subject(typeof(AssemblyExplorer))]
-    public class AssemblyExplorer_FindContexts_WithOneOfManyNamespaces : RandomRunnerSpecs
+    class AssemblyExplorer_FindContexts_WithOneOfManyNamespaces : RunnerSpecs
     {
         static AssemblyExplorer Explorer;
+
         static IEnumerable<Context> contexts;
 
         Establish context = () =>
             Explorer = new AssemblyExplorer();
 
         Because of = () =>
-            contexts = Explorer.FindContextsIn(GetAssembly(), "Machine.Specifications.ExampleA");
+            contexts = Explorer.FindContextsIn(typeof(ContextWithSingleSpecification).Assembly, "Machine.Specifications.ExampleA");
 
         It should_find_two_contexts = () =>
             contexts.Count().ShouldEqual(2);
@@ -76,9 +79,10 @@ namespace Machine.Specifications.Specs.Explorers
     }
 
     [Subject(typeof(AssemblyExplorer))]
-    public class AssemblyExplorer_FindContext_WithFieldInfo : RandomRunnerSpecs
+    class AssemblyExplorer_FindContext_WithFieldInfo : RunnerSpecs
     {
         static AssemblyExplorer Explorer;
+
         static Context single_context;
 
         Establish context = () =>
@@ -86,7 +90,7 @@ namespace Machine.Specifications.Specs.Explorers
 
         Because of = () =>
         {
-            var type = GetFramework("ExampleC.InExampleC_1");
+            var type = typeof(ExampleC.InExampleC_1);
 
             single_context = Explorer.FindContexts(type);
         };
@@ -99,9 +103,10 @@ namespace Machine.Specifications.Specs.Explorers
     }
 
     [Subject(typeof(AssemblyExplorer))]
-    public class AssemblyExplorer_FindContext_WithClass : RandomRunnerSpecs
+    class AssemblyExplorer_FindContext_WithClass : RunnerSpecs
     {
         static AssemblyExplorer Explorer;
+
         static Context single_context;
 
         Establish context = () =>
@@ -109,7 +114,7 @@ namespace Machine.Specifications.Specs.Explorers
 
         Because of = () =>
         {
-            var type = GetFramework("ExampleC.InExampleC_1");
+            var type = typeof(ExampleC.InExampleC_1);
 
             single_context = Explorer.FindContexts(type.GetField("is_spec_1", BindingFlags.Instance | BindingFlags.NonPublic));
         };
@@ -125,10 +130,12 @@ namespace Machine.Specifications.Specs.Explorers
     }
 
     [Subject(typeof(AssemblyExplorer))]
-    public class AssemblyExplorer_FindContext_WithFirstContextOfExampleAssemblyTests : ExampleRunnerSpecs
+    class AssemblyExplorer_FindContext_WithFirstContextOfExampleAssemblyTests : RunnerSpecs
     {
         static AssemblyExplorer Explorer;
+
         static IEnumerable<Context> contexts;
+
         static Context single_context;
 
         Establish context = () =>
@@ -136,7 +143,7 @@ namespace Machine.Specifications.Specs.Explorers
 
         Because of = () =>
         {
-            contexts = Explorer.FindContextsIn(Assembly.LoadFile(AssemblyPath));
+            contexts = Explorer.FindContextsIn(typeof(ContextWithSingleSpecification).Assembly);
             single_context = contexts.FirstOrDefault(x => x.Name == "when transferring between two accounts");
         };
 
@@ -155,9 +162,10 @@ namespace Machine.Specifications.Specs.Explorers
     }
 
     [Subject(typeof(AssemblyExplorer))]
-    public class AssemblyExplorer_FindAssemblyContextsIn_WithinAnAssembly
+    class AssemblyExplorer_FindAssemblyContextsIn_WithinAnAssembly
     {
         static AssemblyExplorer Explorer;
+
         static List<IAssemblyContext> assemblyContexts;
 
         Establish context = () =>

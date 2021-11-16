@@ -4,12 +4,13 @@ using System.Threading.Tasks;
 namespace Machine.Specifications.Specs
 {
     [Subject(typeof(Catch))]
-    public class when_calling_Catch_Exception_with_an_Action
+    class when_calling_Catch_Exception_with_an_Action
     {
         [Subject(typeof(Catch))]
-        public class with_a_throwing_Action
+        class with_a_throwing_Action
         {
             static ArgumentException an_exception;
+
             static Exception result;
 
             Establish context = () =>
@@ -23,9 +24,10 @@ namespace Machine.Specifications.Specs
         }
 
         [Subject(typeof(Catch))]
-        public class with_a_non_throwing_Action
+        class with_a_non_throwing_Action
         {
             static string action_side_effect;
+
             static Exception result;
 
             Because of = () =>
@@ -40,37 +42,35 @@ namespace Machine.Specifications.Specs
     }
 
     [Subject(typeof(Catch))]
-    public class when_calling_Catch_Exception_with_a_Func
+    class when_calling_Catch_Exception_with_a_Func
     {
-        class Dummy
-        {
-            public static readonly ArgumentException AnException = new ArgumentException();
+        static ArgumentException AnException = new ArgumentException();
 
-            public static string ThrowingProperty => throw AnException;
+        static string ThrowingProperty => throw AnException;
 
-            public static string NonThrowingProperty => "hi";
-        }
+        static string NonThrowingProperty => "hi";
 
         [Subject(typeof(Catch))]
-        public class with_a_throwing_Func
+        class with_a_throwing_Func
         {
             static Exception result;
 
             Because of = () =>
-                result = Catch.Exception(() => Dummy.ThrowingProperty);
+                result = Catch.Exception(() => ThrowingProperty);
 
             It should_return_the_same_exception = () =>
-                result.ShouldBeTheSameAs(Dummy.AnException);
+                result.ShouldBeTheSameAs(AnException);
         }
 
         [Subject(typeof(Catch))]
-        public class with_a_non_throwing_Func
+        class with_a_non_throwing_Func
         {
             static Exception result;
+
             static string property_value;
 
             Because of = () =>
-                result = Catch.Exception(() => property_value = Dummy.NonThrowingProperty);
+                result = Catch.Exception(() => property_value = NonThrowingProperty);
 
             It should_access_the_propety = () =>
                 property_value.ShouldEqual("hi");
@@ -81,12 +81,13 @@ namespace Machine.Specifications.Specs
     }
 
     [Subject(typeof(Catch))]
-    public class when_calling_Catch_Only_with_an_Action
+    class when_calling_Catch_Only_with_an_Action
     {
         [Subject(typeof(Catch))]
-        public class with_a_throwing_Action_which_matches_exception_to_be_caught
+        class with_a_throwing_Action_which_matches_exception_to_be_caught
         {
             static ArgumentException an_exception;
+
             static Exception result;
 
             Establish context = () =>
@@ -100,9 +101,10 @@ namespace Machine.Specifications.Specs
         }
 
         [Subject(typeof(Catch))]
-        public class with_a_throwing_Action_which_doesnt_match_exception_to_be_caught
+        class with_a_throwing_Action_which_doesnt_match_exception_to_be_caught
         {
             static ArgumentException an_exception;
+
             static Exception result;
 
             Establish context = () =>
@@ -116,9 +118,10 @@ namespace Machine.Specifications.Specs
         }
 
         [Subject(typeof(Catch))]
-        public class with_a_non_throwing_Action
+        class with_a_non_throwing_Action
         {
             static string action_side_effect;
+
             static Exception result;
 
             Because of = () =>
@@ -133,12 +136,12 @@ namespace Machine.Specifications.Specs
     }
 
     [Subject(typeof(Catch))]
-    public class when_calling_catch_with_async_methods
+    class when_calling_catch_with_async_methods
     {
         static Exception exception;
 
         [Subject(typeof(Catch))]
-        public class with_a_non_throwing_action
+        class with_a_non_throwing_action
         {
             static Task Test() => Task.Run(() => { });
 
@@ -150,7 +153,7 @@ namespace Machine.Specifications.Specs
         }
 
         [Subject(typeof(Catch))]
-        public class with_a_throwing_action
+        class with_a_throwing_action
         {
             static Task Test() => Task.Run(() => throw new ArgumentNullException());
 
@@ -162,7 +165,7 @@ namespace Machine.Specifications.Specs
         }
 
         [Subject(typeof(Catch))]
-        public class calling_wrong_catch_method
+        class calling_wrong_catch_method
         {
             static Task Test() => Task.Run(() => throw new ArgumentNullException());
 

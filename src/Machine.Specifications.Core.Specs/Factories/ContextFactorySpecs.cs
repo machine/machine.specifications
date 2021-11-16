@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Example.Random;
 using Machine.Specifications.Factories;
 using Machine.Specifications.Model;
 using Machine.Specifications.Specs.Runner;
@@ -8,14 +9,15 @@ using Machine.Specifications.Specs.Runner;
 namespace Machine.Specifications.Specs.Factories
 {
     [Subject(typeof(ContextFactory))]
-    public class when_creating_a_context_with_a_concern : RandomRunnerSpecs
+    class when_creating_a_context_with_a_concern : RunnerSpecs
     {
         static Type context_with_subject;
+
         static Context newContext;
 
         Establish context = () =>
         {
-            context_with_subject = GetRandom("context_with_subject");
+            context_with_subject = typeof(context_with_subject);
 
             var factory = new ContextFactory();
             newContext = factory.CreateContextFrom(Activator.CreateInstance(context_with_subject));
@@ -29,14 +31,15 @@ namespace Machine.Specifications.Specs.Factories
     }
 
     [Subject(typeof(ContextFactory))]
-    public class when_creating_a_context_with_a_base_concern_that_has_a_subject_attribute_on_it : RandomRunnerSpecs
+    class when_creating_a_context_with_a_base_concern_that_has_a_subject_attribute_on_it : RunnerSpecs
     {
         static Type context_with_parent_with_subject;
+
         static Context newContext;
 
         Establish context = () =>
         {
-            context_with_parent_with_subject = GetRandom("context_with_parent_with_subject");
+            context_with_parent_with_subject = typeof(context_with_parent_with_subject);
 
             var factory = new ContextFactory();
             newContext = factory.CreateContextFrom(Activator.CreateInstance(context_with_parent_with_subject));
@@ -47,14 +50,14 @@ namespace Machine.Specifications.Specs.Factories
     }
 
     [Subject(typeof(ContextFactory))]
-    public class when_using_nested_contexts
+    class when_using_nested_contexts
     {
         static bool outerContextRan;
 
         Establish context = () =>
             outerContextRan = true;
 
-        public class and_the_parent_context_has_context_blocks
+        class and_the_parent_context_has_context_blocks
         {
             It should_run_the_parent_context_blocks_prior_to_the_nested_context_blocks = () =>
                 outerContextRan.ShouldBeTrue();
@@ -62,65 +65,67 @@ namespace Machine.Specifications.Specs.Factories
     }
 
     [Subject(typeof(ContextFactory))]
-    public class when_creating_a_context_that_is_contained_within_another_context_class : RandomRunnerSpecs
+    class when_creating_a_context_that_is_contained_within_another_context_class : RunnerSpecs
     {
+        static Context new_context;
+
         Establish context = () =>
         {
-            var type = GetRandom("parent_context+nested_context");
+            var type = typeof(parent_context.nested_context);
 
             var factory = new ContextFactory();
             new_context = factory.CreateContextFrom(Activator.CreateInstance(type));
         };
 
-        It should_contain_the_details_created_by_the_context_detail_factory =
-            () => new_context.Specifications.Count().ShouldEqual(1);
+        It should_contain_the_details_created_by_the_context_detail_factory = () =>
+            new_context.Specifications.Count().ShouldEqual(1);
 
-        It should_take_the_subject_from_the_outer_class =
-            () => new_context.Subject.FullConcern.ShouldEqual("Int32 Parent description");
-
-        static Context new_context;
+        It should_take_the_subject_from_the_outer_class = () =>
+            new_context.Subject.FullConcern.ShouldEqual("Int32 Parent description");        
     }
 
     [Subject(typeof(ContextFactory))]
-    public class when_creating_a_context_that_is_contained_within_another_context_class_and_inherits_a_concern : RandomRunnerSpecs
+    class when_creating_a_context_that_is_contained_within_another_context_class_and_inherits_a_concern : RunnerSpecs
     {
+        static Context new_context;
+
         Establish context = () =>
         {
-            var type = GetRandom("parent_context+nested_context_inheriting_another_concern");
+            var type = typeof(parent_context.nested_context_inheriting_another_concern);
 
             var factory = new ContextFactory();
             new_context = factory.CreateContextFrom(Activator.CreateInstance(type));
         };
 
-        It should_take_the_subject_from_the_inherited_concern =
-            () => new_context.Subject.FullConcern.ShouldEqual("Int32 Some description");
-
-        static Context new_context;
+        It should_take_the_subject_from_the_inherited_concern = () =>
+            new_context.Subject.FullConcern.ShouldEqual("Int32 Some description");        
     }
 
     [Subject(typeof(ContextFactory))]
-    public class when_creating_a_context_that_is_contained_within_another_context_class_and_owns_a_concern : RandomRunnerSpecs
+    class when_creating_a_context_that_is_contained_within_another_context_class_and_owns_a_concern : RunnerSpecs
     {
+        static Context new_context;
+
         Establish context = () =>
         {
-            var type = GetRandom("parent_context+nested_context_inheriting_and_owning_a_concern");
+            var type = typeof(parent_context.nested_context_inheriting_and_owning_a_concern);
 
             var factory = new ContextFactory();
             new_context = factory.CreateContextFrom(Activator.CreateInstance(type));
         };
 
-        It should_take_the_owned_concern =
-            () => new_context.Subject.FullConcern.ShouldEqual("Int32 Nested description");
-
-        static Context new_context;
+        It should_take_the_owned_concern = () =>
+            new_context.Subject.FullConcern.ShouldEqual("Int32 Nested description");
     }
 
     [Subject(typeof(ContextFactory))]
-    public class when_creating_a_nested_context_that_has_its_own_because_block_and_its_outer_class_also_has_its_own_because_block : RandomRunnerSpecs
+    class when_creating_a_nested_context_that_has_its_own_because_block_and_its_outer_class_also_has_its_own_because_block : RunnerSpecs
     {
+        static Context new_context;
+
         Establish context = () =>
         {
-            var type = GetRandom("parent_context_that_has_its_own_because_block+nested_context_that_has_a_because_block_which");
+            var type = typeof(parent_context_that_has_its_own_because_block.nested_context_that_has_a_because_block_which);
 
             ContextFactory.ChangeAllowedNumberOfBecauseBlocksTo(2);
 
@@ -130,162 +135,155 @@ namespace Machine.Specifications.Specs.Factories
 
         It should_be_able_to_be_created_successfully_if_a_testing_tool_has_specified_to_override_the_allowed_number_of_because_blocks = () =>
             new_context.ShouldNotBeNull();
-
-        static Context new_context;
     }
 
     [Subject(typeof(ContextFactory))]
-    public class when_creating_a_context_that_is_contained_within_another_context_class_without_concern : RandomRunnerSpecs
+    class when_creating_a_context_that_is_contained_within_another_context_class_without_concern : RunnerSpecs
     {
+        static Context new_context;
+
         Establish context = () =>
         {
-            var type = GetRandom("parent_context_without_concern+nested_context");
+            var type = typeof(parent_context_without_concern.nested_context);
 
             var factory = new ContextFactory();
             new_context = factory.CreateContextFrom(Activator.CreateInstance(type));
         };
 
-        It should_have_no_concern =
-            () => new_context.Subject.ShouldBeNull();
-
-        static Context new_context;
+        It should_have_no_concern = () =>
+            new_context.Subject.ShouldBeNull();
     }
 
     [Subject(typeof(ContextFactory))]
-    public class when_creating_a_context_with_tags : RandomRunnerSpecs
+    class when_creating_a_context_with_tags : RunnerSpecs
     {
         static Context newContext;
 
         Establish context = () =>
         {
-            var type = GetRandom("context_with_tags");
+            var type = typeof(context_with_tags);
 
             var factory = new ContextFactory();
             newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
         };
 
-        It should_capture_the_tags =
-            () => newContext.Tags.ShouldContainOnly(new Tag(tag2.example),
-                new Tag(tag2.some_other_tag),
-                new Tag(tag2.one_more_tag));
+        It should_capture_the_tags = () =>
+            newContext.Tags.ShouldContainOnly(new Tag(Tags.example),
+                new Tag(Tags.some_other_tag),
+                new Tag(Tags.one_more_tag));
     }
 
     [Subject(typeof(ContextFactory))]
-    public class when_creating_a_context_with_duplicate_tags : RandomRunnerSpecs
+    class when_creating_a_context_with_duplicate_tags : RunnerSpecs
     {
         static Context newContext;
 
         Establish context = () =>
         {
-            var type = GetRandom("context_with_duplicate_tags");
+            var type = typeof(context_with_duplicate_tags);
 
             var factory = new ContextFactory();
             newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
         };
 
-        It should_capture_the_tags_once =
-            () => newContext.Tags.Count().ShouldEqual(1);
+        It should_capture_the_tags_once = () =>
+            newContext.Tags.Count().ShouldEqual(1);
     }
 
     [Subject(typeof(ContextFactory))]
-    public class when_creating_a_context_that_is_nested_inside_of_a_generic_class : RandomRunnerSpecs
+    class when_creating_a_context_that_is_nested_inside_of_a_generic_class : RunnerSpecs
     {
-        public class and_the_nested_context_is_not_a_generic_type_definition
-        {
-            static Context newContext;
+        static Context newContext;
 
+        class and_the_nested_context_is_not_a_generic_type_definition
+        {
             Establish context = () =>
             {
-                var type = GetRandom("generic_container`1+nested_context")
+                var type = typeof(generic_container<>.nested_context)
                     .MakeGenericType(typeof(int));
 
                 var factory = new ContextFactory();
                 newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
             };
 
-            It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic =
-                () => newContext.ShouldNotBeNull();
+            It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic = () =>
+                newContext.ShouldNotBeNull();
         }
 
-        public class and_the_nested_context_is_a_generic_type_definition
+        class and_the_nested_context_is_a_generic_type_definition
         {
-            static Context newContext;
-
             Establish context = () =>
             {
-                var type = GetRandom("generic_container`1+nested_generic_context`1")
+                var type = typeof(generic_container<>.nested_generic_context<>)
                     .MakeGenericType(typeof(int), typeof(string));
 
                 var factory = new ContextFactory();
                 newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
             };
 
-            It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic =
-                () => newContext.ShouldNotBeNull();
+            It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic = () =>
+                newContext.ShouldNotBeNull();
         }
 
-        public class and_there_are_multiple_generic_parents
+        class and_there_are_multiple_generic_parents
         {
-            public class and_the_nested_context_is_not_generic
+            class and_the_nested_context_is_not_generic
             {
-                static Context newContext;
-
                 Establish context = () =>
                 {
-                    var type = GetRandom("generic_container`1+nested_generic_context`1+nested_nested_non_generic")
+                    var type = typeof(generic_container<>.nested_generic_context<>.nested_nested_non_generic)
                         .MakeGenericType(typeof(int), typeof(string));
 
                     var factory = new ContextFactory();
                     newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
                 };
 
-                It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic =
-                    () => newContext.ShouldNotBeNull();
+                It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic = () =>
+                    newContext.ShouldNotBeNull();
             }
 
-            public class and_the_nested_context_is_generic
+            class and_the_nested_context_is_generic
             {
-                static Context newContext;
-
                 Establish context = () =>
                 {
-                    var type = GetRandom("generic_container`1+nested_generic_context`1+nested_nested_generic`1")
+                    var type = typeof(generic_container<>.nested_generic_context<>.nested_nested_generic<>)
                         .MakeGenericType(typeof(int), typeof(string), typeof(bool));
 
                     var factory = new ContextFactory();
                     newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
                 };
 
-                It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic =
-                    () => newContext.ShouldNotBeNull();
+                It should_be_able_to_create_the_context_even_though_the_enclosing_class_is_generic = () =>
+                    newContext.ShouldNotBeNull();
             }
         }
     }
 
     [Subject(typeof(ContextFactory))]
-    public class when_creating_behavior_specifications_and_tracking_original_behavior_field : RandomRunnerSpecs
+    class when_creating_behavior_specifications_and_tracking_original_behavior_field : RunnerSpecs
     {
         static Context newContext;
 
         Establish context = () =>
         {
-            var type = GetRandom("context_with_behaviors");
-
+            var type = typeof(context_with_behaviors);
             var factory = new ContextFactory();
+
             newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
         };
 
-        It should_create_behavior_specs_with_original_behavior_field =
-            () => newContext.Specifications
+        It should_create_behavior_specs_with_original_behavior_field = () =>
+            newContext.Specifications
                 .OfType<BehaviorSpecification>()
                 .First()
                 .BehaviorFieldInfo.Name.ShouldContainOnly("behavior");
     }
 
     [Subject(typeof(ContextFactory))]
-    public class ContextFactoryTests : RandomRunnerSpecs
+    class ContextFactoryTests : RunnerSpecs
     {
         static Context single_context;
+
         static ContextFactory factory;
 
         Establish context = () =>
@@ -293,7 +291,7 @@ namespace Machine.Specifications.Specs.Factories
 
         Because of = () =>
         {
-            var type = GetFramework("ContextWithSingleSpecification");
+            var type = typeof(ContextWithSingleSpecification);
 
             single_context = factory.CreateContextFrom(Activator.CreateInstance(type));
         };
@@ -303,10 +301,12 @@ namespace Machine.Specifications.Specs.Factories
     }
 
     [Subject(typeof(ContextFactory))]
-    public class when_using_nested_contexts_hierarchy
+    class when_using_nested_contexts_hierarchy
     {
         static IList<int> numbers;
+
         static ContextFactory factory;
+
         static Context newContext;
 
         Establish context = () =>
@@ -331,7 +331,7 @@ namespace Machine.Specifications.Specs.Factories
         };
     }
 
-    public class top_of_hierarchy
+    class top_of_hierarchy
     {
         public static IList<int> Numbers;
 
@@ -346,10 +346,12 @@ namespace Machine.Specifications.Specs.Factories
     }
 
     [Subject(typeof(ContextFactory))]
-    public class when_creating_a_nested_context
+    class when_creating_a_nested_context
     {
         static List<int> numbers;
+
         static ContextFactory factory;
+
         static Context newContext;
 
         Establish context = () =>
@@ -375,7 +377,7 @@ namespace Machine.Specifications.Specs.Factories
         };
     }
 
-    public class top_of_hierarchy_nested_context
+    class top_of_hierarchy_nested_context
     {
         public static List<int> Numbers;
 
@@ -396,11 +398,12 @@ namespace Machine.Specifications.Specs.Factories
     }
 
     [Subject(typeof(ContextFactory))]
-    public class when_creating_a_context_that_is_nested_inside_of_a_generic_class_hierarchy : RandomRunnerSpecs
+    class when_creating_a_context_that_is_nested_inside_of_a_generic_class_hierarchy : RunnerSpecs
     {
         class and_the_nested_context_is_not_a_generic_type_definition
         {
             static Context newContext;
+
             static ContextFactory factory;
 
             Establish context = () =>
@@ -408,7 +411,7 @@ namespace Machine.Specifications.Specs.Factories
 
             Because of = () =>
             {
-                var type = GetRandom("generic_container`1+nested_context")
+                var type = typeof(generic_container<>.nested_context)
                     .MakeGenericType(typeof(int));
 
                 newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
@@ -421,6 +424,7 @@ namespace Machine.Specifications.Specs.Factories
         class and_the_nested_context_is_a_generic_type_definition
         {
             static Context newContext;
+
             static ContextFactory factory;
 
             Establish context = () =>
@@ -428,7 +432,7 @@ namespace Machine.Specifications.Specs.Factories
 
             Because of = () =>
             {
-                var type = GetRandom("generic_container`1+nested_generic_context`1")
+                var type = typeof(generic_container<>.nested_generic_context<>)
                     .MakeGenericType(typeof(int), typeof(string));
 
                 newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
@@ -443,6 +447,7 @@ namespace Machine.Specifications.Specs.Factories
             class and_the_nested_context_is_not_generic
             {
                 static Context newContext;
+
                 static ContextFactory factory;
 
                 Establish context = () =>
@@ -450,7 +455,7 @@ namespace Machine.Specifications.Specs.Factories
 
                 Because of = () =>
                 {
-                    var type = GetRandom("generic_container`1+nested_generic_context`1+nested_nested_non_generic")
+                    var type = typeof(generic_container<>.nested_generic_context<>.nested_nested_non_generic)
                         .MakeGenericType(typeof(int), typeof(string));
 
                     newContext = factory.CreateContextFrom(Activator.CreateInstance(type));
@@ -463,6 +468,7 @@ namespace Machine.Specifications.Specs.Factories
             class and_the_nested_context_generic
             {
                 static Context newContext;
+
                 static ContextFactory factory;
 
                 Establish context = () =>
@@ -470,7 +476,7 @@ namespace Machine.Specifications.Specs.Factories
 
                 Because of = () =>
                 {
-                    var type = GetRandom("generic_container`1+nested_generic_context`1+nested_nested_generic`1")
+                    var type = typeof(generic_container<>.nested_generic_context<>.nested_nested_generic<>)
                         .MakeGenericType(typeof(int), typeof(string), typeof(bool));
 
                     newContext = factory.CreateContextFrom(Activator.CreateInstance(type));

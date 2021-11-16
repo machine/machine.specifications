@@ -1,119 +1,92 @@
 using System;
 using System.Reflection;
+using Example.Random;
 
 namespace Machine.Specifications.Specs.Runner
 {
     [Subject("Specification Runner")]
-    public class when_running_a_context_with_specifications_in_a_behavior : RandomRunnerSpecs
+    class when_running_a_context_with_specifications_in_a_behavior : RunnerSpecs
     {
-        static Type context_with_behaviors;
-        static Type Behaviors;
-
         Establish context = () =>
         {
-            context_with_behaviors = GetRandom("context_with_behaviors");
-            Behaviors = GetRandom("Behaviors");
-
-            context_with_behaviors.ToDynamic().local_spec_ran = false;
-            Behaviors.ToDynamic().behavior_spec_ran = false;
+            context_with_behaviors.local_spec_ran = false;
+            Behaviors.behavior_spec_ran = false;
         };
 
         Because of = () =>
-            Run(context_with_behaviors);
+            Run<context_with_behaviors>();
 
         It should_run_the_context_spec = () =>
-            context_with_behaviors.ToDynamic().local_spec_ran.ShouldBeTrue();
+            context_with_behaviors.local_spec_ran.ShouldBeTrue();
 
         It should_run_the_behavior_spec = () =>
-            Behaviors.ToDynamic().behavior_spec_ran.ShouldBeTrue();
+            Behaviors.behavior_spec_ran.ShouldBeTrue();
     }
 
     [Subject("Specification Runner")]
-    public class when_running_a_context_with_specifications_in_a_behavior_where_the_behavior_field_is_ignored : RandomRunnerSpecs
+    class when_running_a_context_with_specifications_in_a_behavior_where_the_behavior_field_is_ignored : RunnerSpecs
     {
-        static Type context_with_behaviors_where_the_behavior_field_is_ignored;
-        static Type Behaviors;
-
         Establish context = () =>
         {
-            context_with_behaviors_where_the_behavior_field_is_ignored = GetRandom("context_with_behaviors_where_the_behavior_field_is_ignored");
-            Behaviors = GetRandom("Behaviors");
-
-            context_with_behaviors_where_the_behavior_field_is_ignored.ToDynamic().local_spec_ran = false;
-            Behaviors.ToDynamic().behavior_spec_ran = false;
+            context_with_behaviors_where_the_behavior_field_is_ignored.local_spec_ran = false;
+            Behaviors.behavior_spec_ran = false;
         };
 
         Because of = () =>
-            Run(context_with_behaviors_where_the_behavior_field_is_ignored);
+            Run<context_with_behaviors_where_the_behavior_field_is_ignored>();
 
         It should_run_the_context_spec = () =>
-            context_with_behaviors_where_the_behavior_field_is_ignored.ToDynamic().local_spec_ran.ShouldBeTrue();
+            context_with_behaviors_where_the_behavior_field_is_ignored.local_spec_ran.ShouldBeTrue();
 
         It should_not_run_the_behavior_spec = () =>
-            Behaviors.ToDynamic().behavior_spec_ran.ShouldBeFalse();
+            Behaviors.behavior_spec_ran.ShouldBeFalse();
     }
 
     [Subject("Specification Runner")]
-    public class when_running_a_context_with_specifications_in_a_behavior_where_the_behavior_is_ignored : RandomRunnerSpecs
+    class when_running_a_context_with_specifications_in_a_behavior_where_the_behavior_is_ignored : RunnerSpecs
     {
-        static Type context_with_behaviors_where_the_behavior_is_ignored;
-        static Type IgnoredBehaviors;
-
         Establish context = () =>
         {
-            context_with_behaviors_where_the_behavior_is_ignored = GetRandom("context_with_behaviors");
-            IgnoredBehaviors = GetRandom("IgnoredBehaviors");
-
-            context_with_behaviors_where_the_behavior_is_ignored.ToDynamic().local_spec_ran = false;
-            IgnoredBehaviors.ToDynamic().behavior_spec_ran = false;
+            context_with_behaviors_where_the_behavior_is_ignored.local_spec_ran = false;
+            IgnoredBehaviors.behavior_spec_ran = false;
         };
 
         Because of = () =>
-            Run(context_with_behaviors_where_the_behavior_is_ignored);
+            Run<context_with_behaviors_where_the_behavior_is_ignored>();
 
         It should_run_the_context_spec = () =>
-            context_with_behaviors_where_the_behavior_is_ignored.ToDynamic().local_spec_ran.ShouldBeTrue();
+            context_with_behaviors_where_the_behavior_is_ignored.local_spec_ran.ShouldBeTrue();
 
         It should_not_run_the_behavior_spec = () =>
-            IgnoredBehaviors.ToDynamic().behavior_spec_ran.ShouldBeFalse();
+            IgnoredBehaviors.behavior_spec_ran.ShouldBeFalse();
     }
 
     [Subject("Specification Runner")]
-    public class when_running_a_context_with_specifications_in_a_behavior_where_the_behavior_specs_are_ignored : RandomRunnerSpecs
+    class when_running_a_context_with_specifications_in_a_behavior_where_the_behavior_specs_are_ignored : RunnerSpecs
     {
-        static Type context_with_behaviors_where_the_behavior_specs_are_ignored;
-        static Type BehaviorsWithIgnoredSpec;
-
         Establish context = () =>
         {
-            context_with_behaviors_where_the_behavior_specs_are_ignored = GetRandom("context_with_behaviors_where_the_behavior_specs_are_ignored");
-            BehaviorsWithIgnoredSpec = GetRandom("BehaviorsWithIgnoredSpec");
-
-            context_with_behaviors_where_the_behavior_specs_are_ignored.ToDynamic().local_spec_ran = false;
-            BehaviorsWithIgnoredSpec.ToDynamic().behavior_spec_ran = false;
+            context_with_behaviors_where_the_behavior_specs_are_ignored.local_spec_ran = false;
+            BehaviorsWithIgnoredSpec.behavior_spec_ran = false;
         };
 
         Because of = () =>
-            Run(context_with_behaviors_where_the_behavior_specs_are_ignored);
+            Run<context_with_behaviors_where_the_behavior_specs_are_ignored>();
 
         It should_run_the_context_spec = () =>
-            context_with_behaviors_where_the_behavior_specs_are_ignored.ToDynamic().local_spec_ran.ShouldBeTrue();
+            context_with_behaviors_where_the_behavior_specs_are_ignored.local_spec_ran.ShouldBeTrue();
 
         It should_not_run_the_behavior_spec = () =>
-            BehaviorsWithIgnoredSpec.ToDynamic().behavior_spec_ran.ShouldBeFalse();
+            BehaviorsWithIgnoredSpec.behavior_spec_ran.ShouldBeFalse();
     }
 
     [Subject("Specification Runner")]
-    public class when_running_a_context_with_nested_behaviors : RandomRunnerSpecs
+    class when_running_a_context_with_nested_behaviors : RunnerSpecs
     {
-        static Type context_with_nested_behaviors;
         static Exception exception;
 
-        Establish context = () =>
-            context_with_nested_behaviors = GetRandom("context_with_nested_behaviors");
-
         Because of = () =>
-            exception = Catch.Exception(() => Run(context_with_nested_behaviors));
+            exception = Catch.Exception(() => Run<context_with_nested_behaviors>());
 
         It should_fail = () =>
             exception.ShouldBeOfExactType<SpecificationUsageException>();
@@ -123,16 +96,12 @@ namespace Machine.Specifications.Specs.Runner
     }
 
     [Subject("Specification Runner")]
-    public class when_running_a_context_with_behaviors_that_do_not_have_the_behaviors_attribute : RandomRunnerSpecs
+    class when_running_a_context_with_behaviors_that_do_not_have_the_behaviors_attribute : RunnerSpecs
     {
-        static Type context_with_behaviors_without_behaviors_attribute;
         static Exception exception;
 
-        Establish context = () =>
-            context_with_behaviors_without_behaviors_attribute = GetRandom("context_with_behaviors_without_behaviors_attribute");
-
         Because of = () =>
-            exception = Catch.Exception(() => Run(context_with_behaviors_without_behaviors_attribute));
+            exception = Catch.Exception(() => Run<context_with_behaviors_without_behaviors_attribute>());
 
         It should_fail = () =>
             exception.ShouldBeOfExactType<SpecificationUsageException>();
@@ -142,16 +111,12 @@ namespace Machine.Specifications.Specs.Runner
     }
 
     [Subject("Specification Runner")]
-    public class when_running_a_context_with_behaviors_with_establish : RandomRunnerSpecs
+    class when_running_a_context_with_behaviors_with_establish : RunnerSpecs
     {
-        static Type context_with_behaviors_with_establish;
         static Exception exception;
 
-        Establish context = () =>
-            context_with_behaviors_with_establish = GetRandom("context_with_behaviors_with_establish");
-
         Because of = () => exception =
-            Catch.Exception(() => Run(context_with_behaviors_with_establish));
+            Catch.Exception(() => Run<context_with_behaviors_with_establish>());
 
         It should_fail = () =>
             exception.ShouldBeOfExactType<SpecificationUsageException>();
@@ -161,16 +126,12 @@ namespace Machine.Specifications.Specs.Runner
     }
 
     [Subject("Specification Runner")]
-    public class when_running_a_context_with_behaviors_with_because : RandomRunnerSpecs
+    class when_running_a_context_with_behaviors_with_because : RunnerSpecs
     {
-        static Type context_with_behaviors_with_because;
         static Exception exception;
 
-        Establish context = () =>
-            context_with_behaviors_with_because = GetRandom("context_with_behaviors_with_because");
-
         Because of = () =>
-            exception = Catch.Exception(() => Run(context_with_behaviors_with_because));
+            exception = Catch.Exception(() => Run<context_with_behaviors_with_because>());
 
         It should_fail = () =>
             exception.ShouldBeOfExactType<SpecificationUsageException>();
@@ -180,16 +141,12 @@ namespace Machine.Specifications.Specs.Runner
     }
 
     [Subject("Specification Runner")]
-    public class when_running_a_context_that_does_not_have_all_fields_needed_by_the_behavior : RandomRunnerSpecs
+    class when_running_a_context_that_does_not_have_all_fields_needed_by_the_behavior : RunnerSpecs
     {
-        static Type context_missing_protected_fields_that_are_in_behaviors;
         static Exception exception;
 
-        Establish context = () =>
-            context_missing_protected_fields_that_are_in_behaviors = GetRandom("context_missing_protected_fields_that_are_in_behaviors");
-
         Because of = () =>
-            exception = Catch.Exception(() => Run(context_missing_protected_fields_that_are_in_behaviors));
+            exception = Catch.Exception(() => Run<context_missing_protected_fields_that_are_in_behaviors>());
 
         It should_fail = () =>
             exception.ShouldBeOfExactType<SpecificationUsageException>();
@@ -202,16 +159,12 @@ namespace Machine.Specifications.Specs.Runner
     }
 
     [Subject("Specification Runner")]
-    public class when_running_a_context_that_has_fields_typed_differently_than_needed_by_the_behavior : RandomRunnerSpecs
+    class when_running_a_context_that_has_fields_typed_differently_than_needed_by_the_behavior : RunnerSpecs
     {
-        static Type context_with_protected_fields_having_different_types_than_in_behaviors;
         static Exception exception;
 
-        Establish context = () =>
-            context_with_protected_fields_having_different_types_than_in_behaviors = GetRandom("context_with_protected_fields_having_different_types_than_in_behaviors");
-
         Because of = () =>
-            exception = Catch.Exception(() => Run(context_with_protected_fields_having_different_types_than_in_behaviors));
+            exception = Catch.Exception(() => Run<context_with_protected_fields_having_different_types_than_in_behaviors>());
 
         It should_fail = () => exception.ShouldBeOfExactType<SpecificationUsageException>();
 

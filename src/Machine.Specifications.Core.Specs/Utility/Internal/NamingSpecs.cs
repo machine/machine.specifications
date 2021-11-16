@@ -3,7 +3,7 @@ using Machine.Specifications.Utility.Internal;
 namespace Machine.Specifications.Specs.Utility.Internal
 {
     [Subject(typeof(Naming))]
-    public class when_formatting_specification_elements_with_underscores
+    class when_formatting_specification_elements_with_underscores
     {
         static string Name;
 
@@ -15,7 +15,7 @@ namespace Machine.Specifications.Specs.Utility.Internal
     }
 
     [Subject(typeof(Naming))]
-    public class when_formatting_specification_elements_with_double_underscores
+    class when_formatting_specification_elements_with_double_underscores
     {
         static string Name;
 
@@ -27,8 +27,7 @@ namespace Machine.Specifications.Specs.Utility.Internal
     }
 
     [Subject(typeof(Naming))]
-    public class
-        when_formatting_specification_elements_with_double_underscores_and_only_a_single_double_underscore_is_given
+    class when_formatting_specification_elements_with_double_underscores_and_only_a_single_double_underscore_is_given
     {
         static string Name;
 
@@ -40,7 +39,7 @@ namespace Machine.Specifications.Specs.Utility.Internal
     }
 
     [Subject(typeof(Naming))]
-    public class when_formatting_specification_elements_with_an_underscore_followed_by_an__s__and_another_underscore
+    class when_formatting_specification_elements_with_an_underscore_followed_by_an__s__and_another_underscore
     {
         static string Name;
 
@@ -52,7 +51,7 @@ namespace Machine.Specifications.Specs.Utility.Internal
     }
 
     [Subject(typeof(Naming))]
-    public class when_formatting_specification_elements_with_an__s__enclosed_with_double_underscores
+    class when_formatting_specification_elements_with_an__s__enclosed_with_double_underscores
     {
         static string Name;
 

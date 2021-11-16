@@ -8,23 +8,18 @@ using Machine.Specifications.Specs.Runner;
 namespace Machine.Specifications.Specs.Model
 {
     [Subject(typeof(Specification))]
-    public class SpecificationSpecs : RandomRunnerSpecs
+    class SpecificationSpecs : RunnerSpecs
     {
-        static Type ContextWithSingleSpecification;
         static ContextFactory factory;
 
         Establish context = () =>
-        {
-            ContextWithSingleSpecification = GetFramework("ContextWithSingleSpecification");
-
             factory = new ContextFactory();
-        };
 
         Because of = () =>
         {
-            ContextWithSingleSpecification.ToDynamic().Reset();
+            ContextWithSingleSpecification.Reset();
 
-            var context = factory.CreateContextFrom(Activator.CreateInstance(ContextWithSingleSpecification));
+            var context = factory.CreateContextFrom(new ContextWithSingleSpecification());
 
             ContextRunnerFactory
                 .GetContextRunnerFor(context)
@@ -36,12 +31,12 @@ namespace Machine.Specifications.Specs.Model
         };
 
         It should_establish_context = () =>
-            ContextWithSingleSpecification.ToDynamic().because_invoked.ShouldBeTrue();
+            ContextWithSingleSpecification.because_invoked.ShouldBeTrue();
 
         It should_call_before_each = () =>
-            ContextWithSingleSpecification.ToDynamic().context_invoked.ShouldBeTrue();
+            ContextWithSingleSpecification.context_invoked.ShouldBeTrue();
 
         It should_cleanup = () =>
-            ContextWithSingleSpecification.ToDynamic().cleanup_invoked.ShouldBeTrue();
+            ContextWithSingleSpecification.cleanup_invoked.ShouldBeTrue();
     }
 }

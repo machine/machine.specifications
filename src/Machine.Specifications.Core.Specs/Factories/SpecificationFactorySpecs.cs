@@ -9,15 +9,17 @@ using Machine.Specifications.Utility;
 namespace Machine.Specifications.Specs.Factories
 {
     [Subject(typeof(SpecificationFactory))]
-    public class SpecificationFactory_CreateSpecification : RandomRunnerSpecs
+    class SpecificationFactory_CreateSpecification : RunnerSpecs
     {
         static Type ContextWithSingleSpecification;
+
         static SpecificationFactory factory;
+
         static Specification specification;
 
         Establish context = () =>
         {
-            ContextWithSingleSpecification = GetFramework("ContextWithSingleSpecification");
+            ContextWithSingleSpecification = typeof(ContextWithSingleSpecification);
 
             factory = new SpecificationFactory();
         };
@@ -42,15 +44,17 @@ namespace Machine.Specifications.Specs.Factories
     }
 
     [Subject(typeof(SpecificationFactory))]
-    public class SpecificationFactory_CreateThrowSpecification : RandomRunnerSpecs
+    class SpecificationFactory_CreateThrowSpecification : RunnerSpecs
     {
         static Type ContextWithThrowingSpecification;
+
         static SpecificationFactory factory;
+
         static Specification specification;
 
         Establish context = () =>
         {
-            ContextWithThrowingSpecification = GetFramework("ContextWithThrowingSpecification");
+            ContextWithThrowingSpecification = typeof(ContextWithThrowingSpecification);
 
             factory = new SpecificationFactory();
         };
@@ -72,15 +76,17 @@ namespace Machine.Specifications.Specs.Factories
     }
 
     [Subject(typeof(SpecificationFactory))]
-    public class SpecificationFactory_CreateUndefinedSpecification : RandomRunnerSpecs
+    class SpecificationFactory_CreateUndefinedSpecification : RunnerSpecs
     {
         static Type ContextWithEmptySpecification;
+
         static SpecificationFactory factory;
+
         static Specification specification;
 
         Establish context = () =>
         {
-            ContextWithEmptySpecification = GetFramework("ContextWithEmptySpecification");
+            ContextWithEmptySpecification = typeof(ContextWithEmptySpecification);
 
             factory = new SpecificationFactory();
         };

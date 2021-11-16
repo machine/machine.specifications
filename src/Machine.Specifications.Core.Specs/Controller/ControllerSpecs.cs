@@ -3,23 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using Machine.Specifications.Specs.Runner;
+using Example.Random;
 
 namespace Machine.Specifications.Specs.Controller
 {
-    public class With_Controller : RandomRunnerSpecs
+    public class With_Controller : RunnerSpecs
     {
         protected static Machine.Specifications.Controller.Controller Controller;
-        protected static List<string> ListenEvents;
 
-        public static Type AssemblyContext;
+        protected static List<string> ListenEvents;
 
         Establish context = () =>
         {
-            AssemblyContext = GetRandom("TestAssemblyContext");
-
             ListenEvents = new List<string>();
-            AssemblyContext.ToDynamic().OnAssemblyStartRun = false;
-            AssemblyContext.ToDynamic().OnAssemblyCompleteRun = false;
+            TestAssemblyContext.OnAssemblyStartRun = false;
+            TestAssemblyContext.OnAssemblyCompleteRun = false;
             Controller = new Machine.Specifications.Controller.Controller(eventText =>
             {
                 ListenEvents.Add(eventText);
@@ -60,18 +58,18 @@ namespace Machine.Specifications.Specs.Controller
             ListenEvents.Count(e => e.Contains("<onspecificationend>")).ShouldBeGreaterThanOrEqualTo(1);
 
         It runs_assembly_context_start = () =>
-            With_Controller.AssemblyContext.ToDynamic().OnAssemblyStartRun.ShouldBeTrue();
+            TestAssemblyContext.OnAssemblyStartRun.ShouldBeTrue();
 
         It runs_assembly_complete = () =>
-            With_Controller.AssemblyContext.ToDynamic().OnAssemblyCompleteRun.ShouldBeTrue();
+            TestAssemblyContext.OnAssemblyCompleteRun.ShouldBeTrue();
     }
 
     [Subject(typeof(Machine.Specifications.Controller.Controller))]
-    public class When_running_assemblies : With_Controller
+    class When_running_assemblies : With_Controller
     {
         Because of = () =>
         {
-            var type = GetRandom("SingleContextInThisNamespace.context_without_any_other_in_the_same_namespace");
+            var type = typeof(Example.Random.SingleContextInThisNamespace.context_without_any_other_in_the_same_namespace);
 
             Controller.StartRun();
             Controller.RunAssemblies(new[] {type.GetTypeInfo().Assembly});
@@ -82,11 +80,11 @@ namespace Machine.Specifications.Specs.Controller
     }
 
     [Subject(typeof(Machine.Specifications.Controller.Controller))]
-    public class When_running_namespace : With_Controller
+    class When_running_namespace : With_Controller
     {
         Because of = () =>
         {
-            var type = GetRandom("SingleContextInThisNamespace.context_without_any_other_in_the_same_namespace");
+            var type = typeof(Example.Random.SingleContextInThisNamespace.context_without_any_other_in_the_same_namespace);
 
             Controller.StartRun();
             Controller.RunNamespaces(type.GetTypeInfo().Assembly, new[] {type.Namespace});
@@ -97,11 +95,11 @@ namespace Machine.Specifications.Specs.Controller
     }
 
     [Subject(typeof(Machine.Specifications.Controller.Controller))]
-    public class When_running_types : With_Controller
+    class When_running_types : With_Controller
     {
         Because of = () =>
         {
-            var type = GetRandom("SingleContextInThisNamespace.context_without_any_other_in_the_same_namespace");
+            var type = typeof(Example.Random.SingleContextInThisNamespace.context_without_any_other_in_the_same_namespace);
 
             Controller.StartRun();
             Controller.RunTypes(type.GetTypeInfo().Assembly, new[] {type});
@@ -112,11 +110,11 @@ namespace Machine.Specifications.Specs.Controller
     }
 
     [Subject(typeof(Machine.Specifications.Controller.Controller))]
-    public class When_running_members : With_Controller
+    class When_running_members : With_Controller
     {
         Because of = () =>
         {
-            var type = GetRandom("SingleContextInThisNamespace.context_without_any_other_in_the_same_namespace");
+            var type = typeof(Example.Random.SingleContextInThisNamespace.context_without_any_other_in_the_same_namespace);
 
             Controller.StartRun();
             Controller.RunMembers(type.GetTypeInfo().Assembly, new[]
@@ -130,13 +128,12 @@ namespace Machine.Specifications.Specs.Controller
         Behaves_like<RunListenerNotificationBehaviors> run_listener_notifier;
     }
 
-
     [Subject(typeof(Machine.Specifications.Controller.Controller))]
-    public class When_runspecs_is_given_two_standard_specs : With_Controller
+    class When_runspecs_is_given_two_standard_specs : With_Controller
     {
         Because of = () =>
         {
-            var type = GetRandom("context_with_specs_and_behaviors");
+            var type = typeof(context_with_specs_and_behaviors);
 
             Controller.StartRun();
             Controller.RunSpecs(type.GetTypeInfo().Assembly, new[]
@@ -158,11 +155,11 @@ namespace Machine.Specifications.Specs.Controller
     }
 
     [Subject(typeof(Machine.Specifications.Controller.Controller))]
-    public class When_runspecs_is_given_a_behavior_spec : With_Controller
+    class When_runspecs_is_given_a_behavior_spec : With_Controller
     {
         Because of = () =>
         {
-            var type = GetRandom("context_with_specs_and_behaviors");
+            var type = typeof(context_with_specs_and_behaviors);
 
             Controller.StartRun();
             Controller.RunSpecs(type.Assembly, new[] {type.FullName + ".behavior1"});
@@ -180,11 +177,11 @@ namespace Machine.Specifications.Specs.Controller
     }
 
     [Subject(typeof(Machine.Specifications.Controller.Controller))]
-    public class When_runspecs_is_given_a_behaves_like_field : With_Controller
+    class When_runspecs_is_given_a_behaves_like_field : With_Controller
     {
         Because of = () =>
         {
-            var type = GetRandom("context_with_specs_and_behaviors");
+            var type = typeof(context_with_specs_and_behaviors);
 
             Controller.StartRun();
             Controller.RunSpecs(type.Assembly, new[] {type.FullName + ".behaviors"});
