@@ -28,42 +28,42 @@ namespace Machine.Specifications.Specs
     [Subject(typeof(ExceptionResult))]
     public class When_framework_stack_trace_lines_are_filtered
     {
-        static ExceptionResult Result;
+        static ExceptionResult result;
 
         Because of = () =>
-            Result = new ExceptionResult(Throw.Exception());
+            result = new ExceptionResult(Throw.Exception());
 
         It should_remove_framework_stack_lines = () =>
-            Result.StackTrace.ShouldNotContain(" Machine.Specifications.");
+            result.StackTrace.ShouldNotContain(" Machine.Specifications.");
 
         It should_remove_framework_stack_lines_from_the_string_representation = () =>
-            Result.ToString().ShouldNotContain(" Machine.Specifications.");
+            result.ToString().ShouldNotContain(" Machine.Specifications.");
 
         It should_keep_user_stack_lines = () =>
-            Result.StackTrace.ShouldContain(" SomeProject.Specs.Throw.Exception");
+            result.StackTrace.ShouldContain(" SomeProject.Specs.Throw.Exception");
     }
 
     [Subject(typeof(ExceptionResult))]
     public class When_the_actual_exception_is_wrapped_in_a_TargetInvocationException
     {
-        static ExceptionResult Result;
+        static ExceptionResult result;
 
         Because of = () =>
-            Result = new ExceptionResult(new TargetInvocationException(new Exception("inner")));
+            result = new ExceptionResult(new TargetInvocationException(new Exception("inner")));
 
         It should_only_take_the_inner_exception_into_account = () =>
-            Result.FullTypeName.ShouldEqual(typeof(Exception).FullName);
+            result.FullTypeName.ShouldEqual(typeof(Exception).FullName);
     }
 
     [Subject(typeof(ExceptionResult))]
     public class When_a_TargetInvocationException_is_wrapped
     {
-        static ExceptionResult Result;
+        static ExceptionResult result;
 
         Because of = () =>
-            Result = new ExceptionResult(new Exception("outer", new TargetInvocationException(new Exception("inner"))));
+            result = new ExceptionResult(new Exception("outer", new TargetInvocationException(new Exception("inner"))));
 
         It should_keep_the_exception = () =>
-            Result.InnerExceptionResult.FullTypeName.ShouldEqual(typeof(TargetInvocationException).FullName);
+            result.InnerExceptionResult.FullTypeName.ShouldEqual(typeof(TargetInvocationException).FullName);
     }
 }
