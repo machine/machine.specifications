@@ -24,8 +24,4 @@
     <None Include="../../images/icon.png" Pack="true" PackagePath="" Visible="false" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Machine.Specifications.Analyzers" Version="0.1.0" PrivateAssets="none" />
-  </ItemGroup>
-
 </Project>
