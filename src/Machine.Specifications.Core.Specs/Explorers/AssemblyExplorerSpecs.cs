@@ -35,7 +35,7 @@ namespace Machine.Specifications.Specs.Explorers
             Explorer = new AssemblyExplorer();
 
         Because of = () =>
-            contexts = Explorer.FindContextsIn(typeof(ContextWithSingleSpecification).Assembly);
+            contexts = Explorer.FindContextsIn(typeof(ContextWithSingleSpecification).Assembly, "Example");
 
         It should_find_three_contexts = () =>
             contexts.Count().ShouldEqual(3);
