@@ -140,7 +140,7 @@ namespace Machine.Specifications.Should.Specs.Utility
     }
 
     [Subject(typeof(ObjectGraphHelper))]
-    class when_getting_a_sequence_graph_with_an_IEnumerable
+    class when_getting_a_sequence_graph_with_an_enumerable
     {
         static IEnumerable<string> sequence;
 
@@ -213,7 +213,7 @@ namespace Machine.Specifications.Should.Specs.Utility
     }
 
     [Subject(typeof(ObjectGraphHelper))]
-    class when_expected_Inner_value_is_null
+    class when_expected_inner_value_is_null
     {
         static Model actual_model;
 
@@ -223,14 +223,14 @@ namespace Machine.Specifications.Should.Specs.Utility
             actual_model = new Model {Inner = new InnerModel()};
 
         Because of = () =>
-            thrown_exception = Catch.Only<SpecificationException>(() => actual_model.ShouldBeLike(new Model() { Inner = null }));
+            thrown_exception = Catch.Exception(() => actual_model.ShouldBeLike(new Model() { Inner = null }));
 
         It should_throw_specification_exception = () =>
             thrown_exception.ShouldBeOfExactType<SpecificationException>();
     }
 
     [Subject(typeof(ObjectGraphHelper))]
-    class when_actual_Inner_value_is_null
+    class when_actual_inner_value_is_null
     {
         static Model actual_model;
 
@@ -240,7 +240,7 @@ namespace Machine.Specifications.Should.Specs.Utility
             actual_model = new Model { Inner = null };
 
         Because of = () =>
-            thrown_exception = Catch.Only<SpecificationException>(() => actual_model.ShouldBeLike(new Model() { Inner = new InnerModel() }));
+            thrown_exception = Catch.Exception(() => actual_model.ShouldBeLike(new Model() { Inner = new InnerModel() }));
 
         It should_throw_specification_exception = () =>
             thrown_exception.ShouldBeOfExactType<SpecificationException>();
@@ -257,7 +257,7 @@ namespace Machine.Specifications.Should.Specs.Utility
             actual_model = new Model { Inner = null };
 
         Because of = () =>
-            thrown_exception = Catch.Only<SpecificationException>(() => actual_model.ShouldBeLike(new Model() { Inner = null }));
+            thrown_exception = Catch.Exception(() => actual_model.ShouldBeLike(new Model() { Inner = null }));
 
         It should_throw_specification_exception = () =>
             thrown_exception.ShouldBeNull();

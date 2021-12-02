@@ -5,11 +5,11 @@ namespace Machine.Specifications
 {
     public static class Catch
     {
-        public static Exception Exception(Action throwingAction)
+        public static Exception Exception(Action action)
         {
             try
             {
-                throwingAction();
+                action();
             }
             catch (Exception ex)
             {
@@ -19,7 +19,7 @@ namespace Machine.Specifications
             return null;
         }
 
-        public static Exception Exception<T>(Func<T> throwingFunc)
+        public static Exception Exception(Func<object> throwingFunc)
         {
             Task task;
 
@@ -27,9 +27,9 @@ namespace Machine.Specifications
             {
                 task = throwingFunc() as Task;
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                return exception;
+                return ex;
             }
 
             if (task != null)
@@ -40,11 +40,11 @@ namespace Machine.Specifications
             return null;
         }
 
-        public static async Task<Exception> ExceptionAsync(Func<Task> throwingAction)
+        public static async Task<Exception> ExceptionAsync(Func<Task> action)
         {
             try
             {
-                await throwingAction();
+                await action();
             }
             catch (Exception ex)
             {
@@ -54,16 +54,29 @@ namespace Machine.Specifications
             return null;
         }
 
-        public static TException Only<TException>(Action throwingAction)
-            where TException : Exception
+        public static async Task<Exception> ExceptionAsync(Func<ValueTask> action)
         {
             try
             {
-                throwingAction();
+                await action();
             }
-            catch (TException exception)
+            catch (Exception ex)
             {
-                return exception;
+                return ex;
+            }
+
+            return null;
+        }
+
+        public static async Task<Exception> ExceptionAsync<T>(Func<ValueTask<T>> action)
+        {
+            try
+            {
+                await action();
+            }
+            catch (Exception ex)
+            {
+                return ex;
             }
 
             return null;

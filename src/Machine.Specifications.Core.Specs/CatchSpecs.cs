@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 namespace Machine.Specifications.Specs
 {
     [Subject(typeof(Catch))]
-    class when_calling_Catch_Exception_with_an_Action
+    class when_calling_catch_exception_with_an_action
     {
         [Subject(typeof(Catch))]
-        class with_a_throwing_Action
+        class with_a_throwing_action
         {
             static ArgumentException an_exception;
 
@@ -24,7 +24,7 @@ namespace Machine.Specifications.Specs
         }
 
         [Subject(typeof(Catch))]
-        class with_a_non_throwing_Action
+        class with_a_non_throwing_action
         {
             static string action_side_effect;
 
@@ -42,16 +42,16 @@ namespace Machine.Specifications.Specs
     }
 
     [Subject(typeof(Catch))]
-    class when_calling_Catch_Exception_with_a_Func
+    class when_calling_catch_exception_with_a_func
     {
-        static ArgumentException AnException = new ArgumentException();
+        static ArgumentException an_exception = new ArgumentException();
 
-        static string ThrowingProperty => throw AnException;
+        static string ThrowingProperty => throw an_exception;
 
         static string NonThrowingProperty => "hi";
 
         [Subject(typeof(Catch))]
-        class with_a_throwing_Func
+        class with_a_throwing_func
         {
             static Exception result;
 
@@ -59,11 +59,11 @@ namespace Machine.Specifications.Specs
                 result = Catch.Exception(() => ThrowingProperty);
 
             It should_return_the_same_exception = () =>
-                result.ShouldBeTheSameAs(AnException);
+                result.ShouldBeTheSameAs(an_exception);
         }
 
         [Subject(typeof(Catch))]
-        class with_a_non_throwing_Func
+        class with_a_non_throwing_func
         {
             static Exception result;
 
@@ -74,61 +74,6 @@ namespace Machine.Specifications.Specs
 
             It should_access_the_propety = () =>
                 property_value.ShouldEqual("hi");
-
-            It should_return_null = () =>
-                result.ShouldBeNull();
-        }
-    }
-
-    [Subject(typeof(Catch))]
-    class when_calling_Catch_Only_with_an_Action
-    {
-        [Subject(typeof(Catch))]
-        class with_a_throwing_Action_which_matches_exception_to_be_caught
-        {
-            static ArgumentException an_exception;
-
-            static Exception result;
-
-            Establish context = () =>
-                an_exception = new ArgumentException();
-
-            Because of = () =>
-                result = Catch.Only<ArgumentException>(() => throw an_exception);
-
-            It should_return_the_same_exception = () =>
-                result.ShouldBeTheSameAs(an_exception);
-        }
-
-        [Subject(typeof(Catch))]
-        class with_a_throwing_Action_which_doesnt_match_exception_to_be_caught
-        {
-            static ArgumentException an_exception;
-
-            static Exception result;
-
-            Establish context = () =>
-                an_exception = new ArgumentException();
-
-            Because of = () =>
-                result = Catch.Exception(() => Catch.Only<InvalidOperationException>(() => throw an_exception));
-
-            It should_return_the_same_exception = () =>
-                result.ShouldBeTheSameAs(an_exception);
-        }
-
-        [Subject(typeof(Catch))]
-        class with_a_non_throwing_Action
-        {
-            static string action_side_effect;
-
-            static Exception result;
-
-            Because of = () =>
-                result = Catch.Only<ArgumentException>(() => action_side_effect = "hi");
-
-            It should_access_the_propety = () =>
-                action_side_effect.ShouldEqual("hi");
 
             It should_return_null = () =>
                 result.ShouldBeNull();
@@ -177,6 +122,68 @@ namespace Machine.Specifications.Specs
 
             It should_contain_message = () =>
                 exception.Message.ShouldEqual("You must use Catch.ExceptionAsync for async methods");
+        }
+
+        [Subject(typeof(Catch))]
+        class using_value_task
+        {
+            static ValueTask Test() => throw new ArgumentNullException();
+
+            Because of = async () =>
+                exception = await Catch.ExceptionAsync(Test);
+
+            It should_return_exception = () =>
+                exception.ShouldBeOfExactType<ArgumentNullException>();
+        }
+
+        [Subject(typeof(Catch))]
+        class using_value_task_that_works
+        {
+            static string result;
+
+            static ValueTask Test()
+            {
+                result = "done";
+
+                return new ValueTask(Task.Run(() => { }));
+            }
+
+            Because of = async () =>
+                exception = await Catch.ExceptionAsync(Test);
+
+            It should_complete = () =>
+                result.ShouldEqual("done");
+        }
+
+        [Subject(typeof(Catch))]
+        class using_generic_value_task
+        {
+            static ValueTask<int> Test() => throw new ArgumentNullException();
+
+            Because of = async () =>
+                exception = await Catch.ExceptionAsync(Test);
+
+            It should_return_exception = () =>
+                exception.ShouldBeOfExactType<ArgumentNullException>();
+        }
+
+        [Subject(typeof(Catch))]
+        class using_generic_value_task_that_works
+        {
+            static string result;
+
+            static ValueTask<int> Test()
+            {
+                result = "done";
+
+                return new ValueTask<int>(4);
+            }
+
+            Because of = async () =>
+                exception = await Catch.ExceptionAsync(Test);
+
+            It should_complete = () =>
+                result.ShouldEqual("done");
         }
     }
 }

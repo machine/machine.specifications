@@ -24,14 +24,14 @@ dotnet_naming_symbols.specs_class.applicable_kinds = class
 dotnet_naming_symbols.specs_class.applicable_accessibilities = private, internal
 
 # Naming rules
-dotnet_naming_rule.static_field_should_be_snake_case.severity = error
+dotnet_naming_rule.static_field_should_be_snake_case.severity = warning
 dotnet_naming_rule.static_field_should_be_snake_case.symbols = static_field
 dotnet_naming_rule.static_field_should_be_snake_case.style = snake_case
 
-dotnet_naming_rule.machine_delegate_should_be_snake_case.severity = error
+dotnet_naming_rule.machine_delegate_should_be_snake_case.severity = warning
 dotnet_naming_rule.machine_delegate_should_be_snake_case.symbols = specs_delegate
 dotnet_naming_rule.machine_delegate_should_be_snake_case.style = snake_case
 
-dotnet_naming_rule.specs_class_should_be_snake_case.severity = error
+dotnet_naming_rule.specs_class_should_be_snake_case.severity = warning
 dotnet_naming_rule.specs_class_should_be_snake_case.symbols = specs_class
 dotnet_naming_rule.specs_class_should_be_snake_case.style = snake_case
