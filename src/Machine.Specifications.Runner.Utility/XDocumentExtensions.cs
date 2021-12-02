@@ -9,6 +9,7 @@ namespace Machine.Specifications.Runner.Utility
         public static T SafeGet<T>(this XDocument element, string xpath)
         {
             var selected = element.XPathSelectElement(xpath);
+
             if (selected != null && !selected.IsEmpty)
             {
                 if (typeof(Enum).IsAssignableFrom(typeof(T)))
@@ -19,7 +20,7 @@ namespace Machine.Specifications.Runner.Utility
                 return (T)Convert.ChangeType(selected.Value, typeof(T));
             }
 
-            return default(T);
+            return default;
         }
     }
 }

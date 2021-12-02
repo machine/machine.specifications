@@ -7,6 +7,13 @@ namespace Machine.Specifications.Runner.Utility
     [Serializable]
     public class RunOptions
     {
+        private RunOptions()
+        {
+            IncludeTags = Enumerable.Empty<string>();
+            ExcludeTags = Enumerable.Empty<string>();
+            Filters = Enumerable.Empty<string>();
+        }
+
         public IEnumerable<string> IncludeTags { get; protected set; }
 
         public IEnumerable<string> ExcludeTags { get; protected set; }
@@ -15,15 +22,9 @@ namespace Machine.Specifications.Runner.Utility
 
         public string ShadowCopyCachePath { get; protected set; }
 
-        private RunOptions()
-        {
-            this.IncludeTags = Enumerable.Empty<string>();
-            this.ExcludeTags = Enumerable.Empty<string>();
-            this.Filters = Enumerable.Empty<string>();
-        }
+        public static RunOptions Default => new RunOptions();
 
-        public static RunOptions Default { get { return new RunOptions(); } }
-        public static RunOptionsBuilder Custom { get { return new RunOptionsBuilder(); } }
+        public static RunOptionsBuilder Custom => new RunOptionsBuilder();
 
         public class RunOptionsBuilder : RunOptions 
         {
@@ -33,28 +34,28 @@ namespace Machine.Specifications.Runner.Utility
 
             public RunOptionsBuilder Include(IEnumerable<string> tags)
             {
-                this.IncludeTags = tags;
+                IncludeTags = tags;
 
                 return this;
             }
 
             public RunOptionsBuilder Exclude(IEnumerable<string> tags)
             {
-                this.ExcludeTags = tags;
+                ExcludeTags = tags;
 
                 return this;
             }
 
             public RunOptionsBuilder FilterBy(IEnumerable<string> filters)
             {
-                this.Filters = filters;
+                Filters = filters;
 
                 return this;
             }
 
             public RunOptionsBuilder ShadowCopyTo(string cachePath)
             {
-                this.ShadowCopyCachePath = cachePath;
+                ShadowCopyCachePath = cachePath;
                 return this;
             }
         }

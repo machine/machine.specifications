@@ -15,18 +15,23 @@ namespace Machine.Specifications.Runner.Utility
     {
         private const string RunnerType = "Machine.Specifications.Runner.Impl.DefaultRunner";
 
-        readonly ISpecificationRunListener _listener;
-        readonly RunOptions _options;
-        readonly InvokeOnce _signalRunStart;
-        readonly InvokeOnce _signalRunEnd;
+        private readonly ISpecificationRunListener listener;
+
+        private readonly RunOptions options;
+
+        private readonly InvokeOnce signalRunStart;
+
+        private readonly InvokeOnce signalRunEnd;
+
+        private readonly Dictionary<AssemblyPath, AppDomainAndRunner> appDomains = new Dictionary<AssemblyPath, AppDomainAndRunner>();
 
         public AppDomainRunner(ISpecificationRunListener listener, RunOptions options)
         {
-            _listener = new RemoteRunListener(listener);
-            _options = options;
+            this.listener = new RemoteRunListener(listener);
+            this.options = options;
 
-            _signalRunStart = new InvokeOnce(listener.OnRunStart);
-            _signalRunEnd = new InvokeOnce(listener.OnRunEnd);
+            signalRunStart = new InvokeOnce(listener.OnRunStart);
+            signalRunEnd = new InvokeOnce(listener.OnRunEnd);
         }
 
         [SecuritySafeCritical]
@@ -38,7 +43,7 @@ namespace Machine.Specifications.Runner.Utility
         [SecuritySafeCritical]
         public void RunAssemblies(IEnumerable<AssemblyPath> assemblies)
         {
-            _signalRunStart.Invoke();
+            signalRunStart.Invoke();
 
             assemblies.Each(assembly =>
             {
@@ -53,13 +58,14 @@ namespace Machine.Specifications.Runner.Utility
                 }
             });
 
-            _signalRunEnd.Invoke();
+            signalRunEnd.Invoke();
         }
 
         [SecuritySafeCritical]
         public void RunNamespace(AssemblyPath assembly, string targetNamespace)
         {
-            _signalRunStart.Invoke();
+            signalRunStart.Invoke();
+
             StartRun(assembly);
             GetOrCreateAppDomainRunner(assembly).Runner.RunNamespace(assembly, targetNamespace);
         }
@@ -67,7 +73,8 @@ namespace Machine.Specifications.Runner.Utility
         [SecuritySafeCritical]
         public void RunMember(AssemblyPath assembly, MemberInfo member)
         {
-            _signalRunStart.Invoke();
+            signalRunStart.Invoke();
+
             StartRun(assembly);
             GetOrCreateAppDomainRunner(assembly).Runner.RunMember(assembly, member);
         }
@@ -93,6 +100,7 @@ namespace Machine.Specifications.Runner.Utility
 
             var appDomainRunner = GetOrCreateAppDomainRunner(assembly);
             RemoveEntryFor(assembly);
+
             try
             {
                 appDomainRunner.Runner.EndRun(assembly);
@@ -103,9 +111,9 @@ namespace Machine.Specifications.Runner.Utility
             }
         }
 
-        void RemoveEntryFor(AssemblyPath assembly)
+        private void RemoveEntryFor(AssemblyPath assembly)
         {
-            _appDomains.Remove(assembly);
+            appDomains.Remove(assembly);
         }
 
         private static void UnloadAppDomain(AppDomain appDomain)
@@ -114,6 +122,7 @@ namespace Machine.Specifications.Runner.Utility
             {
                 return;
             }
+
 #if !NETSTANDARD
             var cachePath = appDomain.SetupInformation.CachePath;
 
@@ -134,10 +143,17 @@ namespace Machine.Specifications.Runner.Utility
         }
 
         [SecuritySafeCritical]
-        ISpecificationRunner CreateRunnerInSeparateAppDomain(AppDomain appDomain, AssemblyPath assembly)
+        private ISpecificationRunner CreateRunnerInSeparateAppDomain(AppDomain appDomain, AssemblyPath assembly)
         {
 #if !NETSTANDARD
-            var mspecAssemblyFilename = Path.Combine(Path.GetDirectoryName(assembly), "Machine.Specifications.dll");
+            var path = Path.GetDirectoryName(assembly);
+
+            if (path == null)
+            {
+                return new NullSpecificationRunner();
+            }
+
+            var mspecAssemblyFilename = Path.Combine(path, "Machine.Specifications.dll");
 
             if (!File.Exists(mspecAssemblyFilename))
             {
@@ -147,13 +163,14 @@ namespace Machine.Specifications.Runner.Utility
             var mspecAssemblyName = AssemblyName.GetAssemblyName(mspecAssemblyFilename);
 
             var constructorArgs = new object[3];
-            constructorArgs[0] = _listener;
-            constructorArgs[1] = _options.ToXml();
+            constructorArgs[0] = listener;
+            constructorArgs[1] = options.ToXml();
             constructorArgs[2] = false;
 
             try
             {
-                var defaultRunner = (IMessageSink)appDomain.CreateInstanceAndUnwrap(mspecAssemblyName.FullName,
+                var defaultRunner = (IMessageSink)appDomain.CreateInstanceAndUnwrap(
+                    mspecAssemblyName.FullName,
                     RunnerType,
                     false,
                     0,
@@ -162,6 +179,7 @@ namespace Machine.Specifications.Runner.Utility
                     null,
                     null,
                     null);
+
                 return new RemoteRunnerDecorator(defaultRunner);
             }
             catch (Exception err)
@@ -181,21 +199,20 @@ namespace Machine.Specifications.Runner.Utility
                 .GetConstructors(BindingFlags.Instance | BindingFlags.Public)
                 .First(x => x.GetParameters().Length == 3);
 
-            Runner.RunOptions options = new Runner.RunOptions(_options.IncludeTags, _options.ExcludeTags, _options.Filters);
-
-            var listener = new ReflectionRunListener(_listener);
-            var runner = (Runner.ISpecificationRunner) ctor.Invoke(new object[] {listener, options, false});
+            var runner = (Runner.ISpecificationRunner) ctor.Invoke(new object[]
+            {
+                new ReflectionRunListener(listener),
+                new Runner.RunOptions(options.IncludeTags, options.ExcludeTags, options.Filters),
+                false
+            });
 
             return new ReflectionSpecificationRunner(runner);
 #endif
         }
 
-        readonly Dictionary<AssemblyPath, AppDomainAndRunner> _appDomains = new Dictionary<AssemblyPath, AppDomainAndRunner>();
-
-        AppDomainAndRunner GetOrCreateAppDomainRunner(AssemblyPath assembly)
+        private AppDomainAndRunner GetOrCreateAppDomainRunner(AssemblyPath assembly)
         {
-            AppDomainAndRunner appDomainAndRunner;
-            if (_appDomains.TryGetValue(assembly, out appDomainAndRunner))
+            if (appDomains.TryGetValue(assembly, out var appDomainAndRunner))
             {
                 return appDomainAndRunner;
             }
@@ -204,22 +221,22 @@ namespace Machine.Specifications.Runner.Utility
             var setup = new AppDomainSetup
             {
                 ApplicationBase = Path.GetDirectoryName(assembly),
-                ApplicationName = string.Format("Machine Specifications Runner"),
+                ApplicationName = "Machine Specifications Runner",
                 ConfigurationFile = GetConfigFile(assembly)
             };
 
-            if (!string.IsNullOrEmpty(_options.ShadowCopyCachePath))
+            if (!string.IsNullOrEmpty(options.ShadowCopyCachePath))
             {
                 setup.ShadowCopyFiles = "true";
                 setup.ShadowCopyDirectories = setup.ApplicationBase;
-                setup.CachePath = _options.ShadowCopyCachePath;
+                setup.CachePath = options.ShadowCopyCachePath;
             }
 
             var appDomain = AppDomain.CreateDomain(setup.ApplicationName, null, setup, new PermissionSet(PermissionState.Unrestricted));
 
             var runner = CreateRunnerInSeparateAppDomain(appDomain, assembly);
 
-            _appDomains.Add(assembly, new AppDomainAndRunner
+            appDomains.Add(assembly, new AppDomainAndRunner
             {
                 AppDomain = appDomain,
                 Runner = runner
@@ -234,12 +251,12 @@ namespace Machine.Specifications.Runner.Utility
 #endif
         }
 
-        bool RunnerWasCreated(AssemblyPath assembly)
+        private bool RunnerWasCreated(AssemblyPath assembly)
         {
-            return _appDomains.ContainsKey(assembly);
+            return appDomains.ContainsKey(assembly);
         }
 
-        static string GetConfigFile(AssemblyPath assembly)
+        private static string GetConfigFile(AssemblyPath assembly)
         {
             var configFile = assembly + ".config";
 
@@ -251,9 +268,10 @@ namespace Machine.Specifications.Runner.Utility
             return null;
         }
 
-        class AppDomainAndRunner
+        private class AppDomainAndRunner
         {
             public AppDomain AppDomain { get; set; }
+
             public ISpecificationRunner Runner { get; set; }
         }
     }

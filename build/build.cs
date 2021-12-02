@@ -12,7 +12,7 @@ public class build
 
         Target("clean", () =>
         {
-            Run("dotnet", "clean");
+            Run("dotnet", "clean --configuration Release");
 
             if (Directory.Exists("artifacts"))
             {

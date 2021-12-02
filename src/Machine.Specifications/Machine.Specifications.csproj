@@ -1,19 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>0.1.0</Version>
     <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
-    <Description>Machine.Specifications is a Context/Specification framework geared towards removing language noise and simplifying tests.</Description>
+
+    <Description>Machine.Specifications is a Context/Specification framework geared towards removing language noise and simplifying tests</Description>
     <Authors>Machine Specifications</Authors>
     <PackageTags>test;unit;testing;context;specification;bdd;tdd;mspec</PackageTags>
     <PackageReleaseNotes>https://github.com/machine/machine.specifications/releases</PackageReleaseNotes>
-    <PackageIcon>Machine.png</PackageIcon>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>http://github.com/machine/machine.specifications</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+
+    <NoWarn>NU5128</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Resources\Machine.png" Pack="true" PackagePath="\" />
+    <ProjectReference Include="..\Machine.Specifications.Core\Machine.Specifications.Core.csproj" />
+    <ProjectReference Include="..\Machine.Specifications.Should\Machine.Specifications.Should.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../images/icon.png" Pack="true" PackagePath="" Visible="false" />
   </ItemGroup>
 
 </Project>

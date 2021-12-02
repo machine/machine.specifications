@@ -1,23 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>0.1.0</Version>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Description>Machine.Specifications.Should is a should library for the Context/Specification framework Machine.Specifications</Description>
+    <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+    <RootNamespace>Machine.Specifications</RootNamespace>
+
+    <Description>Assertion library for Machine.Specifications</Description>
     <Authors>Machine Specifications</Authors>
     <PackageTags>test;unit;testing;context;specification;bdd;tdd;mspec</PackageTags>
     <PackageReleaseNotes>https://github.com/machine/machine.specifications.should/releases</PackageReleaseNotes>
-    <PackageIcon>Machine.png</PackageIcon>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>http://github.com/machine/machine.specifications.should</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Machine.Specifications\Machine.Specifications.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Resources\Machine.png" Pack="true" PackagePath="\" />
+    <None Include="../../images/icon.png" Pack="true" PackagePath="" Visible="false" />
   </ItemGroup>
 
 </Project>

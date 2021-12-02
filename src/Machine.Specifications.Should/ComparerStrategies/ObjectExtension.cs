@@ -1,6 +1,6 @@
 ﻿namespace Machine.Specifications.ComparerStrategies
 {
-    static class ObjectExtension
+    internal static class ObjectExtension
     {
         public static bool IsEqualToDefault<T>(this T obj)
         {

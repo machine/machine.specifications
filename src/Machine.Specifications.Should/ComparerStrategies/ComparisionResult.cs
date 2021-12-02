@@ -1,6 +1,6 @@
 ﻿namespace Machine.Specifications.ComparerStrategies
 {
-    class ComparisionResult
+    internal class ComparisionResult
     {
         public ComparisionResult(int result)
         {
@@ -13,6 +13,7 @@
         }
 
         public bool FoundResult { get; protected set; }
-        public int Result { get; private set; }
+
+        public int Result { get; }
     }
 }

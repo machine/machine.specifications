@@ -1,6 +1,6 @@
 ﻿namespace Machine.Specifications.ComparerStrategies
 {
-    interface IComparerStrategy<T>
+    internal interface IComparerStrategy<in T>
     {
         ComparisionResult Compare(T x, T y);
     }

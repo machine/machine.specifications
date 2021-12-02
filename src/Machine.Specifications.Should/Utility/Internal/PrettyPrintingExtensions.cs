@@ -6,22 +6,22 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Reflection;
 
-
 namespace Machine.Specifications.Utility.Internal
 {
     public static class PrettyPrintingExtensions
     {
         private const string CurlyBraceSurround = "{{{0}}}";
+
         private static readonly Regex EscapeNonFormatBraces = new Regex(@"{([^\d].*?)}", RegexOptions.Compiled | RegexOptions.Singleline);
 
         public static string FormatErrorMessage(object actualObject, object expectedObject)
         {
-            if (actualObject == null || !(actualObject is string) ||
-                expectedObject == null || !(expectedObject is string))
+            if (!(actualObject is string) || !(expectedObject is string))
             {
                 // format objects
                 var actual = actualObject.ToUsefulString();
                 var expected = expectedObject.ToUsefulString();
+
                 return string.Format("  Expected: {1}{0}  But was:  {2}", Environment.NewLine, expected, actual);
             }
             else
@@ -32,9 +32,8 @@ namespace Machine.Specifications.Utility.Internal
 
                 var expectedStringLengthMessage = GetExpectedStringLengthMessage(expected.Length, actual.Length);
                 var firstIndexOfFirstDifference = GetFirstIndexOfFirstDifference(actual, expected);
-                string actualReported;
-                string expectedReported;
-                GetStringsAroundFirstDifference(expected, actual, firstIndexOfFirstDifference, out actualReported, out expectedReported);
+
+                GetStringsAroundFirstDifference(expected, actual, firstIndexOfFirstDifference, out var actualReported, out var expectedReported);
 
                 var count = GetFirstIndexOfFirstDifference(actualReported, expectedReported);
 
@@ -52,7 +51,7 @@ namespace Machine.Specifications.Utility.Internal
             }
         }
 
-        static void GetStringsAroundFirstDifference(string expected, string actual, int firstIndexOfFirstDifference, out string actualReported, out string expectedReported)
+        private static void GetStringsAroundFirstDifference(string expected, string actual, int firstIndexOfFirstDifference, out string actualReported, out string expectedReported)
         {
             var left = firstIndexOfFirstDifference;
             var actualRight = firstIndexOfFirstDifference;
@@ -70,6 +69,7 @@ namespace Machine.Specifications.Utility.Internal
                     left--;
                     keepAugmenting = true;
                 }
+
                 if (IsInCopyFrameLength(left, actualRight, actual.Length) &&
                     IsInCopyFrameLength(left, expectedRight, expected.Length))
                 {
@@ -78,6 +78,7 @@ namespace Machine.Specifications.Utility.Internal
                         actualRight++;
                         keepAugmenting = true;
                     }
+
                     if (expected.Length > expectedRight)
                     {
                         expectedRight++;
@@ -94,6 +95,7 @@ namespace Machine.Specifications.Utility.Internal
                 actualReported = "..." + actualReported;
                 expectedReported = "..." + expectedReported;
             }
+
             if (actualRight != actual.Length || expectedRight != expected.Length)
             {
                 actualReported = actualReported + "...";
@@ -101,17 +103,24 @@ namespace Machine.Specifications.Utility.Internal
             }
         }
 
-        static bool IsInCopyFrameLength(int start, int end, int max)
+        private static bool IsInCopyFrameLength(int start, int end, int max)
         {
             int length = end - start;
+
             if (start > 0)
+            {
                 length += 3;
+            }
+
             if (end < max)
+            {
                 length += 3;
+            }
+
             return length < 64;
         }
 
-        static int GetFirstIndexOfFirstDifference(string actual, string expected)
+        private static int GetFirstIndexOfFirstDifference(string actual, string expected)
         {
             for (var i = 0; i < actual.Length; i++)
             {
@@ -120,30 +129,32 @@ namespace Machine.Specifications.Utility.Internal
                     return i;
                 }
             }
+
             return actual.Length;
         }
 
-        static string GetExpectedStringLengthMessage(int actual, int expected)
+        private static string GetExpectedStringLengthMessage(int actual, int expected)
         {
             if (actual == expected)
             {
-                return string.Format("String lengths are both {0}.", actual);
+                return $"String lengths are both {actual}.";
             }
 
-            return string.Format("Expected string length {0} but was {1}.", actual, expected);
+            return $"Expected string length {actual} but was {expected}.";
         }
 
-        static string Tab(this string str)
+        private static string Tab(this string str)
         {
             if (string.IsNullOrEmpty(str))
             {
-                return "";
+                return string.Empty;
             }
 
             var split = str.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
             var sb = new StringBuilder();
 
             sb.Append("  " + split[0]);
+
             foreach (var part in split.Skip(1))
             {
                 sb.AppendLine();
@@ -155,24 +166,28 @@ namespace Machine.Specifications.Utility.Internal
 
         public static string EachToUsefulString<T>(this IEnumerable<T> enumerable)
         {
+            var array = enumerable.ToArray();
+
             var sb = new StringBuilder();
             sb.AppendLine("{");
-            sb.Append(String.Join(",\r\n", enumerable.Select(x => x.ToUsefulString().Tab()).Take(10).ToArray()));
-            if (enumerable.Count() > 10)
+            sb.Append(string.Join(",\r\n", array.Select(x => x.ToUsefulString().Tab()).Take(10).ToArray()));
+
+            if (array.Length > 10)
             {
-                if (enumerable.Count() > 11)
+                if (array.Length > 11)
                 {
-                    sb.AppendLine(String.Format(",\r\n  ...({0} more elements)", enumerable.Count() - 10));
+                    sb.AppendLine($",\r\n  ...({array.Length - 10} more elements)");
                 }
                 else
                 {
-                    sb.AppendLine(",\r\n" + enumerable.Last().ToUsefulString().Tab());
+                    sb.AppendLine(",\r\n" + array.Last().ToUsefulString().Tab());
                 }
             }
             else
             {
                 sb.AppendLine();
             }
+
             sb.AppendLine("}");
 
             return sb.ToString();
@@ -180,34 +195,33 @@ namespace Machine.Specifications.Utility.Internal
 
         internal static string ToUsefulString(this object obj)
         {
-            string str;
             if (obj == null)
             {
                 return "[null]";
             }
-            if (obj.GetType() == typeof(string))
-            {
-                str = (string)obj;
 
-                return "\"" + str.Replace("\n", "\\n") + "\"";
+            if (obj is string value)
+            {
+                return "\"" + value.Replace("\n", "\\n") + "\"";
             }
+
             if (obj.GetType().GetTypeInfo().IsValueType)
             {
                 return "[" + obj + "]";
             }
 
-            if (obj is IEnumerable)
+            if (obj is IEnumerable items)
             {
-                var enumerable = ((IEnumerable)obj).Cast<object>();
+                var enumerable = items.Cast<object>();
 
-                return obj.GetType() + ":\r\n" + enumerable.EachToUsefulString();
+                return items.GetType() + ":\r\n" + enumerable.EachToUsefulString();
             }
 
-            str = obj.ToString();
+            var str = obj.ToString();
 
-            if (str == null || str.Trim() == "")
+            if (str == null || str.Trim() == string.Empty)
             {
-                return String.Format("{0}:[]", obj.GetType());
+                return $"{obj.GetType()}:[]";
             }
 
             str = str.Trim();
@@ -225,7 +239,7 @@ namespace Machine.Specifications.Utility.Internal
                 return obj.GetType().ToString();
             }
 
-            return string.Format("{0}:[{1}]", obj.GetType(), str);
+            return $"{obj.GetType()}:[{str}]";
         }
 
         internal static string EnsureSafeFormat(this string message)

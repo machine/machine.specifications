@@ -5,59 +5,65 @@ namespace Machine.Specifications.Runner.Utility
 {
     public class TimingRunListener : ISpecificationRunListener
     {
-        readonly Stopwatch _assemblyTimer = new Stopwatch();
-        readonly Dictionary<AssemblyInfo, long> _assemblyTimes = new Dictionary<AssemblyInfo, long>();
-        readonly Stopwatch _contextTimer = new Stopwatch();
-        readonly Dictionary<ContextInfo, long> _contextTimes = new Dictionary<ContextInfo, long>();
-        readonly Stopwatch _runTimer = new Stopwatch();
-        readonly Stopwatch _specificationTimer = new Stopwatch();
-        readonly Dictionary<SpecificationInfo, long> _specificationTimes = new Dictionary<SpecificationInfo, long>();
+        private readonly Stopwatch assemblyTimer = new Stopwatch();
+
+        private readonly Dictionary<AssemblyInfo, long> assemblyTimes = new Dictionary<AssemblyInfo, long>();
+
+        private readonly Stopwatch contextTimer = new Stopwatch();
+
+        private readonly Dictionary<ContextInfo, long> contextTimes = new Dictionary<ContextInfo, long>();
+
+        private readonly Stopwatch runTimer = new Stopwatch();
+
+        private readonly Stopwatch specificationTimer = new Stopwatch();
+
+        private readonly Dictionary<SpecificationInfo, long> specificationTimes = new Dictionary<SpecificationInfo, long>();
 
         public void OnRunStart()
         {
-            this._runTimer.Restart();
+            runTimer.Restart();
         }
 
         public void OnRunEnd()
         {
-            this._runTimer.Stop();
+            runTimer.Stop();
         }
 
         public void OnAssemblyStart(AssemblyInfo assembly)
         {
-            this._assemblyTimer.Restart();
+            assemblyTimer.Restart();
         }
 
         public void OnAssemblyEnd(AssemblyInfo assembly)
         {
-            this._assemblyTimer.Stop();
-            this._assemblyTimes[assembly] = this._assemblyTimer.ElapsedMilliseconds;
+            assemblyTimer.Stop();
+            assemblyTimes[assembly] = assemblyTimer.ElapsedMilliseconds;
         }
 
         public void OnContextStart(ContextInfo context)
         {
-            this._contextTimer.Restart();
-            this._specificationTimer.Restart();
+            contextTimer.Restart();
+            specificationTimer.Restart();
         }
 
         public void OnContextEnd(ContextInfo context)
         {
-            this._contextTimer.Stop();
-            this._contextTimes[context] = this._contextTimer.ElapsedMilliseconds;
+            contextTimer.Stop();
+            contextTimes[context] = contextTimer.ElapsedMilliseconds;
         }
 
         public void OnSpecificationStart(SpecificationInfo specification)
         {
-            if (!this._specificationTimer.IsRunning)
+            if (!specificationTimer.IsRunning)
             {
-                this._specificationTimer.Restart();
+                specificationTimer.Restart();
             }
         }
 
         public void OnSpecificationEnd(SpecificationInfo specification, Result result)
         {
-            this._specificationTimer.Stop();
-            this._specificationTimes[specification] = this._specificationTimer.ElapsedMilliseconds;
+            specificationTimer.Stop();
+            specificationTimes[specification] = specificationTimer.ElapsedMilliseconds;
         }
 
         public void OnFatalError(ExceptionResult exception)
@@ -66,9 +72,9 @@ namespace Machine.Specifications.Runner.Utility
 
         public long GetSpecificationTime(SpecificationInfo specificationInfo)
         {
-            if (this._specificationTimes.ContainsKey(specificationInfo))
+            if (specificationTimes.ContainsKey(specificationInfo))
             {
-                return this._specificationTimes[specificationInfo];
+                return specificationTimes[specificationInfo];
             }
 
             return -1;
@@ -76,9 +82,9 @@ namespace Machine.Specifications.Runner.Utility
 
         public long GetContextTime(ContextInfo contextInfo)
         {
-            if (this._contextTimes.ContainsKey(contextInfo))
+            if (contextTimes.ContainsKey(contextInfo))
             {
-                return this._contextTimes[contextInfo];
+                return contextTimes[contextInfo];
             }
 
             return -1;
@@ -86,9 +92,9 @@ namespace Machine.Specifications.Runner.Utility
 
         public long GetAssemblyTime(AssemblyInfo assemblyInfo)
         {
-            if (this._assemblyTimes.ContainsKey(assemblyInfo))
+            if (assemblyTimes.ContainsKey(assemblyInfo))
             {
-                return this._assemblyTimes[assemblyInfo];
+                return assemblyTimes[assemblyInfo];
             }
 
             return -1;
@@ -96,16 +102,7 @@ namespace Machine.Specifications.Runner.Utility
 
         public long GetRunTime()
         {
-            return this._runTimer.ElapsedMilliseconds;
-        }
-    }
-
-    static class TimerExtensions
-    {
-        public static void Restart(this Stopwatch timer)
-        {
-            timer.Reset();
-            timer.Start();
+            return runTimer.ElapsedMilliseconds;
         }
     }
 }

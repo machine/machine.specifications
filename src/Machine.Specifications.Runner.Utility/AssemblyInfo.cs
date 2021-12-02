@@ -8,16 +8,18 @@ namespace Machine.Specifications.Runner.Utility
     {
         public AssemblyInfo(string name, string location)
         {
-            this.Name = name;
-            this.Location = location;
+            Name = name;
+            Location = location;
         }
 
         public AssemblyInfo()
         {
         }
 
-        public string Name { get; private set; }
-        public string Location { get; private set; }
+        public string Name { get; }
+
+        public string Location { get; }
+
         public string CapturedOutput { get; set; }
 
         public static AssemblyInfo Parse(string assemblyInfoXml)
@@ -25,12 +27,12 @@ namespace Machine.Specifications.Runner.Utility
             var document = XDocument.Parse(assemblyInfoXml);
             var name = document.SafeGet<string>("/assemblyinfo/name");
             var location = document.SafeGet<string>("/assemblyinfo/location");
-            var capturedoutput = document.SafeGet<string>("/assemblyinfo/capturedoutput");
+            var capturedOutput = document.SafeGet<string>("/assemblyinfo/capturedoutput");
 
             return new AssemblyInfo(name, location)
-                       {
-                           CapturedOutput = capturedoutput
-                       };
+            {
+                CapturedOutput = capturedOutput
+            };
         }
     }
 }

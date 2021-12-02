@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-
 using Machine.Specifications.ComparerStrategies;
 
 namespace Machine.Specifications
@@ -13,6 +12,7 @@ namespace Machine.Specifications
             foreach (var comparer in comparers)
             {
                 var comparisionResult = comparer.Compare(x, y);
+
                 if (comparisionResult.FoundResult)
                 {
                     return comparisionResult.Result;

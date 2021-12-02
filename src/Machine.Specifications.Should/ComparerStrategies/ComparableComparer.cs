@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 
 namespace Machine.Specifications.ComparerStrategies
 {
@@ -7,23 +6,21 @@ namespace Machine.Specifications.ComparerStrategies
     {
         public ComparisionResult Compare(T x, T y)
         {
-            var comparable1 = x as IComparable<T>;
-
-            if (comparable1 != null)
+            if (x is IComparable<T> comparable1)
             {
                 return new ComparisionResult(comparable1.CompareTo(y));
             }
 
-            var comparable2 = x as IComparable;
-
-            if (comparable2 != null)
+            if (x is IComparable comparable2)
             {
                 if (!(comparable2.GetType().IsInstanceOfType(y)))
                 {
                     return new NoResult();
                 }
+
                 return new ComparisionResult(comparable2.CompareTo(y));
             }
+
             return new NoResult();
         }
     }

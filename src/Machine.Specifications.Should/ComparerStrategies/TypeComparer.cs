@@ -1,6 +1,6 @@
 ﻿namespace Machine.Specifications.ComparerStrategies
 {
-    class TypeComparer<T> : IComparerStrategy<T>
+    internal class TypeComparer<T> : IComparerStrategy<T>
     {
         public ComparisionResult Compare(T x, T y)
         {
@@ -8,6 +8,7 @@
             {
                 return new ComparisionResult(-1);
             }
+
             return new NoResult();
         }
     }

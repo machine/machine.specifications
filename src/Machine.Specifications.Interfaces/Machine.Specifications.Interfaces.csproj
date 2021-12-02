@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Machine.Specifications</RootNamespace>
+
+    <Description>SDK and common runner interfaces used by Machine.Specifications</Description>
+    <Authors>Machine Specifications</Authors>
+    <PackageTags>test;unit;testing;context;specification;bdd;tdd;mspec</PackageTags>
+    <PackageReleaseNotes>https://github.com/machine/machine.specifications/releases</PackageReleaseNotes>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageProjectUrl>http://github.com/machine/machine.specifications</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../../images/icon.png" Pack="true" PackagePath="" Visible="false" />
+  </ItemGroup>
+
+</Project>

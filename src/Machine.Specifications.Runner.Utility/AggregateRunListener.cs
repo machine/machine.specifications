@@ -10,57 +10,59 @@ namespace Machine.Specifications.Runner.Utility
     public class AggregateRunListener : ISpecificationRunListener
     {
         private readonly IEnumerable<ISpecificationRunListener> reversedListeners;
+
         private readonly List<ISpecificationRunListener> listeners;
 
         public AggregateRunListener(IEnumerable<ISpecificationRunListener> listeners)
         {
             this.listeners = new List<ISpecificationRunListener>(listeners);
-            this.reversedListeners = Enumerable.Reverse(this.listeners);
+
+            reversedListeners = Enumerable.Reverse(this.listeners);
         }
 
         public void OnAssemblyStart(AssemblyInfo assemblyInfo)
         {
-            this.listeners.Each(listener => listener.OnAssemblyStart(assemblyInfo));
+            listeners.Each(listener => listener.OnAssemblyStart(assemblyInfo));
         }
 
         public void OnAssemblyEnd(AssemblyInfo assemblyInfo)
         {
-            this.listeners.Each(listener => listener.OnAssemblyEnd(assemblyInfo));
+            listeners.Each(listener => listener.OnAssemblyEnd(assemblyInfo));
         }
 
         public void OnRunStart()
         {
-            this.listeners.Each(listener => listener.OnRunStart());
+            listeners.Each(listener => listener.OnRunStart());
         }
 
         public void OnRunEnd()
         {
-            this.reversedListeners.Each(listener => listener.OnRunEnd());
+            reversedListeners.Each(listener => listener.OnRunEnd());
         }
 
         public void OnContextStart(ContextInfo contextInfo)
         {
-            this.listeners.Each(listener => listener.OnContextStart(contextInfo));
+            listeners.Each(listener => listener.OnContextStart(contextInfo));
         }
 
         public void OnContextEnd(ContextInfo contextInfo)
         {
-            this.listeners.Each(listener => listener.OnContextEnd(contextInfo));
+            listeners.Each(listener => listener.OnContextEnd(contextInfo));
         }
 
         public void OnSpecificationStart(SpecificationInfo specificationInfo)
         {
-            this.listeners.Each(listener => listener.OnSpecificationStart(specificationInfo));
+            listeners.Each(listener => listener.OnSpecificationStart(specificationInfo));
         }
 
         public void OnSpecificationEnd(SpecificationInfo specificationInfo, Result result)
         {
-            this.reversedListeners.Each(listener => listener.OnSpecificationEnd(specificationInfo, result));
+            reversedListeners.Each(listener => listener.OnSpecificationEnd(specificationInfo, result));
         }
 
         public void OnFatalError(ExceptionResult exceptionResult)
         {
-            this.listeners.Each(listener => listener.OnFatalError(exceptionResult));
+            listeners.Each(listener => listener.OnFatalError(exceptionResult));
         }
     }
 }

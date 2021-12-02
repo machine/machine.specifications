@@ -8,7 +8,7 @@ namespace Machine.Specifications.Annotations
     /// The mandatory argument of the attribute is the assertion type.
     /// </summary>
     /// <seealso cref="AssertionConditionType"/>
-    [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Parameter)]
     public sealed class AssertionConditionAttribute : Attribute
     {
         private readonly AssertionConditionType myConditionType;
@@ -36,7 +36,7 @@ namespace Machine.Specifications.Annotations
     /// To set the condition, mark one of the parameters with <see cref="AssertionConditionAttribute"/> attribute
     /// </summary>
     /// <seealso cref="AssertionConditionAttribute"/>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Method)]
     public sealed class AssertionMethodAttribute : Attribute
     {
     }

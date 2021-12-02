@@ -2,14 +2,11 @@
 
 namespace Machine.Specifications.ComparerStrategies
 {
-    class EnumerableComparer<T> : IComparerStrategy<T>
+    internal class EnumerableComparer<T> : IComparerStrategy<T>
     {
         public ComparisionResult Compare(T x, T y)
         {
-            var enumerableX = x as IEnumerable;
-            var enumerableY = y as IEnumerable;
-
-            if (enumerableX != null && enumerableY != null)
+            if (x is IEnumerable enumerableX && y is IEnumerable enumerableY)
             {
                 var enumeratorX = enumerableX.GetEnumerator();
                 var enumeratorY = enumerableY.GetEnumerator();
@@ -30,6 +27,7 @@ namespace Machine.Specifications.ComparerStrategies
                     }
                 }
             }
+
             return new NoResult();
         }
     }

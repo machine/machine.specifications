@@ -6,23 +6,27 @@ namespace Machine.Specifications.Runner.Utility
     [Serializable]
     public class SpecificationInfo
     {
-        public string Leader { get; set; }
-        public string Name { get; set; }
-        public string ContainingType { get; set; }
-        public string FieldName { get; set; }
-        public string CapturedOutput { get; set; }
-
         public SpecificationInfo()
         {
         }
 
         public SpecificationInfo(string leader, string name, string containingType, string fieldName)
         {
-            this.Leader = leader;
-            this.Name = name;
-            this.ContainingType = containingType;
-            this.FieldName = fieldName;
+            Leader = leader;
+            Name = name;
+            ContainingType = containingType;
+            FieldName = fieldName;
         }
+
+        public string Leader { get; set; }
+
+        public string Name { get; set; }
+
+        public string ContainingType { get; set; }
+
+        public string FieldName { get; set; }
+
+        public string CapturedOutput { get; set; }
 
         public static SpecificationInfo Parse(string specificationInfoXml)
         {
@@ -34,9 +38,9 @@ namespace Machine.Specifications.Runner.Utility
             var capturedOutput = document.SafeGet<string>("/specificationinfo/capturedoutput");
 
             return new SpecificationInfo(leader, name, containingType, fieldName)
-                       {
-                           CapturedOutput = capturedOutput,
-                       };
+            {
+                CapturedOutput = capturedOutput
+            };
         }
     }
 }

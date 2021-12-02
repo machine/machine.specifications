@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Reflection;
 
 namespace Machine.Specifications.ComparerStrategies
 {
-    static class TypeExtension
+    internal static class TypeExtension
     {
         public static bool IsNullable(this Type type)
         {
