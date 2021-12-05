@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Machine.Specifications.ComparerStrategies;
+using Machine.Specifications.Comparers;
 
 namespace Machine.Specifications
 {
-    public class AssertComparer<T> : IComparer<T>, IEqualityComparer<T>
+    internal class AssertComparer<T> : IComparer<T>, IEqualityComparer<T>
     {
         public int Compare(T x, T y)
         {

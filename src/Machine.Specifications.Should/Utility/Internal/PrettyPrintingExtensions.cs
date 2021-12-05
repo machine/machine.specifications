@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace Machine.Specifications.Utility.Internal
 {
-    public static class PrettyPrintingExtensions
+    internal static class PrettyPrintingExtensions
     {
         private const string CurlyBraceSurround = "{{{0}}}";
 

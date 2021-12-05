@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Machine.Specifications.ComparerStrategies
+namespace Machine.Specifications.Comparers
 {
     class ComparableComparer<T> : IComparerStrategy<T>
     {

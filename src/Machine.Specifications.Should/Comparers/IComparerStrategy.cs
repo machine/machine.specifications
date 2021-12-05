@@ -1,4 +1,4 @@
-﻿namespace Machine.Specifications.ComparerStrategies
+﻿namespace Machine.Specifications.Comparers
 {
     internal interface IComparerStrategy<in T>
     {

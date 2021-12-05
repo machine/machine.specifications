@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Machine.Specifications.ComparerStrategies
+namespace Machine.Specifications.Comparers
 {
     internal class EquatableComparer<T> : IComparerStrategy<T>
     {

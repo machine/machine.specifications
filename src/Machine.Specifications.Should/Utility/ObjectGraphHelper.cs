@@ -9,7 +9,7 @@ namespace Machine.Specifications.Utility
     /// <summary>
     /// Modified from Steve Wagner's ObjectDiff prototype https://gist.github.com/2841822
     /// </summary>
-    public static class ObjectGraphHelper
+    internal static class ObjectGraphHelper
     {
         public static INode GetGraph(object obj)
         {
