@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
+using Machine.Specifications.Text;
 using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications
 {
-    internal static class EnumerableExtensions
+    public static class EnumerableExtensions
     {
         public static void ShouldEachConformTo<T>(this IEnumerable<T> list, Expression<Func<T, bool>> condition)
         {
@@ -195,6 +195,16 @@ namespace Machine.Specifications
 
                 throw new SpecificationException(message);
             }
+        }
+
+        private static SpecificationException NewException(string message, params object[] parameters)
+        {
+            if (parameters.Any())
+            {
+                return new SpecificationException(string.Format(message.EnsureSafeFormat(), parameters.Select(x => x.ToUsefulString()).Cast<object>().ToArray()));
+            }
+
+            return new SpecificationException(message);
         }
     }
 }

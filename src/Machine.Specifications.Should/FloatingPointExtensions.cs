@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Machine.Specifications.Utility.Internal;
+using Machine.Specifications.Text;
 
 namespace Machine.Specifications
 {
-    internal static class FloatingPointExtensions
+    public static class FloatingPointExtensions
     {
         public static void ShouldBeCloseTo(this float actual, float expected)
         {

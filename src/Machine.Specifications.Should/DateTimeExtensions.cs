@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Machine.Specifications.Utility.Internal;
+using Machine.Specifications.Text;
 
 namespace Machine.Specifications
 {
-    internal static class DateTimeExtensions
+    public static class DateTimeExtensions
     {
         public static void ShouldBeCloseTo(this TimeSpan actual, TimeSpan expected, TimeSpan tolerance)
         {

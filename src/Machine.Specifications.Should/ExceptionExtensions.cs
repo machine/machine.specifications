@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Machine.Specifications
 {
-    internal static class ExceptionExtensions
+    public static class ExceptionExtensions
     {
         public static void ShouldContainErrorMessage(this Exception exception, string expected)
         {

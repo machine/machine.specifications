@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
 namespace Machine.Specifications
 {
-    internal static class BooleanExtensions
+    public static class BooleanExtensions
     {
         [AssertionMethod]
         public static void ShouldBeFalse([AssertionCondition(AssertionConditionType.IS_FALSE)] this bool condition)

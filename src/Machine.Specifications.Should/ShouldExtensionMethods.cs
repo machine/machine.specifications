@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using Machine.Specifications.Text;
 using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications

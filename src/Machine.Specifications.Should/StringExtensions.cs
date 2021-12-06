@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
+using Machine.Specifications.Text;
 
 namespace Machine.Specifications
 {
-    internal static class StringExtensions
+    public static class StringExtensions
     {
         public static void ShouldBeEmpty(this string aString)
         {
@@ -163,6 +164,16 @@ namespace Machine.Specifications
         {
             actual.ShouldStartWith(expectedDelimiter);
             actual.ShouldEndWith(expectedDelimiter);
+        }
+
+        private static SpecificationException NewException(string message, params object[] parameters)
+        {
+            if (parameters.Any())
+            {
+                return new SpecificationException(string.Format(message.EnsureSafeFormat(), parameters.Select(x => x.ToUsefulString()).Cast<object>().ToArray()));
+            }
+
+            return new SpecificationException(message);
         }
     }
 }

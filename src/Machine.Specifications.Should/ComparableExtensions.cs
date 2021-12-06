@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using Machine.Specifications.Text;
+using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications
 {
-    internal static class ComparableExtensions
+    public static class ComparableExtensions
     {
         public static IComparable ShouldBeGreaterThan(this IComparable arg1, IComparable arg2)
         {
@@ -96,6 +97,16 @@ namespace Machine.Specifications
             {
                 return original;
             }
+        }
+
+        private static SpecificationException NewException(string message, params object[] parameters)
+        {
+            if (parameters.Any())
+            {
+                return new SpecificationException(string.Format(message.EnsureSafeFormat(), parameters.Select(x => x.ToUsefulString()).Cast<object>().ToArray()));
+            }
+
+            return new SpecificationException(message);
         }
     }
 }

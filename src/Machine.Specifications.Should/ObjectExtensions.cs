@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using JetBrains.Annotations;
-using Machine.Specifications.Utility;
+using Machine.Specifications.Reflection;
+using Machine.Specifications.Text;
 using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications
 {
-    internal static class ObjectExtensions
+    public static class ObjectExtensions
     {
         [AssertionMethod]
         public static void ShouldBeNull([AssertionCondition(AssertionConditionType.IS_NULL)] this object anObject)
@@ -131,6 +131,16 @@ namespace Machine.Specifications
             }
         }
 
+        private static SpecificationException NewException(string message, params object[] parameters)
+        {
+            if (parameters.Any())
+            {
+                return new SpecificationException(string.Format(message.EnsureSafeFormat(), parameters.Select(x => x.ToUsefulString()).Cast<object>().ToArray()));
+            }
+
+            return new SpecificationException(message);
+        }
+
         private static IEnumerable<SpecificationException> ShouldBeLikeInternal(object obj, object expected, string nodeName, HashSet<ReferentialEqualityTuple> visited)
         {
             // Stop at already checked <actual,expected>-pairs to prevent infinite loops (cycles in object graphs). Additionally
@@ -144,17 +154,17 @@ namespace Machine.Specifications
 
             visited.Add(objExpectedTuple);
 
-            ObjectGraphHelper.INode expectedNode = null;
+            var expectedNode = default(INode);
 
-            var nodeType = typeof(ObjectGraphHelper.LiteralNode);
+            var nodeType = typeof(LiteralNode);
 
             if (obj != null && expected != null)
             {
-                expectedNode = ObjectGraphHelper.GetGraph(expected);
+                expectedNode = ObjectGraph.Get(expected);
                 nodeType = expectedNode.GetType();
             }
 
-            if (nodeType == typeof(ObjectGraphHelper.LiteralNode))
+            if (nodeType == typeof(LiteralNode))
             {
                 try
                 {
@@ -168,7 +178,7 @@ namespace Machine.Specifications
                 return Enumerable.Empty<SpecificationException>();
             }
 
-            if (nodeType == typeof(ObjectGraphHelper.SequenceNode))
+            if (nodeType == typeof(SequenceNode))
             {
                 if (obj == null)
                 {
@@ -177,17 +187,17 @@ namespace Machine.Specifications
                     return new[] { NewException($"{{0}}:{Environment.NewLine}{errorMessage}", nodeName) };
                 }
 
-                var actualNode = ObjectGraphHelper.GetGraph(obj);
+                var actualNode = ObjectGraph.Get(obj);
 
-                if (actualNode.GetType() != typeof(ObjectGraphHelper.SequenceNode))
+                if (actualNode.GetType() != typeof(SequenceNode))
                 {
                     var errorMessage = $"  Expected: Array or Sequence{Environment.NewLine}  But was:  {obj.GetType()}";
 
                     return new[] { NewException($"{{0}}:{Environment.NewLine}{errorMessage}", nodeName) };
                 }
 
-                var expectedValues = ((ObjectGraphHelper.SequenceNode) expectedNode)?.ValueGetters.ToArray();
-                var actualValues = ((ObjectGraphHelper.SequenceNode) actualNode).ValueGetters.ToArray();
+                var expectedValues = ((SequenceNode) expectedNode)?.ValueGetters.ToArray();
+                var actualValues = ((SequenceNode) actualNode).ValueGetters.ToArray();
 
                 var expectedCount = expectedValues?.Length ?? 0;
                 var actualCount = actualValues.Length;
@@ -203,19 +213,19 @@ namespace Machine.Specifications
                     .SelectMany(i => ShouldBeLikeInternal(actualValues.ElementAt(i)(), expectedValues?.ElementAt(i)(), $"{nodeName}[{i}]", visited));
             }
 
-            if (nodeType == typeof(ObjectGraphHelper.KeyValueNode))
+            if (nodeType == typeof(KeyValueNode))
             {
-                var actualNode = ObjectGraphHelper.GetGraph(obj);
+                var actualNode = ObjectGraph.Get(obj);
 
-                if (actualNode.GetType() != typeof(ObjectGraphHelper.KeyValueNode))
+                if (actualNode.GetType() != typeof(KeyValueNode))
                 {
                     var errorMessage = $"  Expected: Class{Environment.NewLine}  But was:  {obj?.GetType()}";
 
                     return new[] { NewException($"{{0}}:{Environment.NewLine}{errorMessage}", nodeName) };
                 }
 
-                var expectedKeyValues = ((ObjectGraphHelper.KeyValueNode) expectedNode)?.KeyValues;
-                var actualKeyValues = ((ObjectGraphHelper.KeyValueNode) actualNode).KeyValues;
+                var expectedKeyValues = ((KeyValueNode) expectedNode)?.KeyValues;
+                var actualKeyValues = ((KeyValueNode) actualNode).KeyValues;
 
                 return expectedKeyValues?.SelectMany(kv =>
                 {
@@ -241,19 +251,19 @@ namespace Machine.Specifications
 
         private class ReferentialEqualityTuple
         {
-            private readonly object obj;
+            private readonly object value;
 
             private readonly object expected;
 
-            public ReferentialEqualityTuple(object obj, object expected)
+            public ReferentialEqualityTuple(object value, object expected)
             {
-                this.obj = obj;
+                this.value = value;
                 this.expected = expected;
             }
 
             public override int GetHashCode()
             {
-                return RuntimeHelpers.GetHashCode(obj) * RuntimeHelpers.GetHashCode(expected);
+                return RuntimeHelpers.GetHashCode(value) * RuntimeHelpers.GetHashCode(expected);
             }
 
             public override bool Equals(object other)
@@ -263,7 +273,7 @@ namespace Machine.Specifications
                     return false;
                 }
 
-                return ReferenceEquals(obj, otherSimpleTuple.obj) && ReferenceEquals(expected, otherSimpleTuple.expected);
+                return ReferenceEquals(value, otherSimpleTuple.value) && ReferenceEquals(expected, otherSimpleTuple.expected);
             }
         }
     }
