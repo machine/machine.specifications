@@ -2,26 +2,26 @@
 
 namespace Machine.Specifications.Comparers
 {
-    class ComparableComparer<T> : IComparerStrategy<T>
+    internal class ComparableComparer<T> : IEqualityComparerStrategy<T>
     {
-        public ComparisionResult Compare(T x, T y)
+        public bool? Equals(T x, T y)
         {
             if (x is IComparable<T> comparable1)
             {
-                return new ComparisionResult(comparable1.CompareTo(y));
+                return comparable1.CompareTo(y) == 0;
             }
 
             if (x is IComparable comparable2)
             {
-                if (!(comparable2.GetType().IsInstanceOfType(y)))
+                if (!comparable2.GetType().IsInstanceOfType(y))
                 {
-                    return new NoResult();
+                    return null;
                 }
 
-                return new ComparisionResult(comparable2.CompareTo(y));
+                return comparable2.CompareTo(y) == 0;
             }
 
-            return new NoResult();
+            return null;
         }
     }
 }

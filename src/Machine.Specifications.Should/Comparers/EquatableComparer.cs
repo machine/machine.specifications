@@ -2,16 +2,16 @@
 
 namespace Machine.Specifications.Comparers
 {
-    internal class EquatableComparer<T> : IComparerStrategy<T>
+    internal class EquatableComparer<T> : IEqualityComparerStrategy<T>
     {
-        public ComparisionResult Compare(T x, T y)
+        public bool? Equals(T x, T y)
         {
             if (!(x is IEquatable<T> equatable))
             {
-                return new NoResult();
+                return null;
             }
 
-            return new ComparisionResult(equatable.Equals(y) ? 0 : -1);
+            return equatable.Equals(y);
         }
     }
 }

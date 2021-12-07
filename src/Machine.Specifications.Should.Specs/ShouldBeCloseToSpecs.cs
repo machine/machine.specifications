@@ -2,7 +2,7 @@
 
 namespace Machine.Specifications.Should.Specs
 {
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(FloatingPointExtensions))]
     class when_asserting_that_a_value_should_be_close_to_another_value
     {
         static Exception exception;

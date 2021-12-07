@@ -1,27 +1,32 @@
-﻿using System.Reflection;
+﻿using System;
 
 namespace Machine.Specifications.Comparers
 {
-    internal class GenericTypeComparer<T> : IComparerStrategy<T>
+    internal class GenericTypeComparer<T> : IEqualityComparerStrategy<T>
     {
-        public ComparisionResult Compare(T x, T y)
+        public bool? Equals(T x, T y)
         {
             var type = typeof(T);
 
-            if (!type.GetTypeInfo().IsValueType || (type.GetTypeInfo().IsGenericType && type.IsNullable()))
+            if (!type.IsValueType || (type.IsGenericType && IsNullable(type)))
             {
-                if (x.IsEqualToDefault())
+                if (object.Equals(x, default(T)))
                 {
-                    return new ComparisionResult(y.IsEqualToDefault() ? 0 : -1);
+                    return object.Equals(y, default(T));
                 }
 
-                if (y.IsEqualToDefault())
+                if (object.Equals(y, default(T)))
                 {
-                    return new ComparisionResult(-1);
+                    return false;
                 }
             }
 
-            return new NoResult();
+            return null;
+        }
+
+        private bool IsNullable(Type type)
+        {
+            return type.GetGenericTypeDefinition().IsAssignableFrom(typeof(Nullable<>));
         }
     }
 }

@@ -1,15 +1,15 @@
 ﻿namespace Machine.Specifications.Comparers
 {
-    internal class TypeComparer<T> : IComparerStrategy<T>
+    internal class TypeComparer<T> : IEqualityComparerStrategy<T>
     {
-        public ComparisionResult Compare(T x, T y)
+        public bool? Equals(T x, T y)
         {
             if (x.GetType() != y.GetType())
             {
-                return new ComparisionResult(-1);
+                return false;
             }
 
-            return new NoResult();
+            return null;
         }
     }
 }

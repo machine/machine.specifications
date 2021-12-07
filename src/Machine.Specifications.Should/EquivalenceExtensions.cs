@@ -2,125 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
+using Machine.Specifications.Formatting;
 using Machine.Specifications.Reflection;
-using Machine.Specifications.Text;
 using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications
 {
-    public static class ObjectExtensions
+    public static class EquivalenceExtensions
     {
-        [AssertionMethod]
-        public static void ShouldBeNull([AssertionCondition(AssertionConditionType.IS_NULL)] this object anObject)
-        {
-            if (anObject != null)
-            {
-                throw new SpecificationException($"Should be [null] but is {anObject.ToUsefulString()}");
-            }
-        }
-
-        [AssertionMethod]
-        public static void ShouldNotBeNull([AssertionCondition(AssertionConditionType.IS_NOT_NULL)] this object anObject)
-        {
-            if (anObject == null)
-            {
-                throw new SpecificationException("Should be [not null] but is [null]");
-            }
-        }
-
-        public static object ShouldBeTheSameAs(this object actual, object expected)
-        {
-            if (!ReferenceEquals(actual, expected))
-            {
-                throw new SpecificationException($"Should be the same as {expected} but is {actual}");
-            }
-
-            return expected;
-        }
-
-        public static object ShouldNotBeTheSameAs(this object actual, object expected)
-        {
-            if (ReferenceEquals(actual, expected))
-            {
-                throw new SpecificationException($"Should not be the same as {expected} but is {actual}");
-            }
-
-            return expected;
-        }
-
-        public static void ShouldBeOfExactType(this object actual, Type expected)
-        {
-            if (actual == null)
-            {
-                throw new SpecificationException($"Should be of type {expected} but is [null]");
-            }
-
-            if (actual.GetType() != expected)
-            {
-                throw new SpecificationException($"Should be of type {expected} but is of type {actual.GetType()}");
-            }
-        }
-
-        public static void ShouldNotBeOfExactType(this object actual, Type expected)
-        {
-            if (actual == null)
-            {
-                throw new SpecificationException($"Should not be of type {expected} but is [null]");
-            }
-
-            if (actual.GetType() == expected)
-            {
-                throw new SpecificationException($"Should not be of type {expected} but is of type {actual.GetType()}");
-            }
-        }
-
-        public static void ShouldBeOfExactType<T>(this object actual)
-        {
-            actual.ShouldBeOfExactType(typeof(T));
-        }
-
-        public static void ShouldNotBeOfExactType<T>(this object actual)
-        {
-            actual.ShouldNotBeOfExactType(typeof(T));
-        }
-
-        public static void ShouldBeAssignableTo(this object actual, Type expected)
-        {
-            if (actual == null)
-            {
-                throw new SpecificationException($"Should be assignable to type {expected} but is [null]");
-            }
-
-            if (!expected.IsInstanceOfType(actual))
-            {
-                throw new SpecificationException($"Should be assignable to type {expected} but is not. Actual type is {actual.GetType()}");
-            }
-        }
-
-        public static void ShouldNotBeAssignableTo(this object actual, Type expected)
-        {
-            if (actual == null)
-            {
-                throw new SpecificationException($"Should not be assignable to type {expected} but is [null]");
-            }
-
-            if (expected.IsInstanceOfType(actual))
-            {
-                throw new SpecificationException($"Should not be assignable to type {expected} but is. Actual type is {actual.GetType()}");
-            }
-        }
-
-        public static void ShouldBeAssignableTo<T>(this object actual)
-        {
-            actual.ShouldBeAssignableTo(typeof(T));
-        }
-
-        public static void ShouldNotBeAssignableTo<T>(this object actual)
-        {
-            actual.ShouldNotBeAssignableTo(typeof(T));
-        }
-
         public static void ShouldBeLike(this object obj, object expected)
         {
             var exceptions = ShouldBeLikeInternal(obj, expected, string.Empty, new HashSet<ReferentialEqualityTuple>()).ToArray();

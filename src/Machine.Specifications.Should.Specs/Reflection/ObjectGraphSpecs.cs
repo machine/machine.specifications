@@ -247,7 +247,7 @@ namespace Machine.Specifications.Should.Specs.Reflection
             thrown_exception.ShouldBeOfExactType<SpecificationException>();
     }
 
-    [Subject(typeof(ObjectExtensions))]
+    [Subject(typeof(EquivalenceExtensions))]
     class when_actual_and_expected_value_are_null
     {
         static Model actual_model;

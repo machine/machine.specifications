@@ -1,5 +1,5 @@
 ﻿using System;
-using Machine.Specifications.Text;
+using Machine.Specifications.Formatting;
 
 namespace Machine.Specifications
 {

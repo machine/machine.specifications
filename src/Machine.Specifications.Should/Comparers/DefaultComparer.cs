@@ -2,14 +2,16 @@
 
 namespace Machine.Specifications.Comparers
 {
-    internal class DefaultComparer<T> : IComparer<T>
+    internal class DefaultComparer<T> : IEqualityComparer<T>
     {
-        public int Compare(T x, T y)
+        public bool Equals(T x, T y)
         {
-            // Last case, rely on Object.Equals
-            return Equals(x, y)
-                ? 0
-                : -1;
+            return object.Equals(x, y);
+        }
+
+        public int GetHashCode(T obj)
+        {
+            return obj.GetHashCode();
         }
     }
 }

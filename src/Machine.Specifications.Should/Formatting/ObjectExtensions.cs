@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace Machine.Specifications.Text
+namespace Machine.Specifications.Formatting
 {
     internal static class ObjectExtensions
     {

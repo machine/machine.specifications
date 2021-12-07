@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Linq;
-using Machine.Specifications.Text;
-using Machine.Specifications.Utility.Internal;
+using Machine.Specifications.Formatting;
 
 namespace Machine.Specifications
 {
     public static class ComparableExtensions
     {
-        public static IComparable ShouldBeGreaterThan(this IComparable arg1, IComparable arg2)
+        public static void ShouldBeGreaterThan(this IComparable arg1, IComparable arg2)
         {
             if (arg2 == null)
             {
@@ -23,11 +22,9 @@ namespace Machine.Specifications
             {
                 throw NewException("Should be greater than {0} but is {1}", arg2, arg1);
             }
-
-            return arg1;
         }
 
-        public static IComparable ShouldBeGreaterThanOrEqualTo(this IComparable arg1, IComparable arg2)
+        public static void ShouldBeGreaterThanOrEqualTo(this IComparable arg1, IComparable arg2)
         {
             if (arg2 == null)
             {
@@ -43,11 +40,9 @@ namespace Machine.Specifications
             {
                 throw NewException("Should be greater than or equal to {0} but is {1}", arg2, arg1);
             }
-
-            return arg1;
         }
 
-        public static IComparable ShouldBeLessThan(this IComparable arg1, IComparable arg2)
+        public static void ShouldBeLessThan(this IComparable arg1, IComparable arg2)
         {
             if (arg2 == null)
             {
@@ -63,11 +58,9 @@ namespace Machine.Specifications
             {
                 throw NewException("Should be less than {0} but is {1}", arg2, arg1);
             }
-
-            return arg1;
         }
 
-        public static IComparable ShouldBeLessThanOrEqualTo(this IComparable arg1, IComparable arg2)
+        public static void ShouldBeLessThanOrEqualTo(this IComparable arg1, IComparable arg2)
         {
             if (arg2 == null)
             {
@@ -83,8 +76,6 @@ namespace Machine.Specifications
             {
                 throw NewException("Should be less than or equal to {0} but is {1}", arg2, arg1);
             }
-
-            return arg1;
         }
 
         private static object TryToChangeType(this object original, Type type)

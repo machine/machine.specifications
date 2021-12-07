@@ -1,5 +1,5 @@
 ﻿using System;
-using Machine.Specifications.Text;
+using Machine.Specifications.Formatting;
 
 namespace Machine.Specifications.Utility.Internal
 {
@@ -92,7 +92,7 @@ namespace Machine.Specifications.Utility.Internal
 
         private static bool IsInCopyFrameLength(int start, int end, int max)
         {
-            int length = end - start;
+            var length = end - start;
 
             if (start > 0)
             {

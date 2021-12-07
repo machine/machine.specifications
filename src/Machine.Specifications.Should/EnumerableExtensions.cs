@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Machine.Specifications.Text;
-using Machine.Specifications.Utility.Internal;
+using Machine.Specifications.Comparers;
+using Machine.Specifications.Formatting;
 
 namespace Machine.Specifications
 {
@@ -42,13 +42,11 @@ namespace Machine.Specifications
 
         public static void ShouldContain<T>(this IEnumerable<T> list, IEnumerable<T> items)
         {
-            var comparer = new AssertComparer<T>();
-
             var listArray = list.ToArray();
             var itemsArray = items.ToArray();
 
             var noContain = itemsArray
-                .Where(x => !listArray.Contains(x, comparer))
+                .Where(x => !listArray.Contains(x, AssertEqualityComparer<T>.Default))
                 .ToList();
 
             if (noContain.Any())
@@ -93,13 +91,11 @@ namespace Machine.Specifications
 
         public static void ShouldNotContain<T>(this IEnumerable<T> list, IEnumerable<T> items)
         {
-            var comparer = new AssertComparer<T>();
-
             var listArray = list.ToArray();
             var itemsArray = items.ToArray();
 
             var contains = itemsArray
-                .Where(x => listArray.Contains(x, comparer))
+                .Where(x => listArray.Contains(x, AssertEqualityComparer<T>.Default))
                 .ToList();
 
             if (contains.Any())
@@ -163,11 +159,10 @@ namespace Machine.Specifications
 
             var source = new List<T>(listArray);
             var noContain = new List<T>();
-            var comparer = new AssertComparer<T>();
 
             foreach (var item in itemsArray)
             {
-                if (!source.Contains(item, comparer))
+                if (!source.Contains(item, AssertEqualityComparer<T>.Default))
                 {
                     noContain.Add(item);
                 }

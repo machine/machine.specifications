@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Xunit;
 
 namespace Machine.Specifications.Should.Specs
 {
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(EqualityExtensions))]
     class when_asserting_object_is_like_expected_key_values
     {
         static Exception exception;
@@ -140,7 +141,7 @@ namespace Machine.Specifications.Should.Specs
         }
     }
 
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(EqualityExtensions))]
     class when_asserting_object_is_like_expected_array
     {
         static Exception exception;
@@ -241,7 +242,7 @@ namespace Machine.Specifications.Should.Specs
         }
     }
 
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(EqualityExtensions))]
     class when_asserting_object_is_like_expected_nested_object
     {
         static Exception exception;
@@ -332,7 +333,7 @@ namespace Machine.Specifications.Should.Specs
         }
     }
 
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(EqualityExtensions))]
     class when_asserting_that_two_objects_of_the_same_concrete_type_are_like_each_other
     {
         static Exception exception;
@@ -400,7 +401,7 @@ namespace Machine.Specifications.Should.Specs
         }
     }
 
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(EqualityExtensions))]
     class when_asserting_that_two_objects_containing_arrays_as_properties_are_like_each_other
     {
         static Exception exception;
@@ -500,7 +501,7 @@ namespace Machine.Specifications.Should.Specs
         }
     }
 
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(EqualityExtensions))]
     class when_asserting_that_two_objects_containing_collections_as_properties_are_like_each_other
     {
         static ListDummy first;
@@ -603,7 +604,7 @@ namespace Machine.Specifications.Should.Specs
         }
     }
 
-    [Subject(typeof (ShouldExtensionMethods))]
+    [Subject(typeof(EqualityExtensions))]
     class when_node_with_circular_references
     {
         public class Node
@@ -775,7 +776,7 @@ namespace Machine.Specifications.Should.Specs
         }
     }
 
-    [Subject(typeof (ShouldExtensionMethods))]
+    [Subject(typeof(EqualityExtensions))]
     class when_node_with_inner_static_node
     {
         public class Node
@@ -804,7 +805,7 @@ namespace Machine.Specifications.Should.Specs
             exception.ShouldBeNull();
     }
 
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(EqualityExtensions))]
     class when_complex_type_with_circular_references_are_in_collection
     {
         public class Node

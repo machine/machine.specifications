@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Machine.Specifications.Text
+namespace Machine.Specifications.Formatting
 {
     internal static class EnumerableExtensions
     {

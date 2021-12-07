@@ -2,28 +2,28 @@
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Machine.Specifications.Text;
+using Machine.Specifications.Formatting;
 
 namespace Machine.Specifications
 {
     public static class StringExtensions
     {
-        public static void ShouldBeEmpty(this string aString)
+        public static void ShouldBeEmpty(this string value)
         {
-            if (aString == null)
+            if (value == null)
             {
                 throw new SpecificationException("Should be empty but is [null]");
             }
 
-            if (!string.IsNullOrEmpty(aString))
+            if (!string.IsNullOrEmpty(value))
             {
-                throw NewException("Should be empty but is {0}", aString);
+                throw NewException("Should be empty but is {0}", value);
             }
         }
 
-        public static void ShouldNotBeEmpty(this string aString)
+        public static void ShouldNotBeEmpty(this string value)
         {
-            if (string.IsNullOrEmpty(aString))
+            if (string.IsNullOrEmpty(value))
             {
                 throw NewException("Should not be empty but is");
             }

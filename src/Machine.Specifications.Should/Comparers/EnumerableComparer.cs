@@ -2,9 +2,9 @@
 
 namespace Machine.Specifications.Comparers
 {
-    internal class EnumerableComparer<T> : IComparerStrategy<T>
+    internal class EnumerableComparer<T> : IEqualityComparerStrategy<T>
     {
-        public ComparisionResult Compare(T x, T y)
+        public bool? Equals(T x, T y)
         {
             if (x is IEnumerable enumerableX && y is IEnumerable enumerableY)
             {
@@ -18,17 +18,17 @@ namespace Machine.Specifications.Comparers
 
                     if (!hasNextX || !hasNextY)
                     {
-                        return new ComparisionResult(hasNextX == hasNextY ? 0 : -1);
+                        return hasNextX == hasNextY;
                     }
 
                     if (!Equals(enumeratorX.Current, enumeratorY.Current))
                     {
-                        return new ComparisionResult(-1);
+                        return false;
                     }
                 }
             }
 
-            return new NoResult();
+            return null;
         }
     }
 }
