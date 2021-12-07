@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+    <AssemblyName>Machine.Specifications.Container</AssemblyName>
 
     <Description>Machine.Specifications is a Context/Specification framework geared towards removing language noise and simplifying tests</Description>
     <Authors>Machine Specifications</Authors>
