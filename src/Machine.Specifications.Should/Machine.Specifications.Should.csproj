@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Machine.Specifications</RootNamespace>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
 
     <Description>Assertion library for Machine.Specifications</Description>
     <Authors>Machine Specifications</Authors>

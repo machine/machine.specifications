@@ -2,9 +2,9 @@
 
 namespace Machine.Specifications.Comparers
 {
-    internal class EnumerableComparer<T> : IEqualityComparerStrategy<T>
+    internal class EnumerableStrategy<T> : IEqualityStrategy<T>
     {
-        public bool? Equals(T x, T y)
+        public bool? Equals(T? x, T? y)
         {
             if (x is IEnumerable enumerableX && y is IEnumerable enumerableY)
             {

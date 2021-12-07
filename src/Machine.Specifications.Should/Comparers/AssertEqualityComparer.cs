@@ -4,24 +4,23 @@ namespace Machine.Specifications.Comparers
 {
     internal class AssertEqualityComparer<T> : IEqualityComparer<T>
     {
-        private static readonly IEqualityComparerStrategy<T>[] Comparers = new IEqualityComparerStrategy<T>[]
+        private static IEqualityStrategy<T>[] Strategies = new IEqualityStrategy<T>[]
         {
-            new EquatableComparer<T>(),
-            new ComparableComparer<T>(),
-            new EnumerableComparer<T>(),
-            new GenericTypeComparer<T>(),
-            new TypeComparer<T>()
+            new NullStrategy<T>(),
+            new EquatableStrategy<T>(),
+            new ComparableStrategy<T>(),
+            new EnumerableStrategy<T>(),
+            new TypeStrategy<T>(),
+            new GenericTypeStrategy<T>()
         };
-
-        private static readonly DefaultComparer<T> DefaultComparer = new DefaultComparer<T>();
 
         public static readonly AssertEqualityComparer<T> Default = new AssertEqualityComparer<T>();
 
-        public bool Equals(T x, T y)
+        public bool Equals(T? x, T? y)
         {
-            foreach (var comparer in Comparers)
+            foreach (var strategy in Strategies)
             {
-                var result = comparer.Equals(x, y);
+                var result = strategy.Equals(x, y);
 
                 if (result != null)
                 {
@@ -29,11 +28,16 @@ namespace Machine.Specifications.Comparers
                 }
             }
 
-            return DefaultComparer.Equals(x, y);
+            return object.Equals(x, y);
         }
 
-        public int GetHashCode(T obj)
+        public int GetHashCode(T? obj)
         {
+            if (obj == null)
+            {
+                return 0;
+            }
+
             return obj.GetHashCode();
         }
     }

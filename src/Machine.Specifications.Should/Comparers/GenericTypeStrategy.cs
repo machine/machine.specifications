@@ -2,13 +2,13 @@
 
 namespace Machine.Specifications.Comparers
 {
-    internal class GenericTypeComparer<T> : IEqualityComparerStrategy<T>
+    internal class GenericTypeStrategy<T> : IEqualityStrategy<T>
     {
-        public bool? Equals(T x, T y)
+        public bool? Equals(T? x, T? y)
         {
             var type = typeof(T);
 
-            if (!type.IsValueType || (type.IsGenericType && IsNullable(type)))
+            if (!type.IsValueType || IsNullableGeneric(type))
             {
                 if (object.Equals(x, default(T)))
                 {
@@ -24,9 +24,9 @@ namespace Machine.Specifications.Comparers
             return null;
         }
 
-        private bool IsNullable(Type type)
+        private bool IsNullableGeneric(Type type)
         {
-            return type.GetGenericTypeDefinition().IsAssignableFrom(typeof(Nullable<>));
+            return type.IsGenericType && type.GetGenericTypeDefinition().IsAssignableFrom(typeof(Nullable<>));
         }
     }
 }
