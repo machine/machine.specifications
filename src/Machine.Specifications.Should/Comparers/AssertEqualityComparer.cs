@@ -4,7 +4,7 @@ namespace Machine.Specifications.Comparers
 {
     internal class AssertEqualityComparer<T> : IEqualityComparer<T>
     {
-        private static IEqualityStrategy<T>[] Strategies = new IEqualityStrategy<T>[]
+        private static readonly IEqualityStrategy<T>[] Strategies =
         {
             new NullStrategy<T>(),
             new EquatableStrategy<T>(),
@@ -14,7 +14,7 @@ namespace Machine.Specifications.Comparers
             new GenericTypeStrategy<T>()
         };
 
-        public static readonly AssertEqualityComparer<T> Default = new AssertEqualityComparer<T>();
+        public static readonly AssertEqualityComparer<T> Default = new();
 
         public bool Equals(T? x, T? y)
         {

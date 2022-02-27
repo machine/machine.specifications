@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
-
-namespace Machine.Specifications.Reflection
+﻿namespace Machine.Specifications.Reflection
 {
     internal class KeyValueNode : INode
     {
-        public IEnumerable<Member> KeyValues { get; set; }
+        public KeyValueNode(Member[] keyValues)
+        {
+            KeyValues = keyValues;
+        }
+
+        public Member[] KeyValues { get; }
     }
 }

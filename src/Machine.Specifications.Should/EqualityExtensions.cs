@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using Machine.Specifications.Comparers;
 using Machine.Specifications.Formatting;
-using Machine.Specifications.Utility.Internal;
 
 namespace Machine.Specifications
 {
@@ -12,7 +11,7 @@ namespace Machine.Specifications
         {
             if (!AssertEqualityComparer<T>.Default.Equals(actual, expected))
             {
-                throw new SpecificationException(PrettyPrintingExtensions.FormatErrorMessage(actual, expected));
+                throw new SpecificationException(actual.FormatErrorMessage(expected));
             }
         }
 
@@ -20,7 +19,7 @@ namespace Machine.Specifications
         {
             if (AssertEqualityComparer<T>.Default.Equals(actual, expected))
             {
-                throw new SpecificationException($"Should not equal {expected.ToUsefulString()} but does: {actual.ToUsefulString()}");
+                throw new SpecificationException($"Should not equal {expected.Format()} but does: {actual.Format()}");
             }
         }
 

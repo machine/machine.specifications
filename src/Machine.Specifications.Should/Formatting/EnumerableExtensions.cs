@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -10,7 +9,7 @@ namespace Machine.Specifications.Formatting
         public static string EachToUsefulString<T>(this IEnumerable<T> enumerable)
         {
             var array = enumerable.ToArray();
-            var arrayValues = array.Select(x => x.ToUsefulString().Indent())
+            var arrayValues = array.Select(x => x.Format().Indent())
                 .Take(10)
                 .ToArray();
 
@@ -26,7 +25,7 @@ namespace Machine.Specifications.Formatting
                 }
                 else
                 {
-                    result.AppendLine(",\r\n" + array.Last().ToUsefulString().Indent());
+                    result.AppendLine(",\r\n" + array.Last().Format().Indent());
                 }
             }
             else

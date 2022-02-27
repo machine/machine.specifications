@@ -26,7 +26,7 @@ namespace Machine.Specifications.Should.Specs.Reflection
                 ((KeyValueNode) result).KeyValues.Where(m => m.Name == "Property").ShouldNotBeEmpty();
 
             It should_retrieve_value = () =>
-                ((KeyValueNode) result).KeyValues.Where(m => m.Name == "Property").Single().ValueGetter().ShouldEqual("value");
+                ((KeyValueNode) result).KeyValues.Single(m => m.Name == "Property").ValueGetter().ShouldEqual("value");
 
             It should_return_a_key_value_node = () =>
                 result.ShouldBeOfExactType<KeyValueNode>();
@@ -48,7 +48,7 @@ namespace Machine.Specifications.Should.Specs.Reflection
                 ((KeyValueNode) result).KeyValues.Where(m => m.Name == "Field").ShouldNotBeEmpty();
 
             It should_retrieve_value = () =>
-                ((KeyValueNode) result).KeyValues.Where(m => m.Name == "Field").Single().ValueGetter().ShouldEqual("value");
+                ((KeyValueNode) result).KeyValues.Single(m => m.Name == "Field").ValueGetter().ShouldEqual("value");
 
             It should_return_a_key_value_node = () =>
                 result.ShouldBeOfExactType<KeyValueNode>();
@@ -66,7 +66,7 @@ namespace Machine.Specifications.Should.Specs.Reflection
                 ((KeyValueNode) result).KeyValues.Where(m => m.Name == "Field").ShouldNotBeEmpty();
 
             It should_retrieve_value = () =>
-                ((KeyValueNode) result).KeyValues.Where(m => m.Name == "Field").Single().ValueGetter().ShouldEqual("value");
+                ((KeyValueNode) result).KeyValues.Single(m => m.Name == "Field").ValueGetter().ShouldEqual("value");
 
             It should_return_a_key_value_node = () =>
                 result.ShouldBeOfExactType<KeyValueNode>();
@@ -92,10 +92,10 @@ namespace Machine.Specifications.Should.Specs.Reflection
                 ((KeyValueNode) result).KeyValues.Where(m => m.Name == "Property").ShouldNotBeEmpty();
 
             It should_retrieve_field_value = () =>
-                ((KeyValueNode) result).KeyValues.Where(m => m.Name == "Field").Single().ValueGetter().ShouldEqual("value2");
+                ((KeyValueNode) result).KeyValues.Single(m => m.Name == "Field").ValueGetter().ShouldEqual("value2");
 
             It should_retrieve_property_value = () =>
-                ((KeyValueNode) result).KeyValues.Where(m => m.Name == "Property").Single().ValueGetter().ShouldEqual("value1");
+                ((KeyValueNode) result).KeyValues.Single(m => m.Name == "Property").ValueGetter().ShouldEqual("value1");
 
             It should_return_a_key_value_node = () =>
                 result.ShouldBeOfExactType<KeyValueNode>();

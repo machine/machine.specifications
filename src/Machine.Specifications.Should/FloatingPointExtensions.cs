@@ -14,7 +14,7 @@ namespace Machine.Specifications
         {
             if (Math.Abs(actual - expected) > tolerance)
             {
-                throw new SpecificationException($"Should be within {tolerance.ToUsefulString()} of {expected.ToUsefulString()} but is {actual.ToUsefulString()}");
+                throw new SpecificationException($"Should be within {tolerance.Format()} of {expected.Format()} but is {actual.Format()}");
             }
         }
 
@@ -27,7 +27,7 @@ namespace Machine.Specifications
         {
             if (Math.Abs(actual - expected) > tolerance)
             {
-                throw new SpecificationException($"Should be within {tolerance.ToUsefulString()} of {expected.ToUsefulString()} but is {actual.ToUsefulString()}");
+                throw new SpecificationException($"Should be within {tolerance.Format()} of {expected.Format()} but is {actual.Format()}");
             }
         }
 
@@ -40,7 +40,7 @@ namespace Machine.Specifications
         {
             if (Math.Abs(actual - expected) > tolerance)
             {
-                throw new SpecificationException($"Should be within {tolerance.ToUsefulString()} of {expected.ToUsefulString()} but is {actual.ToUsefulString()}");
+                throw new SpecificationException($"Should be within {tolerance.Format()} of {expected.Format()} but is {actual.Format()}");
             }
         }
     }

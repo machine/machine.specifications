@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using Machine.Specifications.Formatting;
 
 namespace Machine.Specifications
 {
@@ -15,12 +13,12 @@ namespace Machine.Specifications
 
             if (arg1 == null)
             {
-                throw NewException("Should be greater than {0} but is [null]", arg2);
+                throw Exceptions.Specification("Should be greater than {0} but is [null]", arg2);
             }
 
             if (arg1.CompareTo(arg2.TryToChangeType(arg1.GetType())) <= 0)
             {
-                throw NewException("Should be greater than {0} but is {1}", arg2, arg1);
+                throw Exceptions.Specification("Should be greater than {0} but is {1}", arg2, arg1);
             }
         }
 
@@ -33,12 +31,12 @@ namespace Machine.Specifications
 
             if (arg1 == null)
             {
-                throw NewException("Should be greater than or equal to {0} but is [null]", arg2);
+                throw Exceptions.Specification("Should be greater than or equal to {0} but is [null]", arg2);
             }
 
             if (arg1.CompareTo(arg2.TryToChangeType(arg1.GetType())) < 0)
             {
-                throw NewException("Should be greater than or equal to {0} but is {1}", arg2, arg1);
+                throw Exceptions.Specification("Should be greater than or equal to {0} but is {1}", arg2, arg1);
             }
         }
 
@@ -51,12 +49,12 @@ namespace Machine.Specifications
 
             if (arg1 == null)
             {
-                throw NewException("Should be less than {0} but is [null]", arg2);
+                throw Exceptions.Specification("Should be less than {0} but is [null]", arg2);
             }
 
             if (arg1.CompareTo(arg2.TryToChangeType(arg1.GetType())) >= 0)
             {
-                throw NewException("Should be less than {0} but is {1}", arg2, arg1);
+                throw Exceptions.Specification("Should be less than {0} but is {1}", arg2, arg1);
             }
         }
 
@@ -69,16 +67,16 @@ namespace Machine.Specifications
 
             if (arg1 == null)
             {
-                throw NewException("Should be less than or equal to {0} but is [null]", arg2);
+                throw Exceptions.Specification("Should be less than or equal to {0} but is [null]", arg2);
             }
 
             if (arg1.CompareTo(arg2.TryToChangeType(arg1.GetType())) > 0)
             {
-                throw NewException("Should be less than or equal to {0} but is {1}", arg2, arg1);
+                throw Exceptions.Specification("Should be less than or equal to {0} but is {1}", arg2, arg1);
             }
         }
 
-        private static object TryToChangeType(this object original, Type type)
+        private static object TryToChangeType(this IComparable original, Type type)
         {
             try
             {
@@ -88,16 +86,6 @@ namespace Machine.Specifications
             {
                 return original;
             }
-        }
-
-        private static SpecificationException NewException(string message, params object[] parameters)
-        {
-            if (parameters.Any())
-            {
-                return new SpecificationException(string.Format(message.EnsureSafeFormat(), parameters.Select(x => x.ToUsefulString()).Cast<object>().ToArray()));
-            }
-
-            return new SpecificationException(message);
         }
     }
 }

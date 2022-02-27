@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Machine.Specifications.Formatting
 {
     internal static class StringExtensions
     {
-        private const string EscapedBraces = "{{{0}}}";
-
-        private static readonly Regex FormatBraces = new Regex(@"{([^\d].*?)}", RegexOptions.Compiled | RegexOptions.Singleline);
-
         private static readonly string[] Delimiters =
         {
             "\r\n",
@@ -34,11 +29,6 @@ namespace Machine.Specifications.Formatting
             }
 
             return result.ToString();
-        }
-
-        public static string EnsureSafeFormat(this string message)
-        {
-            return FormatBraces.Replace(message, match => string.Format(EscapedBraces, match.Groups[0]));
         }
     }
 }

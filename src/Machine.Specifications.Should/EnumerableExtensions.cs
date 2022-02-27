@@ -135,7 +135,7 @@ namespace Machine.Specifications
 
             if (items.Any())
             {
-                throw NewException("Should be empty but contains:\n" + items.EachToUsefulString());
+                throw Exceptions.Specification("Should be empty but contains:\n" + items.EachToUsefulString());
             }
         }
 
@@ -143,7 +143,7 @@ namespace Machine.Specifications
         {
             if (!collection.Cast<object>().Any())
             {
-                throw NewException("Should not be empty but is");
+                throw Exceptions.Specification("Should not be empty but is");
             }
         }
 
@@ -190,16 +190,6 @@ namespace Machine.Specifications
 
                 throw new SpecificationException(message);
             }
-        }
-
-        private static SpecificationException NewException(string message, params object[] parameters)
-        {
-            if (parameters.Any())
-            {
-                return new SpecificationException(string.Format(message.EnsureSafeFormat(), parameters.Select(x => x.ToUsefulString()).Cast<object>().ToArray()));
-            }
-
-            return new SpecificationException(message);
         }
     }
 }

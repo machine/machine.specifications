@@ -20,10 +20,7 @@ namespace Machine.Specifications.Reflection
                 return GetKeyValueNode(value);
             }
 
-            return new LiteralNode
-            {
-                Value = value
-            };
+            return new LiteralNode(value);
         }
 
         private static INode GetSequenceNode(IEnumerable value)
@@ -32,10 +29,7 @@ namespace Machine.Specifications.Reflection
                 .Select<object, Func<object>>(x => () => x)
                 .ToArray();
 
-            return new SequenceNode
-            {
-                ValueGetters = getters
-            };
+            return new SequenceNode(getters);
         }
 
         private static INode GetKeyValueNode(object value)
@@ -45,30 +39,13 @@ namespace Machine.Specifications.Reflection
             var properties = type
                 .GetProperties()
                 .Where(x => x.CanRead && !x.GetGetMethod().IsStatic)
-                .Select(x =>
-                {
-                    return new Member
-                    {
-                        Name = x.Name,
-                        ValueGetter = () => x.GetValue(value, null)
-                    };
-                });
+                .Select(x => new Member(x.Name, () => x.GetValue(value, null)));
 
             var fields = type
                 .GetFields()
-                .Select(x =>
-                {
-                    return new Member
-                    {
-                        Name = x.Name,
-                        ValueGetter = () => x.GetValue(value)
-                    };
-                });
+                .Select(x => new Member(x.Name, () => x.GetValue(value)));
 
-            return new KeyValueNode
-            {
-                KeyValues = properties.Concat(fields).OrderBy(m => m.Name)
-            };
+            return new KeyValueNode(properties.Concat(fields).OrderBy(m => m.Name).ToArray());
         }
     }
 }

@@ -4,8 +4,14 @@ namespace Machine.Specifications.Reflection
 {
     internal class Member
     {
-        public string Name { get; set; }
+        public Member(string name, Func<object> valueGetter)
+        {
+            Name = name;
+            ValueGetter = valueGetter;
+        }
 
-        public Func<object> ValueGetter { get; set; }
+        public string Name { get; }
+
+        public Func<object> ValueGetter { get; }
     }
 }

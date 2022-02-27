@@ -2,6 +2,11 @@
 {
     internal class LiteralNode : INode
     {
-        public object Value { get; set; }
+        public LiteralNode(object value)
+        {
+            Value = value;
+        }
+
+        public object Value { get; }
     }
 }

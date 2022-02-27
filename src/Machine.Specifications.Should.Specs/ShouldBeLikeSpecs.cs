@@ -88,7 +88,7 @@ namespace Machine.Specifications.Should.Specs
 
         class with_using_object_multiple_times_in_expected_object_graph
         {
-            // Regression test for issue 17: ShouldBeLikeInternal() must mark <actual,expected> as visisted instead of simply marking <expected>.
+            // Regression test for issue 17: ShouldBeLikeInternal() must mark <actual,expected> as visited instead of simply marking <expected>.
             static Dummy a;
 
             static Dummy b;
