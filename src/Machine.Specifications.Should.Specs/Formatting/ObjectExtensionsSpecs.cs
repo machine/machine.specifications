@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Threading;
 
-namespace Machine.Specifications.Should.Specs.Utility.Internal
+namespace Machine.Specifications.Should.Specs.Formatting
 {
     class when_comparing_two_long_unequal_strings_with_difference_in_the_middle
     {

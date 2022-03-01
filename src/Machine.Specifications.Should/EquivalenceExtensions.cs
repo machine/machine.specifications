@@ -9,21 +9,26 @@ namespace Machine.Specifications
 {
     public static class EquivalenceExtensions
     {
-        public static void ShouldBeLike(this object obj, object expected)
+        public static void ShouldBeLike(this object value, object expected)
         {
-            var exceptions = ShouldBeLike(obj, expected, string.Empty, new HashSet<ReferentialEqualityTuple>()).ToArray();
+            var exceptions = ShouldBeLike(value, expected, string.Empty, new HashSet<ReferentialEqualityTuple>()).ToArray();
 
             if (exceptions.Any())
             {
-                throw Exceptions.Specification(exceptions.Select(e => e.Message).Aggregate(string.Empty, (r, m) => r + m + Environment.NewLine + Environment.NewLine).TrimEnd());
+                var message = exceptions
+                    .Select(e => e.Message)
+                    .Aggregate(string.Empty, (r, m) => r + m + Environment.NewLine + Environment.NewLine)
+                    .TrimEnd();
+
+                throw Exceptions.Specification(message);
             }
         }
 
-        private static IEnumerable<SpecificationException> ShouldBeLike(object? obj, object? expected, string nodeName, ISet<ReferentialEqualityTuple> visited)
+        private static IEnumerable<SpecificationException> ShouldBeLike(object? value, object? expected, string nodeName, ISet<ReferentialEqualityTuple> visited)
         {
             // Stop at already checked <actual,expected>-pairs to prevent infinite loops (cycles in object graphs). Additionally
             // this also avoids re-equality-evaluation for already compared pairs.
-            var tuple = new ReferentialEqualityTuple(obj, expected);
+            var tuple = new ReferentialEqualityTuple(value, expected);
 
             if (visited.Contains(tuple))
             {
@@ -35,7 +40,7 @@ namespace Machine.Specifications
             var expectedNode = default(INode);
             var nodeType = typeof(LiteralNode);
 
-            if (obj != null && expected != null)
+            if (value != null && expected != null)
             {
                 expectedNode = ObjectGraph.Get(expected);
                 nodeType = expectedNode.GetType();
@@ -45,7 +50,7 @@ namespace Machine.Specifications
             {
                 try
                 {
-                    obj.ShouldEqual(expected);
+                    value.ShouldEqual(expected);
                 }
                 catch (SpecificationException ex)
                 {
@@ -57,18 +62,18 @@ namespace Machine.Specifications
 
             if (nodeType == typeof(SequenceNode))
             {
-                if (obj == null)
+                if (value == null)
                 {
                     var errorMessage = ObjectExtensions.FormatErrorMessage(null, expected);
 
                     return new[] { Exceptions.Specification($"{{0}}:{Environment.NewLine}{errorMessage}", nodeName) };
                 }
 
-                var actualNode = ObjectGraph.Get(obj);
+                var actualNode = ObjectGraph.Get(value);
 
                 if (actualNode.GetType() != typeof(SequenceNode))
                 {
-                    var errorMessage = $"  Expected: Array or Sequence{Environment.NewLine}  But was:  {obj.GetType()}";
+                    var errorMessage = $"  Expected: Array or Sequence{Environment.NewLine}  But was:  {value.GetType()}";
 
                     return new[] { Exceptions.Specification($"{{0}}:{Environment.NewLine}{errorMessage}", nodeName) };
                 }
@@ -92,11 +97,11 @@ namespace Machine.Specifications
 
             if (nodeType == typeof(KeyValueNode))
             {
-                var actualNode = ObjectGraph.Get(obj!);
+                var actualNode = ObjectGraph.Get(value!);
 
                 if (actualNode.GetType() != typeof(KeyValueNode))
                 {
-                    var errorMessage = $"  Expected: Class{Environment.NewLine}  But was:  {obj?.GetType()}";
+                    var errorMessage = $"  Expected: Class{Environment.NewLine}  But was:  {value?.GetType()}";
 
                     return new[] { Exceptions.Specification($"{{0}}:{Environment.NewLine}{errorMessage}", nodeName) };
                 }

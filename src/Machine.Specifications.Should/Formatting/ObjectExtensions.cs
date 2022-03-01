@@ -29,7 +29,7 @@ namespace Machine.Specifications.Formatting
             {
                 var enumerable = items.Cast<object>();
 
-                return type + ":\r\n" + enumerable.EachToUsefulString();
+                return type + ":\r\n" + enumerable.Format();
             }
 
             var stringValue = value.ToString();

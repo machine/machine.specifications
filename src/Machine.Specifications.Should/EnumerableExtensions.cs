@@ -23,7 +23,7 @@ namespace Machine.Specifications
             {
                 throw new SpecificationException(string.Format(@"Should contain only elements conforming to: {0}" + Environment.NewLine + "the following items did not meet the condition: {1}",
                     condition,
-                    failingItems.EachToUsefulString()));
+                    failingItems.Format()));
             }
         }
 
@@ -55,9 +55,9 @@ namespace Machine.Specifications
                     @"Should contain: {0}" + Environment.NewLine +
                     "entire list: {1}" + Environment.NewLine +
                     "does not contain: {2}",
-                    itemsArray.EachToUsefulString(),
-                    listArray.EachToUsefulString(),
-                    noContain.EachToUsefulString()));
+                    itemsArray.Format(),
+                    listArray.Format(),
+                    noContain.Format()));
             }
         }
 
@@ -72,7 +72,7 @@ namespace Machine.Specifications
                     @"Should contain elements conforming to: {0}" + Environment.NewLine +
                     "entire list: {1}",
                     condition,
-                    listArray.EachToUsefulString()));
+                    listArray.Format()));
             }
         }
 
@@ -104,9 +104,9 @@ namespace Machine.Specifications
                     @"Should not contain: {0}" + Environment.NewLine +
                     "entire list: {1}" + Environment.NewLine +
                     "does contain: {2}",
-                    itemsArray.EachToUsefulString(),
-                    listArray.EachToUsefulString(),
-                    contains.EachToUsefulString()));
+                    itemsArray.Format(),
+                    listArray.Format(),
+                    contains.Format()));
             }
         }
 
@@ -124,8 +124,8 @@ namespace Machine.Specifications
                     "entire list: {1}" + Environment.NewLine +
                     "does contain: {2}",
                     condition,
-                    listArray.EachToUsefulString(),
-                    contains.EachToUsefulString()));
+                    listArray.Format(),
+                    contains.Format()));
             }
         }
 
@@ -135,7 +135,7 @@ namespace Machine.Specifications
 
             if (items.Any())
             {
-                throw Exceptions.Specification("Should be empty but contains:\n" + items.EachToUsefulString());
+                throw Exceptions.Specification("Should be empty but contains:\n" + items.Format());
             }
         }
 
@@ -175,17 +175,17 @@ namespace Machine.Specifications
             if (noContain.Any() || source.Any())
             {
                 var message = string.Format(@"Should contain only: {0}" + Environment.NewLine + "entire list: {1}",
-                    itemsArray.EachToUsefulString(),
-                    listArray.EachToUsefulString());
+                    itemsArray.Format(),
+                    listArray.Format());
 
                 if (noContain.Any())
                 {
-                    message += "\ndoes not contain: " + noContain.EachToUsefulString();
+                    message += "\ndoes not contain: " + noContain.Format();
                 }
 
                 if (source.Any())
                 {
-                    message += "\ndoes contain but shouldn't: " + source.EachToUsefulString();
+                    message += "\ndoes contain but shouldn't: " + source.Format();
                 }
 
                 throw new SpecificationException(message);

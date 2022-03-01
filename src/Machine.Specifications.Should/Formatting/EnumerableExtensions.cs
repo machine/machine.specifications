@@ -6,7 +6,7 @@ namespace Machine.Specifications.Formatting
 {
     internal static class EnumerableExtensions
     {
-        public static string EachToUsefulString<T>(this IEnumerable<T> enumerable)
+        public static string Format<T>(this IEnumerable<T> enumerable)
         {
             var array = enumerable.ToArray();
             var arrayValues = array.Select(x => x.Format().Indent())
