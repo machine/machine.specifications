@@ -8,7 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Bullseye" Version="4.1.1" />
     <PackageReference Include="SimpleExec" Version="11.0.0" />
-    <PackageReference Include="System.Text.Json" Version="6.0.6" />
+    <PackageReference Include="System.Text.Json" Version="7.0.0" />
   </ItemGroup>
 
 </Project>
