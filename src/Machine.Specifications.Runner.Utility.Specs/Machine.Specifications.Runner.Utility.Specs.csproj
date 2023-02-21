@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Compilers" Version="4.4.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.10.2" />
   </ItemGroup>
 
