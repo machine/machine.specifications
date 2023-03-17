@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace Machine.Specifications.Runner.Impl
@@ -17,6 +19,13 @@ namespace Machine.Specifications.Runner.Impl
 
         public void Execute()
         {
+            if (!IsAsyncVoid())
+            {
+                target.DynamicInvoke(args);
+
+                return;
+            }
+
             var currentContext = SynchronizationContext.Current;
 
             var context = new AsyncSynchronizationContext(currentContext);
@@ -38,6 +47,12 @@ namespace Machine.Specifications.Runner.Impl
             {
                 SynchronizationContext.SetSynchronizationContext(currentContext);
             }
+        }
+
+        private bool IsAsyncVoid()
+        {
+            return target.Method.ReturnType == typeof(void) &&
+                   target.Method.GetCustomAttribute<AsyncStateMachineAttribute>() != null;
         }
     }
 }
