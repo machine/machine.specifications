@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.10.2" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
   </ItemGroup>
 
   <ItemGroup>
