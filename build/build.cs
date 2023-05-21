@@ -27,10 +27,10 @@ Target("build", DependsOn("restore"), () =>
     Run("dotnet", "build " +
                   "--no-restore " +
                   "--configuration Release " +
-                  $"/p:Version={version.SemVer} " +
-                  $"/p:AssemblyVersion={version.AssemblySemVer} " +
-                  $"/p:FileVersion={version.AssemblySemFileVer} " +
-                  $"/p:InformationalVersion={version.InformationalVersion}");
+                  $"--property Version={version.SemVer} " +
+                  $"--property AssemblyVersion={version.AssemblySemVer} " +
+                  $"--property FileVersion={version.AssemblySemFileVer} " +
+                  $"--property InformationalVersion={version.InformationalVersion}");
 });
 
 Target("test", DependsOn("build"), () =>
@@ -40,7 +40,7 @@ Target("test", DependsOn("build"), () =>
 
 Target("package", DependsOn("build", "test"), () =>
 {
-    Run("dotnet", $"pack --configuration Release --no-restore --no-build --output artifacts /p:Version={version.SemVer}");
+    Run("dotnet", $"pack --configuration Release --no-restore --no-build --output artifacts --property Version={version.SemVer}");
 });
 
 Target("publish", DependsOn("package"), () =>
