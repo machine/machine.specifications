@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Machine.Specifications</RootNamespace>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
 
     <Description>Assertion library for Machine.Specifications</Description>
     <Authors>Machine Specifications</Authors>
@@ -12,6 +14,17 @@
     <PackageProjectUrl>http://github.com/machine/machine.specifications.should</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="InternalsVisibleTo.MSBuild" Version="1.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Machine.Specifications.Should.Specs" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="../../images/icon.png" Pack="true" PackagePath="" Visible="false" />
