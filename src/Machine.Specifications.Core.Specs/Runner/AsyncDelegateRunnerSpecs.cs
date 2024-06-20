@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Example.Exceptions;
 using Machine.Specifications.Factories;
 using Machine.Specifications.Runner;
 using Machine.Specifications.Runner.Impl;
@@ -70,6 +71,11 @@ namespace Machine.Specifications.Specs.Runner
 
         It should_have_failures = () =>
             results.ShouldEachConformTo(x => !x.Passed);
+
+        It should_have_exception_details = () =>
+            results.ShouldEachConformTo(r => r.Exception.TypeName == nameof(InvalidOperationException) &&
+                                                   r.Exception.Message == "something went wrong" &&
+                                                   r.Exception.StackTrace.Contains(typeof(AsyncSpecificationsWithExceptions).FullName));
     }
 
     [Subject("Async Delegate Runner")]

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace Machine.Specifications.Runner.Impl
 
         private int callCount;
 
-        private Exception exception;
+        private ExceptionDispatchInfo exceptionDispatchInfo;
 
         public AsyncSynchronizationContext(SynchronizationContext inner)
         {
@@ -27,7 +28,7 @@ namespace Machine.Specifications.Runner.Impl
             }
             catch (Exception ex)
             {
-                exception = ex;
+                exceptionDispatchInfo = ExceptionDispatchInfo.Capture(ex);
             }
             finally
             {
@@ -88,15 +89,15 @@ namespace Machine.Specifications.Runner.Impl
             }
             catch (Exception ex)
             {
-                exception = ex;
+                exceptionDispatchInfo = ExceptionDispatchInfo.Capture(ex);;
             }
         }
 
-        public async Task<Exception> WaitAsync()
+        public async Task<ExceptionDispatchInfo> WaitAsync()
         {
             await events.WaitAsync();
 
-            return exception;
+            return exceptionDispatchInfo;
         }
     }
 }

@@ -1139,6 +1139,10 @@ namespace Machine.Specifications
         Cleanup after = async () =>
             cleanup_value = await Test();
     }
+}
+
+namespace Example.Exceptions
+{
 
     public class AsyncSpecificationsWithExceptions
     {
