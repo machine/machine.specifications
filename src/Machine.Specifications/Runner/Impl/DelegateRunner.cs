@@ -56,7 +56,7 @@ namespace Machine.Specifications.Runner.Impl
                 SynchronizationContext.SetSynchronizationContext(currentContext);
             }
 #endif
-                }
+        }
 
         private bool IsAsyncVoid()
         {
