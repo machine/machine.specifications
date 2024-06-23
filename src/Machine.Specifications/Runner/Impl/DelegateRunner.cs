@@ -44,7 +44,11 @@ namespace Machine.Specifications.Runner.Impl
 
                 if (exception != null)
                 {
+#if !NET40
+                    exception.Throw();
+#else
                     throw exception;
+#endif
                 }
             }
             finally
