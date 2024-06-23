@@ -36,12 +36,9 @@ namespace Machine.Specifications.Runner.Impl
             {
                 target.DynamicInvoke(args);
 
-                var exception = context.WaitAsync().Result;
+                var exceptionDispatchInfo = context.WaitAsync().Result;
 
-                if (exception != null)
-                {
-                    throw exception;
-                }
+                exceptionDispatchInfo?.Throw();
             }
             finally
             {
