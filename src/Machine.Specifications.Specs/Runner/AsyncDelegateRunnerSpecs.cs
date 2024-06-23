@@ -68,6 +68,11 @@ namespace Machine.Specifications.Specs.Runner
 
         It should_have_failures = () =>
             results.Should().Match(x => x.All(y => !y.Passed));
+
+        It should_have_exception_details = () =>
+            results.Should().Match(x => x.All(r => r.Exception.TypeName == nameof(InvalidOperationException) &&
+                                                   r.Exception.Message == "something went wrong" &&
+                                                   r.Exception.StackTrace.Contains(typeof(AsyncSpecificationsWithExceptions).FullName)));
     }
 
 #if NETCOREAPP

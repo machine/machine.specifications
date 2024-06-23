@@ -1,5 +1,6 @@
 ﻿#if !NET35
 using System;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,7 +14,11 @@ namespace Machine.Specifications.Runner.Impl
 
         private int callCount;
 
+#if !NET40
+        private ExceptionDispatchInfo exception;
+#else
         private Exception exception;
+#endif
 
         public AsyncSynchronizationContext(SynchronizationContext inner)
         {
@@ -28,7 +33,11 @@ namespace Machine.Specifications.Runner.Impl
             }
             catch (Exception ex)
             {
+#if !NET40
+                exception = ExceptionDispatchInfo.Capture(ex);
+#else
                 exception = ex;
+#endif
             }
             finally
             {
@@ -89,11 +98,19 @@ namespace Machine.Specifications.Runner.Impl
             }
             catch (Exception ex)
             {
+#if !NET40
+                exception = ExceptionDispatchInfo.Capture(ex);
+#else
                 exception = ex;
+#endif
             }
         }
 
+#if !NET40
+        public ExceptionDispatchInfo WaitAsync()
+#else
         public Exception WaitAsync()
+#endif
         {
             events.Wait();
 
