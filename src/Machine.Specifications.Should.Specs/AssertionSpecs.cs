@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Machine.Specifications.Should.Specs
 {
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(EnumerableExtensions))]
     class when_checking_if_a_collection_contains_elements_that_match_a_func
     {
         static Exception exception;
@@ -20,7 +20,7 @@ namespace Machine.Specifications.Should.Specs
             exception.Message.ShouldContain("Should contain elements conforming to: x => (x > 3)");
     }
 
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(EnumerableExtensions))]
     class when_checking_if_a_collection_contains_elements_that_do_not_match_a_func
     {
         static Exception exception;
@@ -40,7 +40,7 @@ namespace Machine.Specifications.Should.Specs
             exception.Message.ShouldMatch(@"does contain: {\s+\[1\],\s+\[2\]\s+}");
     }
 
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(EnumerableExtensions))]
     class when_checking_if_a_collection_contains_only_elements_that_match_a_func
     {
         static Exception exception;
@@ -63,7 +63,7 @@ namespace Machine.Specifications.Should.Specs
             exception.Message.ShouldMatch(@"the following items did not meet the condition: {\s+\[1\],\s+\[3\]\s+}");
     }
 
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(EnumerableExtensions))]
     class when_a_list_contains_an_element_of_another_list
     {
         static Exception spec_exception;
@@ -88,7 +88,7 @@ namespace Machine.Specifications.Should.Specs
             spec_exception.ShouldBeNull();
     }
 
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(EnumerableExtensions))]
      class when_a_list_not_contains_an_element_of_another_list
     {
         static Exception spec_exception;
@@ -117,7 +117,7 @@ namespace Machine.Specifications.Should.Specs
             spec_exception.ShouldBeOfExactType<SpecificationException>();
     }
 
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(StringExtensions))]
     class when_a_null_string_is_asserted_on
     {
         static string a_string;
@@ -138,7 +138,7 @@ namespace Machine.Specifications.Should.Specs
             Catch.Exception(() => a_string.ShouldNotBeNull()).ShouldBeOfExactType<SpecificationException>();
     }
 
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(StringExtensions))]
     class when_an_empty_string_is_asserted_on
     {
         static string a_string;
@@ -159,7 +159,7 @@ namespace Machine.Specifications.Should.Specs
             Catch.Exception(() => a_string.ShouldNotBeNull()).ShouldBeNull();
     }
 
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(StringExtensions))]
     class when_an_non_empty_string_is_asserted_on
     {
         static string a_string;
@@ -180,7 +180,7 @@ namespace Machine.Specifications.Should.Specs
             Catch.Exception(() => a_string.ShouldNotBeNull()).ShouldBeNull();
     }
 
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(TypeExtensions))]
     class when_a_type_assertion_fails
     {
         static string a_string;
@@ -197,7 +197,7 @@ namespace Machine.Specifications.Should.Specs
             exception.Message.ShouldStartWith("Should be of type System.Int32");
     }
 
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(EqualityExtensions))]
     class when_checking_if_an_item_matches_a_func
     {
         static Exception exception;
@@ -214,7 +214,7 @@ namespace Machine.Specifications.Should.Specs
             exception.ShouldBeNull();
     }
 
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(EqualityExtensions))]
     class when_checking_if_an_item_matches_a_func_and_the_check_fails
     {
         static Exception exception;
@@ -231,7 +231,7 @@ namespace Machine.Specifications.Should.Specs
             exception.Message.ShouldContain("Should match expression [x => (x > 50)], but does not.");
     }
 
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(EqualityExtensions))]
     class when_comparing_different_classes_with_equals_for_equality
     {
         static Franc five_francs;
@@ -243,7 +243,7 @@ namespace Machine.Specifications.Should.Specs
             five_francs.Equals(new Money(5, "CHF")).ShouldBeTrue();
     }
 
-    [Subject(typeof(ShouldExtensionMethods))]
+    [Subject(typeof(EqualityExtensions))]
     class when_comparing_different_classes_with_should_equal_for_equality
     {
         static Franc five_francs;
