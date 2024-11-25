@@ -78,5 +78,21 @@ namespace Machine.Specifications
 
             return null;
         }
+
+#if !NET35 && !NET40
+        public static async Task<TException> OnlyAsync<TException>(Func<Task> throwingFunc) where TException : Exception
+        {
+            try
+            {
+                await throwingFunc();
+            }
+            catch (TException ex)
+            {
+                return ex;
+            }
+
+            return null;
+        }
+#endif
     }
 }
