@@ -130,6 +130,57 @@ namespace Machine.Specifications.Specs
         }
     }
 
+  [Subject(typeof(Catch))]
+  public class when_calling_Catch_OnlyAsync_with_an_Async_Func
+  {
+      [Subject(typeof(Catch))]
+      public class with_a_throwing_Action_which_matches_exception_to_be_caught
+      {
+          static ArgumentException AnException;
+          static Exception Result;
+          static Task TestAsync() => Task.Run(() => throw AnException);
+
+          Establish context = () => { AnException = new ArgumentException(); };
+
+          Because of = async () => { Result = await Catch.OnlyAsync<ArgumentException>(TestAsync); };
+
+          It should_return_the_same_exception =
+              () => Result.Should().BeSameAs(AnException);
+      }
+
+      [Subject(typeof(Catch))]
+      public class with_a_throwing_Action_which_doesnt_match_exception_to_be_caught
+      {
+          static ArgumentException AnException;
+          static Exception Result;
+          static Task TestAsync() => Task.Run(() => throw AnException);
+
+          Establish context = () => { AnException = new ArgumentException(); };
+
+          Because of = async () => { Result = await Catch.ExceptionAsync(async () => await Catch.OnlyAsync<InvalidOperationException>(TestAsync)); };
+
+          It should_return_the_same_exception =
+              () => Result.Should().BeSameAs(AnException);
+      }
+
+      [Subject(typeof(Catch))]
+      public class with_a_non_throwing_Action
+      {
+          static string ActionSideEffect;
+          static Exception Result;
+
+          static Task TestAsync() => Task.Run(() => { ActionSideEffect = "hi"; });
+
+          Because of = async () => { Result = await Catch.OnlyAsync<ArgumentException>(TestAsync); };
+
+          It should_access_the_propety =
+              () => ActionSideEffect.Should().Be("hi");
+
+          It should_return_null =
+              () => Result.Should().BeNull();
+      }
+  }
+
     [Subject(typeof(Catch))]
     public class when_calling_catch_with_async_methods
     {
