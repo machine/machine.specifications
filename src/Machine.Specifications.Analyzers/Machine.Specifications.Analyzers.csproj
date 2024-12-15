@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);PackageItems</TargetsForTfmSpecificContentInPackage>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>Roslyn analyzers and code fixes for Machine.Specifications</Description>
+    <Authors>Machine Specifications</Authors>
+    <PackageTags>mspec;test;unit;testing;context;specification;bdd;tdd;analyzers;roslyn</PackageTags>
+    <PackageReleaseNotes>See https://github.com/machine/machine.specifications.analyzers/releases</PackageReleaseNotes>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/machine/machine.specifications</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/machine/machine.specifications.analyzers</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <DevelopmentDependency>true</DevelopmentDependency>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.11.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../images/icon.png" Pack="true" PackagePath="" Visible="false" />
+    <None Update="*.ps1" CopyToOutputDirectory="Always" Pack="true" PackagePath="tools" Visible="false" />
+  </ItemGroup>
+
+  <Target Name="PackageItems">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="$(OutputPath)\$(AssemblyName).dll" PackagePath="analyzers/dotnet/cs" />
+    </ItemGroup>
+  </Target>
+
+</Project>
