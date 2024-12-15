@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net472;net6.0</TargetFrameworks>
     <RootNamespace>Machine.Specifications</RootNamespace>
     <AssemblyName>Machine.Specifications</AssemblyName>
 
@@ -17,10 +17,6 @@
 
   <ItemGroup>
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Machine.Specifications.Interfaces\Machine.Specifications.Interfaces.csproj" />
   </ItemGroup>
 
   <ItemGroup>

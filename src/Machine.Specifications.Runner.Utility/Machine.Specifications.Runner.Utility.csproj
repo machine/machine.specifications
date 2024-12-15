@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net472;net6.0</TargetFrameworks>
 
     <Description>Provides a version-independent runner for Machine.Specifications</Description>
     <Authors>Machine Specifications</Authors>
@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications.Core\Machine.Specifications.Core.csproj" PrivateAssets="all" />
-    <ProjectReference Include="..\Machine.Specifications.Interfaces\Machine.Specifications.Interfaces.csproj" />
   </ItemGroup>
 
   <ItemGroup>

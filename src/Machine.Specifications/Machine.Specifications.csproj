@@ -1,8 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net472;net6.0</TargetFrameworks>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <NoWarn>NU5128</NoWarn>
+  </PropertyGroup>
 
+  <PropertyGroup>
     <Description>Machine.Specifications is a Context/Specification framework geared towards removing language noise and simplifying tests</Description>
     <Authors>Machine Specifications</Authors>
     <PackageTags>test;unit;testing;context;specification;bdd;tdd;mspec</PackageTags>
@@ -10,9 +14,6 @@
     <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>http://github.com/machine/machine.specifications</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
-
-    <NoWarn>NU5128</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

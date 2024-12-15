@@ -1,21 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+VisualStudioVersion = 17.12.35527.113 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications", "src\Machine.Specifications\Machine.Specifications.csproj", "{EC054D80-8858-4A61-9FD9-0185EA3F4643}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{1D85E618-71A9-43F2-B76D-95DC161E2A13}"
-	ProjectSection(SolutionItems) = preProject
-		build.ps1 = build.ps1
-		build.sh = build.sh
-		.github\workflows\build.yml = .github\workflows\build.yml
-		CONTRIBUTING.md = CONTRIBUTING.md
-		.config\dotnet-tools.json = .config\dotnet-tools.json
-		GitVersion.yml = GitVersion.yml
-		.github\workflows\publish.yml = .github\workflows\publish.yml
-		README.md = README.md
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Runner.Utility", "src\Machine.Specifications.Runner.Utility\Machine.Specifications.Runner.Utility.csproj", "{7E11A6CD-5900-4FFD-AE68-231BDA2436BA}"
 EndProject
@@ -27,11 +15,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Shou
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Core", "src\Machine.Specifications.Core\Machine.Specifications.Core.csproj", "{12F8A086-25B8-4636-8520-5985CA56CB01}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Interfaces", "src\Machine.Specifications.Interfaces\Machine.Specifications.Interfaces.csproj", "{5A18854E-1B66-409F-8122-3E12A13B9F43}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Core.Specs", "src\Machine.Specifications.Core.Specs\Machine.Specifications.Core.Specs.csproj", "{0370391F-C7F2-41E7-BBC2-3D966F6F9ED9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Fixtures", "src\Machine.Specifications.Fixtures\Machine.Specifications.Fixtures.csproj", "{2934AB5B-7506-4150-B61B-FE16EBB13D50}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Analyzers", "src\Machine.Specifications.Analyzers\Machine.Specifications.Analyzers.csproj", "{3463F8CE-3CBE-4AD0-84BC-07C7E5FC9464}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Analyzers.Tests", "src\Machine.Specifications.Analyzers.Tests\Machine.Specifications.Analyzers.Tests.csproj", "{C58845FC-ACD6-4CC2-BF7F-0FD7CCF201C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,10 +53,6 @@ Global
 		{12F8A086-25B8-4636-8520-5985CA56CB01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12F8A086-25B8-4636-8520-5985CA56CB01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12F8A086-25B8-4636-8520-5985CA56CB01}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5A18854E-1B66-409F-8122-3E12A13B9F43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5A18854E-1B66-409F-8122-3E12A13B9F43}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5A18854E-1B66-409F-8122-3E12A13B9F43}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5A18854E-1B66-409F-8122-3E12A13B9F43}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0370391F-C7F2-41E7-BBC2-3D966F6F9ED9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0370391F-C7F2-41E7-BBC2-3D966F6F9ED9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0370391F-C7F2-41E7-BBC2-3D966F6F9ED9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -75,6 +61,14 @@ Global
 		{2934AB5B-7506-4150-B61B-FE16EBB13D50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2934AB5B-7506-4150-B61B-FE16EBB13D50}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2934AB5B-7506-4150-B61B-FE16EBB13D50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3463F8CE-3CBE-4AD0-84BC-07C7E5FC9464}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3463F8CE-3CBE-4AD0-84BC-07C7E5FC9464}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3463F8CE-3CBE-4AD0-84BC-07C7E5FC9464}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3463F8CE-3CBE-4AD0-84BC-07C7E5FC9464}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C58845FC-ACD6-4CC2-BF7F-0FD7CCF201C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C58845FC-ACD6-4CC2-BF7F-0FD7CCF201C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C58845FC-ACD6-4CC2-BF7F-0FD7CCF201C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C58845FC-ACD6-4CC2-BF7F-0FD7CCF201C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
