@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Machine.Specifications
 {
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
     [Serializable]
 #endif
     public class SpecificationException : Exception
@@ -22,7 +22,7 @@ namespace Machine.Specifications
         {
         }
 
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
         protected SpecificationException(
             SerializationInfo info,
             StreamingContext context)

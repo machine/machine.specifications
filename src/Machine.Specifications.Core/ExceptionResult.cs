@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Machine.Specifications
 {
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
     [Serializable]
 #endif
     public class ExceptionResult

@@ -1,35 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net472;net6.0</TargetFrameworks>
+  </PropertyGroup>
 
+  <PropertyGroup>
     <Description>Provides a version-independent runner for Machine.Specifications</Description>
-    <Authors>Machine Specifications</Authors>
-    <PackageTags>test;unit;testing;context;specification;bdd;tdd;mspec;runner</PackageTags>
-    <PackageReleaseNotes>https://github.com/machine/machine.specifications/releases</PackageReleaseNotes>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageProjectUrl>http://github.com/machine/machine.specifications.runner.utility</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="InternalsVisibleTo.MSBuild" Version="1.1.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications.Core\Machine.Specifications.Core.csproj" PrivateAssets="all" />
-    <ProjectReference Include="..\Machine.Specifications.Interfaces\Machine.Specifications.Interfaces.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <InternalsVisibleTo Include="$(AssemblyName).Specs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="../../images/icon.png" Pack="true" PackagePath="" Visible="false" />
   </ItemGroup>
 
 </Project>

@@ -6,7 +6,7 @@ using System.Xml.XPath;
 
 namespace Machine.Specifications.Runner
 {
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
     [Serializable]
 #endif
     public class RunOptions

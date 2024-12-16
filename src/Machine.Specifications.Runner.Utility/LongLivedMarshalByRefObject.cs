@@ -3,7 +3,7 @@ using System.Security;
 
 namespace Machine.Specifications.Runner.Utility
 {
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
     internal class LongLivedMarshalByRefObject : MarshalByRefObject
     {
         [SecurityCritical]

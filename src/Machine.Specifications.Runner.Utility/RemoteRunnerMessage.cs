@@ -2,14 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
 using System.Runtime.Remoting.Messaging;
 #endif
 using System.Xml.Linq;
 
 namespace Machine.Specifications.Runner.Utility
 {
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
     internal class RemoteRunnerMessage : MarshalByRefObject, IMessage
     {
         public RemoteRunnerMessage(XElement root, MemberInfo info = null)

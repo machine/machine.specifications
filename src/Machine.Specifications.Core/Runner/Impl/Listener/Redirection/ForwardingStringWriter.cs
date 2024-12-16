@@ -24,7 +24,7 @@ namespace Machine.Specifications.Runner.Impl.Listener.Redirection
 
                 if (first == null)
                 {
-#if NETSTANDARD
+#if NET6_0_OR_GREATER
                     return Encoding.UTF8;
 #else
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Messaging;
 #endif
@@ -13,11 +13,11 @@ namespace Machine.Specifications.Runner.Utility
     /// The remote run listener is a decorator class which takes the burden to implement IMessageSink and translates
     /// information about specification execution over app domain boundaries.
     /// </summary>
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
     [Serializable]
 #endif
     internal class RemoteRunListener : LongLivedMarshalByRefObject, ISpecificationRunListener
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
         , IMessageSink
 #endif
     {
@@ -73,7 +73,7 @@ namespace Machine.Specifications.Runner.Utility
             runListener.OnFatalError(exceptionResult);
         }
 
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
         public IMessage SyncProcessMessage(IMessage msg)
         {
             if (msg is IMethodCallMessage methodCall)
