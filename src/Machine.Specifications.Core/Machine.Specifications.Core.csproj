@@ -1,30 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
-    <RootNamespace>Machine.Specifications</RootNamespace>
+    <TargetFrameworks>net472;net6.0</TargetFrameworks>
     <AssemblyName>Machine.Specifications</AssemblyName>
-
     <PackageId>Machine.Specifications.Core</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <Description>Machine.Specifications is a Context/Specification framework geared towards removing language noise and simplifying tests</Description>
-    <Authors>Machine Specifications</Authors>
-    <PackageTags>test;unit;testing;context;specification;bdd;tdd;mspec</PackageTags>
-    <PackageReleaseNotes>https://github.com/machine/machine.specifications/releases</PackageReleaseNotes>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageProjectUrl>http://github.com/machine/machine.specifications</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Machine.Specifications.Interfaces\Machine.Specifications.Interfaces.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="../../images/icon.png" Pack="true" PackagePath="" Visible="false" />
   </ItemGroup>
 
 </Project>

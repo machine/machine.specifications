@@ -74,7 +74,7 @@ namespace Machine.Specifications.Runner.Utility
             parameters.ReferencedAssemblies.AddRange(new []
             {
                 "System.dll",
-                "Machine.Specifications.dll",
+                "Machine.Specifications.Core.dll",
                 "Machine.Specifications.Should.dll",
                 "netstandard.dll"
             });

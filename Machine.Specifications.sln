@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Shou
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Core", "src\Machine.Specifications.Core\Machine.Specifications.Core.csproj", "{12F8A086-25B8-4636-8520-5985CA56CB01}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Interfaces", "src\Machine.Specifications.Interfaces\Machine.Specifications.Interfaces.csproj", "{5A18854E-1B66-409F-8122-3E12A13B9F43}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications.Core.Specs", "src\Machine.Specifications.Core.Specs\Machine.Specifications.Core.Specs.csproj", "{0370391F-C7F2-41E7-BBC2-3D966F6F9ED9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Fixtures", "src\Machine.Specifications.Fixtures\Machine.Specifications.Fixtures.csproj", "{2934AB5B-7506-4150-B61B-FE16EBB13D50}"
@@ -59,10 +57,6 @@ Global
 		{12F8A086-25B8-4636-8520-5985CA56CB01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12F8A086-25B8-4636-8520-5985CA56CB01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12F8A086-25B8-4636-8520-5985CA56CB01}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5A18854E-1B66-409F-8122-3E12A13B9F43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5A18854E-1B66-409F-8122-3E12A13B9F43}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5A18854E-1B66-409F-8122-3E12A13B9F43}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5A18854E-1B66-409F-8122-3E12A13B9F43}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0370391F-C7F2-41E7-BBC2-3D966F6F9ED9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0370391F-C7F2-41E7-BBC2-3D966F6F9ED9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0370391F-C7F2-41E7-BBC2-3D966F6F9ED9}.Release|Any CPU.ActiveCfg = Release|Any CPU

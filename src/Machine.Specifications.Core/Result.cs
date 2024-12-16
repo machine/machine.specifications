@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Machine.Specifications
 {
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
     [Serializable]
 #endif
     public class Result

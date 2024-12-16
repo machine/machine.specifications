@@ -1,4 +1,4 @@
-﻿#if !NETSTANDARD
+﻿#if !NET6_0_OR_GREATER
 using System.Runtime.Remoting.Messaging;
 
 namespace Machine.Specifications.Runner.Utility

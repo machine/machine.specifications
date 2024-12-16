@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
 using System.Runtime.Remoting.Messaging;
 #endif
 using System.Security;
@@ -123,7 +123,7 @@ namespace Machine.Specifications.Runner.Utility
                 return;
             }
 
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
             var cachePath = appDomain.SetupInformation.CachePath;
 
             try
@@ -145,7 +145,7 @@ namespace Machine.Specifications.Runner.Utility
         [SecuritySafeCritical]
         private ISpecificationRunner CreateRunnerInSeparateAppDomain(AppDomain appDomain, AssemblyPath assembly)
         {
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
             var path = Path.GetDirectoryName(assembly);
 
             if (path == null)
@@ -154,13 +154,23 @@ namespace Machine.Specifications.Runner.Utility
             }
 
             var mspecAssemblyFilename = Path.Combine(path, "Machine.Specifications.dll");
+            var coreAssemblyFilename = Path.Combine(path, "Machine.Specifications.Core.dll");
 
-            if (!File.Exists(mspecAssemblyFilename))
+            AssemblyName mspecAssemblyName = null;
+
+            if (File.Exists(mspecAssemblyFilename))
+            {
+                mspecAssemblyName = AssemblyName.GetAssemblyName(mspecAssemblyFilename);
+            }
+            else if (File.Exists(coreAssemblyFilename))
+            {
+                mspecAssemblyName = AssemblyName.GetAssemblyName(coreAssemblyFilename);
+            }
+
+            if (mspecAssemblyName == null)
             {
                 return new NullSpecificationRunner();
             }
-
-            var mspecAssemblyName = AssemblyName.GetAssemblyName(mspecAssemblyFilename);
 
             var constructorArgs = new object[3];
             constructorArgs[0] = listener;
@@ -188,7 +198,8 @@ namespace Machine.Specifications.Runner.Utility
                 throw;
             }
 #else
-            var runnerType = Type.GetType($"{RunnerType}, Machine.Specifications");
+            var runnerType = Type.GetType($"{RunnerType}, Machine.Specifications") ??
+                             Type.GetType($"{RunnerType}, Machine.Specifications.Core");
 
             if (runnerType == null)
             {
@@ -217,7 +228,7 @@ namespace Machine.Specifications.Runner.Utility
                 return appDomainAndRunner;
             }
 
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
             var setup = new AppDomainSetup
             {
                 ApplicationBase = Path.GetDirectoryName(assembly),

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Messaging;
 #endif
@@ -16,11 +16,11 @@ using Machine.Specifications.Utility;
 
 namespace Machine.Specifications.Runner.Impl
 {
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
     [Serializable]
 #endif
     public class DefaultRunner :
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
                                 MarshalByRefObject, IMessageSink,
 #endif
                                 ISpecificationRunner
@@ -40,7 +40,7 @@ namespace Machine.Specifications.Runner.Impl
 
         private bool explicitStartAndEnd;
 
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
         public DefaultRunner(object listener, string runOptionsXml, bool signalRunStartAndEnd)
             : this(new RemoteRunListenerDecorator(listener), RunOptions.Parse(runOptionsXml), signalRunStartAndEnd)
         {
@@ -173,7 +173,7 @@ namespace Machine.Specifications.Runner.Impl
             runEnd.Invoke();
         }
 
-#if !NETSTANDARD
+#if !NET6_0_OR_GREATER
         [SecurityCritical]
         public override object InitializeLifetimeService()
         {

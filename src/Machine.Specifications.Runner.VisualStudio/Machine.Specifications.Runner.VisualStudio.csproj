@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <TargetFrameworks>netcoreapp3.1;net472</TargetFrameworks>
+    <PackageId>Machine.Specifications.Runner.VisualStudio</PackageId>
+    <AssemblyName>Machine.Specifications.Runner.VisualStudio.TestAdapter</AssemblyName>
+    <NoWarn>NU5127,NU5128</NoWarn>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+
+    <Description>Machine.Specifications test adapter for .NET Framework and .NET Core.</Description>
+    <Authors>Machine Specifications</Authors>
+    <PackageTags>mspec;unit;testing;context;specification;bdd;tdd</PackageTags>
+    <PackageReleaseNotes>https://github.com/machine/machine.specifications.runner.visualstudio/releases</PackageReleaseNotes>
+    <PackageIcon>Machine.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/machine/machine.specifications.runner.visualstudio</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Machine.Specifications" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.6.3" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Resources\Machine.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);NetCorePackageItems;NetFrameworkPackageItems</TargetsForTfmSpecificContentInPackage>
+  </PropertyGroup>
+
+  <Target Name="NetCorePackageItems" Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="*.props" PackagePath="build\$(TargetFramework)" />
+      <TfmSpecificPackageFile Include="$(OutputPath)\Machine.*.dll" PackagePath="build\$(TargetFramework)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="NetFrameworkPackageItems" Condition="'$(TargetFramework)' == 'net472'">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="*.props" PackagePath="build\$(TargetFramework)" />
+      <TfmSpecificPackageFile Include="$(OutputPath)\Machine.*.dll" PackagePath="build\$(TargetFramework)" />
+    </ItemGroup>
+  </Target>
+
+</Project>
