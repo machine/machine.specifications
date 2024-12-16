@@ -154,17 +154,12 @@ namespace Machine.Specifications.Runner.Utility
             }
 
             var mspecAssemblyFilename = Path.Combine(path, "Machine.Specifications.dll");
-            var coreAssemblyFilename = Path.Combine(path, "Machine.Specifications.Core.dll");
 
             AssemblyName mspecAssemblyName = null;
 
             if (File.Exists(mspecAssemblyFilename))
             {
                 mspecAssemblyName = AssemblyName.GetAssemblyName(mspecAssemblyFilename);
-            }
-            else if (File.Exists(coreAssemblyFilename))
-            {
-                mspecAssemblyName = AssemblyName.GetAssemblyName(coreAssemblyFilename);
             }
 
             if (mspecAssemblyName == null)
