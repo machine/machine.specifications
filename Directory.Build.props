@@ -1,7 +1,4 @@
 <Project>
-  <PropertyGroup>
-    <RootNamespace>Machine.Specifications</RootNamespace>
-  </PropertyGroup>
 
   <PropertyGroup>
     <Authors>Machine Specifications</Authors>
@@ -17,4 +14,5 @@
   <ItemGroup>
     <None Include="../../images/icon.png" Pack="true" PackagePath="" Visible="false" />
   </ItemGroup>
+
 </Project>
