@@ -87,7 +87,7 @@ public class AccessModifierShouldNotBeUsedCodeFixProvider : CodeFixProvider
             .WithLeadingTrivia(trivia);
     }
 
-    private SyntaxNode GetParentDeclaration(SyntaxNode declaration)
+    private SyntaxNode? GetParentDeclaration(SyntaxNode? declaration)
     {
         while (declaration != null)
         {
