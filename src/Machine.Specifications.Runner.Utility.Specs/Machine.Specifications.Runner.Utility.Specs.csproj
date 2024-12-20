@@ -1,19 +1,22 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;net8.0</TargetFrameworks>
+    <TargetFrameworks>net8.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.Compilers" Version="4.6.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.3" />
-    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.10.2" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Compilers" Version="4.12.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications.Core\Machine.Specifications.Core.csproj" />
     <ProjectReference Include="..\Machine.Specifications.Runner.Utility\Machine.Specifications.Runner.Utility.csproj" />
+    <ProjectReference Include="..\Machine.Specifications.Runner.VisualStudio\Machine.Specifications.Runner.VisualStudio.csproj" />
     <ProjectReference Include="..\Machine.Specifications.Should\Machine.Specifications.Should.csproj" />
   </ItemGroup>
 

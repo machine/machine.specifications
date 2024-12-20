@@ -2,17 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.9.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Machine.Specifications.Core\Machine.Specifications.Core.csproj" />
     <ProjectReference Include="..\Machine.Specifications.Fakes\Machine.Specifications.Fakes.csproj" />
+    <ProjectReference Include="..\Machine.Specifications.Runner.VisualStudio\Machine.Specifications.Runner.VisualStudio.csproj" />
     <ProjectReference Include="..\Machine.Specifications.Should\Machine.Specifications.Should.csproj" />
   </ItemGroup>
 

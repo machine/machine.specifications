@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.1;net472</TargetFrameworks>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Machine.Fakes.Moq" Version="2.11.0" />
+    <PackageReference Include="Machine.Specifications.Should" Version="1.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.3" />
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Machine.Specifications.Runner.VisualStudio.Fixtures\Machine.Specifications.Runner.VisualStudio.Fixtures.csproj" />
+    <ProjectReference Include="..\Machine.Specifications.Runner.VisualStudio\Machine.Specifications.Runner.VisualStudio.csproj" />
+  </ItemGroup>
+
+</Project>

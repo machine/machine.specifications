@@ -414,7 +414,8 @@ namespace Machine.Specifications.Should.Specs
             public int[] Prop1 { get; set; }
         }
 
-        Establish context = () => obj1 = new Dummy { Prop1 = new[] { 1, 1, 1 } };
+        Establish context = () =>
+            obj1 = new Dummy { Prop1 = new[] { 1, 1, 1 } };
 
         class and_the_objects_are_similar
         {
@@ -466,15 +467,17 @@ namespace Machine.Specifications.Should.Specs
                 exception.ShouldBeOfExactType<SpecificationException>();
 
             It should_contain_message = () =>
-                exception.Message.ShouldEqual(
-                    @"""Prop1"":" + Environment.NewLine +
-                    @"  Expected: [null]" + Environment.NewLine +
-                    @"  But was:  System.Int32[]:" + Environment.NewLine +
-                    @"{" + Environment.NewLine +
-                    @"  [1]," + Environment.NewLine +
-                    @"  [1]," + Environment.NewLine +
-                    @"  [1]" + Environment.NewLine +
-                    @"}");
+                exception.Message.Trim().ShouldEqual(
+                    """
+                    "Prop1":
+                      Expected: [null]
+                      But was:  System.Int32[]:
+                    {
+                      [1],
+                      [1],
+                      [1]
+                    }
+                    """.Trim());
         }
 
         class and_the_objects_are_different_and_the_actual_object_has_a_null_value

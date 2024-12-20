@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Machine.Specifications", "src\Machine.Specifications\Machine.Specifications.csproj", "{EC054D80-8858-4A61-9FD9-0185EA3F4643}"
 EndProject
@@ -26,6 +26,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Fakes", "src\Machine.Specifications.Fakes\Machine.Specifications.Fakes.csproj", "{2DBF8D62-8A2F-4BE1-B5F3-82910AD277F7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Fakes.Specs", "src\Machine.Specifications.Fakes.Specs\Machine.Specifications.Fakes.Specs.csproj", "{B897126F-BF01-4A97-965D-C2DE1BC63460}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Specifications.Runner.VisualStudio", "src\Machine.Specifications.Runner.VisualStudio\Machine.Specifications.Runner.VisualStudio.csproj", "{D7689810-9604-4E3E-9821-28ABA130B28E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{B897126F-BF01-4A97-965D-C2DE1BC63460}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B897126F-BF01-4A97-965D-C2DE1BC63460}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B897126F-BF01-4A97-965D-C2DE1BC63460}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7689810-9604-4E3E-9821-28ABA130B28E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7689810-9604-4E3E-9821-28ABA130B28E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7689810-9604-4E3E-9821-28ABA130B28E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7689810-9604-4E3E-9821-28ABA130B28E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
