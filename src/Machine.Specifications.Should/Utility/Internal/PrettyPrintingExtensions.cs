@@ -170,17 +170,17 @@ namespace Machine.Specifications.Utility.Internal
 
             var sb = new StringBuilder();
             sb.AppendLine("{");
-            sb.Append(string.Join(",\r\n", array.Select(x => x.ToUsefulString().Tab()).Take(10).ToArray()));
+            sb.Append(string.Join($",{Environment.NewLine}", array.Select(x => x.ToUsefulString().Tab()).Take(10).ToArray()));
 
             if (array.Length > 10)
             {
                 if (array.Length > 11)
                 {
-                    sb.AppendLine($",\r\n  ...({array.Length - 10} more elements)");
+                    sb.AppendLine($",{Environment.NewLine}  ...({array.Length - 10} more elements)");
                 }
                 else
                 {
-                    sb.AppendLine(",\r\n" + array.Last().ToUsefulString().Tab());
+                    sb.AppendLine($",{Environment.NewLine}" + array.Last().ToUsefulString().Tab());
                 }
             }
             else
@@ -214,7 +214,7 @@ namespace Machine.Specifications.Utility.Internal
             {
                 var enumerable = items.Cast<object>();
 
-                return items.GetType() + ":\r\n" + enumerable.EachToUsefulString();
+                return items.GetType() + $":{Environment.NewLine}" + enumerable.EachToUsefulString();
             }
 
             var str = obj.ToString();
