@@ -37,33 +37,20 @@ class When_authenticating_an_admin_user
 ```
 
 ## Getting Started
-1. Create a .NET Framework or .NET Core library project.
-2. Install Nuget packages as follows:
+1. Install Nuget packages as follows:
 
-```powershell
-Install-Package Machine.Specifications
+```ps1
+dotnet add package Machine.Specifications
 ```
 
-3. Install the test SDK and Visual Studio runner:
+2. Optionally, install the mocking libraries:
 
 ```powershell
-Install-Package Microsoft.NET.Test.SDK
-Install-Package Machine.Specifications.Runner.VisualStudio
-```
-
-4. Optionally, install the assert and mocking libraries:
-
-```powershell
-Install-Package Machine.Specifications.Should
-Install-Package Machine.Fakes
+dotnet add package Machine.Specifications.Fakes
 ```
 
 ## Documentation
-
 For project documentation, please visit the [wiki](https://github.com/machine/machine.specifications/wiki).
-
-## Training
-A PluralSight course by [@kevinkuebler](https://github.com/kevinkuebler) is available [here](https://www.pluralsight.com/courses/expressive-testing-dotnet-mspec).
 
 ## Get in touch
 Discuss with us on [Discussions](https://github.com/machine/machine.specifications/discussions), or raise an [issue](https://github.com/machine/machine.specifications/issues).
@@ -75,12 +62,5 @@ Discuss with us on [Discussions](https://github.com/machine/machine.specificatio
 Project | Build | NuGet
 -- | -- | --
 `Machine.Specifications` | [![Build](https://img.shields.io/github/workflow/status/machine/machine.specifications/build?style=flat-square)](https://github.com/machine/machine.specifications/actions?query=workflow:build) | [![](https://img.shields.io/nuget/v/Machine.Specifications.svg?style=flat-square)](https://www.nuget.org/packages/machine.specifications)
-`Machine.Specifications.Reporting` | [![Build](https://img.shields.io/github/workflow/status/machine/machine.specifications/build?style=flat-square)](https://github.com/machine/machine.specifications/actions?query=workflow:build) | [![](https://img.shields.io/nuget/v/Machine.Specifications.Reporting.svg?style=flat-square)](https://www.nuget.org/packages/machine.specifications.reporting)
-`Machine.Specifications.Runner.Console` | [![Build](https://img.shields.io/github/workflow/status/machine/machine.specifications/build?style=flat-square)](https://github.com/machine/machine.specifications/actions?query=workflow:build) | [![](https://img.shields.io/nuget/v/Machine.Specifications.Runner.Console.svg?style=flat-square)](https://www.nuget.org/packages/machine.specifications.runner.console)
-`Machine.Specifications.Runner.ReSharper` | [![Build](https://img.shields.io/github/workflow/status/machine/machine.specifications.runner.resharper/build?style=flat-square)](https://github.com/machine/machine.specifications.runner.resharper/actions?query=workflow:build) | [![](https://img.shields.io/resharper/v/Machine.Specifications.Runner.Resharper9.svg?style=flat-square)](https://plugins.jetbrains.com/plugin/11639-machine-specifications-for-resharper)
-`Machine.Specifications.Runner.Rider` | [![Build](https://img.shields.io/github/workflow/status/machine/machine.specifications.runner.resharper/build?style=flat-square)](https://github.com/machine/machine.specifications.runner.resharper/actions?query=workflow:build) | [![](https://img.shields.io/jetbrains/plugin/v/11528-machine-specifications.svg?style=flat-square&label=rider)](https://plugins.jetbrains.com/plugin/11528-machine-specifications-for-rider)
-`Machine.Specifications.Runner.TDNet` | [![Build](https://img.shields.io/github/workflow/status/machine/machine.specifications/build?style=flat-square)](https://github.com/machine/machine.specifications/actions?query=workflow:build) | [![](https://img.shields.io/nuget/v/Machine.Specifications.Runner.TDNet.svg?style=flat-square)](https://www.nuget.org/packages/machine.specifications.runner.tdnet)
-`Machine.Specifications.Runner.Utility` | [![Build](https://img.shields.io/github/workflow/status/machine/machine.specifications/build?style=flat-square)](https://github.com/machine/machine.specifications/actions?query=workflow:build) | [![](https://img.shields.io/nuget/v/Machine.Specifications.Runner.Utility.svg?style=flat-square)](https://www.nuget.org/packages/machine.specifications.runner.utility)
-`Machine.Specifications.Runner.VisualStudio` | [![Build](https://img.shields.io/github/workflow/status/machine/machine.specifications.runner.visualstudio/build?style=flat-square)](https://github.com/machine/machine.specifications.runner.visualstudio/actions?query=workflow:build) | [![](https://img.shields.io/nuget/v/Machine.Specifications.Runner.VisualStudio.svg?style=flat-square)](https://www.nuget.org/packages/machine.specifications.runner.visualstudio)
-`Machine.Specifications.Should` | [![Build](https://img.shields.io/github/workflow/status/machine/machine.specifications/build?style=flat-square)](https://github.com/machine/machine.specifications/actions?query=workflow:build) | [![](https://img.shields.io/nuget/v/Machine.Specifications.Should.svg?style=flat-square)](https://www.nuget.org/packages/machine.specifications.should)
-`Machine.Fakes` | [![Build](https://img.shields.io/github/workflow/status/machine/machine.specifications.fakes/build?style=flat-square)](https://github.com/machine/machine.specifications.fakes/actions?query=workflow:build) | [![](https://img.shields.io/nuget/v/Machine.Fakes.svg?style=flat-square)](https://www.nuget.org/packages/machine.fakes)
+`Machine.Specifications.Should` | [![Build](https://img.shields.io/github/workflow/status/machine/machine.specifications.should/build?style=flat-square)](https://github.com/machine/machine.specifications.should/actions?query=workflow:build) | [![](https://img.shields.io/nuget/v/Machine.Specifications.Should.svg?style=flat-square)](https://www.nuget.org/packages/machine.specifications.should)
+`Machine.Specificaitons.Fakes` | [![Build](https://img.shields.io/github/workflow/status/machine/machine.specifications.fakes/build?style=flat-square)](https://github.com/machine/machine.specifications.fakes/actions?query=workflow:build) | [![](https://img.shields.io/nuget/v/Machine.Specifications.Fakes.svg?style=flat-square)](https://www.nuget.org/packages/machine.specifications.fakes)
