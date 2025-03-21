@@ -6,11 +6,11 @@ public class MSpecExtension : IExtension
 {
     public string Uid { get; } = nameof(MSpecExtension);
 
-    public string Version { get; } = typeof(MSpecExtension).Assembly.GetName().Version?.ToString() ?? "1.0.0";
+    public string Version { get; } = typeof(MSpecExtension).Assembly.GetName().Version?.ToString(3) ?? "0.0.0";
 
-    public string DisplayName { get; } = "MSpec";
+    public string DisplayName { get; } = "Machine.Specifications";
 
-    public string Description { get; } = "MSpec Framework for Microsoft Testing Platform";
+    public string Description { get; } = "Machine.Specifications framework for Microsoft Testing Platform";
 
     public Task<bool> IsEnabledAsync()
     {

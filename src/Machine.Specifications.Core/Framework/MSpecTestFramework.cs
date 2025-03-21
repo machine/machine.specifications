@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Reflection;
 using Microsoft.Testing.Platform.Extensions;
 using Microsoft.Testing.Platform.Extensions.Messages;
 using Microsoft.Testing.Platform.Extensions.TestFramework;
@@ -6,7 +7,7 @@ using Microsoft.Testing.Platform.Requests;
 
 namespace Machine.Specifications.Framework;
 
-public class MSpecTestFramework(IExtension extension, IServiceProvider serviceProvider) : ITestFramework, IDataProducer
+public class MSpecTestFramework(IExtension extension, IServiceProvider serviceProvider, Assembly assembly) : ITestFramework, IDataProducer
 {
     private static readonly ConcurrentDictionary<string, MSpecServiceProvider> ServiceProviders = [];
 
@@ -45,11 +46,9 @@ public class MSpecTestFramework(IExtension extension, IServiceProvider servicePr
         {
             if (context.Request is DiscoverTestExecutionRequest discoverRequest)
             {
-
             }
             else if (context.Request is RunTestExecutionRequest executionRequest)
             {
-
             }
             else
             {

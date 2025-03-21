@@ -18,11 +18,14 @@ public class MSpecServiceProvider : IServiceProvider, IAsyncDisposable
     {
         LoggerFactory = serviceProvider.GetLoggerFactory();
         OutputDevice = serviceProvider.GetOutputDevice();
+        MessageBus = new MSpecMessageBus(messageBus);
     }
 
     public ILoggerFactory LoggerFactory { get; }
 
     public IOutputDevice OutputDevice { get; }
+
+    public IMSpecMessageBus MessageBus { get; }
 
     public object? GetService(Type serviceType)
     {
