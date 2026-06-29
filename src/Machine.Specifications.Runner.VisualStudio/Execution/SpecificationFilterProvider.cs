@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Machine.Specifications.Model;
@@ -19,7 +19,9 @@ namespace Machine.Specifications.Runner.VisualStudio.Execution
         private readonly Dictionary<string, TestProperty> testCaseProperties = new Dictionary<string, TestProperty>(StringComparer.OrdinalIgnoreCase)
         {
             [TestCaseProperties.FullyQualifiedName.Id] = TestCaseProperties.FullyQualifiedName,
-            [TestCaseProperties.DisplayName.Id] = TestCaseProperties.DisplayName
+            [TestCaseProperties.FullyQualifiedName.Label] = TestCaseProperties.FullyQualifiedName,
+            [TestCaseProperties.DisplayName.Id] = TestCaseProperties.DisplayName,
+            [TestCaseProperties.DisplayName.Label] = TestCaseProperties.DisplayName
         };
 
         private readonly Dictionary<string, TestProperty> traitProperties = new Dictionary<string, TestProperty>(StringComparer.OrdinalIgnoreCase)
@@ -52,53 +54,50 @@ namespace Machine.Specifications.Runner.VisualStudio.Execution
                 return null;
             });
 
-            handle?.SendMessage(TestMessageLevel.Informational, $"Machine Specifications Visual Studio Test Adapter - Filter property set '{filterExpression?.TestCaseFilterValue}'");
-
             if (filterExpression == null)
             {
                 return testCases;
             }
 
             var filteredTests = testCases
-                .Where(x => filterExpression.MatchTestCase(x, propertyName => GetPropertyValue(propertyName, x)));
+                .Where(x => filterExpression.MatchTestCase(x, propertyName => ResolvePropertyValue(propertyName, x)));
 
             return filteredTests;
         }
 
-        private object GetPropertyValue(string propertyName, TestObject testCase)
+        private object ResolvePropertyValue(string propertyName, TestCase testCase)
         {
-            if (testCaseProperties.TryGetValue(propertyName, out var testProperty))
+            // Read well-known properties directly from TestCase — the TestObject property
+            // bag may not contain them reliably across ObjectModel assembly versions
+            if (string.Equals(propertyName, "FullyQualifiedName", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(propertyName, "TestCase.FullyQualifiedName", StringComparison.OrdinalIgnoreCase))
             {
-                if (testCase.Properties.Contains(testProperty))
-                {
-                    return testCase.GetPropertyValue(testProperty);
-                }
+                return testCase.FullyQualifiedName;
             }
 
-            if (traitProperties.TryGetValue(propertyName, out var traitProperty))
+            if (string.Equals(propertyName, "DisplayName", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(propertyName, "TestCase.DisplayName", StringComparison.OrdinalIgnoreCase))
             {
-                var val = TraitContains(testCase, traitProperty.Id);
+                return testCase.DisplayName;
+            }
 
-                if (val.Length == 1)
-                {
-                    return val[0];
-                }
+            // Trait-based properties (Tag, Subject, ClassName)
+            var traits = testCase.Traits?
+                .Where(x => string.Equals(x.Name, propertyName, StringComparison.OrdinalIgnoreCase))
+                .Select(x => x.Value)
+                .ToArray();
 
-                if (val.Length > 1)
-                {
-                    return val;
-                }
+            if (traits?.Length == 1)
+            {
+                return traits[0];
+            }
+
+            if (traits?.Length > 1)
+            {
+                return traits;
             }
 
             return null;
-        }
-
-        private static string[] TraitContains(TestObject testCase, string traitName)
-        {
-            return testCase?.Traits?
-                .Where(x => x.Name == traitName)
-                .Select(x => x.Value)
-                .ToArray();
         }
     }
 }
