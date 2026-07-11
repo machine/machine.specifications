@@ -1,16 +1,11 @@
 version: 2
 updates:
-  - package-ecosystem: "nuget"
-    directory: "/"
+  - package-ecosystem: github-actions
+    directory: /
     schedule:
-      interval: "daily"
+      interval: weekly
 
-  - package-ecosystem: "nuget"
-    directory: "/build"
+  - package-ecosystem: nuget
+    directory: /
     schedule:
-      interval: "weekly"
-
-  - package-ecosystem: "nuget"
-    directory: "/.config"
-    schedule:
-      interval: "weekly"
+      interval: weekly

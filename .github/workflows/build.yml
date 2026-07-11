@@ -1,27 +1,40 @@
-name: build
+name: Build
 
 on:
+  pull_request:
   push:
     branches:
       - master
-  pull_request:
+
+permissions:
+  contents: read
 
 env:
   DOTNET_NOLOGO: true
 
 jobs:
   build:
-    name: build
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-      - name: Fetch all tags and branches
-        run: git fetch --prune --unshallow
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 3.1.x
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v4
+        with:
+          versionSpec: 6.x
+
+      - name: Calculate version
+        uses: gittools/actions/gitversion/execute@v4
+
       - name: Build
         run: ./build.sh
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          path: artifacts/*.nupkg
