@@ -1,0 +1,15 @@
+<Solution>
+  <Project Path="src/Machine.Specifications.Analyzers.Tests/Machine.Specifications.Analyzers.Tests.csproj" />
+  <Project Path="src/Machine.Specifications.Analyzers/Machine.Specifications.Analyzers.csproj" />
+  <Project Path="src/Machine.Specifications.Core.Specs/Machine.Specifications.Core.Specs.csproj" />
+  <Project Path="src/Machine.Specifications.Core/Machine.Specifications.Core.csproj" />
+  <Project Path="src/Machine.Specifications.Fakes.Specs/Machine.Specifications.Fakes.Specs.csproj" />
+  <Project Path="src/Machine.Specifications.Fakes/Machine.Specifications.Fakes.csproj" />
+  <Project Path="src/Machine.Specifications.Fixtures/Machine.Specifications.Fixtures.csproj" />
+  <Project Path="src/Machine.Specifications.Runner.Utility.Specs/Machine.Specifications.Runner.Utility.Specs.csproj" />
+  <Project Path="src/Machine.Specifications.Runner.Utility/Machine.Specifications.Runner.Utility.csproj" />
+  <Project Path="src/Machine.Specifications.Runner.VisualStudio/Machine.Specifications.Runner.VisualStudio.csproj" />
+  <Project Path="src/Machine.Specifications.Should.Specs/Machine.Specifications.Should.Specs.csproj" />
+  <Project Path="src/Machine.Specifications.Should/Machine.Specifications.Should.csproj" />
+  <Project Path="src/Machine.Specifications/Machine.Specifications.csproj" />
+</Solution>
