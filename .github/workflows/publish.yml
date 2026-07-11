@@ -1,27 +1,47 @@
-name: publish
+name: Publish
 
 on:
   release:
     types: [published]
 
+permissions:
+  contents: read
+  id-token: write
+
 env:
   DOTNET_NOLOGO: true
 
 jobs:
-  publish:
-    name: publish
+  build:
+    name: Publish
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-      - name: Fetch all tags and branches
-        run: git fetch --prune --unshallow
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: NuGet login
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 3.1.x
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v4
+        with:
+          versionSpec: 6.x
+
+      - name: Calculate version
+        uses: gittools/actions/gitversion/execute@v4
+
       - name: Deploy
         env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        run: ./build.sh publish
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          path: artifacts/*.nupkg
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+        run: ./build.ps1 publish

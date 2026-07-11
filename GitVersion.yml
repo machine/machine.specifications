@@ -1,3 +1,5 @@
-mode: ContinuousDelivery
-commit-message-incrementing: Disabled
-legacy-semver-padding: 0
+workflow: GitHubFlow/v1
+label:
+branches:
+  main:
+    label:
