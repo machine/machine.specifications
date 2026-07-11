@@ -2,7 +2,8 @@ name: Publish
 
 on:
   release:
-    types: [published]
+    types:
+      - published
 
 permissions:
   contents: read
