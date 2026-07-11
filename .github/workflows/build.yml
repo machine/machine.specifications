@@ -37,4 +37,4 @@ jobs:
         uses: gittools/actions/gitversion/execute@v4
 
       - name: Build
-        run: ./build.ps1
+        run: ./build.sh
