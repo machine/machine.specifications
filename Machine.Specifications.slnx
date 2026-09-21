@@ -1,15 +1,26 @@
 <Solution>
-  <Project Path="src/Machine.Specifications.Analyzers.Tests/Machine.Specifications.Analyzers.Tests.csproj" />
-  <Project Path="src/Machine.Specifications.Analyzers/Machine.Specifications.Analyzers.csproj" />
-  <Project Path="src/Machine.Specifications.Core.Specs/Machine.Specifications.Core.Specs.csproj" />
-  <Project Path="src/Machine.Specifications.Core/Machine.Specifications.Core.csproj" />
-  <Project Path="src/Machine.Specifications.Fakes.Specs/Machine.Specifications.Fakes.Specs.csproj" />
-  <Project Path="src/Machine.Specifications.Fakes/Machine.Specifications.Fakes.csproj" />
-  <Project Path="src/Machine.Specifications.Fixtures/Machine.Specifications.Fixtures.csproj" />
-  <Project Path="src/Machine.Specifications.Runner.Utility.Specs/Machine.Specifications.Runner.Utility.Specs.csproj" />
-  <Project Path="src/Machine.Specifications.Runner.Utility/Machine.Specifications.Runner.Utility.csproj" />
-  <Project Path="src/Machine.Specifications.Runner.VisualStudio/Machine.Specifications.Runner.VisualStudio.csproj" />
-  <Project Path="src/Machine.Specifications.Should.Specs/Machine.Specifications.Should.Specs.csproj" />
-  <Project Path="src/Machine.Specifications.Should/Machine.Specifications.Should.csproj" />
-  <Project Path="src/Machine.Specifications/Machine.Specifications.csproj" />
+  <Folder Name="/analyzers/">
+    <Project Path="src/Machine.Specifications.Analyzers/Machine.Specifications.Analyzers.csproj" />
+    <Project Path="src/Machine.Specifications.Core.SourceGenerator/Machine.Specifications.Core.SourceGenerator.csproj" Id="be1e82ac-fadb-462e-b941-de93bf7a4a41" />
+    <Project Path="src/Machine.Specifications.Fakes.Analyzers/Machine.Specifications.Fakes.Analyzers.csproj" Id="55618fdf-264c-426c-95d9-179826526efc" />
+    <Project Path="src/Machine.Specifications.Fakes.SourceGenerator/Machine.Specifications.Fakes.SourceGenerator.csproj" Id="d39b087e-b815-4431-bf51-a786ab3a740e" />
+  </Folder>
+  <Folder Name="/core/">
+    <Project Path="src/Machine.Specifications.Core/Machine.Specifications.Core.csproj" />
+    <Project Path="src/Machine.Specifications.Fakes/Machine.Specifications.Fakes.csproj" />
+    <Project Path="src/Machine.Specifications.Should/Machine.Specifications.Should.csproj" />
+    <Project Path="src/Machine.Specifications/Machine.Specifications.csproj" />
+  </Folder>
+  <Folder Name="/templates/">
+    <Project Path="src/Machine.Specifications.Templates/Machine.Specifications.Templates.csproj" Id="f8740762-8ccb-4b72-9ae2-2b84dcf04d0e" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Machine.Specifications.Analyzers.Specs/Machine.Specifications.Analyzers.Specs.csproj" />
+    <Project Path="tests/Machine.Specifications.Core.SourceGenerator.Specs/Machine.Specifications.Core.SourceGenerator.Specs.csproj" />
+    <Project Path="tests/Machine.Specifications.Core.Specs/Machine.Specifications.Core.Specs.csproj" />
+    <Project Path="tests/Machine.Specifications.Fakes.Analzyers.Specs/Machine.Specifications.Fakes.Analzyers.Specs.csproj" />
+    <Project Path="tests/Machine.Specifications.Fakes.SourceGenerator.Specs/Machine.Specifications.Fakes.SourceGenerator.Specs.csproj" />
+    <Project Path="tests/Machine.Specifications.Fakes.Specs/Machine.Specifications.Fakes.Specs.csproj" />
+    <Project Path="tests/Machine.Specifications.Should.Specs/Machine.Specifications.Should.Specs.csproj" />
+  </Folder>
 </Solution>
