@@ -6,13 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Machine.Specifications.Core\Machine.Specifications.Core.csproj" />
-    <ProjectReference Include="..\Machine.Specifications.Fakes\Machine.Specifications.Fakes.csproj" />
-    <ProjectReference Include="..\Machine.Specifications.Should\Machine.Specifications.Should.csproj" />
+    <ProjectReference Include="..\..\src\Machine.Specifications.Core\Machine.Specifications.Core.csproj" />
+    <ProjectReference Include="..\..\src\Machine.Specifications.Fakes\Machine.Specifications.Fakes.csproj" />
+    <ProjectReference Include="..\..\src\Machine.Specifications.Should\Machine.Specifications.Should.csproj" />
   </ItemGroup>
 
 </Project>
