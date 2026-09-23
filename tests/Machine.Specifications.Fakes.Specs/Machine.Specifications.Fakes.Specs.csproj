@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Machine.Specifications.Core\Machine.Specifications.Core.csproj" />
+    <ProjectReference Include="..\..\src\Machine.Specifications.Fakes\Machine.Specifications.Fakes.csproj" />
+    <ProjectReference Include="..\..\src\Machine.Specifications.Should\Machine.Specifications.Should.csproj" />
+  </ItemGroup>
+
+</Project>

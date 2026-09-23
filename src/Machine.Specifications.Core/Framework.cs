@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 namespace Machine.Specifications
 {
     [SetupDelegate]
