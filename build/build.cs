@@ -1,5 +1,6 @@
-﻿#:package Bullseye@6.2.0
-#:package SimpleExec@13.1.0
+﻿#:property TargetFramework=net10.0
+#:package Bullseye@6.1.0
+#:package SimpleExec@13.0.0
 
 using static Bullseye.Targets;
 using static SimpleExec.Command;
