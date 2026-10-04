@@ -18,9 +18,7 @@ Target("clean", () =>
 
 Target("version", () =>
 {
-    version = Environment.GetEnvironmentVariable("GITHUB_REF_TYPE") is "tag"
-        ? Environment.GetEnvironmentVariable("GITHUB_REF_NAME")?.TrimStart('v')
-        : $"0.0.{Environment.GetEnvironmentVariable("GITHUB_RUN_NUMBER")}";
+    version = Environment.GetEnvironmentVariable("VERSION");
 });
 
 Target("restore", dependsOn: ["clean"], () =>

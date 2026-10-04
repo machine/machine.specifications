@@ -27,11 +27,11 @@ jobs:
 
       - name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v4
-        with:
-          versionSpec: 6.x
 
       - name: Calculate version
         uses: gittools/actions/gitversion/execute@v4
 
       - name: Build
+        env:
+          VERSION: ${{ env.GitVersion_SemVer }}
         run: ./build.sh build

@@ -41,5 +41,6 @@ jobs:
 
       - name: Deploy
         env:
+          VERSION: ${{ env.GitVersion_SemVer }}
           NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
         run: ./build.sh publish
