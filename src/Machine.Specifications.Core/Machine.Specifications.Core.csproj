@@ -12,4 +12,12 @@
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Machine.Specifications.Core.SourceGenerator\Machine.Specifications.Core.SourceGenerator.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TfmSpecificPackageFile Include="$(TargetDir)$(AssemblyName).SourceGenerator.dll" Pack="true" PackagePath="analyzers/dotnet/cs" />
+  </ItemGroup>
+
 </Project>

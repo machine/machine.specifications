@@ -1,4 +1,4 @@
-﻿namespace Machine.Specifications;
+namespace Machine.Specifications;
 
 public class SetupDelegateAttribute : Attribute
 {
