@@ -1,6 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <RootNamespace>Machine.Specifications</RootNamespace>
+  </PropertyGroup>
+  
+  <PropertyGroup>
     <Description>Assertion library for Machine.Specifications</Description>
   </PropertyGroup>
 

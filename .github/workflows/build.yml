@@ -9,12 +9,9 @@ on:
 permissions:
   contents: read
 
-env:
-  DOTNET_NOLOGO: true
-
 jobs:
   build:
-    name: Build
+    name: Build, test and package
     runs-on: ubuntu-latest
 
     steps:
@@ -26,15 +23,15 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: 3.1.x
+          dotnet-version: 10.x
 
       - name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v4
-        with:
-          versionSpec: 6.x
 
       - name: Calculate version
         uses: gittools/actions/gitversion/execute@v4
 
       - name: Build
-        run: ./build.sh
+        env:
+          VERSION: ${{ env.GitVersion_SemVer }}
+        run: ./build.sh build

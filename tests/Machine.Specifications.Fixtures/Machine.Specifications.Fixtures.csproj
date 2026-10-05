@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Machine.Specifications.Core\Machine.Specifications.Core.csproj" />
+    <ProjectReference Include="..\Machine.Specifications.Should\Machine.Specifications.Should.csproj" />
+  </ItemGroup>
+
+</Project>
