@@ -1,10 +1,10 @@
 # Machine.Specificaitons Agent Guide
-**Machine.Specifications** is also known colloquially as **MSpec**.
+**Machine.Specifications** is also known as **MSpec**.
 
 ## Project architecture
 All code for MSpec lives in `src` or `tests`. Documentation is in `docs`, and logos for NuGet are in `assets`.
 
-The below projects are in use by this project. You should **ignore** any other project that is not in this list.
+The below source projects are in use by this project, along with test projects. You should **ignore** any other project that is not referenced in the `.slnx` file in the repo root.
 
 - `Machine.Specifications` - Meta NuGet package that references the default set of dependencies
 - `Machine.Specifications.Analyzers` - Code hints and fixes for writing tests "the MSpec way"
