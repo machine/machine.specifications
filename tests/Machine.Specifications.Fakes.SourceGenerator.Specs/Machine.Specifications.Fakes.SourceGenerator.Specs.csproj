@@ -1,2 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <EnableMSpecSourceGeneration>false</EnableMSpecSourceGeneration>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Machine.Specifications.Core\Machine.Specifications.Core.csproj" />
+    <ProjectReference Include="..\..\src\Machine.Specifications.Should\Machine.Specifications.Should.csproj" />
+    <ProjectReference Include="..\..\src\Machine.Specifications.Fakes.SourceGenerator\Machine.Specifications.Fakes.SourceGenerator.csproj" />
+  </ItemGroup>
+
 </Project>

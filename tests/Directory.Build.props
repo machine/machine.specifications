@@ -4,6 +4,7 @@
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
+    <IsTestingPlatformProject>true</IsTestingPlatformProject>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

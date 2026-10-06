@@ -1,0 +1,23 @@
+<Project>
+
+  <PropertyGroup>
+    <IsTestProject>true</IsTestProject>
+    <IsTestingPlatformProject>true</IsTestingPlatformProject>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+    <TestingPlatformShowTestsFailure>true</TestingPlatformShowTestsFailure>
+    <TestingPLatformCaptureOutput>false</TestingPLatformCaptureOutput>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <MSpecImplicitUsings Condition="'$(MSpecImplicitUsings)' == ''">true</MSpecImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <TestingPlatformBuilderHook Include="F51AE038-9A32-4C84-A803-871ED565AA85">
+      <DisplayName>MSpec</DisplayName>
+      <TypeFullName>Machine.Specifications.Framework.TestingPlatformBuilderHook</TypeFullName>
+    </TestingPlatformBuilderHook>
+  </ItemGroup>
+
+</Project>
